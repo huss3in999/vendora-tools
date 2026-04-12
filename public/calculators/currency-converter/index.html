@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Currency Converter — Illustrative Exchange Rates | Vendora</title>
+<meta name="description" content="Convert amounts using illustrative exchange rates for education. Not live FX—verify rates before real transactions.">
+<link rel="canonical" href="https://getvendora.net/calculators/currency-converter/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Currency Converter — Illustrative Exchange Rates">
+<meta property="og:description" content="Convert amounts using illustrative exchange rates for education. Not live FX—verify rates before real transactions.">
+<meta property="og:url" content="https://getvendora.net/calculators/currency-converter/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Currency Converter — Illustrative Exchange Rates | Vendora">
+<meta name="twitter:description" content="Convert amounts using illustrative exchange rates for education. Not live FX—verify rates before real transactions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why illustrative rates only?","acceptedAnswer":{"@type":"Answer","text":"Live FX requires a data feed; this tool demonstrates the math only."}},{"@type":"Question","name":"Bid vs ask rates?","acceptedAnswer":{"@type":"Answer","text":"Banks use different buy/sell spreads; this uses a single illustrative rate."}},{"@type":"Question","name":"Crypto?","acceptedAnswer":{"@type":"Answer","text":"Same math applies, but volatility and fees dominate—verify on an exchange."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Finance &amp; Money</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Currency Converter</h1>
+      <p class="text-sm text-vendora-muted mb-6">Illustrative exchange rates vs USD.</p>
+      <label>Amount<input type="number" id="a" class="w-full border rounded px-2 py-1 mt-1" value="100"></label>
+<label class="block mt-3">From<select id="f" class="w-full border rounded px-2 py-1 mt-1"><option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option></select></label>
+<label class="block mt-3">To<select id="t" class="w-full border rounded px-2 py-1 mt-1"><option value="EUR">EUR</option><option value="USD">USD</option><option value="GBP">GBP</option></select></label>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Convert</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Currency Converter</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Multiplies amount by an illustrative or manual rate for practice.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Enter amount and select currencies/rates as the form provides.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Converted = Amount × Exchange rate (quote conventions vary).</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>If 1 USD = 0.92 EUR (mock), $100 → €92.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Why illustrative rates only?</p>
+        <p class="text-sm text-vendora-muted mt-1">Live FX requires a data feed; this tool demonstrates the math only.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Bid vs ask rates?</p>
+        <p class="text-sm text-vendora-muted mt-1">Banks use different buy/sell spreads; this uses a single illustrative rate.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Crypto?</p>
+        <p class="text-sm text-vendora-muted mt-1">Same math applies, but volatility and fees dominate—verify on an exchange.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+const R={USD:1,EUR:0.91,GBP:0.79};
+function run(){const a=+document.getElementById('a').value,f=document.getElementById('f').value,t=document.getElementById('t').value;const usd=f==='USD'?a:a/R[f];const out=t==='USD'?usd:usd*R[t];document.getElementById('out').textContent=out.toFixed(2)+' '+t;}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

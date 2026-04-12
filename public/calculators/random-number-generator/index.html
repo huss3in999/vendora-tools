@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Integer Generator — Inclusive Range | Vendora</title>
+<meta name="description" content="Generate random integers between a minimum and maximum inclusive—useful for games, sampling, and testing.">
+<link rel="canonical" href="https://getvendora.net/calculators/random-number-generator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Random Integer Generator — Inclusive Range">
+<meta property="og:description" content="Generate random integers between a minimum and maximum inclusive—useful for games, sampling, and testing.">
+<meta property="og:url" content="https://getvendora.net/calculators/random-number-generator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Random Integer Generator — Inclusive Range | Vendora">
+<meta name="twitter:description" content="Generate random integers between a minimum and maximum inclusive—useful for games, sampling, and testing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this cryptographically secure?","acceptedAnswer":{"@type":"Answer","text":"No. Use crypto APIs for security-sensitive randomness."}},{"@type":"Question","name":"Duplicates when drawing many?","acceptedAnswer":{"@type":"Answer","text":"Unless the tool offers “sample without replacement,” duplicates can occur."}},{"@type":"Question","name":"Bias?","acceptedAnswer":{"@type":"Answer","text":"Poor scaling can bias edge values; quality depends on implementation."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Math &amp; Algebra</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Random Number Generator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Inclusive random integers.</p>
+      <label>Min <input type="number" id="mn" class="w-full border rounded px-2 py-1 mt-1" value="1"></label>
+<label class="block mt-2">Max <input type="number" id="mx" class="w-full border rounded px-2 py-1 mt-1" value="10"></label>
+<label class="block mt-2">Count <input type="number" id="n" class="w-full border rounded px-2 py-1 mt-1" value="5"></label>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Generate</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Random Number Generator</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Produces pseudo-random integers in a closed interval.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Set min, max, and count, then generate.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Uniform integers via floor of scaled random variate.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>Min 1, max 6 simulates a fair die roll.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Is this cryptographically secure?</p>
+        <p class="text-sm text-vendora-muted mt-1">No. Use crypto APIs for security-sensitive randomness.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Duplicates when drawing many?</p>
+        <p class="text-sm text-vendora-muted mt-1">Unless the tool offers “sample without replacement,” duplicates can occur.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Bias?</p>
+        <p class="text-sm text-vendora-muted mt-1">Poor scaling can bias edge values; quality depends on implementation.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+function run(){const mn=+document.getElementById('mn').value,mx=+document.getElementById('mx').value,n=+document.getElementById('n').value;if(mx<mn||n<1){document.getElementById('out').textContent='Invalid';return;}const arr=[];for(let i=0;i<n;i++)arr.push(Math.floor(Math.random()*(mx-mn+1))+mn);document.getElementById('out').textContent=arr.join(', ');}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

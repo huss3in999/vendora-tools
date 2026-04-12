@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Price Calculator | Menu Pricing, Food Cost &amp; Margin for Restaurants</title>
+  <meta name="description" content="Menu pricing calculator: set selling price from food cost, target margin, VAT, and discounts. Free for restaurants, cafes, food trucks, and takeaway menus.">
+  <meta name="keywords" content="menu pricing calculator, menu price calculator, restaurant menu price calculator, food pricing calculator, menu pricing formula, how to calculate menu price, dish price calculator, selling price calculator for food">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/menu-price-calculator/">
+  <meta property="og:title" content="Menu Price Calculator | Restaurant Pricing &amp; Margin | Vendora">
+  <meta property="og:description" content="Calculate menu prices from cost, margin, VAT, and discounts. Free online tool for food businesses.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/menu-price-calculator/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Menu Price Calculator | Menu Pricing, Food Cost and Margin for Restaurants",
+  "url": "https://getvendora.net/tools/menu-price-calculator/",
+  "description": "Menu pricing calculator: set selling price from food cost, target margin, VAT, and discounts. Free for restaurants, cafes, food trucks, and takeaway menus.",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Vendora",
+    "url": "https://getvendora.net/"
+  }
+}
+</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vendora Menu Price Calculator",
+    "description": "Set menu selling price from food cost, target margin, VAT, and discounts for restaurants and food businesses.",
+    "url": "https://getvendora.net/tools/menu-price-calculator/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a menu pricing calculator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A menu pricing calculator helps calculate the selling price of a menu item based on food cost and profit margin."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do restaurants calculate menu price?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Restaurants calculate menu price by dividing food cost by target margin to determine the correct selling price."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I include VAT and discounts?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. This calculator allows you to include VAT and discounts when calculating final menu price."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="../tool-system.css">
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);
+    t.async=1;
+    t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+    <section class="hero">
+      <p class="eyebrow">Vendora Free Tool</p>
+      <h1>Menu Pricing Calculator</h1>
+      <p class="hero-copy">This menu pricing calculator helps restaurants and food businesses calculate the correct selling price using food cost, margin targets, VAT, and discounts for better menu profitability.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Free tool</span>
+        <span class="hero-tag">Restaurant pricing</span>
+        <span class="hero-tag">Profit focused</span>
+      </div>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calculator-heading">
+        <h2 class="section-title" id="calculator-heading">Set your pricing goals</h2>
+        <p class="section-copy">
+          Use margin, VAT, discounts, and even a target profit-per-item mode to find the right selling price for your menu.
+        </p>
+
+        <div class="field-grid">
+          <div class="field-wide">
+            <label for="itemName">Item name</label>
+            <input id="itemName" type="text" placeholder="Signature chicken wrap">
+          </div>
+
+          <div class="field">
+            <label for="currency">Currency</label>
+            <div class="select-wrap">
+              <select id="currency">
+                <option value="USD" selected>USD $</option>
+                <option value="EUR">EUR EUR</option>
+                <option value="GBP">GBP GBP</option>
+                <option value="BHD">BHD BD</option>
+                <option value="AED">AED AED</option>
+                <option value="SAR">SAR SAR</option>
+                <option value="INR">INR Rs</option>
+                <option value="EGP">EGP EGP</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="totalCost">Total cost per item</label>
+            <input id="totalCost" type="number" min="0" step="0.01" placeholder="3" inputmode="decimal">
+          </div>
+
+          <div class="field">
+            <label for="profitMargin">Desired profit margin %</label>
+            <input id="profitMargin" type="number" min="0.01" max="99.99" step="0.01" placeholder="60" inputmode="decimal">
+          </div>
+
+          <div class="field">
+            <label for="vatPercent">VAT %</label>
+            <input id="vatPercent" type="number" min="0" step="0.01" placeholder="10" inputmode="decimal">
+          </div>
+
+          <div class="field">
+            <label for="discountPercent">Discount %</label>
+            <input id="discountPercent" type="number" min="0" max="100" step="0.01" placeholder="0" inputmode="decimal">
+          </div>
+
+          <div class="field">
+            <label for="currentSellingPrice">Current selling price</label>
+            <input id="currentSellingPrice" type="number" min="0" step="0.01" placeholder="7.50" inputmode="decimal">
+          </div>
+
+          <div class="field-wide">
+            <span class="field-label">I want to earn X per item</span>
+            <label class="toggle-wrap" for="profitToggle">
+              <input id="profitToggle" type="checkbox">
+              <span>Enable target profit mode</span>
+            </label>
+            <span class="input-hint">Turn this on to calculate price based on a specific profit amount instead of only a target margin.</span>
+          </div>
+
+          <div class="field-wide" id="targetProfitField">
+            <label for="targetProfitAmount">Profit per item</label>
+            <input id="targetProfitAmount" type="number" min="0" step="0.01" placeholder="2" inputmode="decimal">
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" id="exampleButton">Try Example</button>
+          <button type="button" class="btn btn-secondary" id="resetButton">Reset</button>
+          <button type="button" class="btn btn-secondary" id="copyButton">Copy Results</button>
+          <button type="button" class="btn btn-primary" id="printButton">Print</button>
+        </div>
+        <div class="validation" id="validationMessage" role="status" aria-live="polite"></div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Pricing summary</h2>
+        <p class="section-copy">
+          Review the suggested selling price and see how VAT and discounts affect what the customer pays.
+        </p>
+
+        <div class="status-banner" id="statusBanner">
+          <span class="status-label" id="statusLabel">Balanced</span>
+          <div class="status-score" id="statusScore">$0.00</div>
+          <p class="summary-note" id="impactText">You should sell this item at $0.00 to stay profitable.</p>
+          <p class="status-text" id="statusText">Add your item cost and goals to see a pricing recommendation.</p>
+        </div>
+
+        <div class="result-grid">
+          <article class="metric-card">
+            <span class="metric-label">Suggested selling price</span>
+            <strong class="metric-value" id="suggestedPriceOutput">$0.00</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Profit per item</span>
+            <strong class="metric-value" id="profitPerItemOutput">$0.00</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Profit margin %</span>
+            <strong class="metric-value" id="profitMarginOutput">0.00%</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Final price after VAT</span>
+            <strong class="metric-value" id="finalVatPriceOutput">$0.00</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Final price after discount</span>
+            <strong class="metric-value" id="finalDiscountPriceOutput">$0.00</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Difference in profit</span>
+            <strong class="metric-value" id="profitDifferenceOutput">$0.00</strong>
+            <p class="summary-note" id="profitComparisonText">Add your current selling price to compare current vs suggested profit.</p>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Recommendation</span>
+            <strong class="metric-value" id="recommendationShort">Balanced</strong>
+            <p class="summary-note" id="recommendationText">The calculator will tell you whether the price looks low, balanced, or premium.</p>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section class="cta">
+      <h2>Turn your menu into profit with Vendora POS</h2>
+      <p>
+        Use Vendora to manage your menu, POS, and direct ordering in one smart system.
+      </p>
+      <a class="btn btn-primary" href="/">Start Now</a>
+    </section>
+
+    <section class="card faq seo-tool-guide" aria-labelledby="mp-guide-what">
+      <h2 class="section-title" id="mp-guide-what">What this tool does</h2>
+      <p class="section-copy">The menu price calculator connects your raw plate cost to the guest-facing price while respecting the margin you need to survive labor, rent, and marketing swings. Enter food cost, choose whether VAT is included or added at sale, dial in an optional discount scenario, and specify your target margin or markup. The outputs translate those guardrails into a recommended selling price, profit dollars, and plain-language guidance about whether the item feels underpriced, balanced, or premium relative to your goal. It is designed for iterative menu engineering: tweak one variable—like a supplier price hike—and immediately see how much the menu board must move to hold margin steady.</p>
+      <h2 class="section-title">Who should use it</h2>
+      <p class="section-copy">Chef-owners, beverage directors pricing non-alcoholic programs, and franchise business coaches all need quick pricing math without breaking Excel. Fast-casual brands launching LTOs, bakeries selling by weight, and takeaway shops balancing delivery discounts will return to the page whenever commodity markets spike. Hotel F&amp;B teams juggling inclusive VAT regimes and US-style add-on tax can both map their scenario with the inclusive/exclusive toggles. Anyone who already trusts the <a href="/tools/food-cost-calculator/">food cost calculator</a> should run its output straight into this tool for a full cost-to-menu story.</p>
+      <h2 class="section-title">How to use it</h2>
+      <p class="section-copy">Start from an honest food cost for one portion—include sauce and garnish if they belong to prime cost. Set your target margin percentage or equivalent markup depending on how your team thinks about pricing. If your market quotes VAT-inclusive prices, switch the tax mode so the calculator does not double-count. Add an expected discount only when promos are structural (happy hour, third-party app coupons). Calculate and read selling price, profit per item, and the recommendation banner. If the price feels unrealistic for your neighborhood, adjust margin temporarily to see the trade-off, then revisit operations costs or portion sizes instead of silently eating the gap.</p>
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">A bowl costs $4.40 fully loaded, you want 65% gross margin excluding VAT, and you plan a standing 10% loyalty discount. The calculator backs into the pre-discount list price that still yields your margin after the promo fires—often higher than intuition suggests. If VAT is 5% inclusive, toggling modes shows whether your printed menu should read $14.5 or $15.2 to guests. Document the final numbers beside each SKU so when chicken prices jump $0.40, you can rerun the tool and know exactly how much to nudge the POS.</p>
+    </section>
+
+    <section class="card faq faq-section">
+
+      <h2>
+      Menu Pricing Calculator FAQ
+      </h2>
+
+      <h3>
+      What is a menu pricing calculator?
+      </h3>
+
+      <p>
+      A menu pricing calculator helps calculate the selling price of a menu item based on food cost and profit margin.
+      </p>
+
+      <h3>
+      How do restaurants calculate menu price?
+      </h3>
+
+      <p>
+      Restaurants calculate menu price by dividing food cost by target margin to determine the correct selling price.
+      </p>
+
+      <h3>
+      Can I include VAT and discounts?
+      </h3>
+
+      <p>
+      Yes. This calculator allows you to include VAT and discounts when calculating final menu price.
+      </p>
+
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related Tools</h2>
+      <p>
+        <a href="/tools/food-cost-calculator/">Food Cost Calculator</a>,
+        <a href="/tools/delivery-commission-calculator/">Delivery Commission Calculator</a>,
+        <a href="/tools/daily-sales-summary/">Daily Sales Summary</a>,
+        <a href="/tools/qr-menu-generator/">QR Menu Generator</a>
+      </p>
+    </section>
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  
+    <section class="card faq">
+      <h2 class="section-title">Free Restaurant Tools</h2>
+      <p>Vendora provides restaurant calculators and tools to help restaurants, cafes, and food trucks manage pricing, profit, and daily operations.</p>
+      <p>Use our free tools to calculate food cost, menu price, delivery commission, and generate invoices quickly.</p>
+    </section>
+
+  </main>
+
+  <a class="btn sticky-cta" href="/">Open Vendora POS</a>
+
+    <script src="./app.js" defer></script>
+  <a href="/contact/" onclick="window.open('https://wa.me/97333404044?text=Hi%20Vendora%2C%20I%20need%20support%20with%20the%20menu%20price%20calculator', '_blank', 'noopener'); return false;" target="_blank" rel="noopener noreferrer" class="whatsapp-support-fab" aria-label="Chat on WhatsApp for support">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4A8.5 8.5 0 1 1 12.5 3a8.38 8.38 0 0 1 5.4 1.9"/><path d="M22 2 12 12"/><path d="M16 2h6v6"/></svg>
+    <span>WhatsApp Support</span>
+  </a>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+
+

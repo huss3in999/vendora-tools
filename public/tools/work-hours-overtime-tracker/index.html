@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work Hours &amp; Overtime Tracker | FLSA &amp; State Daily OT (Free)</title>
+  <meta name="description" content="Free work hours and overtime tracker: FLSA weekly OT after 40 hours plus California, Alaska, Nevada, and Colorado daily rules, anti-pyramiding, weighted average pay rate, and meal break auto-deduct.">
+  <meta name="keywords" content="overtime calculator, work hours tracker, FLSA overtime, California overtime calculator, weekly timesheet, labor compliance">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/work-hours-overtime-tracker/">
+  <meta property="og:title" content="Work Hours &amp; Overtime Tracker | FLSA &amp; State Rules | Vendora">
+  <meta property="og:description" content="Monday–Sunday timesheet with daily and weekly overtime, anti-pyramiding, and estimated gross pay.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/work-hours-overtime-tracker/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "name": "Work Hours & Overtime Tracker | FLSA and State Daily Overtime",
+      "url": "https://getvendora.net/tools/work-hours-overtime-tracker/",
+      "description": "Estimate regular, daily overtime, weekly overtime, and double time with anti-pyramiding and FLSA weighted regular rate for gross pay.",
+      "isPartOf": { "@type": "WebSite", "name": "Vendora", "url": "https://getvendora.net/" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://getvendora.net/tools/work-hours-overtime-tracker/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Does this overtime tracker replace payroll or legal advice?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. It is an estimate tool for planning and checking hours. Final payroll treatment can change based on state rules, industry rules, contracts, and local requirements."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does anti-pyramiding mean here?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Daily overtime hours are separated first. Those same hours are not counted again inside the weekly overtime bucket, which avoids double-counting."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When should I use the default hourly rate field?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use the default rate when most shifts share one hourly rate. If a shift has a different rate, enter that shift-specific rate so the weighted average regular rate can be estimated more accurately."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vendora Work Hours & Overtime Tracker",
+    "description": "Monday–Sunday timesheet with FLSA weekly overtime, California and other state daily overtime rules, anti-pyramiding, weighted average regular rate, and meal auto-deduct.",
+    "url": "https://getvendora.net/tools/work-hours-overtime-tracker/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="../tool-system.css">
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);
+    t.async=1;
+    t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+  <script src="./overtime-engine.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body class="vendora-tool work-hours-overtime-page">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Vendora Free Tool</p>
+      <h1>Work Hours &amp; Overtime Tracker</h1>
+      <p class="hero-copy">
+        Enter a <strong>Monday–Sunday</strong> timesheet with clock in/out, unpaid breaks, and optional pay rates per shift. The engine applies the <strong>FLSA</strong> 40-hour workweek rule, adds <strong>state daily overtime</strong> where selected (CA, AK, NV, CO), and uses <strong>anti-pyramiding</strong> so hours are not double-counted as both daily and weekly OT. <strong>Weighted average regular rate</strong> drives estimated gross pay for blended rates.
+      </p>
+      <div class="hero-points">
+        <span class="hero-point hero-point-highlight">State routing</span>
+        <span class="hero-point">Anti-pyramiding</span>
+        <span class="hero-point">Meal auto-deduct</span>
+        <span class="hero-point">Live totals</span>
+      </div>
+    </section>
+
+    <p class="disclaimer-banner" role="note">
+      <strong>Not legal advice.</strong> Rules vary by industry, agreement, and locality. Colorado also recognizes a 12-consecutive-hour rule—this tool models the 12-hour daily threshold only.
+    </p>
+
+    <section class="calculator-shell">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Timesheet &amp; settings</h2>
+
+        <div class="field-grid settings-row">
+          <div class="field-wide">
+            <label for="workState">Work state (overtime routing)</label>
+            <div class="select-wrap">
+              <select id="workState" aria-label="Work state">
+                <option value="FEDERAL" selected>Federal baseline — weekly OT only (40 hrs)</option>
+                <option value="CA">California — 1.5x after 8h/day, 2x after 12h/day</option>
+                <option value="AK">Alaska — 1.5x after 8h/day</option>
+                <option value="NV">Nevada — 1.5x after 8h/day</option>
+                <option value="CO">Colorado — 1.5x after 12h/day</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-wide">
+            <label for="defaultRate">Default hourly rate ($)</label>
+            <input id="defaultRate" type="text" inputmode="decimal" placeholder="18.50" aria-describedby="rateHint">
+            <p class="field-hint" id="rateHint">Used when a shift row leaves rate blank. Per-shift rates override for weighted average.</p>
+          </div>
+          <div class="field-wide">
+            <label class="checkbox-row">
+              <input type="checkbox" id="autoMeal">
+              Auto-deduct 30-minute unpaid meal when gross shift length exceeds 5 hours (after manual break deductions)
+            </label>
+          </div>
+        </div>
+
+        <div id="validationBanner" class="validation-banner is-hidden" role="alert" hidden></div>
+
+        <div class="week-wrap" id="weekWrap"></div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-secondary" id="resetWeek">Reset week</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Hours &amp; pay summary</h2>
+        <p class="section-copy">Transparent breakdown: regular, daily vs weekly overtime at 1.5x, double time, and estimated gross using the blended regular rate.</p>
+
+        <div class="dash-grid" id="dashGrid"></div>
+
+        <h3 class="subsection-title">Daily detail</h3>
+        <div class="table-wrap">
+          <table class="breakdown-table" id="dailyTable">
+            <thead>
+              <tr>
+                <th scope="col">Day</th>
+                <th scope="col">Hours</th>
+                <th scope="col">Daily regular</th>
+                <th scope="col">Daily 1.5x</th>
+                <th scope="col">Daily 2x</th>
+              </tr>
+            </thead>
+            <tbody id="dailyBody"></tbody>
+          </table>
+        </div>
+
+        <p class="co-note is-hidden" id="coNote" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq seo-tool-guide" aria-labelledby="wh-guide-what">
+      <h2 class="section-title" id="wh-guide-what">What this tool does</h2>
+      <p class="section-copy">This tracker ingests a Monday-through-Sunday timesheet with clock-in and clock-out pairs, unpaid breaks, optional auto-deducted meals after long shifts, and per-shift pay rates when they differ from your default. Behind the scenes it applies federal baseline logic—weekly overtime after 40 hours worked—and layers state-specific daily thresholds for California (including double time after twelve hours), Alaska, Nevada, and Colorado as you select them from the work-state menu. Anti-pyramiding ensures hours credited as daily overtime are not counted again inside the weekly overtime bucket, which mirrors how many compliance teams explain the sequencing verbally. A weighted average regular rate is derived from straight-time pay divided by total hours so blended wage scenarios still produce a defensible overtime estimate before payroll runs the official calc.</p>
+      <h2 class="section-title">Who should use it</h2>
+      <p class="section-copy">Restaurant GMs scheduling doubles, healthcare-adjacent hourly staff, warehouse leads, and any operator who hears “Did we owe OT on Tuesday?” will use this weekly. HR coordinators can compare a federal-only employee against a multi-state traveler, while workers themselves can sanity-check schedules before escalating questions. It is explicitly not a substitute for counsel or certified payroll software—disclaimers on the page remind you that industry agreements, union contracts, and local orders can override generic rules—but it closes the gap between a scribbled timesheet and a payroll preview. Pair it with the <a href="/tools/no-tax-on-overtime-calculator/">paycheck calculator</a> when you need take-home pay after gross hours are settled.</p>
+      <h2 class="section-title">How to use it</h2>
+      <p class="section-copy">Pick the state that governs daily overtime routing, enter a default hourly rate, and toggle meal auto-deduct if your policy assumes a thirty-minute unpaid break once shifts cross five hours after manual break entries. Fill each day’s rows with in/out times; add break minutes where employees actually leave the clock. Override rates on individual rows when someone works a premium station. Watch the dashboard populate regular, daily 1.5x, daily 2x, weekly OT, and estimated gross. Scroll the daily detail table to verify how each weekday split its hours before trusting the headline numbers. Reset the week when you move to a new pay period rather than editing over old data.</p>
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">A California cook works ten hours Monday, nine Tuesday, eight Wednesday, eight Thursday, and seven Friday, all at $22/hour with no split shifts. Monday and Tuesday each spill one and two hours respectively into daily overtime at time-and-a-half before the engine sums remaining daily-regular hours toward the forty-hour federal cap. If weekly regular hours still exceed forty after daily OT is carved out, additional hours move to weekly overtime rather than being taxed twice. Seeing the table row-by-row explains why Friday’s seventh hour might still be “regular” even late in the week—because earlier days already shed OT hours into their own buckets. Export the mental model to your payroll partner when actual checks diverge slightly due to rounding or employer-specific rounding rules.</p>
+    </section>
+
+    <section class="card faq" id="faq">
+      <h2 class="section-title">Frequently asked questions</h2>
+      <div class="section-copy">
+        <p><strong>Does this overtime tracker replace payroll or legal advice?</strong><br> No. It is an estimate tool for planning and checking hours. Final payroll treatment can change based on state rules, industry rules, contracts, and local requirements.</p>
+        <p><strong>What does anti-pyramiding mean here?</strong><br> Daily overtime hours are separated first. Those same hours are not counted again inside the weekly overtime bucket, which avoids double-counting.</p>
+        <p><strong>When should I use the default hourly rate field?</strong><br> Use the default rate when most shifts share one hourly rate. If a shift has a different rate, enter that shift-specific rate so the weighted average regular rate can be estimated more accurately.</p>
+      </div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related Tools</h2>
+      <p><a href="/tools/hourly-to-salary-calculator/">Hourly to Salary Calculator</a>, <a href="/tools/no-tax-on-overtime-calculator/">No Tax on Overtime Calculator</a>, <a href="/tools/commission-calculator/">Commission Calculator</a>, <a href="/tools/daily-sales-summary/">Daily Sales Summary</a></p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <a class="btn sticky-cta" href="/">Open Vendora POS</a>
+  <a href="/contact/" onclick="window.open('https://wa.me/97333404044?text=Hi%20Vendora%2C%20I%20need%20support%20with%20the%20overtime%20tracker', '_blank', 'noopener'); return false;" target="_blank" rel="noopener noreferrer" class="whatsapp-support-fab" aria-label="Chat on WhatsApp for support">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4A8.5 8.5 0 1 1 12.5 3a8.38 8.38 0 0 1 5.4 1.9"/><path d="M22 2 12 12"/><path d="M16 2h6v6"/></svg>
+    <span>WhatsApp Support</span>
+  </a>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

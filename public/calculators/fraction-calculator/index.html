@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fraction Calculator — Add &amp; Simplify Fractions | Vendora</title>
+<meta name="description" content="Add two fractions, simplify results, and see improper or mixed forms. Quick check for students and recipes.">
+<link rel="canonical" href="https://getvendora.net/calculators/fraction-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fraction Calculator — Add &amp; Simplify Fractions">
+<meta property="og:description" content="Add two fractions, simplify results, and see improper or mixed forms. Quick check for students and recipes.">
+<meta property="og:url" content="https://getvendora.net/calculators/fraction-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fraction Calculator — Add &amp; Simplify Fractions | Vendora">
+<meta name="twitter:description" content="Add two fractions, simplify results, and see improper or mixed forms. Quick check for students and recipes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What if denominator is zero?","acceptedAnswer":{"@type":"Answer","text":"Division by zero is undefined; the tool should reject invalid input."}},{"@type":"Question","name":"Mixed numbers?","acceptedAnswer":{"@type":"Answer","text":"Convert to improper fractions first if the tool expects improper form."}},{"@type":"Question","name":"Subtraction instead?","acceptedAnswer":{"@type":"Answer","text":"Add the negative second fraction or use a subtraction mode if provided."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Math &amp; Algebra</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Fraction Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Add two fractions (+ only).</p>
+      <div class="flex gap-2 items-end flex-wrap">
+<span><input type="number" id="n1" class="w-16 border rounded px-1" value="1"></span>/<span><input type="number" id="d1" class="w-16 border rounded px-1" value="2"></span>
+<span class="mx-2">+</span>
+<span><input type="number" id="n2" class="w-16 border rounded px-1" value="1"></span>/<span><input type="number" id="d2" class="w-16 border rounded px-1" value="4"></span></div>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Add</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Fraction Calculator</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Performs fraction addition with simplification via GCD.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Enter numerators and denominators, then calculate.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">a/b + c/d = (ad + bc)/(bd), then reduce by gcd.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>1/3 + 1/6 = 1/2 after simplification.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">What if denominator is zero?</p>
+        <p class="text-sm text-vendora-muted mt-1">Division by zero is undefined; the tool should reject invalid input.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Mixed numbers?</p>
+        <p class="text-sm text-vendora-muted mt-1">Convert to improper fractions first if the tool expects improper form.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Subtraction instead?</p>
+        <p class="text-sm text-vendora-muted mt-1">Add the negative second fraction or use a subtraction mode if provided.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){const t=b;b=a%b;a=t;}return a;}
+function run(){const n1=+document.getElementById('n1').value,d1=+document.getElementById('d1').value,n2=+document.getElementById('n2').value,d2=+document.getElementById('d2').value;if(!d1||!d2){document.getElementById('out').textContent='Denominators non-zero';return;}const n=n1*d2+n2*d1,d=d1*d2,g=gcd(n,d);document.getElementById('out').textContent='Sum: '+(n/g)+' / '+(d/g)+' = '+(n/d).toFixed(6);}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Water Intake Estimator — ml from Weight &amp; Activity | Vendora</title>
+<meta name="description" content="Estimate suggested daily fluid intake in milliliters based on body weight and activity level. General guidance only—ask your clinician for medical needs.">
+<link rel="canonical" href="https://getvendora.net/calculators/water-intake-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Daily Water Intake Estimator — ml from Weight &amp; Activity">
+<meta property="og:description" content="Estimate suggested daily fluid intake in milliliters based on body weight and activity level. General guidance only—ask your clinician for medical needs.">
+<meta property="og:url" content="https://getvendora.net/calculators/water-intake-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Daily Water Intake Estimator — ml from Weight &amp; Activity | Vendora">
+<meta name="twitter:description" content="Estimate suggested daily fluid intake in milliliters based on body weight and activity level. General guidance only—ask your clinician for medical needs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do coffee and tea count?","acceptedAnswer":{"@type":"Answer","text":"Most fluids contribute to hydration; alcohol can dehydrate. This tool estimates total beverage needs broadly."}},{"@type":"Question","name":"What if I exercise heavily?","acceptedAnswer":{"@type":"Answer","text":"Add extra fluids around workouts and replace electrolytes for long sessions."}},{"@type":"Question","name":"Are there kidney or heart conditions?","acceptedAnswer":{"@type":"Answer","text":"Fluid limits may apply. This calculator is not medical advice."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Health &amp; Fitness</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Water Intake Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Base liters ≈ kg × 0.033 + exercise bonus.</p>
+      <label class="block"><span class="text-sm font-medium">Weight (kg)</span><input type="number" id="w" class="mt-1 w-full border rounded px-3 py-2" value="70"></label>
+<label class="block mt-4"><span class="text-sm font-medium">Exercise (min/day)</span><input type="number" id="ex" class="mt-1 w-full border rounded px-3 py-2" min="0" value="30"></label>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Water Intake Calculator</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Provides a simple daily fluid intake target based on weight and a light activity adjustment.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Enter weight (kg) and an activity level, then calculate.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Uses a baseline per-kg guideline plus a multiplier or add-on for higher activity.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>70 kg with moderate activity might suggest a few liters per day including water from food—interpret as a rough target.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Do coffee and tea count?</p>
+        <p class="text-sm text-vendora-muted mt-1">Most fluids contribute to hydration; alcohol can dehydrate. This tool estimates total beverage needs broadly.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">What if I exercise heavily?</p>
+        <p class="text-sm text-vendora-muted mt-1">Add extra fluids around workouts and replace electrolytes for long sessions.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Are there kidney or heart conditions?</p>
+        <p class="text-sm text-vendora-muted mt-1">Fluid limits may apply. This calculator is not medical advice.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+function run(){const w=+document.getElementById('w').value,ex=+document.getElementById('ex').value||0;if(w<=0){document.getElementById('out').textContent='Weight > 0';return;}const L=w*0.033+ex*0.012;document.getElementById('out').textContent='Approx. '+L.toFixed(2)+' L/day (~'+(L*33.814).toFixed(0)+' fl oz)';}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

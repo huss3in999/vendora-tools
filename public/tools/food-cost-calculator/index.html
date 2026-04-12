@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Cost Calculator | Recipe &amp; Menu Food Cost % for Restaurants</title>
+  <meta name="description" content="Calculate recipe cost, plate cost, food cost percentage, and target selling price. Free tool for restaurants, cafes, food trucks, bakeries, and cloud kitchens.">
+  <meta name="keywords" content="food cost calculator, restaurant food cost calculator, recipe cost calculator, menu food cost calculator, food cost percentage calculator, plate cost calculator">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/food-cost-calculator/">
+  <meta property="og:title" content="Food Cost Calculator | Recipe &amp; Menu Cost % | Vendora">
+  <meta property="og:description" content="Recipe cost, food cost %, and pricing for restaurants and food businesses. Free online calculator.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/food-cost-calculator/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Food Cost Calculator | Recipe and Menu Food Cost % for Restaurants",
+  "url": "https://getvendora.net/tools/food-cost-calculator/",
+  "description": "Calculate recipe cost, plate cost, food cost percentage, and target selling price. Free tool for restaurants, cafes, food trucks, bakeries, and cloud kitchens.",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Vendora",
+    "url": "https://getvendora.net/"
+  }
+}
+</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vendora Food Cost Calculator",
+    "description": "Calculate recipe and plate cost, food cost percentage, profit per item, and suggested or required selling prices for restaurant menu items.",
+    "url": "https://getvendora.net/tools/food-cost-calculator/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a food cost calculator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A food cost calculator helps you calculate the total cost of a dish or recipe and compare it with the selling price to measure food cost percentage and profit."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can restaurants use this calculator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. This calculator is made for restaurants, cafes, food trucks, bakeries, and other food businesses."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I calculate food cost percentage?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Food cost percentage is calculated by dividing total food cost by selling price, then multiplying by 100."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I use this as a recipe cost calculator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. You can use it to estimate recipe cost, portion cost, and pricing for individual menu items."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="../tool-system.css">
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);
+    t.async=1;
+    t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+    <section class="hero">
+      <p class="eyebrow">Vendora Free Tool</p>
+      <h1>Food Cost Calculator</h1>
+      <p class="hero-copy">
+        This food cost calculator works as a restaurant food cost calculator and recipe cost calculator to help you measure portion cost, food cost percentage, and selling price for faster menu decisions.
+      </p>
+      <div class="hero-points">
+        <span class="hero-point">Global currency support</span>
+        <span class="hero-point">VAT-aware pricing view</span>
+        <span class="hero-point">Live profit recommendations</span>
+      </div>
+    </section>
+
+    <section class="calculator-shell">
+      <section class="card input-card" aria-labelledby="calculator-heading">
+        <h2 class="section-title" id="calculator-heading">Premium food cost calculator</h2>
+        <p class="section-copy">
+          Enter your cost details, choose your currency, and the calculator updates live as you type.
+        </p>
+
+        <div class="field-grid">
+          <div class="field-wide">
+            <label for="itemName">Item or product name</label>
+            <input id="itemName" type="text" placeholder="Chicken burger combo">
+            <span class="input-hint">Optional, useful when copying or printing the result.</span>
+          </div>
+
+          <div class="field">
+            <label for="currency">Currency</label>
+            <div class="select-wrap">
+              <select id="currency">
+                <option value="USD" selected>USD $</option>
+                <option value="EUR">EUR EUR</option>
+                <option value="GBP">GBP GBP</option>
+                <option value="BHD">BHD BD</option>
+                <option value="AED">AED AED</option>
+                <option value="SAR">SAR SAR</option>
+                <option value="INR">INR Rs</option>
+                <option value="EGP">EGP EGP</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="vatPercent">VAT %</label>
+            <input id="vatPercent" type="number" min="0" step="0.01" placeholder="15" inputmode="decimal">
+          </div>
+
+          <div class="field">
+            <label for="ingredientCost">Ingredient cost</label>
+            <input id="ingredientCost" type="number" min="0" step="0.01" placeholder="4.50" inputmode="decimal">
+          </div>
+
+          <div class="field">
+            <label for="packagingCost">Packaging cost</label>
+            <input id="packagingCost" type="number" min="0" step="0.01" placeholder="0.40" inputmode="decimal">
+          </div>
+
+          <div class="field">
+            <label for="additionalCost">Additional cost</label>
+            <input id="additionalCost" type="number" min="0" step="0.01" placeholder="0.60" inputmode="decimal">
+          </div>
+
+          <div class="field">
+            <label for="sellingPrice">Selling price</label>
+            <input id="sellingPrice" type="number" min="0" step="0.01" placeholder="15.00" inputmode="decimal">
+          </div>
+
+          <div class="field-wide">
+            <label for="targetFoodCost">Target food cost %</label>
+            <input id="targetFoodCost" type="number" min="0.01" step="0.01" placeholder="30" inputmode="decimal">
+            <span class="input-hint">Suggested selling price is calculated from this target food cost percentage.</span>
+          </div>
+
+          <div class="field-wide">
+            <label for="targetProfitMargin">Target profit margin %</label>
+            <input id="targetProfitMargin" type="number" min="0.01" max="99.99" step="0.01" placeholder="60" inputmode="decimal">
+            <span class="input-hint">If entered, the calculator also shows the selling price needed to reach that profit margin.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage"></div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" id="exampleButton">Try Example</button>
+          <button type="button" class="btn btn-secondary" id="resetButton">Reset</button>
+          <button type="button" class="btn btn-secondary" id="copyButton">Copy Results</button>
+          <button type="button" class="btn btn-primary" id="printButton">Print Results</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">
+          Use these numbers to review menu pricing, profitability, and whether this item is strong enough for your business.
+        </p>
+
+        <div class="status-banner" id="statusBanner">
+          <span class="status-label" id="statusLabel">Waiting</span>
+          <div class="status-score" id="statusScore">0.00%</div>
+          <p class="status-text" id="statusText">Add your selling price and costs to see a live performance summary.</p>
+        </div>
+
+        <div class="result-grid">
+          <article class="metric-card">
+            <span class="metric-label">Total cost</span>
+            <strong class="metric-value" id="totalCostOutput">$0.00</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Food cost %</span>
+            <strong class="metric-value" id="foodCostOutput">0.00%</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Profit per item</span>
+            <strong class="metric-value" id="profitOutput">$0.00</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Profit margin %</span>
+            <strong class="metric-value" id="profitMarginOutput">0.00%</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Suggested selling price</span>
+            <strong class="metric-value" id="suggestedPriceOutput">$0.00</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Required price for target margin</span>
+            <strong class="metric-value" id="requiredPriceOutput">$0.00</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Recommendation</span>
+            <strong class="metric-value" id="recommendationShort">Waiting</strong>
+            <p class="summary-note" id="recommendationText">The calculator will explain whether your current price looks strong or risky.</p>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq seo-tool-guide" aria-labelledby="fc-guide-what">
+      <h2 class="section-title" id="fc-guide-what">What this tool does</h2>
+      <p class="section-copy">The food cost calculator rolls every direct plate cost—ingredients, packaging, and other item-specific expenses—into a single number you can compare with your menu price. From there it derives food cost percentage, gross profit dollars per sale, a suggested price when you want to hit a target margin, and the minimum price required if your current margin is too thin. Recommendation text calls out whether an item looks balanced, aggressive, or risky so chefs and owners share the same language during menu meetings. It is the fastest way to answer “Are we underpricing this sandwich?” without exporting a spreadsheet from the back office.</p>
+      <h2 class="section-title">Who should use it</h2>
+      <p class="section-copy">Executive chefs, kitchen managers, and owners in full-service restaurants, fast casual concepts, bakeries, juice bars, and catering operations all touch recipe costing weekly. Franchisees adapting a national menu to local suppliers can recompute plate costs in minutes, while food trucks testing a limited menu can iterate before they print new boards. Anyone responsible for menu engineering alongside marketing or finance should keep this page bookmarked next to their inventory invoices so theoretical costs stay close to actuals.</p>
+      <h2 class="section-title">How to use it</h2>
+      <p class="section-copy">Gather a scaled recipe or single-serving build: list every ingredient cost that hits the plate, add disposables or branded packaging if you include them in prime cost, and capture any other direct line item such as a sauce batch allocated per portion. Enter your current selling price if you are auditing an existing SKU, or leave margin fields active if you want the calculator to propose pricing. Choose the target food cost or margin your concept requires—fine dining might aim for lower food cost % than a pizza shop. Press calculate and read total cost, percentage, profit, suggested price, and required price together so you understand the full story before you change POS buttons.</p>
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">A smash burger uses $3.10 of beef, cheese, bun, sauce, and paper, and sells for $11.99. Food cost percentage is about 25.9%, leaving roughly $8.89 gross profit before labor and overhead. If your brand targets 22% food cost, the suggested selling price climbs toward $14.10, highlighting that either the recipe cost must fall or the menu price must rise. Pair that insight with the <a href="/tools/menu-price-calculator/">menu price calculator</a> when you need VAT, discounts, or composite margin targets in the same conversation.</p>
+    </section>
+
+    <section class="cta">
+      <h2>Upgrade your restaurant with Vendora POS and smart menu system</h2>
+      <p>
+        Stop working with disconnected tools. Vendora helps restaurants launch a digital menu, manage POS sales, and grow direct ordering through one professional platform built for modern food businesses.
+      </p>
+      <ul class="cta-list">
+        <li>Smart POS</li>
+        <li>Digital Menu</li>
+        <li>Direct Ordering</li>
+        <li>Faster Operations</li>
+      </ul>
+      <a class="btn btn-primary" href="/">Try Vendora for Your Restaurant</a>
+    </section>
+
+    <section class="card faq faq-section">
+      <h2>Food Cost Calculator FAQ</h2>
+
+      <h3>What is a food cost calculator?</h3>
+      <p>A food cost calculator helps you calculate the total cost of a dish or recipe and compare it with the selling price to measure food cost percentage and profit.</p>
+
+      <h3>Can restaurants use this calculator?</h3>
+      <p>Yes. It is made for restaurants, cafes, food trucks, bakeries, and other food businesses.</p>
+
+      <h3>How do I calculate food cost percentage?</h3>
+      <p>Food cost percentage is calculated by dividing total food cost by selling price, then multiplying by 100.</p>
+
+      <h3>Can I use this as a recipe cost calculator?</h3>
+      <p>Yes. You can use it to estimate recipe cost, portion cost, and pricing for individual menu items.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related Tools</h2>
+      <p>Use these tools for menu pricing, sales review, and guest-facing billing.</p>
+      <p>
+        <a href="/tools/menu-price-calculator/">Menu Price Calculator</a> |
+        <a href="/tools/delivery-commission-calculator/">Delivery Commission Calculator</a> |
+        <a href="/tools/daily-sales-summary/">Daily Sales Summary</a> |
+        <a href="/tools/invoice-generator/">Invoice Generator</a>
+      </p>
+    </section>
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  
+    <section class="card faq">
+      <h2 class="section-title">Free Restaurant Tools</h2>
+      <p>Vendora provides restaurant calculators and tools to help restaurants, cafes, and food trucks manage pricing, profit, and daily operations.</p>
+      <p>Use our free tools to calculate food cost, menu price, delivery commission, and generate invoices quickly.</p>
+    </section>
+
+  </main>
+  <a class="btn sticky-cta" href="/">Open Vendora POS</a>
+
+    <script src="./app.js" defer></script>
+  <a href="/contact/" onclick="window.open('https://wa.me/97333404044?text=Hi%20Vendora%2C%20I%20need%20support%20with%20the%20food%20cost%20calculator', '_blank', 'noopener'); return false;" target="_blank" rel="noopener noreferrer" class="whatsapp-support-fab" aria-label="Chat on WhatsApp for support">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4A8.5 8.5 0 1 1 12.5 3a8.38 8.38 0 0 1 5.4 1.9"/><path d="M22 2 12 12"/><path d="M16 2h6v6"/></svg>
+    <span>WhatsApp Support</span>
+  </a>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+
+
+

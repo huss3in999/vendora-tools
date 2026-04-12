@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&amp;display=swap" rel="stylesheet">
+  <title>Offline Inventory Dashboard | Excel Import, Stock History &amp; Reports | Vendora</title>
+  <meta name="description" content="Free offline-first inventory dashboard in your browser: Excel and CSV import/export, stock movement history with reasons, low-stock and reorder insights, value by category and supplier, local save—no account required.">
+  <meta name="keywords" content="inventory dashboard, offline inventory, Excel inventory, stock tracker, small business inventory, CSV import inventory">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/inventory-tracker/">
+  <meta property="og:title" content="Offline Inventory Dashboard | Vendora">
+  <meta property="og:description" content="Track stock, costs, and movements locally. Excel/CSV import and export, dashboards, and reorder suggestions—runs in your browser.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/inventory-tracker/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Offline Inventory Dashboard | Excel, CSV, and Local Storage",
+  "url": "https://getvendora.net/tools/inventory-tracker/",
+  "description": "Offline-first inventory dashboard: SKU tracking, quantity and unit cost, movement history with reasons, Excel and CSV import/export, business summaries, low-stock alerts, and reorder suggestions. Data stays in your browser.",
+  "isPartOf": { "@type": "WebSite", "name": "Vendora", "url": "https://getvendora.net/" }
+}
+</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vendora Offline Inventory Dashboard",
+    "description": "Browser-based inventory management with Excel and CSV import/export, stock movement history, dashboard summaries, category and supplier value breakdowns, low-stock alerts, and local storage.",
+    "url": "https://getvendora.net/tools/inventory-tracker/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Where is inventory data stored?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Data is stored only in this browser on this device (local storage). Export Excel or CSV regularly for backup. Clearing site data or using another browser will not show the same inventory unless you import a backup file." }
+      },
+      {
+        "@type": "Question",
+        "name": "How is total inventory value calculated?",
+        "acceptedAnswer": { "@type": "Answer", "text": "For each line, quantity multiplied by unit cost. Dashboard totals sum those line values across your items." }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I work offline?",
+        "acceptedAnswer": { "@type": "Answer", "text": "After the page and bundled scripts load once, you can use the dashboard without a network connection. Excel import/export uses the same offline library bundled with this page." }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="../tool-system.css">
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+  <script src="./vendor/xlsx.full.min.js"></script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/all-tools/">All tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Vendora Free Tool</p>
+      <h1>Offline inventory dashboard</h1>
+      <p class="hero-copy">
+        Run a <strong>local-first inventory workspace</strong> in your browser: <strong>Excel and CSV</strong> import and export, <strong>movement history</strong> with reasons, <strong>dashboard summaries</strong>, <strong>low-stock</strong> and <strong>reorder</strong> insights, and <strong>filters</strong> for category and supplier. Data stays on this device—no account required.
+      </p>
+      <div class="hero-points">
+        <span class="hero-point hero-point-highlight">Offline-first</span>
+        <span class="hero-point">Excel / CSV</span>
+        <span class="hero-point">Movement log</span>
+        <span class="hero-point">Business reports</span>
+      </div>
+    </section>
+
+    <div id="lowStockBanner" class="conflict-banner" role="status" hidden></div>
+
+    <section class="card input-card dash-app" aria-labelledby="dash-main-title">
+      <div class="dash-header-row">
+        <h2 class="section-title" id="dash-main-title">Inventory workspace</h2>
+        <div class="dash-status" aria-live="polite">
+          <span class="save-indicator" id="saveStatus" title="Local storage on this device">Saved</span>
+        </div>
+      </div>
+
+      <div class="dash-tabs" role="tablist" aria-label="Dashboard sections">
+        <button type="button" class="dash-tab is-active" role="tab" aria-selected="true" aria-controls="panel-inventory" id="tab-inventory" data-panel="inventory">Inventory</button>
+        <button type="button" class="dash-tab" role="tab" aria-selected="false" aria-controls="panel-dashboard" id="tab-dashboard" data-panel="dashboard">Dashboard</button>
+        <button type="button" class="dash-tab" role="tab" aria-selected="false" aria-controls="panel-reports" id="tab-reports" data-panel="reports">Reports</button>
+        <button type="button" class="dash-tab" role="tab" aria-selected="false" aria-controls="panel-io" id="tab-io" data-panel="io">Import / Export</button>
+        <button type="button" class="dash-tab" role="tab" aria-selected="false" aria-controls="panel-settings" id="tab-settings" data-panel="settings">Settings</button>
+      </div>
+
+      <div class="dash-panels">
+        <div id="panel-inventory" class="dash-panel" role="tabpanel" aria-labelledby="tab-inventory">
+          <p class="section-copy dash-panel-intro">Edit rows inline. Use <strong>+1 / −1</strong> for quick counts—pick a <strong>reason</strong> first. Direct quantity edits log as <em>manual correction</em>.</p>
+          <div class="inv-toolbar">
+            <label class="inv-toolbar-field">
+              <span class="inv-toolbar-label">Search</span>
+              <input type="search" id="invSearch" class="inv-search" placeholder="Name or SKU" autocomplete="off" aria-label="Search inventory">
+            </label>
+            <label class="inv-toolbar-field">
+              <span class="inv-toolbar-label">Category</span>
+              <select id="invFilterCategory" aria-label="Filter by category"></select>
+            </label>
+            <label class="inv-toolbar-field">
+              <span class="inv-toolbar-label">Supplier</span>
+              <select id="invFilterSupplier" aria-label="Filter by supplier"></select>
+            </label>
+            <label class="inv-toolbar-field">
+              <span class="inv-toolbar-label">Sort</span>
+              <select id="invSort" aria-label="Sort inventory">
+                <option value="updated-desc">Last updated (newest)</option>
+                <option value="updated-asc">Last updated (oldest)</option>
+                <option value="qty-desc">Quantity (high)</option>
+                <option value="qty-asc">Quantity (low)</option>
+                <option value="value-desc">Total value (high)</option>
+                <option value="value-asc">Total value (low)</option>
+                <option value="name-asc">Name (A–Z)</option>
+              </select>
+            </label>
+          </div>
+          <div class="actions inv-actions">
+            <button type="button" class="btn btn-secondary" id="addRowBtn">Add row</button>
+          </div>
+          <div class="mini-summary field-grid" id="invMiniSummary">
+            <div class="field">
+              <label>SKUs (visible)</label>
+              <div class="readonly-output strong-output" id="totalSku">0</div>
+            </div>
+            <div class="field">
+              <label>Total quantity (visible)</label>
+              <div class="readonly-output" id="totalQty">0</div>
+            </div>
+            <div class="field">
+              <label>Total value (visible)</label>
+              <div class="readonly-output strong-output" id="totalValue">0.00</div>
+            </div>
+          </div>
+          <p class="filter-hint section-copy" id="filterHint" hidden></p>
+          <div class="data-table-wrap">
+            <table class="data-table" aria-label="Inventory items">
+              <thead>
+                <tr>
+                  <th>Item name</th>
+                  <th>SKU</th>
+                  <th>Qty</th>
+                  <th>Unit cost</th>
+                  <th>Total value</th>
+                  <th>Min level</th>
+                  <th>Reason</th>
+                  <th>Stock in/out</th>
+                  <th>Category</th>
+                  <th>Supplier</th>
+                  <th>Last updated</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="invBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="panel-dashboard" class="dash-panel is-hidden" role="tabpanel" aria-labelledby="tab-dashboard" hidden>
+          <p class="section-copy">At-a-glance metrics for decision-making. Totals include <strong>all items</strong> unless noted.</p>
+          <div class="widget-grid">
+            <div class="widget-card">
+              <div class="widget-label">Total SKUs</div>
+              <div class="widget-value" id="dashSkuCount">0</div>
+            </div>
+            <div class="widget-card">
+              <div class="widget-label">Total quantity</div>
+              <div class="widget-value" id="dashTotalQty">0</div>
+            </div>
+            <div class="widget-card">
+              <div class="widget-label">Inventory value</div>
+              <div class="widget-value" id="dashTotalValue">0.00</div>
+            </div>
+            <div class="widget-card widget-card-warn">
+              <div class="widget-label">Low-stock lines</div>
+              <div class="widget-value" id="dashLowStockCount">0</div>
+            </div>
+          </div>
+          <div class="widget-two-col">
+            <div class="widget-card">
+              <h3 class="widget-title">Top 5 low-stock items</h3>
+              <ol class="widget-list" id="dashLowStockList"></ol>
+            </div>
+            <div class="widget-card">
+              <h3 class="widget-title">Top 5 by value</h3>
+              <ol class="widget-list" id="dashTopValueList"></ol>
+            </div>
+          </div>
+          <div class="widget-two-col">
+            <div class="widget-card">
+              <h3 class="widget-title">Value by category</h3>
+              <ul class="widget-breakdown" id="dashValueByCategory"></ul>
+            </div>
+            <div class="widget-card">
+              <h3 class="widget-title">Value by supplier</h3>
+              <ul class="widget-breakdown" id="dashValueBySupplier"></ul>
+            </div>
+          </div>
+          <div class="widget-card">
+            <h3 class="widget-title">Stale items (not updated in 30 days)</h3>
+            <ul class="widget-list plain" id="dashStaleList"></ul>
+          </div>
+          <div class="widget-card reorder-card">
+            <h3 class="widget-title">Reorder suggestions</h3>
+            <p class="section-copy">Items at or below minimum stock. Use <strong>Prepare reorder list</strong> to copy a draft you can paste into email or your purchasing workflow. Pair with the <a href="/tools/purchase-order-generator/">purchase order generator</a> when you are ready.</p>
+            <ul class="widget-list plain" id="reorderPanel"></ul>
+            <div class="reorder-actions">
+              <button type="button" class="btn btn-primary" id="btnPrepareReorder">Prepare reorder list</button>
+              <a class="btn btn-secondary" href="/tools/purchase-order-generator/">Open purchase order generator</a>
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-reports" class="dash-panel is-hidden" role="tabpanel" aria-labelledby="tab-reports" hidden>
+          <p class="section-copy">Movement history and breakdowns. History is stored locally with your inventory.</p>
+          <div class="widget-card">
+            <h3 class="widget-title">Stock movement history</h3>
+            <div class="history-wrap">
+              <table class="data-table history-table" aria-label="Stock movement history">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Item</th>
+                    <th>Old qty</th>
+                    <th>New qty</th>
+                    <th>Change</th>
+                    <th>Reason</th>
+                  </tr>
+                </thead>
+                <tbody id="historyBody"></tbody>
+              </table>
+            </div>
+            <p class="section-copy history-empty" id="historyEmpty">No movements recorded yet.</p>
+          </div>
+        </div>
+
+        <div id="panel-io" class="dash-panel is-hidden" role="tabpanel" aria-labelledby="tab-io" hidden>
+          <p class="section-copy">Use <strong>Excel (.xlsx)</strong> or <strong>CSV</strong> for everyday backups and supplier sheets. Headers like <em>Item Name</em>, <em>SKU</em>, <em>Quantity</em>, <em>Unit Cost</em>, <em>Min Level</em>, <em>Category</em>, and <em>Supplier</em> are recognized automatically.</p>
+          <div class="io-grid">
+            <div class="io-card">
+              <h3 class="widget-title">Template</h3>
+              <p class="section-copy">Download a starter file with the correct columns.</p>
+              <button type="button" class="btn btn-secondary" id="btnDownloadTemplate">Download Excel template</button>
+            </div>
+            <div class="io-card">
+              <h3 class="widget-title">Import</h3>
+              <p class="section-copy">Choose merge (update matching SKUs) or replace all rows.</p>
+              <label class="io-mode">
+                <span>Mode</span>
+                <select id="importMode" aria-label="Import mode">
+                  <option value="merge">Merge with existing</option>
+                  <option value="replace">Replace all inventory</option>
+                </select>
+              </label>
+              <label class="btn btn-primary io-file-label">
+                Import Excel or CSV
+                <input type="file" id="importFileIo" accept=".csv,.xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" style="display:none;">
+              </label>
+              <p class="io-error" id="importError" role="alert" hidden></p>
+            </div>
+            <div class="io-card">
+              <h3 class="widget-title">Export</h3>
+              <p class="section-copy">Download your current inventory for Excel or other tools.</p>
+              <div class="io-export-btns">
+                <button type="button" class="btn btn-secondary" id="btnExportXlsx">Export Excel (.xlsx)</button>
+                <button type="button" class="btn btn-ghost" id="btnExportCsv">Export CSV</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-settings" class="dash-panel is-hidden" role="tabpanel" aria-labelledby="tab-settings" hidden>
+          <div class="settings-warning widget-card">
+            <h3 class="widget-title">Local data on this device</h3>
+            <p class="section-copy">Inventory and history are saved only in <strong>this browser on this device</strong>. They are not synced to Vendora servers. If you clear site data, use private browsing, or switch devices, use your Excel or CSV exports—or the JSON backup below—to restore.</p>
+          </div>
+          <div class="settings-actions">
+            <button type="button" class="btn btn-danger" id="btnClearData">Clear data from this browser</button>
+          </div>
+          <details class="advanced-backup">
+            <summary>Advanced: JSON backup (optional)</summary>
+            <p class="section-copy">For technical users: export or import the raw JSON snapshot. Prefer Excel or CSV for day-to-day use.</p>
+            <div class="io-export-btns">
+              <button type="button" class="btn btn-ghost" id="exportJsonHidden">Download JSON backup</button>
+              <label class="btn btn-ghost" style="cursor:pointer;margin:0;">
+                Restore JSON backup
+                <input type="file" id="importJsonHidden" accept=".json,application/json" style="display:none;">
+              </label>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="card faq seo-tool-guide" aria-labelledby="inv-guide-what">
+      <h2 class="section-title" id="inv-guide-what">What this tool does</h2>
+      <p class="section-copy">This offline inventory dashboard turns your browser into a small-business stock workspace. Each line keeps the identifiers your team already uses—plain-language item name plus SKU—while quantity and unit cost roll up to line and total inventory value. Minimum stock levels drive alerts and reorder suggestions. Stock-in and stock-out buttons capture quick adjustments with explicit reasons (received, sold, wasted, damaged, returned, or manual correction), and every change is written to a movement history you can audit later. Category and supplier fields power filters and value-by-dimension summaries. Excel and CSV import and export match how real teams swap files with suppliers and accountants—without treating raw JSON as the primary workflow.</p>
+      <h2 class="section-title">Who should use it</h2>
+      <p class="section-copy">Independent retail, food operations, workshops, and mobile vendors who want structured inventory discipline before adopting a full IMS. Owners reconciling walk-in stock, shift leads logging spoilage, and bookkeepers estimating on-hand asset value can all work from one local dashboard. Pair it with the <a href="/tools/purchase-order-generator/">purchase order generator</a> when it is time to reorder, and the <a href="/tools/daily-sales-summary/">daily sales summary</a> when you want to relate usage to revenue.</p>
+      <h2 class="section-title">How to use it</h2>
+      <p class="section-copy">Add rows for each SKU or download the Excel template to get started. Enter quantity and unit cost; totals update per line and across dashboard widgets. Set minimum stock to surface low lines in the banner and reorder panel. Choose a movement reason before using +1/−1, or edit quantity directly for manual corrections. Use search and filters to focus the table; dashboard metrics still reflect your full file unless noted. Export Excel or CSV regularly—your data stays local to this browser.</p>
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">A cafe tracks beans, cups, and syrup. Espresso beans sit below minimum— the banner and reorder list highlight them. Oat milk shows healthy quantity and value in the top-by-value list. One −1 on pastries with reason <em>sold</em> after lunch updates quantity, timestamp, and movement history without opening another app.</p>
+    </section>
+
+    <section class="cta">
+      <h2>Upgrade your restaurant with Vendora POS and smart menu system</h2>
+      <p>Move from manual counts to integrated inventory when you are ready.</p>
+      <ul class="cta-list"><li>Smart POS</li><li>Digital Menu</li><li>Direct Ordering</li><li>Faster Operations</li></ul>
+      <a class="btn btn-primary" href="/">Try Vendora for Your Restaurant</a>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p>
+        <a href="/tools/purchase-order-generator/">Purchase Order Generator</a>,
+        <a href="/tools/daily-sales-summary/">Daily Sales Summary</a>,
+        <a href="/tools/food-cost-calculator/">Food Cost Calculator</a>,
+        <a href="/tools/menu-price-calculator/">Menu Price Calculator</a>
+      </p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/all-tools/">All tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+  <a class="btn sticky-cta" href="/">Open Vendora POS</a>
+  <script src="./app.js" defer></script>
+  <a href="/contact/" onclick="window.open('https://wa.me/97333404044?text=Hi%20Vendora%2C%20I%20need%20support%20with%20the%20inventory%20tracker', '_blank', 'noopener'); return false;" target="_blank" rel="noopener noreferrer" class="whatsapp-support-fab" aria-label="Chat on WhatsApp for support">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4A8.5 8.5 0 1 1 12.5 3a8.38 8.38 0 0 1 5.4 1.9"/><path d="M22 2 12 12"/><path d="M16 2h6v6"/></svg>
+    <span>WhatsApp Support</span>
+  </a>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMR Calculator — Basal Metabolic Rate (Mifflin–St Jeor) | Vendora</title>
+<meta name="description" content="Estimate Basal Metabolic Rate (BMR) from age, sex, height, and weight using a common predictive equation. For planning and education, not medical advice.">
+<link rel="canonical" href="https://getvendora.net/calculators/bmr-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BMR Calculator — Basal Metabolic Rate (Mifflin–St Jeor)">
+<meta property="og:description" content="Estimate Basal Metabolic Rate (BMR) from age, sex, height, and weight using a common predictive equation. For planning and education, not medical advice.">
+<meta property="og:url" content="https://getvendora.net/calculators/bmr-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BMR Calculator — Basal Metabolic Rate (Mifflin–St Jeor) | Vendora">
+<meta name="twitter:description" content="Estimate Basal Metabolic Rate (BMR) from age, sex, height, and weight using a common predictive equation. For planning and education, not medical advice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is BMR the same as my calorie target?","acceptedAnswer":{"@type":"Answer","text":"No. Total daily energy needs add activity (TDEE). BMR is only the resting component."}},{"@type":"Question","name":"Why might my real metabolism differ?","acceptedAnswer":{"@type":"Answer","text":"Equations are averages. Medications, thyroid, lean mass, and genetics can shift actual needs."}},{"@type":"Question","name":"Which units does this calculator expect?","acceptedAnswer":{"@type":"Answer","text":"Metric inputs as labeled in the form (kg, cm, years)."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Health &amp; Fitness</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">BMR Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Mifflin–St Jeor: resting calories per day.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<label class="block"><span class="text-sm font-medium">Age</span><input type="number" id="age" class="mt-1 w-full border rounded px-3 py-2" min="15" max="100" value="30"></label>
+<label class="block"><span class="text-sm font-medium">Sex</span><select id="sex" class="mt-1 w-full border rounded px-3 py-2"><option value="m">Male</option><option value="f">Female</option></select></label>
+<label class="block"><span class="text-sm font-medium">Weight (kg)</span><input type="number" id="bw" class="mt-1 w-full border rounded px-3 py-2" step="0.1" value="80"></label>
+<label class="block"><span class="text-sm font-medium">Height (cm)</span><input type="number" id="ht" class="mt-1 w-full border rounded px-3 py-2" step="0.1" value="180"></label></div>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: BMR Calculator</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Approximates calories your body may burn at rest per day based on anthropometrics and sex, using the Mifflin–St Jeor equation.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Fill in age, height, weight, and sex, then calculate. The result is an estimate in kcal/day at rest.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Men: BMR = 10×weight(kg) + 6.25×height(cm) − 5×age + 5. Women: 10×W + 6.25×H − 5×age − 161.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>A 30-year-old, 175 cm, 70 kg male → ~1,665 kcal/day BMR (rounded), before activity.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Is BMR the same as my calorie target?</p>
+        <p class="text-sm text-vendora-muted mt-1">No. Total daily energy needs add activity (TDEE). BMR is only the resting component.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Why might my real metabolism differ?</p>
+        <p class="text-sm text-vendora-muted mt-1">Equations are averages. Medications, thyroid, lean mass, and genetics can shift actual needs.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Which units does this calculator expect?</p>
+        <p class="text-sm text-vendora-muted mt-1">Metric inputs as labeled in the form (kg, cm, years).</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+function run(){const age=+document.getElementById('age').value,w=+document.getElementById('bw').value,hCm=+document.getElementById('ht').value,o=document.getElementById('out'),f=document.getElementById('sex').value==='f';if(age<15||!w||!hCm){o.textContent='Check inputs.';return;}const h=hCm/100;const bmr=10*w+6.25*hCm-5*age+(f?-161:5);o.textContent='BMR: ~'+Math.round(bmr)+' kcal/day';}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

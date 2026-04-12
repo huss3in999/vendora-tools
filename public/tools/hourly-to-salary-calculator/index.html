@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hourly to Salary Calculator | Convert Hourly Wage &amp; Annual Salary (Free)</title>
+  <meta name="description" content="Free hourly to salary calculator: convert hourly wage to annual salary or salary to hourly rate. Includes fiscal-year hours (2,080 / 2,088 / 2,096), unpaid time, and overtime breakdown.">
+  <meta name="keywords" content="hourly to salary calculator, salary to hourly calculator, hourly to annual salary calculator, calculate hourly rate from salary, annual salary to hourly rate">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/hourly-to-salary-calculator/">
+  <meta property="og:title" content="Hourly to Salary Calculator | Wage &amp; Salary Converter | Vendora">
+  <meta property="og:description" content="Convert hourly to salary or salary to hourly with transparent breakdowns: daily, weekly, bi-weekly, monthly, and annual. Advanced options for payroll hours and overtime.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/hourly-to-salary-calculator/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Hourly to Salary Calculator | Convert Hourly Wage and Annual Salary",
+  "url": "https://getvendora.net/tools/hourly-to-salary-calculator/",
+  "description": "Free hourly to salary calculator with bidirectional conversion, fiscal-year hour profiles, unpaid time deductions, and overtime estimates with separated base pay.",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Vendora",
+    "url": "https://getvendora.net/"
+  }
+}
+</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vendora Hourly to Salary Calculator",
+    "description": "Convert hourly wage to annual salary or salary to hourly rate with payroll hour profiles, unpaid time, and overtime separated from base pay.",
+    "url": "https://getvendora.net/tools/hourly-to-salary-calculator/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I calculate hourly rate from salary?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Divide your annual gross salary by your effective paid hours per year. Effective hours start from a standard profile such as 2,080, 2,088, or 2,096 annual hours, then subtract unpaid vacation and holiday hours (converted using your hours per week divided by days worked per week)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you calculate annual salary to hourly rate?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the same effective annual hours: choose your fiscal or payroll annual hour total, subtract uncompensated hours from unpaid days, then divide annual salary by the remaining paid hours to get an equivalent hourly rate."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the difference between 2,080, 2,088, and 2,096 annual hours?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "2,080 assumes 40 hours times 52 weeks. Some payroll and budget cycles use 2,088 or 2,096 workable hours to align with biweekly schedules or leap-year calendar effects. Pick the profile that matches your employer or model."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="../tool-system.css">
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);
+    t.async=1;
+    t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Vendora Free Tool</p>
+      <h1>Hourly to Salary Calculator</h1>
+      <p class="hero-copy">
+        Convert <strong>hourly wage to annual salary</strong> or <strong>annual salary to hourly rate</strong> with a transparent breakdown. Defaults use 40 hours per week and 2,080 annual hours; advanced options cover payroll hour profiles (2,088 / 2,096), unpaid time, and overtime at time-and-a-half or double time&mdash;with base pay separated from overtime.
+      </p>
+      <div class="hero-points">
+        <span class="hero-point hero-point-highlight">Bidirectional</span>
+        <span class="hero-point">Live results</span>
+        <span class="hero-point">Payroll hour profiles</span>
+        <span class="hero-point">Overtime split</span>
+      </div>
+    </section>
+
+    <section class="calculator-shell">
+      <section class="card input-card" aria-labelledby="calculator-heading">
+        <h2 class="section-title" id="calculator-heading">Enter your pay details</h2>
+        <p class="section-copy">Choose hourly or salary, then enter your numbers. Results update automatically; use Advanced settings for fiscal hours, unpaid days, and overtime.</p>
+
+        <div class="field-grid">
+          <div class="field-wide">
+            <label for="currency">Currency</label>
+            <div class="select-wrap">
+              <select id="currency" aria-label="Currency"></select>
+            </div>
+          </div>
+
+          <div class="field-wide">
+            <fieldset class="pay-type-fieldset">
+              <legend>Pay type</legend>
+              <div class="pay-type-toggle" role="group" aria-label="Pay type">
+                <label class="pay-type-option">
+                  <input type="radio" name="payType" id="payHourly" value="hourly" checked>
+                  <span>Hourly</span>
+                </label>
+                <label class="pay-type-option">
+                  <input type="radio" name="payType" id="paySalary" value="salary">
+                  <span>Salary (annual)</span>
+                </label>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="field-wide" id="wrapHourlyRate">
+            <label for="hourlyRate">Hourly pay rate</label>
+            <input id="hourlyRate" type="text" inputmode="decimal" autocomplete="off" placeholder="25.00" aria-describedby="hourlyRateHint">
+            <p class="field-hint" id="hourlyRateHint">Numbers and one decimal only.</p>
+          </div>
+
+          <div class="field-wide" id="wrapAnnualSalary" hidden>
+            <label for="annualSalary">Annual gross salary</label>
+            <input id="annualSalary" type="text" inputmode="decimal" autocomplete="off" placeholder="52000" aria-describedby="annualSalaryHint">
+            <p class="field-hint" id="annualSalaryHint">Numbers and one decimal only.</p>
+          </div>
+
+          <div class="field-wide">
+            <label for="hoursPerWeek">Hours worked per week</label>
+            <input id="hoursPerWeek" type="text" inputmode="decimal" autocomplete="off" placeholder="40">
+          </div>
+
+          <div class="field-wide">
+            <label for="daysPerWeek">Days worked per week</label>
+            <input id="daysPerWeek" type="text" inputmode="numeric" autocomplete="off" placeholder="5">
+          </div>
+        </div>
+
+        <details class="advanced-accordion" id="advancedSettings">
+          <summary>Advanced settings</summary>
+          <div class="advanced-inner">
+            <div class="field-grid">
+              <div class="field-wide">
+                <label for="annualHoursProfile">Annual workable hours (payroll / fiscal profile)</label>
+                <div class="select-wrap">
+                  <select id="annualHoursProfile" aria-label="Annual workable hours">
+                    <option value="2080" selected>2,080 (40 x 52 weeks)</option>
+                    <option value="2088">2,088 (common biweekly alignment)</option>
+                    <option value="2096">2,096 (maximum in many fiscal models)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field-wide">
+                <label for="unpaidVacation">Unpaid vacation days per year</label>
+                <input id="unpaidVacation" type="text" inputmode="numeric" autocomplete="off" placeholder="0">
+              </div>
+              <div class="field-wide">
+                <label for="unpaidHolidays">Unpaid holidays per year</label>
+                <input id="unpaidHolidays" type="text" inputmode="numeric" autocomplete="off" placeholder="0">
+              </div>
+              <div class="field-wide">
+                <label for="otWeekly">Estimated overtime hours per week</label>
+                <input id="otWeekly" type="text" inputmode="decimal" autocomplete="off" placeholder="0">
+              </div>
+              <div class="field-wide">
+                <label for="otMultiplier">Overtime premium (regular rate x)</label>
+                <div class="select-wrap">
+                  <select id="otMultiplier" aria-label="Overtime multiplier">
+                    <option value="1.5" selected>1.5x (time and a half)</option>
+                    <option value="2">2.0x (double time)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <div class="actions">
+          <button type="button" class="btn btn-secondary" id="resetButton">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Earnings breakdown</h2>
+        <p class="section-copy">Base pay uses your regular rate and effective paid hours. Overtime is estimated from weekly OT and shown separately from base salary.</p>
+
+        <div class="status-banner">
+          <span class="status-label">Live results</span>
+          <p class="status-text" id="statusText">Enter a pay rate and optional advanced settings to see the full breakdown.</p>
+        </div>
+
+        <div class="meta-hours" id="metaHoursBlock" aria-live="polite">
+          <p><strong>Standard annual hours:</strong> <span id="outStandardHours">2,080</span></p>
+          <p><strong>Uncompensated hours:</strong> <span id="outUncompHours">0</span></p>
+          <p><strong>Effective paid hours:</strong> <span id="outEffectiveHours">2,080</span></p>
+          <p class="meta-note" id="dailyHoursExplainer">Daily hours = hours per week &divide; days per week.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table class="breakdown-table" id="breakdownTable">
+            <caption class="sr-only">Gross earnings by period; base pay excludes overtime</caption>
+            <thead>
+              <tr>
+                <th scope="col">Period</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Regular hourly rate</th>
+                <td id="outRegularHourly">--</td>
+              </tr>
+              <tr id="rowBlended" class="is-muted-row">
+                <th scope="row">Blended hourly (annual base &divide; standard annual hours)</th>
+                <td id="outBlendedHourly">--</td>
+              </tr>
+              <tr>
+                <th scope="row">Daily (base)</th>
+                <td id="outDaily">--</td>
+              </tr>
+              <tr>
+                <th scope="row">Weekly (base)</th>
+                <td id="outWeekly">--</td>
+              </tr>
+              <tr>
+                <th scope="row">Bi-weekly (base &divide; 26)</th>
+                <td id="outBiweekly">--</td>
+              </tr>
+              <tr>
+                <th scope="row">Semi-monthly (base &divide; 24)</th>
+                <td id="outSemimonthly">--</td>
+              </tr>
+              <tr>
+                <th scope="row">Monthly (base &divide; 12)</th>
+                <td id="outMonthly">--</td>
+              </tr>
+              <tr class="row-emphasis">
+                <th scope="row">Annual base salary</th>
+                <td id="outAnnualBase">--</td>
+              </tr>
+              <tr>
+                <th scope="row">Estimated annual overtime pay</th>
+                <td id="outOtAnnual">--</td>
+              </tr>
+              <tr class="row-total">
+                <th scope="row">Total annual (base + overtime)</th>
+                <td id="outAnnualTotal">--</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq seo-tool-guide" aria-labelledby="hts-guide-what">
+      <h2 class="section-title" id="hts-guide-what">What this tool does</h2>
+      <p class="section-copy">This converter bridges hourly wages and annualized salary using the same payroll conventions HR teams reference. Hourly mode multiplies your rate by effective paid hours per year—after you choose a 2,080, 2,088, or 2,096 baseline and subtract unpaid vacation or holidays—then shows daily through annual equivalents. Salary mode divides your gross annual pay by those effective hours to reveal the implied regular rate. Overtime hours are handled separately: enter average weekly OT and a multiplier so the calculator keeps base salary distinct from OT pay, which matters when you compare offers or model restaurant labor budgets that rely on blended schedules.</p>
+      <h2 class="section-title">Who should use it</h2>
+      <p class="section-copy">Restaurant managers negotiating raises, sous chefs moving between hourly and salaried roles, and corporate recruiters explaining total compensation will all use it. Small-business owners planning labor as a percentage of sales can translate proposed hourly increases into annual dollars instantly. Job seekers comparing a $58k salary offer with a $27/hour union scale can see which package wins once hours and unpaid weeks are honest. It is not legal advice or a payroll system, but it is an excellent companion to conversations with HR and accountants.</p>
+      <h2 class="section-title">How to use it</h2>
+      <p class="section-copy">Pick Hourly or Salary at the top, then fill hours per week, days worked, and the annual hour profile that matches your contract. Add unpaid days and daily hours to shave effective time off the year. For overtime, supply typical weekly OT hours and choose 1.5x or 2.0x; the table shows base annual pay, estimated OT dollars, and a combined annual figure. Switch modes to cross-check: a salary employee can verify the hourly equivalent their employer uses for partial PTO payouts, while hourly staff can see what annual base their wage implies before bonuses.</p>
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Someone earns $22/hour, works 40 hours over five days, and selects the 2,080-hour profile with one unpaid week at eight hours per day. Effective hours drop slightly, so annual base lands near $44,880 before overtime. If they reliably work four OT hours weekly at time-and-a-half, the tool adds roughly $6,864 OT for a combined annual picture near $51,744—useful when comparing against a competing $50k salaried sous role that forbids OT. Pair results with the <a href="/tools/no-tax-on-overtime-calculator/">paycheck calculator</a> when you need take-home estimates after taxes.</p>
+    </section>
+
+    <section class="card faq faq-section">
+      <h2>Hourly to salary calculator FAQ</h2>
+
+      <h3>How to calculate hourly rate from salary?</h3>
+      <p>Divide annual gross salary by effective paid hours per year. Effective hours are your selected annual profile minus uncompensated hours from unpaid days times hours per day.</p>
+
+      <h3>How do you calculate annual salary to hourly rate?</h3>
+      <p>It is the same divisor: annual salary divided by effective paid hours. This tool shows the result as &quot;Regular hourly rate&quot; in Salary mode.</p>
+
+      <h3>Does overtime change my equivalent hourly rate?</h3>
+      <p>The regular hourly rate and base salary exclude overtime. Overtime pay is estimated separately using your weekly overtime hours and multiplier, then added in the total annual row.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related Tools</h2>
+      <p>
+        <a href="/tools/no-tax-on-overtime-calculator/">No Tax on Overtime Calculator</a>,
+        <a href="/tools/commission-calculator/">Commission Calculator</a>,
+        <a href="/tools/work-hours-overtime-tracker/">Work Hours &amp; Overtime Tracker</a>,
+        <a href="/tools/daily-sales-summary/">Daily Sales Summary</a>
+      </p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+
+    <section class="card faq">
+      <h2 class="section-title">Free business calculators</h2>
+      <p>Vendora offers free calculators for restaurants and small businesses alongside POS and operations software.</p>
+    </section>
+
+  </main>
+
+  <a class="btn sticky-cta" href="/">Open Vendora POS</a>
+
+  <script src="./app.js" defer></script>
+  <a href="/contact/" onclick="window.open('https://wa.me/97333404044?text=Hi%20Vendora%2C%20I%20need%20support%20with%20the%20hourly%20to%20salary%20calculator', '_blank', 'noopener'); return false;" target="_blank" rel="noopener noreferrer" class="whatsapp-support-fab" aria-label="Chat on WhatsApp for support">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4A8.5 8.5 0 1 1 12.5 3a8.38 8.38 0 0 1 5.4 1.9"/><path d="M22 2 12 12"/><path d="M16 2h6v6"/></svg>
+    <span>WhatsApp Support</span>
+  </a>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

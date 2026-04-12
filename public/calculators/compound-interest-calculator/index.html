@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compound Interest Calculator — Future Value &amp; Growth | Vendora</title>
+<meta name="description" content="Compute future value with compound interest: principal, rate, time, and compounding frequency. See how money grows year over year.">
+<link rel="canonical" href="https://getvendora.net/calculators/compound-interest-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Compound Interest Calculator — Future Value &amp; Growth">
+<meta property="og:description" content="Compute future value with compound interest: principal, rate, time, and compounding frequency. See how money grows year over year.">
+<meta property="og:url" content="https://getvendora.net/calculators/compound-interest-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Compound Interest Calculator — Future Value &amp; Growth | Vendora">
+<meta name="twitter:description" content="Compute future value with compound interest: principal, rate, time, and compounding frequency. See how money grows year over year.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What does “compounding monthly” mean?","acceptedAnswer":{"@type":"Answer","text":"Interest is credited 12 times per year and earns interest thereafter."}},{"@type":"Question","name":"Is this what my bank pays?","acceptedAnswer":{"@type":"Answer","text":"Real accounts have fees, taxes, and variable rates—use this as a model, not a guarantee."}},{"@type":"Question","name":"Does it include inflation?","acceptedAnswer":{"@type":"Answer","text":"No. For purchasing power, compare with a separate inflation model."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Finance &amp; Money</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Compound Interest Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Future value with periodic compounding.</p>
+      <div class="grid gap-3 text-sm"><label>P ($)<input type="number" id="p" class="w-full border rounded px-2 py-1 mt-1" value="1000"></label>
+<label>Annual rate (decimal e.g. 0.05)<input type="number" id="r" step="0.001" class="w-full border rounded px-2 py-1 mt-1" value="0.05"></label>
+<label>Years<input type="number" id="t" class="w-full border rounded px-2 py-1 mt-1" value="10"></label>
+<label>Compounds/year<input type="number" id="n" class="w-full border rounded px-2 py-1 mt-1" value="12"></label></div>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Compound Interest Calculator</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Projects account balance over time when interest compounds at a set rate and frequency.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Enter principal, annual rate, years, and compounding periods per year, then calculate.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">A = P(1 + r/n)^(nt) for periodic compounding; continuous variants use e^(rt).</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>$10,000 at 5% annual compounded monthly for 10 years grows to roughly $16,470 (rounded).</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">What does “compounding monthly” mean?</p>
+        <p class="text-sm text-vendora-muted mt-1">Interest is credited 12 times per year and earns interest thereafter.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Is this what my bank pays?</p>
+        <p class="text-sm text-vendora-muted mt-1">Real accounts have fees, taxes, and variable rates—use this as a model, not a guarantee.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Does it include inflation?</p>
+        <p class="text-sm text-vendora-muted mt-1">No. For purchasing power, compare with a separate inflation model.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+function run(){const P=+document.getElementById('p').value,r=+document.getElementById('r').value,t=+document.getElementById('t').value,n=+document.getElementById('n').value||12;if(P<=0||t<=0){document.getElementById('out').textContent='P>0, t>0';return;}const A=P*Math.pow(1+r/n,n*t);document.getElementById('out').textContent='Future value: $'+A.toFixed(2)+'\nInterest: $'+(A-P).toFixed(2);}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

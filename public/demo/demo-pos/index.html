@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vendora POS Terminal | Live Demo</title>
+    <meta name="description" content="Try Vendora's live POS terminal demo to explore order taking, cart updates, payment flow, and a fast restaurant checkout interface." />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href="https://getvendora.net/demo/demo-pos/">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-DFY197R2MS');
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { primary: '#0F172A', accent: '#3B82F6', brand: '#00D084', danger: '#EF4444' } } } }
+    </script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+        .tap-active:active { transform: scale(0.95); transition: transform 0.1s; }
+        .fade-in { animation: fadeIn 0.2s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .h-safe-screen { height: 100vh; height: 100dvh; }
+    </style>
+    <script>
+        window.currentOrderMode = "Walk-in";
+        window.currentCustomer = "Walk-in";
+
+        window.isReadOnly = function() {
+            return false; // Always allow interactions in Demo Mode
+        };
+
+        window.selectMode = function(mode) {
+            window.currentOrderMode = mode;
+            window.currentCustomer = mode === 'Walk-in' ? 'Walk-in' : (mode + ' Customer');
+            
+            const modal = document.getElementById('modal-mode-select');
+            if(modal) modal.classList.add('hidden');
+            
+            const display = document.getElementById('current-mode-display');
+            if(display) display.innerText = `MODE: ${mode.toUpperCase()}`;
+            
+            if(window.updateTicketUI) window.updateTicketUI();
+        };
+    </script>
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);
+    t.async=1;
+    t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+
+</head>
+<body class="bg-slate-100 h-safe-screen w-screen overflow-hidden text-slate-800 font-sans select-none support-pos-lockable">
+
+    <div id="toast-container" class="fixed top-6 right-6 z-[500] space-y-3 pointer-events-none"></div>
+
+    <!-- MODE SELECTION MODAL -->
+    <div id="modal-mode-select" class="fixed inset-0 z-[1000] bg-slate-900/95 backdrop-blur-sm flex items-center justify-center p-4 fade-in hidden">
+        <div class="w-full max-w-4xl bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row min-h-0 md:min-h-[550px] max-h-[90vh] md:max-h-none border border-white/10 overflow-y-auto md:overflow-hidden">
+            <div class="w-full md:w-5/12 bg-slate-900 relative p-10 flex flex-col justify-between text-white overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-blue-600/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                <div class="relative z-10">
+                    <div id="modal-store-logo" class="w-24 h-24 bg-white/10 backdrop-blur-md rounded-3xl flex items-center justify-center mb-8 text-4xl font-black shadow-inner border border-white/10 overflow-hidden">V</div>
+                    <h1 class="text-4xl font-black mb-2 leading-tight tracking-tight" id="modal-store-name">Store POS</h1>
+                    <div class="flex items-center gap-2 text-blue-200 font-medium text-sm"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> System Online</div>
+                </div>
+            </div>
+            <div class="w-full md:w-7/12 p-8 md:p-12 bg-slate-50 flex flex-col justify-center">
+                <h2 class="text-2xl font-black text-slate-800 mb-2">New Session</h2>
+                <p class="text-slate-500 font-medium mb-8 text-sm">Select an order mode to begin serving customers.</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="selectMode('Walk-in')" class="group relative p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:border-blue-500 hover:-translate-y-1 transition-all duration-300 text-left">
+                        <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"><i data-lucide="footprints" class="w-5 h-5"></i></div>
+                        <h3 class="font-black text-slate-700 text-sm group-hover:text-blue-600 transition-colors">Walk-in</h3>
+                    </button>
+                    <button onclick="selectMode('Dining')" class="group relative p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:border-orange-500 hover:-translate-y-1 transition-all duration-300 text-left">
+                        <div class="w-10 h-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"><i data-lucide="utensils" class="w-5 h-5"></i></div>
+                        <h3 class="font-black text-slate-700 text-sm group-hover:text-orange-600 transition-colors">Dining</h3>
+                    </button>
+                    <button onclick="selectMode('Delivery')" class="group relative p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:border-green-500 hover:-translate-y-1 transition-all duration-300 text-left">
+                        <div class="w-10 h-10 bg-green-50 text-green-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"><i data-lucide="bike" class="w-5 h-5"></i></div>
+                        <h3 class="font-black text-slate-700 text-sm group-hover:text-green-600 transition-colors">Delivery</h3>
+                    </button>
+                    <button onclick="selectMode('Pickup')" class="group relative p-4 bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl hover:border-purple-500 hover:-translate-y-1 transition-all duration-300 text-left">
+                        <div class="w-10 h-10 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"><i data-lucide="shopping-bag" class="w-5 h-5"></i></div>
+                        <h3 class="font-black text-slate-700 text-sm group-hover:text-purple-600 transition-colors">Pickup</h3>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex h-full overflow-hidden support-pos-lockable">
+        <!-- LEFT SIDEBAR -->
+        <aside class="w-16 md:w-24 bg-primary text-white flex flex-col items-center py-4 md:py-6 gap-3 md:gap-4 overflow-y-auto no-scrollbar shrink-0 z-30 shadow-xl">
+            <div id="sidebar-logo-slot" class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center font-black text-xl text-white mb-4 shadow-lg overflow-hidden">V</div>
+            <div id="pos-categories" class="flex flex-col gap-3 w-full px-1 md:px-2"></div>
+            <button onclick="document.getElementById('modal-mode-select').classList.remove('hidden')" class="mt-auto mb-2 flex flex-col items-center justify-center p-3 rounded-xl bg-white/10 hover:bg-white/20 transition tap-active mx-2">
+                <i data-lucide="layers" class="w-6 h-6 mb-1"></i>
+                <span class="text-[8px] font-bold uppercase tracking-wider text-center mt-1">Switch Mode</span>
+            </button>
+        </aside>
+
+        <!-- CENTER GRID -->
+        <main class="flex-1 flex flex-col min-w-0 bg-slate-100 relative">
+            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-6 shrink-0">
+                <div class="relative w-full md:w-96">
+                    <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
+                    <input type="text" id="pos-search" oninput="renderPOSGrid()" placeholder="Search Menu..." class="w-full pl-10 pr-4 py-3 bg-slate-100 border-none rounded-xl font-bold text-slate-700 focus:ring-2 focus:ring-accent outline-none">
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden lg:block">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Cashier</p>
+                        <p class="text-sm font-black text-primary" id="cashier-name">Demo User</p>
+                        <p class="text-[10px] font-bold text-accent uppercase tracking-wider" id="current-mode-display">MODE: WALK-IN</p>
+                    </div>
+                    <div class="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center font-bold text-slate-500"><i data-lucide="user" class="w-5 h-5"></i></div>
+                </div>
+            </header>
+            <div class="flex-1 overflow-y-auto p-4 md:p-6 no-scrollbar">
+                <!-- POS Grid -->
+                <div id="pos-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4 pb-24"></div>
+            </div>
+        </main>
+
+        <!-- RIGHT TICKET -->
+        <div id="ticket-backdrop" onclick="toggleMobileTicket()" class="fixed inset-0 bg-black/50 z-40 hidden md:hidden backdrop-blur-sm"></div>
+        <aside id="ticket-panel" class="fixed inset-y-0 right-0 w-full md:w-[380px] lg:w-[420px] bg-white border-l border-slate-200 flex flex-col shadow-2xl z-50 transform translate-x-full md:translate-x-0 transition-transform duration-300 md:relative md:flex shrink-0">
+            <div class="h-16 border-b border-slate-100 flex items-center justify-between px-6 bg-slate-50 shrink-0">
+                <h2 class="font-black text-lg text-primary flex items-center gap-2"><i data-lucide="receipt" class="w-5 h-5 text-slate-400"></i> Ticket</h2>
+                <div class="flex gap-2">
+                    <button onclick="toggleMobileTicket()" class="md:hidden p-2 bg-slate-200 rounded-lg"><i data-lucide="x" class="w-4 h-4"></i></button>
+                    <button onclick="clearTicket()" class="text-xs font-bold text-red-500 hover:bg-red-50 px-3 py-1.5 rounded-lg transition border border-red-100">Clear</button>
+                </div>
+            </div>
+            
+            <div id="ticket-items" class="flex-1 overflow-y-auto p-4 space-y-2 no-scrollbar bg-white"></div>
+            
+            <div class="p-4 border-t border-slate-100 bg-slate-50 space-y-3 shrink-0">
+                <div class="grid grid-cols-2 gap-2 md:gap-3">
+                    <button onclick="addCustomItem()" class="py-3 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:border-accent hover:text-accent transition shadow-sm tap-active">+ Custom Item</button>
+                    <button onclick="addDiscount()" class="py-3 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:border-orange-400 hover:text-orange-500 transition shadow-sm tap-active">% Discount</button>
+                    <button onclick="setCustomerName()" class="col-span-2 py-3 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-600 hover:border-blue-400 hover:text-blue-500 transition shadow-sm tap-active" id="btn-set-customer">
+                        <i data-lucide="user" class="w-3 h-3 inline mr-1"></i> <span id="cust-name-display">Walk-in</span>
+                    </button>
+                </div>
+                <div class="space-y-1 pt-2">
+                    <div class="flex justify-between text-sm font-bold text-slate-500"><span>Subtotal</span><span id="ticket-subtotal">0.000</span></div>
+                    <div class="flex justify-between text-sm font-bold text-orange-500 hidden" id="ticket-discount-row"><span>Discount</span><span id="ticket-discount">0.000</span></div>
+                    <div class="flex justify-between text-2xl font-black text-primary pt-2 border-t border-slate-200 mt-2"><span>Total</span><span id="ticket-total">0.000</span></div>
+                </div>
+                <div class="grid grid-cols-3 gap-2 mt-4">
+                    <button onclick="processPayment('CASH')" class="py-4 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold text-sm shadow-md tap-active flex flex-col items-center justify-center gap-1"><i data-lucide="banknote" class="w-5 h-5"></i> CASH</button>
+                    <button onclick="processPayment('CARD')" class="py-4 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-bold text-sm shadow-md tap-active flex flex-col items-center justify-center gap-1"><i data-lucide="credit-card" class="w-5 h-5"></i> CARD</button>
+                    <button onclick="processPayment('PAY')" class="py-4 bg-red-500 hover:bg-red-600 text-white rounded-xl font-bold text-sm shadow-md tap-active flex flex-col items-center justify-center gap-1"><i data-lucide="smartphone" class="w-5 h-5"></i> PAY</button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Mobile Sticky Cart Button -->
+    <button onclick="toggleMobileTicket()" class="md:hidden fixed bottom-4 left-20 right-4 bg-primary text-white p-4 rounded-2xl shadow-2xl z-40 flex justify-between items-center tap-active">
+        <div class="flex items-center gap-3"><div class="bg-brand text-primary w-8 h-8 rounded-lg flex items-center justify-center font-bold" id="mobile-count">0</div> <span class="font-bold text-sm">Current Order</span></div>
+        <span class="font-black text-lg" id="mobile-total-btn">0.000</span>
+    </button>
+
+    <script>
+        // State variables
+        let posCart = {};
+        let currentDiscount = 0; 
+        let currentCustomerPhone = "";
+        let activeCategory = 'all';
+        
+        let appState = { 
+            token: 'LOCAL_DEV_MODE', // FORCES DEMO MODE TO ALWAYS WORK
+            categories: [], 
+            products: [] 
+        };
+
+        function setElText(id, text) { const el = document.getElementById(id); if (el) el.innerText = text; }
+
+        function toast(msg, type = 'success') {
+            const id = Date.now();
+            const icon = type === 'success' ? '<i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i>' : '<i data-lucide="alert-circle" class="w-4 h-4 text-red-500"></i>';
+            const html = `<div id="t-${id}" class="px-5 py-3 rounded-xl bg-white text-slate-800 shadow-lg border border-slate-100 flex items-center space-x-3 transform transition-all duration-300 translate-x-full z-[1000] pointer-events-auto">${icon}<div class="text-xs font-bold">${msg}</div></div>`;
+            const container = document.getElementById('toast-container');
+            if(container) {
+                container.insertAdjacentHTML('beforeend', html); lucide.createIcons();
+                setTimeout(() => { const el = document.getElementById(`t-${id}`); if(el) el.classList.remove('translate-x-full'); }, 10);
+                setTimeout(() => { const el = document.getElementById(`t-${id}`); if(el) { el.classList.add('opacity-0'); setTimeout(() => el.remove(), 300); }}, 3000);
+            }
+        }
+
+        window.onload = async () => {
+            // INJECT 40 UNIQUE FAKE PRODUCTS WITH VERIFIED IMAGES (NO HUMANS!)
+            appState.categories = [
+                { id: 1, name: "Burgers" },
+                { id: 2, name: "Pizzas" },
+                { id: 3, name: "Sides" },
+                { id: 4, name: "Drinks" },
+                { id: 5, name: "Desserts" }
+            ];
+            
+            appState.products = [
+                // Burgers
+                { id: 101, name: "Classic Beef Burger", price: 2.500, category_id: 1, show_in_pos: 1, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&q=80" },
+                { id: 102, name: "Double Cheese Burger", price: 3.500, category_id: 1, show_in_pos: 1, image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=300&q=80" },
+                { id: 103, name: "Mushroom Swiss", price: 3.000, category_id: 1, show_in_pos: 1, image: "https://images.unsplash.com/photo-1583032465522-2fc16d9a5988?w=300&q=80" },
+                { id: 104, name: "Spicy Jalapeno Burger", price: 2.800, category_id: 1, show_in_pos: 1, image: "https://images.unsplash.com/photo-1594212691516-b2a613bce366?w=300&q=80" },
+                { id: 105, name: "BBQ Bacon Smash", price: 3.200, category_id: 1, show_in_pos: 1, image: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=300&q=80" },
+                { id: 106, name: "Crispy Chicken Sandwich", price: 2.500, category_id: 1, show_in_pos: 1, image: "https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=300&q=80" },
+                { id: 107, name: "Grilled Chicken Burger", price: 2.800, category_id: 1, show_in_pos: 1, image: "https://images.unsplash.com/photo-1615719413546-198b25453f85?w=300&q=80" },
+                { id: 108, name: "Truffle Burger", price: 4.000, category_id: 1, show_in_pos: 1, image: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=300&q=80" },
+                { id: 109, name: "Veggie Patty Burger", price: 2.200, category_id: 1, show_in_pos: 1, image: "https://images.unsplash.com/photo-1520072959219-c595dc870360?w=300&q=80" },
+                { id: 110, name: "Mini Sliders (3pcs)", price: 4.000, category_id: 1, show_in_pos: 1, image: "https://images.unsplash.com/photo-1547584370-2cc98b8b8dc5?w=300&q=80" },
+                
+                // Pizzas
+                { id: 201, name: "Margherita Pizza", price: 4.000, category_id: 2, show_in_pos: 1, image: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=300&q=80" },
+                { id: 202, name: "Pepperoni Feast", price: 4.500, category_id: 2, show_in_pos: 1, image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=300&q=80" },
+                { id: 203, name: "Vegetarian Supreme", price: 4.200, category_id: 2, show_in_pos: 1, image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300&q=80" },
+                { id: 204, name: "BBQ Chicken Pizza", price: 5.000, category_id: 2, show_in_pos: 1, image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=300&q=80" },
+                { id: 205, name: "Meat Lovers", price: 5.500, category_id: 2, show_in_pos: 1, image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=300&q=80" },
+                { id: 206, name: "Hawaiian Pizza", price: 4.500, category_id: 2, show_in_pos: 1, image: "https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?w=300&q=80" },
+                { id: 207, name: "Four Cheese (Quattro)", price: 4.800, category_id: 2, show_in_pos: 1, image: "https://images.unsplash.com/photo-1573821663912-569905455b1c?w=300&q=80" },
+                { id: 208, name: "Truffle & Fungi", price: 5.500, category_id: 2, show_in_pos: 1, image: "https://images.unsplash.com/photo-1590947132387-155cc02f3212?w=300&q=80" },
+                
+                // Sides
+                { id: 301, name: "Classic French Fries", price: 1.000, category_id: 3, show_in_pos: 1, image: "https://images.unsplash.com/photo-1576107232684-1279f390859f?w=300&q=80" },
+                { id: 302, name: "Curly Fries", price: 1.200, category_id: 3, show_in_pos: 1, image: "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=300&q=80" },
+                { id: 303, name: "Potato Wedges", price: 1.500, category_id: 3, show_in_pos: 1, image: "https://images.unsplash.com/photo-1630431341973-02e1b662ce3b?w=300&q=80" },
+                { id: 304, name: "Crispy Onion Rings", price: 1.500, category_id: 3, show_in_pos: 1, image: "https://images.unsplash.com/photo-1639024471283-03518883512d?w=300&q=80" },
+                { id: 305, name: "Mozzarella Sticks", price: 2.000, category_id: 3, show_in_pos: 1, image: "https://images.unsplash.com/photo-1536521642388-441263f88a61?w=300&q=80" },
+                { id: 306, name: "Buffalo Chicken Wings", price: 3.000, category_id: 3, show_in_pos: 1, image: "https://images.unsplash.com/photo-1569691899455-88464f6d3ab1?w=300&q=80" },
+                { id: 307, name: "Garlic Bread", price: 1.500, category_id: 3, show_in_pos: 1, image: "https://images.unsplash.com/photo-1589367920969-1c711c828237?w=300&q=80" },
+                { id: 308, name: "Fresh Garden Salad", price: 1.800, category_id: 3, show_in_pos: 1, image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=300&q=80" },
+                
+                // Drinks
+                { id: 401, name: "Classic Cola", price: 0.500, category_id: 4, show_in_pos: 1, image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300&q=80" },
+                { id: 402, name: "Diet Cola", price: 0.500, category_id: 4, show_in_pos: 1, image: "https://images.unsplash.com/photo-1554866585-cd94860890b7?w=300&q=80" },
+                { id: 403, name: "Lemon Lime Soda", price: 0.500, category_id: 4, show_in_pos: 1, image: "https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?w=300&q=80" },
+                { id: 404, name: "Fresh Lemonade", price: 1.200, category_id: 4, show_in_pos: 1, image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=300&q=80" },
+                { id: 405, name: "Peach Iced Tea", price: 1.000, category_id: 4, show_in_pos: 1, image: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300&q=80" },
+                { id: 406, name: "Fresh Orange Juice", price: 1.500, category_id: 4, show_in_pos: 1, image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=300&q=80" },
+                { id: 407, name: "Mineral Water", price: 0.300, category_id: 4, show_in_pos: 1, image: "https://images.unsplash.com/photo-1523362628445-0fa455ac83ce?w=300&q=80" },
+                { id: 408, name: "Sparkling Water", price: 0.600, category_id: 4, show_in_pos: 1, image: "https://images.unsplash.com/photo-1516762689619-0e530dcdddf8?w=300&q=80" },
+                
+                // Desserts
+                { id: 501, name: "New York Cheesecake", price: 2.500, category_id: 5, show_in_pos: 1, image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=300&q=80" },
+                { id: 502, name: "Fudge Brownie", price: 2.000, category_id: 5, show_in_pos: 1, image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=300&q=80" },
+                { id: 503, name: "Classic Tiramisu", price: 2.500, category_id: 5, show_in_pos: 1, image: "https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=300&q=80" },
+                { id: 504, name: "Vanilla Bean Ice Cream", price: 1.500, category_id: 5, show_in_pos: 1, image: "https://images.unsplash.com/photo-1563805042-7684c8a9e9cb?w=300&q=80" },
+                { id: 505, name: "Chocolate Lava Cake", price: 3.000, category_id: 5, show_in_pos: 1, image: "https://images.unsplash.com/photo-1624353365286-cb18d415f922?w=300&q=80" },
+                { id: 506, name: "Warm Apple Pie", price: 2.000, category_id: 5, show_in_pos: 1, image: "https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?w=300&q=80" }
+            ];
+
+            renderCategories(); 
+            renderPOSGrid();
+            lucide.createIcons();
+            updateTicketUI();
+        };
+
+        function renderCategories() {
+            const container = document.getElementById('pos-categories');
+            container.innerHTML = `<button onclick="setCategory('all')" class="w-full aspect-square rounded-xl flex flex-col items-center justify-center gap-1 transition ${activeCategory === 'all' ? 'bg-white text-primary shadow-md' : 'bg-white/10 text-white hover:bg-white/20'}"><i data-lucide="grid" class="w-5 h-5"></i><span class="text-[9px] font-bold">All</span></button>`;
+            appState.categories.forEach(c => {
+                container.innerHTML += `<button onclick="setCategory(${c.id})" class="w-full aspect-square rounded-xl flex flex-col items-center justify-center gap-1 transition text-center px-1 ${activeCategory == c.id ? 'bg-white text-primary shadow-md' : 'bg-white/10 text-white hover:bg-white/20'}"><span class="text-[9px] font-bold leading-tight line-clamp-2">${c.name}</span></button>`;
+            }); lucide.createIcons();
+        }
+
+        function setCategory(id) { activeCategory = id; renderCategories(); renderPOSGrid(); }
+
+        function renderPOSGrid() {
+            const container = document.getElementById('pos-grid');
+            const search = document.getElementById('pos-search').value.toLowerCase();
+            const filtered = appState.products.filter(p => {
+                if(activeCategory !== 'all' && p.category_id != activeCategory) return false;
+                return (p.name.toLowerCase().includes(search));
+            });
+
+            // Added mobile-friendly tweaks: responsive title sizes (text-[11px] on mobile), specific image heights (h-28), and a failsafe `onerror` just in case!
+            container.innerHTML = filtered.map(p => `
+                <div onclick="addToTicket(${p.id})" class="bg-white rounded-2xl shadow-sm border border-slate-200 hover:border-accent hover:shadow-md transition cursor-pointer tap-active flex flex-col h-48 overflow-hidden group relative">
+                    <div class="h-28 w-full bg-slate-100 relative overflow-hidden shrink-0">
+                        ${p.image ? `<img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&q=80';">` : `<div class="w-full h-full flex items-center justify-center text-slate-300"><i data-lucide="image" class="w-8 h-8"></i></div>`}
+                    </div>
+                    <div class="p-3 flex flex-col justify-between flex-1">
+                        <h4 class="font-bold text-[11px] sm:text-xs text-slate-700 leading-tight line-clamp-2">${p.name}</h4>
+                        <p class="text-base sm:text-lg font-black text-primary mt-1">${parseFloat(p.price).toFixed(3)}</p>
+                    </div>
+                </div>
+            `).join(''); lucide.createIcons();
+        }
+
+        function addToTicket(id) {
+            const p = appState.products.find(x => x.id === id); if(!p) return;
+            if(posCart[id]) posCart[id].qty++; else posCart[id] = { ...p, qty: 1, isCustom: false };
+            updateTicketUI();
+        }
+
+        function addCustomItem() {
+            const name = prompt("Enter Item Name:"); if(!name) return;
+            const price = parseFloat(prompt("Enter Price (BHD):")); if(isNaN(price)) return;
+            const id = 'custom_' + Date.now();
+            posCart[id] = { id: id, name: name, price: price, qty: 1, isCustom: true };
+            updateTicketUI();
+        }
+
+        function addDiscount() {
+            const val = prompt("Enter Discount Amount (BHD):"); if(val === null) return;
+            const num = parseFloat(val); if(!isNaN(num)) { currentDiscount = num; updateTicketUI(); }
+        }
+
+        function setCustomerName() {
+            const name = prompt("Enter Customer Name:", window.currentCustomer);
+            if(name) window.currentCustomer = name;
+            const phone = prompt("Enter Customer Phone (for rewards):", currentCustomerPhone);
+            if(phone) currentCustomerPhone = phone;
+            updateTicketUI();
+        }
+
+        function changeQty(id, delta) {
+            if(posCart[id]) { posCart[id].qty += delta; if(posCart[id].qty <= 0) delete posCart[id]; updateTicketUI(); }
+        }
+
+        function clearTicket() {
+            posCart = {}; currentDiscount = 0;
+            window.currentCustomer = window.currentOrderMode === 'Walk-in' ? 'Walk-in' : (window.currentOrderMode + ' Customer');
+            currentCustomerPhone = ""; updateTicketUI();
+        }
+
+        function updateTicketUI() {
+            const container = document.getElementById('ticket-items');
+            let subtotal = 0; let html = '';
+            Object.values(posCart).forEach(item => {
+                subtotal += item.price * item.qty;
+                html += `<div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100 group relative overflow-hidden">
+                    <div class="flex-1 min-w-0 pr-2"><div class="text-xs font-bold text-slate-800 truncate">${item.name}</div><div class="text-[10px] text-slate-400 font-mono">${parseFloat(item.price).toFixed(3)} x ${item.qty}</div></div>
+                    <div class="flex items-center gap-2 bg-white rounded-lg border border-slate-200 p-1 shadow-sm shrink-0">
+                        <button onclick="deleteLineItem('${item.id}')" class="w-6 h-6 flex items-center justify-center text-red-400 hover:bg-red-50 rounded font-bold"><i data-lucide="trash-2" class="w-3 h-3"></i></button>
+                        <button onclick="changeQty('${item.id}', -1)" class="w-6 h-6 flex items-center justify-center text-slate-500 hover:bg-slate-100 rounded font-bold">-</button>
+                        <span class="text-xs font-black w-4 text-center">${item.qty}</span>
+                        <button onclick="changeQty('${item.id}', 1)" class="w-6 h-6 flex items-center justify-center text-slate-500 hover:bg-slate-100 rounded font-bold">+</button>
+                    </div></div>`;
+            });
+
+            if(Object.keys(posCart).length === 0) {
+                html = `<div class="h-full flex flex-col items-center justify-center text-slate-300 opacity-50"><i data-lucide="shopping-cart" class="w-12 h-12 mb-2"></i><span class="text-xs font-bold uppercase tracking-widest">Ticket Empty</span></div>`;
+            }
+            container.innerHTML = html; lucide.createIcons();
+
+            const total = Math.max(0, subtotal - currentDiscount);
+            setElText('ticket-subtotal', subtotal.toFixed(3)); setElText('ticket-total', total.toFixed(3));
+            setElText('mobile-total-btn', total.toFixed(3)); setElText('mobile-count', Object.values(posCart).reduce((a,b)=>a+b.qty,0));
+            setElText('cust-name-display', window.currentCustomer + (currentCustomerPhone ? ` (${currentCustomerPhone})` : ''));
+            
+            const discRow = document.getElementById('ticket-discount-row');
+            if(currentDiscount > 0) { discRow.classList.remove('hidden'); setElText('ticket-discount', '-' + currentDiscount.toFixed(3)); } else { discRow.classList.add('hidden'); }
+        }
+        window.updateTicketUI = updateTicketUI;
+
+        function deleteLineItem(id) { 
+            if(posCart[id]) delete posCart[id]; updateTicketUI(); 
+        }
+
+        function toggleMobileTicket() { document.getElementById('ticket-panel').classList.toggle('translate-x-full'); document.getElementById('ticket-backdrop').classList.toggle('hidden'); }
+
+        async function processPayment(method) {
+            if(Object.keys(posCart).length === 0) return toast("Ticket is empty", "error");
+            clearTicket(); 
+            toast(`Payment Approved (${method})`, "success");
+        }
+    </script>
+
+    <section class="max-w-md mx-auto px-5 pb-10">
+      <div class="bg-white rounded-[1.75rem] border border-gray-100 shadow-sm p-6">
+        <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">Free Restaurant Tools</h2>
+        <p class="mt-3 text-sm leading-7 text-gray-600">Vendora provides restaurant calculators and tools to help restaurants, cafes, and food trucks manage pricing, profit, and daily operations.</p>
+        <p class="mt-3 text-sm leading-7 text-gray-600">Use our free tools to calculate food cost, menu price, delivery commission, and generate invoices quickly.</p>
+      </div>
+    </section>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

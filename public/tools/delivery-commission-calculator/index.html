@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delivery Commission Calculator | Uber Eats, DoorDash &amp; App Fee Estimator</title>
+  <meta name="description" content="Estimate third-party delivery app commission and fees against your menu price. Free delivery commission calculator for restaurants, cloud kitchens, and takeaways.">
+  <meta name="keywords" content="delivery commission calculator, restaurant delivery cost calculator, food delivery commission calculator, delivery app fees calculator, direct ordering savings calculator">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/delivery-commission-calculator/">
+  <meta property="og:title" content="Delivery Commission Calculator | Restaurant App Fees | Vendora">
+  <meta property="og:description" content="Model delivery marketplace commission vs your price. Free calculator for restaurants and takeaways.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/delivery-commission-calculator/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Delivery Commission Calculator | Uber Eats, DoorDash and App Fee Estimator",
+  "url": "https://getvendora.net/tools/delivery-commission-calculator/",
+  "description": "Estimate third-party delivery app commission and fees against your menu price. Free delivery commission calculator for restaurants, cloud kitchens, and takeaways.",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Vendora",
+    "url": "https://getvendora.net/"
+  }
+}
+</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vendora Delivery Commission Calculator",
+    "description": "Compare third-party delivery marketplace fees against direct ordering costs using order volume, average ticket, and commission rate.",
+    "url": "https://getvendora.net/tools/delivery-commission-calculator/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a delivery commission?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A delivery commission is the percentage a delivery platform charges the restaurant for each order placed through its marketplace."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much do delivery apps usually charge restaurants?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Many delivery platforms charge restaurants around 15% to 35%, depending on service level, market, and promotional agreements."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How can restaurants reduce commission costs?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Restaurants can reduce commission costs by shifting repeat customers to direct ordering through their own digital menu, ordering flow, and POS system."
+        }
+      }
+    ]
+  }
+  </script>
+    <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="../tool-system.css">
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);
+    t.async=1;
+    t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+    <section class="hero">
+      <p class="eyebrow">Vendora Free Tool</p>
+      <h1>Delivery Commission Calculator for Restaurants</h1>
+      <p class="hero-copy">
+        Find out how much delivery marketplaces are really costing your restaurant. This delivery commission calculator works as a restaurant delivery cost calculator, food delivery commission calculator, delivery app fees calculator, doordash commission calculator, ubereats commission calculator, and direct ordering savings calculator for operators who want a clear view of daily, monthly, and yearly losses.
+      </p>
+      <div class="hero-tags">
+        <span class="hero-tag">Commission-free comparison</span>
+        <span class="hero-tag">Restaurant-friendly</span>
+        <span class="hero-tag">Free tool</span>
+      </div>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calculator-heading">
+        <h2 class="section-title" id="calculator-heading">Enter your delivery numbers</h2>
+        <p class="section-copy">
+          Use realistic order and commission assumptions to see how much revenue is leaving your business every month.
+        </p>
+
+        <div class="field-grid">
+          <div class="field-wide">
+            <label for="businessName">Item or business name</label>
+            <input id="businessName" type="text" placeholder="Downtown Burger House">
+            <span class="input-hint">Optional. Helpful when copying or printing results.</span>
+          </div>
+
+          <div class="field">
+            <label for="currency">Currency</label>
+            <div class="select-wrap">
+              <select id="currency">
+                <option value="USD" selected>USD $</option>
+                <option value="EUR">EUR EUR</option>
+                <option value="GBP">GBP GBP</option>
+                <option value="BHD">BHD BD</option>
+                <option value="AED">AED AED</option>
+                <option value="SAR">SAR SAR</option>
+                <option value="INR">INR Rs</option>
+                <option value="EGP">EGP EGP</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="commissionPercent">Commission percentage</label>
+            <input id="commissionPercent" type="number" min="0" max="100" step="0.01" placeholder="25" inputmode="decimal">
+          </div>
+
+          <div class="field">
+            <label for="averageOrderValue">Average order value</label>
+            <input id="averageOrderValue" type="number" min="0" step="0.01" placeholder="12" inputmode="decimal">
+          </div>
+
+          <div class="field">
+            <label for="ordersPerDay">Orders per day</label>
+            <input id="ordersPerDay" type="number" min="0" step="0.01" placeholder="35" inputmode="decimal">
+          </div>
+
+          <div class="field">
+            <label for="daysPerMonth">Days open per month</label>
+            <input id="daysPerMonth" type="number" min="1" step="1" placeholder="30" inputmode="decimal">
+          </div>
+
+          <div class="field">
+            <label for="directFeePercent">Direct ordering fee %</label>
+            <input id="directFeePercent" type="number" min="0" max="100" step="0.01" placeholder="3" inputmode="decimal">
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite"></div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" id="exampleButton">Try Example</button>
+          <button type="button" class="btn btn-secondary" id="resetButton">Reset</button>
+          <button type="button" class="btn btn-secondary" id="copyButton">Copy Results</button>
+          <button type="button" class="btn btn-secondary" id="shareButton">Share</button>
+          <button type="button" class="btn btn-primary" id="printButton">Print</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Commission impact summary</h2>
+        <p class="section-copy">
+          Review the cost of marketplace commissions and see what direct ordering could keep inside your business.
+        </p>
+
+        <div class="status-banner" id="statusBanner">
+          <span class="status-label" id="statusLabel">Moderate loss</span>
+          <div class="status-score" id="statusScore">$0.00</div>
+          <p style="font-size:18px; font-weight:700; margin-top:10px;">
+            You are losing <span id="bigLossText">$0</span> per year to delivery apps
+          </p>
+          <p class="status-text" id="statusText">Add your delivery numbers to see how much commission is leaving your restaurant.</p>
+        </div>
+
+        <div class="result-grid">
+          <article class="metric-card">
+            <span class="metric-label">Commission lost per order</span>
+            <strong class="metric-value" id="lossPerOrderOutput">$0.00</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Daily commission loss</span>
+            <strong class="metric-value" id="dailyLossOutput">$0.00</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Monthly commission loss</span>
+            <strong class="metric-value" id="monthlyLossOutput">$0.00</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Yearly commission loss</span>
+            <strong class="metric-value" id="yearlyLossOutput">$0.00</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Revenue kept with direct ordering</span>
+            <strong class="metric-value" id="revenueKeptOutput">$0.00</strong>
+          </article>
+
+          <article class="metric-card">
+            <span class="metric-label">Savings percentage</span>
+            <strong class="metric-value" id="savingsPercentOutput">0.00%</strong>
+            <p class="summary-note" id="recommendationText">Direct ordering usually keeps more of each sale in your business.</p>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section class="card compare-card">
+      <h2 class="section-title">Delivery app vs direct ordering</h2>
+      <p class="section-copy">
+        Use this side-by-side comparison to explain the real difference between marketplace dependence and direct ordering ownership.
+      </p>
+
+      <div class="compare-grid">
+        <article class="compare-panel">
+          <h3>Delivery app model</h3>
+          <div class="compare-row">
+            <span>Total monthly fees</span>
+            <strong id="appMonthlyFeesOutput">$0.00</strong>
+          </div>
+          <div class="compare-row">
+            <span>Total yearly fees</span>
+            <strong id="appYearlyFeesOutput">$0.00</strong>
+          </div>
+          <div class="compare-row">
+            <span>Commission rate</span>
+            <strong id="appRateOutput">0.00%</strong>
+          </div>
+        </article>
+
+        <article class="compare-panel">
+          <h3>Direct ordering model</h3>
+          <div class="compare-row">
+            <span>Total monthly fees</span>
+            <strong id="directMonthlyFeesOutput">$0.00</strong>
+          </div>
+          <div class="compare-row">
+            <span>Total yearly fees</span>
+            <strong id="directYearlyFeesOutput">$0.00</strong>
+          </div>
+          <div class="compare-row">
+            <span>Difference / savings</span>
+            <strong id="differenceOutput">$0.00</strong>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="card faq seo-tool-guide" aria-labelledby="dcc-guide-what">
+      <h2 class="section-title" id="dcc-guide-what">What this tool does</h2>
+      <p class="section-copy">The delivery commission calculator quantifies how much third-party marketplaces can take from your restaurant compared with a direct-ordering scenario you define. You supply realistic averages—orders per day, typical ticket size, the app’s commission percentage, and a modest fee assumption for orders that come through your own menu or QR flow. The interface highlights monthly and yearly fee exposure, shows implied commission rates, and contrasts marketplace totals with direct fees so you can visualize savings. It is intentionally simple: no logins, no POS integration, just transparent arithmetic you can repeat whenever a platform changes pricing or you test a new promo.</p>
+      <h2 class="section-title">Who should use it</h2>
+      <p class="section-copy">Operators who rely on Uber Eats, DoorDash, Deliveroo-style partners, or regional aggregators will use this weekly. It is equally relevant for ghost kitchens balancing multiple brands and for traditional dining rooms that only see spikes on apps during slow seasons. Finance-minded owners can export the mental model into investor conversations, while general managers can explain to staff why pushing direct QR orders protects margin. If you are evaluating whether to pause a marketplace or renegotiate, start here before you rework the entire menu.</p>
+      <h2 class="section-title">How to use it</h2>
+      <p class="section-copy">Collect a recent week’s average order value and order count so inputs reflect reality, not the best day you remember. Enter the commission percentage your contract lists—including any marketing or service add-ons if you fold them into one blended rate. Then estimate what you pay to serve a direct order: payment processing, packaging, or a small loyalty discount. Run the calculation and read both panels: marketplace totals versus direct totals, plus the difference line that signals potential savings. Adjust commission up or down to stress-test future scenarios, and repeat whenever you launch a new virtual brand or change delivery radius fees.</p>
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">A takeaway averages 95 delivery orders daily at $18.50 per check while the marketplace keeps 28%. That is roughly $491 in commission per day, or about $14,700 over a 30-day month. If direct orders cost 3% in processing plus $0.35 per order, the same volume might incur near $560 monthly in fees—a dramatic gap that funds marketing, labor, or menu upgrades if you convert even a fraction of guests. Seeing the annual column makes it easier to justify branded QR menus, staff training on upselling direct links, and follow-up with the <a href="/tools/menu-price-calculator/">menu price calculator</a> to protect item-level margin.</p>
+    </section>
+
+    <section class="cta">
+      <h2>Stop losing profit to delivery apps</h2>
+      <p>
+        Launch your own digital menu, POS, and direct ordering system with Vendora. Reduce commission pressure, keep more revenue, and bring repeat customers back to your own brand.
+      </p>
+      <a class="btn btn-primary" href="/">Stop Paying Commission - Start Direct Orders</a>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How to use this delivery commission calculator</h2>
+      <p>Use your real sales numbers to compare third-party delivery fees against direct ordering costs before you make menu or channel decisions.</p>
+
+      <div class="faq-grid">
+        <article class="faq-item">
+          <h3>1. Add your order volume and commission rate</h3>
+          <p>Enter your average order value, daily order count, and delivery app commission percentage to reflect your real marketplace costs.</p>
+        </article>
+
+        <article class="faq-item">
+          <h3>2. Compare direct ordering fees</h3>
+          <p>Add the estimated fee for direct orders so you can see how much revenue your restaurant could keep by shifting repeat customers away from high-commission apps.</p>
+        </article>
+
+        <article class="faq-item">
+          <h3>3. Review monthly and yearly impact</h3>
+          <p>Use the loss summary and comparison table to understand how delivery commissions affect margins over time.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Delivery commission FAQ</h2>
+      <p>Simple answers to help restaurant owners understand where platform fees are going.</p>
+
+      <div class="faq-grid">
+        <article class="faq-item">
+          <h3>What is a delivery commission?</h3>
+          <p>A delivery commission is the fee percentage a marketplace charges your restaurant for every order it brings through its platform.</p>
+        </article>
+
+        <article class="faq-item">
+          <h3>How much do delivery apps usually charge restaurants?</h3>
+          <p>It varies by market and service level, but many restaurants pay between 15% and 35% on marketplace orders.</p>
+        </article>
+
+        <article class="faq-item">
+          <h3>How can restaurants reduce commission costs?</h3>
+          <p>By building direct ordering channels and moving repeat customers to their own menu, POS, and branded ordering experience.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related Tools</h2>
+      <p>
+        <a href="/tools/food-cost-calculator/">Food Cost Calculator</a>,
+        <a href="/tools/menu-price-calculator/">Menu Price Calculator</a>,
+        <a href="/tools/qr-menu-generator/">QR Menu Generator</a>, and
+        <a href="/tools/daily-sales-summary/">Daily Sales Summary</a>
+      </p>
+    </section>
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  
+    <section class="card faq">
+      <h2 class="section-title">Free Restaurant Tools</h2>
+      <p>Vendora provides restaurant calculators and tools to help restaurants, cafes, and food trucks manage pricing, profit, and daily operations.</p>
+      <p>Use our free tools to calculate food cost, menu price, delivery commission, and generate invoices quickly.</p>
+    </section>
+
+  </main>
+
+  <a class="btn sticky-cta" href="/">Open Vendora POS</a>
+
+    <script src="./app.js" defer></script>
+  <a href="/contact/" onclick="window.open('https://wa.me/97333404044?text=Hi%20Vendora%2C%20I%20need%20support%20with%20the%20delivery%20commission%20calculator', '_blank', 'noopener'); return false;" target="_blank" rel="noopener noreferrer" class="whatsapp-support-fab" aria-label="Chat on WhatsApp for support">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4A8.5 8.5 0 1 1 12.5 3a8.38 8.38 0 0 1 5.4 1.9"/><path d="M22 2 12 12"/><path d="M16 2h6v6"/></svg>
+    <span>WhatsApp Support</span>
+  </a>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,26 @@
+CLOUDFLARE PAGES (recommended)
+--------------------------------
+1. In the Cloudflare dashboard: Workers & Pages -> Create -> Pages -> Connect your Git repo (or Upload assets).
+
+2. Set the project’s root directory to THIS folder (the one that contains package.json and vite.config.ts), for example:
+   New folder/public/zip
+
+3. Build settings:
+   Build command:  npm install && npm run build
+   Build output:   dist
+
+4. Deploy. Your live URL will serve index.html and assets from dist/. Do NOT publish only the top-level index.html (next to src); that file is for local development with Vite only.
+
+DIRECT UPLOAD (drag-and-drop)
+-----------------------------
+Run: npm install && npm run build
+Then upload the FILES INSIDE the dist folder (not the zip folder root).
+
+LOCAL PREVIEW
+--------------
+From this folder run: npm install && npm run preview
+
+OPTIONAL: copy for static hosting next to this folder
+-------------------------------------------------------
+npm run build:site
+This rebuilds and copies dist -> app/ so you can upload the app/ folder if your host expects a separate directory.

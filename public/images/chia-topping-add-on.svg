@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">Chia topping add-on</title>
+  <desc id="desc">Illustrated local placeholder image for a chia topping add-on.</desc>
+  <rect width="320" height="320" rx="36" fill="#ecfccb"/>
+  <circle cx="160" cy="170" r="92" fill="#65a30d"/>
+  <circle cx="130" cy="150" r="10" fill="#365314"/>
+  <circle cx="180" cy="120" r="9" fill="#365314"/>
+  <circle cx="205" cy="170" r="11" fill="#365314"/>
+  <circle cx="150" cy="205" r="8" fill="#365314"/>
+  <circle cx="105" cy="190" r="9" fill="#365314"/>
+  <text x="160" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#3f6212">Chia Add-on</text>
+</svg>

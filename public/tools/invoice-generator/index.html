@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Restaurant Invoice Generator Free Online | Catering &amp; Food Business Invoices</title>
+  <meta name="description" content="Create professional restaurant invoices online: branding, line items, tax, PDF export. Free invoice generator for cafes, catering, food trucks, and wholesale.">
+  <meta name="keywords" content="restaurant invoice generator, invoice generator, free invoice generator, invoice maker, restaurant invoice template, invoice pdf generator, catering invoice">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/invoice-generator/">
+  <meta property="og:title" content="Restaurant Invoice Generator | Free Online Invoices | Vendora">
+  <meta property="og:description" content="Professional invoices for restaurants and food businesses. Branding, line items, tax, PDF. Free generator.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/invoice-generator/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Restaurant Invoice Generator Free Online | Catering and Food Business Invoices",
+  "url": "https://getvendora.net/tools/invoice-generator/",
+  "description": "Create professional restaurant invoices online: branding, line items, tax, PDF export. Free invoice generator for cafes, catering, food trucks, and wholesale.",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Vendora",
+    "url": "https://getvendora.net/"
+  }
+}
+</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can I create invoices for restaurant catering or takeaway orders?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. You can use this invoice generator for dine-in events, catering jobs, takeaway orders, bakery sales, and other restaurant-related billing."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I download the invoice as a PDF?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The tool includes a PDF export option so you can save or send a professional invoice after filling in your restaurant details and line items."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this invoice generator save my restaurant data?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Saved profiles, customers, and items are stored in your browser so you can reuse common restaurant billing details more quickly."
+        }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vendora Restaurant Invoice Generator",
+    "description": "Create branded restaurant invoices with line items, tax, discounts, and PDF export in the browser.",
+    "url": "https://getvendora.net/tools/invoice-generator/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+
+  <!-- Google Fonts & HTML2PDF -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);
+    t.async=1;
+    t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+
+</head>
+<body>
+
+  <!-- --- Top Navigation & Hidden Toolbars --- -->
+  <header class="app-header hide-on-pdf">
+    <div class="top-bar">
+      <div class="brand">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Vendora <span>Invoice</span>
+      </div>
+      <div class="nav-actions">
+        <button class="btn btn-secondary" onclick="toggleMenu('optionsMenu')" id="btn-options">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          Options
+        </button>
+        <button class="btn btn-secondary" onclick="toggleMenu('editMenu')" id="btn-edit">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+          Company
+        </button>
+        <button class="btn btn-secondary" onclick="toggleMenu('customerMenu')" id="btn-customer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21a8 8 0 1 0-16 0"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          Customer
+        </button>
+        <button class="btn btn-secondary" onclick="toggleMenu('libraryMenu')" id="btn-library">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+          Saved Data
+        </button>
+        <button class="btn btn-secondary" onclick="toggleMenu('actionsMenu')" id="btn-actions">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+          Actions
+        </button>
+        <button class="btn btn-primary" onclick="downloadNativePDF()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- Mega Menus (Options, Edit, Data, Actions) hidden for brevity, logically unchanged -->
+    <div id="optionsMenu" class="mega-menu">
+      <div class="menu-grid">
+        <div class="menu-section">
+          <h3>Global Settings</h3>
+          <div class="menu-control"><label>Document Type</label><select id="docTypeSelect" class="custom-select" onchange="val('docType', this.value); autoSave();"><option>INVOICE</option><option>QUOTE</option><option>ESTIMATE</option></select></div>
+          <div class="stack-2"><div class="menu-control"><label>Payment Terms</label><input type="text" id="paymentTermsInput" class="custom-input" placeholder="Due on receipt" oninput="val('paymentTermsPaper', this.value); autoSave();"></div><div class="menu-control"><label>Round Total</label><select id="roundSelect" class="custom-select" onchange="updateTotals(); autoSave();"><option value="none">No rounding</option><option value="up">Round up</option><option value="down">Round down</option></select></div></div>
+          <div class="menu-control"><label>Invoice Status</label><select id="statusSelect" class="custom-select" onchange="updateTotals(); autoSave();"><option value="auto">Auto</option><option value="draft">Draft</option><option value="sent">Sent</option><option value="unpaid">Unpaid</option><option value="partial">Partially Paid</option><option value="paid">Paid</option><option value="overdue">Overdue</option><option value="credit">Credit</option></select></div>
+          <div class="menu-control"><label>Currency</label><select id="currencySelect" class="custom-select" onchange="handleCurrencyChange()"></select></div>
+          <div class="menu-control" id="customCurrencyGroup" style="display: none;"><input type="text" id="customCurrency" class="custom-input" placeholder="e.g. USDT" oninput="updateTotals(); autoSave();"></div>
+          <div class="stack-2" style="margin-top:15px;">
+            <div class="menu-control" style="margin-bottom:0;"><label>Accent Color</label><input type="color" id="accentColorPicker" value="#00d084" style="width:100%; height:40px; border-radius:6px; cursor:pointer;" onchange="updateAccent(); autoSave();"></div>
+            <div class="menu-control" style="margin-bottom:0;"><label>Bill / Ship Heading Color</label><input type="color" id="billHeadingColorPicker" value="#00d084" style="width:100%; height:40px; border-radius:6px; cursor:pointer;" onchange="updateBillHeadingColor(); autoSave();"></div>
+          </div>
+          <div class="stack-2" style="margin-top:15px;">
+            <div class="menu-control" style="margin-bottom:0;"><label>Theme</label><select id="themeSelect" class="custom-select" onchange="applyTheme(); autoSave();"><option value="theme-modern">Modern</option><option value="theme-classic">Classic</option><option value="theme-minimal">Minimal</option><option value="theme-bold">Bold</option><option value="theme-compact">Compact</option><option value="theme-spreadsheet">Spreadsheet</option></select></div>
+            <div class="menu-control" style="margin-bottom:0;"><label>Page Fit</label><select id="pageFitSelect" class="custom-select" onchange="applyPageFit(); autoSave();"><option value="auto">Auto</option><option value="balanced">Balanced</option><option value="compact">Compact</option><option value="onepage">One-Page First</option></select></div>
+          </div>
+          <div class="stack-2" style="margin-top:15px;">
+            <div class="menu-control" style="margin-bottom:0;"><label>Content Density</label><select id="contentDensitySelect" class="custom-select" onchange="applyContentDensity(); autoSave();"><option value="normal">Normal</option><option value="tight">Tight</option><option value="tighter">Tighter</option></select></div>
+            <div class="menu-control" style="margin-bottom:0;"><label>Page Estimate</label><div id="pageEstimateText" class="custom-input" style="display:flex; align-items:center; justify-content:center; color:var(--text); font-weight:700;">Checking...</div></div>
+          </div>
+          <div id="pageEstimateHint" class="menu-section" style="padding-top:0; color:var(--muted); font-size:0.82rem; line-height:1.45; margin-top:-4px;">The tool will suggest how to keep short invoices on one page.</div>
+        </div>
+        <div class="menu-section">
+          <h3>Show / Hide Sections</h3>
+          <div class="menu-control"><label><input type="checkbox" id="tglLogo" checked onchange="toggleVis('logo-media', this.checked); rebalanceLayout()"> Logo</label></div>
+          <div class="menu-control"><label><input type="checkbox" id="tglTaxNum" checked onchange="toggleVis('tax-num-box', this.checked)"> My Tax Number</label></div>
+          <div class="menu-control"><label><input type="checkbox" id="tglShip" onchange="toggleVis('ship-box', this.checked); rebalanceLayout()"> Shipping Address Block</label></div>
+          <div class="menu-control"><label><input type="checkbox" id="tglItemCode" checked onchange="renderItems(); autoSave()"> Line Item SKU / Code</label></div>
+          <div class="menu-control"><label><input type="checkbox" id="tglItemDesc" checked onchange="renderItems(); autoSave()"> Line Item Description</label></div>
+          <div class="menu-control"><label><input type="checkbox" id="tglColTax" checked onchange="toggleCol('col-tax', this.checked)"> Line Item Tax Column</label></div>
+          <div class="menu-control"><label><input type="checkbox" id="tglColDisc" checked onchange="toggleCol('col-disc', this.checked)"> Line Item Disc Column</label></div>
+          <div class="menu-control"><label><input type="checkbox" id="tglNotes" checked onchange="toggleVis('notes-box', this.checked); rebalanceLayout()"> Notes Box</label></div>
+          <div class="menu-control"><label><input type="checkbox" id="tglPayment" checked onchange="toggleVis('payment-box', this.checked); rebalanceLayout()"> Payment Details Box</label></div>
+          <div class="menu-control"><label><input type="checkbox" id="tglTerms" onchange="toggleVis('terms-box', this.checked); rebalanceLayout()"> Terms Box</label></div>
+          <div class="menu-control"><label><input type="checkbox" id="tglSig" onchange="toggleVis('signature-box', this.checked)"> Signature Block</label></div>
+        </div>
+        <div class="menu-section">
+          <h3>Advanced Rows</h3>
+          <div class="menu-control"><label><input type="checkbox" id="tglShipRow" checked onchange="toggleVis('ship-row', this.checked)"> Shipping charge row</label></div>
+          <div class="menu-control"><label><input type="checkbox" id="tglAdjRow" checked onchange="toggleVis('adj-row', this.checked)"> Adjustment row</label></div>
+          <div class="menu-control"><label><input type="checkbox" id="tglPaidRow" checked onchange="toggleVis('paid-row', this.checked); toggleVis('paid-row-bal', this.checked)"> Amount paid &amp; balance rows</label></div>
+          <p class="menu-hint" style="font-size:0.78rem;color:var(--muted);margin:-6px 0 8px;line-height:1.4;">These rows are on by default so totals update live. Uncheck to hide on the invoice.</p>
+          <div class="stack-2" style="margin-top:18px;"><button class="btn btn-secondary" style="width:100%;" onclick="fillExample()">Try Example</button><button class="btn btn-danger" style="width:100%;" onclick="clearAllData()">Clear Entire Invoice</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="editMenu" class="mega-menu">
+      <div class="menu-grid">
+        <div class="menu-section">
+          <h3>Basic Details</h3>
+          <div class="drawer-field"><label>Document Type</label><select id="ctrlDocType" class="custom-select" data-target="docType"><option>INVOICE</option><option>QUOTE</option><option>ESTIMATE</option></select></div>
+          <div class="stack-2"><div class="drawer-field"><label>Invoice Number</label><input id="ctrlInvNum" class="custom-input" data-target="invNum" placeholder="INV-001"></div><div class="drawer-field"><label>Reference / PO</label><input id="ctrlInvRef" class="custom-input" data-target="invRef" placeholder="PO-1234"></div></div>
+          <div class="stack-2"><div class="drawer-field"><label>Issue Date</label><input id="ctrlInvDate" type="date" class="custom-input" data-target="invDate"></div><div class="drawer-field"><label>Due Date</label><input id="ctrlInvDue" type="date" class="custom-input" data-target="invDue"></div></div>
+          <div class="drawer-field"><label>Due Date Shortcut</label><select id="duePreset" class="custom-select" onchange="applyDuePreset()"><option value="manual">Manual</option><option value="7">7 days</option><option value="14">14 days</option><option value="30">1 month</option><option value="60">2 months</option></select></div>
+          <div class="drawer-field"><label>Payment Terms</label><input id="ctrlTerms" class="custom-input" data-target="paymentTermsPaper" placeholder="Due on receipt"></div>
+        </div>
+        <div class="menu-section">
+          <h3>Company</h3>
+          <div class="stack-2"><div class="drawer-field"><label>Company Logo</label><input id="logoInputDrawer" type="file" accept="image/*" class="custom-input" onchange="handleImageUpload(event, 'logo')"></div><div class="drawer-field"><label>Stamp / Seal</label><input id="stampInputDrawer" type="file" accept="image/*" class="custom-input" onchange="handleImageUpload(event, 'stamp')"></div></div>
+          <div class="drawer-field"><label>Company Name</label><input id="ctrlCompName" class="custom-input" data-target="compName" placeholder="Your Company Name"></div>
+          <div class="drawer-field"><label>Owner / Contact / Address</label><textarea id="ctrlCompDetails" class="custom-input" data-target="compDetails" rows="4"></textarea></div>
+          <div class="drawer-field"><label>Tax / VAT / CR</label><input id="ctrlCompTax" class="custom-input" data-target="compTax"></div>
+        </div>
+        <div class="menu-section">
+          <h3>Fast Totals & Optional</h3>
+          <div class="stack-2"><div class="drawer-field"><label>Shipping</label><input id="ctrlShip" type="text" inputmode="decimal" class="custom-input" data-target="valShip"></div><div class="drawer-field"><label>Adjustment</label><input id="ctrlAdj" type="text" inputmode="decimal" class="custom-input" data-target="valAdj"></div></div>
+          <div class="drawer-field"><label>Amount Paid</label><input id="ctrlPaid" type="text" inputmode="decimal" class="custom-input" data-target="valPaid"></div>
+          <div class="drawer-field"><label>Notes</label><textarea id="ctrlNotes" class="custom-input" data-target="notes" rows="3"></textarea></div>
+          <div class="drawer-field"><label>Payment Instructions</label><textarea id="ctrlPayment" class="custom-input" data-target="paymentInfo" rows="3"></textarea></div>
+          <div class="drawer-field"><label>Terms & Conditions</label><textarea id="ctrlTermsInfo" class="custom-input" data-target="termsInfo" rows="3"></textarea></div>
+          <!-- Sync targets for separate payment preview (filled by Try Example / draft); not shown in drawer -->
+          <div class="hide-on-pdf" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+            <input type="text" id="ctrlBankName" autocomplete="off">
+            <input type="text" id="ctrlAccountName" autocomplete="off">
+            <input type="text" id="ctrlIbanField" autocomplete="off">
+            <input type="text" id="ctrlAccountNoField" autocomplete="off">
+            <input type="text" id="ctrlPaymentNoteField" autocomplete="off">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="customerMenu" class="mega-menu">
+      <div class="menu-grid">
+        <div class="menu-section">
+          <h3>Customer Details</h3>
+          <p>Update who the invoice is for and where it should be shipped without digging through company settings.</p>
+          <div class="drawer-field"><label>Customer Layout</label><select id="customerMode" class="custom-select" onchange="applySectionModes(); autoSave();"><option value="combined">Combined Box</option><option value="separate">Separate Fields</option></select></div>
+          <div class="drawer-field"><label>Customer Name / Company</label><input id="ctrlCustName" class="custom-input" data-target="custName"></div>
+          <div class="drawer-field"><label>Customer Details</label><textarea id="ctrlCustDetails" class="custom-input" data-target="custDetails" rows="4"></textarea></div>
+          <div class="stack-2"><div class="drawer-field"><label>Company</label><input id="ctrlCustCompanyField" class="custom-input"></div><div class="drawer-field"><label>Person</label><input id="ctrlCustPersonField" class="custom-input"></div></div>
+          <div class="stack-2"><div class="drawer-field"><label>Email</label><input id="ctrlCustEmailField" class="custom-input"></div><div class="drawer-field"><label>Phone</label><input id="ctrlCustPhoneField" class="custom-input"></div></div>
+          <div class="drawer-field"><label>Address</label><textarea id="ctrlCustAddressField" class="custom-input" rows="3"></textarea></div>
+          <div class="drawer-field"><label>Tax Number</label><input id="ctrlCustTaxField" class="custom-input"></div>
+          <div class="drawer-field"><label>Ship To</label><textarea id="ctrlShipDetails" class="custom-input" data-target="shipDetails" rows="3"></textarea></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="libraryMenu" class="mega-menu">
+      <div class="menu-grid">
+        <div class="menu-section"><h3>Company Profiles</h3><button class="btn btn-secondary" style="width:100%; margin-bottom:10px;" onclick="libSave('company')">Save Current</button><div class="library-list" id="lib-company-list"></div></div>
+        <div class="menu-section"><h3>Customer Book</h3><button class="btn btn-secondary" style="width:100%; margin-bottom:10px;" onclick="libSave('customer')">Save Current</button><div class="library-list" id="lib-customer-list"></div></div>
+        <div class="menu-section"><h3>Item Catalog</h3><button class="btn btn-secondary" style="width:100%; margin-bottom:10px;" onclick="libSave('item')">Save Top Item</button><div class="library-list" id="lib-item-list"></div></div>
+        <div class="menu-section"><h3>Recent Invoices</h3><button class="btn btn-secondary" style="width:100%; margin-bottom:10px;" onclick="saveRecentInvoice()">Save Snapshot</button><div class="library-list" id="lib-invoice-list"></div></div>
+      </div>
+    </div>
+
+    <div id="actionsMenu" class="mega-menu">
+      <div class="menu-grid">
+        <div class="menu-section"><h3>Fast Actions</h3><div class="menu-buttons"><button class="btn btn-primary" onclick="downloadNativePDF()">Download PDF</button><button class="btn btn-secondary" onclick="printInvoice()">Print</button><button class="btn btn-secondary" onclick="copyInvoiceSummary()">Copy Summary</button></div></div>
+        <div class="menu-section">
+          <h3>Bulk line items (CSV)</h3>
+          <p style="font-size:0.82rem;color:var(--muted);line-height:1.45;margin-bottom:12px;">Download the template, fill rows in Excel or Google Sheets, then import. Totals update live.</p>
+          <div class="menu-buttons">
+            <button type="button" class="btn btn-secondary" onclick="downloadLineItemsTemplate()">Download CSV template</button>
+            <label class="btn btn-secondary" style="cursor:pointer;text-align:center;display:block;">
+              Import CSV
+              <input type="file" id="lineItemsCsvInput" accept=".csv,text/csv" style="display:none" onchange="importLineItemsFromCsv(event)">
+            </label>
+          </div>
+          <label style="display:flex;align-items:center;gap:8px;margin-top:12px;font-size:0.85rem;color:var(--muted);cursor:pointer;">
+            <input type="checkbox" id="csvReplaceItems"> Replace existing lines (otherwise append)
+          </label>
+        </div>
+        <div class="menu-section">
+          <h3>Export products (Firebase → CSV)</h3>
+          <p style="font-size:0.82rem;color:var(--muted);line-height:1.45;margin-bottom:12px;">Downloads a CSV like your sheet: <strong>id, SKU_ID, Images</strong> by reading your Firestore collection. Works only if your Firestore rules allow read access for this website.</p>
+          <div class="stack-2">
+            <div class="drawer-field"><label>Firebase API Key</label><input id="fbApiKey" class="custom-input" placeholder="AIza..." autocomplete="off"></div>
+            <div class="drawer-field"><label>Firebase Project ID</label><input id="fbProjectId" class="custom-input" placeholder="my-project-id" autocomplete="off"></div>
+          </div>
+          <div class="drawer-field"><label>Collection</label><input id="fbCollection" class="custom-input" placeholder="products" value="products" autocomplete="off"></div>
+          <div class="stack-2">
+            <div class="drawer-field"><label>SKU field name</label><input id="fbSkuField" class="custom-input" placeholder="SKU_ID / sku / code" value="SKU_ID" autocomplete="off"></div>
+            <div class="drawer-field"><label>Images field name</label><input id="fbImagesField" class="custom-input" placeholder="Images / images / image_urls" value="Images" autocomplete="off"></div>
+          </div>
+          <div class="menu-buttons" style="margin-top:10px;">
+            <button type="button" class="btn btn-secondary" onclick="downloadProductsCsvFromFirebase()">Download products CSV</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <section class="seo-section hide-on-pdf">
+    <nav aria-label="Primary">
+      <p>
+        <a href="/">Home</a> |
+        <a href="/about/">About</a> |
+        <a href="/tools/">Tools</a> |
+        <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+        <a href="/#pricing">Pricing</a> |
+        <a href="/contact/">Contact</a>
+      </p>
+    </nav>
+  </section>
+
+  <section class="seo-section hide-on-pdf">
+    <div class="seo-hero">
+      <h1>Restaurant Invoice Generator</h1>
+      <p>Create clear invoices for restaurant catering, takeaway orders, bakery sales, cafe accounts, and other hospitality billing without changing the way this editor works.</p>
+    </div>
+    <div class="seo-grid">
+      <article class="seo-card">
+        <h2>How to use this invoice generator</h2>
+        <p>Start by adding your restaurant name, invoice number, and customer details, then fill in line items for food, drinks, service charges, or catering packages.</p>
+      </article>
+      <article class="seo-card">
+        <h3>Review totals and payment details</h3>
+        <p>Use tax, discount, shipping, and payment fields to match the invoice to real restaurant orders before you send it to the customer.</p>
+      </article>
+      <article class="seo-card">
+        <h3>Export a clean PDF invoice</h3>
+        <p>When everything looks right, download the invoice as a PDF for email, printing, or simple bookkeeping.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- --- The WYSIWYG Editor --- -->
+  <main class="editor-container">
+    <div class="invoice-paper" id="invoicePaper">
+      <div class="accent-bar" id="accentBar"></div>
+
+      <!-- Header -->
+      <header class="inv-header">
+        <div class="logo-box" id="logo-box">
+          <div class="logo-media" id="logo-media">
+            <img id="logoImage" class="logo-preview" style="display: none;" title="Company logo" alt="Uploaded company logo">
+            <label class="logo-upload-btn hide-on-pdf" id="logoUploadLabel">
+              + Upload Logo
+              <input type="file" id="logoInput" accept="image/*" onchange="handleImageUpload(event, 'logo')">
+            </label>
+          </div>
+          <textarea id="compName" class="seamless-input auto-expand" placeholder="Your Company Name" rows="1"></textarea>
+          <textarea id="compDetails" class="seamless-input auto-expand" placeholder="123 Business Rd&#10;City, Country 12345&#10;hello@company.com" rows="1"></textarea>
+          <div id="tax-num-box" style="width:100%;">
+            <input type="text" id="compTax" class="seamless-input" placeholder="Tax / VAT Number">
+          </div>
+        </div>
+
+        <div class="inv-title-box">
+          <div class="badge-container">
+            <div id="statusBadge" class="status-badge status-draft">DRAFT</div>
+          </div>
+          <input type="text" id="docType" class="seamless-input main-title" value="INVOICE">
+          <div class="meta-grid">
+            <label>Invoice #</label>
+            <input type="text" id="invNum" class="seamless-input" placeholder="INV-001">
+            <label>Issue Date</label>
+            <input type="date" id="invDate" class="seamless-input">
+            <label>Due Date</label>
+            <input type="date" id="invDue" class="seamless-input">
+            <label>Terms</label>
+            <input type="text" id="paymentTermsPaper" class="seamless-input" placeholder="Due on receipt">
+            <label>Reference</label>
+            <input type="text" id="invRef" class="seamless-input" placeholder="PO-1234">
+          </div>
+        </div>
+      </header>
+
+      <!-- Billing -->
+      <section class="billing-row" id="billingRow">
+        <div class="bill-box">
+          <h3>Bill To</h3>
+          <textarea id="custName" class="seamless-input auto-expand" placeholder="Client Name or Company" rows="1"></textarea>
+          <textarea id="custDetails" class="seamless-input auto-expand" placeholder="Client Address&#10;City, State, Zip&#10;Email / Phone" rows="1"></textarea>
+          <div id="custSeparatePreview" class="preview-lines hide-section">
+            <div class="preview-line" id="custCompanyPreview"></div>
+            <div class="preview-line" id="custPersonPreview"></div>
+            <div class="preview-line" id="custEmailPreview"></div>
+            <div class="preview-line" id="custPhonePreview"></div>
+            <div class="preview-line" id="custAddressPreview"></div>
+            <div class="preview-line" id="custTaxPreview"></div>
+          </div>
+        </div>
+        <div class="bill-box hide-section" id="ship-box">
+          <h3>Ship To</h3>
+          <textarea id="shipDetails" class="seamless-input auto-expand" placeholder="Shipping Address (if different)" rows="1"></textarea>
+        </div>
+      </section>
+
+      <!-- Line Items -->
+      <section>
+        <div class="items-header" id="itemsHeader">
+          <div>Item / Description</div>
+          <div style="text-align: right;">Qty</div>
+          <div style="text-align: right;">Price</div>
+          <div style="text-align: right;" class="col-tax">Tax %</div>
+          <div style="text-align: right;" class="col-disc">Disc %</div>
+          <div style="text-align: right;">Amount</div>
+          <div class="hide-on-pdf"></div>
+        </div>
+
+        <div id="itemsContainer">
+          <!-- Rows rendered by JS -->
+        </div>
+        <button class="add-row-btn hide-on-pdf" onclick="addItemRow()">+ Add Line Item</button>
+        <p class="hide-on-pdf" style="margin-top:10px;font-size:0.78rem;color:var(--ink-muted);line-height:1.45;">Many rows? <strong>Actions → Bulk line items</strong>: download CSV template, fill in Excel, import.</p>
+      </section>
+
+      <!-- Totals -->
+      <section class="totals-wrapper">
+        <div class="totals-box">
+          <div class="total-line">
+            <label>Subtotal</label>
+            <div id="lblSubtotal">0.00</div>
+          </div>
+          <div class="total-line col-tax">
+            <label>Tax Total</label>
+            <div id="lblTax">0.00</div>
+          </div>
+          <div class="total-line col-disc">
+            <label>Discount Total</label>
+            <div id="lblDisc">0.00</div>
+          </div>
+          <div class="total-line" id="ship-row">
+            <label>Shipping Cost</label>
+            <input type="text" id="valShip" class="seamless-input hide-on-pdf" style="width:80px; text-align:right; border:1px solid var(--paper-border);" value="0" inputmode="decimal" autocomplete="off">
+            <div id="lblShip" class="total-inline-readout hide-on-pdf">0.00</div>
+          </div>
+          <div class="total-line" id="adj-row">
+            <label>Adjustment</label>
+            <input type="text" id="valAdj" class="seamless-input hide-on-pdf" style="width:80px; text-align:right; border:1px solid var(--paper-border);" value="0" inputmode="decimal" autocomplete="off">
+            <div id="lblAdj" class="total-inline-readout hide-on-pdf">0.00</div>
+          </div>
+          <div class="total-line grand-total">
+            <label>Grand Total</label>
+            <div id="lblTotal">0.00</div>
+          </div>
+          <div class="total-line" id="paid-row" style="padding-top:10px;">
+            <label>Amount Paid</label>
+            <input type="text" id="valPaid" class="seamless-input hide-on-pdf" style="width:80px; text-align:right; border:1px solid var(--paper-border);" value="0" inputmode="decimal" autocomplete="off">
+            <div id="lblPaid" class="total-inline-readout hide-on-pdf">0.00</div>
+          </div>
+          <div class="total-line" id="paid-row-bal">
+            <label><strong>Balance Due</strong></label>
+            <div id="lblBalance">0.00</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer Notes -->
+      <footer class="inv-footer" style="display: none;">
+        <div class="bill-box" id="notes-box">
+          <h3>Notes / Terms</h3>
+          <textarea id="notes" class="seamless-input auto-expand" placeholder="Thank you for your business!&#10;Payment due within 15 days." rows="1"></textarea>
+        </div>
+        <div class="bill-box" id="payment-box">
+          <h3>Payment Instructions</h3>
+          <textarea id="paymentInfo" class="seamless-input auto-expand" placeholder="Bank: XYZ Bank&#10;Account Name: Your Company&#10;IBAN: AB12 3456 7890" rows="1"></textarea>
+          <div id="paymentSeparatePreview" class="preview-lines hide-section">
+            <div class="preview-line" id="bankNamePreview"></div>
+            <div class="preview-line" id="accountNamePreview"></div>
+            <div class="preview-line" id="ibanPreview"></div>
+            <div class="preview-line" id="accountNoPreview"></div>
+            <div class="preview-line" id="paymentNotePreview"></div>
+          </div>
+        </div>
+        <div class="bill-box hide-section" id="terms-box">
+          <h3>Terms and Conditions</h3>
+          <textarea id="termsInfo" class="seamless-input auto-expand" placeholder="Late payments may be subject to additional charges." rows="1"></textarea>
+        </div>
+      </footer>
+
+      <!-- Signature -->
+      <div class="signature-box hide-section" id="signature-box">
+        <img id="stampImage" class="logo-preview" style="display: none; margin: 0 auto 10px; max-height:80px;" onclick="document.getElementById('stampInput').click()" title="Change signature/stamp" alt="Uploaded signature or stamp">
+        <label class="logo-upload-btn hide-on-pdf" id="stampUploadLabel" style="display:block; margin:0 auto 10px; width:fit-content;">
+          + Upload Stamp/Sign
+          <input type="file" id="stampInput" accept="image/*" onchange="handleImageUpload(event, 'stamp')">
+        </label>
+        <input type="text" id="sigName" class="seamless-input" placeholder="Authorized Signatory">
+      </div>
+      <div style="clear:both;"></div>
+
+    </div>
+
+  </main>
+
+  <section class="tool-promo-section hide-on-pdf" aria-label="More free tools from Vendora">
+    <div class="tool-promo-inner">
+      <h2 class="tool-promo-title">Free restaurant tools</h2>
+      <p>Vendora provides restaurant calculators and tools to help restaurants, cafes, and food trucks manage pricing, profit, and daily operations.</p>
+      <p>Use our free tools to calculate food cost, menu price, delivery commission, and generate invoices quickly.</p>
+      <p class="tool-promo-links">
+        <a href="/tools/">Browse all tools</a>
+        <span class="tool-promo-sep" aria-hidden="true">·</span>
+        <a href="/restaurant-calculators/">Restaurant calculators</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="seo-section hide-on-pdf" aria-labelledby="inv-guide-what">
+    <div class="seo-hero">
+      <h2 id="inv-guide-what">What this tool does</h2>
+      <p>Vendora’s invoice generator is a browser-based document builder tailored to restaurants, caterers, and food wholesalers. You lay out company branding, customer details, line items, tax and discount columns, shipping or adjustments, and payment notes, then export a polished PDF you can email or print. Saved profiles and reusable customers live in local storage so repeat catering clients or wholesale accounts load in seconds. Because everything renders live, you see exactly what guests and finance teams will read before you commit.</p>
+      <h2>Who should use it</h2>
+      <p>Owners billing tasting menus, cafes invoicing corporate breakfast drops, food trucks closing festival tabs, and commissary kitchens selling to retail partners all fit the workflow. It is especially helpful when you need a professional layout but are not ready for heavy accounting software. Event coordinators can duplicate past invoices for seasonal gigs, while bookkeepers appreciate consistent numbering, dates, and tax lines they can reconcile later.</p>
+      <h2>How to use it</h2>
+      <p>Start from the header: upload a logo, set invoice numbers and dates, and choose payment terms that match your policy. Fill Bill To with the client’s legal name and tax ID when required, then add line items with quantity, rate, tax, and discount fields as needed. Use bulk CSV import when you have long pick lists from a banquet order. Review totals, shipping, adjustments, and notes, then open PDF export. Store customer and item libraries from the Data menu so the next invoice is mostly taps instead of typing.</p>
+      <h2>Example</h2>
+      <p>A boutique hotel orders a $3,200 catering package with 5% service tax and a 10% deposit already paid. You enter two line items (food and staffing), apply tax only where required, note the deposit in Amount Paid, and the grand total shows the remaining balance due on delivery. Saving the hotel as a customer profile means next month’s coffee break invoice reuses addresses and tax IDs automatically.</p>
+    </div>
+  </section>
+
+  <section class="seo-section hide-on-pdf">
+    <div class="seo-hero">
+      <h2>Restaurant invoice FAQ</h2>
+      <p>Quick answers for restaurant owners using this invoice generator for day-to-day billing.</p>
+    </div>
+    <div class="seo-grid">
+      <article class="seo-card">
+        <h3>Can I create invoices for restaurant catering or takeaway orders?</h3>
+        <p>Yes. You can use this invoice generator for dine-in events, catering jobs, takeaway orders, bakery sales, and other restaurant-related billing.</p>
+      </article>
+      <article class="seo-card">
+        <h3>Can I download the invoice as a PDF?</h3>
+        <p>Yes. The tool includes a PDF export option so you can save or send a professional invoice after filling in your restaurant details and line items.</p>
+      </article>
+      <article class="seo-card">
+        <h3>Does this invoice generator save my restaurant data?</h3>
+        <p>Yes. Saved profiles, customers, and items are stored in your browser so you can reuse common restaurant billing details more quickly.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="seo-section hide-on-pdf">
+    <div class="seo-hero">
+      <h2>Related Tools</h2>
+      <p>
+        <a href="/tools/receipt-generator/">Receipt Generator</a>,
+        <a href="/tools/qr-menu-generator/">QR Menu Generator</a>,
+        <a href="/tools/food-cost-calculator/">Food Cost Calculator</a>,
+        <a href="/tools/menu-price-calculator/">Menu Price Calculator</a>
+      </p>
+    </div>
+  </section>
+  <footer class="seo-section hide-on-pdf">
+    <nav aria-label="Footer">
+      <p>
+        <a href="/">Home</a> |
+        <a href="/about/">About</a> |
+        <a href="/tools/">Tools</a> |
+        <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+        <a href="/#pricing">Pricing</a> |
+        <a href="/contact/">Contact</a> |
+        <a href="/privacy-policy/">Privacy Policy</a>
+      </p>
+    </nav>
+  </footer>
+
+  <!-- Mobile Action Bar -->
+  <div class="mobile-action-bar hide-on-pdf">
+    <button class="btn btn-secondary" onclick="toggleMenu('optionsMenu')">Options</button>
+    <button class="btn btn-secondary" onclick="toggleMenu('libraryMenu')">Data</button>
+    <button class="btn btn-primary" onclick="downloadNativePDF()">PDF</button>
+  </div>
+
+  <div id="pdfExportHost" class="pdf-export-host" aria-hidden="true"></div>
+  <a href="/contact/" onclick="window.open('https://wa.me/97333404044?text=Hi%20Vendora%2C%20I%20need%20support%20with%20the%20invoice%20generator', '_blank', 'noopener'); return false;" target="_blank" rel="noopener noreferrer" class="whatsapp-support-fab hide-on-pdf" aria-label="Chat on WhatsApp for support">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4A8.5 8.5 0 1 1 12.5 3a8.38 8.38 0 0 1 5.4 1.9"/><path d="M22 2 12 12"/><path d="M16 2h6v6"/></svg>
+    <span>WhatsApp Support</span>
+  </a>
+  <div id="toast">Action Successful</div>
+
+    <script src="./app.js" defer></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+

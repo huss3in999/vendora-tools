@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ovulation Estimator — Cycle Day &amp; 14-Day Rule | Vendora</title>
+<meta name="description" content="Roughly estimate ovulation from cycle length using a simple day-14 style model. Not a substitute for fertility tracking or medical advice.">
+<link rel="canonical" href="https://getvendora.net/calculators/ovulation-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ovulation Estimator — Cycle Day &amp; 14-Day Rule">
+<meta property="og:description" content="Roughly estimate ovulation from cycle length using a simple day-14 style model. Not a substitute for fertility tracking or medical advice.">
+<meta property="og:url" content="https://getvendora.net/calculators/ovulation-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ovulation Estimator — Cycle Day &amp; 14-Day Rule | Vendora">
+<meta name="twitter:description" content="Roughly estimate ovulation from cycle length using a simple day-14 style model. Not a substitute for fertility tracking or medical advice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is ovulation always day 14?","acceptedAnswer":{"@type":"Answer","text":"No. Variation is common; LH tests and BBT help track ovulation more reliably."}},{"@type":"Question","name":"Can I use this for contraception?","acceptedAnswer":{"@type":"Answer","text":"No. Calendar methods alone are unreliable for birth control."}},{"@type":"Question","name":"Does stress affect cycles?","acceptedAnswer":{"@type":"Answer","text":"Yes. Stress, illness, and travel can shift ovulation."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Health &amp; Fitness</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Ovulation Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Ovulation ≈ LMP + (cycle − 14) days.</p>
+      <label class="block"><span class="text-sm font-medium">LMP</span><input type="date" id="lmp" class="mt-1 w-full border rounded px-3 py-2"></label>
+<label class="block mt-4"><span class="text-sm font-medium">Cycle length (days)</span><input type="number" id="c" class="mt-1 w-full border rounded px-3 py-2" min="21" max="35" value="28"></label>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Ovulation Calculator</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Approximates ovulation timing from cycle length for planning awareness.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Enter average cycle length and last period start date if prompted, then calculate.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Often modeled as ovulation ≈ cycle length − 14 days before next period (simplified).</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>If cycles are 28 days, mid-cycle ovulation is often estimated around day 14 from period start.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Is ovulation always day 14?</p>
+        <p class="text-sm text-vendora-muted mt-1">No. Variation is common; LH tests and BBT help track ovulation more reliably.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Can I use this for contraception?</p>
+        <p class="text-sm text-vendora-muted mt-1">No. Calendar methods alone are unreliable for birth control.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Does stress affect cycles?</p>
+        <p class="text-sm text-vendora-muted mt-1">Yes. Stress, illness, and travel can shift ovulation.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+document.getElementById('lmp').valueAsDate=new Date(Date.now()-14*24*3600*1000);
+function run(){const lmp=document.getElementById('lmp').value,cy=+document.getElementById('c').value;if(!lmp||cy<21){document.getElementById('out').textContent='Check inputs.';return;}const d=new Date(lmp+'T12:00:00');d.setDate(d.getDate()+(cy-14));document.getElementById('out').textContent='Est. ovulation: '+d.toDateString();}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

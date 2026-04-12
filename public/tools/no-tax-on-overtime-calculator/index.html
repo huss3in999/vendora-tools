@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>No Tax on Overtime Calculator | 2026 State Paycheck &amp; Take-Home Pay</title>
+  <meta name="description" content="No tax on overtime calculator and state-specific paycheck calculator for 2026: gross-to-net with federal W-4, FICA, state and local taxes, SDI/PFML, and transparent charts. Estimates only—not tax advice.">
+  <meta name="keywords" content="no tax on overtime calculator, paycheck calculator, state paycheck calculator, 2026 tax calculator, take home pay calculator, federal withholding calculator">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/no-tax-on-overtime-calculator/">
+  <meta property="og:title" content="No Tax on Overtime Calculator | 2026 Paycheck Estimator | Vendora">
+  <meta property="og:description" content="Model federal and state take-home pay with optional overtime federal exclusion, W-4 inputs, and full tax waterfall.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/no-tax-on-overtime-calculator/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "No Tax on Overtime Calculator | State-Specific Paycheck Calculator (2026)",
+  "url": "https://getvendora.net/tools/no-tax-on-overtime-calculator/",
+  "description": "Estimate gross-to-net pay with 2026 federal brackets, FICA, state and local routing, optional overtime federal-income exclusion model, and SDI/PFML where applicable.",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Vendora",
+    "url": "https://getvendora.net/"
+  }
+}
+</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How does the no tax on overtime calculator work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You enter gross pay, pay frequency, state, and federal Form W-4 style inputs. The tool estimates taxable wages, applies 2026 federal marginal rates after the standard deduction, adds FICA, routes state and optional local taxes, and can optionally exclude overtime dollars from federal taxable wages only (FICA generally still applies to wages under current law)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this official IRS or state payroll withholding?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. It is an educational model using published 2026 parameters. Actual withholding uses IRS Publication 15-T tables and employer payroll systems. Verify results with your payroll provider or tax professional."
+        }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vendora No Tax on Overtime Paycheck Calculator",
+    "description": "Estimate 2026 take-home pay with federal W-4 inputs, FICA, state and local taxes, optional overtime federal-income exclusion model, and waterfall charts.",
+    "url": "https://getvendora.net/tools/no-tax-on-overtime-calculator/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="../tool-system.css">
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);
+    t.async=1;
+    t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+  <script src="./paycheck-engine.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Vendora Free Tool · 2026 parameters</p>
+      <h1>No Tax on Overtime Calculator</h1>
+      <p class="hero-copy">
+        State-specific <strong>paycheck calculator</strong> with a full <strong>gross-to-net</strong> pipeline: pre-tax 401(k), 2026 federal marginal tax (W-4 style inputs), Social Security and Medicare (including additional Medicare over $200k), state and optional local taxes, and statutory <strong>SDI / PFL / PFML</strong> where modeled. Turn on <strong>federal overtime exclusion</strong> to estimate scenarios where overtime is not subject to federal income tax (FICA still modeled on total wages).
+      </p>
+      <div class="hero-points">
+        <span class="hero-point hero-point-highlight">Tabbed steps</span>
+        <span class="hero-point">Waterfall + pie</span>
+        <span class="hero-point">Local tax fields</span>
+        <span class="hero-point">Bonus 22% supplemental</span>
+      </div>
+    </section>
+
+    <p class="disclaimer-banner" role="note">
+      <strong>Important:</strong> Estimates only—not tax, legal, or payroll advice. Withholding rules follow IRS Pub 15-T in production; this tool uses annualized marginal rates for illustration.
+    </p>
+
+    <section class="calculator-shell">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Paycheck inputs</h2>
+        <p class="section-copy">Use the tabs to move from pay and state to W-4 details, then deductions. All amounts update live.</p>
+
+        <div class="tablist" role="tablist" aria-label="Paycheck form steps">
+          <button type="button" class="tab-btn is-active" role="tab" id="tab1" aria-selected="true" aria-controls="panel1">1. Pay &amp; state</button>
+          <button type="button" class="tab-btn" role="tab" id="tab2" aria-selected="false" aria-controls="panel2">2. Federal W-4</button>
+          <button type="button" class="tab-btn" role="tab" id="tab3" aria-selected="false" aria-controls="panel3">3. Deductions</button>
+        </div>
+
+        <div id="panel1" class="tab-panel" role="tabpanel" aria-labelledby="tab1">
+          <div class="field-grid">
+            <div class="field-wide">
+              <label for="currency">Currency</label>
+              <div class="select-wrap">
+                <select id="currency" aria-label="Currency"></select>
+              </div>
+            </div>
+            <div class="field-wide">
+              <label for="grossPay">Gross pay (regular, this period)</label>
+              <input id="grossPay" type="text" inputmode="decimal" autocomplete="off" placeholder="2000">
+            </div>
+            <div class="field-wide">
+              <label for="bonusPay">Bonus (this period, optional)</label>
+              <input id="bonusPay" type="text" inputmode="decimal" autocomplete="off" placeholder="0">
+              <p class="field-hint">Federal withholding on bonuses uses a flat 22% supplemental rate (IRS).</p>
+            </div>
+            <div class="field-wide">
+              <label for="payFrequency">Pay frequency</label>
+              <div class="select-wrap">
+                <select id="payFrequency">
+                  <option value="weekly">Weekly</option>
+                  <option value="biweekly" selected>Bi-weekly</option>
+                  <option value="semimonthly">Semi-monthly</option>
+                  <option value="monthly">Monthly</option>
+                  <option value="annual">Annually</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-wide">
+              <label for="state">Work state</label>
+              <div class="select-wrap">
+                <select id="state"></select>
+              </div>
+            </div>
+          </div>
+
+          <div id="localNY" class="local-panel is-hidden" hidden>
+            <h3 class="subsection-title">New York local</h3>
+            <div class="field-grid">
+              <label class="checkbox-row"><input type="checkbox" id="nycResident"> NYC resident (city tax)</label>
+              <div class="field-wide">
+                <label for="yonkersRate">Yonkers resident rate (%)</label>
+                <input id="yonkersRate" type="text" inputmode="decimal" placeholder="0">
+              </div>
+            </div>
+          </div>
+          <div id="localMD" class="local-panel is-hidden" hidden>
+            <h3 class="subsection-title">Maryland county</h3>
+            <div class="field-wide">
+              <label for="mdCountyRate">County / local income rate (%)</label>
+              <input id="mdCountyRate" type="text" inputmode="decimal" placeholder="3.2">
+              <p class="field-hint">Combined local rates vary by county (model uses your % on gross).</p>
+            </div>
+          </div>
+          <div id="localPA" class="local-panel is-hidden" hidden>
+            <h3 class="subsection-title">Pennsylvania local</h3>
+            <div class="field-wide">
+              <label for="paLocalEit">Local earned income tax (%)</label>
+              <input id="paLocalEit" type="text" inputmode="decimal" placeholder="1.5">
+            </div>
+          </div>
+          <div id="localOH" class="local-panel is-hidden" hidden>
+            <h3 class="subsection-title">Ohio municipal</h3>
+            <div class="field-wide">
+              <label for="ohCityRate">City / school district income tax (%)</label>
+              <input id="ohCityRate" type="text" inputmode="decimal" placeholder="2.5">
+            </div>
+          </div>
+        </div>
+
+        <div id="panel2" class="tab-panel is-hidden" role="tabpanel" aria-labelledby="tab2" hidden>
+          <div class="field-grid">
+            <div class="field-wide">
+              <label for="filingStatus">Federal filing status (2026 standard deduction)</label>
+              <div class="select-wrap">
+                <select id="filingStatus">
+                  <option value="single" selected>Single</option>
+                  <option value="mfj">Married filing jointly</option>
+                  <option value="hoh">Head of household</option>
+                </select>
+              </div>
+            </div>
+            <label class="checkbox-row"><input type="checkbox" id="w4Step2"> W-4 Step 2: multiple jobs (reduces standard deduction in this model)</label>
+            <div class="field-wide">
+              <label for="w4Step3">W-4 Step 3: annual tax credit / dependents ($)</label>
+              <input id="w4Step3" type="text" inputmode="decimal" placeholder="0">
+            </div>
+            <div class="field-wide">
+              <label for="w4Step4a">W-4 Step 4a: other annual income ($)</label>
+              <input id="w4Step4a" type="text" inputmode="decimal" placeholder="0">
+            </div>
+            <div class="field-wide">
+              <label for="w4Step4b">W-4 Step 4b: other annual deductions ($)</label>
+              <input id="w4Step4b" type="text" inputmode="decimal" placeholder="0">
+            </div>
+            <label class="checkbox-row"><input type="checkbox" id="noTaxOnOvertime"> Model: exclude overtime from <strong>federal income tax</strong> wages only</label>
+            <div class="field-wide">
+              <label for="overtimeAmount">Overtime in this period ($)</label>
+              <input id="overtimeAmount" type="text" inputmode="decimal" placeholder="0">
+              <p class="field-hint">FICA still applies to total gross in this calculator. Policy details depend on final law and IRS guidance.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="panel3" class="tab-panel is-hidden" role="tabpanel" aria-labelledby="tab3" hidden>
+          <div class="field-grid">
+            <div class="field-wide">
+              <label for="pretax401kPercent">Pre-tax 401(k) (% of regular gross)</label>
+              <input id="pretax401kPercent" type="text" inputmode="decimal" placeholder="0">
+            </div>
+            <div class="field-wide">
+              <label for="pretax401kFixed">Pre-tax 401(k) (fixed $ per period)</label>
+              <input id="pretax401kFixed" type="text" inputmode="decimal" placeholder="0">
+              <p class="field-hint">Traditional 401(k) reduces federal taxable wages; FICA base still uses full gross in this model.</p>
+            </div>
+            <div class="field-wide">
+              <label for="postTaxDeduction">Post-tax deductions ($ per period)</label>
+              <input id="postTaxDeduction" type="text" inputmode="decimal" placeholder="0">
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-secondary" id="resetButton">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Take-home breakdown</h2>
+        <p class="section-copy">Net pay and every major deduction in one view.</p>
+
+        <div class="results-highlight">
+          <div>
+            <span class="net-label">Estimated net pay (this period)</span>
+            <strong class="net-value" id="netPayOutput">$0.00</strong>
+          </div>
+          <p class="meta-line" id="metaLine"></p>
+        </div>
+
+        <div class="viz-row">
+          <div class="viz-card">
+            <h3 class="viz-title">Where your pay goes</h3>
+            <div class="pie-wrap" aria-hidden="true">
+              <svg id="pieChart" viewBox="-1 -1 2 2" class="pie-svg"></svg>
+            </div>
+            <ul id="pieLegend" class="pie-legend"></ul>
+          </div>
+          <div class="viz-card viz-card-wide">
+            <h3 class="viz-title">Waterfall</h3>
+            <div class="table-wrap">
+              <table class="breakdown-table waterfall-table" id="waterfallTable">
+                <thead>
+                  <tr><th scope="col">Line</th><th scope="col">Amount</th></tr>
+                </thead>
+                <tbody id="waterfallBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq seo-tool-guide" aria-labelledby="nto-guide-what">
+      <h2 class="section-title" id="nto-guide-what">What this tool does</h2>
+      <p class="section-copy">This paycheck estimator models gross-to-net pay using 2026-style federal ordinary brackets, standard deductions, Social Security up to the $184,500 wage base at 6.2%, Medicare at 1.45% plus additional Medicare above $200k annualized wages, and a wide set of state and local routines—including flat, graduated, and zero-income-tax states—with add-on fields for NYC/Yonkers, Maryland counties, Pennsylvania local EIT, and Ohio municipalities. A distinguishing feature is the optional scenario where part of overtime wages is excluded from federal taxable wages while FICA still follows current-law definitions, helping employees visualize proposed policy changes or news headlines without replacing employer payroll engines. Charts summarize effective rates, pie slices for tax categories, and a waterfall table that mirrors accounting statements.</p>
+      <h2 class="section-title">Who should use it</h2>
+      <p class="section-copy">Hourly workers with volatile OT, dual-job households comparing withholdings, HR generalists explaining offers, and restaurant operators budgeting labor should bookmark the page. It is especially helpful when you move between states or when local taxes apply on top of state filings. Tax professionals may use it to educate clients, but it remains an educational model—actual withholding follows IRS Publication 15-T and employer systems. Pair it with the <a href="/tools/hourly-to-salary-calculator/">hourly to salary calculator</a> when you need annualized base pay before you enter pay frequency here.</p>
+      <h2 class="section-title">How to use it</h2>
+      <p class="section-copy">Enter gross pay, pay frequency, filing status, and Form W-4 style inputs such as dependents and extra withholding. Choose your work state and, when prompted, locality options that match your paycheck stub. Toggle the overtime exclusion model if you want to compare baseline federal taxable wages against a scenario that removes OT dollars from the federal income calculation only. Review FICA, federal, state, local, SDI, and PFML lines in the waterfall, then adjust pre-tax deductions or bonus flags to mirror your actual check. Always reconcile against your employer’s PDF because benefits, cafeteria plans, and garnishments can differ.</p>
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">A cook earns $1,200 base plus $350 overtime on a weekly check, files single, claims the standard deduction, and works in a state with a mid-single-digit flat rate. Baseline mode might show roughly $260 federal, $97 FICA, and $48 state, leaving near $795 net. Activating overtime federal exclusion lowers taxable wages on the OT portion only, shifting federal withholding down while Social Security and Medicare still reflect full gross—illustrating why take-home jumps are smaller than headlines imply. Export the mental model to your CPA whenever life events change W-4 elections.</p>
+    </section>
+
+    <section class="card faq faq-section">
+      <h2>FAQ</h2>
+      <h3>What is a no tax on overtime calculator?</h3>
+      <p>It helps you estimate take-home pay when <strong>federal income tax</strong> might not apply to overtime wages under proposed or enacted rules, while other payroll taxes may still apply.</p>
+      <h3>Does this replace my employer’s payroll system?</h3>
+      <p>No. Employers use IRS withholding tables and state rules. Use this for planning and education only.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related Tools</h2>
+      <p><a href="/tools/hourly-to-salary-calculator/">Hourly to Salary Calculator</a>, <a href="/tools/work-hours-overtime-tracker/">Work Hours &amp; Overtime Tracker</a>, <a href="/tools/commission-calculator/">Commission Calculator</a>, <a href="/tools/daily-sales-summary/">Daily Sales Summary</a></p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/contact/">Contact</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <a class="btn sticky-cta" href="/">Open Vendora POS</a>
+  <a href="/contact/" onclick="window.open('https://wa.me/97333404044?text=Hi%20Vendora%2C%20I%20need%20support%20with%20the%20paycheck%20calculator', '_blank', 'noopener'); return false;" target="_blank" rel="noopener noreferrer" class="whatsapp-support-fab" aria-label="Chat on WhatsApp for support">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4A8.5 8.5 0 1 1 12.5 3a8.38 8.38 0 0 1 5.4 1.9"/><path d="M22 2 12 12"/><path d="M16 2h6v6"/></svg>
+    <span>WhatsApp Support</span>
+  </a>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

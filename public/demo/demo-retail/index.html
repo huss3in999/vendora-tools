@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Retail Demo | Vendora Pro</title>
+    <meta name="description" content="Browse a retail demo storefront created with Vendora, with product discovery, cart interactions, and a polished mobile shopping layout." />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href="https://getvendora.net/demo/demo-retail/">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-DFY197R2MS');
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } } }</script>
+    <style>.no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; } .modal-open { transform: translateY(0%); } .modal-closed { transform: translateY(100%); } #cart-modal, #whatsapp-modal { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); } .retail-gradient { background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 100%); }</style>
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);
+    t.async=1;
+    t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+
+</head>
+<body class="font-sans antialiased selection:bg-gray-800 selection:text-white pb-24 transition-colors duration-300 bg-gray-900">
+    <div id="app-root" class="max-w-md mx-auto min-h-screen relative overflow-hidden bg-[#0a0a0a] shadow-2xl transition-all duration-300">
+        <!-- Edgy Header -->
+        <div class="pt-16 pb-10 px-6 bg-[#0a0a0a] text-center sticky top-0 z-30 border-b border-gray-800">
+            <h1 class="text-4xl font-black text-white tracking-tighter uppercase">URBAN THREADS</h1>
+            <p class="text-gray-400 text-xs tracking-widest uppercase mt-2">Streetwear & Modern Minimalist</p>
+        </div>
+        
+        <!-- Products -->
+        <div class="p-4 space-y-6" id="products"></div>
+    </div>
+
+    <!-- Floating Cart & Modals -->
+    <button onclick="toggleCart()" id="fab-cart" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 w-[90%] max-w-[380px] bg-white text-black rounded-2xl shadow-[0_20px_40px_rgba(255,255,255,0.15)] p-4 flex justify-between items-center z-40 transition-transform active:scale-95 hidden border border-gray-200">
+        <div class="flex items-center bg-black/10 px-3 py-1 rounded-lg backdrop-blur-sm"><i data-lucide="shopping-bag" class="w-5 h-5 mr-2"></i><span id="cart-count" class="font-bold">0</span></div>
+        <span class="font-extrabold text-lg">View Cart</span><span id="cart-total" class="font-bold text-lg">0.000 BHD</span>
+    </button>
+
+    <div id="cart-modal" class="fixed inset-x-0 bottom-0 z-50 w-full max-w-md mx-auto h-[85vh] bg-white rounded-t-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.2)] modal-closed flex flex-col">
+        <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-white rounded-t-[2rem]"><h2 class="text-xl font-extrabold text-gray-900">Your Bag</h2><button onclick="toggleCart()" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition"><i data-lucide="x" class="w-5 h-5 text-gray-600"></i></button></div>
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50"></div>
+        <div class="p-5 bg-white border-t border-gray-100 pb-8">
+            <div class="flex justify-between items-center mb-4"><span class="text-gray-500 font-medium">Total Amount</span><span id="modal-total" class="text-2xl font-extrabold text-gray-900">0.000 BHD</span></div>
+            <button onclick="openWhatsAppModal()" class="w-full bg-black text-white font-bold text-lg py-4 rounded-xl shadow-lg transition active:scale-95">Checkout Details</button>
+        </div>
+    </div>
+
+    <div id="whatsapp-modal" class="fixed inset-x-0 bottom-0 z-[60] w-full max-w-md mx-auto bg-white rounded-t-[2rem] shadow-[0_-10px_50px_rgba(0,0,0,0.3)] modal-closed flex flex-col pb-8">
+        <div class="p-6 text-center border-b border-gray-100"><div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="smartphone" class="w-8 h-8 text-green-500"></i></div><h2 class="text-2xl font-extrabold text-gray-900">Send Demo Order</h2><p class="text-sm text-gray-500 mt-2">Experience how your customers will send their orders directly to WhatsApp.</p></div>
+        <div class="p-6 bg-gray-50"><div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm mb-6"><p class="text-xs text-gray-400 font-bold uppercase mb-2">Order Preview</p><div id="wa-preview" class="text-sm text-gray-700 font-mono whitespace-pre-line leading-relaxed h-32 overflow-y-auto"></div></div><button onclick="triggerWhatsAppRedirect()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-lg py-4 rounded-xl shadow-lg flex justify-center items-center transition active:scale-95"><i data-lucide="send" class="w-5 h-5 mr-2"></i>Send to WhatsApp</button></div>
+    </div>
+    <div id="modal-backdrop" onclick="closeAllModals()" class="fixed inset-0 bg-black/60 z-[35] hidden backdrop-blur-sm transition-opacity"></div>
+
+    <script>
+        const db = [
+            { id: 'r1', cat: "New Arrivals", catId: 0, name: "Heavyweight Hoodie", price: 22.000, img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=500&q=80" },
+            { id: 'r2', cat: "New Arrivals", catId: 0, name: "Canvas Tote", price: 12.000, img: "https://images.unsplash.com/photo-1597488055627-2c9cc7e436f5?auto=format&fit=crop&w=500&q=80" },
+            { id: 'r3', cat: "Outerwear", catId: 1, name: "Vintage Denim Jacket", price: 35.000, img: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?auto=format&fit=crop&w=500&q=80" },
+            { id: 'r4', cat: "Outerwear", catId: 1, name: "Minimalist Trench Coat", price: 45.000, img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=500&q=80" }
+        ];
+        let cart = {};
+
+        function renderProducts() {
+            let html = '';
+            [0, 1].forEach(catIdx => {
+                const items = db.filter(i => i.catId === catIdx);
+                if(items.length === 0) return;
+                html += `<h2 class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-8 mb-4">${items[0].cat}</h2><div class="space-y-6">`;
+                items.forEach(item => {
+                    const qty = cart[item.id] || 0;
+                    const btn = qty > 0 ? `<div class="flex items-center bg-white/20 backdrop-blur-md rounded-full p-1 border border-white/30"><button onclick="updateCart('${item.id}', -1)" class="w-10 h-10 flex items-center justify-center bg-black rounded-full shadow-sm text-white font-bold text-lg">-</button><span class="w-8 text-center font-bold text-sm text-white">${qty}</span><button onclick="updateCart('${item.id}', 1)" class="w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-sm text-black font-bold text-lg">+</button></div>` : `<button onclick="updateCart('${item.id}', 1)" class="w-12 h-12 rounded-full flex items-center justify-center bg-white text-black shadow-2xl transition transform active:scale-90 hover:bg-gray-200"><i data-lucide="shopping-bag" class="w-5 h-5"></i></button>`;
+                    html += `<div class="relative rounded-3xl overflow-hidden bg-gray-900 shadow-2xl h-96 group"><img src="${item.img}" alt="${item.name}" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-500"><div class="absolute inset-0 retail-gradient"></div><div class="absolute bottom-0 left-0 right-0 p-6 flex justify-between items-end"><div class="w-2/3"><h3 class="font-black text-white text-xl leading-tight uppercase tracking-tight">${item.name}</h3><span class="font-bold text-lg text-white block mt-1">${item.price.toFixed(3)} BHD</span></div><div>${btn}</div></div></div>`;
+                });
+                html += `</div>`;
+            });
+            document.getElementById('products').innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function updateCart(id, change) {
+            cart[id] = (cart[id] || 0) + change;
+            if (cart[id] <= 0) delete cart[id];
+            renderProducts(); updateCartUI();
+        }
+
+        function updateCartUI() {
+            let totalItems = 0; let totalPrice = 0; let cartHtml = '';
+            Object.entries(cart).forEach(([id, qty]) => {
+                const item = db.find(i => i.id === id);
+                totalItems += qty; totalPrice += item.price * qty;
+                cartHtml += `<div class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-sm"><div class="flex items-center gap-3"><img src="${item.img}" alt="${item.name}" class="w-12 h-12 rounded-lg object-cover bg-gray-100"><div><h4 class="font-bold text-sm text-gray-900">${item.name}</h4><p class="text-xs text-gray-500">${item.price.toFixed(3)} BHD x ${qty}</p></div></div><div class="font-extrabold text-sm text-gray-900">${(item.price * qty).toFixed(3)}</div></div>`;
+            });
+            
+            const fab = document.getElementById('fab-cart');
+            if (totalItems > 0) {
+                fab.classList.remove('hidden'); document.getElementById('cart-count').innerText = totalItems;
+                document.getElementById('cart-total').innerText = totalPrice.toFixed(3) + ' BHD';
+                document.getElementById('modal-total').innerText = totalPrice.toFixed(3) + ' BHD';
+            } else {
+                fab.classList.add('hidden');
+                if(!document.getElementById('cart-modal').classList.contains('modal-closed')) toggleCart();
+            }
+            document.getElementById('cart-items-container').innerHTML = cartHtml;
+        }
+
+        function toggleCart() {
+            const m = document.getElementById('cart-modal'); const b = document.getElementById('modal-backdrop');
+            m.classList.toggle('modal-closed'); m.classList.toggle('modal-open'); b.classList.toggle('hidden');
+        }
+        function closeAllModals() {
+            document.getElementById('cart-modal').classList.replace('modal-open', 'modal-closed');
+            document.getElementById('whatsapp-modal').classList.replace('modal-open', 'modal-closed');
+            document.getElementById('modal-backdrop').classList.add('hidden');
+        }
+
+        let waText = "";
+        function openWhatsAppModal() {
+            document.getElementById('cart-modal').classList.replace('modal-open', 'modal-closed');
+            document.getElementById('whatsapp-modal').classList.replace('modal-closed', 'modal-open');
+            let text = `*New Order - Urban Threads*\n\n`; let total = 0;
+            Object.entries(cart).forEach(([id, qty]) => {
+                const item = db.find(i => i.id === id); text += `${qty}x ${item.name} - ${(item.price * qty).toFixed(3)} BHD\n`; total += item.price * qty;
+            });
+            text += `\n*Total: ${total.toFixed(3)} BHD*`;
+            waText = encodeURIComponent(text); document.getElementById('wa-preview').innerText = text;
+        }
+        function triggerWhatsAppRedirect() { window.open(`https://wa.me/?text=${waText}`, '_blank'); closeAllModals(); }
+
+        window.onload = () => { lucide.createIcons(); renderProducts(); };
+    </script>
+
+    <section class="max-w-md mx-auto px-5 pb-10">
+      <div class="bg-white rounded-[1.75rem] border border-gray-100 shadow-sm p-6">
+        <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">Free Restaurant Tools</h2>
+        <p class="mt-3 text-sm leading-7 text-gray-600">Vendora provides restaurant calculators and tools to help restaurants, cafes, and food trucks manage pricing, profit, and daily operations.</p>
+        <p class="mt-3 text-sm leading-7 text-gray-600">Use our free tools to calculate food cost, menu price, delivery commission, and generate invoices quickly.</p>
+      </div>
+    </section>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

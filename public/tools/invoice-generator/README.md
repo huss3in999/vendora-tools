@@ -1,0 +1,105 @@
+# Invoice Generator Map
+
+This tool is powered by:
+
+- [index.html](C:/Users/Hussain%20Alyaqoob/Desktop/new/new%20try/New%20folder/Vendora%20Landing%20Page/tools/invoice-generator/index.html)
+- [styles.css](C:/Users/Hussain%20Alyaqoob/Desktop/new/new%20try/New%20folder/Vendora%20Landing%20Page/tools/invoice-generator/styles.css)
+- [app.js](C:/Users/Hussain%20Alyaqoob/Desktop/new/new%20try/New%20folder/Vendora%20Landing%20Page/tools/invoice-generator/app.js)
+
+## Ownership Map
+
+- Head SEO and analytics:
+  - page title, meta tags, canonical, Open Graph, schema, Google Analytics
+  - these stay in [index.html](C:/Users/Hussain%20Alyaqoob/Desktop/new/new%20try/New%20folder/Vendora%20Landing%20Page/tools/invoice-generator/index.html)
+- App shell and menus:
+  - top bar, mega menus, mobile controls, support button, toast shell, invoice paper markup, SEO content, and schema blocks stay in [index.html](C:/Users/Hussain%20Alyaqoob/Desktop/new/new%20try/New%20folder/Vendora%20Landing%20Page/tools/invoice-generator/index.html)
+- Style system:
+  - all invoice, menu, PDF, SEO, and mobile CSS live in [styles.css](C:/Users/Hussain%20Alyaqoob/Desktop/new/new%20try/New%20folder/Vendora%20Landing%20Page/tools/invoice-generator/styles.css)
+- Invoice runtime:
+  - all interactive invoice logic lives in [app.js](C:/Users/Hussain%20Alyaqoob/Desktop/new/new%20try/New%20folder/Vendora%20Landing%20Page/tools/invoice-generator/app.js)
+- Core state and constants:
+  - `DRAFT_KEY`
+  - `LIB_KEYS`
+  - `state`
+  - `worldCurrencies`
+- Shared utilities:
+  - `genId()`
+  - `el(id)`
+  - `val(id, v)`
+  - `showToast(msg)`
+  - `formatMoney(num)`
+  - `autoResize(ta)`
+  - `escapeHTML(str)`
+  - `hexToRgba(hex, alpha)`
+- UI and layout controls:
+  - `toggleMenu(menuId)`
+  - `toggleVis(id, show)`
+  - `toggleCol(cls, show)`
+  - `rebalanceLayout()`
+  - `applyTheme()`
+  - `applyPageFit()`
+  - `applyContentDensity()`
+  - `updatePageEstimate()`
+  - `schedulePageEstimate()`
+  - `updateSeparatePreviews()`
+  - `applySectionModes()`
+  - `updateAccent()`
+  - `updateBillHeadingColor()`
+  - `applyDuePreset()`
+  - `syncControlPanel()`
+  - `bindControlPanel()`
+  - `applyBulkValue(type)`
+- Currency and formatting:
+  - `initCurrencies()`
+  - `handleCurrencyChange()`
+- Line items and totals:
+  - `lineAmount(item)`
+  - `renderItems()`
+  - `updateItemAmountCell(id)`
+  - `scheduleTotalsUpdate()`
+  - `schedulePanelSync()`
+  - `scheduleItemsRender()`
+  - `updItm(id, f, v)`
+  - `addItemRow()`
+  - `delItm(id)`
+  - `updateTotals()`
+- Logo and stamp handling:
+  - `handleImageUpload(e, type)`
+  - `renderImg(imgId, lblId, src)`
+- Draft persistence:
+  - `buildDraft()`
+  - `autoSave()`
+  - `loadDraft()`
+- Saved libraries:
+  - `libSave(type)`
+  - `libLoad(type, id)`
+  - `libEdit(type, id)`
+  - `libDel(type, id)`
+  - `saveRecentInvoice()`
+  - `duplicateCurrentInvoice()`
+  - `copyInvoiceSummary()`
+  - `copyPaymentDetails()`
+  - `clearAllBrowserData()`
+  - `fillExample()`
+  - `renderLibs()`
+- PDF and print pipeline:
+  - `buildPdfClone()`
+  - `cleanupPrintClone()`
+  - `printInvoice()`
+  - `downloadNativePDF()`
+- Init flow:
+  - bottom-of-file initialization plus global seamless-input listener
+
+## Editing Rules
+
+- Treat these files as the source of truth for this tool:
+  - [index.html](C:/Users/Hussain%20Alyaqoob/Desktop/new/new%20try/New%20folder/Vendora%20Landing%20Page/tools/invoice-generator/index.html) for structure, SEO, analytics, schema, and export shell markup
+  - [styles.css](C:/Users/Hussain%20Alyaqoob/Desktop/new/new%20try/New%20folder/Vendora%20Landing%20Page/tools/invoice-generator/styles.css) for presentation, PDF styles, and responsive behavior
+  - [app.js](C:/Users/Hussain%20Alyaqoob/Desktop/new/new%20try/New%20folder/Vendora%20Landing%20Page/tools/invoice-generator/app.js) for invoice state, calculations, libraries, PDF logic, and event wiring
+- Preserve the browser-only workflow, local draft saving, saved libraries, themes, PDF export, and mobile behavior unless the change explicitly replaces them with a better working version.
+- Prefer changing the smallest responsible block:
+  - HTML structure
+  - CSS section
+  - named JS function
+- If a feature changes ownership, a new subsystem is added, or an existing function’s responsibility changes significantly, update this README in the same change.
+- If a change affects connected surfaces like the landing page tools list, shared WhatsApp support, or analytics setup, update those files in the same change.

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Beauty Demo | Vendora Pro</title>
+    <meta name="description" content="Preview a beauty store demo menu built with Vendora, including product browsing, cart flow, and a mobile-friendly customer experience.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://getvendora.net/demo/demo-beauty/">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-DFY197R2MS');
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] } } } }</script>
+    <style>.no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; } .modal-open { transform: translateY(0%); } .modal-closed { transform: translateY(100%); } #cart-modal, #whatsapp-modal { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }</style>
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);
+    t.async=1;
+    t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+
+</head>
+<body class="font-sans antialiased selection:bg-pink-500 selection:text-white pb-24 transition-colors duration-300 bg-pink-50/30">
+    <div id="app-root" class="max-w-md mx-auto min-h-screen relative overflow-hidden bg-pink-50/30 shadow-2xl transition-all duration-300">
+        <!-- Minimal Header -->
+        <div class="bg-white pt-12 pb-6 px-6 text-center border-b border-gray-100 shadow-sm relative z-10">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full p-1 border-2 border-pink-200">
+                <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=800&q=80" class="w-full h-full rounded-full object-cover" alt="Lumina Beauty store logo">
+            </div>
+            <h1 class="text-3xl font-bold text-gray-900 tracking-wide font-serif">Lumina Beauty</h1>
+            <p class="text-pink-500 text-xs tracking-widest uppercase mt-2 font-bold">Premium Cosmetics & Skincare</p>
+        </div>
+        
+        <!-- Categories -->
+        <div class="sticky top-0 z-30 bg-white/90 backdrop-blur-md py-4 px-6 flex overflow-x-auto no-scrollbar space-x-6 border-b border-gray-100" id="cat-container">
+            <a href="#cat-0" class="whitespace-nowrap pb-1 border-b-2 font-semibold text-sm transition text-pink-600 border-pink-500 uppercase tracking-wider" onclick="updateActiveTabLine(this)">Face</a>
+            <a href="#cat-1" class="whitespace-nowrap pb-1 border-b-2 font-semibold text-sm transition text-gray-400 border-transparent uppercase tracking-wider" onclick="updateActiveTabLine(this)">Lips</a>
+            <a href="#cat-2" class="whitespace-nowrap pb-1 border-b-2 font-semibold text-sm transition text-gray-400 border-transparent uppercase tracking-wider" onclick="updateActiveTabLine(this)">Skincare</a>
+        </div>
+
+        <!-- Products -->
+        <div class="p-5 space-y-10" id="products"></div>
+    </div>
+
+    <!-- Floating Cart & Modals -->
+    <button onclick="toggleCart()" id="fab-cart" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 w-[90%] max-w-[380px] bg-pink-500 text-white rounded-2xl shadow-2xl p-4 flex justify-between items-center z-40 transition-transform active:scale-95 hidden">
+        <div class="flex items-center bg-black/20 px-3 py-1 rounded-lg backdrop-blur-sm"><i data-lucide="shopping-bag" class="w-5 h-5 mr-2"></i><span id="cart-count" class="font-bold">0</span></div>
+        <span class="font-extrabold text-lg">View Bag</span><span id="cart-total" class="font-bold text-lg">0.000 BHD</span>
+    </button>
+
+    <div id="cart-modal" class="fixed inset-x-0 bottom-0 z-50 w-full max-w-md mx-auto h-[85vh] bg-white rounded-t-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.2)] modal-closed flex flex-col">
+        <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-white rounded-t-[2rem]"><h2 class="text-xl font-extrabold text-gray-900 font-serif">Your Bag</h2><button onclick="toggleCart()" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition"><i data-lucide="x" class="w-5 h-5 text-gray-600"></i></button></div>
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50"></div>
+        <div class="p-5 bg-white border-t border-gray-100 pb-8">
+            <div class="flex justify-between items-center mb-4"><span class="text-gray-500 font-medium">Total Amount</span><span id="modal-total" class="text-2xl font-extrabold text-gray-900">0.000 BHD</span></div>
+            <button onclick="openWhatsAppModal()" class="w-full bg-pink-500 text-white font-bold text-lg py-4 rounded-xl shadow-lg transition active:scale-95">Checkout Details</button>
+        </div>
+    </div>
+
+    <div id="whatsapp-modal" class="fixed inset-x-0 bottom-0 z-[60] w-full max-w-md mx-auto bg-white rounded-t-[2rem] shadow-[0_-10px_50px_rgba(0,0,0,0.3)] modal-closed flex flex-col pb-8">
+        <div class="p-6 text-center border-b border-gray-100"><div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="smartphone" class="w-8 h-8 text-green-500"></i></div><h2 class="text-2xl font-extrabold text-gray-900">Send Demo Order</h2><p class="text-sm text-gray-500 mt-2">Experience how your customers will send their orders directly to WhatsApp.</p></div>
+        <div class="p-6 bg-gray-50"><div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm mb-6"><p class="text-xs text-gray-400 font-bold uppercase mb-2">Order Preview</p><div id="wa-preview" class="text-sm text-gray-700 font-mono whitespace-pre-line leading-relaxed h-32 overflow-y-auto"></div></div><button onclick="triggerWhatsAppRedirect()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-lg py-4 rounded-xl shadow-lg flex justify-center items-center transition active:scale-95"><i data-lucide="send" class="w-5 h-5 mr-2"></i>Send to WhatsApp</button></div>
+    </div>
+    <div id="modal-backdrop" onclick="closeAllModals()" class="fixed inset-0 bg-black/60 z-[35] hidden backdrop-blur-sm transition-opacity"></div>
+
+    <script>
+        const db = [
+            { id: 'b1', cat: "Face", catId: 0, name: "Flawless Liquid Foundation", price: 18.500, img: "https://images.unsplash.com/photo-1629198688000-71f23e745b6e?auto=format&fit=crop&w=400&q=80" },
+            { id: 'b2', cat: "Face", catId: 0, name: "Luminous Blush Powder", price: 12.000, img: "https://images.unsplash.com/photo-1515688594390-b649af70d282?auto=format&fit=crop&w=400&q=80" },
+            { id: 'b3', cat: "Lips", catId: 1, name: "Velvet Matte Lipstick", price: 9.500, img: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=400&q=80" },
+            { id: 'b4', cat: "Lips", catId: 1, name: "Hydrating Lip Gloss", price: 7.000, img: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=400&q=80" },
+            { id: 'b5', cat: "Skincare", catId: 2, name: "Vitamin C Glow Serum", price: 24.000, img: "https://images.unsplash.com/photo-1608248593842-8021c6479a02?auto=format&fit=crop&w=400&q=80" }
+        ];
+        let cart = {};
+
+        function renderProducts() {
+            let html = '';
+            [0, 1, 2].forEach(catIdx => {
+                const items = db.filter(i => i.catId === catIdx);
+                if(items.length === 0) return;
+                html += `<div id="cat-${catIdx}" class="scroll-mt-24"><div class="flex items-center mb-6"><div class="h-px bg-gray-200 flex-1"></div><h2 class="text-lg font-bold text-gray-800 mx-4 font-serif italic">${items[0].cat}</h2><div class="h-px bg-gray-200 flex-1"></div></div><div class="grid grid-cols-2 gap-4">`;
+                items.forEach(item => {
+                    const qty = cart[item.id] || 0;
+                    const btn = qty > 0 ? `<div class="flex items-center w-full justify-between bg-pink-50 rounded-lg p-1 border border-pink-100"><button onclick="updateCart('${item.id}', -1)" class="w-8 h-8 flex items-center justify-center bg-white rounded-md shadow-sm text-pink-600 font-bold">-</button><span class="text-center font-bold text-sm text-pink-800">${qty}</span><button onclick="updateCart('${item.id}', 1)" class="w-8 h-8 flex items-center justify-center bg-pink-500 rounded-md shadow-sm text-white font-bold">+</button></div>` : `<button onclick="updateCart('${item.id}', 1)" class="w-full py-2.5 rounded-lg border border-pink-200 text-pink-600 font-bold text-xs uppercase tracking-wider hover:bg-pink-50 transition active:scale-95">Add to Bag</button>`;
+                    html += `<div class="bg-white rounded-2xl shadow-sm border border-gray-50 overflow-hidden flex flex-col group"><div class="h-40 w-full relative overflow-hidden bg-gray-100"><img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110"></div><div class="p-4 flex-1 flex flex-col justify-between"><div><h3 class="font-bold text-gray-900 text-sm leading-snug font-serif">${item.name}</h3><span class="font-bold text-sm text-pink-500 block mt-2">${item.price.toFixed(3)} BHD</span></div><div class="mt-4 flex justify-center">${btn}</div></div></div>`;
+                });
+                html += `</div></div>`;
+            });
+            document.getElementById('products').innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function updateActiveTabLine(el) {
+            Array.from(el.parentElement.children).forEach(c => c.className = "whitespace-nowrap pb-1 border-b-2 font-semibold text-sm transition text-gray-400 border-transparent uppercase tracking-wider");
+            el.className = `whitespace-nowrap pb-1 border-b-2 font-semibold text-sm transition text-pink-600 border-pink-500 uppercase tracking-wider`;
+        }
+
+        function updateCart(id, change) {
+            cart[id] = (cart[id] || 0) + change;
+            if (cart[id] <= 0) delete cart[id];
+            renderProducts(); updateCartUI();
+        }
+
+        function updateCartUI() {
+            let totalItems = 0; let totalPrice = 0; let cartHtml = '';
+            Object.entries(cart).forEach(([id, qty]) => {
+                const item = db.find(i => i.id === id);
+                totalItems += qty; totalPrice += item.price * qty;
+                cartHtml += `<div class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-sm"><div class="flex items-center gap-3"><img src="${item.img}" alt="${item.name}" class="w-12 h-12 rounded-lg object-cover bg-gray-100"><div><h4 class="font-bold text-sm text-gray-900">${item.name}</h4><p class="text-xs text-gray-500">${item.price.toFixed(3)} BHD x ${qty}</p></div></div><div class="font-extrabold text-sm text-gray-900">${(item.price * qty).toFixed(3)}</div></div>`;
+            });
+            
+            const fab = document.getElementById('fab-cart');
+            if (totalItems > 0) {
+                fab.classList.remove('hidden'); document.getElementById('cart-count').innerText = totalItems;
+                document.getElementById('cart-total').innerText = totalPrice.toFixed(3) + ' BHD';
+                document.getElementById('modal-total').innerText = totalPrice.toFixed(3) + ' BHD';
+            } else {
+                fab.classList.add('hidden');
+                if(!document.getElementById('cart-modal').classList.contains('modal-closed')) toggleCart();
+            }
+            document.getElementById('cart-items-container').innerHTML = cartHtml;
+        }
+
+        function toggleCart() {
+            const m = document.getElementById('cart-modal'); const b = document.getElementById('modal-backdrop');
+            m.classList.toggle('modal-closed'); m.classList.toggle('modal-open'); b.classList.toggle('hidden');
+        }
+        function closeAllModals() {
+            document.getElementById('cart-modal').classList.replace('modal-open', 'modal-closed');
+            document.getElementById('whatsapp-modal').classList.replace('modal-open', 'modal-closed');
+            document.getElementById('modal-backdrop').classList.add('hidden');
+        }
+
+        let waText = "";
+        function openWhatsAppModal() {
+            document.getElementById('cart-modal').classList.replace('modal-open', 'modal-closed');
+            document.getElementById('whatsapp-modal').classList.replace('modal-closed', 'modal-open');
+            let text = `*New Order - Lumina Beauty*\n\n`; let total = 0;
+            Object.entries(cart).forEach(([id, qty]) => {
+                const item = db.find(i => i.id === id); text += `${qty}x ${item.name} - ${(item.price * qty).toFixed(3)} BHD\n`; total += item.price * qty;
+            });
+            text += `\n*Total: ${total.toFixed(3)} BHD*`;
+            waText = encodeURIComponent(text); document.getElementById('wa-preview').innerText = text;
+        }
+        function triggerWhatsAppRedirect() { window.open(`https://wa.me/?text=${waText}`, '_blank'); closeAllModals(); }
+
+        window.onload = () => { lucide.createIcons(); renderProducts(); };
+    </script>
+
+    <section class="max-w-md mx-auto px-5 pb-10">
+      <div class="bg-white rounded-[1.75rem] border border-gray-100 shadow-sm p-6">
+        <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">Free Restaurant Tools</h2>
+        <p class="mt-3 text-sm leading-7 text-gray-600">Vendora provides restaurant calculators and tools to help restaurants, cafes, and food trucks manage pricing, profit, and daily operations.</p>
+        <p class="mt-3 text-sm leading-7 text-gray-600">Use our free tools to calculate food cost, menu price, delivery commission, and generate invoices quickly.</p>
+      </div>
+    </section>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

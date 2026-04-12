@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Sales Summary Tool | Restaurant Revenue, AOV &amp; Sales Mix</title>
+  <meta name="description" content="Track daily restaurant sales: revenue, profit, average order value, discounts, refunds, and category mix. Free daily sales summary for owners and managers.">
+  <meta name="keywords" content="daily sales summary, restaurant daily sales summary, restaurant sales tracking, daily sales report, average order value, sales mix restaurant">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/daily-sales-summary/">
+  <meta property="og:title" content="Daily Sales Summary | Restaurant Sales Tracking | Vendora">
+  <meta property="og:description" content="End-of-day revenue, AOV, and mix in one view. Free tool for restaurants and food businesses.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/daily-sales-summary/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Daily Sales Summary Tool | Restaurant Revenue, AOV and Sales Mix",
+  "url": "https://getvendora.net/tools/daily-sales-summary/",
+  "description": "Track daily restaurant sales: revenue, profit, average order value, discounts, refunds, and category mix. Free daily sales summary for owners and managers.",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Vendora",
+    "url": "https://getvendora.net/"
+  }
+}
+</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vendora Daily Sales Summary",
+    "description": "Free restaurant daily sales snapshot: net sales, average order value, gross profit, operating estimate, and channel mix from simple inputs.",
+    "url": "https://getvendora.net/tools/daily-sales-summary/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "What is a daily sales summary in a restaurant?", "acceptedAnswer": {"@type": "Answer", "text": "A daily sales summary gives restaurant owners a quick view of orders, sales, costs, and profit for one day so they can review performance without a full reporting system."}},
+      {"@type": "Question", "name": "Why is average order value important?", "acceptedAnswer": {"@type": "Answer", "text": "Average order value helps you see how much each order is worth on average, which can guide menu design, upsells, and promotion decisions."}},
+      {"@type": "Question", "name": "Should discounts and refunds be included?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Discounts and refunds reduce the sales you actually keep, so including them gives a more realistic net sales and profit view."}},
+      {"@type": "Question", "name": "Can I use this for cafes and food trucks?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. This tool works for restaurants, cafes, food trucks, takeaways, cloud kitchens, bakeries, caterers, and juice shops."}},
+      {"@type": "Question", "name": "Does this replace a POS report?", "acceptedAnswer": {"@type": "Answer", "text": "No. This tool is a lightweight daily summary and planning helper. It can complement a POS report, but it does not replace a full operating system report."}}
+    ]
+  }
+  </script>
+  <style>
+    :root {
+      --bg: #081324; --bg-soft: #0b1a30; --panel: rgba(12, 27, 49, 0.92); --panel-strong: rgba(16, 33, 58, 0.98);
+      --text: #f4f7f6; --muted: #9fb1c9; --line: rgba(255, 255, 255, 0.09); --brand: #00d084; --brand-dark: #00b370;
+      --danger: #ff6b6b; --warning: #ffc857; --shadow: 0 30px 70px rgba(0, 0, 0, 0.28); --radius-xl: 28px; --radius-lg: 22px; --radius-md: 16px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Inter, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: radial-gradient(circle at 10% 10%, rgba(0, 208, 132, 0.16), transparent 25%), radial-gradient(circle at 90% 20%, rgba(59, 130, 246, 0.18), transparent 28%), linear-gradient(180deg, var(--bg-soft) 0%, var(--bg) 100%); color: var(--text); min-height: 100vh; }
+    a { color: inherit; }
+    .page-shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 28px 0 56px; }
+    .card { border: 1px solid var(--line); border-radius: var(--radius-xl); background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02)), var(--panel); box-shadow: var(--shadow); }
+    .hero { position: relative; overflow: hidden; padding: 40px; border: 1px solid var(--line); border-radius: var(--radius-xl); background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)), rgba(8, 19, 36, 0.85); box-shadow: var(--shadow); }
+    .hero::after { content: ""; position: absolute; inset: auto -10% -45% auto; width: 320px; height: 320px; border-radius: 50%; background: rgba(0, 208, 132, 0.14); filter: blur(80px); pointer-events: none; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 16px; padding: 10px 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; background: rgba(255,255,255,0.04); color: var(--brand); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+    .hero h1 { max-width: 900px; margin: 0; font-size: clamp(2.4rem, 6vw, 4.8rem); line-height: 1.02; letter-spacing: -0.03em; }
+    .hero-copy { max-width: 820px; margin: 18px 0 0; color: var(--muted); font-size: 1.08rem; line-height: 1.8; }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+    .hero-tag { padding: 10px 14px; border: 1px solid rgba(255,255,255,0.08); border-radius: 999px; background: rgba(255,255,255,0.04); color: #d7e0ec; font-size: 0.92rem; }
+    .tool-layout { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); gap: 24px; margin-top: 24px; }
+    .input-card, .results-card, .faq, .cta { padding: 28px; }
+    .section-title { margin: 0; font-size: 1.45rem; letter-spacing: -0.02em; }
+    .section-copy { margin: 10px 0 0; color: var(--muted); line-height: 1.7; font-size: 0.98rem; }
+    .field-section { margin-top: 24px; padding: 18px; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.07); background: rgba(255,255,255,0.025); }
+    .field-section:first-of-type { margin-top: 0; }
+    .field-section h3 { margin: 0; font-size: 1rem; letter-spacing: -0.02em; }
+    .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
+    .field { display: grid; gap: 8px; }
+    label { color: #e8eef6; font-size: 0.95rem; font-weight: 700; }
+    input, select, button { font: inherit; }
+    input, select { width: 100%; min-height: 56px; appearance: none; padding: 14px 16px; border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-md); background: rgba(255,255,255,0.04); color: var(--text); transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease; }
+    input::placeholder { color: #7f93ad; }
+    input:focus, select:focus { outline: none; border-color: rgba(0,208,132,0.5); box-shadow: 0 0 0 4px rgba(0,208,132,0.12); background: rgba(255,255,255,0.06); }
+    .select-wrap { position: relative; }
+    .select-wrap::after { content: "v"; position: absolute; top: 50%; right: 16px; transform: translateY(-50%); color: var(--muted); font-size: 0.9rem; pointer-events: none; }
+    select option, select optgroup { background: #0b1a30; color: #f4f7f6; }
+    .input-hint, .helper-note { color: #7f93ad; font-size: 0.84rem; line-height: 1.5; }
+    .validation { margin-top: 18px; padding: 14px 16px; border: 1px solid rgba(255,200,87,0.22); border-radius: var(--radius-md); background: rgba(255,200,87,0.08); color: #ffe7a0; font-size: 0.95rem; line-height: 1.6; display: none; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 20px; border-radius: 999px; border: none; cursor: pointer; transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease; text-decoration: none; font-weight: 700; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--brand); color: #081324; }
+    .btn-primary:hover { background: var(--brand-dark); }
+    .btn-secondary, .btn-ghost { background: rgba(255,255,255,0.04); color: var(--text); border: 1px solid rgba(255,255,255,0.08); }
+    .status-banner { padding: 20px; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); }
+    .status-label { display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px; border-radius: 999px; background: rgba(0,208,132,0.14); color: var(--brand); font-size: 0.82rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    .status-label.warning { background: rgba(255,200,87,0.14); color: var(--warning); }
+    .status-label.danger { background: rgba(255,107,107,0.14); color: #ffb0b0; }
+    .status-score { margin-top: 14px; font-size: clamp(2rem, 6vw, 3rem); font-weight: 900; line-height: 1; letter-spacing: -0.04em; }
+    .status-text, .summary-note { margin: 10px 0 0; color: var(--muted); line-height: 1.7; font-size: 0.96rem; }
+    .result-grid, .faq-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .result-grid { margin-top: 16px; }
+    .metric-card, .faq-item { padding: 18px; border-radius: var(--radius-lg); background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.07); }
+    .metric-card.featured { background: linear-gradient(180deg, rgba(0,208,132,0.08), rgba(255,255,255,0.03)); border-color: rgba(0,208,132,0.22); }
+    .metric-label { display: block; color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+    .metric-value { display: block; margin-top: 10px; font-size: 1.35rem; line-height: 1.2; font-weight: 900; letter-spacing: -0.03em; }
+    .metric-value.negative { color: #ffb0b0; }
+    .metric-value.warning { color: var(--warning); }
+    .metric-value.placeholder { color: #bfd0e3; opacity: 0.72; }
+    .cta { margin-top: 24px; border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-xl); background: linear-gradient(135deg, rgba(0,208,132,0.12), rgba(59,130,246,0.06)), var(--panel-strong); box-shadow: var(--shadow); }
+    .cta-list { display: flex; flex-wrap: wrap; gap: 10px; padding: 0; margin: 18px 0 24px; list-style: none; }
+    .cta-list li { padding: 10px 14px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: #d7e0ec; font-size: 0.92rem; }
+    .faq { margin-top: 24px; }
+    .faq-grid { margin-top: 20px; }
+    .faq-item h3 { margin: 0; font-size: 1.08rem; letter-spacing: -0.02em; }
+    .faq-item p { margin: 10px 0 0; color: var(--muted); line-height: 1.7; }
+    .sticky-cta, .whatsapp-support-fab { position: fixed; right: 18px; z-index: 20; text-decoration: none; }
+    .sticky-cta { bottom: 18px; }
+    .whatsapp-support-fab { bottom: 82px; display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 18px; border-radius: 999px; background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid rgba(255,255,255,0.08); box-shadow: var(--shadow); }
+    @media (max-width: 940px) { .tool-layout { grid-template-columns: 1fr; } }
+    @media (max-width: 720px) { .page-shell { width: min(100% - 20px, 1180px); } .hero, .input-card, .results-card, .faq, .cta { padding: 22px; } .field-grid, .result-grid, .faq-grid { grid-template-columns: 1fr; } .actions .btn { width: 100%; } .sticky-cta, .whatsapp-support-fab { left: 10px; right: 10px; justify-content: center; } .whatsapp-support-fab { bottom: 86px; } }
+  </style>
+  <link rel="stylesheet" href="../tool-system.css">
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);
+    t.async=1;
+    t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Vendora Free Tool</p>
+      <h1>Daily Sales Summary for Restaurants</h1>
+      <p class="hero-copy">Review daily sales, profit, order value, and channel mix in one simple summary using the numbers you already track each day.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Daily net sales</span>
+        <span class="hero-tag">Average order value</span>
+        <span class="hero-tag">Sales mix overview</span>
+      </div>
+      <p class="helper-note" style="margin:18px 0 0; max-width:760px;">Built for restaurants, cafes, food trucks, takeaways, cloud kitchens, bakeries, and similar food businesses that want a quick daily view without a full reporting setup.</p>
+    </section>
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calculator-heading">
+        <h2 class="section-title" id="calculator-heading">Enter your daily numbers</h2>
+        <p class="section-copy">Start with sales and orders first, then add costs and optional sales mix details for a fuller day-end summary.</p>
+
+        <div class="field-section">
+          <h3>Revenue inputs</h3>
+          <p class="section-copy">These are the main numbers used to calculate net sales and average order value.</p>
+          <div class="field-grid">
+            <div class="field">
+              <label for="currency">Currency</label>
+              <div class="select-wrap"><select id="currency" aria-label="Currency"></select></div>
+              <span class="input-hint">Choose the currency you want to use for all money outputs below.</span>
+            </div>
+            <div class="field">
+              <label for="totalOrders">Total Orders</label>
+              <input id="totalOrders" type="number" min="0" step="1" placeholder="125" inputmode="numeric">
+              <span class="input-hint">Use the total number of completed orders for the day so average order value stays realistic.</span>
+            </div>
+            <div class="field">
+              <label for="totalSales">Total Sales Revenue</label>
+              <input id="totalSales" type="number" min="0" step="0.01" placeholder="1850.00" inputmode="decimal">
+              <span class="input-hint">Enter your total daily sales before subtracting discounts and refunds.</span>
+            </div>
+            <div class="field">
+              <label for="cogs">Total Cost of Goods Sold</label>
+              <input id="cogs" type="number" min="0" step="0.01" placeholder="640.00" inputmode="decimal">
+              <span class="input-hint">Add the total direct food and drink cost for the day, based on what was sold.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-section">
+          <h3>Cost and adjustment inputs</h3>
+          <p class="section-copy">Use these fields to make net sales and profit more realistic for daily review.</p>
+          <div class="field-grid">
+            <div class="field"><label for="discounts">Discounts Given</label><input id="discounts" type="number" min="0" step="0.01" placeholder="60.00" inputmode="decimal"><span class="input-hint">Optional. Include coupons, offers, or manual discounts so net sales stay realistic.</span></div>
+            <div class="field"><label for="refunds">Refunds</label><input id="refunds" type="number" min="0" step="0.01" placeholder="25.00" inputmode="decimal"><span class="input-hint">Optional. Refunds should reduce the sales you actually keep for the day.</span></div>
+            <div class="field"><label for="laborCost">Labor Cost</label><input id="laborCost" type="number" min="0" step="0.01" placeholder="280.00" inputmode="decimal"><span class="input-hint">Optional. Add staff cost for the day if you want an operating profit estimate.</span></div>
+            <div class="field"><label for="otherExpenses">Other Daily Expenses</label><input id="otherExpenses" type="number" min="0" step="0.01" placeholder="95.00" inputmode="decimal"><span class="input-hint">Optional. Use this for delivery costs, utilities, packaging, or other daily operating spend.</span></div>
+          </div>
+        </div>
+
+        <div class="field-section">
+          <h3>Optional sales mix inputs</h3>
+          <p class="section-copy">Add these only if you want a quick view of where sales came from across delivery, dine-in, and takeaway.</p>
+          <div class="field-grid">
+            <div class="field"><label for="deliverySales">Delivery Sales</label><input id="deliverySales" type="number" min="0" step="0.01" placeholder="620.00" inputmode="decimal"><span class="input-hint">Optional. Add delivery channel sales if you want to track delivery share.</span></div>
+            <div class="field"><label for="dineInSales">Dine-In Sales</label><input id="dineInSales" type="number" min="0" step="0.01" placeholder="780.00" inputmode="decimal"><span class="input-hint">Optional. Useful for comparing guest traffic with off-premise sales.</span></div>
+            <div class="field"><label for="takeawaySales">Takeaway Sales</label><input id="takeawaySales" type="number" min="0" step="0.01" placeholder="450.00" inputmode="decimal"><span class="input-hint">Optional. Add takeaway or pickup sales if you want a cleaner channel split.</span></div>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite"></div>
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" id="exampleButton">Use Example Values</button>
+          <button type="button" class="btn btn-secondary" id="copyButton">Copy Results</button>
+          <button type="button" class="btn btn-secondary" id="resetButton">Reset</button>
+        </div>
+        <p class="helper-note" style="margin-top:18px;">Blank optional fields are treated as zero. This tool is best for daily review and does not replace full POS or accounting reporting.</p>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Daily sales summary</h2>
+        <p class="section-copy">See net sales, profit, order value, and channel mix in a clean snapshot as soon as your core numbers are entered.</p>
+        <div class="status-banner">
+          <span class="status-label" id="statusLabel">Waiting for inputs</span>
+          <div class="status-score" id="statusScore">--</div>
+          <p class="status-text" id="statusText">Add total orders, total sales revenue, and cost of goods sold to generate a daily summary.</p>
+        </div>
+        <div class="result-grid">
+          <article class="metric-card featured"><span class="metric-label">Net Sales</span><strong class="metric-value placeholder" id="netSalesOutput">--</strong><p class="summary-note">Total sales revenue minus discounts and refunds.</p></article>
+          <article class="metric-card featured"><span class="metric-label">Average Order Value</span><strong class="metric-value placeholder" id="averageOrderValueOutput">--</strong><p class="summary-note" id="averageOrderValueNote">Net sales divided by total orders.</p></article>
+          <article class="metric-card featured"><span class="metric-label">Gross Profit</span><strong class="metric-value placeholder" id="grossProfitOutput">--</strong><p class="summary-note">Net sales minus total cost of goods sold.</p></article>
+          <article class="metric-card featured"><span class="metric-label">Operating Profit Estimate</span><strong class="metric-value placeholder" id="operatingProfitOutput">--</strong><p class="summary-note">Net sales after food cost, labor, and other daily expenses.</p></article>
+          <article class="metric-card"><span class="metric-label">Delivery Share %</span><strong class="metric-value placeholder" id="deliveryShareOutput">--</strong><p class="summary-note">Delivery sales as a share of net sales.</p></article>
+          <article class="metric-card"><span class="metric-label">Dine-In Share %</span><strong class="metric-value placeholder" id="dineInShareOutput">--</strong><p class="summary-note">Dine-in sales as a share of net sales.</p></article>
+          <article class="metric-card"><span class="metric-label">Takeaway Share %</span><strong class="metric-value placeholder" id="takeawayShareOutput">--</strong><p class="summary-note">Takeaway sales as a share of net sales.</p></article>
+          <article class="metric-card"><span class="metric-label">Daily Insight</span><strong class="metric-value placeholder" id="insightOutput">--</strong><p class="summary-note" id="insightNote">Use the core inputs above to generate a practical daily summary for your restaurant.</p></article>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq seo-tool-guide" aria-labelledby="dss-guide-what">
+      <h2 class="section-title" id="dss-guide-what">What this tool does</h2>
+      <p class="section-copy">This daily sales summary turns a short set of operational numbers into an end-of-day narrative you can read in minutes. Instead of exporting a heavy POS report, you enter orders, revenue, food cost, optional discounts and refunds, labor, other expenses, and a simple split between delivery, dine-in, and takeaway. The page responds with net sales, average order value, gross profit, an operating-profit-style estimate, and channel share percentages so you can see whether the day was driven by apps, tables, or pickup. It is built for clarity: every metric includes a plain-language note so managers and owners align on what each figure means before they move on to weekly planning.</p>
+      <h2 class="section-title">Who should use it</h2>
+      <p class="section-copy">Independent restaurants, franchised locations, cafes, bakeries, cloud kitchens, and food trucks all benefit when leadership reviews the day without waiting on accounting. It fits shift managers closing out tills, owners checking performance from a phone, and small groups that do not yet have a full BI stack. Caterers and multi-channel operators can use the same layout to compare a busy Friday service against a slower weekday. If you already run Vendora or another POS, treat this page as a lightweight sanity check that still respects your real discounts, refunds, and cost inputs.</p>
+      <h2 class="section-title">How to use it</h2>
+      <p class="section-copy">Begin with the essentials: total orders, total sales revenue, and cost of goods sold. Those three fields alone unlock the headline metrics. Layer in discounts and refunds when they materially changed the day so net sales reflects cash you kept. Add labor and other daily expenses when you want the operating snapshot; leave them blank if you only need top-line performance. Finally, allocate delivery, dine-in, and takeaway dollars to populate mix charts—percentages should add up to your net sales logic. Use the example button if you want to see the flow before typing your own numbers, then copy results if you are pasting into a log or message.</p>
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Suppose you recorded 210 orders, $6,400 in sales revenue, and $2,100 in food cost on a Thursday. You offered $220 in discounts and processed $80 in refunds, so net sales settles around $6,100. Average order value becomes roughly $29.05 before you factor other costs. Subtract COGS to see about $3,900 gross profit. If labor was $1,900 and other expenses $400, the operating estimate lands near $1,600. If delivery represented $2,750 of net sales, dine-in $2,100, and takeaway $1,250, you immediately see delivery leading the mix—prompting follow-up with your <a href="/tools/delivery-commission-calculator/">delivery commission</a> and menu pricing tools.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How to use this tool</h2>
+      <p>Enter your total orders, daily sales revenue, and cost of goods sold first. Then add discounts, refunds, labor, extra expenses, and sales mix only if you want a more complete review.</p>
+      <div class="faq-grid">
+        <article class="faq-item"><h3>1. Add your revenue basics</h3><p>Start with total orders, total sales revenue, and cost of goods sold. These are enough to create the main daily snapshot.</p></article>
+        <article class="faq-item"><h3>2. Add discounts and refunds when they apply</h3><p>These adjustments help you see the sales you actually kept, instead of relying only on gross sales.</p></article>
+        <article class="faq-item"><h3>3. Add labor, extra expenses, and sales mix for a fuller review</h3><p>These optional inputs help you estimate operating profit and understand whether delivery, dine-in, or takeaway led the day.</p></article>
+      </div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">What this tool shows</h2>
+      <p>Use these outputs to review daily performance quickly before moving into deeper POS, accounting, or weekly reporting.</p>
+      <div class="faq-grid">
+        <article class="faq-item"><h3>Net Sales</h3><p>A more realistic sales figure after discounts and refunds are removed from total sales revenue.</p></article>
+        <article class="faq-item"><h3>Gross Profit and Operating Profit Estimate</h3><p>Gross profit shows what is left after cost of goods sold, while the operating estimate goes further by subtracting labor and other daily expenses.</p></article>
+        <article class="faq-item"><h3>Average Order Value</h3><p>A quick way to see whether orders are strong enough to support your pricing, upsells, and promotion strategy.</p></article>
+        <article class="faq-item"><h3>Delivery, Dine-In, and Takeaway Share</h3><p>A simple channel mix view so you can spot where sales are coming from on any given day.</p></article>
+      </div>
+    </section>
+    <section class="cta">
+      <h2>Use daily sales review to stay closer to restaurant performance</h2>
+      <p>Vendora helps food businesses connect sales review, pricing, margin control, invoicing, QR ordering, and daily operations in one practical workflow.</p>
+      <ul class="cta-list"><li>Restaurants</li><li>Cafes</li><li>Food Trucks</li><li>Takeaways</li><li>Cloud Kitchens</li></ul>
+      <a class="btn btn-primary" href="/">Explore Vendora</a>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Daily sales summary FAQ</h2>
+      <p>Simple answers for restaurant owners using daily sales numbers to guide operations, staffing, and pricing decisions.</p>
+      <div class="faq-grid">
+        <article class="faq-item"><h3>What is a daily sales summary in a restaurant?</h3><p>A daily sales summary is a quick end-of-day view of orders, sales, costs, and profit. It helps owners spot how the day performed without digging into a full reporting stack.</p></article>
+        <article class="faq-item"><h3>Why is average order value important?</h3><p>Average order value shows how much each order is worth on average. It is useful when you are reviewing upsells, combo offers, pricing, and customer spend patterns.</p></article>
+        <article class="faq-item"><h3>Should discounts and refunds be included?</h3><p>Yes. Discounts and refunds reduce the sales you actually keep, so including them gives a more realistic view of net sales and profit.</p></article>
+        <article class="faq-item"><h3>Can I use this for cafes and food trucks?</h3><p>Yes. It works well for restaurants, cafes, food trucks, takeaways, cloud kitchens, bakeries, caterers, and similar food businesses.</p></article>
+        <article class="faq-item"><h3>Does this replace a POS report?</h3><p>No. This tool is best used as a simple daily review helper. It complements POS reporting, but it does not replace a full operations or accounting report.</p></article>
+      </div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related Tools</h2>
+      <p>Use these Vendora tools when you move from daily review into pricing, margin checks, and billing.</p>
+      <p>
+        <a href="/tools/food-cost-calculator/" style="color:#00d084;">Food Cost Calculator</a> |
+        <a href="/tools/menu-price-calculator/" style="color:#00d084;">Menu Price Calculator</a> |
+        <a href="/tools/delivery-commission-calculator/" style="color:#00d084;">Delivery Commission Calculator</a> |
+        <a href="/tools/invoice-generator/" style="color:#00d084;">Invoice Generator</a>
+      </p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  
+    <section class="card faq">
+      <h2 class="section-title">Free Restaurant Tools</h2>
+      <p>Vendora provides restaurant calculators and tools to help restaurants, cafes, and food trucks manage pricing, profit, and daily operations.</p>
+      <p>Use our free tools to calculate food cost, menu price, delivery commission, and generate invoices quickly.</p>
+    </section>
+
+  </main>
+
+  <a class="btn btn-primary sticky-cta" href="/">Open Vendora POS</a>
+  <a href="/contact/" onclick="window.open('https://wa.me/97333404044?text=Hi%20Vendora%2C%20I%20need%20support%20with%20the%20daily%20sales%20summary%20tool', '_blank', 'noopener'); return false;" target="_blank" rel="noopener noreferrer" class="whatsapp-support-fab" aria-label="Chat on WhatsApp for support"><span>WhatsApp Support</span></a>
+
+  <script>
+    const currencyGroups = [
+      { label: "Global and North America", options: [ { code: "USD", label: "USD - US Dollar ($)" }, { code: "CAD", label: "CAD - Canadian Dollar (CA$)" }, { code: "MXN", label: "MXN - Mexican Peso (MX$)" } ] },
+      { label: "Europe", options: [ { code: "EUR", label: "EUR - Euro (EUR)" }, { code: "GBP", label: "GBP - British Pound (GBP)" }, { code: "CHF", label: "CHF - Swiss Franc (CHF)" }, { code: "SEK", label: "SEK - Swedish Krona (SEK)" }, { code: "NOK", label: "NOK - Norwegian Krone (NOK)" }, { code: "DKK", label: "DKK - Danish Krone (DKK)" }, { code: "PLN", label: "PLN - Polish Zloty (PLN)" }, { code: "CZK", label: "CZK - Czech Koruna (CZK)" }, { code: "HUF", label: "HUF - Hungarian Forint (HUF)" }, { code: "RON", label: "RON - Romanian Leu (RON)" }, { code: "UAH", label: "UAH - Ukrainian Hryvnia (UAH)" } ] },
+      { label: "Middle East and North Africa", options: [ { code: "AED", label: "AED - UAE Dirham (AED)" }, { code: "SAR", label: "SAR - Saudi Riyal (SAR)" }, { code: "BHD", label: "BHD - Bahraini Dinar (BHD)" }, { code: "QAR", label: "QAR - Qatari Riyal (QAR)" }, { code: "KWD", label: "KWD - Kuwaiti Dinar (KWD)" }, { code: "OMR", label: "OMR - Omani Rial (OMR)" }, { code: "JOD", label: "JOD - Jordanian Dinar (JOD)" }, { code: "EGP", label: "EGP - Egyptian Pound (EGP)" }, { code: "TRY", label: "TRY - Turkish Lira (TRY)" } ] },
+      { label: "Asia Pacific", options: [ { code: "INR", label: "INR - Indian Rupee (INR)" }, { code: "PKR", label: "PKR - Pakistani Rupee (PKR)" }, { code: "BDT", label: "BDT - Bangladeshi Taka (BDT)" }, { code: "SGD", label: "SGD - Singapore Dollar (S$)" }, { code: "HKD", label: "HKD - Hong Kong Dollar (HK$)" }, { code: "CNY", label: "CNY - Chinese Yuan (CNY)" }, { code: "JPY", label: "JPY - Japanese Yen (JPY)" }, { code: "KRW", label: "KRW - South Korean Won (KRW)" }, { code: "THB", label: "THB - Thai Baht (THB)" }, { code: "MYR", label: "MYR - Malaysian Ringgit (MYR)" }, { code: "IDR", label: "IDR - Indonesian Rupiah (IDR)" }, { code: "PHP", label: "PHP - Philippine Peso (PHP)" }, { code: "AUD", label: "AUD - Australian Dollar (A$)" }, { code: "NZD", label: "NZD - New Zealand Dollar (NZ$)" } ] },
+      { label: "Africa and Latin America", options: [ { code: "ZAR", label: "ZAR - South African Rand (ZAR)" }, { code: "NGN", label: "NGN - Nigerian Naira (NGN)" }, { code: "KES", label: "KES - Kenyan Shilling (KES)" }, { code: "BRL", label: "BRL - Brazilian Real (BRL)" }, { code: "ARS", label: "ARS - Argentine Peso (ARS)" }, { code: "CLP", label: "CLP - Chilean Peso (CLP)" }, { code: "PEN", label: "PEN - Peruvian Sol (PEN)" }, { code: "COP", label: "COP - Colombian Peso (COP)" } ] }
+    ];
+
+    const elements = {
+      currency: document.getElementById("currency"), totalOrders: document.getElementById("totalOrders"), totalSales: document.getElementById("totalSales"), cogs: document.getElementById("cogs"), deliverySales: document.getElementById("deliverySales"), dineInSales: document.getElementById("dineInSales"), takeawaySales: document.getElementById("takeawaySales"), discounts: document.getElementById("discounts"), refunds: document.getElementById("refunds"), laborCost: document.getElementById("laborCost"), otherExpenses: document.getElementById("otherExpenses"), validationMessage: document.getElementById("validationMessage"), statusLabel: document.getElementById("statusLabel"), statusScore: document.getElementById("statusScore"), statusText: document.getElementById("statusText"), netSalesOutput: document.getElementById("netSalesOutput"), averageOrderValueOutput: document.getElementById("averageOrderValueOutput"), averageOrderValueNote: document.getElementById("averageOrderValueNote"), grossProfitOutput: document.getElementById("grossProfitOutput"), operatingProfitOutput: document.getElementById("operatingProfitOutput"), deliveryShareOutput: document.getElementById("deliveryShareOutput"), dineInShareOutput: document.getElementById("dineInShareOutput"), takeawayShareOutput: document.getElementById("takeawayShareOutput"), insightOutput: document.getElementById("insightOutput"), insightNote: document.getElementById("insightNote"), exampleButton: document.getElementById("exampleButton"), copyButton: document.getElementById("copyButton"), resetButton: document.getElementById("resetButton")
+    };
+    function populateCurrencies() {
+      currencyGroups.forEach((group) => {
+        const optgroup = document.createElement("optgroup");
+        optgroup.label = group.label;
+        group.options.forEach((option) => {
+          const el = document.createElement("option");
+          el.value = option.code;
+          el.textContent = option.label;
+          if (option.code === "USD") el.selected = true;
+          optgroup.appendChild(el);
+        });
+        elements.currency.appendChild(optgroup);
+      });
+    }
+    function toNumber(value) { const num = parseFloat(value); return Number.isFinite(num) ? num : 0; }
+    function hasValue(value) { return value !== "" && value !== null && value !== undefined; }
+    function formatCurrency(value) { if (!Number.isFinite(value)) return "--"; try { return new Intl.NumberFormat(undefined, { style: "currency", currency: elements.currency.value || "USD", maximumFractionDigits: 2 }).format(value); } catch (error) { return value.toFixed(2); } }
+    function formatPercent(value) { if (!Number.isFinite(value)) return "--"; return value.toFixed(2) + "%"; }
+    function formatCount(value) { if (!Number.isFinite(value)) return "--"; return new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 }).format(value); }
+    function setMetric(element, text, tone) { element.textContent = text; element.classList.remove("negative", "warning", "placeholder"); if (tone) element.classList.add(tone); }
+    function showValidation(message) { if (!message) { elements.validationMessage.style.display = "none"; elements.validationMessage.textContent = ""; return; } elements.validationMessage.style.display = "block"; elements.validationMessage.textContent = message; }
+    function updateStatus(label, score, text, tone) { elements.statusLabel.textContent = label; elements.statusLabel.classList.remove("warning", "danger"); if (tone) elements.statusLabel.classList.add(tone); elements.statusScore.textContent = score; elements.statusText.textContent = text; }
+    function setPlaceholders() {
+      setMetric(elements.netSalesOutput, "--", "placeholder"); setMetric(elements.averageOrderValueOutput, "--", "placeholder"); setMetric(elements.grossProfitOutput, "--", "placeholder"); setMetric(elements.operatingProfitOutput, "--", "placeholder"); setMetric(elements.deliveryShareOutput, "--", "placeholder"); setMetric(elements.dineInShareOutput, "--", "placeholder"); setMetric(elements.takeawayShareOutput, "--", "placeholder"); setMetric(elements.insightOutput, "--", "placeholder");
+      elements.averageOrderValueNote.textContent = "Net sales divided by total orders.";
+      elements.insightNote.textContent = "Use the core inputs above to generate a practical daily summary for your restaurant.";
+    }
+    function calculate() {
+      const totalOrdersRaw = elements.totalOrders.value.trim(); const totalSalesRaw = elements.totalSales.value.trim(); const cogsRaw = elements.cogs.value.trim(); const deliverySalesRaw = elements.deliverySales.value.trim(); const dineInSalesRaw = elements.dineInSales.value.trim(); const takeawaySalesRaw = elements.takeawaySales.value.trim(); const discountsRaw = elements.discounts.value.trim(); const refundsRaw = elements.refunds.value.trim(); const laborCostRaw = elements.laborCost.value.trim(); const otherExpensesRaw = elements.otherExpenses.value.trim();
+      const totalOrders = toNumber(totalOrdersRaw); const totalSales = toNumber(totalSalesRaw); const cogs = toNumber(cogsRaw); const deliverySales = toNumber(deliverySalesRaw); const dineInSales = toNumber(dineInSalesRaw); const takeawaySales = toNumber(takeawaySalesRaw); const discounts = toNumber(discountsRaw); const refunds = toNumber(refundsRaw); const laborCost = toNumber(laborCostRaw); const otherExpenses = toNumber(otherExpensesRaw);
+      showValidation("");
+      if ([totalOrders, totalSales, cogs, deliverySales, dineInSales, takeawaySales, discounts, refunds, laborCost, otherExpenses].some((value) => value < 0)) { setPlaceholders(); updateStatus("Check your inputs", "--", "Daily sales review needs zero or positive values for sales, orders, discounts, and costs.", "warning"); showValidation("Please use zero or positive values for all daily sales inputs."); return; }
+      if (!hasValue(totalOrdersRaw) && !hasValue(totalSalesRaw) && !hasValue(cogsRaw)) { setPlaceholders(); updateStatus("Waiting for inputs", "--", "Add total orders, total sales revenue, and cost of goods sold to generate a daily summary.", null); return; }
+      if (!hasValue(totalSalesRaw)) { setPlaceholders(); updateStatus("Need sales revenue", "--", "Enter total sales revenue to calculate net sales and profit safely.", "warning"); showValidation("Total Sales Revenue is required to generate a daily sales summary."); return; }
+      const netSales = totalSales - discounts - refunds; const grossProfit = netSales - cogs; const operatingProfit = netSales - cogs - laborCost - otherExpenses; const averageOrderValue = totalOrders > 0 ? netSales / totalOrders : null; const deliveryShare = netSales > 0 ? (deliverySales / netSales) * 100 : null; const dineInShare = netSales > 0 ? (dineInSales / netSales) * 100 : null; const takeawayShare = netSales > 0 ? (takeawaySales / netSales) * 100 : null; const channelSalesTotal = deliverySales + dineInSales + takeawaySales;
+      setMetric(elements.netSalesOutput, formatCurrency(netSales), netSales < 0 ? "negative" : null); setMetric(elements.grossProfitOutput, formatCurrency(grossProfit), grossProfit < 0 ? "negative" : null); setMetric(elements.operatingProfitOutput, formatCurrency(operatingProfit), operatingProfit < 0 ? "negative" : null);
+      if (totalOrders > 0) { setMetric(elements.averageOrderValueOutput, formatCurrency(averageOrderValue), averageOrderValue < 0 ? "negative" : null); elements.averageOrderValueNote.textContent = "Net sales divided by total orders."; } else { setMetric(elements.averageOrderValueOutput, "No orders entered", "placeholder"); elements.averageOrderValueNote.textContent = "Add total orders to calculate average order value safely."; }
+      if (netSales > 0) { setMetric(elements.deliveryShareOutput, formatPercent(deliveryShare), null); setMetric(elements.dineInShareOutput, formatPercent(dineInShare), null); setMetric(elements.takeawayShareOutput, formatPercent(takeawayShare), null); } else { setMetric(elements.deliveryShareOutput, "--", "placeholder"); setMetric(elements.dineInShareOutput, "--", "placeholder"); setMetric(elements.takeawayShareOutput, "--", "placeholder"); }
+      if (netSales < 0) { setMetric(elements.insightOutput, "Negative net sales", "warning"); elements.insightNote.textContent = "Discounts and refunds are currently higher than sales revenue. Check the entries above before using this daily summary for decisions."; updateStatus("Review needed", formatCurrency(netSales), "Net sales are below zero, so the day summary needs a quick input check before it is used.", "warning"); showValidation("Net Sales is below zero because discounts and refunds are higher than total sales revenue. Please review those numbers."); return; }
+      if (channelSalesTotal > 0 && channelSalesTotal > netSales + 0.005) { setMetric(elements.insightOutput, "Channel mix mismatch", "warning"); elements.insightNote.textContent = "The delivery, dine-in, and takeaway totals are higher than net sales, so the channel split needs a quick check."; updateStatus("Review channel mix", formatCurrency(netSales), "Channel sales are currently higher than net sales, so the mix percentages will not be reliable until those values are corrected.", "warning"); showValidation("Delivery, dine-in, and takeaway sales should not add up to more than net sales."); return; }
+      if (grossProfit < 0 || operatingProfit < 0) { setMetric(elements.insightOutput, "Margin pressure", "warning"); elements.insightNote.textContent = "Sales are covering less than your recorded costs today, so this looks like a low-margin or loss-making day."; updateStatus("Profit under pressure", totalOrders > 0 ? formatCount(totalOrders) + " orders" : formatCurrency(netSales), "Today's numbers suggest costs are taking most of the sales value, so review pricing, waste, discounts, or staffing.", "warning"); return; }
+      setMetric(elements.insightOutput, "Healthy daily snapshot", null); elements.insightNote.textContent = "Net sales, profit, and order value are available, giving you a quick daily view before deeper reporting."; updateStatus("Daily summary ready", totalOrders > 0 ? formatCount(totalOrders) + " orders" : formatCurrency(netSales), "Use this snapshot to review daily performance, compare shifts, and spot margin changes early.", null);
+    }
+    function fillExample() { elements.currency.value = "USD"; elements.totalOrders.value = "125"; elements.totalSales.value = "1850"; elements.cogs.value = "640"; elements.deliverySales.value = "620"; elements.dineInSales.value = "780"; elements.takeawaySales.value = "450"; elements.discounts.value = "60"; elements.refunds.value = "25"; elements.laborCost.value = "280"; elements.otherExpenses.value = "95"; calculate(); }
+    function resetForm() { elements.currency.value = "USD"; elements.totalOrders.value = ""; elements.totalSales.value = ""; elements.cogs.value = ""; elements.deliverySales.value = ""; elements.dineInSales.value = ""; elements.takeawaySales.value = ""; elements.discounts.value = ""; elements.refunds.value = ""; elements.laborCost.value = ""; elements.otherExpenses.value = ""; calculate(); }
+    async function copyResults() {
+      const lines = ["Daily sales summary", "Currency: " + (elements.currency.value || "USD"), "Net Sales: " + elements.netSalesOutput.textContent, "Average Order Value: " + elements.averageOrderValueOutput.textContent, "Gross Profit: " + elements.grossProfitOutput.textContent, "Operating Profit Estimate: " + elements.operatingProfitOutput.textContent, "Delivery Share: " + elements.deliveryShareOutput.textContent, "Dine-In Share: " + elements.dineInShareOutput.textContent, "Takeaway Share: " + elements.takeawayShareOutput.textContent];
+      try { await navigator.clipboard.writeText(lines.join("\n")); elements.copyButton.textContent = "Copied"; setTimeout(() => { elements.copyButton.textContent = "Copy Results"; }, 1500); } catch (error) { elements.copyButton.textContent = "Copy Failed"; setTimeout(() => { elements.copyButton.textContent = "Copy Results"; }, 1500); }
+    }
+    populateCurrencies();
+    [elements.currency, elements.totalOrders, elements.totalSales, elements.cogs, elements.deliverySales, elements.dineInSales, elements.takeawaySales, elements.discounts, elements.refunds, elements.laborCost, elements.otherExpenses].forEach((element) => { element.addEventListener("input", calculate); element.addEventListener("change", calculate); });
+    elements.exampleButton.addEventListener("click", fillExample); elements.resetButton.addEventListener("click", resetForm); elements.copyButton.addEventListener("click", copyResults); calculate();
+  </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+

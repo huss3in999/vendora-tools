@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discount Calculator — Sale Price from % Off | Vendora</title>
+<meta name="description" content="Find sale price and dollars saved from list price and discount percent. Stack multiple discounts carefully (not always additive).">
+<link rel="canonical" href="https://getvendora.net/calculators/discount-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Discount Calculator — Sale Price from % Off">
+<meta property="og:description" content="Find sale price and dollars saved from list price and discount percent. Stack multiple discounts carefully (not always additive).">
+<meta property="og:url" content="https://getvendora.net/calculators/discount-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Discount Calculator — Sale Price from % Off | Vendora">
+<meta name="twitter:description" content="Find sale price and dollars saved from list price and discount percent. Stack multiple discounts carefully (not always additive).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are two 20% discounts equal to 40% off?","acceptedAnswer":{"@type":"Answer","text":"No. Sequential percents multiply: 0.8×0.8 = 36% off from original."}},{"@type":"Question","name":"Can I enter percent as 15 instead of 0.15?","acceptedAnswer":{"@type":"Answer","text":"Use the form as labeled—typically enter 15 for 15%."}},{"@type":"Question","name":"Does this include shipping?","acceptedAnswer":{"@type":"Answer","text":"Only if you include shipping in the base amount you tax."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Finance &amp; Money</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Discount Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Price after discount, optional tax.</p>
+      <label>Original ($)<input type="number" id="o" class="w-full border rounded px-2 py-1 mt-1" value="50"></label>
+<label class="block mt-3">Discount %<input type="number" id="d" class="w-full border rounded px-2 py-1 mt-1" value="20"></label>
+<label class="block mt-3">Sales tax % (optional)<input type="number" id="t" class="w-full border rounded px-2 py-1 mt-1" value="0"></label>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Discount Calculator</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Computes reduced price after a percentage discount.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Enter original price and discount percentage, then calculate.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Sale = Original × (1 − d%); Savings = Original − Sale.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>$120 item at 25% off → $90 final price, $30 saved.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Are two 20% discounts equal to 40% off?</p>
+        <p class="text-sm text-vendora-muted mt-1">No. Sequential percents multiply: 0.8×0.8 = 36% off from original.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Can I enter percent as 15 instead of 0.15?</p>
+        <p class="text-sm text-vendora-muted mt-1">Use the form as labeled—typically enter 15 for 15%.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Does this include shipping?</p>
+        <p class="text-sm text-vendora-muted mt-1">Only if you include shipping in the base amount you tax.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+function run(){const o=+document.getElementById('o').value,d=+document.getElementById('d').value/100,tax=+document.getElementById('t').value/100;const sale=o*(1-d),final=sale*(1+tax);document.getElementById('out').textContent='Saved: $'+(o*d).toFixed(2)+'\nAfter discount: $'+sale.toFixed(2)+'\nFinal (with tax): $'+final.toFixed(2);}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

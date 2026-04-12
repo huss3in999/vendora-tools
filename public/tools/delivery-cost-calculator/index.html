@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delivery Cost Calculator Free | Route Cost, Margin &amp; Delivery Fee | Vendora</title>
+  <meta name="description" content="Free delivery cost calculator: distance, cost per km, fuel, labor, vehicle type, number of deliveries, overhead, and profit margin to estimate a final delivery fee per stop.">
+  <meta name="keywords" content="delivery cost calculator, delivery fee calculator, route cost, food delivery pricing">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/delivery-cost-calculator/">
+  <meta property="og:title" content="Delivery Cost Calculator | Fee &amp; Margin | Vendora">
+  <meta property="og:description" content="Estimate per-delivery fees from distance, variable costs, overhead, and target margin.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/delivery-cost-calculator/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Delivery Cost Calculator Free | Route Cost and Delivery Fee Estimate",
+  "url": "https://getvendora.net/tools/delivery-cost-calculator/",
+  "description": "Calculate delivery economics with distance, per-km cost, fuel, labor, vehicle type, delivery count, overhead, and margin-based final fee.",
+  "isPartOf": { "@type": "WebSite", "name": "Vendora", "url": "https://getvendora.net/" }
+}
+</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vendora Delivery Cost Calculator",
+    "description": "Web calculator combining distance-based cost, fuel, labor, overhead, stops, and target profit margin into a suggested delivery fee.",
+    "url": "https://getvendora.net/tools/delivery-cost-calculator/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How is the final delivery fee calculated?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Distance times cost per km plus fuel, labor, and overhead forms total route cost. That total is divided by number of deliveries for cost per stop. The final fee applies your profit margin as revenue = cost divided by (1 minus margin percent)." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does vehicle type change the math?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Vehicle type is tracked for your notes; enter fuel and per-km costs that match that vehicle." }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="../tool-system.css">
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/all-tools/">All tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Vendora Free Tool</p>
+      <h1>Delivery Cost Calculator</h1>
+      <p class="hero-copy">
+        Model <strong>distance</strong>, <strong>cost per km</strong>, <strong>fuel</strong>, <strong>labor</strong>, <strong>vehicle type</strong>, <strong>number of deliveries</strong> on the route, <strong>overhead</strong>, and <strong>profit margin</strong> to estimate a <strong>final delivery fee</strong> per stop. Outputs show distance cost, total route cost, cost per delivery, and margin-adjusted fee.
+      </p>
+      <div class="hero-points">
+        <span class="hero-point hero-point-highlight">Per-stop fee</span>
+        <span class="hero-point">Margin aware</span>
+        <span class="hero-point">Multi-drop</span>
+        <span class="hero-point">Instant recalc</span>
+      </div>
+    </section>
+
+    <section class="calculator-shell">
+      <section class="card input-card" aria-labelledby="dc-heading">
+        <h2 class="section-title" id="dc-heading">Route inputs</h2>
+        <p class="section-copy">Use numbers that match your market (currency-agnostic).</p>
+        <div class="field-grid">
+          <div class="field">
+            <label for="distanceKm">Distance (km)</label>
+            <input id="distanceKm" type="number" min="0" step="0.1" inputmode="decimal" placeholder="12.5">
+          </div>
+          <div class="field">
+            <label for="costPerKm">Cost per km</label>
+            <input id="costPerKm" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.85">
+          </div>
+          <div class="field">
+            <label for="fuelCost">Fuel cost (total route)</label>
+            <input id="fuelCost" type="number" min="0" step="0.01" inputmode="decimal" placeholder="4.50">
+          </div>
+          <div class="field">
+            <label for="laborCost">Labor cost (driver time)</label>
+            <input id="laborCost" type="number" min="0" step="0.01" inputmode="decimal" placeholder="18.00">
+          </div>
+          <div class="field">
+            <label for="vehicleType">Vehicle type</label>
+            <div class="select-wrap">
+              <select id="vehicleType">
+                <option value="Bicycle / e-bike">Bicycle / e-bike</option>
+                <option value="Scooter">Scooter</option>
+                <option value="Car" selected>Car</option>
+                <option value="Van">Van</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="numDeliveries">Number of deliveries</label>
+            <input id="numDeliveries" type="number" min="1" step="1" inputmode="numeric" value="3">
+          </div>
+          <div class="field">
+            <label for="overheadCost">Overhead (insurance, platform, misc.)</label>
+            <input id="overheadCost" type="number" min="0" step="0.01" inputmode="decimal" placeholder="2.00">
+          </div>
+          <div class="field">
+            <label for="profitMargin">Target profit margin %</label>
+            <input id="profitMargin" type="number" min="0" max="99.99" step="0.5" inputmode="decimal" placeholder="25" value="25">
+          </div>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="dc-out">
+        <h2 class="section-title" id="dc-out">Results</h2>
+        <div class="field-grid">
+          <div class="field">
+            <label>Distance × rate</label>
+            <div class="readonly-output" id="outDistanceCost">0</div>
+          </div>
+          <div class="field">
+            <label>Total route cost</label>
+            <div class="readonly-output strong-output" id="outBase">0</div>
+          </div>
+          <div class="field">
+            <label>Cost per delivery</label>
+            <div class="readonly-output" id="outPerDelivery">0</div>
+          </div>
+          <div class="field">
+            <label>Final delivery fee (with margin)</label>
+            <div class="readonly-output strong-output" id="outFinalFee">0</div>
+          </div>
+          <div class="field-wide">
+            <label>Vehicle (reference)</label>
+            <div class="readonly-output" id="outVehicleNote">—</div>
+          </div>
+        </div>
+        <p class="section-copy" style="margin-top:14px;">Margin uses fee = cost per stop ÷ (1 − margin%). Estimates only—not a quote for customers.</p>
+      </section>
+    </section>
+
+    <section class="card faq seo-tool-guide" aria-labelledby="dc-guide-what">
+      <h2 class="section-title" id="dc-guide-what">What this tool does</h2>
+      <p class="section-copy">The delivery cost calculator turns route assumptions into a defendable per-stop fee before you publish menu pricing or negotiate with marketplaces. Distance multiplied by your internal cost-per-kilometer rate captures wear, depreciation, and fuel sensitivity in one knob, while explicit fuel and labor lines keep the model transparent for partners who ask “where did this number come from?” Overhead buckets insurance slices, thermal bags, phone plans, or per-shift platform subscriptions so they are not forgotten when the map looks short. Dividing total route cost by the number of drops acknowledges batching—three stops in one loop should not carry the same per-order burden as a single remote drop. Finally, target profit margin converts fully loaded cost into a suggested customer-facing fee using margin-on-revenue math so you preserve the intended percent after covering costs.</p>
+      <h2 class="section-title">Who should use it</h2>
+      <p class="section-copy">Restaurant owners offering first-party delivery, cloud kitchens comparing in-house riders to aggregator quotes, and caterers running multi-stop runs can sanity-check pricing in minutes. It complements the <a href="/tools/delivery-commission-calculator/">delivery commission calculator</a> when third-party fees dominate, and the <a href="/tools/menu-price-calculator/">menu price calculator</a> when you fold delivery into item pricing.</p>
+      <h2 class="section-title">How to use it</h2>
+      <p class="section-copy">Enter realistic kilometers for the loop, a per-km rate that matches your vehicle class, and route-level fuel and driver labor. Pick vehicle type for documentation. Set deliveries to the average stops per trip you actually run. Add overhead you allocate per route. Adjust margin to your net target. Read cost per delivery versus final fee to see the margin lift. Tune inputs after a week of actual odometer and payroll data.</p>
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">A car runs 14 km urban at $0.80/km, burns $6 fuel, pays $22 labor, carries $3 overhead, and completes four drops. Base cost sums to roughly distance charge plus fuel, labor, overhead. Dividing by four yields cost per stop. A 30% margin target inflates that cost into the posted delivery fee customers see at checkout.</p>
+    </section>
+
+    <section class="cta">
+      <h2>Upgrade your restaurant with Vendora POS and smart menu system</h2>
+      <p>Offer delivery with clearer unit economics on Vendora.</p>
+      <ul class="cta-list"><li>Smart POS</li><li>Digital Menu</li><li>Direct Ordering</li><li>Faster Operations</li></ul>
+      <a class="btn btn-primary" href="/">Try Vendora for Your Restaurant</a>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p>
+        <a href="/tools/delivery-commission-calculator/">Delivery Commission Calculator</a>,
+        <a href="/tools/menu-price-calculator/">Menu Price Calculator</a>,
+        <a href="/tools/food-cost-calculator/">Food Cost Calculator</a>,
+        <a href="/tools/purchase-order-generator/">Purchase Order Generator</a>
+      </p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/all-tools/">All tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+  <a class="btn sticky-cta" href="/">Open Vendora POS</a>
+  <script src="./app.js" defer></script>
+  <a href="/contact/" onclick="window.open('https://wa.me/97333404044?text=Hi%20Vendora%2C%20I%20need%20support%20with%20the%20delivery%20cost%20calculator', '_blank', 'noopener'); return false;" target="_blank" rel="noopener noreferrer" class="whatsapp-support-fab" aria-label="Chat on WhatsApp for support">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4A8.5 8.5 0 1 1 12.5 3a8.38 8.38 0 0 1 5.4 1.9"/><path d="M22 2 12 12"/><path d="M16 2h6v6"/></svg>
+    <span>WhatsApp Support</span>
+  </a>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

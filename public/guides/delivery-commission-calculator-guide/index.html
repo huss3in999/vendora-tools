@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delivery Commission Guide | Third-Party App Fees &amp; Restaurant Margins | Vendora</title>
+  <meta name="description" content="How delivery marketplace commission affects menu prices: estimate fees, adjust pricing, and protect margin on Uber Eats, DoorDash-style orders." />
+  <meta name="keywords" content="delivery commission guide, restaurant delivery fees, third party delivery commission, food delivery app fees" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://getvendora.net/guides/delivery-commission-calculator-guide/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Delivery Commission Guide | Third-Party App Fees &amp; Restaurant Margins | Vendora" />
+  <meta property="og:description" content="How delivery marketplace commission affects menu prices: estimate fees, adjust pricing, and protect margin on Uber Eats, DoorDash-style orders." />
+  <meta property="og:url" content="https://getvendora.net/guides/delivery-commission-calculator-guide/" />
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Delivery Commission Guide | Restaurant Margins | Vendora" />
+  <meta name="twitter:description" content="Third-party delivery fees and menu pricing for food businesses." />
+  <meta name="twitter:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+{
+    "@context":  "https://schema.org",
+    "@graph":  [
+                   {
+                       "@type":  "Article",
+                       "headline":  "Delivery Commission Calculator Guide for Food Businesses",
+                       "description":  "How delivery marketplace commission affects menu prices: estimate fees, adjust pricing, and protect margin on Uber Eats, DoorDash-style orders.",
+                       "mainEntityOfPage":  {
+                                                "@type":  "WebPage",
+                                                "@id":  "https://getvendora.net/guides/delivery-commission-calculator-guide/"
+                                            },
+                       "author":  {
+                                      "@type":  "Organization",
+                                      "name":  "Vendora Editorial Team"
+                                  },
+                       "publisher":  {
+                                         "@type":  "Organization",
+                                         "name":  "Vendora",
+                                         "logo":  {
+                                                      "@type":  "ImageObject",
+                                                      "url":  "https://getvendora.net/images/street-bites-featured-wrap.svg"
+                                                  }
+                                     },
+                       "datePublished":  "2026-03-28",
+                       "dateModified":  "2026-03-28",
+                       "image":  "https://getvendora.net/images/street-bites-featured-wrap.svg"
+                   },
+                   {
+                       "@type":  "FAQPage",
+                       "mainEntity":  [
+                                          {
+                                              "@type":  "Question",
+                                              "name":  "Should I increase my prices on delivery apps?",
+                                              "acceptedAnswer":  {
+                                                                     "@type":  "Answer",
+                                                                     "text":  "Yes, it is standard industry practice. Most operators apply a markup of 10% to 20% to their delivery app menus. Consumers generally understand that paying a premium for the convenience of delivery is standard. Just ensure your markup is calculated accurately to protect your margins without alienating your customer base."
+                                                                 }
+                                          },
+                                          {
+                                              "@type":  "Question",
+                                              "name":  "What is a standard delivery app commission rate?",
+                                              "acceptedAnswer":  {
+                                                                     "@type":  "Answer",
+                                                                     "text":  "Depending on the platform and the level of marketing visibility you choose, commission rates typically range from 15% to 30%. If you handle your own delivery fleet and only use the app for order generation, the fee is usually lower (around 10% to 15%)."
+                                                                 }
+                                          },
+                                          {
+                                              "@type":  "Question",
+                                              "name":  "Are third-party delivery apps actually worth the cost?",
+                                              "acceptedAnswer":  {
+                                                                     "@type":  "Answer",
+                                                                     "text":  "Yes, but they must be viewed partially as a marketing expense. Platforms provide access to customers who might never walk past your physical storefront. If you engineer your delivery menu correctly, ensuring a baseline profit on every item, the apps are a highly effective tool for driving volume and brand awareness."
+                                                                 }
+                                          }
+                                      ]
+                   }
+               ]
+}
+  </script>
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);
+    t.async=1;
+    t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+
+</head>
+<body>
+<style>
+  /* Scoped CSS for Vendora SEO Guide to ensure premium presentation */
+  .vendora-guide-wrapper {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #334155;
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    background: #ffffff;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  /* Hero Section Styles */
+  .vendora-hero {
+    background: #0f172a;
+    border-radius: 16px;
+    padding: 60px 20px 40px;
+    margin-bottom: 50px;
+    color: #f8fafc;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .vendora-hero-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: 0.4;
+    background: radial-gradient(circle at top right, #10b981 0%, transparent 40%),
+                radial-gradient(circle at bottom left, #047857 0%, transparent 40%);
+    z-index: 1;
+  }
+
+  .vendora-hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .vendora-hero h1 {
+    color: #ffffff;
+    font-size: 2.75rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  .vendora-hero p.lead {
+    font-size: 1.25rem;
+    color: #cbd5e1;
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+  }
+
+  /* SVG Dashboard Visual */
+  .vendora-hero-visual {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 750px;
+    margin: 0 auto;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .v-dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 16px;
+  }
+  
+  .v-dash-dot { height: 12px; width: 12px; background: #ef4444; border-radius: 50%; display: inline-block; box-shadow: 20px 0 0 #eab308, 40px 0 0 #22c55e;}
+  
+  .v-dash-title { color: #e2e8f0; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .v-dash-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .v-dash-card {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: left;
+  }
+
+  .v-dash-card-title { font-size: 0.875rem; color: #94a3b8; margin-bottom: 8px; }
+  .v-dash-card-value { font-size: 1.5rem; color: #ffffff; font-weight: 700; }
+  .v-dash-card-value.red { color: #ef4444; }
+  .v-dash-card-value.green { color: #10b981; }
+
+  /* Content Typography & Layout */
+  .vendora-content {
+    padding: 0 20px;
+  }
+
+  .vendora-content h2 { 
+    color: #0f172a; 
+    font-size: 2rem; 
+    font-weight: 700; 
+    margin: 50px 0 24px; 
+    letter-spacing: -0.01em;
+  }
+
+  .vendora-content h3 { 
+    color: #1e293b; 
+    font-size: 1.35rem; 
+    font-weight: 600; 
+    margin: 32px 0 16px; 
+  }
+
+  .vendora-content p { 
+    margin-bottom: 24px; 
+    font-size: 1.05rem;
+  }
+
+  .vendora-content ul, .vendora-content ol { 
+    margin-bottom: 32px; 
+    padding-left: 24px; 
+    font-size: 1.05rem;
+  }
+
+  .vendora-content li { 
+    margin-bottom: 12px; 
+  }
+
+  .vendora-content strong {
+    color: #0f172a;
+  }
+
+  .vendora-content a { 
+    color: #10b981; 
+    text-decoration: none; 
+    font-weight: 600; 
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .vendora-content a:hover { 
+    border-color: #10b981; 
+  }
+
+  /* Highlight Boxes & Callouts */
+  .vendora-highlight { 
+    background: #ecfdf5; 
+    border-left: 4px solid #10b981; 
+    padding: 24px; 
+    border-radius: 0 8px 8px 0; 
+    margin: 40px 0; 
+  }
+  
+  .vendora-highlight h4 {
+    color: #047857;
+    margin: 0 0 12px 0;
+    font-size: 1.15rem;
+  }
+
+  .vendora-highlight p:last-child {
+    margin-bottom: 0;
+  }
+
+  .vendora-table-wrapper {
+    overflow-x: auto;
+    margin: 32px 0;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .vendora-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.95rem;
+  }
+
+  .vendora-table th {
+    background: #f8fafc;
+    padding: 16px;
+    font-weight: 600;
+    color: #0f172a;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .vendora-table td {
+    padding: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #334155;
+  }
+
+  /* FAQ Section */
+  .vendora-faq-item {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .vendora-faq-item:last-child {
+    border-bottom: none;
+  }
+
+  /* CTA Section */
+  .vendora-cta-section { 
+    background: #f8fafc; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 16px; 
+    padding: 50px 30px; 
+    text-align: center; 
+    margin-top: 60px; 
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  }
+
+  .vendora-cta-section h2 {
+    margin-top: 0;
+  }
+
+  .vendora-btn { 
+    display: inline-block; 
+    background: #10b981; 
+    color: #ffffff !important; 
+    font-weight: 600; 
+    font-size: 1.125rem;
+    padding: 16px 32px; 
+    border-radius: 8px; 
+    text-decoration: none !important; 
+    transition: all 0.2s ease; 
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
+    margin: 20px 0;
+  }
+
+  .vendora-btn:hover { 
+    background: #059669; 
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -1px rgba(16, 185, 129, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .vendora-hero { padding: 40px 15px 30px; }
+    .vendora-hero h1 { font-size: 2rem; }
+    .v-dash-grid { grid-template-columns: 1fr; }
+    .vendora-content h2 { font-size: 1.75rem; }
+  }
+</style>
+
+<article class="vendora-guide-wrapper">
+  
+  <header class="vendora-hero">
+    <div class="vendora-hero-bg"></div>
+    <div class="vendora-hero-content">
+      <h1>Delivery Commission Calculator Guide for Food Businesses</h1>
+      <p class="lead">Understand exactly how third-party delivery apps impact your margins. Learn how to adjust your pricing and protect your revenue on every order.</p>
+      
+      <div class="vendora-hero-visual" aria-hidden="true">
+        <div class="v-dash-header">
+          <div><span class="v-dash-dot"></span></div>
+          <div class="v-dash-title">Vendora Delivery Intelligence</div>
+          <div style="width: 52px;"></div>
+        </div>
+        <div class="v-dash-grid">
+          <div class="v-dash-card">
+            <div class="v-dash-card-title">Customer Order Value</div>
+            <div class="v-dash-card-value">$30.00</div>
+          </div>
+          <div class="v-dash-card">
+            <div class="v-dash-card-title">Platform Fee (30%)</div>
+            <div class="v-dash-card-value red">-$9.00</div>
+          </div>
+          <div class="v-dash-card">
+            <div class="v-dash-card-title">Net Revenue Kept</div>
+            <div class="v-dash-card-value green">$21.00</div>
+          </div>
+        </div>
+        <div style="background: #0f172a; height: 8px; border-radius: 4px; overflow: hidden; margin-top: 8px; position: relative;">
+          <div style="width: 70%; height: 100%; background: #10b981; float: left; border-right: 2px solid #ffffff;"></div>
+          <div style="width: 30%; height: 100%; background: #ef4444; float: left;"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="vendora-content">
+    <p>Partnering with third-party delivery platforms has become a standard requirement for modern food operations. These apps can introduce your menu to thousands of new local customers and keep your kitchen moving during otherwise slow periods. However, the volume they bring comes with a significant financial trade-off. The commissions these platforms charge can easily consume the majority of your profit if your menu pricing is not carefully structured.</p>
+    
+    <p>Many business owners focus strictly on the top-line revenue generated by delivery tablets, failing to account for how deeply the platform fees cut into their bottom line. To run a sustainable delivery operation, you need clear margin visibility. By using a professional <a href="https://getvendora.net/tools/delivery-commission-calculator/">delivery commission calculator</a>, you can replace assumptions with hard data, ensuring that every takeout box leaving your kitchen is actually generating a profit.</p>
+
+    <h2>What is a Delivery Commission Calculator?</h2>
+    
+    <p>A delivery commission calculator is a specialized financial tool that breaks down the true economics of a third-party delivery order. Rather than manually calculating percentages and subtracting hidden expenses, this tool processes your data to reveal your exact net earnings per order.</p>
+    
+    <p>As a comprehensive <strong>delivery app fee calculator</strong>, it relies on a few key inputs: the total <em>order value</em>, the platform's exact <em>commission percentage</em>, your direct <em>food cost</em>, and your <em>packaging cost</em>. By processing these variables alongside your specific delivery pricing assumptions, the tool provides a transparent breakdown of the transaction.</p>
+
+    <p>The key outputs give you total operational clarity. You instantly see the exact <em>commission amount</em> deducted by the app, the net <em>revenue kept</em> by your business, and your true profit margin. This clear delivery pricing support empowers you to make informed decisions about whether to absorb the platform fees or adjust your digital menu prices.</p>
+
+    <h2>Why Calculating Delivery Margins Matters</h2>
+    
+    <p>Selling a $15 burger in your dining room yields a vastly different profit margin than selling that identical $15 burger through an app. Failing to account for this difference is one of the quickest ways to damage your cash flow. Here is why integrating a <strong>food delivery commission calculator</strong> into your operational planning is vital:</p>
+
+    <ul>
+      <li><strong>Protecting Your Bottom Line:</strong> If your standard profit margin on a dish is 25%, but a delivery app takes a 30% commission, you are effectively paying to prepare and sell that food. Calculating your margins ensures you never unknowingly operate at a loss.</li>
+      <li><strong>Informed Menu Pricing:</strong> Because platform fees are so substantial, many operators choose to price their delivery menus higher than their dine-in menus. A calculator allows you to test different pricing strategies to see exactly how much you need to increase your prices to maintain your baseline <a href="https://getvendora.net/calculators/margin-markup-calculator/">profit margin</a>.</li>
+      <li><strong>Exposing Hidden Costs:</strong> Delivery requires premium, temperature-holding containers, bags, and secure seals. A proper <strong>delivery margin calculator</strong> forces you to factor in packaging costs, which routinely add $1.00 to $2.00 to the baseline expense of an order.</li>
+      <li><strong>Platform Negotiation:</strong> Understanding exactly how much money you are handing over to delivery partners provides you with the data needed to negotiate better commission rates as your sales volume grows.</li>
+    </ul>
+
+    <h2>How to Use the Calculator Step by Step</h2>
+
+    <p>Analyzing your delivery economics requires pulling together specific operational data. Here is the best way to utilize the tool to evaluate your digital menu:</p>
+
+    <ol>
+      <li><strong>Input the Order Value:</strong> Start by entering the retail selling price of a typical delivery order (or a specific high-volume menu item).</li>
+      <li><strong>Enter the Commission Percentage:</strong> Review your contract with the delivery platform (e.g., UberEats, DoorDash, Deliveroo) and input their exact commission rate. This typically ranges from 15% to 30%.</li>
+      <li><strong>Add Your Food Cost:</strong> Enter the direct ingredient cost required to prepare the order. If you do not have exact figures, you must first run your recipes through a <a href="https://getvendora.net/tools/food-cost-calculator/">food cost calculator</a> to establish your baseline.</li>
+      <li><strong>Include Packaging Costs:</strong> Add the total cost of all disposable items used for this specific order, including to-go boxes, cutlery, napkins, sauce cups, and bags.</li>
+      <li><strong>Review the Breakdown:</strong> The calculator will instantly output the commission dollars paid to the app, the net revenue deposited into your bank account, and the actual gross profit you generated after food and packaging costs are covered.</li>
+    </ol>
+
+    <div class="vendora-highlight">
+      <h4>Gross Revenue vs. Net Revenue Kept</h4>
+      <p>It is vital to understand this distinction. <strong>Gross Revenue</strong> is the total price the customer paid for the food. <strong>Net Revenue Kept</strong> is the amount the delivery platform actually deposits into your account after their commission fee is deducted. You must build your financial planning around the net revenue, not the gross.</p>
+    </div>
+
+    <h2>Practical Example: Evaluating a Delivery Order</h2>
+
+    <p>Let's look at a practical scenario to see how platform fees impact standard restaurant economics. Imagine you run a neighborhood pasta shop and are evaluating an order for your popular Spaghetti and Meatballs, paired with a side salad and a drink.</p>
+
+    <p>The total order value on the delivery app is <strong>$25.00</strong>.</p>
+
+    <p>First, you break down your direct costs for this specific meal:</p>
+
+    <div class="vendora-table-wrapper">
+      <table class="vendora-table">
+        <thead>
+          <tr>
+            <th>Expense Category</th>
+            <th>Cost Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Direct Food Cost (Ingredients)</td>
+            <td>$6.00</td>
+          </tr>
+          <tr>
+            <td>Packaging (Containers, Bag, Utensils)</td>
+            <td>$1.50</td>
+          </tr>
+          <tr>
+            <td><strong>Total Item Cost</strong></td>
+            <td><strong>$7.50</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>If you sold this meal in your dining room, your gross profit would be a healthy $17.50. However, this is a delivery order, and the app charges a <strong>30% commission</strong>.</p>
+    
+    <p>You input these variables into the <strong>restaurant delivery commission calculator</strong>:</p>
+    <ul>
+        <li>Order Value: $25.00</li>
+        <li>Commission (30%): -$7.50</li>
+        <li><strong>Net Revenue Kept: $17.50</strong></li>
+    </ul>
+
+    <p>Now, you subtract your Total Item Cost ($7.50) from your Net Revenue Kept ($17.50). Your actual gross profit for this delivery order is <strong>$10.00</strong>. While still profitable, the app took nearly 43% of your potential gross profit. Seeing this clear data allows you to decide if you need to use a <a href="https://getvendora.net/tools/menu-price-calculator/">menu price calculator</a> to raise the digital price of the pasta to $28.00 to better protect your margins.</p>
+
+    <h2>Common Mistakes in Delivery Pricing</h2>
+
+    <p>Operating a delivery-optimized menu requires precision. Avoid these common financial missteps when structuring your digital offerings:</p>
+
+    <h3>1. Using Dine-In Prices on Delivery Apps</h3>
+    <p>Offering parity pricing (keeping delivery prices exactly the same as your in-house menu) forces your business to absorb the entire 20% to 30% commission fee. Unless your food costs are exceptionally low, this model is rarely sustainable. Most successful operators increase their digital menu prices by 10% to 20% to share the commission burden with the end consumer.</p>
+
+    <h3>2. Ignoring the Cost of Packaging</h3>
+    <p>A dine-in plate is washed and reused. A delivery container is a one-time expense that directly reduces your margin. High-quality, tamper-evident packaging can easily cost $1.00 to $2.00 per order. If you leave this out of your <strong>commission fee calculator</strong>, your perceived profit will be falsely inflated.</p>
+
+    <h3>3. Running App Promotions Without Doing the Math</h3>
+    <p>Delivery platforms heavily encourage restaurants to run "Buy One Get One Free" (BOGO) or "20% Off" campaigns. While these promotions drive impressive volume, the platform still takes their commission based on the post-discount price, and you are supplying double the food. Always calculate your exact margins before opting into a platform marketing campaign.</p>
+
+    <h3>4. Focusing Only on Volume</h3>
+    <p>Seeing your <a href="https://getvendora.net/calculators/break-even-point/">break-even calculator</a> numbers rise due to increased delivery volume can be exciting, but volume does not equal profit. Processing 100 delivery orders at a $1.00 profit margin requires massive labor and kitchen capacity for very little financial return. Always prioritize margin integrity over sheer order volume.</p>
+
+    <h2>Who Should Use This Tool?</h2>
+
+    <p>If a portion of your revenue relies on third-party couriers, understanding these metrics is a requirement. This tool is built specifically for:</p>
+
+    <ul>
+      <li><strong>Independent Restaurants:</strong> To evaluate whether standard dine-in menu items remain profitable when subjected to a 30% digital platform fee.</li>
+      <li><strong>Cloud Kitchens (Ghost Kitchens):</strong> To manage the strict unit economics of a business model that relies 100% on delivery app infrastructure and visibility.</li>
+      <li><strong>Fast-Casual Cafes:</strong> To understand how high platform commissions impact low-ticket items like coffee and single pastries.</li>
+      <li><strong>Food Trucks:</strong> To determine if partnering with a delivery platform during slow neighborhood shifts actually contributes to the bottom line or just creates busywork.</li>
+      <li><strong>Bakeries and Small Food Businesses:</strong> To strategically price large delivery orders so that packaging and commission fees do not consume the wholesale margin.</li>
+    </ul>
+
+    <h2>Frequently Asked Questions (FAQ)</h2>
+
+    <div class="vendora-faq-item">
+      <h3>Should I increase my prices on delivery apps?</h3>
+      <p>Yes, it is standard industry practice. Most operators apply a markup of 10% to 20% to their delivery app menus. Consumers generally understand that paying a premium for the convenience of delivery is standard. Just ensure your markup is calculated accurately to protect your margins without alienating your customer base.</p>
+    </div>
+
+    <div class="vendora-faq-item">
+      <h3>What is a standard delivery app commission rate?</h3>
+      <p>Depending on the platform and the level of marketing visibility you choose, commission rates typically range from 15% to 30%. If you handle your own delivery fleet and only use the app for order generation, the fee is usually lower (around 10% to 15%).</p>
+    </div>
+
+    <div class="vendora-faq-item">
+      <h3>Are third-party delivery apps actually worth the cost?</h3>
+      <p>Yes, but they must be viewed partially as a marketing expense. Platforms provide access to customers who might never walk past your physical storefront. If you engineer your delivery menu correctly, ensuring a baseline profit on every item, the apps are a highly effective tool for driving volume and brand awareness.</p>
+    </div>
+
+    <div class="vendora-cta-section">
+      <h2>Stop Losing Money on Delivery Fees</h2>
+      <p>Third-party delivery platforms offer incredible reach, but their fees can quietly dismantle your profitability. Knowing your exact numbers allows you to adjust your strategy, optimize your menu, and ensure every order contributes to your success.</p>
+      
+      <p>Take control of your digital margins and find out exactly what you are earning on every transaction.</p>
+      
+      <a href="https://getvendora.net/tools/delivery-commission-calculator/" class="vendora-btn">Calculate Your Delivery Margins Now</a>
+      
+      <p style="font-size: 0.9rem; color: #64748b; margin-top: 24px;">
+        <em>Ready to adjust your prices? Use our <a href="https://getvendora.net/tools/menu-price-calculator/">menu price calculator</a> to build a profitable delivery menu, or check your overall business health using our <a href="https://getvendora.net/calculators/margin-markup-calculator/">profit margin calculator</a>.</em>
+      </p>
+    </div>
+
+  </section>
+</article>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

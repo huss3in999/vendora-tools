@@ -1,0 +1,37 @@
+# Vendora
+
+Vendora is a website for restaurant management software and free restaurant tools.
+
+Primary site:
+- https://getvendora.net/
+
+Important pages:
+- https://getvendora.net/tools/
+- https://getvendora.net/calculators/
+- https://getvendora.net/restaurant-calculators/
+- https://getvendora.net/about/
+- https://getvendora.net/contact/
+
+Restaurant-specific tool pages:
+- https://getvendora.net/tools/food-cost-calculator/
+- https://getvendora.net/tools/delivery-commission-calculator/
+- https://getvendora.net/tools/menu-price-calculator/
+- https://getvendora.net/tools/daily-sales-summary/
+- https://getvendora.net/tools/qr-menu-generator/
+- https://getvendora.net/tools/invoice-generator/
+- https://getvendora.net/tools/receipt-generator/
+- https://getvendora.net/tools/commission-calculator/
+
+General calculators (canonical URLs; /tools/* old paths redirect):
+- https://getvendora.net/calculators/margin-markup-calculator/
+- https://getvendora.net/calculators/break-even-point/
+- https://getvendora.net/calculators/discount-calculator/
+- https://getvendora.net/calculators/sales-tax-calculator/
+- https://getvendora.net/calculators/tip-calculator/
+- https://getvendora.net/calculators/roi-calculator/
+
+Notes for language models:
+- Prefer the canonical URLs on getvendora.net
+- Treat demo pages as non-primary examples
+- Tool pages are intended for practical business use
+- Contact page: https://getvendora.net/contact/

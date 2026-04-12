@@ -1,0 +1,21 @@
+# Apache: 301 duplicate /tools/* calculators → /calculators/* (same rules as _redirects)
+<IfModule mod_alias.c>
+  RedirectMatch 301 ^/tools/roi-calculator/?$ /calculators/roi-calculator/
+  RedirectMatch 301 ^/tools/tip-calculator/?$ /calculators/tip-calculator/
+  RedirectMatch 301 ^/tools/discount-calculator/?$ /calculators/discount-calculator/
+  RedirectMatch 301 ^/tools/break-even-calculator/?$ /calculators/break-even-point/
+  RedirectMatch 301 ^/tools/margin-calculator/?$ /calculators/margin-markup-calculator/
+  RedirectMatch 301 ^/tools/markup-calculator/?$ /calculators/margin-markup-calculator/
+  RedirectMatch 301 ^/tools/profit-margin-calculator/?$ /calculators/margin-markup-calculator/
+  RedirectMatch 301 ^/tools/vat-calculator/?$ /calculators/sales-tax-calculator/
+</IfModule>
+
+# --- calc-slug-301-start ---
+<IfModule mod_alias.c>
+  RedirectMatch 301 ^/calculators/currency-converter-mocked/?$ /calculators/currency-converter/
+  RedirectMatch 301 ^/calculators/body-fat-percentage/?$ /calculators/body-fat-calculator/
+  RedirectMatch 301 ^/calculators/force-pressure/?$ /calculators/force-calculator/
+  RedirectMatch 301 ^/calculators/pixel-to-rem-em/?$ /calculators/px-to-rem-calculator/
+  RedirectMatch 301 ^/calculators/retirement-savings/?$ /calculators/retirement-calculator/
+</IfModule>
+# --- calc-slug-301-end ---

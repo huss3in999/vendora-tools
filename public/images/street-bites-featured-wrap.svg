@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Street Bites featured wrap</title>
+  <desc id="desc">Illustrated local placeholder image for a featured wrap card.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f7d08a"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <circle cx="970" cy="160" r="150" fill="#fde68a" opacity="0.45"/>
+  <rect x="180" y="180" rx="34" ry="34" width="840" height="360" fill="#fff7ed"/>
+  <rect x="250" y="250" rx="120" ry="120" width="700" height="210" fill="#d1fae5"/>
+  <rect x="300" y="295" rx="90" ry="90" width="610" height="120" fill="#a16207"/>
+  <circle cx="420" cy="355" r="24" fill="#86efac"/>
+  <circle cx="760" cy="340" r="18" fill="#fca5a5"/>
+  <circle cx="690" cy="390" r="20" fill="#facc15"/>
+  <text x="600" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="54" font-weight="700" fill="#7c2d12">Street Bites Featured Wrap</text>
+</svg>

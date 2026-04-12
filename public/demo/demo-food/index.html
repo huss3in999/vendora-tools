@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Food Demo | Vendora Pro</title>
+    <meta name="description" content="See a restaurant demo menu built with Vendora, featuring categories, item cards, cart flow, and a mobile-first ordering experience." />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="canonical" href="https://getvendora.net/demo/demo-food/">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-DFY197R2MS');
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } } }</script>
+    <style>.no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; } .modal-open { transform: translateY(0%); } .modal-closed { transform: translateY(100%); } #cart-modal, #whatsapp-modal { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }</style>
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);
+    t.async=1;
+    t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+
+</head>
+<body class="font-sans antialiased selection:bg-emerald-500 selection:text-white pb-24 transition-colors duration-300 bg-gray-50">
+    <div id="app-root" class="max-w-md mx-auto min-h-screen relative overflow-hidden bg-gray-50 shadow-2xl transition-all duration-300">
+        <!-- Minimal Header -->
+        <div class="bg-white pt-12 pb-6 px-6 text-center border-b border-gray-100 shadow-sm relative z-10 relative overflow-hidden">
+            <!-- Background Image overlay -->
+            <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80')] bg-cover bg-center"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-white via-white/90 to-transparent"></div>
+            
+            <div class="relative z-10">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-2xl p-1 bg-white shadow-md border border-gray-100 flex items-center justify-center">
+                    <i data-lucide="utensils-crossed" class="w-10 h-10 text-emerald-500"></i>
+                </div>
+                <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Vendora Bistro</h1>
+                <p class="text-emerald-600 text-xs tracking-wide font-bold mt-2">Artisan Burgers & Woodfire Pizzas</p>
+                <div class="flex items-center justify-center gap-4 mt-4 text-xs font-semibold text-gray-500">
+                    <span class="flex items-center"><i data-lucide="clock" class="w-3 h-3 mr-1"></i> 20-30 min</span>
+                    <span class="flex items-center"><i data-lucide="star" class="w-3 h-3 mr-1 text-yellow-400"></i> 4.9 (2k+)</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Categories -->
+        <div class="sticky top-0 z-30 bg-white/95 backdrop-blur-md py-4 px-6 flex overflow-x-auto no-scrollbar space-x-6 border-b border-gray-100 shadow-sm" id="cat-container">
+            <a href="#cat-0" class="whitespace-nowrap pb-1 border-b-2 font-bold text-sm transition text-emerald-600 border-emerald-500 tracking-wide" onclick="updateActiveTabLine(this)">Burgers</a>
+            <a href="#cat-1" class="whitespace-nowrap pb-1 border-b-2 font-bold text-sm transition text-gray-400 border-transparent tracking-wide" onclick="updateActiveTabLine(this)">Pizzas</a>
+            <a href="#cat-2" class="whitespace-nowrap pb-1 border-b-2 font-bold text-sm transition text-gray-400 border-transparent tracking-wide" onclick="updateActiveTabLine(this)">Sides</a>
+            <a href="#cat-3" class="whitespace-nowrap pb-1 border-b-2 font-bold text-sm transition text-gray-400 border-transparent tracking-wide" onclick="updateActiveTabLine(this)">Drinks</a>
+            <a href="#cat-4" class="whitespace-nowrap pb-1 border-b-2 font-bold text-sm transition text-gray-400 border-transparent tracking-wide" onclick="updateActiveTabLine(this)">Desserts</a>
+        </div>
+
+        <!-- Products -->
+        <div class="p-5 space-y-10" id="products"></div>
+    </div>
+
+    <!-- Floating Cart & Modals -->
+    <button onclick="toggleCart()" id="fab-cart" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 w-[90%] max-w-[380px] bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl shadow-[0_10px_25px_rgba(16,185,129,0.4)] p-4 flex justify-between items-center z-40 transition-transform active:scale-95 hidden">
+        <div class="flex items-center bg-black/20 px-3 py-1.5 rounded-lg backdrop-blur-sm"><i data-lucide="shopping-bag" class="w-5 h-5 mr-2"></i><span id="cart-count" class="font-bold">0</span></div>
+        <span class="font-extrabold text-lg">View Order</span><span id="cart-total" class="font-bold text-lg">0.000 BHD</span>
+    </button>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="fixed inset-x-0 bottom-0 z-50 w-full max-w-md mx-auto h-[85vh] bg-white rounded-t-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.2)] modal-closed flex flex-col">
+        <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-white rounded-t-[2rem]">
+            <h2 class="text-xl font-extrabold text-gray-900">Your Order</h2>
+            <button onclick="toggleCart()" class="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition"><i data-lucide="x" class="w-5 h-5 text-gray-600"></i></button>
+        </div>
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50"></div>
+        <div class="p-5 bg-white border-t border-gray-100 pb-8">
+            <div class="flex justify-between items-center mb-4"><span class="text-gray-500 font-medium">Total Amount</span><span id="modal-total" class="text-2xl font-extrabold text-gray-900">0.000 BHD</span></div>
+            <button onclick="openWhatsAppModal()" class="w-full bg-emerald-500 text-white font-bold text-lg py-4 rounded-xl shadow-lg transition active:scale-95">Checkout Details</button>
+        </div>
+    </div>
+
+    <!-- WhatsApp Modal -->
+    <div id="whatsapp-modal" class="fixed inset-x-0 bottom-0 z-[60] w-full max-w-md mx-auto bg-white rounded-t-[2rem] shadow-[0_-10px_50px_rgba(0,0,0,0.3)] modal-closed flex flex-col pb-8">
+        <div class="p-6 text-center border-b border-gray-100">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"><i data-lucide="smartphone" class="w-8 h-8 text-green-500"></i></div>
+            <h2 class="text-2xl font-extrabold text-gray-900">Send Demo Order</h2>
+            <p class="text-sm text-gray-500 mt-2">Experience how your customers will send their orders directly to WhatsApp.</p>
+        </div>
+        <div class="p-6 bg-gray-50">
+            <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm mb-6">
+                <p class="text-xs text-gray-400 font-bold uppercase mb-2">Order Preview</p>
+                <div id="wa-preview" class="text-sm text-gray-700 font-mono whitespace-pre-line leading-relaxed h-32 overflow-y-auto"></div>
+            </div>
+            <button onclick="triggerWhatsAppRedirect()" class="w-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold text-lg py-4 rounded-xl shadow-lg flex justify-center items-center transition active:scale-95"><i data-lucide="send" class="w-5 h-5 mr-2"></i>Send to WhatsApp</button>
+        </div>
+    </div>
+    <div id="modal-backdrop" onclick="closeAllModals()" class="fixed inset-0 bg-black/60 z-[35] hidden backdrop-blur-sm transition-opacity"></div>
+
+    <script>
+        // Database of 40 Food Products
+        const db = [
+            // Category 0: Burgers (8 items)
+            { id: 'b1', cat: "Burgers", catId: 0, name: "Vendora Classic Burger", price: 2.500, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=400&q=80", desc: "Double smash patty, melted cheddar." },
+            { id: 'b2', cat: "Burgers", catId: 0, name: "Spicy Volcano Burger", price: 3.000, img: "https://images.unsplash.com/photo-1594212202815-5e0427329971?auto=format&fit=crop&w=400&q=80", desc: "JalapeÃ±os, pepper jack, spicy mayo." },
+            { id: 'b3', cat: "Burgers", catId: 0, name: "Truffle Mushroom Swiss", price: 3.500, img: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=400&q=80", desc: "Swiss cheese, grilled mushrooms." },
+            { id: 'b4', cat: "Burgers", catId: 0, name: "BBQ Bacon Ranch", price: 3.200, img: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?auto=format&fit=crop&w=400&q=80", desc: "Crispy bacon, onion rings, BBQ sauce." },
+            { id: 'b5', cat: "Burgers", catId: 0, name: "Crispy Chicken Sandwich", price: 2.800, img: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=400&q=80", desc: "Fried chicken breast, pickles, slaw." },
+            { id: 'b6', cat: "Burgers", catId: 0, name: "Veggie Beyond Burger", price: 3.000, img: "https://images.unsplash.com/photo-1520072959219-c595dc870360?auto=format&fit=crop&w=400&q=80", desc: "Plant-based patty, vegan cheese." },
+            { id: 'b7', cat: "Burgers", catId: 0, name: "The Monster Triple", price: 4.500, img: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=400&q=80", desc: "Three patties, extra cheese." },
+            { id: 'b8', cat: "Burgers", catId: 0, name: "Breakfast Egg Burger", price: 2.200, img: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=400&q=80", desc: "Fried egg, bacon, hash brown." },
+
+            // Category 1: Pizzas (8 items)
+            { id: 'p1', cat: "Pizzas", catId: 1, name: "Margherita Original", price: 3.500, img: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=400&q=80", desc: "Fresh mozzarella, tomato, basil." },
+            { id: 'p2', cat: "Pizzas", catId: 1, name: "Pepperoni Feast", price: 4.000, img: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=400&q=80", desc: "Double pepperoni, extra cheese." },
+            { id: 'p3', cat: "Pizzas", catId: 1, name: "BBQ Chicken Supreme", price: 4.500, img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80", desc: "Grilled chicken, red onions, BBQ base." },
+            { id: 'p4', cat: "Pizzas", catId: 1, name: "Vegetarian Garden", price: 3.800, img: "https://images.unsplash.com/photo-1585238342024-78d387f4a707?auto=format&fit=crop&w=400&q=80", desc: "Bell peppers, mushrooms, olives." },
+            { id: 'p5', cat: "Pizzas", catId: 1, name: "Spicy Meatlovers", price: 4.800, img: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&w=400&q=80", desc: "Sausage, bacon, pepperoni, chili." },
+            { id: 'p6', cat: "Pizzas", catId: 1, name: "Four Cheese (Quattro Formaggi)", price: 4.200, img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80", desc: "Mozzarella, gorgonzola, parmesan, feta." },
+            { id: 'p7', cat: "Pizzas", catId: 1, name: "Hawaiian Tropical", price: 3.900, img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80", desc: "Ham, fresh pineapple." },
+            { id: 'p8', cat: "Pizzas", catId: 1, name: "Truffle & Mushroom", price: 4.500, img: "https://images.unsplash.com/photo-1571066811602-716837d681de?auto=format&fit=crop&w=400&q=80", desc: "Wild mushrooms, truffle oil." },
+
+            // Category 2: Sides (8 items)
+            { id: 's1', cat: "Sides", catId: 2, name: "Classic French Fries", price: 1.000, img: "https://images.unsplash.com/photo-1576107232684-1279f390859f?auto=format&fit=crop&w=400&q=80", desc: "Crispy and golden." },
+            { id: 's2', cat: "Sides", catId: 2, name: "Cheesy Fries", price: 1.500, img: "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=400&q=80", desc: "Melted cheddar sauce." },
+            { id: 's3', cat: "Sides", catId: 2, name: "Crispy Onion Rings", price: 1.200, img: "https://images.unsplash.com/photo-1639024471283-03518883512d?auto=format&fit=crop&w=400&q=80", desc: "Battered and fried to perfection." },
+            { id: 's4', cat: "Sides", catId: 2, name: "Mozzarella Sticks (6pcs)", price: 1.800, img: "https://images.unsplash.com/photo-1530682802879-6b58203f7e61?auto=format&fit=crop&w=400&q=80", desc: "Served with marinara dip." },
+            { id: 's5', cat: "Sides", catId: 2, name: "Buffalo Wings (8pcs)", price: 2.500, img: "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?auto=format&fit=crop&w=400&q=80", desc: "Spicy buffalo sauce." },
+            { id: 's6', cat: "Sides", catId: 2, name: "Garlic Bread", price: 0.800, img: "https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?auto=format&fit=crop&w=400&q=80", desc: "Oven baked with herbs." },
+            { id: 's7', cat: "Sides", catId: 2, name: "Mac & Cheese Bites", price: 1.600, img: "https://images.unsplash.com/photo-1543339494-b4cd4f7ba686?auto=format&fit=crop&w=400&q=80", desc: "Deep fried cheesy goodness." },
+            { id: 's8', cat: "Sides", catId: 2, name: "Fresh Coleslaw", price: 0.600, img: "https://images.unsplash.com/photo-1505253758473-96b7015fcd40?auto=format&fit=crop&w=400&q=80", desc: "Creamy cabbage salad." },
+
+            // Category 3: Drinks (8 items)
+            { id: 'd1', cat: "Drinks", catId: 3, name: "Coca-Cola", price: 0.500, img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80", desc: "Chilled can." },
+            { id: 'd2', cat: "Drinks", catId: 3, name: "Diet Coke", price: 0.500, img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=400&q=80", desc: "Chilled can." },
+            { id: 'd3', cat: "Drinks", catId: 3, name: "Fresh Lemonade", price: 1.200, img: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=400&q=80", desc: "Squeezed daily." },
+            { id: 'd4', cat: "Drinks", catId: 3, name: "Iced Peach Tea", price: 1.000, img: "https://images.unsplash.com/photo-1499638673689-79a0b5115d87?auto=format&fit=crop&w=400&q=80", desc: "Refreshing and sweet." },
+            { id: 'd5', cat: "Drinks", catId: 3, name: "Vanilla Milkshake", price: 1.800, img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=400&q=80", desc: "Thick and creamy." },
+            { id: 'd6', cat: "Drinks", catId: 3, name: "Chocolate Milkshake", price: 1.800, img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=400&q=80", desc: "Rich chocolate flavor." },
+            { id: 'd7', cat: "Drinks", catId: 3, name: "Fresh Orange Juice", price: 1.500, img: "https://images.unsplash.com/photo-1600271886742-f049cd451b06?auto=format&fit=crop&w=400&q=80", desc: "100% natural." },
+            { id: 'd8', cat: "Drinks", catId: 3, name: "Mineral Water", price: 0.300, img: "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=400&q=80", desc: "Bottled water." },
+
+            // Category 4: Desserts (8 items)
+            { id: 'ds1', cat: "Desserts", catId: 4, name: "Molten Lava Cake", price: 2.500, img: "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=400&q=80", desc: "Served with vanilla ice cream." },
+            { id: 'ds2', cat: "Desserts", catId: 4, name: "New York Cheesecake", price: 2.200, img: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=400&q=80", desc: "Strawberry sauce." },
+            { id: 'ds3', cat: "Desserts", catId: 4, name: "Fudge Brownie", price: 1.800, img: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=400&q=80", desc: "Warm and gooey." },
+            { id: 'ds4', cat: "Desserts", catId: 4, name: "Classic Tiramisu", price: 2.400, img: "https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=400&q=80", desc: "Coffee flavored Italian dessert." },
+            { id: 'ds5', cat: "Desserts", catId: 4, name: "Apple Pie", price: 1.500, img: "https://images.unsplash.com/photo-1562007908-17c67e878c88?auto=format&fit=crop&w=400&q=80", desc: "Cinnamon and apples." },
+            { id: 'ds6', cat: "Desserts", catId: 4, name: "Churros with Nutella", price: 1.800, img: "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?auto=format&fit=crop&w=400&q=80", desc: "Crispy fried dough." },
+            { id: 'ds7', cat: "Desserts", catId: 4, name: "Ice Cream Sundae", price: 1.600, img: "https://images.unsplash.com/photo-1563805042-7684c8a9e9ce?auto=format&fit=crop&w=400&q=80", desc: "Chocolate syrup and cherry." },
+            { id: 'ds8', cat: "Desserts", catId: 4, name: "Glazed Donut", price: 0.800, img: "https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=400&q=80", desc: "Sweet and fluffy." }
+        ];
+        
+        let cart = {};
+
+        function renderProducts() {
+            let html = '';
+            [0, 1, 2, 3, 4].forEach(catIdx => {
+                const items = db.filter(i => i.catId === catIdx);
+                if(items.length === 0) return;
+                
+                html += `<div id="cat-${catIdx}" class="scroll-mt-24 mb-10">
+                            <div class="flex items-center mb-6">
+                                <h2 class="text-xl font-extrabold text-gray-900 tracking-tight">${items[0].cat}</h2>
+                            </div>
+                            <div class="space-y-4">`;
+                
+                items.forEach(item => {
+                    const qty = cart[item.id] || 0;
+                    // Using a horizontal card layout for food which looks better
+                    const btn = qty > 0 
+                        ? `<div class="flex items-center justify-between bg-emerald-50 rounded-lg p-1 border border-emerald-100 mt-3"><button onclick="updateCart('${item.id}', -1)" class="w-8 h-8 flex items-center justify-center bg-white rounded-md shadow-sm text-emerald-600 font-bold">-</button><span class="text-center font-bold text-sm text-emerald-800 px-2">${qty}</span><button onclick="updateCart('${item.id}', 1)" class="w-8 h-8 flex items-center justify-center bg-emerald-500 rounded-md shadow-sm text-white font-bold">+</button></div>` 
+                        : `<button onclick="updateCart('${item.id}', 1)" class="mt-3 w-full py-2 rounded-lg bg-emerald-50 text-emerald-600 font-bold text-xs uppercase tracking-wider hover:bg-emerald-100 transition active:scale-95 flex items-center justify-center"><i data-lucide="plus" class="w-4 h-4 mr-1"></i> Add</button>`;
+                    
+                    html += `
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-3 flex gap-4 overflow-hidden relative">
+                            <div class="w-28 h-28 rounded-xl overflow-hidden shrink-0 bg-gray-100 relative">
+                                <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 flex flex-col justify-between py-1">
+                                <div>
+                                    <h3 class="font-bold text-gray-900 text-sm leading-snug">${item.name}</h3>
+                                    <p class="text-xs text-gray-500 mt-1 line-clamp-2">${item.desc}</p>
+                                </div>
+                                <div class="flex items-end justify-between mt-2">
+                                    <span class="font-extrabold text-sm text-emerald-600">${item.price.toFixed(3)} BHD</span>
+                                </div>
+                                ${btn}
+                            </div>
+                        </div>`;
+                });
+                html += `</div></div>`;
+            });
+            document.getElementById('products').innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function updateActiveTabLine(el) {
+            Array.from(el.parentElement.children).forEach(c => c.className = "whitespace-nowrap pb-1 border-b-2 font-bold text-sm transition text-gray-400 border-transparent tracking-wide");
+            el.className = `whitespace-nowrap pb-1 border-b-2 font-bold text-sm transition text-emerald-600 border-emerald-500 tracking-wide`;
+        }
+
+        function updateCart(id, change) {
+            cart[id] = (cart[id] || 0) + change;
+            if (cart[id] <= 0) delete cart[id];
+            renderProducts(); updateCartUI();
+        }
+
+        function updateCartUI() {
+            let totalItems = 0; let totalPrice = 0; let cartHtml = '';
+            Object.entries(cart).forEach(([id, qty]) => {
+                const item = db.find(i => i.id === id);
+                totalItems += qty; totalPrice += item.price * qty;
+                cartHtml += `
+                    <div class="flex justify-between items-center bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <img src="${item.img}" alt="${item.name}" class="w-12 h-12 rounded-lg object-cover bg-gray-100">
+                            <div>
+                                <h4 class="font-bold text-sm text-gray-900">${item.name}</h4>
+                                <p class="text-xs text-gray-500">${item.price.toFixed(3)} BHD x ${qty}</p>
+                            </div>
+                        </div>
+                        <div class="font-extrabold text-sm text-gray-900">${(item.price * qty).toFixed(3)}</div>
+                    </div>`;
+            });
+            
+            const fab = document.getElementById('fab-cart');
+            if (totalItems > 0) {
+                fab.classList.remove('hidden'); 
+                document.getElementById('cart-count').innerText = totalItems;
+                document.getElementById('cart-total').innerText = totalPrice.toFixed(3) + ' BHD';
+                document.getElementById('modal-total').innerText = totalPrice.toFixed(3) + ' BHD';
+            } else {
+                fab.classList.add('hidden');
+                if(!document.getElementById('cart-modal').classList.contains('modal-closed')) toggleCart();
+            }
+            document.getElementById('cart-items-container').innerHTML = cartHtml;
+        }
+
+        function toggleCart() {
+            const m = document.getElementById('cart-modal'); const b = document.getElementById('modal-backdrop');
+            m.classList.toggle('modal-closed'); m.classList.toggle('modal-open'); b.classList.toggle('hidden');
+        }
+        function closeAllModals() {
+            document.getElementById('cart-modal').classList.replace('modal-open', 'modal-closed');
+            document.getElementById('whatsapp-modal').classList.replace('modal-open', 'modal-closed');
+            document.getElementById('modal-backdrop').classList.add('hidden');
+        }
+
+        let waText = "";
+        function openWhatsAppModal() {
+            document.getElementById('cart-modal').classList.replace('modal-open', 'modal-closed');
+            document.getElementById('whatsapp-modal').classList.replace('modal-closed', 'modal-open');
+            let text = `*New Order - Vendora Bistro*\n\n`; let total = 0;
+            Object.entries(cart).forEach(([id, qty]) => {
+                const item = db.find(i => i.id === id); text += `${qty}x ${item.name} - ${(item.price * qty).toFixed(3)} BHD\n`; total += item.price * qty;
+            });
+            text += `\n*Total: ${total.toFixed(3)} BHD*`;
+            waText = encodeURIComponent(text); document.getElementById('wa-preview').innerText = text;
+        }
+        function triggerWhatsAppRedirect() { window.open(`https://wa.me/?text=${waText}`, '_blank'); closeAllModals(); }
+
+        window.onload = () => { lucide.createIcons(); renderProducts(); };
+    </script>
+
+    <section class="max-w-md mx-auto px-5 pb-10">
+      <div class="bg-white rounded-[1.75rem] border border-gray-100 shadow-sm p-6">
+        <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">Free Restaurant Tools</h2>
+        <p class="mt-3 text-sm leading-7 text-gray-600">Vendora provides restaurant calculators and tools to help restaurants, cafes, and food trucks manage pricing, profit, and daily operations.</p>
+        <p class="mt-3 text-sm leading-7 text-gray-600">Use our free tools to calculate food cost, menu price, delivery commission, and generate invoices quickly.</p>
+      </div>
+    </section>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

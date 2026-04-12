@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Interest Calculator — I = PRT | Vendora</title>
+<meta name="description" content="Calculate simple interest and total repayment for loans or investments where interest does not compound on interest.">
+<link rel="canonical" href="https://getvendora.net/calculators/simple-interest-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Simple Interest Calculator — I = PRT">
+<meta property="og:description" content="Calculate simple interest and total repayment for loans or investments where interest does not compound on interest.">
+<meta property="og:url" content="https://getvendora.net/calculators/simple-interest-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Simple Interest Calculator — I = PRT | Vendora">
+<meta name="twitter:description" content="Calculate simple interest and total repayment for loans or investments where interest does not compound on interest.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"When is simple interest used?","acceptedAnswer":{"@type":"Answer","text":"Some short-term notes and teaching examples; most savings products compound."}},{"@type":"Question","name":"How is time entered?","acceptedAnswer":{"@type":"Answer","text":"Use years as a decimal (e.g., 18 months = 1.5 years) unless the form specifies otherwise."}},{"@type":"Question","name":"Can interest accrue daily on a simple-interest loan?","acceptedAnswer":{"@type":"Answer","text":"Some products accrue on a daily basis but still use simple interest rules—follow your promissory note."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Finance &amp; Money</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Simple Interest Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">I = P × r × t</p>
+      <div class="grid gap-3"><label>P ($)<input type="number" id="p" class="w-full border rounded px-2 py-1 mt-1" value="1000"></label>
+<label>Rate (annual)<input type="number" id="r" step="0.01" class="w-full border rounded px-2 py-1 mt-1" value="0.05"></label>
+<label>Years<input type="number" id="t" class="w-full border rounded px-2 py-1 mt-1" value="5"></label></div>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Simple Interest Calculator</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Computes interest as principal × rate × time without compounding.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Enter principal, annual rate, and time in years, then calculate.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Interest = P × r × t; total = P + interest.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>$5,000 at 4% simple interest for 3 years → $600 interest, $5,600 total.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">When is simple interest used?</p>
+        <p class="text-sm text-vendora-muted mt-1">Some short-term notes and teaching examples; most savings products compound.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">How is time entered?</p>
+        <p class="text-sm text-vendora-muted mt-1">Use years as a decimal (e.g., 18 months = 1.5 years) unless the form specifies otherwise.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Can interest accrue daily on a simple-interest loan?</p>
+        <p class="text-sm text-vendora-muted mt-1">Some products accrue on a daily basis but still use simple interest rules—follow your promissory note.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+function run(){const P=+document.getElementById('p').value,r=+document.getElementById('r').value,t=+document.getElementById('t').value;const I=P*r*t;document.getElementById('out').textContent='Interest: $'+I.toFixed(2)+'\nTotal: $'+(P+I).toFixed(2);}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

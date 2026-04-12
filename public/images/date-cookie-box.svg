@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Date cookie box</title>
+  <desc id="desc">Illustrated local placeholder image for a boxed date cookie product.</desc>
+  <rect width="800" height="500" fill="#fef3c7"/>
+  <rect x="170" y="100" width="460" height="290" rx="28" fill="#78350f"/>
+  <rect x="205" y="135" width="390" height="220" rx="20" fill="#fde68a"/>
+  <circle cx="300" cy="240" r="52" fill="#92400e"/>
+  <circle cx="400" cy="240" r="52" fill="#a16207"/>
+  <circle cx="500" cy="240" r="52" fill="#92400e"/>
+  <text x="400" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="42" font-weight="700" fill="#78350f">Date Cookie Box</text>
+</svg>

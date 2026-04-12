@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eBay Fee Calculator | Etsy Fees &amp; Net Profit (2026)</title>
+  <meta name="description" content="Free eBay fee calculator and Etsy fee calculator for 2026: final value fees, promoted listings, per-order fees, payment processing, offsite ads, and true net profit with waterfall breakdown.">
+  <meta name="keywords" content="ebay fee calculator, ebay fees calculator, etsy fee calculator, ebay selling fees calculator, calculate ebay fees, ebay final value fee calculator">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/ebay-fee-calculator/">
+  <meta property="og:title" content="eBay Fee Calculator | Etsy &amp; eBay Net Profit | Vendora">
+  <meta property="og:description" content="Compare eBay and Etsy marketplace fees with transparent waterfall: FVF, fixed order fee, ads, payment processing, and profit margin.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/ebay-fee-calculator/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "eBay Fee Calculator | E-Commerce Marketplace Fee Aggregator (eBay & Etsy)",
+  "url": "https://getvendora.net/tools/ebay-fee-calculator/",
+  "description": "Estimate eBay and Etsy seller fees and net profit using 2026-style fee structures, including total-sale-based FVF, promoted listings, and Etsy offsite ads.",
+  "isPartOf": { "@type": "WebSite", "name": "Vendora", "url": "https://getvendora.net/" }
+}
+</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vendora eBay & Etsy Fee Calculator",
+    "description": "Estimate eBay and Etsy seller fees, payment processing, ads, and net profit with a waterfall breakdown for 2026-style fee models.",
+    "url": "https://getvendora.net/tools/ebay-fee-calculator/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="../tool-system.css">
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);
+    t.async=1;
+    t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];
+    y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+  <script src="./fee-engine.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Vendora Free Tool · 2026 fee model</p>
+      <h1>eBay Fee Calculator &amp; Etsy Fee Aggregator</h1>
+      <p class="hero-copy">
+        Calculate <strong>true net profit</strong> after marketplace fees. Percentage fees use the <strong>full amount paid by the buyer</strong> (item + shipping + sales tax) for eBay; Etsy includes item, shipping, gift wrap, and tax in the order total. See a full <strong>waterfall</strong> of listing, transaction, FVF, payment processing, promoted and offsite ads, then COGS and shipping costs.
+      </p>
+      <div class="hero-points">
+        <span class="hero-point hero-point-highlight">eBay &amp; Etsy</span>
+        <span class="hero-point">FVF tiers &amp; store</span>
+        <span class="hero-point">Ads &amp; international</span>
+        <span class="hero-point">Net &amp; margin %</span>
+      </div>
+    </section>
+
+    <p class="disclaimer-banner" role="note">
+      <strong>Note:</strong> Fee structures change. Use this as a planning estimate—confirm current rates in eBay and Etsy seller hubs.
+    </p>
+
+    <section class="calculator-shell">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Sale inputs</h2>
+
+        <div class="platform-tabs" role="tablist" aria-label="Marketplace">
+          <button type="button" class="platform-tab is-active" id="platEbay" role="tab" aria-selected="true">eBay</button>
+          <button type="button" class="platform-tab" id="platEtsy" role="tab" aria-selected="false">Etsy</button>
+        </div>
+
+        <div class="field-grid">
+          <div class="field-wide">
+            <label for="itemPrice">Item selling price</label>
+            <input id="itemPrice" type="text" inputmode="decimal" placeholder="45.00">
+          </div>
+          <div class="field-wide">
+            <label for="shippingCharge">Shipping charged to buyer</label>
+            <input id="shippingCharge" type="text" inputmode="decimal" placeholder="8.50">
+          </div>
+          <div class="field-wide">
+            <label for="taxPct">Sales tax % (on item + shipping<span class="etsy-only"> + gift wrap</span>)</label>
+            <input id="taxPct" type="text" inputmode="decimal" placeholder="7.25">
+          </div>
+          <div class="field-wide etsy-only" id="wrapGift">
+            <label for="giftWrap">Gift wrap charge (Etsy)</label>
+            <input id="giftWrap" type="text" inputmode="decimal" placeholder="0">
+          </div>
+          <div class="field-wide etsy-only" id="wrapQty">
+            <label for="quantity">Quantity sold (this order)</label>
+            <input id="quantity" type="text" inputmode="numeric" placeholder="1">
+          </div>
+        </div>
+
+        <h3 class="subsection-title">Your costs</h3>
+        <div class="field-grid">
+          <div class="field-wide">
+            <label for="cogs">Item cost (COGS)</label>
+            <input id="cogs" type="text" inputmode="decimal" placeholder="12.00">
+          </div>
+          <div class="field-wide">
+            <label for="actualShippingCost">Actual shipping cost (to you)</label>
+            <input id="actualShippingCost" type="text" inputmode="decimal" placeholder="6.00">
+          </div>
+          <div class="field-wide">
+            <label for="packagingCost">Packaging</label>
+            <input id="packagingCost" type="text" inputmode="decimal" placeholder="0.75">
+          </div>
+        </div>
+
+        <h3 class="subsection-title ebay-only">eBay options</h3>
+        <div class="field-grid ebay-only" id="ebayOptions">
+          <label class="checkbox-row"><input type="checkbox" id="storeSubscription"> Active eBay Store subscription (lower FVF tier cap)</label>
+          <div class="field-wide">
+            <label for="promotedPct">Promoted Listings Standard ad rate (%)</label>
+            <input id="promotedPct" type="text" inputmode="decimal" placeholder="0">
+            <p class="field-hint">Use 0 for none; otherwise 2%–100% of total sale amount.</p>
+          </div>
+        </div>
+
+        <h3 class="subsection-title etsy-only is-hidden" id="etsyOptionsTitle">Etsy options</h3>
+        <div class="field-grid etsy-only is-hidden" id="etsyOptions">
+          <div class="field-wide">
+            <label for="etsyBankRegion">Payment account region</label>
+            <div class="select-wrap">
+              <select id="etsyBankRegion">
+                <option value="US" selected>United States (3% + $0.25)</option>
+                <option value="UK">United Kingdom (4% + £0.20)</option>
+                <option value="EU">EU (4% + €0.30)</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-wide">
+            <label for="offsiteAds">Offsite Ads</label>
+            <div class="select-wrap">
+              <select id="offsiteAds">
+                <option value="optout" selected>Opted out (0%)</option>
+                <option value="under10k">Under $10k/yr revenue (15%)</option>
+                <option value="over10k">Over $10k/yr mandatory (12%)</option>
+              </select>
+            </div>
+            <p class="field-hint">Applies to item + shipping only.</p>
+          </div>
+        </div>
+
+        <details class="advanced-accordion" id="advancedSettings">
+          <summary>Advanced settings</summary>
+          <div class="advanced-inner">
+            <h4 class="adv-heading ebay-only">eBay: international &amp; performance</h4>
+            <div class="field-grid ebay-only">
+              <label class="checkbox-row"><input type="checkbox" id="internationalBuyer"> International buyer</label>
+              <label class="checkbox-row"><input type="checkbox" id="ebayIntlShipping"> Using eBay International Shipping (waives 1.65% intl. fee)</label>
+              <label class="checkbox-row"><input type="checkbox" id="currencyConversion"> Currency conversion (3%)</label>
+              <label class="checkbox-row"><input type="checkbox" id="belowStandard"> Below Standard seller (+6% FVF)</label>
+              <label class="checkbox-row"><input type="checkbox" id="veryHighReturn"> Very high return rate (+5% FVF)</label>
+            </div>
+            <h4 class="adv-heading etsy-only is-hidden" id="etsyAdvTitle">Etsy: regulatory (international sellers)</h4>
+            <div class="field-wide etsy-only is-hidden" id="etsyRegWrap">
+              <label for="regulatoryCountry">Regulatory operating fee</label>
+              <div class="select-wrap">
+                <select id="regulatoryCountry">
+                  <option value="" selected>None</option>
+                  <option value="UK">United Kingdom (0.32%)</option>
+                  <option value="FR">France (0.47%)</option>
+                  <option value="ES">Spain (0.72%)</option>
+                  <option value="CA">Canada (1.15%)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <div class="actions">
+          <button type="button" class="btn btn-secondary" id="resetButton">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Profit waterfall</h2>
+        <p class="section-copy">Gross revenue, every platform fee, tax remittance estimate, your costs, and net profit.</p>
+
+        <div class="results-highlight">
+          <div class="results-cols">
+            <div>
+              <span class="net-label">Net profit</span>
+              <strong class="net-value" id="netProfitOutput">$0.00</strong>
+            </div>
+            <div>
+              <span class="net-label">Profit margin</span>
+              <strong class="net-value net-value-sm" id="marginOutput">0%</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="stack-bar-wrap" aria-hidden="true">
+          <span class="stack-bar-label">Share of buyer payment</span>
+          <div class="stack-bar" id="stackBar"></div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="breakdown-table" id="waterfallTable">
+            <caption class="sr-only">Fee and profit waterfall</caption>
+            <thead>
+              <tr><th scope="col">Line</th><th scope="col">Amount</th></tr>
+            </thead>
+            <tbody id="waterfallBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq seo-tool-guide" aria-labelledby="ebay-guide-what">
+      <h2 class="section-title" id="ebay-guide-what">What this tool does</h2>
+      <p class="section-copy">This calculator reconstructs the full buyer payment for eBay or Etsy sales, then walks each fee line—listing, final value, fixed order charges, promoted listings, offsite ads, payment processing, regulatory extras, and your own cost of goods plus outbound shipping—until it lands on net profit and margin percentage. eBay logic models tiered final value fees on the total amount paid (item + shipping + estimated tax) with different breakpoints for standard versus store subscriptions, plus the small fixed per-order fee. Etsy mode layers per-listing renewal costs, transaction percentages on the order total, regional processing rates, and optional offsite ad surcharges. A waterfall table and stacked bar make it obvious which category eats the most margin so you can adjust price, shipping, or ad spend before you list.</p>
+      <h2 class="section-title">Who should use it</h2>
+      <p class="section-copy">Resellers, handmade sellers, vintage curators, and micro-brands juggling both marketplaces will rely on it whenever they price new inventory or audit a month-end statement. Accountants supporting ecommerce clients can sanity-check exports, while restaurant-adjacent merchants selling merchandise or packaged goods online get the same clarity. Because the tool separates marketplace fees from your true variable costs, it is also helpful when you compare multichannel strategies—knowing net dollars after fees is the only fair way to stack Etsy against eBay against your own Shopify site.</p>
+      <h2 class="section-title">How to use it</h2>
+      <p class="section-copy">Pick the platform tab, then enter item price, quantity, shipping you charge, and sales tax assumptions that mirror how buyers check out. Toggle store status, promoted listing rates, international surcharges, or Etsy-specific options like offsite ads and regulatory fees. Add your product cost and shipping-out cost so profit is real, not just fee math. Hit calculate and read the summary cards first, then expand the waterfall to verify each line item. When policies change, update percentages inside the form and save screenshots for your records—always confirm live rates in seller hubs because marketplaces adjust tiers without notice.</p>
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Suppose you sell a $45 handmade apron with $8 buyer shipping and $4 estimated tax, so the buyer pays $57. On eBay without a store, final value fees apply to that full total using the tiered percentages in the tool, then the fixed order fee applies. After subtracting $18 material cost and $6 outbound postage, you might see $22 net and roughly 39% margin. Switching to Etsy with listing renewals, transaction fee, and domestic processing might yield a different net even when headline percentages look smaller—run both tabs before you commit inventory to one channel.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related Tools</h2>
+      <p><a href="/tools/commission-calculator/">Commission Calculator</a>, <a href="/tools/menu-price-calculator/">Menu Price Calculator</a>, <a href="/tools/receipt-generator/">Receipt Generator</a>, <a href="/tools/invoice-generator/">Invoice Generator</a></p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/contact/">Contact</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <a class="btn sticky-cta" href="/">Open Vendora POS</a>
+  <a href="/contact/" onclick="window.open('https://wa.me/97333404044?text=Hi%20Vendora%2C%20I%20need%20support%20with%20the%20eBay%20fee%20calculator', '_blank', 'noopener'); return false;" target="_blank" rel="noopener noreferrer" class="whatsapp-support-fab" aria-label="Chat on WhatsApp for support">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4A8.5 8.5 0 1 1 12.5 3a8.38 8.38 0 0 1 5.4 1.9"/><path d="M22 2 12 12"/><path d="M16 2h6v6"/></svg>
+    <span>WhatsApp Support</span>
+  </a>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

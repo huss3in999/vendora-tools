@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shift Scheduler Free Online | Weekly View &amp; Conflict Detection | Vendora</title>
+  <meta name="description" content="Free shift scheduler: employee, role, shift date, start and end time, break minutes, auto total hours, weekly schedule view, and overlap conflict detection for the same person on the same day.">
+  <meta name="keywords" content="shift scheduler, employee schedule, weekly schedule, shift planner, restaurant scheduling">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/shift-scheduler/">
+  <meta property="og:title" content="Shift Scheduler | Weekly View &amp; Conflicts | Vendora">
+  <meta property="og:description" content="Plan shifts with hours auto-calculated and conflicts flagged.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/shift-scheduler/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Shift Scheduler Free Online | Weekly View and Conflict Detection",
+  "url": "https://getvendora.net/tools/shift-scheduler/",
+  "description": "Schedule employees with role, date, start and end times, break minutes, automatic total hours, grouped weekly view, and conflict detection for overlapping shifts.",
+  "isPartOf": { "@type": "WebSite", "name": "Vendora", "url": "https://getvendora.net/" }
+}
+</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vendora Shift Scheduler",
+    "description": "Browser shift table with employee, role, date, times, break deduction, total hours, calendar-style grouping, and same-day overlap warnings.",
+    "url": "https://getvendora.net/tools/shift-scheduler/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How are total hours calculated?",
+        "acceptedAnswer": { "@type": "Answer", "text": "End time minus start time on the same calendar day, minus unpaid break minutes. Overnight shifts extend end past midnight in logic when end is before start." }
+      },
+      {
+        "@type": "Question",
+        "name": "What counts as a conflict?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Two shifts for the same employee name on the same date with overlapping time ranges." }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="../tool-system.css">
+<script>
+(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/w28z01fb1p";
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "w28z01fb1p");
+</script>
+  <script defer src="/assets/clarity-helper.js"></script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/all-tools/">All tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Vendora Free Tool</p>
+      <h1>Shift Scheduler</h1>
+      <p class="hero-copy">
+        Enter <strong>employee name</strong>, <strong>role</strong>, <strong>shift date</strong>, <strong>start</strong> and <strong>end time</strong>, and <strong>break minutes</strong>. <strong>Total hours</strong> update automatically. The <strong>weekly schedule view</strong> groups shifts by date, and <strong>conflict detection</strong> flags overlapping shifts for the same person on the same day.
+      </p>
+      <div class="hero-points">
+        <span class="hero-point hero-point-highlight">Auto hours</span>
+        <span class="hero-point">Weekly cards</span>
+        <span class="hero-point">Overlap alerts</span>
+        <span class="hero-point">No signup</span>
+      </div>
+    </section>
+
+    <div id="conflictBox" class="conflict-banner" role="alert" hidden></div>
+
+    <section class="calculator-shell">
+      <section class="card input-card" aria-labelledby="sh-heading">
+        <h2 class="section-title" id="sh-heading">Shifts</h2>
+        <p class="section-copy">Add rows for each block. Use consistent employee names for conflict checks.</p>
+        <div class="actions" style="margin-bottom:16px;">
+          <button type="button" class="btn btn-secondary" id="addShiftBtn">Add shift</button>
+        </div>
+        <div class="data-table-wrap">
+          <table class="data-table" aria-label="Shift rows">
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Role</th>
+                <th>Date</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Break (min)</th>
+                <th>Total hours</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="shiftBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="wk-heading">
+        <h2 class="section-title" id="wk-heading">Schedule by date</h2>
+        <p class="section-copy">Shifts grouped by calendar date (scroll on small screens).</p>
+        <div class="week-grid" id="weekGrid"></div>
+      </section>
+    </section>
+
+    <section class="card faq seo-tool-guide" aria-labelledby="sh-guide-what">
+      <h2 class="section-title" id="sh-guide-what">What this tool does</h2>
+      <p class="section-copy">The shift scheduler gives front-of-house and back-of-house leads a single grid to draft coverage before it hits the team chat. Each row binds a person to a role, calendar date, and clock span, then subtracts unpaid break minutes so labor estimates reflect real paid time. Total hours recalculates on every keystroke, which helps compare a proposed eight-hour cook block against a six-hour split. Below the grid, a schedule-by-date panel stacks the same records visually so you can read Monday versus Tuesday at a glance—similar to a condensed week strip. Conflict detection watches for the same employee name on the same day with overlapping intervals and surfaces a warning banner before you text the roster out.</p>
+      <h2 class="section-title">Who should use it</h2>
+      <p class="section-copy">Cafes, quick-service restaurants, retail shops, and event crews that still plan in spreadsheets will appreciate the lightweight flow. It complements the <a href="/tools/work-hours-overtime-tracker/">work hours and overtime tracker</a> when you move from planned shifts to actual punch data, and the <a href="/tools/hourly-to-salary-calculator/">hourly to salary calculator</a> when you translate hours into pay bands.</p>
+      <h2 class="section-title">How to use it</h2>
+      <p class="section-copy">Add a shift row per block—not per employee per day if they split roles, split rows. Enter 24-hour style times using the browser time picker. Break minutes cover unpaid meal or rest. Watch total hours and the grouped view update. If conflicts appear, shorten a block, stagger start times, or assign a different teammate. Remove rows you cancel so the summary stays truthful.</p>
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Saturday brunch needs two servers and one cook. Sara works 10:00–18:00 with thirty minutes unpaid; Omar opens the line 09:00–17:00. The tool shows both on Saturday’s card and totals their paid hours. If Sara is accidentally given a second 14:00–22:00 row the same day, the conflict banner calls it out before publish.</p>
+    </section>
+
+    <section class="cta">
+      <h2>Upgrade your restaurant with Vendora POS and smart menu system</h2>
+      <p>Pair smarter schedules with POS labor insights when you grow.</p>
+      <ul class="cta-list"><li>Smart POS</li><li>Digital Menu</li><li>Direct Ordering</li><li>Faster Operations</li></ul>
+      <a class="btn btn-primary" href="/">Try Vendora for Your Restaurant</a>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p>
+        <a href="/tools/work-hours-overtime-tracker/">Work Hours &amp; Overtime Tracker</a>,
+        <a href="/tools/hourly-to-salary-calculator/">Hourly to Salary Calculator</a>,
+        <a href="/tools/no-tax-on-overtime-calculator/">No Tax on Overtime Calculator</a>,
+        <a href="/tools/daily-sales-summary/">Daily Sales Summary</a>
+      </p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/all-tools/">All tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+  <a class="btn sticky-cta" href="/">Open Vendora POS</a>
+  <script src="./app.js" defer></script>
+  <a href="/contact/" onclick="window.open('https://wa.me/97333404044?text=Hi%20Vendora%2C%20I%20need%20support%20with%20the%20shift%20scheduler', '_blank', 'noopener'); return false;" target="_blank" rel="noopener noreferrer" class="whatsapp-support-fab" aria-label="Chat on WhatsApp for support">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-1.9 5.4A8.5 8.5 0 1 1 12.5 3a8.38 8.38 0 0 1 5.4 1.9"/><path d="M22 2 12 12"/><path d="M16 2h6v6"/></svg>
+    <span>WhatsApp Support</span>
+  </a>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
