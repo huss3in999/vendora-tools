@@ -1,0 +1,5 @@
+# Allow crawlers. Update sitemap URL if you host the app elsewhere.
+User-agent: *
+Allow: /
+
+Sitemap: https://getvendora.net/tools/shift-scheduler/sitemap.xml
