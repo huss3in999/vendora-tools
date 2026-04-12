@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "vite build",
+    "build": "vite build && node ./scripts/write-static-root-index.mjs",
     "build:site": "vite build && node ./scripts/copy-dist-to-app.mjs",
     "preview": "vite preview --host 127.0.0.1 --port 4173 --open",
     "lint": "tsc --noEmit"

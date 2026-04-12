@@ -81,21 +81,10 @@
         ]
       }
     </script>
-    <script>
-      (function () {
-        if (location.protocol === 'file:') return;
-        var h = location.hostname;
-        if (h === 'localhost' || h === '127.0.0.1') return;
-        if (location.port === '4173') return;
-        var path = location.pathname.replace(/\/index\.html?$/i, '');
-        if (!path.endsWith('/')) path += '/';
-        if (path.endsWith('/dist/')) return;
-        location.replace(location.origin + path + 'dist/');
-      })();
-    </script>
+    <script type="module" src="./dist/assets/index-7dhZf1LW.js"></script>
+    <link rel="stylesheet" href="./dist/assets/style-DvGFUIiE.css">
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -1,12 +1,25 @@
+import fs from 'node:fs';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig} from 'vite';
 
+/** Copy Vite entry template so `index.html` is never the static shell while dev/build runs. */
+function useViteIndexTemplate() {
+  return {
+    name: 'use-vite-index-template',
+    buildStart() {
+      const from = path.resolve(__dirname, 'index.vite.html');
+      const to = path.resolve(__dirname, 'index.html');
+      fs.copyFileSync(from, to);
+    },
+  };
+}
+
 export default defineConfig(() => {
   return {
     base: './',
-    plugins: [react(), tailwindcss()],
+    plugins: [useViteIndexTemplate(), react(), tailwindcss()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
