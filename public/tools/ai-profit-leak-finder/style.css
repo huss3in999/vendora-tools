@@ -1,0 +1,351 @@
+/* AI Profit Leak Finder — complements ../tool-system.css */
+
+/* Centered tool column, comfortable reading width */
+.plf-tool-page .plf-main {
+  width: 100%;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+.plf-tool-page .plf-calculator-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Stack form then results; avoid sticky overlap in narrow column */
+.plf-tool-page .plf-results.results-card {
+  position: static;
+  top: auto;
+}
+
+/* (Deprecated) Previously toggled 2-column only after results. Kept here intentionally removed. */
+
+/* Desktop default: balanced 2-column layout with a real \"Waiting\" results panel (no empty space). */
+@media (min-width: 1020px) {
+  body.plf-tool-page .plf-main {
+    max-width: 72rem;
+  }
+
+  body.plf-tool-page .plf-calculator-shell {
+    display: grid;
+    grid-template-columns: minmax(380px, 1fr) minmax(380px, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  body.plf-tool-page .plf-results.results-card {
+    position: sticky;
+    top: 20px;
+  }
+}
+
+/* Hero: keep content centered and readable on wide screens */
+.plf-tool-page .plf-hero {
+  text-align: left;
+}
+
+@media (min-width: 900px) {
+  .plf-tool-page .plf-hero {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 1fr);
+    gap: 24px;
+    align-items: center;
+  }
+
+  .plf-tool-page .plf-hero h1,
+  .plf-tool-page .plf-hero .hero-copy,
+  .plf-tool-page .plf-hero .eyebrow {
+    grid-column: 1 / 2;
+  }
+}
+
+/* Below content: two-column grid on laptop, single column on mobile */
+.plf-below {
+  margin-top: 24px;
+}
+
+.plf-below-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 1020px) {
+  .plf-below-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+.plf-status .status-score {
+  font-size: 1.05rem;
+}
+
+.plf-tool-page .plf-input-card .section-title {
+  margin-bottom: 0.35rem;
+}
+
+.plf-intro-copy {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.plf-trust-note {
+  margin: 0 0 1.35rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(0, 208, 132, 0.22);
+  background: rgba(0, 208, 132, 0.06);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* Single-column form: avoids cramped 2-col fields on phones (720px breakpoint in tool-system) */
+.plf-tool-page .plf-field-grid,
+.plf-tool-page .plf-result-grid {
+  display: grid;
+  grid-template-columns: 1fr !important;
+  gap: 1.125rem !important;
+}
+
+@media (min-width: 640px) {
+  .plf-tool-page .plf-result-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 900px) {
+  .plf-tool-page .plf-result-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  body.plf-tool-page .plf-main {
+    max-width: 48rem;
+  }
+}
+
+.plf-tool-page .plf-field label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.plf-tool-page .plf-field input,
+.plf-tool-page .plf-field select {
+  width: 100%;
+  min-height: 3rem;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.plf-tool-page .plf-field .select-wrap {
+  width: 100%;
+}
+
+.plf-tool-page .plf-field .select-wrap select {
+  width: 100%;
+  min-height: 3rem;
+}
+
+/* Actions: full-width on mobile, row on larger screens */
+.plf-tool-page .plf-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+@media (min-width: 520px) {
+  .plf-tool-page .plf-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+
+  .plf-tool-page .plf-actions .btn {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .plf-tool-page .plf-actions .btn-primary {
+    flex: 1 1 100%;
+  }
+}
+
+@media (min-width: 640px) {
+  .plf-tool-page .plf-actions .btn-primary {
+    flex: 1 1 auto;
+  }
+}
+
+.plf-tool-page .plf-hero .hero-copy {
+  font-size: clamp(1rem, 2.8vw, 1.125rem);
+  line-height: 1.45;
+  max-width: 36rem;
+}
+
+.plf-ai-badge {
+  display: inline-block;
+  padding: 0.15em 0.5em;
+  margin-left: 0.15em;
+  border-radius: 6px;
+  background: rgba(91, 140, 255, 0.22);
+  color: #bfdbfe;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.plf-results .plf-section {
+  margin-top: 1.75rem;
+}
+
+.plf-results .plf-section:first-of-type {
+  margin-top: 0;
+}
+
+.plf-subtitle {
+  font-size: clamp(1.05rem, 2.5vw, 1.15rem);
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: var(--text);
+}
+
+.plf-section-lead {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.req {
+  color: var(--brand);
+}
+
+.optional-label {
+  font-weight: 400;
+  color: var(--muted);
+  font-size: 0.9em;
+}
+
+.plf-warnings {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.plf-warnings li {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line);
+  background: var(--surface-inset);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.plf-warnings li.plf-warn-high {
+  border-color: rgba(248, 113, 113, 0.35);
+  background: rgba(248, 113, 113, 0.08);
+}
+
+.plf-warnings li.plf-warn-med {
+  border-color: rgba(251, 191, 36, 0.35);
+  background: rgba(251, 191, 36, 0.06);
+}
+
+.plf-empty-warnings {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.plf-ai-disclosure {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 1rem;
+  line-height: 1.5;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(91, 140, 255, 0.2);
+  background: rgba(91, 140, 255, 0.06);
+}
+
+.plf-ai-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.plf-spinner {
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 2px solid var(--line);
+  border-top-color: var(--brand);
+  border-radius: 50%;
+  animation: plf-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes plf-spin {
+  to { transform: rotate(360deg); }
+}
+
+.plf-ai-error {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  background: rgba(248, 113, 113, 0.08);
+  color: #fecaca;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.plf-ai-summary {
+  margin: 0 0 1rem;
+  line-height: 1.55;
+  font-size: 1.02rem;
+}
+
+.plf-ai-actions {
+  margin: 0;
+  padding-left: 1.35rem;
+  line-height: 1.55;
+}
+
+.plf-ai-actions li {
+  margin-bottom: 0.65rem;
+  font-size: 0.98rem;
+}
+
+.plf-ai-actions li:last-child {
+  margin-bottom: 0;
+}
+
+.plf-metric .metric-value {
+  font-size: clamp(1rem, 2.8vw, 1.125rem);
+}
+
+/* Related tools list */
+.plf-related-list {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+  line-height: 1.65;
+}
+
+.plf-related-list li {
+  margin-bottom: 0.5rem;
+}
+
+.plf-related-list li:last-child {
+  margin-bottom: 0;
+}

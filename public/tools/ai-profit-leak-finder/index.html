@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Profit Leak Finder for Small Businesses | Free Business Tool</title>
+  <meta name="description" content="Use this AI Profit Leak Finder to spot where your business may be losing money. Analyze revenue, expenses, and profit margin with practical AI suggestions.">
+  <meta name="keywords" content="AI profit leak finder, business profit analysis, find business expense problems, improve profit margin, small business profit tool, expense ratio, profit margin calculator">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/ai-profit-leak-finder/">
+  <meta property="og:title" content="AI Profit Leak Finder for Small Businesses | Free Business Tool | Vendora">
+  <meta property="og:description" content="Use this AI Profit Leak Finder to spot where your business may be losing money. Analyze revenue, expenses, and profit margin with practical AI suggestions.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/ai-profit-leak-finder/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "AI Profit Leak Finder for Small Businesses",
+    "url": "https://getvendora.net/tools/ai-profit-leak-finder/",
+    "description": "Use this AI Profit Leak Finder to spot where your business may be losing money. Analyze revenue, expenses, and profit margin with practical AI suggestions.",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Vendora",
+      "url": "https://getvendora.net/"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Vendora AI Profit Leak Finder",
+    "description": "Review monthly revenue and expenses, spot profit risk flags with local calculations, and get concise AI profit tips for small businesses.",
+    "url": "https://getvendora.net/tools/ai-profit-leak-finder/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is an AI profit leak finder?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "An AI profit leak finder is a small business profit tool that combines business profit analysis with short AI suggestions. It helps you find business expense problems by reviewing revenue, costs, and margin, then adds plain-language tips—not a replacement for an accountant."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is profit margin calculated in this tool?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Estimated profit is monthly revenue minus the sum of your entered expenses. Profit margin percent is estimated profit divided by revenue, times 100. Expense ratio percent is total expenses divided by revenue, times 100. These run in your browser."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does the AI do the math?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Calculations and warning flags are handled locally in JavaScript for speed and consistency. AI is only used once per run to turn your numbers and flags into a short summary and three practical actions."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why do businesses lose profit even when sales look fine?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Common issues include high fixed costs compared to revenue, product cost creep, payroll that outpaces sales, rent stress, and marketing spend that is too low to grow or too high without return. This tool surfaces those patterns with simple ratios."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my data stored?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Numbers are not saved by this page. Only the compact summary needed for AI tips is sent to the analysis service when you click analyze. Review your privacy policy for general site analytics."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Who should use this AI Profit Leak Finder?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Independent retailers, restaurants, salons, service businesses, and other small teams who want a quick monthly sanity check on profit margin and expense mix before deeper bookkeeping or advisor conversations."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <!-- Page-only layout overrides (loads after shared CSS; does not change branding colors). -->
+  <style id="plf-layout-overrides">
+    /* --- Page tokens: consistent spacing + max width (mobile-first) --- */
+    body.plf-tool-page {
+      overflow-x: clip;
+      /* Screen-fitting: avoid double “shrink” from max-width + padding. */
+      --plf-gutter: clamp(12px, 3.2vw, 22px);
+      --plf-max: min(1180px, calc(100vw - (var(--plf-gutter) * 2)));
+      --plf-gap-xs: 0.45rem;
+      --plf-gap-sm: 0.65rem;
+      --plf-gap-md: 0.85rem;
+      --plf-gap-lg: 1.15rem;
+      --plf-gap-xl: clamp(0.95rem, 2.4vw, 1.5rem);
+      --plf-card-pad: clamp(14px, 3vw, 22px);
+      --plf-prose: 62ch;
+    }
+
+    body.plf-tool-page main.page-shell {
+      /* Fit naturally: full available width minus gutters, capped. */
+      /* Use vw (viewport) to avoid % containing-block quirks in some contexts (e.g. file://). */
+      width: min(1180px, calc(100vw - (var(--plf-gutter) * 2)));
+      max-width: min(1180px, calc(100vw - (var(--plf-gutter) * 2)));
+      margin-inline: auto;
+      padding-inline: 0;
+      padding-top: clamp(2px, 0.8vw, 8px);
+      padding-bottom: clamp(22px, 3.5vw, 48px);
+      box-sizing: border-box;
+      min-width: 0;
+    }
+
+    /* Header: reduce height, keep clean wrapping */
+    body.plf-tool-page header.site-nav.card {
+      padding: clamp(10px, 1.6vw, 14px) var(--plf-gutter);
+      margin-bottom: var(--plf-gap-sm);
+    }
+
+    body.plf-tool-page header.site-nav {
+      gap: 10px;
+      align-items: center;
+    }
+
+    body.plf-tool-page header.site-nav .section-copy {
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 14px;
+      max-width: 100%;
+    }
+
+    body.plf-tool-page header.site-nav .section-copy a {
+      white-space: nowrap;
+    }
+
+    @media (max-width: 720px) {
+      body.plf-tool-page header.site-nav.card {
+        padding: 10px var(--plf-gutter);
+      }
+
+      body.plf-tool-page header.site-nav .section-copy a {
+        white-space: normal;
+      }
+    }
+
+    /*
+      Footer nav: same treatment as header. Global .section-copy sets max-width: 62ch for
+      prose — that leaves a narrow column inside the full-width footer card unless we reset.
+    */
+    body.plf-tool-page footer.site-nav.card {
+      padding-top: clamp(10px, 1.6vw, 14px);
+      padding-bottom: clamp(10px, 1.6vw, 14px);
+      margin-top: var(--plf-gap-md);
+    }
+
+    body.plf-tool-page footer.site-nav nav {
+      width: 100%;
+      min-width: 0;
+    }
+
+    body.plf-tool-page footer.site-nav .section-copy {
+      margin: 0;
+      max-width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 14px;
+    }
+
+    body.plf-tool-page footer.site-nav .section-copy a {
+      white-space: nowrap;
+    }
+
+    @media (max-width: 720px) {
+      body.plf-tool-page footer.site-nav .section-copy a {
+        white-space: normal;
+      }
+    }
+
+    /* Hero: compact vertical footprint; tool starts higher */
+    body.plf-tool-page .hero.plf-hero {
+      padding: clamp(10px, 1.4vw, 14px) var(--plf-gutter);
+      margin-top: 0;
+      margin-bottom: var(--plf-gap-md);
+    }
+
+    /* Keep all top-level cards aligned to the same gutter */
+    body.plf-tool-page header.site-nav.card,
+    body.plf-tool-page .hero.plf-hero,
+    body.plf-tool-page .plf-main,
+    body.plf-tool-page .plf-below,
+    body.plf-tool-page footer.site-nav.card {
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    /* If any shared styles add inner padding, keep it consistent */
+    body.plf-tool-page header.site-nav.card,
+    body.plf-tool-page footer.site-nav.card {
+      padding-left: var(--plf-gutter);
+      padding-right: var(--plf-gutter);
+    }
+
+    body.plf-tool-page .plf-main {
+      padding-left: var(--plf-gutter);
+      padding-right: var(--plf-gutter);
+    }
+
+    body.plf-tool-page .plf-below {
+      padding-left: var(--plf-gutter);
+      padding-right: var(--plf-gutter);
+    }
+
+    body.plf-tool-page .hero.plf-hero h1 {
+      font-size: clamp(1.28rem, 2.7vw, 1.78rem);
+      line-height: 1.12;
+      margin: 0.1rem 0 0.25rem;
+      max-width: 22ch;
+    }
+
+    body.plf-tool-page .hero.plf-hero .eyebrow {
+      margin-bottom: 0.2rem;
+    }
+
+    body.plf-tool-page .hero.plf-hero .hero-copy {
+      margin: 0;
+      max-width: min(var(--plf-prose), 100%);
+      line-height: 1.48;
+    }
+
+    body.plf-tool-page .plf-main {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    body.plf-tool-page .plf-calculator-shell {
+      gap: var(--plf-gap-xl);
+      min-width: 0;
+    }
+
+    /* Desktop: equal columns + stable gap (no “dead” gutter) */
+    @media (min-width: 1020px) {
+      body.plf-tool-page .plf-calculator-shell {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: stretch;
+        gap: clamp(18px, 2.4vw, 28px);
+      }
+
+      body.plf-tool-page .plf-input-card,
+      body.plf-tool-page .plf-results.results-card {
+        min-width: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      body.plf-tool-page .plf-results.results-card,
+      body.plf-tool-page .plf-input-card {
+        padding: var(--plf-card-pad);
+      }
+    }
+
+    /* Gutters are handled by the page-shell width math above (avoid double margins). */
+
+    /* Tablet: single column, comfortable measure (not overly narrow) */
+    @media (min-width: 640px) and (max-width: 1019px) {
+      body.plf-tool-page .plf-main {
+        max-width: min(720px, 100%);
+        margin-inline: auto;
+      }
+    }
+
+    /* <1020: stack; unified card padding */
+    @media (max-width: 1019px) {
+      body.plf-tool-page .plf-calculator-shell {
+        display: flex;
+        flex-direction: column;
+      }
+
+      body.plf-tool-page .plf-results.results-card,
+      body.plf-tool-page .plf-input-card {
+        padding: var(--plf-card-pad);
+      }
+    }
+
+    body.plf-tool-page .section-title {
+      letter-spacing: -0.01em;
+    }
+
+    body.plf-tool-page .section-copy,
+    body.plf-tool-page .hero-copy,
+    body.plf-tool-page .faq p,
+    body.plf-tool-page .faq li {
+      max-width: min(var(--plf-prose), 100%);
+    }
+
+    body.plf-tool-page .plf-input-card .section-title,
+    body.plf-tool-page .plf-results .section-title {
+      margin-bottom: var(--plf-gap-xs);
+    }
+
+    body.plf-tool-page .plf-trust-note {
+      margin-bottom: var(--plf-gap-lg);
+    }
+
+    body.plf-tool-page .plf-field-grid {
+      gap: var(--plf-gap-md) !important;
+    }
+
+    body.plf-tool-page .plf-results .plf-section {
+      margin-top: clamp(0.95rem, 1.8vw, 1.25rem);
+    }
+
+    body.plf-tool-page .plf-results .metric-card {
+      padding: clamp(10px, 1.6vw, 14px) clamp(11px, 1.8vw, 15px);
+    }
+
+    body.plf-tool-page .plf-status.status-banner {
+      margin-bottom: var(--plf-gap-xs);
+    }
+
+    body.plf-tool-page .plf-below {
+      margin-top: var(--plf-gap-xl);
+    }
+
+    body.plf-tool-page .plf-below-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--plf-gap-xl);
+      min-width: 0;
+    }
+
+    @media (min-width: 900px) {
+      body.plf-tool-page .plf-below-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+        gap: clamp(16px, 2.2vw, 24px);
+      }
+    }
+
+    body.plf-tool-page .plf-below .card.faq {
+      min-width: 0;
+      padding: var(--plf-card-pad);
+    }
+
+    body.plf-tool-page .plf-below .section-title {
+      margin-top: var(--plf-gap-lg);
+    }
+
+    body.plf-tool-page .plf-below .section-title:first-child {
+      margin-top: 0;
+    }
+
+    @media (min-width: 1280px) {
+      body.plf-tool-page .plf-below .section-copy {
+        max-width: min(var(--plf-prose), 100%);
+      }
+    }
+
+    @media (max-width: 720px) {
+      body.plf-tool-page .plf-field label {
+        font-size: 0.95rem;
+      }
+
+      body.plf-tool-page .plf-field input,
+      body.plf-tool-page .plf-field select {
+        min-height: 3.05rem;
+        font-size: 1rem;
+      }
+
+      body.plf-tool-page .plf-actions {
+        gap: var(--plf-gap-sm);
+        margin-top: var(--plf-gap-xs);
+      }
+
+      body.plf-tool-page .plf-trust-note {
+        padding: var(--plf-gap-md) calc(var(--plf-gap-md) + 2px);
+      }
+    }
+
+    /* --- Results panel: structure, scan hierarchy, AI states (this page only) --- */
+    body.plf-tool-page .plf-results.results-card {
+      display: flex;
+      flex-direction: column;
+      /* Enough presence on desktop without a huge empty column */
+      min-height: min(48vh, 640px);
+      gap: 0;
+    }
+
+    @media (max-width: 720px) {
+      body.plf-tool-page .plf-results.results-card {
+        min-height: 0;
+      }
+    }
+
+    body.plf-tool-page .plf-results-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--plf-gap-sm);
+      margin-bottom: var(--plf-gap-sm);
+      padding-bottom: var(--plf-gap-sm);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    body.plf-tool-page .plf-results-lead {
+      margin: 0.15rem 0 0;
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--muted);
+      max-width: min(52ch, 100%);
+    }
+
+    body.plf-tool-page .plf-results-status.plf-status.status-banner {
+      margin: 0 0 var(--plf-gap-md);
+      border-radius: var(--radius-md);
+    }
+
+    body.plf-tool-page .plf-results-body {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--plf-gap-md);
+      min-height: 0;
+    }
+
+    body.plf-tool-page .plf-results .plf-section {
+      margin-top: 0 !important;
+      padding-top: clamp(0.75rem, 1.4vw, 1rem);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    body.plf-tool-page .plf-results .plf-section:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    body.plf-tool-page .plf-results .plf-subtitle {
+      margin: 0 0 0.45rem;
+      font-size: 0.98rem;
+      letter-spacing: 0.01em;
+      color: rgba(244, 247, 246, 0.95);
+    }
+
+    body.plf-tool-page .plf-results .plf-section-lead {
+      margin: 0 0 0.55rem;
+      font-size: 0.86rem;
+    }
+
+    /* KPI emphasis: primary numbers read larger */
+    body.plf-tool-page .plf-metric-row {
+      display: grid;
+      gap: var(--plf-gap-sm);
+      min-width: 0;
+    }
+
+    body.plf-tool-page .plf-metric-row--hero {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    body.plf-tool-page .plf-results .plf-metric-row--rest.plf-result-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+
+    @media (max-width: 720px) {
+      body.plf-tool-page .plf-results .plf-metric-row--rest.plf-result-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    body.plf-tool-page .plf-results .metric-card.plf-metric--primary .metric-value {
+      font-size: clamp(1.05rem, 2.6vw, 1.25rem);
+      letter-spacing: -0.02em;
+    }
+
+    body.plf-tool-page .plf-results .metric-card.plf-metric--primary {
+      background:
+        radial-gradient(circle at 20% 20%, rgba(0, 208, 132, 0.12), transparent 45%),
+        rgba(255, 255, 255, 0.04);
+      border-color: rgba(0, 208, 132, 0.22);
+    }
+
+    body.plf-tool-page .plf-warnings-shell {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.02);
+      padding: 0.55rem 0.65rem;
+    }
+
+    body.plf-tool-page .plf-warnings-shell .plf-warnings {
+      gap: 0.45rem;
+    }
+
+    /* AI panel: idle / loading / success / error */
+    body.plf-tool-page .plf-ai-wrap {
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(91, 140, 255, 0.18);
+      background: rgba(91, 140, 255, 0.04);
+      padding: 0.75rem 0.85rem;
+    }
+
+    body.plf-tool-page .plf-ai-disclosure {
+      margin-top: 0.35rem;
+      margin-bottom: 0.65rem;
+      border: none;
+      background: transparent;
+      padding: 0;
+    }
+
+    body.plf-tool-page .plf-ai-idle {
+      display: none;
+      margin: 0;
+      padding: 0.65rem 0.75rem;
+      border-radius: 12px;
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    body.plf-tool-page
+      .plf-ai-wrap:has(#aiLoading[hidden]):has(#aiContent[hidden]):has(#aiError[hidden])
+      .plf-ai-idle {
+      display: block;
+    }
+
+    body.plf-tool-page .plf-ai-loading {
+      border-radius: 12px;
+      border: 1px solid rgba(0, 208, 132, 0.22);
+      background: rgba(0, 208, 132, 0.06);
+      padding: 0.75rem 0.85rem;
+      min-height: 3.25rem;
+    }
+
+    body.plf-tool-page .plf-ai-error {
+      border-radius: 12px;
+      border: 1px solid rgba(248, 113, 113, 0.35);
+      background: rgba(248, 113, 113, 0.08);
+      padding: 0.75rem 0.85rem;
+      margin-top: 0.35rem;
+    }
+
+    body.plf-tool-page .plf-ai-content {
+      margin-top: 0.35rem;
+      padding: 0.65rem 0.75rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    body.plf-tool-page .plf-ai-summary {
+      font-size: 0.98rem;
+      line-height: 1.55;
+    }
+
+    body.plf-tool-page .plf-ai-actions {
+      margin-top: 0.5rem;
+    }
+
+    /* State tint: loading vs success vs error (uses visibility of blocks) */
+    body.plf-tool-page .plf-ai-wrap:has(#aiLoading:not([hidden])) {
+      border-color: rgba(0, 208, 132, 0.28);
+      background: rgba(0, 208, 132, 0.05);
+    }
+
+    body.plf-tool-page .plf-ai-wrap:has(#aiError:not([hidden])) {
+      border-color: rgba(248, 113, 113, 0.28);
+      background: rgba(248, 113, 113, 0.05);
+    }
+
+    body.plf-tool-page .plf-ai-wrap:has(#aiContent:not([hidden])):has(#aiLoading[hidden]) {
+      border-color: rgba(91, 140, 255, 0.22);
+      background: rgba(91, 140, 255, 0.05);
+    }
+  </style>
+  <script>
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r); t.async=1; t.src="https://www.clarity.ms/tag/w28z01fb1p";
+      y=l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "w28z01fb1p");
+  </script>
+  <script defer src="/assets/clarity-helper.js"></script>
+</head>
+<body class="vendora-tool plf-tool-page">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero plf-hero">
+      <p class="eyebrow">Vendora <span class="plf-ai-badge" title="AI-powered suggestions">AI</span> tool</p>
+      <h1>AI Profit Leak Finder</h1>
+      <p class="hero-copy">
+        Find where your business may be losing money and get AI-powered suggestions to improve profit.
+      </p>
+    </section>
+
+    <div class="plf-main">
+      <section class="calculator-shell plf-calculator-shell">
+        <section class="card input-card plf-input-card" aria-labelledby="input-heading">
+          <h2 class="section-title" id="input-heading">Monthly numbers</h2>
+          <p class="section-copy plf-intro-copy">
+            Enter your latest monthly figures. Totals and risk flags are calculated instantly in your browser. AI adds a short advisory note—one request per analysis.
+          </p>
+          <p class="plf-trust-note">Calculations are handled locally for speed. AI is only used for concise business suggestions after you click Analyze.</p>
+
+          <div class="field-grid plf-field-grid">
+            <div class="field-wide plf-field">
+              <label for="revenue">Monthly revenue <span class="req">*</span></label>
+              <input id="revenue" type="number" min="0" step="0.01" inputmode="decimal" placeholder="e.g. 25000" autocomplete="off">
+            </div>
+            <div class="field plf-field">
+              <label for="cogs">Cost of goods / product cost</label>
+              <input id="cogs" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0" autocomplete="off">
+            </div>
+            <div class="field plf-field">
+              <label for="staff">Staff cost</label>
+              <input id="staff" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0" autocomplete="off">
+            </div>
+            <div class="field plf-field">
+              <label for="rent">Rent</label>
+              <input id="rent" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0" autocomplete="off">
+            </div>
+            <div class="field plf-field">
+              <label for="utilities">Utilities / bills</label>
+              <input id="utilities" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0" autocomplete="off">
+            </div>
+            <div class="field plf-field">
+              <label for="marketing">Marketing cost</label>
+              <input id="marketing" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0" autocomplete="off">
+            </div>
+            <div class="field plf-field">
+              <label for="other">Other expenses</label>
+              <input id="other" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0" autocomplete="off">
+            </div>
+            <div class="field-wide plf-field">
+              <label for="businessType">Business type <span class="optional-label">(optional)</span></label>
+              <div class="select-wrap">
+                <select id="businessType">
+                  <option value="">Select…</option>
+                  <option value="Restaurant">Restaurant</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Salon">Salon</option>
+                  <option value="Service Business">Service Business</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="validation" id="validationMessage" role="status" aria-live="polite"></div>
+
+          <div class="actions plf-actions">
+            <button type="button" class="btn btn-primary" id="analyzeBtn">Analyze Business</button>
+            <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+            <button type="button" class="btn btn-secondary" id="copyBtn">Copy Summary</button>
+          </div>
+        </section>
+
+        <section class="card results-card plf-results" id="resultsPanel" aria-live="polite">
+          <header class="plf-results-header">
+            <div>
+              <h2 class="section-title" id="results-heading">Results</h2>
+              <p class="plf-results-lead">Your snapshot, risk flags, and AI tips stay in one scannable column.</p>
+            </div>
+          </header>
+
+          <div class="status-banner plf-status plf-results-status" id="plfStatusBanner">
+            <span class="status-label" id="plfStatusLabel">Ready</span>
+            <div class="status-score" id="plfStatusScore">—</div>
+            <p class="status-text" id="plfStatusText">Enter your monthly numbers and click Analyze Business to refresh this panel.</p>
+          </div>
+
+          <div class="plf-results-body">
+            <section class="plf-section plf-snapshot" aria-labelledby="snap-heading">
+              <h3 class="plf-subtitle" id="snap-heading">1. Calculated Business Snapshot</h3>
+              <div class="plf-metric-row plf-metric-row--hero">
+                <article class="metric-card plf-metric plf-metric--primary">
+                  <span class="metric-label">Revenue</span>
+                  <strong class="metric-value" id="outRevenue">—</strong>
+                </article>
+                <article class="metric-card plf-metric plf-metric--primary">
+                  <span class="metric-label">Estimated profit</span>
+                  <strong class="metric-value" id="outProfit">—</strong>
+                </article>
+              </div>
+              <div class="result-grid plf-result-grid plf-metric-row plf-metric-row--rest">
+                <article class="metric-card plf-metric">
+                  <span class="metric-label">Total expenses</span>
+                  <strong class="metric-value" id="outExpenses">—</strong>
+                </article>
+                <article class="metric-card plf-metric">
+                  <span class="metric-label">Profit margin %</span>
+                  <strong class="metric-value" id="outMargin">—</strong>
+                </article>
+                <article class="metric-card plf-metric">
+                  <span class="metric-label">Expense ratio %</span>
+                  <strong class="metric-value" id="outExpenseRatio">—</strong>
+                </article>
+              </div>
+            </section>
+
+            <section class="plf-section plf-warnings-block" aria-labelledby="warn-heading">
+              <h3 class="plf-subtitle" id="warn-heading">2. Profit leak warnings</h3>
+              <p class="plf-section-lead">Rule-based checks on your ratios (not AI).</p>
+              <div class="plf-warnings-shell">
+                <ul class="plf-warnings" id="warningsList"></ul>
+                <p class="plf-empty-warnings" id="warningsEmpty" hidden>No automated risk flags for these numbers. You can still use AI Profit Tips below for ideas.</p>
+              </div>
+            </section>
+
+            <section class="plf-section plf-ai plf-ai-wrap" aria-labelledby="ai-heading">
+              <h3 class="plf-subtitle" id="ai-heading">3. AI Profit Tips</h3>
+              <p class="plf-ai-disclosure">Calculations are handled locally for speed. AI is only used for concise business suggestions.</p>
+              <p class="plf-ai-idle">Run <strong>Analyze Business</strong> to generate AI tips. Your numbers and warnings above stay on screen while this loads.</p>
+              <div class="plf-ai-loading" id="aiLoading" hidden>
+                <span class="plf-spinner" aria-hidden="true"></span>
+                <span><strong>Working on AI tips…</strong> This usually takes a few seconds.</span>
+              </div>
+              <div class="plf-ai-error" id="aiError" hidden role="alert"></div>
+              <div class="plf-ai-content" id="aiContent" hidden>
+                <p class="plf-ai-summary" id="aiSummary"></p>
+                <ol class="plf-ai-actions" id="aiActions"></ol>
+              </div>
+            </section>
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <section class="plf-below" aria-label="Guide and FAQs">
+      <div class="plf-below-grid">
+        <section class="card faq seo-tool-guide" aria-labelledby="plf-guide-what">
+          <h2 class="section-title" id="plf-guide-what">What this tool does</h2>
+          <p class="section-copy">This <strong>AI profit leak finder</strong> is a free <strong>small business profit tool</strong> for quick <strong>business profit analysis</strong>. You enter one month of revenue and major expense lines. The page calculates totals, estimated profit, margin, and expense ratio, then applies simple rules to <strong>find business expense problems</strong> such as rent or payroll taking too much of sales. After that, a single AI pass adds a short summary and three actions to help you <strong>improve profit margin</strong>—written in plain language, not spreadsheets.</p>
+          <h2 class="section-title">How to use this AI Profit Leak Finder</h2>
+          <p class="section-copy">Use recent, realistic monthly figures. Start with revenue, then add cost of goods or product cost, staff, rent, utilities, marketing, and anything else material. Pick a business type if you want context for the AI. Click <strong>Analyze Business</strong> to see your snapshot and warnings, then read <strong>AI Profit Tips</strong>. Use <strong>Copy Summary</strong> to paste results into notes or share with a partner. <strong>Reset</strong> clears the form and results.</p>
+        </section>
+
+        <section class="card faq seo-tool-guide" aria-labelledby="plf-guide-why">
+          <h2 class="section-title" id="plf-guide-why">Why businesses lose profit</h2>
+          <p class="section-copy">Sales can look healthy while margin disappears. Common patterns include product or food cost creeping up, labor scheduled ahead of demand, fixed rent that is high for the revenue base, utilities and subscriptions stacking up, and marketing that is either too weak to drive new sales or too expensive for the return. This tool does not diagnose tax or legal issues; it helps you see where the numbers are tight so you can investigate operations and pricing.</p>
+          <h2 class="section-title">How the result is calculated</h2>
+          <p class="section-copy"><strong>Total expenses</strong> is the sum of the expense fields you entered. <strong>Estimated profit</strong> is monthly revenue minus total expenses. <strong>Profit margin %</strong> is estimated profit divided by revenue, times 100. <strong>Expense ratio %</strong> is total expenses divided by revenue, times 100. Warnings use fixed thresholds—for example, staff cost above 35% of revenue or rent above 10% of revenue—to flag areas that often deserve a closer look.</p>
+        </section>
+
+        <section class="card faq seo-tool-guide" aria-labelledby="plf-guide-ai">
+          <h2 class="section-title" id="plf-guide-ai">Why the AI suggestions can help</h2>
+          <p class="section-copy">The math tells you <em>what</em> the ratios are; AI turns that into a short narrative and prioritized actions in everyday business language. It does not replace a bookkeeper or advisor. It is useful when you want a fast second opinion on where to focus after you see the snapshot and warnings.</p>
+          <h2 class="section-title">Example scenario</h2>
+          <p class="section-copy">A small cafe enters monthly revenue of $42,000, product cost $14,500, staff $16,000, rent $4,200, utilities $900, marketing $800, and other $1,200. Total expenses are $37,600, estimated profit is $4,400, profit margin about 10.5%, and expense ratio about 89.5%. Warnings might flag payroll share and tight margin. AI Profit Tips could suggest reviewing labor scheduling, renegotiating a supplier line, and testing a small price adjustment on high-volume items—always validated against your real operations.</p>
+        </section>
+
+        <section class="card faq plf-related" aria-labelledby="related-heading">
+          <h2 class="section-title" id="related-heading">Related tools for profit and costs</h2>
+          <p class="section-copy">Use these alongside this page for pricing, sales review, and direct costs.</p>
+          <ul class="plf-related-list">
+            <li><a href="/tools/daily-sales-summary/">Daily Sales Summary</a> — quick performance snapshot</li>
+            <li><a href="/tools/menu-price-calculator/">Menu Price Calculator</a> — pricing from cost and margin</li>
+            <li><a href="/tools/food-cost-calculator/">Food Cost Calculator</a> — recipe and plate-level cost %</li>
+            <li><a href="/calculators/margin-markup-calculator/">Profit Margin Calculator</a> — margin and markup</li>
+            <li><a href="/calculators/break-even-point/">Break-Even Calculator</a> — cover fixed costs</li>
+          </ul>
+        </section>
+
+        <section class="card faq faq-section" aria-labelledby="faq-heading">
+          <h2 class="section-title" id="faq-heading">Frequently asked questions</h2>
+          <h3>What is an AI profit leak finder?</h3>
+          <p>It is a small business profit tool that combines local business profit analysis with short AI suggestions so you can find business expense problems faster than staring at a blank spreadsheet.</p>
+          <h3>How is profit margin calculated here?</h3>
+          <p>Estimated profit is revenue minus entered expenses. Profit margin percent is that profit divided by revenue. All of that runs in your browser.</p>
+          <h3>Does the AI calculate my totals?</h3>
+          <p>No. JavaScript calculates totals, margin, and expense ratio, and builds the warning list. AI only receives a compact text summary of those results to return brief tips.</p>
+          <h3>Is this only for restaurants?</h3>
+          <p>No. You can use it for retail, salons, services, and other types. The optional business type helps tailor the AI wording.</p>
+          <h3>Will this fix my business finances?</h3>
+          <p>It is an educational starting point. Use it with accurate books, professional advice where needed, and your own judgment.</p>
+        </section>
+      </div>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <a class="btn sticky-cta" href="/">Open Vendora POS</a>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>
