@@ -1,0 +1,64 @@
+# Vendora
+
+Vendora is a website for restaurant management software and free restaurant tools.
+
+Primary site:
+- https://getvendora.net/
+
+## Main calculator system (future-forward structure)
+
+The primary calculator directory is under `/calculator/` — each tool lives on a stable URL shaped like `/calculator/<category>/<tool-slug>/`.
+
+- Main hub: https://getvendora.net/calculator/
+- Finance: https://getvendora.net/calculator/finance/
+- Food: https://getvendora.net/calculator/food/
+- Restaurant: https://getvendora.net/calculator/restaurant/
+- Profit: https://getvendora.net/calculator/profit/
+- Operations: https://getvendora.net/calculator/operations/
+- Inventory: https://getvendora.net/calculator/inventory/
+- General (business metrics, elasticity, CTR, etc.): https://getvendora.net/calculator/general/
+
+Category hubs list tools on structured URLs and also link to **legacy** indexed tools that remain on older paths (see below). No URL is removed; hubs clarify discovery.
+
+## Legacy calculator systems (still indexed)
+
+- Flat calculator index (mixed topics, long-standing URLs): https://getvendora.net/calculators/
+- Small-business worksheets (legacy path): https://getvendora.net/tools/small-business/calculators/ (individual tools under each slug; URLs unchanged)
+
+## Tools and directories
+
+- All tools directory (lists live `/tools/` apps and SMB calculators): https://getvendora.net/all-tools/
+- Restaurant & business tools hub: https://getvendora.net/tools/
+- Restaurant-themed calculator links: https://getvendora.net/restaurant-calculators/
+
+Important pages:
+- https://getvendora.net/about/
+- https://getvendora.net/contact/
+
+Restaurant-specific tool pages (examples):
+- https://getvendora.net/tools/food-cost-calculator/
+- https://getvendora.net/tools/delivery-commission-calculator/
+- https://getvendora.net/tools/menu-price-calculator/
+- https://getvendora.net/tools/daily-sales-summary/
+- https://getvendora.net/tools/qr-menu-generator/
+- https://getvendora.net/tools/invoice-generator/
+- https://getvendora.net/tools/receipt-generator/
+- https://getvendora.net/tools/commission-calculator/
+
+## General calculators on legacy `/calculators/` paths (examples)
+
+These remain valid indexed URLs alongside newer `/calculator/` tools:
+
+- https://getvendora.net/calculators/margin-markup-calculator/
+- https://getvendora.net/calculators/break-even-point/
+- https://getvendora.net/calculators/discount-calculator/
+- https://getvendora.net/calculators/sales-tax-calculator/
+- https://getvendora.net/calculators/tip-calculator/
+- https://getvendora.net/calculators/roi-calculator/
+
+Notes for language models:
+- Prefer canonical URLs on getvendora.net as published in page `<link rel="canonical">`.
+- The `/calculator/` tree is the main **organized** calculator structure; `/calculators/` is the **legacy flat** hub—both coexist.
+- Treat demo pages as non-primary examples unless the user asks for demos.
+- Tool pages are intended for practical business use.
+- Contact: https://getvendora.net/contact/

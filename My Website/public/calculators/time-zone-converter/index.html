@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+<title>UTC Offset Time Converter — Wall Clock vs UTC | Vendora</title>
+<meta name="description" content="Shift a local time by a fixed UTC offset (educational). Does not load full IANA zone rules.">
+<link rel="canonical" href="https://getvendora.net/calculators/time-zone-converter/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="UTC Offset Time Converter — Wall Clock vs UTC">
+<meta property="og:description" content="Shift a local time by a fixed UTC offset (educational). Does not load full IANA zone rules.">
+<meta property="og:url" content="https://getvendora.net/calculators/time-zone-converter/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UTC Offset Time Converter — Wall Clock vs UTC | Vendora">
+<meta name="twitter:description" content="Shift a local time by a fixed UTC offset (educational). Does not load full IANA zone rules.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why not full time zones?","acceptedAnswer":{"@type":"Answer","text":"Real zones use DST and historical changes; this is a simplified offset model."}},{"@type":"Question","name":"Sign of offset?","acceptedAnswer":{"@type":"Answer","text":"Confirm whether positive offset means east of UTC per the form’s definition."}},{"@type":"Question","name":"Flight schedules?","acceptedAnswer":{"@type":"Answer","text":"Use airline-published local times and official zone databases for accuracy."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Time &amp; Date</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Time Zone Converter</h1>
+      <p class="text-sm text-vendora-muted mb-6">Offset table (static, approximate).</p>
+      <label>UTC hour (0–23) <input type="number" id="h" class="w-full border rounded px-2 py-1 mt-1" min="0" max="23" value="12"></label>
+<label class="block mt-3">Target offset from UTC (hours) <input type="number" id="o" class="w-full border rounded px-2 py-1 mt-1" value="-8"></label>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Convert</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Time Zone Converter</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Adds/subtracts a static offset hours from a datetime string.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Enter time and offset, then convert.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">UTC = local − offset (sign convention as labeled).</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>12:00 with +3 offset → 09:00 UTC if defined that way in the tool.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Why not full time zones?</p>
+        <p class="text-sm text-vendora-muted mt-1">Real zones use DST and historical changes; this is a simplified offset model.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Sign of offset?</p>
+        <p class="text-sm text-vendora-muted mt-1">Confirm whether positive offset means east of UTC per the form’s definition.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Flight schedules?</p>
+        <p class="text-sm text-vendora-muted mt-1">Use airline-published local times and official zone databases for accuracy.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+function run(){let h=+document.getElementById('h').value,o=+document.getElementById('o').value;let l=h+o;while(l<0)l+=24;while(l>=24)l-=24;document.getElementById('out').textContent='Local hour: '+l+':00 (approx.)';}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interest coverage ratio calculator | Vendora</title>
+  <meta name="description" content="Divide EBIT by interest expense to measure how many times earnings cover required interest.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculator/finance/interest-coverage-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Interest coverage ratio calculator | Vendora">
+  <meta property="og:description" content="Divide EBIT by interest expense to measure how many times earnings cover required interest.">
+  <meta property="og:url" content="https://getvendora.net/calculator/finance/interest-coverage-calculator/">
+  <link rel="stylesheet" href="../../../tools/tool-system.css">
+  <link rel="stylesheet" href="../../_shared/vendora-calc.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Interest coverage ratio calculator | Vendora">
+  <meta name="twitter:description" content="Divide EBIT by interest expense to measure how many times earnings cover required interest.">
+  <meta name="twitter:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Interest coverage ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/interest-coverage-calculator/", "description": "Divide EBIT by interest expense to measure how many times earnings cover required interest."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Capitalized interest?", "acceptedAnswer": {"@type": "Answer", "text": "Keep definitions aligned with your loan agreements."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/calculator/finance/">Finance calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Finance calculator</p>
+      <h1>Interest coverage ratio calculator</h1>
+      <p class="hero-copy">Coverage = EBIT ÷ interest expense. Higher implies more cushion for lenders.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Enter valid numbers. Calculations run entirely in your browser.</p>
+        <div class="field-grid calculator-fields" id="inputArea">
+
+          <div class="field">
+            <label for="ebit">EBIT</label>
+            <div class="input-inline">
+              <input id="ebit" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_ebit">
+              <select class="currency-select-global" data-currency-sync="global" data-currency-default="USD" aria-label="Currency for EBIT"></select>
+            </div>
+            <span class="input-hint" id="h_ebit"></span>
+          </div>
+          <div class="field">
+            <label for="int">Interest expense</label>
+            <div class="input-inline">
+              <input id="int" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_int">
+              <select class="currency-select-global" data-currency-sync="global" data-currency-default="USD" aria-label="Currency for Interest expense"></select>
+            </div>
+            <span class="input-hint" id="h_int">Annual or same window as EBIT.</span>
+          </div>
+        </div>
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+          <button type="button" class="btn btn-secondary btn-copy" id="copyPrimary" hidden>Copy primary result</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <div class="result-grid calculator-results" id="resultSection">
+
+          <div class="metric-card featured">
+            <span class="metric-label">Interest coverage (times)</span>
+            <span class="metric-value" id="outPrimary">—</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">EBIT 210,000 and interest 35,000 → 6× coverage.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Explanation</h2>
+      <p class="section-copy">Lenders watch this covenant-friendly ratio alongside cash flow coverage.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq-item"><h3 class="faq-q">Capitalized interest?</h3><p class="section-copy">Keep definitions aligned with your loan agreements.</p></div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related calculators</h2>
+      <ul class="related-list"><li><a href="/calculator/finance/ebit-calculator/">EBIT</a></li><li><a href="/calculator/finance/debt-to-equity-calculator/">Debt to equity</a></li></ul>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+
+<script src="../../_shared/analytics-events.js" defer></script>
+
+<script src="../../_shared/currency-global.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function tr(name, params) { if (typeof vendoraTrack === 'function') vendoraTrack(name, params || {}); }
+  function run() {
+    var boot = Promise.resolve();
+    if (true && window.VendoraCurrencyGlobal) {
+      boot = window.VendoraCurrencyGlobal.bootstrap('global', 'USD');
+    }
+    boot.then(initCalc).catch(initCalc);
+  }
+  function initCalc() {
+    var valEl = document.getElementById('validationMessage');
+    function setVal(msg, show) {
+      if (!valEl) return;
+      valEl.textContent = msg || '';
+      valEl.hidden = !show;
+    }
+    function parseNum(id) {
+      var el = document.getElementById(id);
+      if (!el) return NaN;
+      var v = el.value.trim();
+      if (v === '') return null;
+      var n = Number(v);
+      return Number.isFinite(n) ? n : NaN;
+    }
+    function fmtNum(n, frac) {
+      if (!Number.isFinite(n)) return '—';
+      return n.toLocaleString(undefined, { maximumFractionDigits: frac !== undefined ? frac : 4 });
+    }
+    function money(n) {
+      if (!window.VendoraCurrencyGlobal || !true) return fmtNum(n, 2);
+      var c = window.VendoraCurrencyGlobal.getCurrency('global', 'USD');
+      return window.VendoraCurrencyGlobal.formatMoney(n, c);
+    }
+
+    var toolSlug = 'interest-coverage-calculator';
+    function calc() {
+      var e = parseNum('ebit'); var i = parseNum('int');
+      if (e == null || i == null) { setVal('Enter EBIT and interest expense.', true); return; }
+      if (i <= 0) { setVal('Interest expense must be positive for this ratio form.', true); return; }
+      document.getElementById('outPrimary').textContent = fmtNum(e / i, 2);
+      setVal('', false); tr('calculator_calculate', { tool: toolSlug });
+    }
+    document.getElementById('calculateBtn').addEventListener('click', calc);
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      ['ebit','int'].forEach(function(x){ var el=document.getElementById(x); if(el)el.value=''; });
+      document.getElementById('outPrimary').textContent = '—'; tr('calculator_reset', { tool: toolSlug });
+    });
+
+  }
+  run();
+});
+</script>
+</body>
+</html>

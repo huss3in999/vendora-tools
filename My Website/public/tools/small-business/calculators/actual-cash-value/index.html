@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actual Cash Value Calculator | Small Business | Vendora</title>
+  <meta name="description" content="Estimate actual cash value (ACV) from purchase price and straight-line depreciation using expected life and current age. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/actual-cash-value/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script src="../_shared/currency.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Actual Cash Value Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/actual-cash-value/", "description": "Estimate actual cash value (ACV) from purchase price and straight-line depreciation using expected life and current age. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Estimate an item’s actual cash value (ACV) using a simple straight‑line depreciation model. Enter purchase price, expected life, and current life to see the depreciated value and depreciation amount."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>Actual Cash Value Calculator</h1>
+      <p class="hero-copy">Estimate an item’s actual cash value (ACV) using a simple straight‑line depreciation model. Enter purchase price, expected life, and current life to see the depreciated value and depreciation amount.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">ACV here assumes straight-line depreciation: value drops evenly from purchase price to zero over the expected life.</p>
+
+        <div class="field-grid calculator-fields">
+          <div class="field">
+            <label for="purchasePrice">Purchase price</label>
+            <div class="input-inline">
+              <input id="purchasePrice" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 1200" autocomplete="off">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Purchase price currency"></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="expectedLife">Expected life of the item</label>
+            <input id="expectedLife" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 5" autocomplete="off">
+            <span class="input-hint">Use years (or any consistent time unit).</span>
+          </div>
+          <div class="field">
+            <label for="currentLife">Current life of the item</label>
+            <input id="currentLife" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 2" autocomplete="off">
+            <span class="input-hint">Time already used (same unit as expected life).</span>
+          </div>
+          <div class="field">
+            <label for="acvField">Actual cash value</label>
+            <div class="input-inline">
+              <input id="acvField" type="text" inputmode="decimal" readonly value="">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="ACV currency"></select>
+            </div>
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">Depreciation is calculated as a fraction of purchase price based on current life vs expected life.</p>
+        <div class="result-grid calculator-results" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Actual cash value</span>
+            <span class="metric-value" id="outAcv">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Depreciation amount</span>
+            <span class="metric-value" id="outDep">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Depreciation percent</span>
+            <span class="metric-value" id="outDepPct">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">If purchase price is $1,200, expected life is 5 years, and current life is 2 years, depreciation is 40% and ACV is about $720.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">Depreciation percent = current life ÷ expected life. Depreciation amount = purchase price × depreciation percent. Actual cash value = purchase price − depreciation amount, floored at zero.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Use ACV as a quick planning baseline for replacement decisions, but adjust for market demand and condition when pricing used assets.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="../accumulated-depreciation/index.html">Accumulated Depreciation</a>, <a href="../profit/index.html">Profit Calculator</a>, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      if (window.VendoraCurrency) window.VendoraCurrency.initSyncedCurrencySelects('global', 'USD');
+
+      function parseNonNeg(id, label) {
+        var el = document.getElementById(id);
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true, message: 'Enter ' + label + '.' };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true, message: label + ' must be a valid number.' };
+        if (n < 0) return { negative: true, message: label + ' must not be negative.' };
+        return { value: n };
+      }
+
+      function pct(n) {
+        return n.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 }) + '%';
+      }
+
+      function money(n) {
+        return window.VendoraCurrency
+          ? window.VendoraCurrency.formatMoney(n, window.VendoraCurrency.getCurrency('global', 'USD'))
+          : ('$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function interpret(acv, depPct) {
+        var el = document.getElementById('interpretation');
+        if (!Number.isFinite(acv)) {
+          el.hidden = true;
+          return;
+        }
+        var text;
+        if (depPct >= 100) text = 'Current life is at or beyond expected life, so this straight-line model yields an ACV near zero.';
+        else text = 'This is a straight-line estimate; real resale value can be higher or lower depending on condition and demand.';
+        el.textContent = text;
+        el.hidden = false;
+      }
+
+      function compute() {
+        var rp = parseNonNeg('purchasePrice', 'purchase price');
+        if (rp.empty || rp.invalid || rp.negative) return { ok: false, message: rp.message };
+        var re = parseNonNeg('expectedLife', 'expected life');
+        if (re.empty || re.invalid || re.negative) return { ok: false, message: re.message };
+        if (re.value === 0) return { ok: false, message: 'Expected life must be greater than zero.' };
+        var rc = parseNonNeg('currentLife', 'current life');
+        if (rc.empty || rc.invalid || rc.negative) return { ok: false, message: rc.message };
+
+        var purchase = rp.value;
+        var expected = re.value;
+        var current = rc.value;
+        var depFrac = Math.min(1, current / expected);
+        var depAmt = purchase * depFrac;
+        var acv = Math.max(0, purchase - depAmt);
+        return { ok: true, acv: acv, depAmt: depAmt, depPct: depFrac * 100 };
+      }
+
+      function render(out) {
+        document.getElementById('outAcv').textContent = money(out.acv);
+        document.getElementById('outDep').textContent = money(out.depAmt);
+        document.getElementById('outDepPct').textContent = pct(out.depPct);
+        document.getElementById('acvField').value = money(out.acv);
+        interpret(out.acv, out.depPct);
+      }
+
+      function reset() {
+        ['purchasePrice', 'expectedLife', 'currentLife'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('acvField').value = '';
+        document.getElementById('outAcv').textContent = '—';
+        document.getElementById('outDep').textContent = '—';
+        document.getElementById('outDepPct').textContent = '—';
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) return setValidation(r.message, true);
+        setValidation('', false);
+        render(r);
+      });
+      document.getElementById('resetBtn').addEventListener('click', reset);
+      reset();
+    })();
+  </script>
+</body>
+</html>
+

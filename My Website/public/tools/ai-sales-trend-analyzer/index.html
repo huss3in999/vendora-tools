@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Sales Trend Analyzer for Small Businesses</title>
+  <meta name="description" content="Analyze sales direction, growth rate, and volatility from daily or weekly sales. Get short AI insights and risk flags. Free tool for small businesses.">
+  <meta name="keywords" content="ai sales trend analyzer, sales trend analysis, sales growth rate, sales volatility, small business sales tool">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/ai-sales-trend-analyzer/">
+  <meta property="og:title" content="AI Sales Trend Analyzer for Small Businesses">
+  <meta property="og:description" content="Paste daily or weekly sales numbers to detect trend direction, growth rate, and risks. Includes short AI recommendations.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/ai-sales-trend-analyzer/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "AI Sales Trend Analyzer",
+    "description": "Analyze sales direction, growth rate, and volatility from daily or weekly sales numbers. AI provides short insights and recommendations.",
+    "url": "https://getvendora.net/tools/ai-sales-trend-analyzer/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <link rel="stylesheet" href="../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script>
+  (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);
+      t.async=1;
+      t.src="https://www.clarity.ms/tag/w28z01fb1p";
+      y=l.getElementsByTagName(r)[0];
+      y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "w28z01fb1p");
+  </script>
+  <script defer src="/assets/clarity-helper.js"></script>
+</head>
+<body class="vendora-tool ai-tool-page">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero ai-hero">
+      <p class="eyebrow">AI Business Tool</p>
+      <h1>AI Sales Trend Analyzer</h1>
+      <p class="hero-copy">Paste daily or weekly sales to detect direction, growth rate, and volatility. The calculations run locally in your browser; AI adds short, practical next steps.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Trend direction</span>
+        <span class="hero-tag">Growth rate</span>
+        <span class="hero-tag">Risk flags</span>
+      </div>
+      <p class="helper-note" style="margin:18px 0 0; max-width:760px;">No accounts. No storage. Your numbers stay in your browser; only a compact summary is sent to AI for short insights.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="tool-inputs">
+        <h2 class="section-title" id="tool-inputs">Enter your sales</h2>
+        <p class="section-copy">Add one value per line. Example: 1200, 1320, 980, 1410. You can use commas in numbers.</p>
+
+        <div class="field-section">
+          <h3>Sales series</h3>
+          <div class="field-grid">
+            <div class="field">
+              <label for="seriesType">Series type</label>
+              <div class="select-wrap">
+                <select id="seriesType">
+                  <option value="daily">Daily sales</option>
+                  <option value="weekly">Weekly sales</option>
+                </select>
+              </div>
+              <span class="input-hint">Used for labeling outputs (daily vs weekly) and example wording.</span>
+            </div>
+            <div class="field">
+              <label for="currency">Currency symbol</label>
+              <input id="currency" type="text" inputmode="text" placeholder="$" maxlength="4" value="$">
+              <span class="input-hint">Optional. This is only used for display (does not change calculations).</span>
+            </div>
+            <div class="field field-wide">
+              <label for="salesValues">Sales values (one per line)</label>
+              <textarea id="salesValues" rows="8" placeholder="1200&#10;1320&#10;980&#10;1410"></textarea>
+              <span class="input-hint">Tip: include at least 5 values for a more reliable trend signal.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite"></div>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="analyzeBtn" type="button">Analyze Trend</button>
+          <button class="btn btn-secondary" id="resetBtn" type="button">Reset</button>
+          <button class="btn btn-ghost" id="copyBtn" type="button">Copy Result</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="tool-results">
+        <h2 class="section-title" id="tool-results">Results</h2>
+        <p class="section-copy">Trend and risk signals from your numbers, plus short AI insights.</p>
+
+        <div class="status-banner" id="resultsPanel" hidden>
+          <span class="status-label" id="trendLabel">Ready</span>
+          <div class="status-score" id="trendHeadline">—</div>
+          <p class="status-text" id="trendSummary">Run an analysis to see your trend direction and risks.</p>
+        </div>
+
+        <div class="result-grid" id="metricsGrid" hidden>
+          <div class="metric-card featured">
+            <span class="metric-label">Trend direction</span>
+            <span class="metric-value" id="outDirection">—</span>
+          </div>
+          <div class="metric-card featured">
+            <span class="metric-label">Growth rate (first to last)</span>
+            <span class="metric-value" id="outGrowthRate">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Average sales</span>
+            <span class="metric-value" id="outAvg">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Volatility (CV)</span>
+            <span class="metric-value" id="outVolatility">—</span>
+          </div>
+        </div>
+
+        <section class="card faq ai-panel" aria-labelledby="ai-heading">
+          <h3 class="section-title" id="ai-heading">AI Insight</h3>
+          <p class="section-copy">AI does not calculate your trend. It only turns your computed summary into short recommendations.</p>
+
+          <div class="ai-state ai-loading" id="aiLoading" hidden>
+            <p class="section-copy">Generating insights…</p>
+          </div>
+
+          <div class="ai-state ai-error" id="aiError" hidden>
+            <p class="section-copy" id="aiErrorText">AI is unavailable right now. You can still use the local results above.</p>
+          </div>
+
+          <div class="ai-state ai-content" id="aiContent" hidden>
+            <p class="section-copy" id="aiText"></p>
+          </div>
+        </section>
+      </section>
+    </section>
+
+    <section class="card faq seo-tool-guide" aria-labelledby="seo-what">
+      <h2 class="section-title" id="seo-what">What this tool does</h2>
+      <p class="section-copy">The AI Sales Trend Analyzer turns a list of daily or weekly sales values into a clear direction (up, down, or flat), a simple growth rate, and a volatility signal. It also highlights common risk patterns like high variability or a recent decline.</p>
+
+      <h2 class="section-title" id="seo-why">Why this matters</h2>
+      <p class="section-copy">A slow decline is easy to miss when you’re busy. Trend direction and volatility help you spot demand issues, pricing problems, staffing mismatch, or marketing gaps earlier—before cash pressure hits.</p>
+
+      <h2 class="section-title" id="seo-how">How to use it</h2>
+      <ol class="section-copy">
+        <li>Choose daily or weekly sales.</li>
+        <li>Paste one sales number per line.</li>
+        <li>Click Analyze to see the computed trend and AI suggestions.</li>
+      </ol>
+
+      <h2 class="section-title" id="seo-example">Example</h2>
+      <p class="section-copy">If weekly sales move from 12,000 → 11,400 → 10,900 → 10,500, the tool will flag a downward direction and negative growth. AI suggestions might recommend checking top selling items, marketing consistency, and whether hours match demand.</p>
+
+      <h2 class="section-title" id="seo-faqs">FAQs</h2>
+      <h3>Does AI calculate the trend?</h3>
+      <p class="section-copy">No. JavaScript calculates the direction, growth rate, and volatility locally. AI only receives a short summary and returns brief recommendations.</p>
+      <h3>How many data points do I need?</h3>
+      <p class="section-copy">At least 5 values are recommended. More values usually make the direction more reliable.</p>
+      <h3>Is my data stored?</h3>
+      <p class="section-copy">No. Your pasted values are not stored. Only a compact computed summary is sent to AI to generate short insights.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <a class="btn sticky-cta" href="/">Open Vendora POS</a>
+  <script src="./script.js" defer></script>
+</body>
+</html>
+

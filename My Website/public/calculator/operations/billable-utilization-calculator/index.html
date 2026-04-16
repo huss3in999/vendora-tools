@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billable utilization calculator | Vendora</title>
+  <meta name="description" content="Divide billable hours by available working hours for staff utilization percent.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculator/operations/billable-utilization-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Billable utilization calculator | Vendora">
+  <meta property="og:description" content="Divide billable hours by available working hours for staff utilization percent.">
+  <meta property="og:url" content="https://getvendora.net/calculator/operations/billable-utilization-calculator/">
+  <link rel="stylesheet" href="../../../tools/tool-system.css">
+  <link rel="stylesheet" href="../../_shared/vendora-calc.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Billable utilization calculator | Vendora">
+  <meta name="twitter:description" content="Divide billable hours by available working hours for staff utilization percent.">
+  <meta name="twitter:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Billable utilization calculator | Vendora", "url": "https://getvendora.net/calculator/operations/billable-utilization-calculator/", "description": "Divide billable hours by available working hours for staff utilization percent."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Target rate?", "acceptedAnswer": {"@type": "Answer", "text": "Compare realized utilization to pricing and salary loads separately."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/calculator/operations/">Operations calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Operations calculator</p>
+      <h1>Billable utilization calculator</h1>
+      <p class="hero-copy">Utilization = billable hours ÷ available hours × 100 when both are in the same unit.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Enter valid numbers. Calculations run entirely in your browser.</p>
+        <div class="field-grid calculator-fields" id="inputArea">
+
+          <div class="field">
+            <label for="bill">Billable hours (period)</label>
+            <input id="bill" type="number" inputmode="decimal" step="any" autocomplete="off" min="0" aria-describedby="h_bill">
+            <span class="input-hint" id="h_bill"></span>
+          </div>
+          <div class="field">
+            <label for="avail">Available working hours (period)</label>
+            <input id="avail" type="number" inputmode="decimal" step="any" autocomplete="off" min="0" aria-describedby="h_avail">
+            <span class="input-hint" id="h_avail"></span>
+          </div>
+        </div>
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+          
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <div class="result-grid calculator-results" id="resultSection">
+
+          <div class="metric-card featured">
+            <span class="metric-label">Utilization (%)</span>
+            <span class="metric-value" id="outPrimary">—</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Billable 112 vs available 160 hours → 70%.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Explanation</h2>
+      <p class="section-copy">Exclude PTO consistently when it applies to availability targets.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq-item"><h3 class="faq-q">Target rate?</h3><p class="section-copy">Compare realized utilization to pricing and salary loads separately.</p></div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related calculators</h2>
+      <ul class="related-list"><li><a href="/calculator/operations/overtime-pay-estimator-calculator/">Overtime pay</a></li><li><a href="/calculator/profit/client-effective-hourly-calculator/">Client effective hourly rate</a></li></ul>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+
+<script src="../../_shared/analytics-events.js" defer></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function tr(name, params) { if (typeof vendoraTrack === 'function') vendoraTrack(name, params || {}); }
+  function run() {
+    var boot = Promise.resolve();
+    if (false && window.VendoraCurrencyGlobal) {
+      boot = window.VendoraCurrencyGlobal.bootstrap('global', 'USD');
+    }
+    boot.then(initCalc).catch(initCalc);
+  }
+  function initCalc() {
+    var valEl = document.getElementById('validationMessage');
+    function setVal(msg, show) {
+      if (!valEl) return;
+      valEl.textContent = msg || '';
+      valEl.hidden = !show;
+    }
+    function parseNum(id) {
+      var el = document.getElementById(id);
+      if (!el) return NaN;
+      var v = el.value.trim();
+      if (v === '') return null;
+      var n = Number(v);
+      return Number.isFinite(n) ? n : NaN;
+    }
+    function fmtNum(n, frac) {
+      if (!Number.isFinite(n)) return '—';
+      return n.toLocaleString(undefined, { maximumFractionDigits: frac !== undefined ? frac : 4 });
+    }
+    function money(n) {
+      if (!window.VendoraCurrencyGlobal || !false) return fmtNum(n, 2);
+      var c = window.VendoraCurrencyGlobal.getCurrency('global', 'USD');
+      return window.VendoraCurrencyGlobal.formatMoney(n, c);
+    }
+
+    var toolSlug = 'billable-utilization-calculator';
+    function calc() {
+      var b = parseNum('bill'); var a = parseNum('avail');
+      if (b == null || a == null) { setVal('Enter billable and available hours.', true); return; }
+      if (b < 0 || a <= 0 || b > a) { setVal('0 <= billable <= available; available positive.', true); return; }
+      document.getElementById('outPrimary').textContent = fmtNum((b / a) * 100, 2) + '%';
+      setVal('', false); tr('calculator_calculate', { tool: toolSlug });
+    }
+    document.getElementById('calculateBtn').addEventListener('click', calc);
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      ['bill','avail'].forEach(function(i){ var e=document.getElementById(i); if(e)e.value=''; });
+      document.getElementById('outPrimary').textContent = '—'; tr('calculator_reset', { tool: toolSlug });
+    });
+
+  }
+  run();
+});
+</script>
+</body>
+</html>

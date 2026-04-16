@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Printer Buy vs Outsource Calculator | Small Business | Vendora</title>
+  <meta name="description" content="Compare total cost to buy a 3D printer and print in-house versus outsourcing the same number of parts. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/3d-printer-buy-vs-outsource/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "3D Printer Buy vs Outsource Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/3d-printer-buy-vs-outsource/", "description": "Compare total cost to buy a 3D printer and print in-house versus outsourcing the same number of parts. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Estimate whether buying a printer and printing in-house costs less than ordering the same number of parts from a service. Enter the printer purchase price, how many identical prints you are comparing, your material and consumable cost per print, and the outsourced price per print."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>3D Printer: Buy vs Outsource</h1>
+      <p class="hero-copy">Estimate whether buying a printer and printing in-house costs less than ordering the same number of parts from a service. Enter the printer purchase price, how many identical prints you are comparing, your material and consumable cost per print, and the outsourced price per print.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Use one currency. This calculator estimates the total cost to buy a printer and print in-house vs ordering the same number of models from an outsourcing service.</p>
+
+        <div class="field-grid calculator-fields">
+          <div class="field">
+            <label for="goal">I want to buy a printer for</label>
+            <div class="choice-row" role="group" aria-label="I want to buy a printer for">
+              <label class="choice"><input type="radio" name="goal" id="goalPersonal" value="personal" checked> Educational/personal use</label>
+              <label class="choice"><input type="radio" name="goal" id="goalCommercial" value="commercial"> Commercial use</label>
+            </div>
+            <span class="input-hint">Used for guidance only; calculations stay the same.</span>
+          </div>
+          <div class="field">
+            <label for="printerModel">Printer model</label>
+            <input id="printerModel" type="text" placeholder="e.g. Creality Ender 3 V3" autocomplete="off">
+            <span class="input-hint">Optional (for your reference).</span>
+          </div>
+          <div class="field">
+            <label for="printerPrice">Printer price</label>
+            <input id="printerPrice" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 734.23" autocomplete="off">
+            <span class="input-hint">One-time cost of the printer.</span>
+          </div>
+          <div class="field">
+            <label for="numModels">How many models do you want to print?</label>
+            <input id="numModels" type="number" inputmode="numeric" step="1" min="1" placeholder="e.g. 1" autocomplete="off">
+            <span class="input-hint">Whole number of identical models for this comparison.</span>
+          </div>
+
+          <div class="field full">
+            <h3 class="section-title small">Filament</h3>
+          </div>
+          <div class="field">
+            <label for="filamentPricePerKg">Filament price</label>
+            <div class="input-inline">
+              <input id="filamentPricePerKg" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 75.58" autocomplete="off">
+              <span class="unit">RON/kg</span>
+            </div>
+            <span class="input-hint">Price of filament per kilogram.</span>
+          </div>
+          <div class="field">
+            <label for="filamentDensity">Filament density</label>
+            <div class="input-inline">
+              <input id="filamentDensity" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 1240" autocomplete="off">
+              <span class="unit">kg/m³</span>
+            </div>
+            <span class="input-hint">Typical PLA is ~1,240 kg/m³.</span>
+          </div>
+          <div class="field">
+            <label for="modelVolumeCm3">Volume of your 3D model</label>
+            <div class="input-inline">
+              <input id="modelVolumeCm3" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 100" autocomplete="off">
+              <span class="unit">cm³</span>
+            </div>
+            <span class="input-hint">Use your slicer’s volume estimate.</span>
+          </div>
+
+          <div class="field full">
+            <h3 class="section-title small">Software & accessories</h3>
+          </div>
+          <div class="field">
+            <label>Do you have free slicing software license?</label>
+            <div class="choice-row" role="group" aria-label="Free slicing software license">
+              <label class="choice"><input type="radio" name="slicingFree" id="slicingFreeNo" value="no" checked> No</label>
+              <label class="choice"><input type="radio" name="slicingFree" id="slicingFreeYes" value="yes"> Yes</label>
+            </div>
+            <span class="input-hint">If “No”, include the license cost below.</span>
+          </div>
+          <div class="field" id="slicingCostWrap">
+            <label for="slicingCost">Slicing software cost</label>
+            <input id="slicingCost" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 0" autocomplete="off">
+            <span class="input-hint">One-time cost (set 0 if not applicable).</span>
+          </div>
+          <div class="field">
+            <label for="accessoriesCost">Extra 3D printer accessories</label>
+            <input id="accessoriesCost" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 0" autocomplete="off">
+            <span class="input-hint">Nozzles, tools, enclosure, upgrades, etc.</span>
+          </div>
+
+          <div class="field full">
+            <h3 class="section-title small">Electricity</h3>
+          </div>
+          <div class="field">
+            <label for="printerPowerW">Equipment power consumption</label>
+            <div class="input-inline">
+              <input id="printerPowerW" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 180" autocomplete="off">
+              <span class="unit">W</span>
+            </div>
+            <span class="input-hint">Average power draw while printing (excluding heated bed below, if you want to separate it).</span>
+          </div>
+          <div class="field">
+            <label for="electricityCostPerKwh">Electricity cost</label>
+            <div class="input-inline">
+              <input id="electricityCostPerKwh" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 0.10" autocomplete="off">
+              <span class="unit">RON/kWh</span>
+            </div>
+            <span class="input-hint">Your utility price per kWh.</span>
+          </div>
+          <div class="field">
+            <label for="usageHours">Usage time</label>
+            <div class="input-inline">
+              <input id="usageHours" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 0" autocomplete="off">
+              <span class="unit">hrs</span>
+            </div>
+            <span class="input-hint">Total print time for all models combined.</span>
+          </div>
+          <div class="field">
+            <label for="heatedBedW">Heated bed</label>
+            <div class="input-inline">
+              <input id="heatedBedW" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 150" autocomplete="off">
+              <span class="unit">W</span>
+            </div>
+            <span class="input-hint">If you don’t want to separate bed power, set to 0.</span>
+          </div>
+          <div class="field">
+            <label for="heatedBedHours">Time using heated bed mode</label>
+            <div class="input-inline">
+              <input id="heatedBedHours" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 0" autocomplete="off">
+              <span class="unit">hrs</span>
+            </div>
+            <span class="input-hint">Total hours the bed is heated for all models combined.</span>
+          </div>
+          <div class="field">
+            <label for="totalElectricalCost">Total electrical cost</label>
+            <input id="totalElectricalCost" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+
+          <div class="field full">
+            <h3 class="section-title small">Design (buy path)</h3>
+          </div>
+          <div class="field">
+            <label>Are you going to buy a ready-to-print design?</label>
+            <div class="choice-row" role="group" aria-label="Buy a ready-to-print design">
+              <label class="choice"><input type="radio" name="buyDesign" id="buyDesignNo" value="no" checked> No</label>
+              <label class="choice"><input type="radio" name="buyDesign" id="buyDesignYes" value="yes"> Yes</label>
+            </div>
+            <span class="input-hint">If “Yes”, include the design cost below.</span>
+          </div>
+          <div class="field" id="buyDesignCostWrap" hidden>
+            <label for="buyDesignCost">Design cost (buy path)</label>
+            <input id="buyDesignCost" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 0" autocomplete="off">
+            <span class="input-hint">One-time cost of the design file.</span>
+          </div>
+
+          <div class="field full">
+            <h3 class="section-title small">Outsourcing</h3>
+          </div>
+          <div class="field">
+            <label>Are you going to buy a design?</label>
+            <div class="choice-row" role="group" aria-label="Buy a design for outsourcing">
+              <label class="choice"><input type="radio" name="outDesign" id="outDesignNo" value="no" checked> No</label>
+              <label class="choice"><input type="radio" name="outDesign" id="outDesignYes" value="yes"> Yes</label>
+            </div>
+            <span class="input-hint">If “Yes”, include the design cost below.</span>
+          </div>
+          <div class="field" id="outDesignCostWrap" hidden>
+            <label for="outDesignCost">Design cost (outsource path)</label>
+            <input id="outDesignCost" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 0" autocomplete="off">
+            <span class="input-hint">One-time cost of the design file.</span>
+          </div>
+          <div class="field">
+            <label for="outsourcePerModel">Outsourcing price per model</label>
+            <input id="outsourcePerModel" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 0" autocomplete="off">
+            <span class="input-hint">What the service charges per printed model.</span>
+          </div>
+          <div class="field">
+            <label for="shippingCost">Shipping cost</label>
+            <input id="shippingCost" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 0" autocomplete="off">
+            <span class="input-hint">Total shipping for the order.</span>
+          </div>
+          <div class="field">
+            <label for="totalOutsourcingCost">Total outsourcing cost</label>
+            <input id="totalOutsourcingCost" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">Buy total includes printer price, accessories, optional slicing/design costs, filament cost estimated from volume & density, and electricity (including optional heated bed). Outsource total includes price per model, shipping, and optional design cost.</p>
+        <div class="result-grid calculator-results" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Lower total cost</span>
+            <span class="metric-value" id="outLower">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Buy path total</span>
+            <span class="metric-value" id="outBuy">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Outsource path total</span>
+            <span class="metric-value" id="outOut">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Difference (buy − outsource)</span>
+            <span class="metric-value" id="outDiff">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Filament cost (estimated)</span>
+            <span class="metric-value" id="outFilament">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Total electrical cost</span>
+            <span class="metric-value" id="outElectric">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Printer costs $800, you plan 100 prints, material is $2 per print, and a bureau charges $15 per print. Buy path total is $800 + $200 = $1,000. Outsource total is $1,500. Difference is −$500, so buying and printing is cheaper for this batch.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">Buy path total = printer purchase price + (material and consumables per print × number of prints). Outsource path total = outsourced price per print × number of prints. Difference = buy path total − outsource path total. If difference is negative, the buy path is cheaper; if positive, outsourcing is cheaper for these inputs. This is a simplified cash comparison and ignores time, quality, and resale value.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Raise the print count until outsource wins if your per-print bureau price is high—then compare that break-even volume to realistic demand before you buy hardware.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="../profit/index.html">Profit Calculator</a>, <a href="../break-even/index.html">Break-even Calculator</a>, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      function parseNonNeg(el) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0) return { negative: true };
+        return { value: n };
+      }
+
+      function parseQty(el) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0) return { negative: true };
+        if (n === 0) return { zero: true };
+        if (Math.floor(n) !== n) return { fractional: true };
+        return { value: Math.floor(n) };
+      }
+
+      function moneyRON(n) {
+        return new Intl.NumberFormat('ro-RO', { style: 'currency', currency: 'RON', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function interpret(diff, buy, out) {
+        var el = document.getElementById('interpretation');
+        if (!Number.isFinite(diff)) {
+          el.hidden = true;
+          return;
+        }
+        var text;
+        if (Math.abs(diff) < 0.005) {
+          text = 'Totals are about the same at these inputs—decide using lead time, quality, and capacity.';
+        } else if (diff < 0) {
+          text = 'Buy path is cheaper for this batch; confirm your material estimate and spare time before you commit.';
+        } else {
+          text = 'Outsourcing is cheaper for this batch; buying a printer still might make sense at higher volume or different material cost.';
+        }
+        el.textContent = text;
+        el.hidden = false;
+      }
+
+      function compute() {
+        function nn(id, label, allowEmpty, emptyValue) {
+          var r = parseNonNeg(document.getElementById(id));
+          if (r.empty) return allowEmpty ? { ok: true, value: emptyValue } : { ok: false, message: 'Enter ' + label + '.' };
+          if (r.invalid || r.negative) return { ok: false, message: label + ' must be a valid number that is not negative.' };
+          return { ok: true, value: r.value };
+        }
+
+        var q = parseQty(document.getElementById('numModels'));
+        if (q.empty) return { ok: false, message: 'Enter how many models you want to print.' };
+        if (q.invalid || q.negative || q.fractional) return { ok: false, message: 'Number of models must be a valid whole number.' };
+        if (q.zero) return { ok: false, message: 'Number of models must be at least 1.' };
+        var nModels = q.value;
+
+        var printerPrice = nn('printerPrice', 'Printer price', false).value;
+        if (!Number.isFinite(printerPrice)) {
+          var rp = nn('printerPrice', 'Printer price', false);
+          if (!rp.ok) return rp;
+          printerPrice = rp.value;
+        }
+
+        var filamentPricePerKg = nn('filamentPricePerKg', 'Filament price (RON/kg)', false);
+        if (!filamentPricePerKg.ok) return filamentPricePerKg;
+        var filamentDensity = nn('filamentDensity', 'Filament density (kg/m³)', false);
+        if (!filamentDensity.ok) return filamentDensity;
+        var modelVolumeCm3 = nn('modelVolumeCm3', 'Model volume (cm³)', false);
+        if (!modelVolumeCm3.ok) return modelVolumeCm3;
+
+        var accessoriesCost = nn('accessoriesCost', 'Extra accessories cost', true, 0);
+        if (!accessoriesCost.ok) return accessoriesCost;
+
+        var slicingIsFree = document.getElementById('slicingFreeYes').checked;
+        var slicingCost = 0;
+        if (!slicingIsFree) {
+          var sc = nn('slicingCost', 'Slicing software cost', true, 0);
+          if (!sc.ok) return sc;
+          slicingCost = sc.value;
+        }
+
+        var printerPowerW = nn('printerPowerW', 'Equipment power consumption (W)', true, 0);
+        if (!printerPowerW.ok) return printerPowerW;
+        var electricityCostPerKwh = nn('electricityCostPerKwh', 'Electricity cost (RON/kWh)', true, 0);
+        if (!electricityCostPerKwh.ok) return electricityCostPerKwh;
+        var usageHours = nn('usageHours', 'Usage time (hrs)', true, 0);
+        if (!usageHours.ok) return usageHours;
+        var heatedBedW = nn('heatedBedW', 'Heated bed (W)', true, 0);
+        if (!heatedBedW.ok) return heatedBedW;
+        var heatedBedHours = nn('heatedBedHours', 'Heated bed hours (hrs)', true, 0);
+        if (!heatedBedHours.ok) return heatedBedHours;
+
+        var buyDesign = document.getElementById('buyDesignYes').checked;
+        var buyDesignCost = 0;
+        if (buyDesign) {
+          var bdc = nn('buyDesignCost', 'Design cost (buy path)', true, 0);
+          if (!bdc.ok) return bdc;
+          buyDesignCost = bdc.value;
+        }
+
+        var outDesign = document.getElementById('outDesignYes').checked;
+        var outDesignCost = 0;
+        if (outDesign) {
+          var odc = nn('outDesignCost', 'Design cost (outsource path)', true, 0);
+          if (!odc.ok) return odc;
+          outDesignCost = odc.value;
+        }
+
+        var outsourcePerModel = nn('outsourcePerModel', 'Outsourcing price per model', false);
+        if (!outsourcePerModel.ok) return outsourcePerModel;
+        var shippingCost = nn('shippingCost', 'Shipping cost', true, 0);
+        if (!shippingCost.ok) return shippingCost;
+
+        var volumeM3PerModel = modelVolumeCm3.value * 1e-6;
+        var filamentKgPerModel = filamentDensity.value * volumeM3PerModel;
+        var filamentKgTotal = filamentKgPerModel * nModels;
+        var filamentCost = filamentKgTotal * filamentPricePerKg.value;
+
+        var kwh = ((printerPowerW.value * usageHours.value) + (heatedBedW.value * heatedBedHours.value)) / 1000;
+        var electricalCost = kwh * electricityCostPerKwh.value;
+
+        var buyTotal = printerPrice + accessoriesCost.value + slicingCost + buyDesignCost + filamentCost + electricalCost;
+        var outTotal = (outsourcePerModel.value * nModels) + shippingCost.value + outDesignCost;
+        var diff = buyTotal - outTotal;
+
+        return { ok: true, buyTotal: buyTotal, outTotal: outTotal, diff: diff, filamentCost: filamentCost, electricalCost: electricalCost };
+      }
+
+      function render(out) {
+        var lowerEl = document.getElementById('outLower');
+        document.getElementById('outBuy').textContent = moneyRON(out.buyTotal);
+        document.getElementById('outOut').textContent = moneyRON(out.outTotal);
+        var diffEl = document.getElementById('outDiff');
+        diffEl.textContent = moneyRON(out.diff);
+        diffEl.classList.toggle('negative', out.diff > 0);
+
+        document.getElementById('outFilament').textContent = moneyRON(out.filamentCost || 0);
+        document.getElementById('outElectric').textContent = moneyRON(out.electricalCost || 0);
+        document.getElementById('totalElectricalCost').value = moneyRON(out.electricalCost || 0);
+        document.getElementById('totalOutsourcingCost').value = moneyRON(out.outTotal);
+
+        if (Math.abs(out.diff) < 0.005) {
+          lowerEl.textContent = 'Roughly tied';
+        } else if (out.diff < 0) {
+          lowerEl.textContent = 'Buy path';
+        } else {
+          lowerEl.textContent = 'Outsource path';
+        }
+        interpret(out.diff, out.buyTotal, out.outTotal);
+      }
+
+      function reset() {
+        [
+          'printerModel',
+          'printerPrice',
+          'numModels',
+          'filamentPricePerKg',
+          'filamentDensity',
+          'modelVolumeCm3',
+          'slicingCost',
+          'accessoriesCost',
+          'printerPowerW',
+          'electricityCostPerKwh',
+          'usageHours',
+          'heatedBedW',
+          'heatedBedHours',
+          'totalElectricalCost',
+          'buyDesignCost',
+          'outDesignCost',
+          'outsourcePerModel',
+          'shippingCost'
+          ,'totalOutsourcingCost'
+        ].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('goalPersonal').checked = true;
+        document.getElementById('slicingFreeNo').checked = true;
+        document.getElementById('buyDesignNo').checked = true;
+        document.getElementById('outDesignNo').checked = true;
+        document.getElementById('buyDesignCostWrap').hidden = true;
+        document.getElementById('outDesignCostWrap').hidden = true;
+        document.getElementById('slicingCostWrap').style.display = '';
+        document.getElementById('outLower').textContent = '—';
+        document.getElementById('outBuy').textContent = '—';
+        document.getElementById('outOut').textContent = '—';
+        document.getElementById('outDiff').textContent = '—';
+        document.getElementById('outFilament').textContent = '—';
+        document.getElementById('outElectric').textContent = '—';
+        document.getElementById('outDiff').classList.remove('negative');
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      function wireConditionalUI() {
+        function toggleDesign(idYes, wrapId) {
+          var yes = document.getElementById(idYes);
+          var wrap = document.getElementById(wrapId);
+          if (!yes || !wrap) return;
+          wrap.hidden = !yes.checked;
+        }
+        function toggleSlicing() {
+          var freeYes = document.getElementById('slicingFreeYes');
+          var wrap = document.getElementById('slicingCostWrap');
+          if (!freeYes || !wrap) return;
+          wrap.style.display = freeYes.checked ? 'none' : '';
+        }
+
+        ['buyDesignYes', 'buyDesignNo'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.addEventListener('change', function () { toggleDesign('buyDesignYes', 'buyDesignCostWrap'); });
+        });
+        ['outDesignYes', 'outDesignNo'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.addEventListener('change', function () { toggleDesign('outDesignYes', 'outDesignCostWrap'); });
+        });
+        ['slicingFreeYes', 'slicingFreeNo'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.addEventListener('change', toggleSlicing);
+        });
+
+        toggleDesign('buyDesignYes', 'buyDesignCostWrap');
+        toggleDesign('outDesignYes', 'outDesignCostWrap');
+        toggleSlicing();
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) {
+          setValidation(r.message, true);
+          return;
+        }
+        setValidation('', false);
+        render(r);
+      });
+
+      document.getElementById('resetBtn').addEventListener('click', reset);
+
+      wireConditionalUI();
+      reset();
+    })();
+  </script>
+</body>
+</html>

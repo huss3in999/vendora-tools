@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+<title>Time Duration Calculator — Span Across Midnight | Vendora</title>
+<meta name="description" content="Compute hours and minutes between two clock times, including overnight spans.">
+<link rel="canonical" href="https://getvendora.net/calculators/time-duration/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Time Duration Calculator — Span Across Midnight">
+<meta property="og:description" content="Compute hours and minutes between two clock times, including overnight spans.">
+<meta property="og:url" content="https://getvendora.net/calculators/time-duration/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Time Duration Calculator — Span Across Midnight | Vendora">
+<meta name="twitter:description" content="Compute hours and minutes between two clock times, including overnight spans.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does it handle DST jumps?","acceptedAnswer":{"@type":"Answer","text":"Wall-clock duration can be ambiguous on DST days; use UTC for precision."}},{"@type":"Question","name":"Lunch breaks?","acceptedAnswer":{"@type":"Answer","text":"Subtract unpaid break minutes manually if your form doesn’t include a break field."}},{"@type":"Question","name":"Crossing multiple days?","acceptedAnswer":{"@type":"Answer","text":"Some tools assume same calendar day unless you enable overnight mode."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Time &amp; Date</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Time Duration</h1>
+      <p class="text-sm text-vendora-muted mb-6">Minutes between two times (same day or next day).</p>
+      <label>Start <input type="time" id="a" class="w-full border rounded px-2 py-1 mt-1" value="09:00"></label>
+<label class="block mt-3">End <input type="time" id="b" class="w-full border rounded px-2 py-1 mt-1" value="17:30"></label>
+<label class="block mt-3">Break (minutes) <input type="number" id="br" class="w-full border rounded px-2 py-1 mt-1" value="30"></label>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Time Duration</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Find elapsed time between time-of-day values.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Enter start and end times (24h or AM/PM as supported).</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Convert to minutes, subtract, add 24h if end &lt; start.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>22:00 to 02:00 next day → 4 hours.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Does it handle DST jumps?</p>
+        <p class="text-sm text-vendora-muted mt-1">Wall-clock duration can be ambiguous on DST days; use UTC for precision.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Lunch breaks?</p>
+        <p class="text-sm text-vendora-muted mt-1">Subtract unpaid break minutes manually if your form doesn’t include a break field.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Crossing multiple days?</p>
+        <p class="text-sm text-vendora-muted mt-1">Some tools assume same calendar day unless you enable overnight mode.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+function parse(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
+function run(){let m=parse(document.getElementById('b').value)-parse(document.getElementById('a').value);if(m<0)m+=24*60;m-=+document.getElementById('br').value;document.getElementById('out').textContent='Duration: '+Math.floor(m/60)+'h '+(m%60)+'m';}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

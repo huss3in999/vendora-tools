@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+<title>Running Pace Calculator — Minutes per Kilometer | Vendora</title>
+<meta name="description" content="Convert race time and distance into pace (min/km) for training and race planning.">
+<link rel="canonical" href="https://getvendora.net/calculators/pace-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Running Pace Calculator — Minutes per Kilometer">
+<meta property="og:description" content="Convert race time and distance into pace (min/km) for training and race planning.">
+<meta property="og:url" content="https://getvendora.net/calculators/pace-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Running Pace Calculator — Minutes per Kilometer | Vendora">
+<meta name="twitter:description" content="Convert race time and distance into pace (min/km) for training and race planning.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I convert to min/mile?","acceptedAnswer":{"@type":"Answer","text":"Multiply min/km by 1.60934, or use a dedicated converter."}},{"@type":"Question","name":"Hill courses?","acceptedAnswer":{"@type":"Answer","text":"Pace varies by terrain; this is overall average pace."}},{"@type":"Question","name":"Treadmill km vs outdoor?","acceptedAnswer":{"@type":"Answer","text":"Same math if distance and time are accurate."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Physics &amp; Engineering</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Pace Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Min/km from distance km and time.</p>
+      <label>Distance (km) <input type="number" id="d" class="w-full border rounded px-2 py-1 mt-1" value="5"></label>
+<label class="block mt-2">Time — minutes <input type="number" id="m" class="w-full border rounded px-2 py-1 mt-1" value="25"></label>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Pace Calculator</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Divides total minutes by distance to get pace.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Enter distance in km and total time in minutes.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Pace (min/km) = total minutes ÷ distance (km).</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>5 km in 25 min → 5:00 per km average.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">How do I convert to min/mile?</p>
+        <p class="text-sm text-vendora-muted mt-1">Multiply min/km by 1.60934, or use a dedicated converter.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Hill courses?</p>
+        <p class="text-sm text-vendora-muted mt-1">Pace varies by terrain; this is overall average pace.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Treadmill km vs outdoor?</p>
+        <p class="text-sm text-vendora-muted mt-1">Same math if distance and time are accurate.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+function run(){const d=+document.getElementById('d').value,m=+document.getElementById('m').value;if(d<=0||m<=0){document.getElementById('out').textContent='Invalid';return;}const mpk=m/d;const mm=Math.floor(mpk),ss=Math.round((mpk-mm)*60);document.getElementById('out').textContent='Pace: '+mm+':'+String(ss).padStart(2,'0')+' /km';}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

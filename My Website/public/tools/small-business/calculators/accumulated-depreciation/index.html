@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accumulated Depreciation Calculator for Small Business | Vendora</title>
+  <meta name="description" content="Calculate straight-line depreciation: annual amount, accumulated depreciation after a given number of years, and net book value. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/accumulated-depreciation/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Accumulated Depreciation Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/accumulated-depreciation/", "description": "Calculate straight-line depreciation: annual amount, accumulated depreciation after a given number of years, and net book value. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Estimate straight-line depreciation for a fixed asset: enter cost, salvage value, useful life in years, and years elapsed. You get annual depreciation, accumulated depreciation, and net book value."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>Accumulated Depreciation Calculator</h1>
+      <p class="hero-copy">Estimate straight-line depreciation for a fixed asset: enter cost, salvage value, useful life in years, and years elapsed. You get annual depreciation, accumulated depreciation, and net book value.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Choose a depreciation method and enter the inputs for that method. Outputs include annual depreciation (current year), accumulated depreciation, and net book value.</p>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="method">Depreciation method</label>
+            <div class="choice-row" role="group" aria-label="Depreciation method">
+              <label class="choice"><input type="radio" name="method" id="methodStraight" value="straight-line" checked> Straight line</label>
+              <label class="choice"><input type="radio" name="method" id="methodDeclining" value="declining-balance"> Declining balance</label>
+              <label class="choice"><input type="radio" name="method" id="methodSyd" value="sum-of-years-digits"> Sum of the year's digits</label>
+              <label class="choice"><input type="radio" name="method" id="methodUnits" value="units-of-production"> Units of production</label>
+            </div>
+            <span class="input-hint">Straight-line matches the simplest accounting model.</span>
+          </div>
+          <div class="field">
+            <label for="assetCost">Cost of the asset</label>
+            <input id="assetCost" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 50000" autocomplete="off">
+            <span class="input-hint">Purchase price or capitalized cost.</span>
+          </div>
+          <div class="field">
+            <label for="salvageValue">Salvage value</label>
+            <input id="salvageValue" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 5000" autocomplete="off">
+            <span class="input-hint">Expected residual value at end of useful life.</span>
+          </div>
+          <div class="field">
+            <label for="usefulLife">Life of the asset or useful life</label>
+            <input id="usefulLife" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 10" autocomplete="off">
+            <span class="input-hint">Total years to depreciate over (must be greater than zero).</span>
+          </div>
+          <div class="field">
+            <label for="yearsElapsed">Number of years</label>
+            <input id="yearsElapsed" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 3" autocomplete="off">
+            <span class="input-hint">How many years of depreciation have passed (0 or more).</span>
+          </div>
+          <div class="field" id="decliningRateWrap" hidden>
+            <label for="decliningRatePct">Declining balance</label>
+            <input id="decliningRatePct" type="number" inputmode="decimal" step="any" min="0" placeholder="200" autocomplete="off">
+            <span class="input-hint">Rate as % of straight-line (e.g. 200 for double-declining).</span>
+          </div>
+          <div class="field" id="unitsTotalWrap" hidden>
+            <label for="totalUnits">Units of production</label>
+            <input id="totalUnits" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 100000" autocomplete="off">
+            <span class="input-hint">Total expected units over the asset’s life.</span>
+          </div>
+          <div class="field" id="unitsSoFarWrap" hidden>
+            <label for="unitsSoFar">Units of production (to date)</label>
+            <input id="unitsSoFar" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 25000" autocomplete="off">
+            <span class="input-hint">Units produced so far (for accumulated depreciation).</span>
+          </div>
+          <div class="field">
+            <label for="straightLineOut">Straight line</label>
+            <input id="straightLineOut" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Annual depreciation under straight-line (for comparison).</span>
+          </div>
+          <div class="field">
+            <label for="accumulatedDepreciationOut">Accumulated depreciation</label>
+            <input id="accumulatedDepreciationOut" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+          <div class="field">
+            <label for="netBookValueOut">Net book value</label>
+            <input id="netBookValueOut" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">Depreciable base is cost minus salvage. Annual depreciation is depreciable base divided by useful life. Accumulated depreciation is annual depreciation times the lesser of years elapsed and useful life.</p>
+        <div class="result-grid" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Net book value</span>
+            <span class="metric-value" id="outBook">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Accumulated depreciation</span>
+            <span class="metric-value" id="outAccum">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Annual depreciation</span>
+            <span class="metric-value" id="outAnnual">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Asset cost is $50,000, salvage is $5,000, useful life is 10 years, and 3 years have elapsed. Depreciable base is $45,000. Annual depreciation is $4,500. Accumulated depreciation after 3 years is $13,500. Net book value is $50,000 − $13,500 = $36,500.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">Depreciable base = cost of the asset − salvage value. Annual depreciation = depreciable base ÷ useful life (when useful life &gt; 0 and salvage ≤ cost). Effective years = min(years elapsed, useful life). Accumulated depreciation = annual depreciation × effective years. Net book value = cost − accumulated depreciation.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Tax rules and financial reporting rules differ; use this for planning and then confirm with your accountant or tax software.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="../accounting-profit/index.html">Accounting Profit Calculator</a>, <a href="../break-even/index.html">Break-even Calculator</a>, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      function parseNonNeg(el) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0) return { negative: true };
+        return { value: n };
+      }
+
+      function money(n) {
+        return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function interpret(accum, life, years) {
+        var el = document.getElementById('interpretation');
+        var text;
+        if (years >= life) {
+          text = 'Years elapsed reached or passed useful life—book value is at salvage (for this straight-line model).';
+        } else {
+          text = 'Book value falls each year by annual depreciation until you reach salvage at the end of useful life.';
+        }
+        el.textContent = text;
+        el.hidden = false;
+      }
+
+      function compute() {
+        var rc = parseNonNeg(document.getElementById('assetCost'));
+        if (rc.empty) return { ok: false, message: 'Enter cost of the asset.' };
+        if (rc.invalid || rc.negative) return { ok: false, message: 'Asset cost must be a valid number that is not negative.' };
+
+        var rs = parseNonNeg(document.getElementById('salvageValue'));
+        if (rs.empty) return { ok: false, message: 'Enter salvage value (use 0 if none).' };
+        if (rs.invalid || rs.negative) return { ok: false, message: 'Salvage value must be a valid number that is not negative.' };
+
+        var rl = parseNonNeg(document.getElementById('usefulLife'));
+        if (rl.empty) return { ok: false, message: 'Enter useful life in years.' };
+        if (rl.invalid || rl.negative) return { ok: false, message: 'Useful life must be a valid number that is not negative.' };
+        if (rl.value === 0) return { ok: false, message: 'Useful life must be greater than zero.' };
+
+        var ry = parseNonNeg(document.getElementById('yearsElapsed'));
+        if (ry.empty) return { ok: false, message: 'Enter years elapsed (use 0 for new).' };
+        if (ry.invalid || ry.negative) return { ok: false, message: 'Years elapsed must be a valid number that is not negative.' };
+
+        var methodEl = document.querySelector('input[name="method"]:checked');
+        var method = methodEl ? methodEl.value : 'straight-line';
+        var cost = rc.value;
+        var salvage = rs.value;
+        var life = rl.value;
+        var years = ry.value;
+
+        if (salvage > cost) {
+          return { ok: false, message: 'Salvage value cannot be greater than asset cost.' };
+        }
+
+        var base = cost - salvage;
+        var effectiveYears = Math.min(years, life);
+        var straightAnnual = base / life;
+
+        function clampBook(v) {
+          return Math.max(salvage, Math.min(cost, v));
+        }
+
+        var annual = 0;
+        var accum = 0;
+        var book = 0;
+
+        if (method === 'straight-line') {
+          annual = straightAnnual;
+          accum = annual * effectiveYears;
+          book = clampBook(cost - accum);
+        } else if (method === 'sum-of-years-digits') {
+          var sumYears = (life * (life + 1)) / 2;
+          var n = Math.floor(effectiveYears);
+          var fracSum = 0;
+          for (var k = 1; k <= n; k++) fracSum += (life - (k - 1)) / sumYears;
+          accum = base * fracSum;
+          annual = base * ((life - (n - 1)) / sumYears);
+          book = clampBook(cost - accum);
+        } else if (method === 'declining-balance') {
+          var r = parseNonNeg(document.getElementById('decliningRatePct'));
+          if (r.empty) return { ok: false, message: 'Enter declining balance rate (e.g. 200 for double-declining).' };
+          if (r.invalid || r.negative) return { ok: false, message: 'Declining balance rate must be a valid number that is not negative.' };
+          if (r.value === 0) return { ok: false, message: 'Declining balance rate must be greater than zero.' };
+          var rate = (r.value / 100) * (1 / life);
+          book = cost;
+          accum = 0;
+          var y = Math.floor(effectiveYears);
+          for (var i = 1; i <= y; i++) {
+            var dep = (book - salvage) * rate;
+            if (dep < 0) dep = 0;
+            if (book - dep < salvage) dep = book - salvage;
+            if (i === y) annual = dep;
+            accum += dep;
+            book -= dep;
+          }
+          book = clampBook(book);
+        } else if (method === 'units-of-production') {
+          var tu = parseNonNeg(document.getElementById('totalUnits'));
+          if (tu.empty) return { ok: false, message: 'Enter total expected units for units of production.' };
+          if (tu.invalid || tu.negative) return { ok: false, message: 'Total expected units must be a valid number that is not negative.' };
+          if (tu.value === 0) return { ok: false, message: 'Total expected units must be greater than zero.' };
+          var us = parseNonNeg(document.getElementById('unitsSoFar'));
+          if (us.empty) return { ok: false, message: 'Enter units produced to date.' };
+          if (us.invalid || us.negative) return { ok: false, message: 'Units produced to date must be a valid number that is not negative.' };
+          if (us.value > tu.value) return { ok: false, message: 'Units produced to date cannot exceed total expected units.' };
+          var perUnit = base / tu.value;
+          accum = perUnit * us.value;
+          annual = perUnit * (us.value / Math.max(1, years || 1));
+          book = clampBook(cost - accum);
+        } else {
+          return { ok: false, message: 'Unknown depreciation method.' };
+        }
+
+        return {
+          ok: true,
+          annual: annual,
+          accum: accum,
+          book: book,
+          straightAnnual: straightAnnual,
+          life: life,
+          years: years,
+        };
+      }
+
+      function render(out) {
+        document.getElementById('outAnnual').textContent = money(out.annual);
+        document.getElementById('outAccum').textContent = money(out.accum);
+        document.getElementById('outBook').textContent = money(out.book);
+        document.getElementById('straightLineOut').value = money(out.straightAnnual);
+        document.getElementById('accumulatedDepreciationOut').value = money(out.accum);
+        document.getElementById('netBookValueOut').value = money(out.book);
+        interpret(out.accum, out.life, out.years);
+      }
+
+      function reset() {
+        ['assetCost', 'salvageValue', 'usefulLife', 'yearsElapsed', 'decliningRatePct', 'totalUnits', 'unitsSoFar'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('methodStraight').checked = true;
+        ['straightLineOut', 'accumulatedDepreciationOut', 'netBookValueOut'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('outAnnual').textContent = '—';
+        document.getElementById('outAccum').textContent = '—';
+        document.getElementById('outBook').textContent = '—';
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      function wireMethodUI() {
+        function sync() {
+          var sel = document.querySelector('input[name="method"]:checked');
+          var m = sel ? sel.value : 'straight-line';
+          document.getElementById('decliningRateWrap').hidden = m !== 'declining-balance';
+          document.getElementById('unitsTotalWrap').hidden = m !== 'units-of-production';
+          document.getElementById('unitsSoFarWrap').hidden = m !== 'units-of-production';
+        }
+        ['methodStraight', 'methodDeclining', 'methodSyd', 'methodUnits'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.addEventListener('change', sync);
+        });
+        sync();
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) {
+          setValidation(r.message, true);
+          return;
+        }
+        setValidation('', false);
+        render(r);
+      });
+
+      document.getElementById('resetBtn').addEventListener('click', reset);
+
+      wireMethodUI();
+      reset();
+    })();
+  </script>
+</body>
+</html>

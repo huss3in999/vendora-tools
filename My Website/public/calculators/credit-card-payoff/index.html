@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+<title>Credit Card Payoff Calculator — Months to Zero Debt | Vendora</title>
+<meta name="description" content="Estimate payoff time and interest paid from balance, APR, and monthly payment. Assumes consistent payments.">
+<link rel="canonical" href="https://getvendora.net/calculators/credit-card-payoff/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Credit Card Payoff Calculator — Months to Zero Debt">
+<meta property="og:description" content="Estimate payoff time and interest paid from balance, APR, and monthly payment. Assumes consistent payments.">
+<meta property="og:url" content="https://getvendora.net/calculators/credit-card-payoff/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Credit Card Payoff Calculator — Months to Zero Debt | Vendora">
+<meta name="twitter:description" content="Estimate payoff time and interest paid from balance, APR, and monthly payment. Assumes consistent payments.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does this include new charges?","acceptedAnswer":{"@type":"Answer","text":"No. Additional spending changes payoff time."}},{"@type":"Question","name":"Minimum payment only?","acceptedAnswer":{"@type":"Answer","text":"Paying only minimums stretches payoff; enter your actual planned payment."}},{"@type":"Question","name":"Promotional APR?","acceptedAnswer":{"@type":"Answer","text":"Blended APR changes over time; this model assumes a single rate unless extended."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Finance &amp; Money</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Credit Card Payoff</h1>
+      <p class="text-sm text-vendora-muted mb-6">Months to pay off (fixed payment).</p>
+      <label>Balance ($)<input type="number" id="b" class="w-full border rounded px-2 py-1 mt-1" value="5000"></label>
+<label class="block mt-3">APR (decimal)<input type="number" id="apr" step="0.001" class="w-full border rounded px-2 py-1 mt-1" value="0.18"></label>
+<label class="block mt-3">Monthly payment ($)<input type="number" id="p" class="w-full border rounded px-2 py-1 mt-1" value="150"></label>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Credit Card Payoff</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Iterates monthly interest and principal reduction until balance hits zero.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Enter balance, APR, and planned monthly payment.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Each month: interest = balance × (APR/12); principal = payment − interest.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>$5,000 at 19.99% APR with $200/month may take ~32 months—run the tool for exact numbers.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Does this include new charges?</p>
+        <p class="text-sm text-vendora-muted mt-1">No. Additional spending changes payoff time.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Minimum payment only?</p>
+        <p class="text-sm text-vendora-muted mt-1">Paying only minimums stretches payoff; enter your actual planned payment.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Promotional APR?</p>
+        <p class="text-sm text-vendora-muted mt-1">Blended APR changes over time; this model assumes a single rate unless extended.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+function run(){let B=+document.getElementById('b').value,apr=+document.getElementById('apr').value,P=+document.getElementById('p').value;const r=apr/12,mi=B*r;if(P<=mi){document.getElementById('out').textContent='Payment must exceed monthly interest: $'+mi.toFixed(2);return;}let m=0,totInt=0;while(B>0.01&&m<600){const int=B*r;totInt+=int;const pr=P-int;if(pr<=0)break;B-=pr;m++;}document.getElementById('out').textContent='Months: '+m+'\nTotal interest paid: ~ $'+totInt.toFixed(2);}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

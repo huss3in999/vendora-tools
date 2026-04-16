@@ -1,0 +1,65 @@
+/* 3D Printer buy vs outsource — small overrides on top of tool-system.css */
+
+body.vendora-tool .business-tip {
+  border-color: rgba(0, 208, 132, 0.22);
+  background: linear-gradient(135deg, rgba(0, 208, 132, 0.08), rgba(255, 255, 255, 0.02)), var(--panel);
+}
+
+body.vendora-tool .calculator-fields .field.full {
+  grid-column: 1 / -1;
+}
+
+body.vendora-tool .section-title.small {
+  font-size: 1.05rem;
+  margin: 0.25rem 0 0;
+}
+
+body.vendora-tool .input-inline {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+body.vendora-tool .input-inline input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+body.vendora-tool .unit {
+  font-size: 0.9rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+body.vendora-tool .choice-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+
+body.vendora-tool .choice {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+  padding: 0.35rem 0.55rem;
+  border-radius: 0.65rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(15, 23, 42, 0.12);
+}
+
+body.vendora-tool .choice input {
+  margin: 0;
+}
+
+body.vendora-tool .sb-results .metric-value.interpret {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+body.vendora-tool .sb-results .metric-value.negative {
+  color: #f87171;
+}

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<!--
+  This file is a STARTER for ONE calculator only. It does NOT read the manifest.
+  For the full list of tools + Pending/Done: open index.html in this folder (generated from the repository’s internal manifest, not shipped as a public JSON file).
+  Stylesheet path is for THIS file location: tools/small-business/template.html → ../tool-system.css
+  When you copy to tools/small-business/calculators/<slug>/index.html, use: ../../../tool-system.css
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- TOOL: Replace page title and meta with original copy (do not copy reference sites). -->
+  <title>{{PAGE_TITLE}}</title>
+  <meta name="description" content="{{META_DESCRIPTION}}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{CANONICAL_URL}}">
+  <link rel="stylesheet" href="../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/tools/small-business/">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1 id="toolTitle">{{H1}}</h1>
+      <p class="hero-copy" id="toolIntro">{{SHORT_INTRO}}</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Enter numbers in your main currency. All calculations run in the browser.</p>
+
+        <div class="field-grid calculator-fields" id="inputArea">
+          <!-- Replace with labeled fields per tool; keep names stable for JS. -->
+          <div class="field">
+            <label for="fieldA">Field A</label>
+            <input id="fieldA" type="number" inputmode="decimal" step="any" placeholder="0">
+          </div>
+          <div class="field">
+            <label for="fieldB">Field B</label>
+            <input id="fieldB" type="number" inputmode="decimal" step="any" placeholder="0">
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">Outputs update instantly after you calculate.</p>
+        <div class="result-grid calculator-results" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Primary result</span>
+            <span class="metric-value" id="primaryResult">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Secondary</span>
+            <span class="metric-value" id="secondaryResult">—</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy" id="exampleSection">{{EXAMPLE_COPY}}</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy" id="explainSection">{{EXPLAIN_COPY}}</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy" id="tipSection">{{TIP_COPY}}</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy" id="relatedPlaceholder">Add links to other calculators in this category when published.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script type="module">
+    /**
+     * Calculator shell: swap `createCalculator` implementation per tool.
+     * Keep parsing, formatting, and validation separate from DOM updates.
+     */
+    function parseNum(el) {
+      const v = el?.value?.trim();
+      if (v === '' || v == null) return null;
+      const n = Number(v);
+      return Number.isFinite(n) ? n : NaN;
+    }
+
+    function fmt(n) {
+      if (!Number.isFinite(n)) return '—';
+      return n.toLocaleString(undefined, { maximumFractionDigits: 4 });
+    }
+
+    function setValidation(msg, show) {
+      const box = document.getElementById('validationMessage');
+      box.textContent = msg || '';
+      box.hidden = !show;
+      box.style.display = show ? 'block' : 'none';
+    }
+
+    /** Replace this factory with your tool’s math (original formulas). */
+    function createCalculator() {
+      return {
+        validate() {
+          const a = parseNum(document.getElementById('fieldA'));
+          const b = parseNum(document.getElementById('fieldB'));
+          if (a == null || b == null) return { ok: false, message: 'Enter both fields.' };
+          if (Number.isNaN(a) || Number.isNaN(b)) return { ok: false, message: 'Use valid numbers.' };
+          return { ok: true, a, b };
+        },
+        compute({ a, b }) {
+          return {
+            primary: a + b,
+            secondary: a * b,
+          };
+        },
+        render(out) {
+          document.getElementById('primaryResult').textContent = fmt(out.primary);
+          document.getElementById('secondaryResult').textContent = fmt(out.secondary);
+        },
+        reset() {
+          document.getElementById('fieldA').value = '';
+          document.getElementById('fieldB').value = '';
+          document.getElementById('primaryResult').textContent = '—';
+          document.getElementById('secondaryResult').textContent = '—';
+          setValidation('', false);
+        },
+      };
+    }
+
+    const calc = createCalculator();
+
+    document.getElementById('calculateBtn').addEventListener('click', () => {
+      const v = calc.validate();
+      if (!v.ok) {
+        setValidation(v.message, true);
+        return;
+      }
+      setValidation('', false);
+      calc.render(calc.compute(v));
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => calc.reset());
+  </script>
+</body>
+</html>

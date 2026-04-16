@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Customer Profitability Calculator</title>
+  <meta name="description" content="Calculate customer profit from revenue and costs. Add time spent to estimate time-based cost. Get short AI suggestions to improve profitability.">
+  <meta name="keywords" content="ai customer profitability calculator, customer profit, unprofitable customers, service cost, delivery cost, time spent">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/ai-customer-profitability/">
+  <meta property="og:title" content="AI Customer Profitability Calculator">
+  <meta property="og:description" content="Identify profitable vs unprofitable customers using revenue, costs, and time spent. AI suggests actions to improve profitability.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/ai-customer-profitability/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "AI Customer Profitability Calculator",
+    "description": "Calculate customer profit from revenue, service cost, delivery cost, and time spent. AI provides short actions to improve profitability.",
+    "url": "https://getvendora.net/tools/ai-customer-profitability/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <link rel="stylesheet" href="../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script>
+  (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);
+      t.async=1;
+      t.src="https://www.clarity.ms/tag/w28z01fb1p";
+      y=l.getElementsByTagName(r)[0];
+      y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "w28z01fb1p");
+  </script>
+  <script defer src="/assets/clarity-helper.js"></script>
+</head>
+<body class="vendora-tool ai-tool-page">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero ai-hero">
+      <p class="eyebrow">AI Business Tool</p>
+      <h1>AI Customer Profitability Calculator</h1>
+      <p class="hero-copy">Calculate customer profit using revenue and costs. Optionally include time spent to estimate time-based cost. AI adds short actions to improve profitability.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Customer profit</span>
+        <span class="hero-tag">Time cost (optional)</span>
+        <span class="hero-tag">AI actions</span>
+      </div>
+      <p class="helper-note" style="margin:18px 0 0; max-width:760px;">Calculations run locally. No storage. AI only receives a compact computed summary for short suggestions.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="tool-inputs">
+        <h2 class="section-title" id="tool-inputs">Enter customer numbers</h2>
+        <p class="section-copy">Use one customer, one order, or one contract. Leave optional fields blank if not applicable.</p>
+
+        <div class="field-section">
+          <h3>Revenue and costs</h3>
+          <div class="field-grid">
+            <div class="field">
+              <label for="currency">Currency symbol</label>
+              <input id="currency" type="text" inputmode="text" placeholder="$" maxlength="4" value="$">
+              <span class="input-hint">Optional. Used only for display.</span>
+            </div>
+            <div class="field">
+              <label for="revenue">Revenue</label>
+              <input id="revenue" type="number" min="0" step="0.01" placeholder="500.00" inputmode="decimal">
+              <span class="input-hint">Total billed or earned from this customer.</span>
+            </div>
+            <div class="field">
+              <label for="serviceCost">Service cost</label>
+              <input id="serviceCost" type="number" min="0" step="0.01" placeholder="180.00" inputmode="decimal">
+              <span class="input-hint">Direct fulfillment cost: materials, labor paid, subcontractors, etc.</span>
+            </div>
+            <div class="field">
+              <label for="deliveryCost">Delivery cost</label>
+              <input id="deliveryCost" type="number" min="0" step="0.01" placeholder="25.00" inputmode="decimal">
+              <span class="input-hint">Shipping, fuel, courier fees, packaging, etc.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-section">
+          <h3>Time spent (optional)</h3>
+          <p class="section-copy">Time is often the hidden cost. Add hours and an hourly value if you want time-based profit.</p>
+          <div class="field-grid">
+            <div class="field">
+              <label for="timeHours">Time spent (hours)</label>
+              <input id="timeHours" type="number" min="0" step="0.1" placeholder="3.5" inputmode="decimal">
+              <span class="input-hint">Hours spent serving this customer (support, meetings, revisions, etc.).</span>
+            </div>
+            <div class="field">
+              <label for="hourlyValue">Hourly value (for time cost)</label>
+              <input id="hourlyValue" type="number" min="0" step="0.01" placeholder="35.00" inputmode="decimal">
+              <span class="input-hint">Optional. If blank, profit will be calculated without time cost.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite"></div>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="calcBtn" type="button">Calculate</button>
+          <button class="btn btn-secondary" id="resetBtn" type="button">Reset</button>
+          <button class="btn btn-ghost" id="copyBtn" type="button">Copy Result</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="tool-results">
+        <h2 class="section-title" id="tool-results">Results</h2>
+        <p class="section-copy">Customer profit (with and without time cost) and short AI actions.</p>
+
+        <div class="status-banner" id="resultsPanel" hidden>
+          <span class="status-label" id="statusLabel">Ready</span>
+          <div class="status-score" id="profitHeadline">—</div>
+          <p class="status-text" id="profitSummary">Run a calculation to see profit and flags.</p>
+        </div>
+
+        <div class="result-grid" id="metricsGrid" hidden>
+          <div class="metric-card featured">
+            <span class="metric-label">Customer profit (no time cost)</span>
+            <span class="metric-value" id="outProfitNoTime">—</span>
+          </div>
+          <div class="metric-card featured">
+            <span class="metric-label">Customer profit (with time cost)</span>
+            <span class="metric-value" id="outProfitWithTime">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Total direct costs</span>
+            <span class="metric-value" id="outDirectCosts">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Time cost used</span>
+            <span class="metric-value" id="outTimeCost">—</span>
+          </div>
+        </div>
+
+        <section class="card faq ai-panel" aria-labelledby="ai-heading">
+          <h3 class="section-title" id="ai-heading">AI Suggestions</h3>
+          <p class="section-copy">AI does not calculate profit. It only uses the computed results to suggest practical actions.</p>
+
+          <div class="ai-state ai-loading" id="aiLoading" hidden>
+            <p class="section-copy">Generating suggestions…</p>
+          </div>
+
+          <div class="ai-state ai-error" id="aiError" hidden>
+            <p class="section-copy" id="aiErrorText">AI is unavailable right now. You can still use the local results above.</p>
+          </div>
+
+          <div class="ai-state ai-content" id="aiContent" hidden>
+            <p class="section-copy" id="aiText"></p>
+          </div>
+        </section>
+      </section>
+    </section>
+
+    <section class="card faq seo-tool-guide" aria-labelledby="seo-what">
+      <h2 class="section-title" id="seo-what">What this tool does</h2>
+      <p class="section-copy">The AI Customer Profitability Calculator estimates customer profit from revenue minus direct service and delivery costs. If you add time spent and an hourly value, it also estimates time-based profit.</p>
+
+      <h2 class="section-title" id="seo-why">Why this matters</h2>
+      <p class="section-copy">Some customers look “busy” but are unprofitable after rework, support, and delivery. Knowing which customers are profitable helps you improve pricing, set boundaries, and focus on better-fit customers.</p>
+
+      <h2 class="section-title" id="seo-how">How to use it</h2>
+      <ol class="section-copy">
+        <li>Enter revenue, service cost, and delivery cost.</li>
+        <li>Optionally add time spent and an hourly value to include time cost.</li>
+        <li>Click Calculate to see profit and short AI actions.</li>
+      </ol>
+
+      <h2 class="section-title" id="seo-example">Example</h2>
+      <p class="section-copy">A customer pays $500. Service cost is $180 and delivery cost is $25. Profit (no time cost) is $295. If you spent 3.5 hours and value your time at $35/hour, time cost is $122.50 and profit with time cost becomes $172.50.</p>
+
+      <h2 class="section-title" id="seo-faqs">FAQs</h2>
+      <h3>Do I have to include time?</h3>
+      <p class="section-copy">No. Time is optional. If you leave hourly value blank, the tool will still compute profit from direct costs.</p>
+      <h3>Does AI change my numbers?</h3>
+      <p class="section-copy">No. JavaScript calculates profit locally. AI only receives a short summary of the computed results and returns short suggestions.</p>
+      <h3>Is any customer data stored?</h3>
+      <p class="section-copy">No. The tool does not store customer data. Only a compact summary may be sent to AI for recommendations.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <a class="btn sticky-cta" href="/">Open Vendora POS</a>
+  <script src="./script.js" defer></script>
+</body>
+</html>
+

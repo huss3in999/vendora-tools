@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Break-even units calculator | Vendora</title>
+  <meta name="description" content="Divide fixed costs by per-unit contribution (price minus variable cost) to estimate breakeven volume.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculator/profit/break-even-units-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Break-even units calculator | Vendora">
+  <meta property="og:description" content="Divide fixed costs by per-unit contribution (price minus variable cost) to estimate breakeven volume.">
+  <meta property="og:url" content="https://getvendora.net/calculator/profit/break-even-units-calculator/">
+  <link rel="stylesheet" href="../../../tools/tool-system.css">
+  <link rel="stylesheet" href="../../_shared/vendora-calc.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Break-even units calculator | Vendora">
+  <meta name="twitter:description" content="Divide fixed costs by per-unit contribution (price minus variable cost) to estimate breakeven volume.">
+  <meta name="twitter:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Break-even units calculator | Vendora", "url": "https://getvendora.net/calculator/profit/break-even-units-calculator/", "description": "Divide fixed costs by per-unit contribution (price minus variable cost) to estimate breakeven volume."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Semi-variable costs?", "acceptedAnswer": {"@type": "Answer", "text": "Allocate a representative variable portion before using this shortcut."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/calculator/profit/">Profit calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Profit calculator</p>
+      <h1>Break-even units calculator</h1>
+      <p class="hero-copy">Breakeven units = fixed costs ÷ (price per unit − variable cost per unit). Contribution must be positive.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Enter valid numbers. Calculations run entirely in your browser.</p>
+        <div class="field-grid calculator-fields" id="inputArea">
+
+          <div class="field">
+            <label for="fixed">Fixed costs (period)</label>
+            <div class="input-inline">
+              <input id="fixed" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_fixed">
+              <select class="currency-select-global" data-currency-sync="global" data-currency-default="USD" aria-label="Currency for Fixed costs (period)"></select>
+            </div>
+            <span class="input-hint" id="h_fixed"></span>
+          </div>
+          <div class="field">
+            <label for="price">Selling price per unit</label>
+            <div class="input-inline">
+              <input id="price" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_price">
+              <select class="currency-select-global" data-currency-sync="global" data-currency-default="USD" aria-label="Currency for Selling price per unit"></select>
+            </div>
+            <span class="input-hint" id="h_price"></span>
+          </div>
+          <div class="field">
+            <label for="var">Variable cost per unit</label>
+            <div class="input-inline">
+              <input id="var" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_var">
+              <select class="currency-select-global" data-currency-sync="global" data-currency-default="USD" aria-label="Currency for Variable cost per unit"></select>
+            </div>
+            <span class="input-hint" id="h_var"></span>
+          </div>
+        </div>
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+          <button type="button" class="btn btn-secondary btn-copy" id="copyPrimary" hidden>Copy primary result</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <div class="result-grid calculator-results" id="resultSection">
+
+          <div class="metric-card featured">
+            <span class="metric-label">Break-even units</span>
+            <span class="metric-value" id="outPrimary">—</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Fixed 60,000; price 45; variable 27 → contribution 18 → 3,333 units.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Explanation</h2>
+      <p class="section-copy">Assumes linear costs; step-fixed or volume discounts need richer models.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq-item"><h3 class="faq-q">Semi-variable costs?</h3><p class="section-copy">Allocate a representative variable portion before using this shortcut.</p></div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related calculators</h2>
+      <ul class="related-list"><li><a href="/calculator/profit/target-selling-price-calculator/">Target selling price</a></li><li><a href="/calculators/break-even-point/">Break-even point (tools)</a></li></ul>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+
+<script src="../../_shared/analytics-events.js" defer></script>
+
+<script src="../../_shared/currency-global.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function tr(name, params) { if (typeof vendoraTrack === 'function') vendoraTrack(name, params || {}); }
+  function run() {
+    var boot = Promise.resolve();
+    if (true && window.VendoraCurrencyGlobal) {
+      boot = window.VendoraCurrencyGlobal.bootstrap('global', 'USD');
+    }
+    boot.then(initCalc).catch(initCalc);
+  }
+  function initCalc() {
+    var valEl = document.getElementById('validationMessage');
+    function setVal(msg, show) {
+      if (!valEl) return;
+      valEl.textContent = msg || '';
+      valEl.hidden = !show;
+    }
+    function parseNum(id) {
+      var el = document.getElementById(id);
+      if (!el) return NaN;
+      var v = el.value.trim();
+      if (v === '') return null;
+      var n = Number(v);
+      return Number.isFinite(n) ? n : NaN;
+    }
+    function fmtNum(n, frac) {
+      if (!Number.isFinite(n)) return '—';
+      return n.toLocaleString(undefined, { maximumFractionDigits: frac !== undefined ? frac : 4 });
+    }
+    function money(n) {
+      if (!window.VendoraCurrencyGlobal || !true) return fmtNum(n, 2);
+      var c = window.VendoraCurrencyGlobal.getCurrency('global', 'USD');
+      return window.VendoraCurrencyGlobal.formatMoney(n, c);
+    }
+
+    var toolSlug = 'break-even-units-calculator';
+    function calc() {
+      var f = parseNum('fixed'); var p = parseNum('price'); var v = parseNum('var');
+      if (f == null || p == null || v == null) { setVal('Enter fixed costs, price, and variable cost.', true); return; }
+      if (f < 0 || p <= 0 || v < 0 || v >= p) { setVal('Need price above variable cost; fixed non-negative.', true); return; }
+      var u = f / (p - v);
+      document.getElementById('outPrimary').textContent = fmtNum(u, 2);
+      setVal('', false); tr('calculator_calculate', { tool: toolSlug });
+    }
+    document.getElementById('calculateBtn').addEventListener('click', calc);
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      ['fixed','price','var'].forEach(function(i){ var e=document.getElementById(i); if(e)e.value=''; });
+      document.getElementById('outPrimary').textContent = '—'; tr('calculator_reset', { tool: toolSlug });
+    });
+
+  }
+  run();
+});
+</script>
+</body>
+</html>

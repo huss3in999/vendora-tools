@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weighted average calculator | Vendora</title>
+  <meta name="description" content="Weighted mean = Σ(weight × value) ÷ Σ(weights) for up to three pairs.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculator/general/weighted-average-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Weighted average calculator | Vendora">
+  <meta property="og:description" content="Weighted mean = Σ(weight × value) ÷ Σ(weights) for up to three pairs.">
+  <meta property="og:url" content="https://getvendora.net/calculator/general/weighted-average-calculator/">
+  <link rel="stylesheet" href="../../../tools/tool-system.css">
+  <link rel="stylesheet" href="../../_shared/vendora-calc.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Weighted average calculator | Vendora">
+  <meta name="twitter:description" content="Weighted mean = Σ(weight × value) ÷ Σ(weights) for up to three pairs.">
+  <meta name="twitter:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Weighted average calculator | Vendora", "url": "https://getvendora.net/calculator/general/weighted-average-calculator/", "description": "Weighted mean = Σ(weight × value) ÷ Σ(weights) for up to three pairs."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Normalized weights?", "acceptedAnswer": {"@type": "Answer", "text": "They need not sum to one; the tool divides by the sum you supply."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/calculator/general/">General calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">General calculator</p>
+      <h1>Weighted average calculator</h1>
+      <p class="hero-copy">Weights should be non-negative. At least one pair is required.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Enter valid numbers. Calculations run entirely in your browser.</p>
+        <div class="field-grid calculator-fields" id="inputArea">
+
+          <div class="field">
+            <label for="w1">Weight 1</label>
+            <input id="w1" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_w1">
+            <span class="input-hint" id="h_w1"></span>
+          </div>
+          <div class="field">
+            <label for="v1">Value 1</label>
+            <input id="v1" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_v1">
+            <span class="input-hint" id="h_v1"></span>
+          </div>
+          <div class="field">
+            <label for="w2">Weight 2</label>
+            <input id="w2" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_w2">
+            <span class="input-hint" id="h_w2"></span>
+          </div>
+          <div class="field">
+            <label for="v2">Value 2</label>
+            <input id="v2" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_v2">
+            <span class="input-hint" id="h_v2"></span>
+          </div>
+          <div class="field">
+            <label for="w3">Weight 3 (optional)</label>
+            <input id="w3" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_w3">
+            <span class="input-hint" id="h_w3"></span>
+          </div>
+          <div class="field">
+            <label for="v3">Value 3 (optional)</label>
+            <input id="v3" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_v3">
+            <span class="input-hint" id="h_v3"></span>
+          </div>
+        </div>
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+          
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <div class="result-grid calculator-results" id="resultSection">
+
+          <div class="metric-card featured">
+            <span class="metric-label">Weighted average</span>
+            <span class="metric-value" id="outPrimary">—</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Weights 0.5,0.3,0.2 with values 80,90,70 → 81.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Explanation</h2>
+      <p class="section-copy">Zero weights skip that pair. Sum of weights in denominator excludes empty pairs.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq-item"><h3 class="faq-q">Normalized weights?</h3><p class="section-copy">They need not sum to one; the tool divides by the sum you supply.</p></div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related calculators</h2>
+      <ul class="related-list"><li><a href="/calculator/general/midpoint-price-elasticity-calculator/">Arc elasticity</a></li><li><a href="/calculators/percentage-calculator/">Percentage calculator</a></li></ul>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+
+<script src="../../_shared/analytics-events.js" defer></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function tr(name, params) { if (typeof vendoraTrack === 'function') vendoraTrack(name, params || {}); }
+  function run() {
+    var boot = Promise.resolve();
+    if (false && window.VendoraCurrencyGlobal) {
+      boot = window.VendoraCurrencyGlobal.bootstrap('global', 'USD');
+    }
+    boot.then(initCalc).catch(initCalc);
+  }
+  function initCalc() {
+    var valEl = document.getElementById('validationMessage');
+    function setVal(msg, show) {
+      if (!valEl) return;
+      valEl.textContent = msg || '';
+      valEl.hidden = !show;
+    }
+    function parseNum(id) {
+      var el = document.getElementById(id);
+      if (!el) return NaN;
+      var v = el.value.trim();
+      if (v === '') return null;
+      var n = Number(v);
+      return Number.isFinite(n) ? n : NaN;
+    }
+    function fmtNum(n, frac) {
+      if (!Number.isFinite(n)) return '—';
+      return n.toLocaleString(undefined, { maximumFractionDigits: frac !== undefined ? frac : 4 });
+    }
+    function money(n) {
+      if (!window.VendoraCurrencyGlobal || !false) return fmtNum(n, 2);
+      var c = window.VendoraCurrencyGlobal.getCurrency('global', 'USD');
+      return window.VendoraCurrencyGlobal.formatMoney(n, c);
+    }
+
+    var toolSlug = 'weighted-average-calculator';
+    function calc() {
+      function nz(x) { var n = parseFloat(x); return Number.isFinite(n) ? n : null; }
+      var pairs = [['w1','v1'],['w2','v2'],['w3','v3']];
+      var sw = 0, s = 0, used = false;
+      for (var i = 0; i < pairs.length; i++) {
+        var w = nz(document.getElementById(pairs[i][0]).value);
+        var v = nz(document.getElementById(pairs[i][1]).value);
+        if (w === null && v === null) continue;
+        if (w === null || v === null || w < 0) { setVal('Each used row needs non-negative weight and numeric value.', true); return; }
+        sw += w; s += w * v; used = true;
+      }
+      if (!used || sw === 0) { setVal('Provide at least one weight–value pair with positive total weight.', true); return; }
+      document.getElementById('outPrimary').textContent = fmtNum(s / sw, 6);
+      setVal('', false); tr('calculator_calculate', { tool: toolSlug });
+    }
+    document.getElementById('calculateBtn').addEventListener('click', calc);
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      ['w1','v1','w2','v2','w3','v3'].forEach(function(i){ var e=document.getElementById(i); if(e)e.value=''; });
+      document.getElementById('outPrimary').textContent = '—'; tr('calculator_reset', { tool: toolSlug });
+    });
+
+  }
+  run();
+});
+</script>
+</body>
+</html>

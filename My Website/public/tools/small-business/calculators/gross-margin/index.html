@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gross Margin Calculator for Small Business | Vendora</title>
+  <meta name="description" content="Calculate gross profit and gross margin percent from revenue and cost of goods sold. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/gross-margin/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Gross Margin Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/gross-margin/", "description": "Calculate gross profit and gross margin percent from revenue and cost of goods sold. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Find gross profit and gross margin on revenue: enter revenue and cost of goods sold for the same period. Gross margin is gross profit as a percent of revenue."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>Gross Margin Calculator</h1>
+      <p class="hero-copy">Find gross profit and gross margin on revenue: enter revenue and cost of goods sold for the same period. Gross margin is gross profit as a percent of revenue.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Use one currency. Revenue and COGS must cover the same reporting period.</p>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="revenue">Revenue</label>
+            <input id="revenue" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 100000" autocomplete="off">
+            <span class="input-hint">Sales and other revenue for the period.</span>
+          </div>
+          <div class="field">
+            <label for="cogs">Cost of goods sold (COGS)</label>
+            <input id="cogs" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 45000" autocomplete="off">
+            <span class="input-hint">Direct costs tied to what you sold in the period.</span>
+          </div>
+          <div class="field">
+            <label for="grossProfit">Gross profit</label>
+            <input id="grossProfit" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">Gross profit = revenue − COGS. Gross margin (percent) = gross profit ÷ revenue × 100 when revenue is greater than zero.</p>
+        <div class="result-grid" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Gross margin</span>
+            <span class="metric-value" id="outMarginPct">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Gross profit</span>
+            <span class="metric-value" id="outGrossProfit">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Revenue is $100,000 and COGS is $45,000. Gross profit is $55,000. Gross margin is $55,000 ÷ $100,000 × 100 = 55%.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">Gross profit = revenue − cost of goods sold. Gross margin (percent of revenue) = gross profit ÷ revenue × 100. If revenue is zero, margin is not shown. Negative gross profit yields a negative gross margin percentage.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Track gross margin by product line when you can—blended revenue can hide weak categories.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="../cogs/index.html">COGS Calculator</a>, <a href="../profit/index.html">Profit Calculator</a>, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      function parseNonNeg(el) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0) return { negative: true };
+        return { value: n };
+      }
+
+      function money(n) {
+        return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function pct(n) {
+        return n.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 }) + '%';
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function interpret(gp, marginPct) {
+        var el = document.getElementById('interpretation');
+        if (!Number.isFinite(gp)) {
+          el.hidden = true;
+          return;
+        }
+        var text;
+        if (gp < 0) {
+          text = 'Gross profit is negative—COGS exceeds revenue at these inputs; check period alignment.';
+        } else if (marginPct < 20) {
+          text = 'Gross margin is tight; small COGS or price moves change results quickly.';
+        } else {
+          text = 'Compare this margin to prior periods or peers with similar revenue recognition.';
+        }
+        el.textContent = text;
+        el.hidden = false;
+      }
+
+      function compute() {
+        var rr = parseNonNeg(document.getElementById('revenue'));
+        if (rr.empty) return { ok: false, message: 'Enter revenue.' };
+        if (rr.invalid || rr.negative) return { ok: false, message: 'Revenue must be a valid number that is not negative.' };
+
+        var rc = parseNonNeg(document.getElementById('cogs'));
+        if (rc.empty) return { ok: false, message: 'Enter cost of goods sold.' };
+        if (rc.invalid || rc.negative) return { ok: false, message: 'COGS must be a valid number that is not negative.' };
+
+        var revenue = rr.value;
+        var cogs = rc.value;
+        if (revenue === 0) {
+          return { ok: false, message: 'Revenue must be greater than zero to compute gross margin percent.' };
+        }
+
+        var gp = revenue - cogs;
+        var marginPct = (gp / revenue) * 100;
+
+        return { ok: true, gp: gp, marginPct: marginPct };
+      }
+
+      function render(out) {
+        document.getElementById('outGrossProfit').textContent = money(out.gp);
+        document.getElementById('outGrossProfit').classList.toggle('negative', out.gp < 0);
+        var mEl = document.getElementById('outMarginPct');
+        mEl.textContent = pct(out.marginPct);
+        mEl.classList.toggle('negative', out.marginPct < 0);
+        document.getElementById('grossProfit').value = money(out.gp);
+        interpret(out.gp, out.marginPct);
+      }
+
+      function reset() {
+        document.getElementById('revenue').value = '';
+        document.getElementById('cogs').value = '';
+        document.getElementById('grossProfit').value = '';
+        document.getElementById('outMarginPct').textContent = '—';
+        document.getElementById('outMarginPct').classList.remove('negative');
+        document.getElementById('outGrossProfit').textContent = '—';
+        document.getElementById('outGrossProfit').classList.remove('negative');
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) {
+          setValidation(r.message, true);
+          return;
+        }
+        setValidation('', false);
+        render(r);
+      });
+
+      document.getElementById('resetBtn').addEventListener('click', reset);
+
+      reset();
+    })();
+  </script>
+</body>
+</html>

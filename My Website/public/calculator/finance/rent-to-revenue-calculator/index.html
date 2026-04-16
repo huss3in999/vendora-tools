@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rent to revenue ratio calculator | Vendora</title>
+  <meta name="description" content="Divide annual or period rent by matching revenue for occupancy cost intensity.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculator/finance/rent-to-revenue-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Rent to revenue ratio calculator | Vendora">
+  <meta property="og:description" content="Divide annual or period rent by matching revenue for occupancy cost intensity.">
+  <meta property="og:url" content="https://getvendora.net/calculator/finance/rent-to-revenue-calculator/">
+  <link rel="stylesheet" href="../../../tools/tool-system.css">
+  <link rel="stylesheet" href="../../_shared/vendora-calc.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Rent to revenue ratio calculator | Vendora">
+  <meta name="twitter:description" content="Divide annual or period rent by matching revenue for occupancy cost intensity.">
+  <meta name="twitter:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Rent to revenue ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/rent-to-revenue-calculator/", "description": "Divide annual or period rent by matching revenue for occupancy cost intensity."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "CAM charges?", "acceptedAnswer": {"@type": "Answer", "text": "Include in rent consistently with your P&L mapping."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/calculator/finance/">Finance calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Finance calculator</p>
+      <h1>Rent to revenue calculator</h1>
+      <p class="hero-copy">Rent ratio = rent expense ÷ revenue in the same window.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Enter valid numbers. Calculations run entirely in your browser.</p>
+        <div class="field-grid calculator-fields" id="inputArea">
+
+          <div class="field">
+            <label for="rent">Rent expense (period)</label>
+            <div class="input-inline">
+              <input id="rent" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_rent">
+              <select class="currency-select-global" data-currency-sync="global" data-currency-default="USD" aria-label="Currency for Rent expense (period)"></select>
+            </div>
+            <span class="input-hint" id="h_rent"></span>
+          </div>
+          <div class="field">
+            <label for="rev">Revenue (same period)</label>
+            <div class="input-inline">
+              <input id="rev" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_rev">
+              <select class="currency-select-global" data-currency-sync="global" data-currency-default="USD" aria-label="Currency for Revenue (same period)"></select>
+            </div>
+            <span class="input-hint" id="h_rev"></span>
+          </div>
+        </div>
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+          <button type="button" class="btn btn-secondary btn-copy" id="copyPrimary" hidden>Copy primary result</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <div class="result-grid calculator-results" id="resultSection">
+
+          <div class="metric-card featured">
+            <span class="metric-label">Rent to revenue ratio</span>
+            <span class="metric-value" id="outPrimary">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Rent to revenue (%)</span>
+            <span class="metric-value" id="outB">—</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Rent 84,000 on 900,000 revenue → about 9.3%.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Explanation</h2>
+      <p class="section-copy">Useful for location benchmarking; exclude pass-through subleases if not in revenue.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq-item"><h3 class="faq-q">CAM charges?</h3><p class="section-copy">Include in rent consistently with your P&amp;L mapping.</p></div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related calculators</h2>
+      <ul class="related-list"><li><a href="/calculator/operations/sales-per-square-foot-calculator/">Sales per square foot</a></li><li><a href="/calculator/finance/operating-cash-flow-margin-calculator/">OCF margin</a></li></ul>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+
+<script src="../../_shared/analytics-events.js" defer></script>
+
+<script src="../../_shared/currency-global.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function tr(name, params) { if (typeof vendoraTrack === 'function') vendoraTrack(name, params || {}); }
+  function run() {
+    var boot = Promise.resolve();
+    if (true && window.VendoraCurrencyGlobal) {
+      boot = window.VendoraCurrencyGlobal.bootstrap('global', 'USD');
+    }
+    boot.then(initCalc).catch(initCalc);
+  }
+  function initCalc() {
+    var valEl = document.getElementById('validationMessage');
+    function setVal(msg, show) {
+      if (!valEl) return;
+      valEl.textContent = msg || '';
+      valEl.hidden = !show;
+    }
+    function parseNum(id) {
+      var el = document.getElementById(id);
+      if (!el) return NaN;
+      var v = el.value.trim();
+      if (v === '') return null;
+      var n = Number(v);
+      return Number.isFinite(n) ? n : NaN;
+    }
+    function fmtNum(n, frac) {
+      if (!Number.isFinite(n)) return '—';
+      return n.toLocaleString(undefined, { maximumFractionDigits: frac !== undefined ? frac : 4 });
+    }
+    function money(n) {
+      if (!window.VendoraCurrencyGlobal || !true) return fmtNum(n, 2);
+      var c = window.VendoraCurrencyGlobal.getCurrency('global', 'USD');
+      return window.VendoraCurrencyGlobal.formatMoney(n, c);
+    }
+
+    var toolSlug = 'rent-to-revenue-calculator';
+    function calc() {
+      var rent = parseNum('rent'); var r = parseNum('rev');
+      if (rent == null || r == null) { setVal('Enter rent and revenue.', true); return; }
+      if (rent < 0 || r <= 0) { setVal('Rent non-negative; revenue positive.', true); return; }
+      var x = rent / r;
+      document.getElementById('outPrimary').textContent = fmtNum(x, 4);
+      document.getElementById('outB').textContent = fmtNum(x*100, 2) + '%';
+      document.getElementById('copyPrimary').hidden = true;
+      setVal('', false); tr('calculator_calculate', { tool: toolSlug });
+    }
+    document.getElementById('calculateBtn').addEventListener('click', calc);
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      ['rent','rev'].forEach(function(i){ var e=document.getElementById(i); if(e)e.value=''; });
+      document.getElementById('outPrimary').textContent = '—'; document.getElementById('outB').textContent = '—'; tr('calculator_reset', { tool: toolSlug });
+    });
+
+  }
+  run();
+});
+</script>
+</body>
+</html>

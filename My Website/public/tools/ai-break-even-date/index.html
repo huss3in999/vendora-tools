@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Break-Even Date Calculator</title>
+  <meta name="description" content="Predict when a startup investment will be recovered using startup cost, monthly revenue, and monthly expenses. AI explains risk level with short guidance.">
+  <meta name="keywords" content="ai break even date calculator, break even date, startup cost recovery, monthly profit, business break even">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/ai-break-even-date/">
+  <meta property="og:title" content="AI Break-Even Date Calculator">
+  <meta property="og:description" content="Estimate break-even date from startup cost and monthly net profit. Includes short AI risk explanation.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://getvendora.net/tools/ai-break-even-date/">
+  <meta name="twitter:card" content="summary_large_image">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "AI Break-Even Date Predictor",
+    "description": "Predict when a business investment will be recovered using startup cost, monthly revenue, and monthly expenses. AI explains risk level.",
+    "url": "https://getvendora.net/tools/ai-break-even-date/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <link rel="stylesheet" href="../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script>
+  (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);
+      t.async=1;
+      t.src="https://www.clarity.ms/tag/w28z01fb1p";
+      y=l.getElementsByTagName(r)[0];
+      y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "w28z01fb1p");
+  </script>
+  <script defer src="/assets/clarity-helper.js"></script>
+</head>
+<body class="vendora-tool ai-tool-page">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero ai-hero">
+      <p class="eyebrow">AI Business Tool</p>
+      <h1>AI Break-Even Date Predictor</h1>
+      <p class="hero-copy">Estimate when your startup or investment cost is recovered based on monthly revenue and monthly expenses. Calculations are local; AI explains risk level in simple terms.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">Break-even date</span>
+        <span class="hero-tag">Monthly net profit</span>
+        <span class="hero-tag">Risk level</span>
+      </div>
+      <p class="helper-note" style="margin:18px 0 0; max-width:760px;">No storage. Only a compact computed summary is sent to AI for a short explanation.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="tool-inputs">
+        <h2 class="section-title" id="tool-inputs">Enter your numbers</h2>
+        <p class="section-copy">Use monthly averages. If revenue is seasonal, try multiple scenarios.</p>
+
+        <div class="field-section">
+          <h3>Investment and monthly cash flow</h3>
+          <div class="field-grid">
+            <div class="field">
+              <label for="currency">Currency symbol</label>
+              <input id="currency" type="text" inputmode="text" placeholder="$" maxlength="4" value="$">
+              <span class="input-hint">Optional. Used only for display.</span>
+            </div>
+            <div class="field">
+              <label for="startupCost">Startup / investment cost</label>
+              <input id="startupCost" type="number" min="0" step="0.01" placeholder="25000.00" inputmode="decimal">
+              <span class="input-hint">One-time cost you want to recover.</span>
+            </div>
+            <div class="field">
+              <label for="monthlyRevenue">Monthly revenue</label>
+              <input id="monthlyRevenue" type="number" min="0" step="0.01" placeholder="12000.00" inputmode="decimal">
+              <span class="input-hint">Average monthly sales.</span>
+            </div>
+            <div class="field">
+              <label for="monthlyExpenses">Monthly expenses</label>
+              <input id="monthlyExpenses" type="number" min="0" step="0.01" placeholder="9000.00" inputmode="decimal">
+              <span class="input-hint">Average monthly operating expenses.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite"></div>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="calcBtn" type="button">Predict Break-Even</button>
+          <button class="btn btn-secondary" id="resetBtn" type="button">Reset</button>
+          <button class="btn btn-ghost" id="copyBtn" type="button">Copy Result</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="tool-results">
+        <h2 class="section-title" id="tool-results">Results</h2>
+        <p class="section-copy">Break-even estimate and AI risk explanation.</p>
+
+        <div class="status-banner" id="resultsPanel" hidden>
+          <span class="status-label" id="statusLabel">Ready</span>
+          <div class="status-score" id="headline">—</div>
+          <p class="status-text" id="summary">Run a prediction to see the estimated break-even date.</p>
+        </div>
+
+        <div class="result-grid" id="metricsGrid" hidden>
+          <div class="metric-card featured">
+            <span class="metric-label">Break-even date</span>
+            <span class="metric-value" id="outDate">—</span>
+          </div>
+          <div class="metric-card featured">
+            <span class="metric-label">Months to break-even</span>
+            <span class="metric-value" id="outMonths">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Monthly net profit</span>
+            <span class="metric-value" id="outNet">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Startup cost</span>
+            <span class="metric-value" id="outStartup">—</span>
+          </div>
+        </div>
+
+        <section class="card faq ai-panel" aria-labelledby="ai-heading">
+          <h3 class="section-title" id="ai-heading">AI Risk Explanation</h3>
+          <p class="section-copy">AI does not calculate the break-even date. It only explains the computed result and risk level.</p>
+
+          <div class="ai-state ai-loading" id="aiLoading" hidden>
+            <p class="section-copy">Generating explanation…</p>
+          </div>
+
+          <div class="ai-state ai-error" id="aiError" hidden>
+            <p class="section-copy" id="aiErrorText">AI is unavailable right now. You can still use the local results above.</p>
+          </div>
+
+          <div class="ai-state ai-content" id="aiContent" hidden>
+            <p class="section-copy" id="aiText"></p>
+          </div>
+        </section>
+      </section>
+    </section>
+
+    <section class="card faq seo-tool-guide" aria-labelledby="seo-what">
+      <h2 class="section-title" id="seo-what">What this tool does</h2>
+      <p class="section-copy">The AI Break-Even Date Predictor estimates how many months it takes to recover your startup cost based on monthly net profit (monthly revenue minus monthly expenses). It then converts that into an estimated calendar date.</p>
+
+      <h2 class="section-title" id="seo-why">Why this matters</h2>
+      <p class="section-copy">Break-even timing helps you decide how risky an investment is, how much cash runway you need, and what level of monthly performance you must maintain to recover costs.</p>
+
+      <h2 class="section-title" id="seo-how">How to use it</h2>
+      <ol class="section-copy">
+        <li>Enter startup cost, monthly revenue, and monthly expenses.</li>
+        <li>Click Predict Break-Even to compute months and an estimated date.</li>
+        <li>Read the AI risk explanation for short planning guidance.</li>
+      </ol>
+
+      <h2 class="section-title" id="seo-example">Example</h2>
+      <p class="section-copy">Startup cost is $25,000. Monthly revenue is $12,000 and monthly expenses are $9,000, so net profit is $3,000/month. Break-even is roughly 8.3 months from today.</p>
+
+      <h2 class="section-title" id="seo-faqs">FAQs</h2>
+      <h3>What if monthly profit is zero or negative?</h3>
+      <p class="section-copy">If monthly revenue does not exceed monthly expenses, there is no break-even date based on these inputs. The tool will show that break-even is not reached.</p>
+      <h3>Does this include taxes or financing costs?</h3>
+      <p class="section-copy">No. This is a simple estimate based on the numbers you enter. Use it as a planning baseline.</p>
+      <h3>Does AI calculate the break-even date?</h3>
+      <p class="section-copy">No. JavaScript calculates the net profit, months, and date locally. AI only explains the computed risk level.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/about/">About</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/restaurant-calculators/">Restaurant Calculators</a> |
+          <a href="/#pricing">Pricing</a> |
+          <a href="/contact/">Contact</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <a class="btn sticky-cta" href="/">Open Vendora POS</a>
+  <script src="./script.js" defer></script>
+</body>
+</html>
+

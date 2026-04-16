@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Savings future value calculator | Vendora</title>
+  <meta name="description" content="Future value of equal end-of-period contributions at a constant nominal annual rate.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculator/finance/periodic-savings-future-value-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Savings future value calculator | Vendora">
+  <meta property="og:description" content="Future value of equal end-of-period contributions at a constant nominal annual rate.">
+  <meta property="og:url" content="https://getvendora.net/calculator/finance/periodic-savings-future-value-calculator/">
+  <link rel="stylesheet" href="../../../tools/tool-system.css">
+  <link rel="stylesheet" href="../../_shared/vendora-calc.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Savings future value calculator | Vendora">
+  <meta name="twitter:description" content="Future value of equal end-of-period contributions at a constant nominal annual rate.">
+  <meta name="twitter:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Savings future value calculator | Vendora", "url": "https://getvendora.net/calculator/finance/periodic-savings-future-value-calculator/", "description": "Future value of equal end-of-period contributions at a constant nominal annual rate."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Beginning vs end of period?", "acceptedAnswer": {"@type": "Answer", "text": "This uses end-of-period (ordinary annuity)."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/calculator/finance/">Finance calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Finance calculator</p>
+      <h1>Periodic savings future value calculator</h1>
+      <p class="hero-copy">Enter payment per period, annual rate, years, and payments per year (e.g. 12). Payments at end of each period.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Enter valid numbers. Calculations run entirely in your browser.</p>
+        <div class="field-grid calculator-fields" id="inputArea">
+
+          <div class="field">
+            <label for="pmt">Payment per period</label>
+            <div class="input-inline">
+              <input id="pmt" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_pmt">
+              <select class="currency-select-global" data-currency-sync="global" data-currency-default="USD" aria-label="Currency for Payment per period"></select>
+            </div>
+            <span class="input-hint" id="h_pmt"></span>
+          </div>
+          <div class="field">
+            <label for="ratePct">Nominal annual rate (%)</label>
+            <input id="ratePct" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_ratePct">
+            <span class="input-hint" id="h_ratePct"></span>
+          </div>
+          <div class="field">
+            <label for="years">Years</label>
+            <input id="years" type="number" inputmode="decimal" step="any" autocomplete="off" min="0" aria-describedby="h_years">
+            <span class="input-hint" id="h_years"></span>
+          </div>
+          <div class="field">
+            <label for="ppy">Payments per year</label>
+            <input id="ppy" type="number" inputmode="decimal" step="any" autocomplete="off" min="1" aria-describedby="h_ppy">
+            <span class="input-hint" id="h_ppy">12 for monthly</span>
+          </div>
+        </div>
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+          <button type="button" class="btn btn-secondary btn-copy" id="copyPrimary" hidden>Copy primary result</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <div class="result-grid calculator-results" id="resultSection">
+
+          <div class="metric-card featured">
+            <span class="metric-label">Future value</span>
+            <span class="metric-value" id="outPrimary">—</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">200/month at 5% for 10 years (monthly): FV ≈ 31,056.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Explanation</h2>
+      <p class="section-copy">FV = PMT × [((1+r)^n − 1) ÷ r] where r is rate per period and n is total periods.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq-item"><h3 class="faq-q">Beginning vs end of period?</h3><p class="section-copy">This uses end-of-period (ordinary annuity).</p></div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related calculators</h2>
+      <ul class="related-list"><li><a href="/calculator/finance/future-value-calculator/">Lump-sum FV</a></li><li><a href="/calculator/finance/loan-payment-calculator/">Loan payment</a></li></ul>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+
+<script src="../../_shared/analytics-events.js" defer></script>
+
+<script src="../../_shared/currency-global.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function tr(name, params) { if (typeof vendoraTrack === 'function') vendoraTrack(name, params || {}); }
+  function run() {
+    var boot = Promise.resolve();
+    if (true && window.VendoraCurrencyGlobal) {
+      boot = window.VendoraCurrencyGlobal.bootstrap('global', 'USD');
+    }
+    boot.then(initCalc).catch(initCalc);
+  }
+  function initCalc() {
+    var valEl = document.getElementById('validationMessage');
+    function setVal(msg, show) {
+      if (!valEl) return;
+      valEl.textContent = msg || '';
+      valEl.hidden = !show;
+    }
+    function parseNum(id) {
+      var el = document.getElementById(id);
+      if (!el) return NaN;
+      var v = el.value.trim();
+      if (v === '') return null;
+      var n = Number(v);
+      return Number.isFinite(n) ? n : NaN;
+    }
+    function fmtNum(n, frac) {
+      if (!Number.isFinite(n)) return '—';
+      return n.toLocaleString(undefined, { maximumFractionDigits: frac !== undefined ? frac : 4 });
+    }
+    function money(n) {
+      if (!window.VendoraCurrencyGlobal || !true) return fmtNum(n, 2);
+      var c = window.VendoraCurrencyGlobal.getCurrency('global', 'USD');
+      return window.VendoraCurrencyGlobal.formatMoney(n, c);
+    }
+
+    var toolSlug = 'periodic-savings-future-value-calculator';
+    function calc() {
+      var pmt = parseNum('pmt'); var ar = parseNum('ratePct'); var y = parseNum('years'); var ppy = parseNum('ppy');
+      if (pmt == null || ar == null || y == null || ppy == null) { setVal('Fill all fields.', true); return; }
+      if (ppy <= 0 || y < 0) { setVal('Payments/year and years invalid.', true); return; }
+      var n = Math.round(y * ppy);
+      var r = (ar/100) / ppy;
+      var fv = 0;
+      if (n === 0) fv = 0;
+      else if (r === 0) fv = pmt * n;
+      else fv = pmt * (Math.pow(1+r, n) - 1) / r;
+      document.getElementById('outPrimary').textContent = money(fv); document.getElementById('copyPrimary').hidden = false;
+      setVal('', false); tr('calculator_calculate', { tool: toolSlug });
+    }
+    document.getElementById('calculateBtn').addEventListener('click', calc);
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      ['pmt','ratePct','years','ppy'].forEach(function(i){ var e=document.getElementById(i); if(e)e.value=''; });
+      document.getElementById('outPrimary').textContent = '—'; document.getElementById('copyPrimary').hidden = true; tr('calculator_reset', { tool: toolSlug });
+    });
+    var cp = document.getElementById('copyPrimary'); if (cp) cp.addEventListener('click', function() {
+      var t = document.getElementById('outPrimary').textContent; if (t && navigator.clipboard) navigator.clipboard.writeText(t);
+      tr('calculator_copy_result', { tool: toolSlug });
+    });
+
+  }
+  run();
+});
+</script>
+</body>
+</html>

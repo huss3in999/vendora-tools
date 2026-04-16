@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+<title>GCD &amp; LCM Calculator — Two or More Integers | Vendora</title>
+<meta name="description" content="Compute greatest common divisor (GCD) and least common multiple (LCM) for several whole numbers.">
+<link rel="canonical" href="https://getvendora.net/calculators/gcd-lcm-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="GCD &amp; LCM Calculator — Two or More Integers">
+<meta property="og:description" content="Compute greatest common divisor (GCD) and least common multiple (LCM) for several whole numbers.">
+<meta property="og:url" content="https://getvendora.net/calculators/gcd-lcm-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GCD &amp; LCM Calculator — Two or More Integers | Vendora">
+<meta name="twitter:description" content="Compute greatest common divisor (GCD) and least common multiple (LCM) for several whole numbers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do negative numbers work?","acceptedAnswer":{"@type":"Answer","text":"GCD/LCM are usually defined on absolute values of integers."}},{"@type":"Question","name":"More than two numbers?","acceptedAnswer":{"@type":"Answer","text":"gcd(a,b,c)=gcd(gcd(a,b),c); lcm extends similarly."}},{"@type":"Question","name":"Zero as input?","acceptedAnswer":{"@type":"Answer","text":"gcd(n,0) is often defined as |n|; lcm with zero is problematic—check inputs."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Math &amp; Algebra</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">GCD &amp; LCM Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Two positive integers.</p>
+      <label>Integers (comma-separated)<input type="text" id="v" class="w-full border rounded px-2 py-1 mt-1" value="12, 18"></label>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: GCD &amp; LCM Calculator</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Uses number theory algorithms to find GCD and LCM.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Enter integers separated as the form specifies, then calculate.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">gcd(a,b) via Euclidean algorithm; lcm(a,b) = |ab|/gcd(a,b); extend to lists.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>gcd(84, 30) = 6; lcm(12, 18) = 36.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Do negative numbers work?</p>
+        <p class="text-sm text-vendora-muted mt-1">GCD/LCM are usually defined on absolute values of integers.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">More than two numbers?</p>
+        <p class="text-sm text-vendora-muted mt-1">gcd(a,b,c)=gcd(gcd(a,b),c); lcm extends similarly.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Zero as input?</p>
+        <p class="text-sm text-vendora-muted mt-1">gcd(n,0) is often defined as |n|; lcm with zero is problematic—check inputs.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){const t=b;b=a%b;a=t;}return a;}
+function run(){const arr=document.getElementById('v').value.split(/[,\s]+/).map(Number).filter(n=>n>0);if(arr.length<2){document.getElementById('out').textContent='Need 2+ positive integers';return;}let g=arr[0];for(let i=1;i<arr.length;i++)g=gcd(g,arr[i]);let l=arr[0];for(let i=1;i<arr.length;i++)l=l*arr[i]/gcd(l,arr[i]);document.getElementById('out').textContent='GCD: '+g+'\nLCM: '+l;}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

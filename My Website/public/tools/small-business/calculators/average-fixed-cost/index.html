@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Average Fixed Cost Calculator | Small Business | Vendora</title>
+  <meta name="description" content="Calculate average fixed cost per unit from total fixed cost and number of units. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/average-fixed-cost/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script src="../_shared/currency.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Average Fixed Cost Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/average-fixed-cost/", "description": "Calculate average fixed cost per unit from total fixed cost and number of units. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Calculate fixed cost per unit produced: divide total fixed cost for a period by the number of units produced in that period."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>Average Fixed Cost Calculator</h1>
+      <p class="hero-copy">Calculate fixed cost per unit produced: divide total fixed cost for a period by the number of units produced in that period.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Average fixed cost = total fixed cost ÷ number of units.</p>
+
+        <div class="field-grid calculator-fields">
+          <div class="field">
+            <label for="totalFixedCost">Total fixed cost</label>
+            <div class="input-inline">
+              <input id="totalFixedCost" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 8000" autocomplete="off">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Total fixed cost currency"></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="units">Number of units</label>
+            <input id="units" type="number" inputmode="numeric" step="1" min="0" placeholder="e.g. 400" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="avgFixedCostField">Average fixed cost</label>
+            <div class="input-inline">
+              <input id="avgFixedCostField" type="text" inputmode="decimal" readonly value="">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Average fixed cost currency"></select>
+            </div>
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">This is a unit-level allocation of fixed cost across the units you produced.</p>
+        <div class="result-grid calculator-results" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Average fixed cost</span>
+            <span class="metric-value" id="outAfc">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">If total fixed cost is $8,000 and you produce 400 units, average fixed cost is $8,000 ÷ 400 = $20 per unit.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">Average fixed cost = total fixed cost ÷ number of units. If units are zero, the average fixed cost is not defined.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Track fixed cost per unit across volumes—average fixed cost usually falls as you produce more units in the same period.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="../break-even/index.html">Break-even</a>, <a href="../contribution-margin/index.html">Contribution margin</a>, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      if (window.VendoraCurrency) window.VendoraCurrency.initSyncedCurrencySelects('global', 'USD');
+
+      function parseNonNeg(id, label) {
+        var el = document.getElementById(id);
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true, message: 'Enter ' + label + '.' };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true, message: label + ' must be a valid number.' };
+        if (n < 0) return { negative: true, message: label + ' must not be negative.' };
+        return { value: n };
+      }
+
+      function parseUnits() {
+        var el = document.getElementById('units');
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true, message: 'Enter number of units.' };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true, message: 'Number of units must be a valid number.' };
+        if (n <= 0) return { invalid: true, message: 'Number of units must be greater than zero.' };
+        if (Math.floor(n) !== n) return { invalid: true, message: 'Number of units must be a whole number.' };
+        return { value: n };
+      }
+
+      function money(n) {
+        return window.VendoraCurrency
+          ? window.VendoraCurrency.formatMoney(n, window.VendoraCurrency.getCurrency('global', 'USD'))
+          : ('$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function compute() {
+        var tf = parseNonNeg('totalFixedCost', 'total fixed cost');
+        if (tf.empty || tf.invalid || tf.negative) return { ok: false, message: tf.message };
+        var u = parseUnits();
+        if (u.empty || u.invalid) return { ok: false, message: u.message };
+        var afc = tf.value / u.value;
+        return { ok: true, afc: afc };
+      }
+
+      function render(out) {
+        document.getElementById('outAfc').textContent = money(out.afc);
+        document.getElementById('avgFixedCostField').value = money(out.afc);
+        var el = document.getElementById('interpretation');
+        el.textContent = 'This is fixed cost allocated per produced unit for the period.';
+        el.hidden = false;
+      }
+
+      function reset() {
+        document.getElementById('totalFixedCost').value = '';
+        document.getElementById('units').value = '';
+        document.getElementById('avgFixedCostField').value = '';
+        document.getElementById('outAfc').textContent = '—';
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) return setValidation(r.message, true);
+        setValidation('', false);
+        render(r);
+      });
+      document.getElementById('resetBtn').addEventListener('click', reset);
+      reset();
+    })();
+  </script>
+</body>
+</html>
+

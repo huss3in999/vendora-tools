@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+<title>Volume Calculator — Box, Cylinder, Sphere &amp; More | Vendora</title>
+<meta name="description" content="Compute volume for common 3D shapes based on selected type and inputs.">
+<link rel="canonical" href="https://getvendora.net/calculators/volume-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Volume Calculator — Box, Cylinder, Sphere &amp; More">
+<meta property="og:description" content="Compute volume for common 3D shapes based on selected type and inputs.">
+<meta property="og:url" content="https://getvendora.net/calculators/volume-calculator/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Volume Calculator — Box, Cylinder, Sphere &amp; More | Vendora">
+<meta name="twitter:description" content="Compute volume for common 3D shapes based on selected type and inputs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Are these exact for manufacturing?","acceptedAnswer":{"@type":"Answer","text":"Mathematically exact from inputs; real objects have tolerances."}},{"@type":"Question","name":"Cylinder: radius or diameter?","acceptedAnswer":{"@type":"Answer","text":"Confirm whether the form expects radius—doubling halves volume if misread."}},{"@type":"Question","name":"Units?","acceptedAnswer":{"@type":"Answer","text":"Volume is in cubic length units consistent with your inputs."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Math &amp; Algebra</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Volume Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Sphere, cube, cylinder.</p>
+      <select id="sh" class="w-full border rounded px-2 py-1 mb-2"><option value="s">Sphere (r)</option><option value="c">Cube (side)</option><option value="cy">Cylinder (r,h)</option></select>
+<div id="f"><label>r <input type="number" id="r" class="w-full border rounded px-2 py-1 mt-1" value="3"></label></div>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Volume Calculator</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Uses solid geometry volume formulas.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Select shape, fill dimensions, then calculate.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Examples: box V = lwh; sphere V = (4/3)πr³.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>2×3×4 box → volume 24 cubic units.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Are these exact for manufacturing?</p>
+        <p class="text-sm text-vendora-muted mt-1">Mathematically exact from inputs; real objects have tolerances.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Cylinder: radius or diameter?</p>
+        <p class="text-sm text-vendora-muted mt-1">Confirm whether the form expects radius—doubling halves volume if misread.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Units?</p>
+        <p class="text-sm text-vendora-muted mt-1">Volume is in cubic length units consistent with your inputs.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+function vol(){const sh=document.getElementById('sh').value;if(sh==='s'){const r=+document.getElementById('r').value;return(4/3)*Math.PI*r*r*r;}if(sh==='c'){const s=+document.getElementById('s').value;return s*s*s;}const r=+document.getElementById('cr').value,h=+document.getElementById('ch').value;return Math.PI*r*r*h;}
+function run(){document.getElementById('out').textContent='Volume: '+vol().toFixed(4);}
+function refreshFields(){const sh=document.getElementById('sh').value,f=document.getElementById('f');if(sh==='s')f.innerHTML='<label>r <input type="number" id="r" class="w-full border rounded px-2 py-1 mt-1" value="3"></label>';else if(sh==='c')f.innerHTML='<label>side <input type="number" id="s" class="w-full border rounded px-2 py-1 mt-1" value="3"></label>';else f.innerHTML='<label>r <input type="number" id="cr" class="w-full border rounded px-2 py-1 mt-1" value="2"></label><label class="block mt-2">h <input type="number" id="ch" class="w-full border rounded px-2 py-1 mt-1" value="5"></label>';}
+document.getElementById('sh').addEventListener('change',()=>{refreshFields();run();});
+document.getElementById('go').addEventListener('click',run);refreshFields();run();
+</script>
+</body>
+</html>

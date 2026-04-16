@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Point price elasticity calculator | Vendora</title>
+  <meta name="description" content="Approximate elasticity at a single move using percent change in quantity over percent change in price.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculator/general/price-elasticity-point-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Point price elasticity calculator | Vendora">
+  <meta property="og:description" content="Approximate elasticity at a single move using percent change in quantity over percent change in price.">
+  <meta property="og:url" content="https://getvendora.net/calculator/general/price-elasticity-point-calculator/">
+  <link rel="stylesheet" href="../../../tools/tool-system.css">
+  <link rel="stylesheet" href="../../_shared/vendora-calc.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Point price elasticity calculator | Vendora">
+  <meta name="twitter:description" content="Approximate elasticity at a single move using percent change in quantity over percent change in price.">
+  <meta name="twitter:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Point price elasticity calculator | Vendora", "url": "https://getvendora.net/calculator/general/price-elasticity-point-calculator/", "description": "Approximate elasticity at a single move using percent change in quantity over percent change in price."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Sign?", "acceptedAnswer": {"@type": "Answer", "text": "Ordinary goods show negative elasticity when price falls and quantity rises."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/calculator/general/">General calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">General calculator</p>
+      <h1>Point price elasticity calculator</h1>
+      <p class="hero-copy">Elasticity ≈ (%ΔQ) ÷ (%ΔP) with careful sign conventions for demand curves.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Enter valid numbers. Calculations run entirely in your browser.</p>
+        <div class="field-grid calculator-fields" id="inputArea">
+
+          <div class="field">
+            <label for="p0">Old price</label>
+            <input id="p0" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_p0">
+            <span class="input-hint" id="h_p0"></span>
+          </div>
+          <div class="field">
+            <label for="p1">New price</label>
+            <input id="p1" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_p1">
+            <span class="input-hint" id="h_p1"></span>
+          </div>
+          <div class="field">
+            <label for="q0">Old quantity</label>
+            <input id="q0" type="number" inputmode="decimal" step="any" autocomplete="off" min="0" aria-describedby="h_q0">
+            <span class="input-hint" id="h_q0"></span>
+          </div>
+          <div class="field">
+            <label for="q1">New quantity</label>
+            <input id="q1" type="number" inputmode="decimal" step="any" autocomplete="off" min="0" aria-describedby="h_q1">
+            <span class="input-hint" id="h_q1"></span>
+          </div>
+        </div>
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+          
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <div class="result-grid calculator-results" id="resultSection">
+
+          <div class="metric-card featured">
+            <span class="metric-label">Point elasticity estimate</span>
+            <span class="metric-value" id="outPrimary">—</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Price 10→9, quantity 1000→1150 → about −1.5 (downward sloping demand).</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Explanation</h2>
+      <p class="section-copy">Uses discrete point ratios; arc elasticity differs when moves are large.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq-item"><h3 class="faq-q">Sign?</h3><p class="section-copy">Ordinary goods show negative elasticity when price falls and quantity rises.</p></div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related calculators</h2>
+      <ul class="related-list"><li><a href="/calculator/general/midpoint-price-elasticity-calculator/">Arc elasticity</a></li><li><a href="/calculator/profit/unit-economics-contribution-calculator/">Unit contribution</a></li></ul>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+
+<script src="../../_shared/analytics-events.js" defer></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function tr(name, params) { if (typeof vendoraTrack === 'function') vendoraTrack(name, params || {}); }
+  function run() {
+    var boot = Promise.resolve();
+    if (false && window.VendoraCurrencyGlobal) {
+      boot = window.VendoraCurrencyGlobal.bootstrap('global', 'USD');
+    }
+    boot.then(initCalc).catch(initCalc);
+  }
+  function initCalc() {
+    var valEl = document.getElementById('validationMessage');
+    function setVal(msg, show) {
+      if (!valEl) return;
+      valEl.textContent = msg || '';
+      valEl.hidden = !show;
+    }
+    function parseNum(id) {
+      var el = document.getElementById(id);
+      if (!el) return NaN;
+      var v = el.value.trim();
+      if (v === '') return null;
+      var n = Number(v);
+      return Number.isFinite(n) ? n : NaN;
+    }
+    function fmtNum(n, frac) {
+      if (!Number.isFinite(n)) return '—';
+      return n.toLocaleString(undefined, { maximumFractionDigits: frac !== undefined ? frac : 4 });
+    }
+    function money(n) {
+      if (!window.VendoraCurrencyGlobal || !false) return fmtNum(n, 2);
+      var c = window.VendoraCurrencyGlobal.getCurrency('global', 'USD');
+      return window.VendoraCurrencyGlobal.formatMoney(n, c);
+    }
+
+    var toolSlug = 'price-elasticity-point-calculator';
+    function calc() {
+      var p0 = parseNum('p0'); var p1 = parseNum('p1'); var q0 = parseNum('q0'); var q1 = parseNum('q1');
+      if ([p0,p1,q0,q1].some(function(x){ return x===null; })) { setVal('Enter all four values.', true); return; }
+      if (p0 === 0 || q0 === 0) { setVal('Starting price and quantity must be positive.', true); return; }
+      var pq = (q1 - q0) / q0;
+      var pp = (p1 - p0) / p0;
+      if (pp === 0) { setVal('Price cannot move 0% vs baseline.', true); return; }
+      var E = pq / pp;
+      document.getElementById('outPrimary').textContent = fmtNum(E, 4);
+      setVal('', false); tr('calculator_calculate', { tool: toolSlug });
+    }
+    document.getElementById('calculateBtn').addEventListener('click', calc);
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      ['p0','p1','q0','q1'].forEach(function(i){ var e=document.getElementById(i); if(e)e.value=''; });
+      document.getElementById('outPrimary').textContent = '—'; tr('calculator_reset', { tool: toolSlug });
+    });
+
+  }
+  run();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Burn rate and cash runway calculator | Vendora</title>
+  <meta name="description" content="Estimate how many months of operations remain by dividing cash on hand by average monthly cash burn.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculator/finance/burn-rate-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Burn rate and cash runway calculator | Vendora">
+  <meta property="og:description" content="Estimate how many months of operations remain by dividing cash on hand by average monthly cash burn.">
+  <meta property="og:url" content="https://getvendora.net/calculator/finance/burn-rate-calculator/">
+  <link rel="stylesheet" href="../../../tools/tool-system.css">
+  <link rel="stylesheet" href="../../_shared/vendora-calc.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Burn rate and cash runway calculator | Vendora">
+  <meta name="twitter:description" content="Estimate how many months of operations remain by dividing cash on hand by average monthly cash burn.">
+  <meta name="twitter:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Burn rate and cash runway calculator | Vendora", "url": "https://getvendora.net/calculator/finance/burn-rate-calculator/", "description": "Estimate how many months of operations remain by dividing cash on hand by average monthly cash burn."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Gross burn vs net burn?", "acceptedAnswer": {"@type": "Answer", "text": "Use the net figure that matches how you fund the gap each month."}}, {"@type": "Question", "name": "Revenue offsets burn?", "acceptedAnswer": {"@type": "Answer", "text": "If burn is already net of inflows, you are set; otherwise recompute net burn."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/calculator/finance/">Finance calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Finance calculator</p>
+      <h1>Burn rate and runway calculator</h1>
+      <p class="hero-copy">Enter cash on hand and typical monthly operating burn (cash leaving the business). Output is runway in months.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Enter valid numbers. Calculations run entirely in your browser.</p>
+        <div class="field-grid calculator-fields" id="inputArea">
+
+          <div class="field">
+            <label for="cash">Cash on hand</label>
+            <div class="input-inline">
+              <input id="cash" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_cash">
+              <select class="currency-select-global" data-currency-sync="global" data-currency-default="USD" aria-label="Currency for Cash on hand"></select>
+            </div>
+            <span class="input-hint" id="h_cash">Liquid cash available for operations.</span>
+          </div>
+          <div class="field">
+            <label for="burn">Average monthly burn</label>
+            <div class="input-inline">
+              <input id="burn" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_burn">
+              <select class="currency-select-global" data-currency-sync="global" data-currency-default="USD" aria-label="Currency for Average monthly burn"></select>
+            </div>
+            <span class="input-hint" id="h_burn">Net cash outflow per month (positive number).</span>
+          </div>
+        </div>
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+          <button type="button" class="btn btn-secondary btn-copy" id="copyPrimary" hidden>Copy primary result</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <div class="result-grid calculator-results" id="resultSection">
+
+          <div class="metric-card featured">
+            <span class="metric-label">Runway (months)</span>
+            <span class="metric-value" id="outPrimary">—</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Cash 240,000 with burn 30,000/month → about 8.0 months of runway.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Explanation</h2>
+      <p class="section-copy">Runway ≈ cash on hand ÷ monthly burn when burn is steady and positive.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq-item"><h3 class="faq-q">Gross burn vs net burn?</h3><p class="section-copy">Use the net figure that matches how you fund the gap each month.</p></div>
+<div class="faq-item"><h3 class="faq-q">Revenue offsets burn?</h3><p class="section-copy">If burn is already net of inflows, you are set; otherwise recompute net burn.</p></div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related calculators</h2>
+      <ul class="related-list"><li><a href="/calculator/finance/payback-period-calculator/">Payback period</a></li><li><a href="/tools/small-business/">Small business tools list</a></li></ul>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+
+<script src="../../_shared/analytics-events.js" defer></script>
+
+<script src="../../_shared/currency-global.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function tr(name, params) { if (typeof vendoraTrack === 'function') vendoraTrack(name, params || {}); }
+  function run() {
+    var boot = Promise.resolve();
+    if (true && window.VendoraCurrencyGlobal) {
+      boot = window.VendoraCurrencyGlobal.bootstrap('global', 'USD');
+    }
+    boot.then(initCalc).catch(initCalc);
+  }
+  function initCalc() {
+    var valEl = document.getElementById('validationMessage');
+    function setVal(msg, show) {
+      if (!valEl) return;
+      valEl.textContent = msg || '';
+      valEl.hidden = !show;
+    }
+    function parseNum(id) {
+      var el = document.getElementById(id);
+      if (!el) return NaN;
+      var v = el.value.trim();
+      if (v === '') return null;
+      var n = Number(v);
+      return Number.isFinite(n) ? n : NaN;
+    }
+    function fmtNum(n, frac) {
+      if (!Number.isFinite(n)) return '—';
+      return n.toLocaleString(undefined, { maximumFractionDigits: frac !== undefined ? frac : 4 });
+    }
+    function money(n) {
+      if (!window.VendoraCurrencyGlobal || !true) return fmtNum(n, 2);
+      var c = window.VendoraCurrencyGlobal.getCurrency('global', 'USD');
+      return window.VendoraCurrencyGlobal.formatMoney(n, c);
+    }
+
+    var toolSlug = 'burn-rate-calculator';
+    function calc() {
+      var c = parseNum('cash'); var b = parseNum('burn');
+      if (c == null || b == null) { setVal('Enter cash and monthly burn.', true); return; }
+      if (c < 0 || b <= 0) { setVal('Cash must be non-negative; burn must be positive.', true); return; }
+      var months = c / b;
+      document.getElementById('outPrimary').textContent = fmtNum(months, 2);
+      setVal('', false); tr('calculator_calculate', { tool: toolSlug });
+    }
+    document.getElementById('calculateBtn').addEventListener('click', calc);
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      ['cash','burn'].forEach(function(i){ var e=document.getElementById(i); if(e)e.value=''; });
+      document.getElementById('outPrimary').textContent = '—'; tr('calculator_reset', { tool: toolSlug });
+    });
+
+  }
+  run();
+});
+</script>
+</body>
+</html>

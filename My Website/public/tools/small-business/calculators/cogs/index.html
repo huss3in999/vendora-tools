@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cost of Goods Sold (COGS) Calculator | Small Business | Vendora</title>
+  <meta name="description" content="Calculate cost of goods sold from beginning inventory, purchases, and ending inventory for a period. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/cogs/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Cost of Goods Sold (COGS) Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/cogs/", "description": "Calculate cost of goods sold from beginning inventory, purchases, and ending inventory for a period. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Estimate cost of goods sold for a period using beginning inventory, purchases, and ending inventory. Use the same currency and the same inventory valuation method you use in your books."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>Cost of Goods Sold (COGS)</h1>
+      <p class="hero-copy">Estimate cost of goods sold for a period using beginning inventory, purchases, and ending inventory. Use the same currency and the same inventory valuation method you use in your books.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">COGS = beginning inventory + purchases − ending inventory.</p>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="beginningInv">Beginning inventory</label>
+            <input id="beginningInv" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 10000" autocomplete="off">
+            <span class="input-hint">Inventory value at the start of the period.</span>
+          </div>
+          <div class="field">
+            <label for="purchases">Purchases</label>
+            <input id="purchases" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 50000" autocomplete="off">
+            <span class="input-hint">Cost of goods purchased or produced in the period (your definition).</span>
+          </div>
+          <div class="field">
+            <label for="endingInv">Ending inventory</label>
+            <input id="endingInv" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 15000" autocomplete="off">
+            <span class="input-hint">Inventory value at the end of the period.</span>
+          </div>
+          <div class="field">
+            <label for="cogsValue">Cost of goods sold (COGS)</label>
+            <input id="cogsValue" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">COGS is what flowed through to cost of sales for the period under this inventory roll-forward.</p>
+        <div class="result-grid" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Cost of goods sold</span>
+            <span class="metric-value" id="outCogs">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Beginning inventory is $10,000, purchases are $50,000, and ending inventory is $15,000. COGS = $10,000 + $50,000 − $15,000 = $45,000.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">Cost of goods sold = beginning inventory + purchases − ending inventory. If the result is negative, ending inventory plus cost of goods sold implied exceeds beginning inventory plus purchases—double-check inputs and timing.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Keep COGS aligned with the same period as revenue; mismatched periods distort margin and pricing decisions.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="../profit/index.html">Profit Calculator</a>, <a href="../break-even/index.html">Break-even Calculator</a>, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      function parseNonNeg(el) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0) return { negative: true };
+        return { value: n };
+      }
+
+      function money(n) {
+        return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function interpret(cogs) {
+        var el = document.getElementById('interpretation');
+        if (!Number.isFinite(cogs)) {
+          el.hidden = true;
+          return;
+        }
+        var text;
+        if (cogs < 0) {
+          text = 'COGS is negative at these numbers—check that beginning, purchases, and ending inventory match the same period and valuation.';
+        } else {
+          text = 'Compare COGS to revenue for the same period to see gross margin; refine inventory counts if this looks off.';
+        }
+        el.textContent = text;
+        el.hidden = false;
+      }
+
+      function compute() {
+        var rb = parseNonNeg(document.getElementById('beginningInv'));
+        if (rb.empty) return { ok: false, message: 'Enter beginning inventory.' };
+        if (rb.invalid || rb.negative) return { ok: false, message: 'Beginning inventory must be a valid number that is not negative.' };
+
+        var rp = parseNonNeg(document.getElementById('purchases'));
+        if (rp.empty) return { ok: false, message: 'Enter purchases.' };
+        if (rp.invalid || rp.negative) return { ok: false, message: 'Purchases must be a valid number that is not negative.' };
+
+        var re = parseNonNeg(document.getElementById('endingInv'));
+        if (re.empty) return { ok: false, message: 'Enter ending inventory.' };
+        if (re.invalid || re.negative) return { ok: false, message: 'Ending inventory must be a valid number that is not negative.' };
+
+        var cogs = rb.value + rp.value - re.value;
+        return { ok: true, cogs: cogs };
+      }
+
+      function render(out) {
+        var el = document.getElementById('outCogs');
+        el.textContent = money(out.cogs);
+        el.classList.toggle('negative', out.cogs < 0);
+        document.getElementById('cogsValue').value = money(out.cogs);
+        interpret(out.cogs);
+      }
+
+      function reset() {
+        ['beginningInv', 'purchases', 'endingInv'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        var c = document.getElementById('cogsValue');
+        if (c) c.value = '';
+        document.getElementById('outCogs').textContent = '—';
+        document.getElementById('outCogs').classList.remove('negative');
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) {
+          setValidation(r.message, true);
+          return;
+        }
+        setValidation('', false);
+        render(r);
+      });
+
+      document.getElementById('resetBtn').addEventListener('click', reset);
+
+      reset();
+    })();
+  </script>
+</body>
+</html>

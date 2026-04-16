@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overtime pay estimator calculator | Vendora</title>
+  <meta name="description" content="Multiply regular hourly pay, overtime premium multiplier, and overtime hours for incremental OT cost.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculator/operations/overtime-pay-estimator-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Overtime pay estimator calculator | Vendora">
+  <meta property="og:description" content="Multiply regular hourly pay, overtime premium multiplier, and overtime hours for incremental OT cost.">
+  <meta property="og:url" content="https://getvendora.net/calculator/operations/overtime-pay-estimator-calculator/">
+  <link rel="stylesheet" href="../../../tools/tool-system.css">
+  <link rel="stylesheet" href="../../_shared/vendora-calc.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Overtime pay estimator calculator | Vendora">
+  <meta name="twitter:description" content="Multiply regular hourly pay, overtime premium multiplier, and overtime hours for incremental OT cost.">
+  <meta name="twitter:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Overtime pay estimator calculator | Vendora", "url": "https://getvendora.net/calculator/operations/overtime-pay-estimator-calculator/", "description": "Multiply regular hourly pay, overtime premium multiplier, and overtime hours for incremental OT cost."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Blended rate?", "acceptedAnswer": {"@type": "Answer", "text": "This is a simple estimator, not payroll legal advice."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/calculator/operations/">Operations calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Operations calculator</p>
+      <h1>Overtime pay estimator</h1>
+      <p class="hero-copy">Premium is the factor over straight time (often 1.5× in many jurisdictions—verify locally).</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Enter valid numbers. Calculations run entirely in your browser.</p>
+        <div class="field-grid calculator-fields" id="inputArea">
+
+          <div class="field">
+            <label for="rate">Regular hourly pay</label>
+            <div class="input-inline">
+              <input id="rate" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_rate">
+              <select class="currency-select-global" data-currency-sync="global" data-currency-default="USD" aria-label="Currency for Regular hourly pay"></select>
+            </div>
+            <span class="input-hint" id="h_rate"></span>
+          </div>
+          <div class="field">
+            <label for="mult">Overtime multiplier</label>
+            <input id="mult" type="number" inputmode="decimal" step="any" autocomplete="off" min="0" aria-describedby="h_mult">
+            <span class="input-hint" id="h_mult">e.g. 1.5</span>
+          </div>
+          <div class="field">
+            <label for="hours">Overtime hours</label>
+            <input id="hours" type="number" inputmode="decimal" step="any" autocomplete="off" min="0" aria-describedby="h_hours">
+            <span class="input-hint" id="h_hours"></span>
+          </div>
+        </div>
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+          <button type="button" class="btn btn-secondary btn-copy" id="copyPrimary" hidden>Copy primary result</button>
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <div class="result-grid calculator-results" id="resultSection">
+
+          <div class="metric-card featured">
+            <span class="metric-label">Overtime labor cost</span>
+            <span class="metric-value" id="outPrimary">—</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">25/hr, 1.5×, 6 OT hours → 225 OT cost.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Explanation</h2>
+      <p class="section-copy">Cost = hourly rate × multiplier × overtime hours.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq-item"><h3 class="faq-q">Blended rate?</h3><p class="section-copy">This is a simple estimator, not payroll legal advice.</p></div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related calculators</h2>
+      <ul class="related-list"><li><a href="/calculator/operations/capacity-utilization-calculator/">Capacity</a></li><li><a href="/tools/work-hours-overtime-tracker/">Work hours tracker</a></li></ul>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+
+<script src="../../_shared/analytics-events.js" defer></script>
+
+<script src="../../_shared/currency-global.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function tr(name, params) { if (typeof vendoraTrack === 'function') vendoraTrack(name, params || {}); }
+  function run() {
+    var boot = Promise.resolve();
+    if (true && window.VendoraCurrencyGlobal) {
+      boot = window.VendoraCurrencyGlobal.bootstrap('global', 'USD');
+    }
+    boot.then(initCalc).catch(initCalc);
+  }
+  function initCalc() {
+    var valEl = document.getElementById('validationMessage');
+    function setVal(msg, show) {
+      if (!valEl) return;
+      valEl.textContent = msg || '';
+      valEl.hidden = !show;
+    }
+    function parseNum(id) {
+      var el = document.getElementById(id);
+      if (!el) return NaN;
+      var v = el.value.trim();
+      if (v === '') return null;
+      var n = Number(v);
+      return Number.isFinite(n) ? n : NaN;
+    }
+    function fmtNum(n, frac) {
+      if (!Number.isFinite(n)) return '—';
+      return n.toLocaleString(undefined, { maximumFractionDigits: frac !== undefined ? frac : 4 });
+    }
+    function money(n) {
+      if (!window.VendoraCurrencyGlobal || !true) return fmtNum(n, 2);
+      var c = window.VendoraCurrencyGlobal.getCurrency('global', 'USD');
+      return window.VendoraCurrencyGlobal.formatMoney(n, c);
+    }
+
+    var toolSlug = 'overtime-pay-estimator-calculator';
+    function calc() {
+      var r = parseNum('rate'); var m = parseNum('mult'); var h = parseNum('hours');
+      if (r == null || m == null || h == null) { setVal('Fill all fields.', true); return; }
+      if (r < 0 || m < 0 || h < 0) { setVal('All inputs must be non-negative.', true); return; }
+      var cost = r * m * h;
+      document.getElementById('outPrimary').textContent = money(cost); document.getElementById('copyPrimary').hidden = false;
+      setVal('', false); tr('calculator_calculate', { tool: toolSlug });
+    }
+    document.getElementById('calculateBtn').addEventListener('click', calc);
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      ['rate','mult','hours'].forEach(function(i){ var e=document.getElementById(i); if(e)e.value=''; });
+      document.getElementById('outPrimary').textContent = '—'; document.getElementById('copyPrimary').hidden = true; tr('calculator_reset', { tool: toolSlug });
+    });
+    var cp = document.getElementById('copyPrimary'); if (cp) cp.addEventListener('click', function() {
+      var t = document.getElementById('outPrimary').textContent; if (t && navigator.clipboard) navigator.clipboard.writeText(t);
+      tr('calculator_copy_result', { tool: toolSlug });
+    });
+
+  }
+  run();
+});
+</script>
+</body>
+</html>

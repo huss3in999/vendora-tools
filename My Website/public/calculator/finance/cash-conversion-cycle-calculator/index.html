@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cash conversion cycle calculator | Vendora</title>
+  <meta name="description" content="Combine days inventory outstanding, days sales outstanding, and days payable outstanding into the classic CCC in days.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculator/finance/cash-conversion-cycle-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Cash conversion cycle calculator | Vendora">
+  <meta property="og:description" content="Combine days inventory outstanding, days sales outstanding, and days payable outstanding into the classic CCC in days.">
+  <meta property="og:url" content="https://getvendora.net/calculator/finance/cash-conversion-cycle-calculator/">
+  <link rel="stylesheet" href="../../../tools/tool-system.css">
+  <link rel="stylesheet" href="../../_shared/vendora-calc.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cash conversion cycle calculator | Vendora">
+  <meta name="twitter:description" content="Combine days inventory outstanding, days sales outstanding, and days payable outstanding into the classic CCC in days.">
+  <meta name="twitter:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Cash conversion cycle calculator | Vendora", "url": "https://getvendora.net/calculator/finance/cash-conversion-cycle-calculator/", "description": "Combine days inventory outstanding, days sales outstanding, and days payable outstanding into the classic CCC in days."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Negative CCC?", "acceptedAnswer": {"@type": "Answer", "text": "Some retailers can run a negative cycle when they collect before they pay suppliers."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/calculator/finance/">Finance calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Finance calculator</p>
+      <h1>Cash conversion cycle calculator</h1>
+      <p class="hero-copy">CCC = DIO + DSO − DPO. Use days from the same reporting window where possible.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Enter valid numbers. Calculations run entirely in your browser.</p>
+        <div class="field-grid calculator-fields" id="inputArea">
+
+          <div class="field">
+            <label for="dio">Days inventory outstanding (DIO)</label>
+            <input id="dio" type="number" inputmode="decimal" step="any" autocomplete="off" min="0" aria-describedby="h_dio">
+            <span class="input-hint" id="h_dio"></span>
+          </div>
+          <div class="field">
+            <label for="dso">Days sales outstanding (DSO)</label>
+            <input id="dso" type="number" inputmode="decimal" step="any" autocomplete="off" min="0" aria-describedby="h_dso">
+            <span class="input-hint" id="h_dso"></span>
+          </div>
+          <div class="field">
+            <label for="dpo">Days payable outstanding (DPO)</label>
+            <input id="dpo" type="number" inputmode="decimal" step="any" autocomplete="off" min="0" aria-describedby="h_dpo">
+            <span class="input-hint" id="h_dpo"></span>
+          </div>
+        </div>
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+          
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <div class="result-grid calculator-results" id="resultSection">
+
+          <div class="metric-card featured">
+            <span class="metric-label">Cash conversion cycle (days)</span>
+            <span class="metric-value" id="outPrimary">—</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">DIO 45 + DSO 38 − DPO 32 = 51 days.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Explanation</h2>
+      <p class="section-copy">Measures how long cash is tied up from paying suppliers to collecting from customers, net of supplier terms.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq-item"><h3 class="faq-q">Negative CCC?</h3><p class="section-copy">Some retailers can run a negative cycle when they collect before they pay suppliers.</p></div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related calculators</h2>
+      <ul class="related-list"><li><a href="/calculator/finance/days-sales-outstanding-calculator/">Days sales outstanding</a></li><li><a href="/calculator/inventory/days-inventory-outstanding-calculator/">Days inventory outstanding</a></li></ul>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+
+<script src="../../_shared/analytics-events.js" defer></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function tr(name, params) { if (typeof vendoraTrack === 'function') vendoraTrack(name, params || {}); }
+  function run() {
+    var boot = Promise.resolve();
+    if (false && window.VendoraCurrencyGlobal) {
+      boot = window.VendoraCurrencyGlobal.bootstrap('global', 'USD');
+    }
+    boot.then(initCalc).catch(initCalc);
+  }
+  function initCalc() {
+    var valEl = document.getElementById('validationMessage');
+    function setVal(msg, show) {
+      if (!valEl) return;
+      valEl.textContent = msg || '';
+      valEl.hidden = !show;
+    }
+    function parseNum(id) {
+      var el = document.getElementById(id);
+      if (!el) return NaN;
+      var v = el.value.trim();
+      if (v === '') return null;
+      var n = Number(v);
+      return Number.isFinite(n) ? n : NaN;
+    }
+    function fmtNum(n, frac) {
+      if (!Number.isFinite(n)) return '—';
+      return n.toLocaleString(undefined, { maximumFractionDigits: frac !== undefined ? frac : 4 });
+    }
+    function money(n) {
+      if (!window.VendoraCurrencyGlobal || !false) return fmtNum(n, 2);
+      var c = window.VendoraCurrencyGlobal.getCurrency('global', 'USD');
+      return window.VendoraCurrencyGlobal.formatMoney(n, c);
+    }
+
+    var toolSlug = 'cash-conversion-cycle-calculator';
+    function calc() {
+      var a = parseNum('dio'); var b = parseNum('dso'); var c = parseNum('dpo');
+      if (a == null || b == null || c == null) { setVal('Enter DIO, DSO, and DPO.', true); return; }
+      if (a < 0 || b < 0 || c < 0) { setVal('Use non-negative day counts.', true); return; }
+      var ccc = a + b - c;
+      document.getElementById('outPrimary').textContent = fmtNum(ccc, 2);
+      setVal('', false); tr('calculator_calculate', { tool: toolSlug });
+    }
+    document.getElementById('calculateBtn').addEventListener('click', calc);
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      ['dio','dso','dpo'].forEach(function(i){ var e=document.getElementById(i); if(e)e.value=''; });
+      document.getElementById('outPrimary').textContent = '—'; tr('calculator_reset', { tool: toolSlug });
+    });
+
+  }
+  run();
+});
+</script>
+</body>
+</html>

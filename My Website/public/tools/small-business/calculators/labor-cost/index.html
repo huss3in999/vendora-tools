@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Labor Cost Calculator for Small Business | Vendora</title>
+  <meta name="description" content="Estimate loaded hourly labor cost from pay rate, hours worked per year, and employer taxes and benefits as a percent of wages. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/labor-cost/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Labor Cost Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/labor-cost/", "description": "Estimate loaded hourly labor cost from pay rate, hours worked per year, and employer taxes and benefits as a percent of wages. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Estimate a loaded hourly cost: enter gross pay rate per hour, hours worked per year, and employer taxes and benefits as a percent of wages. You get effective hourly cost and total annual labor cost before allocations."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>Labor Cost Calculator</h1>
+      <p class="hero-copy">Estimate a loaded hourly cost: enter gross pay rate per hour, hours worked per year, and employer taxes and benefits as a percent of wages. You get effective hourly cost and total annual labor cost before allocations.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Estimate annual payroll labor cost and loaded hourly labor cost. Gross hours come from weekly hours; net hours subtract time not worked (e.g., absence days). Burden adds employer taxes and benefits as a percent of wages.</p>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="payRate">Pay rate</label>
+            <input id="payRate" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 25.00" autocomplete="off">
+            <span class="input-hint">Wage to the employee before employer burden.</span>
+          </div>
+          <div class="field">
+            <label for="grossHoursPerWeek">Gross hours per week</label>
+            <input id="grossHoursPerWeek" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 40" autocomplete="off">
+            <span class="input-hint">Scheduled hours per week before absences.</span>
+          </div>
+          <div class="field">
+            <label for="absentDaysPerYear">Absent days per year</label>
+            <input id="absentDaysPerYear" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 10" autocomplete="off">
+            <span class="input-hint">Vacation, sick days, and other days not worked (in days).</span>
+          </div>
+          <div class="field">
+            <label for="burdenPct">Employer burden (% of wages)</label>
+            <input id="burdenPct" type="number" inputmode="decimal" step="any" min="0" max="100" placeholder="0" autocomplete="off">
+            <span class="input-hint">Taxes, benefits, and other load as % of gross wages.</span>
+          </div>
+          <div class="field">
+            <label for="grossHoursPerYear">Gross hours per year</label>
+            <input id="grossHoursPerYear" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated as gross hours per week × 52.</span>
+          </div>
+          <div class="field">
+            <label for="hoursNotWorkedPerYear">Hours not worked per year</label>
+            <input id="hoursNotWorkedPerYear" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Absent days × (gross hours per week ÷ 5).</span>
+          </div>
+          <div class="field">
+            <label for="netHoursWorked">Net hours worked</label>
+            <input id="netHoursWorked" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Gross hours per year minus hours not worked.</span>
+          </div>
+          <div class="field">
+            <label for="grossPay">Gross pay</label>
+            <input id="grossPay" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Pay rate × net hours worked.</span>
+          </div>
+          <div class="field">
+            <label for="hourlyLaborCost">Hourly labor cost</label>
+            <input id="hourlyLaborCost" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Annual payroll labor cost ÷ net hours worked.</span>
+          </div>
+          <div class="field">
+            <label for="annualPayrollLaborCost">Annual payroll labor cost</label>
+            <input id="annualPayrollLaborCost" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Gross pay × (1 + burden ÷ 100).</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">Loaded hourly cost = pay rate × (1 + burden ÷ 100). Annual labor cost = loaded hourly cost × hours per year.</p>
+        <div class="result-grid" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Hourly labor cost</span>
+            <span class="metric-value" id="outHourly">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Annual payroll labor cost</span>
+            <span class="metric-value" id="outAnnual">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Pay rate is $25 per hour, hours per year are 2,080, and employer burden is 18%. Loaded hourly cost is $25 × 1.18 = $29.50. Annual labor cost is $29.50 × 2,080 = $61,360.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">Loaded hourly cost = gross pay rate per hour × (1 + employer burden % ÷ 100). Annual labor cost = loaded hourly cost × hours worked per year. Burden must be between 0 and 100 percent. This is a planning estimate—confirm with payroll and tax advice.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Separate hourly cost from billable rate if you charge clients—overhead and profit sit on top of loaded labor.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="../break-even/index.html">Break-even Calculator</a>, <a href="../contribution-margin/index.html">Contribution Margin Calculator</a>, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      function parseNonNeg(el, allowZero) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0) return { negative: true };
+        if (!allowZero && n === 0) return { zero: true };
+        return { value: n };
+      }
+
+      function parseBurden(el) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { value: 0 };
+        var n = parseFloat(v);
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0 || n > 100) return { range: true };
+        return { value: n };
+      }
+
+      function money(n) {
+        return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function interpret() {
+        var el = document.getElementById('interpretation');
+        el.textContent =
+          'Use loaded cost for pricing and job costing; update burden when benefits or tax rates change.';
+        el.hidden = false;
+      }
+
+      function compute() {
+        var rr = parseNonNeg(document.getElementById('payRate'), false);
+        if (rr.empty) return { ok: false, message: 'Enter pay rate.' };
+        if (rr.invalid || rr.negative) return { ok: false, message: 'Pay rate must be a valid number that is not negative.' };
+
+        var gh = parseNonNeg(document.getElementById('grossHoursPerWeek'), false);
+        if (gh.empty) return { ok: false, message: 'Enter gross hours per week.' };
+        if (gh.invalid || gh.negative) return { ok: false, message: 'Gross hours per week must be a valid number that is not negative.' };
+        if (gh.zero) return { ok: false, message: 'Gross hours per week must be greater than zero.' };
+
+        var ad = parseNonNeg(document.getElementById('absentDaysPerYear'), true);
+        if (ad.invalid || ad.negative) return { ok: false, message: 'Absent days per year must be a valid number that is not negative.' };
+
+        var rb = parseBurden(document.getElementById('burdenPct'));
+        if (rb.invalid) return { ok: false, message: 'Employer burden must be a valid number.' };
+        if (rb.range) return { ok: false, message: 'Employer burden must be between 0 and 100 percent.' };
+
+        var rate = rr.value;
+        var grossHoursPerWeek = gh.value;
+        var absentDays = ad.value;
+        var burden = rb.value;
+
+        var grossHoursPerYear = grossHoursPerWeek * 52;
+        var hoursPerDay = grossHoursPerWeek / 5;
+        var hoursNotWorked = absentDays * hoursPerDay;
+        var netHours = grossHoursPerYear - hoursNotWorked;
+        if (netHours <= 0) {
+          return { ok: false, message: 'Net hours worked must be greater than zero (check absent days and weekly hours).' };
+        }
+        var grossPay = rate * netHours;
+        var annualPayroll = grossPay * (1 + burden / 100);
+        var hourlyLaborCost = annualPayroll / netHours;
+
+        return {
+          ok: true,
+          grossHoursPerYear: grossHoursPerYear,
+          hoursNotWorked: hoursNotWorked,
+          netHours: netHours,
+          grossPay: grossPay,
+          annualPayroll: annualPayroll,
+          hourlyLaborCost: hourlyLaborCost,
+        };
+      }
+
+      function render(out) {
+        document.getElementById('outHourly').textContent = money(out.hourlyLaborCost);
+        document.getElementById('outAnnual').textContent = money(out.annualPayroll);
+        document.getElementById('grossHoursPerYear').value = out.grossHoursPerYear.toLocaleString(undefined, { maximumFractionDigits: 2 });
+        document.getElementById('hoursNotWorkedPerYear').value = out.hoursNotWorked.toLocaleString(undefined, { maximumFractionDigits: 2 });
+        document.getElementById('netHoursWorked').value = out.netHours.toLocaleString(undefined, { maximumFractionDigits: 2 });
+        document.getElementById('grossPay').value = money(out.grossPay);
+        document.getElementById('hourlyLaborCost').value = money(out.hourlyLaborCost);
+        document.getElementById('annualPayrollLaborCost').value = money(out.annualPayroll);
+        interpret();
+      }
+
+      function reset() {
+        ['payRate', 'grossHoursPerWeek', 'absentDaysPerYear'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('burdenPct').value = '';
+        ['grossHoursPerYear', 'hoursNotWorkedPerYear', 'netHoursWorked', 'grossPay', 'hourlyLaborCost', 'annualPayrollLaborCost'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('outHourly').textContent = '—';
+        document.getElementById('outAnnual').textContent = '—';
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) {
+          setValidation(r.message, true);
+          return;
+        }
+        setValidation('', false);
+        render(r);
+      });
+
+      document.getElementById('resetBtn').addEventListener('click', reset);
+
+      reset();
+    })();
+  </script>
+</body>
+</html>

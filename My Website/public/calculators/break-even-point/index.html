@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+<title>Break-Even Calculator — Fixed Cost, Price &amp; Variable Cost | Vendora</title>
+<meta name="description" content="Find break-even units or revenue given fixed costs, price per unit, and variable cost per unit.">
+<link rel="canonical" href="https://getvendora.net/calculators/break-even-point/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Break-Even Calculator — Fixed Cost, Price &amp; Variable Cost">
+<meta property="og:description" content="Find break-even units or revenue given fixed costs, price per unit, and variable cost per unit.">
+<meta property="og:url" content="https://getvendora.net/calculators/break-even-point/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Break-Even Calculator — Fixed Cost, Price &amp; Variable Cost | Vendora">
+<meta name="twitter:description" content="Find break-even units or revenue given fixed costs, price per unit, and variable cost per unit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What if contribution margin is negative?","acceptedAnswer":{"@type":"Answer","text":"You never break even at any volume—reduce costs or raise price."}},{"@type":"Question","name":"Semi-variable costs?","acceptedAnswer":{"@type":"Answer","text":"Split costs into fixed vs variable per unit for a cleaner model."}},{"@type":"Question","name":"Break-even revenue vs units?","acceptedAnswer":{"@type":"Answer","text":"Multiply units by price for revenue break-even."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Finance &amp; Money</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Break-Even Point</h1>
+      <p class="text-sm text-vendora-muted mb-6">Units = fixed / (price − variable).</p>
+      <label>Fixed costs ($)<input type="number" id="f" class="w-full border rounded px-2 py-1 mt-1" value="1000"></label>
+<label class="block mt-3">Variable $/unit<input type="number" id="v" class="w-full border rounded px-2 py-1 mt-1" value="30"></label>
+<label class="block mt-3">Price $/unit<input type="number" id="p" class="w-full border rounded px-2 py-1 mt-1" value="50"></label>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Break-Even Point</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Solves for quantity where total revenue equals total cost.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Enter fixed costs, selling price, and variable cost per unit.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Break-even units = Fixed ÷ (Price − Variable cost per unit).</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>Fixed $10,000, price $50, variable $20 → break-even at 333.33 units.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">What if contribution margin is negative?</p>
+        <p class="text-sm text-vendora-muted mt-1">You never break even at any volume—reduce costs or raise price.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Semi-variable costs?</p>
+        <p class="text-sm text-vendora-muted mt-1">Split costs into fixed vs variable per unit for a cleaner model.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Break-even revenue vs units?</p>
+        <p class="text-sm text-vendora-muted mt-1">Multiply units by price for revenue break-even.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+function run(){const F=+document.getElementById('f').value,v=+document.getElementById('v').value,p=+document.getElementById('p').value;if(p<=v){document.getElementById('out').textContent='Price must exceed variable cost.';return;}const u=F/(p-v);document.getElementById('out').textContent='Break-even units: '+u.toFixed(1)+'\nRevenue at BEP: $'+(u*p).toFixed(2);}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EBITDA Margin Calculator for Small Business | Vendora</title>
+  <meta name="description" content="Calculate EBITDA margin percent from total revenue and EBITDA. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/ebitda-margin/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "EBITDA Margin Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/ebitda-margin/", "description": "Calculate EBITDA margin percent from total revenue and EBITDA. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Measure how much of revenue becomes EBITDA: enter total revenue and EBITDA for the same period. You get EBITDA margin as a percent of revenue."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>EBITDA Margin Calculator</h1>
+      <p class="hero-copy">Measure how much of revenue becomes EBITDA: enter total revenue and EBITDA for the same period. You get EBITDA margin as a percent of revenue.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Use one currency. EBITDA should match the revenue period (month, quarter, or year).</p>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="totalRevenue">Total revenues</label>
+            <input id="totalRevenue" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 200000" autocomplete="off">
+            <span class="input-hint">Top-line revenue for the period.</span>
+          </div>
+          <div class="field">
+            <label for="ebitda">EBITDA</label>
+            <input id="ebitda" type="number" inputmode="decimal" step="any" placeholder="e.g. 40000" autocomplete="off">
+            <span class="input-hint">Earnings before interest, taxes, depreciation, and amortization (can be negative).</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">EBITDA margin = EBITDA ÷ total revenue × 100 when revenue is greater than zero.</p>
+        <div class="result-grid" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">EBITDA margin</span>
+            <span class="metric-value" id="outMargin">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Total revenue is $200,000 and EBITDA is $40,000. EBITDA margin is $40,000 ÷ $200,000 × 100 = 20%.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">EBITDA margin (percent) = EBITDA ÷ total revenue × 100. If revenue is zero, margin is not shown. Negative EBITDA yields a negative margin percentage.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Compare EBITDA margin across periods with the same accounting policy—definitions of EBITDA can differ by company.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="../accounting-profit/index.html">Accounting Profit Calculator</a>, <a href="../profit/index.html">Profit Calculator</a>, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      function parseNonNeg(el) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0) return { negative: true };
+        return { value: n };
+      }
+
+      function parseNumberAny(el) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        return { value: n };
+      }
+
+      function pct(n) {
+        return n.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 }) + '%';
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function interpret(marginPct, ebitda) {
+        var el = document.getElementById('interpretation');
+        if (!Number.isFinite(marginPct)) {
+          el.hidden = true;
+          return;
+        }
+        var text;
+        if (ebitda < 0) {
+          text = 'EBITDA is negative—margin is negative; revenue may still be positive.';
+        } else if (marginPct < 10) {
+          text = 'Margin is thin; small revenue or cost moves change EBITDA a lot.';
+        } else {
+          text = 'Use this margin to compare periods or peers with similar revenue recognition.';
+        }
+        el.textContent = text;
+        el.hidden = false;
+      }
+
+      function compute() {
+        var rr = parseNonNeg(document.getElementById('totalRevenue'));
+        if (rr.empty) return { ok: false, message: 'Enter total revenue.' };
+        if (rr.invalid || rr.negative) return { ok: false, message: 'Total revenue must be a valid number that is not negative.' };
+
+        var re = parseNumberAny(document.getElementById('ebitda'));
+        if (re.empty) return { ok: false, message: 'Enter EBITDA.' };
+        if (re.invalid) return { ok: false, message: 'EBITDA must be a valid number.' };
+
+        var revenue = rr.value;
+        var ebitda = re.value;
+
+        if (revenue === 0) {
+          return { ok: false, message: 'Total revenue must be greater than zero to compute EBITDA margin.' };
+        }
+
+        var marginPct = (ebitda / revenue) * 100;
+
+        return { ok: true, revenue: revenue, ebitda: ebitda, marginPct: marginPct };
+      }
+
+      function render(out) {
+        var mEl = document.getElementById('outMargin');
+        mEl.textContent = pct(out.marginPct);
+        mEl.classList.toggle('negative', out.marginPct < 0);
+        interpret(out.marginPct, out.ebitda);
+      }
+
+      function reset() {
+        document.getElementById('totalRevenue').value = '';
+        document.getElementById('ebitda').value = '';
+        document.getElementById('outMargin').textContent = '—';
+        document.getElementById('outMargin').classList.remove('negative');
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) {
+          setValidation(r.message, true);
+          return;
+        }
+        setValidation('', false);
+        render(r);
+      });
+
+      document.getElementById('resetBtn').addEventListener('click', reset);
+
+      reset();
+    })();
+  </script>
+</body>
+</html>

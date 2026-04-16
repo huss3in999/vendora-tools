@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculators | Vendora</title>
+  <meta name="description" content="Browse Vendora calculators by category: finance, food, restaurant, profit, operations, inventory, and general.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Calculators | Vendora">
+  <meta property="og:description" content="Browse Vendora calculators by category: finance, food, restaurant, profit, operations, inventory, and general.">
+  <meta property="og:url" content="https://getvendora.net/calculator/">
+  <link rel="stylesheet" href="../tools/tool-system.css">
+  <style>
+    .calc-hub-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .calc-card {
+      display: block;
+      text-decoration: none;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(15, 23, 42, 0.35);
+      border-radius: 16px;
+      padding: 14px 14px;
+      transition: border-color 120ms ease, transform 120ms ease;
+      color: inherit;
+    }
+    .calc-card:hover {
+      border-color: rgba(0, 208, 132, 0.35);
+      transform: translateY(-1px);
+    }
+    .calc-title {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.35;
+    }
+    .calc-url {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    .crumbs {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .hub-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .hub-links a {
+      color: var(--brand);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .hub-links a:hover { text-decoration: underline; }
+    @media (max-width: 980px) {
+      .calc-hub-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .calc-hub-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "2D Distance Calculator — Euclidean Distance Between Points | Vendora", "url": "https://getvendora.net/calculators/distance-2d-calculator/"}, {"@type": "ListItem", "position": 2, "name": "3D Printer Buy vs Outsource Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/3d-printer-buy-vs-outsource/"}, {"@type": "ListItem", "position": 3, "name": "Accounting Profit Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/accounting-profit/"}, {"@type": "ListItem", "position": 4, "name": "Accounts receivable turnover calculator | Vendora", "url": "https://getvendora.net/calculator/finance/accounts-receivable-turnover-calculator/"}, {"@type": "ListItem", "position": 5, "name": "Accumulated Depreciation Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/accumulated-depreciation/"}, {"@type": "ListItem", "position": 6, "name": "Actual Cash Value Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/actual-cash-value/"}, {"@type": "ListItem", "position": 7, "name": "After-tax Cost of Debt Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/after-tax-cost-of-debt/"}, {"@type": "ListItem", "position": 8, "name": "Age Calculator — Exact Years, Months & Days | Vendora", "url": "https://getvendora.net/calculators/age-calculator/"}, {"@type": "ListItem", "position": 9, "name": "AI Break-Even Date Calculator", "url": "https://getvendora.net/tools/ai-break-even-date/"}, {"@type": "ListItem", "position": 10, "name": "AI Cash Flow Risk Detector", "url": "https://getvendora.net/tools/ai-cash-flow-risk-detector/"}, {"@type": "ListItem", "position": 11, "name": "AI Customer Profitability Calculator", "url": "https://getvendora.net/tools/ai-customer-profitability/"}, {"@type": "ListItem", "position": 12, "name": "AI Profit Leak Finder for Small Businesses | Free Business Tool", "url": "https://getvendora.net/tools/ai-profit-leak-finder/"}, {"@type": "ListItem", "position": 13, "name": "AI Sales Trend Analyzer for Small Businesses", "url": "https://getvendora.net/tools/ai-sales-trend-analyzer/"}, {"@type": "ListItem", "position": 14, "name": "Amortization Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/amortization/"}, {"@type": "ListItem", "position": 15, "name": "Annual recurring revenue calculator | Vendora", "url": "https://getvendora.net/calculator/finance/annual-recurring-revenue-calculator/"}, {"@type": "ListItem", "position": 16, "name": "Area Calculator — Circle, Rectangle, Triangle & More | Vendora", "url": "https://getvendora.net/calculators/area-calculator/"}, {"@type": "ListItem", "position": 17, "name": "Aspect Ratio Calculator — Resize Width or Height | Vendora", "url": "https://getvendora.net/calculators/aspect-ratio-calculator/"}, {"@type": "ListItem", "position": 18, "name": "Asset turnover calculator | Vendora", "url": "https://getvendora.net/calculator/finance/asset-turnover-calculator/"}, {"@type": "ListItem", "position": 19, "name": "Auto Loan Payment Calculator — Monthly Car Payment | Vendora", "url": "https://getvendora.net/calculators/auto-loan-calculator/"}, {"@type": "ListItem", "position": 20, "name": "Average check calculator | Vendora", "url": "https://getvendora.net/calculator/restaurant/average-check-calculator/"}, {"@type": "ListItem", "position": 21, "name": "Average Fixed Cost Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/average-fixed-cost/"}, {"@type": "ListItem", "position": 22, "name": "BAC Estimator (Widmark) — Educational Alcohol Metabolism Model | Vendora", "url": "https://getvendora.net/calculators/blood-alcohol-content-bac/"}, {"@type": "ListItem", "position": 23, "name": "Billable utilization calculator | Vendora", "url": "https://getvendora.net/calculator/operations/billable-utilization-calculator/"}, {"@type": "ListItem", "position": 24, "name": "BMI Calculator — Body Mass Index (kg/m²) for Adults | Vendora", "url": "https://getvendora.net/calculators/bmi-calculator/"}, {"@type": "ListItem", "position": 25, "name": "BMR Calculator — Basal Metabolic Rate (Mifflin–St Jeor) | Vendora", "url": "https://getvendora.net/calculators/bmr-calculator/"}, {"@type": "ListItem", "position": 26, "name": "Body Fat Calculator — U.S. Navy Method Estimate | Vendora", "url": "https://getvendora.net/calculators/body-fat-calculator/"}, {"@type": "ListItem", "position": 27, "name": "Bond Price Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/bond-price/"}, {"@type": "ListItem", "position": 28, "name": "Break-even Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/break-even/"}, {"@type": "ListItem", "position": 29, "name": "Break-Even Calculator — Fixed Cost, Price & Variable Cost | Vendora", "url": "https://getvendora.net/calculators/break-even-point/"}, {"@type": "ListItem", "position": 30, "name": "Break-even units calculator | Vendora", "url": "https://getvendora.net/calculator/profit/break-even-units-calculator/"}, {"@type": "ListItem", "position": 31, "name": "Bundle savings calculator | Vendora", "url": "https://getvendora.net/calculator/profit/bundle-value-calculator/"}, {"@type": "ListItem", "position": 32, "name": "Burn rate and cash runway calculator | Vendora", "url": "https://getvendora.net/calculator/finance/burn-rate-calculator/"}, {"@type": "ListItem", "position": 33, "name": "Cap rate calculator | Vendora", "url": "https://getvendora.net/calculator/finance/cap-rate-calculator/"}, {"@type": "ListItem", "position": 34, "name": "Capacity utilization calculator | Vendora", "url": "https://getvendora.net/calculator/operations/capacity-utilization-calculator/"}, {"@type": "ListItem", "position": 35, "name": "Cash conversion cycle calculator | Vendora", "url": "https://getvendora.net/calculator/finance/cash-conversion-cycle-calculator/"}, {"@type": "ListItem", "position": 36, "name": "Cash ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/cash-ratio-calculator/"}, {"@type": "ListItem", "position": 37, "name": "Cash-on-cash return calculator | Vendora", "url": "https://getvendora.net/calculator/finance/cash-on-cash-return-calculator/"}, {"@type": "ListItem", "position": 38, "name": "Click-through rate calculator | Vendora", "url": "https://getvendora.net/calculator/general/click-through-rate-calculator/"}, {"@type": "ListItem", "position": 39, "name": "Client effective hourly rate calculator | Vendora", "url": "https://getvendora.net/calculator/profit/client-effective-hourly-calculator/"}, {"@type": "ListItem", "position": 40, "name": "Commission Calculator | Sales Commission %, Total Pay & Target Sales", "url": "https://getvendora.net/tools/commission-calculator/"}, {"@type": "ListItem", "position": 41, "name": "Commission split calculator | Vendora", "url": "https://getvendora.net/calculator/profit/commission-split-calculator/"}, {"@type": "ListItem", "position": 42, "name": "Compound annual growth rate calculator | Vendora", "url": "https://getvendora.net/calculator/finance/cagr-calculator/"}, {"@type": "ListItem", "position": 43, "name": "Compound Interest Calculator — Future Value & Growth | Vendora", "url": "https://getvendora.net/calculators/compound-interest-calculator/"}, {"@type": "ListItem", "position": 44, "name": "Contribution Margin Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/contribution-margin/"}, {"@type": "ListItem", "position": 45, "name": "Cost of Goods Sold (COGS) Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/cogs/"}, {"@type": "ListItem", "position": 46, "name": "Cost-plus pricing calculator | Vendora", "url": "https://getvendora.net/calculator/profit/cost-plus-pricing-calculator/"}, {"@type": "ListItem", "position": 47, "name": "Credit Card Payoff Calculator — Months to Zero Debt | Vendora", "url": "https://getvendora.net/calculators/credit-card-payoff/"}, {"@type": "ListItem", "position": 48, "name": "Currency Converter — Illustrative Exchange Rates | Vendora", "url": "https://getvendora.net/calculators/currency-converter/"}, {"@type": "ListItem", "position": 49, "name": "Current ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/current-ratio-calculator/"}, {"@type": "ListItem", "position": 50, "name": "Customer acquisition cost calculator | Vendora", "url": "https://getvendora.net/calculator/profit/customer-acquisition-cost-calculator/"}, {"@type": "ListItem", "position": 51, "name": "Customer churn rate calculator | Vendora", "url": "https://getvendora.net/calculator/general/customer-churn-rate-calculator/"}, {"@type": "ListItem", "position": 52, "name": "Daily Sales Summary Tool | Restaurant Revenue, AOV & Sales Mix", "url": "https://getvendora.net/tools/daily-sales-summary/"}, {"@type": "ListItem", "position": 53, "name": "Daily Water Intake Estimator — ml from Weight & Activity | Vendora", "url": "https://getvendora.net/calculators/water-intake-calculator/"}, {"@type": "ListItem", "position": 54, "name": "Date Difference Calculator — Days Between Two Dates | Vendora", "url": "https://getvendora.net/calculators/date-difference/"}, {"@type": "ListItem", "position": 55, "name": "Days inventory outstanding calculator | Vendora", "url": "https://getvendora.net/calculator/inventory/days-inventory-outstanding-calculator/"}, {"@type": "ListItem", "position": 56, "name": "Days payable outstanding calculator | Vendora", "url": "https://getvendora.net/calculator/finance/days-payable-outstanding-calculator/"}, {"@type": "ListItem", "position": 57, "name": "Days sales outstanding calculator | Vendora", "url": "https://getvendora.net/calculator/finance/days-sales-outstanding-calculator/"}, {"@type": "ListItem", "position": 58, "name": "Days Until Event — Countdown to a Future Date | Vendora", "url": "https://getvendora.net/calculators/days-until-event/"}, {"@type": "ListItem", "position": 59, "name": "Debt ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/debt-ratio-calculator/"}, {"@type": "ListItem", "position": 60, "name": "Debt to equity ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/debt-to-equity-calculator/"}, {"@type": "ListItem", "position": 61, "name": "Debt-to-income ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/debt-to-income-calculator/"}, {"@type": "ListItem", "position": 62, "name": "Delivery Commission Calculator | Uber Eats, DoorDash & App Fee Estimator", "url": "https://getvendora.net/tools/delivery-commission-calculator/"}, {"@type": "ListItem", "position": 63, "name": "Delivery Cost Calculator Free | Route Cost, Margin & Delivery Fee | Vendora", "url": "https://getvendora.net/tools/delivery-cost-calculator/"}, {"@type": "ListItem", "position": 64, "name": "Density Calculator — ρ = mass ÷ volume | Vendora", "url": "https://getvendora.net/calculators/density-calculator/"}, {"@type": "ListItem", "position": 65, "name": "Discount Calculator — Sale Price from % Off | Vendora", "url": "https://getvendora.net/calculators/discount-calculator/"}, {"@type": "ListItem", "position": 66, "name": "Discount impact calculator | Vendora", "url": "https://getvendora.net/calculator/profit/discount-impact-calculator/"}, {"@type": "ListItem", "position": 67, "name": "Discount percent calculator | Vendora", "url": "https://getvendora.net/calculator/profit/discount-percent-calculator/"}, {"@type": "ListItem", "position": 68, "name": "Dividend payout ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/dividend-payout-ratio-calculator/"}, {"@type": "ListItem", "position": 69, "name": "Download Time Estimator — File Size vs Mbps | Vendora", "url": "https://getvendora.net/calculators/bandwidth-download-time/"}, {"@type": "ListItem", "position": 70, "name": "eBay Fee Calculator | Etsy Fees & Net Profit (2026)", "url": "https://getvendora.net/tools/ebay-fee-calculator/"}, {"@type": "ListItem", "position": 71, "name": "EBIT calculator | Vendora", "url": "https://getvendora.net/calculator/finance/ebit-calculator/"}, {"@type": "ListItem", "position": 72, "name": "EBITDA Margin Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/ebitda-margin/"}, {"@type": "ListItem", "position": 73, "name": "EBITDA margin calculator | Vendora", "url": "https://getvendora.net/calculator/profit/ebitda-margin-calculator/"}, {"@type": "ListItem", "position": 74, "name": "Economic order quantity calculator | Vendora", "url": "https://getvendora.net/calculator/inventory/economic-order-quantity-calculator/"}, {"@type": "ListItem", "position": 75, "name": "Effective annual rate calculator | Vendora", "url": "https://getvendora.net/calculator/finance/effective-annual-rate-calculator/"}, {"@type": "ListItem", "position": 76, "name": "Effective tax rate calculator | Vendora", "url": "https://getvendora.net/calculator/finance/effective-tax-rate-calculator/"}, {"@type": "ListItem", "position": 77, "name": "Email open rate calculator | Vendora", "url": "https://getvendora.net/calculator/general/email-open-rate-calculator/"}, {"@type": "ListItem", "position": 78, "name": "Enterprise value calculator | Vendora", "url": "https://getvendora.net/calculator/finance/enterprise-value-calculator/"}, {"@type": "ListItem", "position": 79, "name": "Equity ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/equity-ratio-calculator/"}, {"@type": "ListItem", "position": 80, "name": "Financial leverage ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/financial-leverage-ratio-calculator/"}, {"@type": "ListItem", "position": 81, "name": "Fixed cost per unit calculator | Vendora", "url": "https://getvendora.net/calculator/profit/fixed-cost-per-unit-calculator/"}, {"@type": "ListItem", "position": 82, "name": "Food Cost Calculator | Recipe & Menu Food Cost % for Restaurants", "url": "https://getvendora.net/tools/food-cost-calculator/"}, {"@type": "ListItem", "position": 83, "name": "Food cost percentage calculator | Vendora", "url": "https://getvendora.net/calculator/restaurant/food-cost-percent-calculator/"}, {"@type": "ListItem", "position": 84, "name": "Force Calculator — F = ma and Pressure P = F/A | Vendora", "url": "https://getvendora.net/calculators/force-calculator/"}, {"@type": "ListItem", "position": 85, "name": "Fraction Calculator — Add & Simplify Fractions | Vendora", "url": "https://getvendora.net/calculators/fraction-calculator/"}, {"@type": "ListItem", "position": 86, "name": "Free Online Calculators — Health, Finance, Math, Time & Physics | Vendora", "url": "https://getvendora.net/calculators/"}, {"@type": "ListItem", "position": 87, "name": "Free Restaurant Tools Online | Food Cost, Menu Price, POS & Invoices | Vendora", "url": "https://getvendora.net/tools/"}, {"@type": "ListItem", "position": 88, "name": "Fuel Economy Converter — MPG and Liters per 100 km | Vendora", "url": "https://getvendora.net/calculators/fuel-economy-mpg-l-100km/"}, {"@type": "ListItem", "position": 89, "name": "Future value calculator | Vendora", "url": "https://getvendora.net/calculator/finance/future-value-calculator/"}, {"@type": "ListItem", "position": 90, "name": "GCD & LCM Calculator — Two or More Integers | Vendora", "url": "https://getvendora.net/calculators/gcd-lcm-calculator/"}, {"@type": "ListItem", "position": 91, "name": "Golden Ratio Divider — φ ≈ 1.618 Split | Vendora", "url": "https://getvendora.net/calculators/golden-ratio/"}, {"@type": "ListItem", "position": 92, "name": "Gross booking value calculator | Vendora", "url": "https://getvendora.net/calculator/profit/gross-booking-value-calculator/"}, {"@type": "ListItem", "position": 93, "name": "Gross Margin Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/gross-margin/"}, {"@type": "ListItem", "position": 94, "name": "Gross profit margin calculator | Vendora", "url": "https://getvendora.net/calculator/profit/gross-profit-margin-calculator/"}, {"@type": "ListItem", "position": 95, "name": "Hourly to Salary Calculator | Convert Hourly Wage & Annual Salary (Free)", "url": "https://getvendora.net/tools/hourly-to-salary-calculator/"}, {"@type": "ListItem", "position": 96, "name": "Ideal Body Weight (Devine Formula) — Calculator | Vendora", "url": "https://getvendora.net/calculators/ideal-body-weight/"}, {"@type": "ListItem", "position": 97, "name": "Inflation Calculator — Future & Past Purchasing Power | Vendora", "url": "https://getvendora.net/calculators/inflation-calculator/"}, {"@type": "ListItem", "position": 98, "name": "Interest coverage ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/interest-coverage-calculator/"}, {"@type": "ListItem", "position": 99, "name": "Inventory sell-through rate calculator | Vendora", "url": "https://getvendora.net/calculator/inventory/inventory-sell-through-calculator/"}, {"@type": "ListItem", "position": 100, "name": "Inventory Turnover Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/inventory-turnover/"}, {"@type": "ListItem", "position": 101, "name": "Inventory turnover ratio calculator | Vendora", "url": "https://getvendora.net/calculator/inventory/inventory-turnover-ratio-calculator/"}, {"@type": "ListItem", "position": 102, "name": "Kinetic Energy Calculator — KE = ½mv² in Joules | Vendora", "url": "https://getvendora.net/calculators/kinetic-energy/"}, {"@type": "ListItem", "position": 103, "name": "Labor Cost Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/labor-cost/"}, {"@type": "ListItem", "position": 104, "name": "Labor cost percentage calculator | Vendora", "url": "https://getvendora.net/calculator/restaurant/labor-cost-percent-calculator/"}, {"@type": "ListItem", "position": 105, "name": "Loan payment calculator — amortizing monthly payment | Vendora", "url": "https://getvendora.net/calculator/finance/loan-payment-calculator/"}, {"@type": "ListItem", "position": 106, "name": "Loan-to-value calculator | Vendora", "url": "https://getvendora.net/calculator/finance/loan-to-value-calculator/"}, {"@type": "ListItem", "position": 107, "name": "Margin & Markup Calculator — Retail Pricing Math | Vendora", "url": "https://getvendora.net/calculators/margin-markup-calculator/"}, {"@type": "ListItem", "position": 108, "name": "Margin percent calculator | Vendora", "url": "https://getvendora.net/calculator/profit/margin-percent-calculator/"}, {"@type": "ListItem", "position": 109, "name": "Margin to markup bridge calculator | Vendora", "url": "https://getvendora.net/calculator/profit/margin-markup-bridge-calculator/"}, {"@type": "ListItem", "position": 110, "name": "Markup percent calculator | Vendora", "url": "https://getvendora.net/calculator/profit/markup-percent-calculator/"}, {"@type": "ListItem", "position": 111, "name": "Menu Price Calculator | Menu Pricing, Food Cost & Margin for Restaurants", "url": "https://getvendora.net/tools/menu-price-calculator/"}, {"@type": "ListItem", "position": 112, "name": "Midpoint price elasticity calculator | Vendora", "url": "https://getvendora.net/calculator/general/midpoint-price-elasticity-calculator/"}, {"@type": "ListItem", "position": 113, "name": "Monthly recurring revenue calculator | Vendora", "url": "https://getvendora.net/calculator/finance/monthly-recurring-revenue-calculator/"}, {"@type": "ListItem", "position": 114, "name": "Mortgage Payment Calculator — Principal & Interest (Amortizing) | Vendora", "url": "https://getvendora.net/calculators/mortgage-calculator/"}, {"@type": "ListItem", "position": 115, "name": "Net present value calculator | Vendora", "url": "https://getvendora.net/calculator/finance/net-present-value-calculator/"}, {"@type": "ListItem", "position": 116, "name": "Net profit margin calculator | Vendora", "url": "https://getvendora.net/calculator/profit/net-profit-margin-calculator/"}, {"@type": "ListItem", "position": 117, "name": "No Tax on Overtime Calculator | 2026 State Paycheck & Take-Home Pay", "url": "https://getvendora.net/tools/no-tax-on-overtime-calculator/"}, {"@type": "ListItem", "position": 118, "name": "Offline Inventory Dashboard | Excel Import, Stock History & Reports | Vendora", "url": "https://getvendora.net/tools/inventory-tracker/"}, {"@type": "ListItem", "position": 119, "name": "Ohm’s Law Calculator — Voltage, Current, Resistance & Power | Vendora", "url": "https://getvendora.net/calculators/ohms-law/"}, {"@type": "ListItem", "position": 120, "name": "Operating cash flow margin calculator | Vendora", "url": "https://getvendora.net/calculator/finance/operating-cash-flow-margin-calculator/"}, {"@type": "ListItem", "position": 121, "name": "Operating cash flow ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/operating-cash-flow-ratio-calculator/"}, {"@type": "ListItem", "position": 122, "name": "Operating margin calculator | Vendora", "url": "https://getvendora.net/calculator/profit/operating-margin-calculator/"}, {"@type": "ListItem", "position": 123, "name": "Overtime pay estimator calculator | Vendora", "url": "https://getvendora.net/calculator/operations/overtime-pay-estimator-calculator/"}, {"@type": "ListItem", "position": 124, "name": "Ovulation Estimator — Cycle Day & 14-Day Rule | Vendora", "url": "https://getvendora.net/calculators/ovulation-calculator/"}, {"@type": "ListItem", "position": 125, "name": "Payback period calculator | Vendora", "url": "https://getvendora.net/calculator/finance/payback-period-calculator/"}, {"@type": "ListItem", "position": 126, "name": "Percentage Calculator — Of, Change, Ratio & Backwards | Vendora", "url": "https://getvendora.net/calculators/percentage-calculator/"}, {"@type": "ListItem", "position": 127, "name": "Plate cost per serving calculator | Vendora", "url": "https://getvendora.net/calculator/food/plate-cost-calculator/"}, {"@type": "ListItem", "position": 128, "name": "Point price elasticity calculator | Vendora", "url": "https://getvendora.net/calculator/general/price-elasticity-point-calculator/"}, {"@type": "ListItem", "position": 129, "name": "Pomodoro Planner — Work & Break Blocks | Vendora", "url": "https://getvendora.net/calculators/pomodoro-sprint-calculator/"}, {"@type": "ListItem", "position": 130, "name": "Pregnancy Due Date Estimator — LMP & 40-Week Rule | Vendora", "url": "https://getvendora.net/calculators/pregnancy-due-date/"}, {"@type": "ListItem", "position": 131, "name": "Present value calculator | Vendora", "url": "https://getvendora.net/calculator/finance/present-value-calculator/"}, {"@type": "ListItem", "position": 132, "name": "Price-to-earnings ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/price-to-earnings-ratio-calculator/"}, {"@type": "ListItem", "position": 133, "name": "Prime cost percentage calculator | Vendora", "url": "https://getvendora.net/calculator/restaurant/prime-cost-calculator/"}, {"@type": "ListItem", "position": 134, "name": "Profit Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/profit/"}, {"@type": "ListItem", "position": 135, "name": "Profit per unit calculator | Vendora", "url": "https://getvendora.net/calculator/profit/profit-per-unit-calculator/"}, {"@type": "ListItem", "position": 136, "name": "Project profit calculator | Vendora", "url": "https://getvendora.net/calculator/profit/project-profit-calculator/"}, {"@type": "ListItem", "position": 137, "name": "Purchase Order Generator Free Online | PO Maker & Printable PO | Vendora", "url": "https://getvendora.net/tools/purchase-order-generator/"}, {"@type": "ListItem", "position": 138, "name": "PX to REM Converter — Divide by Root Font Size | Vendora", "url": "https://getvendora.net/calculators/px-to-rem-calculator/"}, {"@type": "ListItem", "position": 139, "name": "Pythagorean Theorem Calculator — Find Missing Right-Triangle Side | Vendora", "url": "https://getvendora.net/calculators/pythagorean-theorem/"}, {"@type": "ListItem", "position": 140, "name": "QR Menu Generator Free | Restaurant QR Code Digital Menu", "url": "https://getvendora.net/tools/qr-menu-generator/"}, {"@type": "ListItem", "position": 141, "name": "Quadratic Equation Solver — Roots of ax² + bx + c | Vendora", "url": "https://getvendora.net/calculators/quadratic-equation/"}, {"@type": "ListItem", "position": 142, "name": "Quick ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/quick-ratio-calculator/"}, {"@type": "ListItem", "position": 143, "name": "Random Integer Generator — Inclusive Range | Vendora", "url": "https://getvendora.net/calculators/random-number-generator/"}, {"@type": "ListItem", "position": 144, "name": "Receipt Generator Free Online | Restaurant & Payment Receipt Maker", "url": "https://getvendora.net/tools/receipt-generator/"}, {"@type": "ListItem", "position": 145, "name": "Recipe scaling calculator | Vendora", "url": "https://getvendora.net/calculator/food/recipe-scaling-calculator/"}, {"@type": "ListItem", "position": 146, "name": "Rent to revenue ratio calculator | Vendora", "url": "https://getvendora.net/calculator/finance/rent-to-revenue-calculator/"}, {"@type": "ListItem", "position": 147, "name": "Reorder point calculator | Vendora", "url": "https://getvendora.net/calculator/inventory/reorder-point-calculator/"}, {"@type": "ListItem", "position": 148, "name": "Resistor Color Code Decoder — 4-Band Value | Vendora", "url": "https://getvendora.net/calculators/resistor-color-code/"}, {"@type": "ListItem", "position": 149, "name": "Restaurant Calculators Free | Food Cost, Menu Price, Margin, Tip & VAT | Vendora", "url": "https://getvendora.net/restaurant-calculators/"}, {"@type": "ListItem", "position": 150, "name": "Restaurant Invoice Generator Free Online | Catering & Food Business Invoices", "url": "https://getvendora.net/tools/invoice-generator/"}, {"@type": "ListItem", "position": 151, "name": "Retirement Calculator — Savings Projection & Contributions | Vendora", "url": "https://getvendora.net/calculators/retirement-calculator/"}, {"@type": "ListItem", "position": 152, "name": "Return on assets calculator | Vendora", "url": "https://getvendora.net/calculator/finance/return-on-assets-calculator/"}, {"@type": "ListItem", "position": 153, "name": "Return on equity calculator | Vendora", "url": "https://getvendora.net/calculator/finance/return-on-equity-calculator/"}, {"@type": "ListItem", "position": 154, "name": "Return on investment calculator | Vendora", "url": "https://getvendora.net/calculator/profit/return-on-investment-calculator/"}, {"@type": "ListItem", "position": 155, "name": "Revenue per employee calculator | Vendora", "url": "https://getvendora.net/calculator/operations/revenue-per-employee-calculator/"}, {"@type": "ListItem", "position": 156, "name": "RevPASh (revenue per seat hour) calculator | Vendora", "url": "https://getvendora.net/calculator/restaurant/revpas-calculator/"}, {"@type": "ListItem", "position": 157, "name": "ROAS calculator | Vendora", "url": "https://getvendora.net/calculator/profit/roas-calculator/"}, {"@type": "ListItem", "position": 158, "name": "ROI Calculator — Return on Investment Percent | Vendora", "url": "https://getvendora.net/calculators/roi-calculator/"}, {"@type": "ListItem", "position": 159, "name": "Rule of 72 calculator | Vendora", "url": "https://getvendora.net/calculator/general/rule-of-72-calculator/"}, {"@type": "ListItem", "position": 160, "name": "Running Pace Calculator — Minutes per Kilometer | Vendora", "url": "https://getvendora.net/calculators/pace-calculator/"}, {"@type": "ListItem", "position": 161, "name": "Runway net burn calculator | Vendora", "url": "https://getvendora.net/calculator/finance/runway-net-burn-calculator/"}, {"@type": "ListItem", "position": 162, "name": "Safety stock calculator | Vendora", "url": "https://getvendora.net/calculator/inventory/safety-stock-calculator/"}, {"@type": "ListItem", "position": 163, "name": "Salary to Hourly Pay Converter — Annual to Per-Hour Rate | Vendora", "url": "https://getvendora.net/calculators/salary-to-hourly-converter/"}, {"@type": "ListItem", "position": 164, "name": "Sales commission calculator | Vendora", "url": "https://getvendora.net/calculator/profit/sales-commission-calculator/"}, {"@type": "ListItem", "position": 165, "name": "Sales per square foot calculator | Vendora", "url": "https://getvendora.net/calculator/operations/sales-per-square-foot-calculator/"}, {"@type": "ListItem", "position": 166, "name": "Sales Tax Calculator — Tax-Inclusive & Tax-Exclusive Prices | Vendora", "url": "https://getvendora.net/calculators/sales-tax-calculator/"}, {"@type": "ListItem", "position": 167, "name": "Sales tax: net amount from gross total | Vendora", "url": "https://getvendora.net/calculator/profit/sales-tax-exclusive-from-total-calculator/"}, {"@type": "ListItem", "position": 168, "name": "Savings future value calculator | Vendora", "url": "https://getvendora.net/calculator/finance/periodic-savings-future-value-calculator/"}, {"@type": "ListItem", "position": 169, "name": "Savings goal monthly contribution calculator | Vendora", "url": "https://getvendora.net/calculator/finance/savings-goal-monthly-calculator/"}, {"@type": "ListItem", "position": 170, "name": "Sequential discount calculator | Vendora", "url": "https://getvendora.net/calculator/profit/sequential-discount-calculator/"}, {"@type": "ListItem", "position": 171, "name": "Shift premium pay calculator | Vendora", "url": "https://getvendora.net/calculator/operations/shift-premium-pay-calculator/"}, {"@type": "ListItem", "position": 172, "name": "Shift Scheduler Free Online | Weekly View & Conflict Detection | Vendora", "url": "https://getvendora.net/tools/shift-scheduler/"}, {"@type": "ListItem", "position": 173, "name": "Shrinkage cost calculator | Vendora", "url": "https://getvendora.net/calculator/operations/shrinkage-cost-calculator/"}, {"@type": "ListItem", "position": 174, "name": "Simple interest calculator | Vendora", "url": "https://getvendora.net/calculator/finance/simple-interest-calculator/"}, {"@type": "ListItem", "position": 175, "name": "Simple Interest Calculator — I = PRT | Vendora", "url": "https://getvendora.net/calculators/simple-interest-calculator/"}, {"@type": "ListItem", "position": 176, "name": "Sleep Cycle Calculator — Bedtime & Wake Times (90-Min Cycles) | Vendora", "url": "https://getvendora.net/calculators/sleep-cycle-calculator/"}, {"@type": "ListItem", "position": 177, "name": "Small Business — calculator manifest", "url": "https://getvendora.net/tools/small-business/"}, {"@type": "ListItem", "position": 178, "name": "Speed, Distance & Time Solver — v = d ÷ t | Vendora", "url": "https://getvendora.net/calculators/speed-distance-time/"}, {"@type": "ListItem", "position": 179, "name": "Spoilage waste percent calculator | Vendora", "url": "https://getvendora.net/calculator/food/spoilage-waste-percent-calculator/"}, {"@type": "ListItem", "position": 180, "name": "Standard Deviation Calculator — Sample SD for Data Sets | Vendora", "url": "https://getvendora.net/calculators/standard-deviation/"}, {"@type": "ListItem", "position": 181, "name": "Straight-line depreciation calculator | Vendora", "url": "https://getvendora.net/calculator/finance/straight-line-depreciation-calculator/"}, {"@type": "ListItem", "position": 182, "name": "Table turn calculator | Vendora", "url": "https://getvendora.net/calculator/restaurant/table-turn-calculator/"}, {"@type": "ListItem", "position": 183, "name": "Target selling price calculator | Vendora", "url": "https://getvendora.net/calculator/profit/target-selling-price-calculator/"}, {"@type": "ListItem", "position": 184, "name": "TDEE Calculator — Total Daily Energy Expenditure & Activity | Vendora", "url": "https://getvendora.net/calculators/tdee-calculator/"}, {"@type": "ListItem", "position": 185, "name": "Temperature Converter — °C, °F, and Kelvin | Vendora", "url": "https://getvendora.net/calculators/temperature-converter/"}, {"@type": "ListItem", "position": 186, "name": "Time Duration Calculator — Span Across Midnight | Vendora", "url": "https://getvendora.net/calculators/time-duration/"}, {"@type": "ListItem", "position": 187, "name": "Timesheet Hours Calculator — Mon–Fri Sum & Overtime | Vendora", "url": "https://getvendora.net/calculators/hours-worked-timesheet/"}, {"@type": "ListItem", "position": 188, "name": "Tip Calculator — Split Bill & Gratuity | Vendora", "url": "https://getvendora.net/calculators/tip-calculator/"}, {"@type": "ListItem", "position": 189, "name": "Trim yield calculator | Vendora", "url": "https://getvendora.net/calculator/food/trim-yield-calculator/"}, {"@type": "ListItem", "position": 190, "name": "Unit contribution margin calculator | Vendora", "url": "https://getvendora.net/calculator/profit/unit-contribution-margin-calculator/"}, {"@type": "ListItem", "position": 191, "name": "Unit economics contribution calculator | Vendora", "url": "https://getvendora.net/calculator/profit/unit-economics-contribution-calculator/"}, {"@type": "ListItem", "position": 192, "name": "UTC Offset Time Converter — Wall Clock vs UTC | Vendora", "url": "https://getvendora.net/calculators/time-zone-converter/"}, {"@type": "ListItem", "position": 193, "name": "Volume Calculator — Box, Cylinder, Sphere & More | Vendora", "url": "https://getvendora.net/calculators/volume-calculator/"}, {"@type": "ListItem", "position": 194, "name": "Weighted average calculator | Vendora", "url": "https://getvendora.net/calculator/general/weighted-average-calculator/"}, {"@type": "ListItem", "position": 195, "name": "Work Hours & Overtime Tracker | FLSA & State Daily OT (Free)", "url": "https://getvendora.net/tools/work-hours-overtime-tracker/"}, {"@type": "ListItem", "position": 196, "name": "Working capital calculator | Vendora", "url": "https://getvendora.net/calculator/finance/working-capital-calculator/"}]}</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy"><a href="/">Home</a> / <a href="/calculator/">Calculators</a></p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Calculators</p>
+      <h1>Calculators</h1>
+      <p class="hero-copy">Primary calculator directory (<code>/calculator/</code>): each category lists tools on structured URLs. Cards also reference <strong>legacy</strong> indexed tools that keep their original addresses—the flat <a href="/calculators/">general calculators hub</a>, <a href="/restaurant-calculators/">restaurant calculator hub</a>, and <a href="/tools/small-business/calculators/break-even/">small-business calculator worksheets</a>—so nothing moves; links only clarify where to go.</p>
+      <div class="hub-links">
+        <a href="/calculator/finance/">Finance calculators</a>
+        <a href="/calculator/food/">Food calculators</a>
+        <a href="/calculator/restaurant/">Restaurant calculators</a>
+        <a href="/calculator/profit/">Profit calculators</a>
+        <a href="/calculator/operations/">Operations calculators</a>
+        <a href="/calculator/inventory/">Inventory calculators</a>
+        <a href="/calculator/general/">General calculators</a>
+      </div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Browse calculators</h2>
+      <div class="calc-hub-grid">
+
+          <a class="calc-card" href="/calculators/distance-2d-calculator/">
+            <h3 class="calc-title">2D Distance Calculator — Euclidean Distance Between Points | Vendora</h3>
+            <p class="calc-url">/calculators/distance-2d-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/3d-printer-buy-vs-outsource/">
+            <h3 class="calc-title">3D Printer Buy vs Outsource Calculator | Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/3d-printer-buy-vs-outsource/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/accounting-profit/">
+            <h3 class="calc-title">Accounting Profit Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/accounting-profit/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/accounts-receivable-turnover-calculator/">
+            <h3 class="calc-title">Accounts receivable turnover calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/accounts-receivable-turnover-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/accumulated-depreciation/">
+            <h3 class="calc-title">Accumulated Depreciation Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/accumulated-depreciation/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/actual-cash-value/">
+            <h3 class="calc-title">Actual Cash Value Calculator | Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/actual-cash-value/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/after-tax-cost-of-debt/">
+            <h3 class="calc-title">After-tax Cost of Debt Calculator | Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/after-tax-cost-of-debt/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/age-calculator/">
+            <h3 class="calc-title">Age Calculator — Exact Years, Months &amp; Days | Vendora</h3>
+            <p class="calc-url">/calculators/age-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/ai-break-even-date/">
+            <h3 class="calc-title">AI Break-Even Date Calculator</h3>
+            <p class="calc-url">/tools/ai-break-even-date/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/ai-cash-flow-risk-detector/">
+            <h3 class="calc-title">AI Cash Flow Risk Detector</h3>
+            <p class="calc-url">/tools/ai-cash-flow-risk-detector/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/ai-customer-profitability/">
+            <h3 class="calc-title">AI Customer Profitability Calculator</h3>
+            <p class="calc-url">/tools/ai-customer-profitability/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/ai-profit-leak-finder/">
+            <h3 class="calc-title">AI Profit Leak Finder for Small Businesses | Free Business Tool</h3>
+            <p class="calc-url">/tools/ai-profit-leak-finder/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/ai-sales-trend-analyzer/">
+            <h3 class="calc-title">AI Sales Trend Analyzer for Small Businesses</h3>
+            <p class="calc-url">/tools/ai-sales-trend-analyzer/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/amortization/">
+            <h3 class="calc-title">Amortization Calculator | Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/amortization/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/annual-recurring-revenue-calculator/">
+            <h3 class="calc-title">Annual recurring revenue calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/annual-recurring-revenue-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/area-calculator/">
+            <h3 class="calc-title">Area Calculator — Circle, Rectangle, Triangle &amp; More | Vendora</h3>
+            <p class="calc-url">/calculators/area-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/aspect-ratio-calculator/">
+            <h3 class="calc-title">Aspect Ratio Calculator — Resize Width or Height | Vendora</h3>
+            <p class="calc-url">/calculators/aspect-ratio-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/asset-turnover-calculator/">
+            <h3 class="calc-title">Asset turnover calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/asset-turnover-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/auto-loan-calculator/">
+            <h3 class="calc-title">Auto Loan Payment Calculator — Monthly Car Payment | Vendora</h3>
+            <p class="calc-url">/calculators/auto-loan-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/restaurant/average-check-calculator/">
+            <h3 class="calc-title">Average check calculator | Vendora</h3>
+            <p class="calc-url">/calculator/restaurant/average-check-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/average-fixed-cost/">
+            <h3 class="calc-title">Average Fixed Cost Calculator | Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/average-fixed-cost/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/blood-alcohol-content-bac/">
+            <h3 class="calc-title">BAC Estimator (Widmark) — Educational Alcohol Metabolism Model | Vendora</h3>
+            <p class="calc-url">/calculators/blood-alcohol-content-bac/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/operations/billable-utilization-calculator/">
+            <h3 class="calc-title">Billable utilization calculator | Vendora</h3>
+            <p class="calc-url">/calculator/operations/billable-utilization-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/bmi-calculator/">
+            <h3 class="calc-title">BMI Calculator — Body Mass Index (kg/m²) for Adults | Vendora</h3>
+            <p class="calc-url">/calculators/bmi-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/bmr-calculator/">
+            <h3 class="calc-title">BMR Calculator — Basal Metabolic Rate (Mifflin–St Jeor) | Vendora</h3>
+            <p class="calc-url">/calculators/bmr-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/body-fat-calculator/">
+            <h3 class="calc-title">Body Fat Calculator — U.S. Navy Method Estimate | Vendora</h3>
+            <p class="calc-url">/calculators/body-fat-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/bond-price/">
+            <h3 class="calc-title">Bond Price Calculator | Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/bond-price/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/break-even/">
+            <h3 class="calc-title">Break-even Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/break-even/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/break-even-point/">
+            <h3 class="calc-title">Break-Even Calculator — Fixed Cost, Price &amp; Variable Cost | Vendora</h3>
+            <p class="calc-url">/calculators/break-even-point/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/break-even-units-calculator/">
+            <h3 class="calc-title">Break-even units calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/break-even-units-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/bundle-value-calculator/">
+            <h3 class="calc-title">Bundle savings calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/bundle-value-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/burn-rate-calculator/">
+            <h3 class="calc-title">Burn rate and cash runway calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/burn-rate-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/cap-rate-calculator/">
+            <h3 class="calc-title">Cap rate calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/cap-rate-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/operations/capacity-utilization-calculator/">
+            <h3 class="calc-title">Capacity utilization calculator | Vendora</h3>
+            <p class="calc-url">/calculator/operations/capacity-utilization-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/cash-conversion-cycle-calculator/">
+            <h3 class="calc-title">Cash conversion cycle calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/cash-conversion-cycle-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/cash-ratio-calculator/">
+            <h3 class="calc-title">Cash ratio calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/cash-ratio-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/cash-on-cash-return-calculator/">
+            <h3 class="calc-title">Cash-on-cash return calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/cash-on-cash-return-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/general/click-through-rate-calculator/">
+            <h3 class="calc-title">Click-through rate calculator | Vendora</h3>
+            <p class="calc-url">/calculator/general/click-through-rate-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/client-effective-hourly-calculator/">
+            <h3 class="calc-title">Client effective hourly rate calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/client-effective-hourly-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/commission-calculator/">
+            <h3 class="calc-title">Commission Calculator | Sales Commission %, Total Pay &amp; Target Sales</h3>
+            <p class="calc-url">/tools/commission-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/commission-split-calculator/">
+            <h3 class="calc-title">Commission split calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/commission-split-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/cagr-calculator/">
+            <h3 class="calc-title">Compound annual growth rate calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/cagr-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/compound-interest-calculator/">
+            <h3 class="calc-title">Compound Interest Calculator — Future Value &amp; Growth | Vendora</h3>
+            <p class="calc-url">/calculators/compound-interest-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/contribution-margin/">
+            <h3 class="calc-title">Contribution Margin Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/contribution-margin/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/cogs/">
+            <h3 class="calc-title">Cost of Goods Sold (COGS) Calculator | Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/cogs/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/cost-plus-pricing-calculator/">
+            <h3 class="calc-title">Cost-plus pricing calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/cost-plus-pricing-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/credit-card-payoff/">
+            <h3 class="calc-title">Credit Card Payoff Calculator — Months to Zero Debt | Vendora</h3>
+            <p class="calc-url">/calculators/credit-card-payoff/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/currency-converter/">
+            <h3 class="calc-title">Currency Converter — Illustrative Exchange Rates | Vendora</h3>
+            <p class="calc-url">/calculators/currency-converter/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/current-ratio-calculator/">
+            <h3 class="calc-title">Current ratio calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/current-ratio-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/customer-acquisition-cost-calculator/">
+            <h3 class="calc-title">Customer acquisition cost calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/customer-acquisition-cost-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/general/customer-churn-rate-calculator/">
+            <h3 class="calc-title">Customer churn rate calculator | Vendora</h3>
+            <p class="calc-url">/calculator/general/customer-churn-rate-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/daily-sales-summary/">
+            <h3 class="calc-title">Daily Sales Summary Tool | Restaurant Revenue, AOV &amp; Sales Mix</h3>
+            <p class="calc-url">/tools/daily-sales-summary/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/water-intake-calculator/">
+            <h3 class="calc-title">Daily Water Intake Estimator — ml from Weight &amp; Activity | Vendora</h3>
+            <p class="calc-url">/calculators/water-intake-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/date-difference/">
+            <h3 class="calc-title">Date Difference Calculator — Days Between Two Dates | Vendora</h3>
+            <p class="calc-url">/calculators/date-difference/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/inventory/days-inventory-outstanding-calculator/">
+            <h3 class="calc-title">Days inventory outstanding calculator | Vendora</h3>
+            <p class="calc-url">/calculator/inventory/days-inventory-outstanding-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/days-payable-outstanding-calculator/">
+            <h3 class="calc-title">Days payable outstanding calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/days-payable-outstanding-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/days-sales-outstanding-calculator/">
+            <h3 class="calc-title">Days sales outstanding calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/days-sales-outstanding-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/days-until-event/">
+            <h3 class="calc-title">Days Until Event — Countdown to a Future Date | Vendora</h3>
+            <p class="calc-url">/calculators/days-until-event/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/debt-ratio-calculator/">
+            <h3 class="calc-title">Debt ratio calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/debt-ratio-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/debt-to-equity-calculator/">
+            <h3 class="calc-title">Debt to equity ratio calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/debt-to-equity-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/debt-to-income-calculator/">
+            <h3 class="calc-title">Debt-to-income ratio calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/debt-to-income-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/delivery-commission-calculator/">
+            <h3 class="calc-title">Delivery Commission Calculator | Uber Eats, DoorDash &amp; App Fee Estimator</h3>
+            <p class="calc-url">/tools/delivery-commission-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/delivery-cost-calculator/">
+            <h3 class="calc-title">Delivery Cost Calculator Free | Route Cost, Margin &amp; Delivery Fee | Vendora</h3>
+            <p class="calc-url">/tools/delivery-cost-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/density-calculator/">
+            <h3 class="calc-title">Density Calculator — ρ = mass ÷ volume | Vendora</h3>
+            <p class="calc-url">/calculators/density-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/discount-calculator/">
+            <h3 class="calc-title">Discount Calculator — Sale Price from % Off | Vendora</h3>
+            <p class="calc-url">/calculators/discount-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/discount-impact-calculator/">
+            <h3 class="calc-title">Discount impact calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/discount-impact-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/discount-percent-calculator/">
+            <h3 class="calc-title">Discount percent calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/discount-percent-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/dividend-payout-ratio-calculator/">
+            <h3 class="calc-title">Dividend payout ratio calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/dividend-payout-ratio-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/bandwidth-download-time/">
+            <h3 class="calc-title">Download Time Estimator — File Size vs Mbps | Vendora</h3>
+            <p class="calc-url">/calculators/bandwidth-download-time/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/ebay-fee-calculator/">
+            <h3 class="calc-title">eBay Fee Calculator | Etsy Fees &amp; Net Profit (2026)</h3>
+            <p class="calc-url">/tools/ebay-fee-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/ebit-calculator/">
+            <h3 class="calc-title">EBIT calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/ebit-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/ebitda-margin/">
+            <h3 class="calc-title">EBITDA Margin Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/ebitda-margin/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/ebitda-margin-calculator/">
+            <h3 class="calc-title">EBITDA margin calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/ebitda-margin-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/inventory/economic-order-quantity-calculator/">
+            <h3 class="calc-title">Economic order quantity calculator | Vendora</h3>
+            <p class="calc-url">/calculator/inventory/economic-order-quantity-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/effective-annual-rate-calculator/">
+            <h3 class="calc-title">Effective annual rate calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/effective-annual-rate-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/effective-tax-rate-calculator/">
+            <h3 class="calc-title">Effective tax rate calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/effective-tax-rate-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/general/email-open-rate-calculator/">
+            <h3 class="calc-title">Email open rate calculator | Vendora</h3>
+            <p class="calc-url">/calculator/general/email-open-rate-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/enterprise-value-calculator/">
+            <h3 class="calc-title">Enterprise value calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/enterprise-value-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/equity-ratio-calculator/">
+            <h3 class="calc-title">Equity ratio calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/equity-ratio-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/financial-leverage-ratio-calculator/">
+            <h3 class="calc-title">Financial leverage ratio calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/financial-leverage-ratio-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/fixed-cost-per-unit-calculator/">
+            <h3 class="calc-title">Fixed cost per unit calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/fixed-cost-per-unit-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/food-cost-calculator/">
+            <h3 class="calc-title">Food Cost Calculator | Recipe &amp; Menu Food Cost % for Restaurants</h3>
+            <p class="calc-url">/tools/food-cost-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/restaurant/food-cost-percent-calculator/">
+            <h3 class="calc-title">Food cost percentage calculator | Vendora</h3>
+            <p class="calc-url">/calculator/restaurant/food-cost-percent-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/force-calculator/">
+            <h3 class="calc-title">Force Calculator — F = ma and Pressure P = F/A | Vendora</h3>
+            <p class="calc-url">/calculators/force-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/fraction-calculator/">
+            <h3 class="calc-title">Fraction Calculator — Add &amp; Simplify Fractions | Vendora</h3>
+            <p class="calc-url">/calculators/fraction-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/">
+            <h3 class="calc-title">Free Online Calculators — Health, Finance, Math, Time &amp; Physics | Vendora</h3>
+            <p class="calc-url">/calculators/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/">
+            <h3 class="calc-title">Free Restaurant Tools Online | Food Cost, Menu Price, POS &amp; Invoices | Vendora</h3>
+            <p class="calc-url">/tools/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/fuel-economy-mpg-l-100km/">
+            <h3 class="calc-title">Fuel Economy Converter — MPG and Liters per 100 km | Vendora</h3>
+            <p class="calc-url">/calculators/fuel-economy-mpg-l-100km/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/future-value-calculator/">
+            <h3 class="calc-title">Future value calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/future-value-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/gcd-lcm-calculator/">
+            <h3 class="calc-title">GCD &amp; LCM Calculator — Two or More Integers | Vendora</h3>
+            <p class="calc-url">/calculators/gcd-lcm-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/golden-ratio/">
+            <h3 class="calc-title">Golden Ratio Divider — φ ≈ 1.618 Split | Vendora</h3>
+            <p class="calc-url">/calculators/golden-ratio/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/gross-booking-value-calculator/">
+            <h3 class="calc-title">Gross booking value calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/gross-booking-value-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/gross-margin/">
+            <h3 class="calc-title">Gross Margin Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/gross-margin/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/gross-profit-margin-calculator/">
+            <h3 class="calc-title">Gross profit margin calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/gross-profit-margin-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/hourly-to-salary-calculator/">
+            <h3 class="calc-title">Hourly to Salary Calculator | Convert Hourly Wage &amp; Annual Salary (Free)</h3>
+            <p class="calc-url">/tools/hourly-to-salary-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/ideal-body-weight/">
+            <h3 class="calc-title">Ideal Body Weight (Devine Formula) — Calculator | Vendora</h3>
+            <p class="calc-url">/calculators/ideal-body-weight/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/inflation-calculator/">
+            <h3 class="calc-title">Inflation Calculator — Future &amp; Past Purchasing Power | Vendora</h3>
+            <p class="calc-url">/calculators/inflation-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/interest-coverage-calculator/">
+            <h3 class="calc-title">Interest coverage ratio calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/interest-coverage-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/inventory/inventory-sell-through-calculator/">
+            <h3 class="calc-title">Inventory sell-through rate calculator | Vendora</h3>
+            <p class="calc-url">/calculator/inventory/inventory-sell-through-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/inventory-turnover/">
+            <h3 class="calc-title">Inventory Turnover Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/inventory-turnover/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/inventory/inventory-turnover-ratio-calculator/">
+            <h3 class="calc-title">Inventory turnover ratio calculator | Vendora</h3>
+            <p class="calc-url">/calculator/inventory/inventory-turnover-ratio-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/kinetic-energy/">
+            <h3 class="calc-title">Kinetic Energy Calculator — KE = ½mv² in Joules | Vendora</h3>
+            <p class="calc-url">/calculators/kinetic-energy/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/labor-cost/">
+            <h3 class="calc-title">Labor Cost Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/labor-cost/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/restaurant/labor-cost-percent-calculator/">
+            <h3 class="calc-title">Labor cost percentage calculator | Vendora</h3>
+            <p class="calc-url">/calculator/restaurant/labor-cost-percent-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/loan-payment-calculator/">
+            <h3 class="calc-title">Loan payment calculator — amortizing monthly payment | Vendora</h3>
+            <p class="calc-url">/calculator/finance/loan-payment-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/loan-to-value-calculator/">
+            <h3 class="calc-title">Loan-to-value calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/loan-to-value-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/margin-markup-calculator/">
+            <h3 class="calc-title">Margin &amp; Markup Calculator — Retail Pricing Math | Vendora</h3>
+            <p class="calc-url">/calculators/margin-markup-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/margin-percent-calculator/">
+            <h3 class="calc-title">Margin percent calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/margin-percent-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/margin-markup-bridge-calculator/">
+            <h3 class="calc-title">Margin to markup bridge calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/margin-markup-bridge-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/markup-percent-calculator/">
+            <h3 class="calc-title">Markup percent calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/markup-percent-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/menu-price-calculator/">
+            <h3 class="calc-title">Menu Price Calculator | Menu Pricing, Food Cost &amp; Margin for Restaurants</h3>
+            <p class="calc-url">/tools/menu-price-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/general/midpoint-price-elasticity-calculator/">
+            <h3 class="calc-title">Midpoint price elasticity calculator | Vendora</h3>
+            <p class="calc-url">/calculator/general/midpoint-price-elasticity-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/monthly-recurring-revenue-calculator/">
+            <h3 class="calc-title">Monthly recurring revenue calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/monthly-recurring-revenue-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/mortgage-calculator/">
+            <h3 class="calc-title">Mortgage Payment Calculator — Principal &amp; Interest (Amortizing) | Vendora</h3>
+            <p class="calc-url">/calculators/mortgage-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/net-present-value-calculator/">
+            <h3 class="calc-title">Net present value calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/net-present-value-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/net-profit-margin-calculator/">
+            <h3 class="calc-title">Net profit margin calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/net-profit-margin-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/no-tax-on-overtime-calculator/">
+            <h3 class="calc-title">No Tax on Overtime Calculator | 2026 State Paycheck &amp; Take-Home Pay</h3>
+            <p class="calc-url">/tools/no-tax-on-overtime-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/inventory-tracker/">
+            <h3 class="calc-title">Offline Inventory Dashboard | Excel Import, Stock History &amp; Reports | Vendora</h3>
+            <p class="calc-url">/tools/inventory-tracker/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/ohms-law/">
+            <h3 class="calc-title">Ohm’s Law Calculator — Voltage, Current, Resistance &amp; Power | Vendora</h3>
+            <p class="calc-url">/calculators/ohms-law/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/operating-cash-flow-margin-calculator/">
+            <h3 class="calc-title">Operating cash flow margin calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/operating-cash-flow-margin-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/operating-cash-flow-ratio-calculator/">
+            <h3 class="calc-title">Operating cash flow ratio calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/operating-cash-flow-ratio-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/operating-margin-calculator/">
+            <h3 class="calc-title">Operating margin calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/operating-margin-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/operations/overtime-pay-estimator-calculator/">
+            <h3 class="calc-title">Overtime pay estimator calculator | Vendora</h3>
+            <p class="calc-url">/calculator/operations/overtime-pay-estimator-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/ovulation-calculator/">
+            <h3 class="calc-title">Ovulation Estimator — Cycle Day &amp; 14-Day Rule | Vendora</h3>
+            <p class="calc-url">/calculators/ovulation-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/payback-period-calculator/">
+            <h3 class="calc-title">Payback period calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/payback-period-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/percentage-calculator/">
+            <h3 class="calc-title">Percentage Calculator — Of, Change, Ratio &amp; Backwards | Vendora</h3>
+            <p class="calc-url">/calculators/percentage-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/food/plate-cost-calculator/">
+            <h3 class="calc-title">Plate cost per serving calculator | Vendora</h3>
+            <p class="calc-url">/calculator/food/plate-cost-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/general/price-elasticity-point-calculator/">
+            <h3 class="calc-title">Point price elasticity calculator | Vendora</h3>
+            <p class="calc-url">/calculator/general/price-elasticity-point-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/pomodoro-sprint-calculator/">
+            <h3 class="calc-title">Pomodoro Planner — Work &amp; Break Blocks | Vendora</h3>
+            <p class="calc-url">/calculators/pomodoro-sprint-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/pregnancy-due-date/">
+            <h3 class="calc-title">Pregnancy Due Date Estimator — LMP &amp; 40-Week Rule | Vendora</h3>
+            <p class="calc-url">/calculators/pregnancy-due-date/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/present-value-calculator/">
+            <h3 class="calc-title">Present value calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/present-value-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/price-to-earnings-ratio-calculator/">
+            <h3 class="calc-title">Price-to-earnings ratio calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/price-to-earnings-ratio-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/restaurant/prime-cost-calculator/">
+            <h3 class="calc-title">Prime cost percentage calculator | Vendora</h3>
+            <p class="calc-url">/calculator/restaurant/prime-cost-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/profit/">
+            <h3 class="calc-title">Profit Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/profit/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/profit-per-unit-calculator/">
+            <h3 class="calc-title">Profit per unit calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/profit-per-unit-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/project-profit-calculator/">
+            <h3 class="calc-title">Project profit calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/project-profit-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/purchase-order-generator/">
+            <h3 class="calc-title">Purchase Order Generator Free Online | PO Maker &amp; Printable PO | Vendora</h3>
+            <p class="calc-url">/tools/purchase-order-generator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/px-to-rem-calculator/">
+            <h3 class="calc-title">PX to REM Converter — Divide by Root Font Size | Vendora</h3>
+            <p class="calc-url">/calculators/px-to-rem-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/pythagorean-theorem/">
+            <h3 class="calc-title">Pythagorean Theorem Calculator — Find Missing Right-Triangle Side | Vendora</h3>
+            <p class="calc-url">/calculators/pythagorean-theorem/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/qr-menu-generator/">
+            <h3 class="calc-title">QR Menu Generator Free | Restaurant QR Code Digital Menu</h3>
+            <p class="calc-url">/tools/qr-menu-generator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/quadratic-equation/">
+            <h3 class="calc-title">Quadratic Equation Solver — Roots of ax² + bx + c | Vendora</h3>
+            <p class="calc-url">/calculators/quadratic-equation/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/quick-ratio-calculator/">
+            <h3 class="calc-title">Quick ratio calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/quick-ratio-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/random-number-generator/">
+            <h3 class="calc-title">Random Integer Generator — Inclusive Range | Vendora</h3>
+            <p class="calc-url">/calculators/random-number-generator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/receipt-generator/">
+            <h3 class="calc-title">Receipt Generator Free Online | Restaurant &amp; Payment Receipt Maker</h3>
+            <p class="calc-url">/tools/receipt-generator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/food/recipe-scaling-calculator/">
+            <h3 class="calc-title">Recipe scaling calculator | Vendora</h3>
+            <p class="calc-url">/calculator/food/recipe-scaling-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/rent-to-revenue-calculator/">
+            <h3 class="calc-title">Rent to revenue ratio calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/rent-to-revenue-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/inventory/reorder-point-calculator/">
+            <h3 class="calc-title">Reorder point calculator | Vendora</h3>
+            <p class="calc-url">/calculator/inventory/reorder-point-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/resistor-color-code/">
+            <h3 class="calc-title">Resistor Color Code Decoder — 4-Band Value | Vendora</h3>
+            <p class="calc-url">/calculators/resistor-color-code/</p>
+          </a>
+
+          <a class="calc-card" href="/restaurant-calculators/">
+            <h3 class="calc-title">Restaurant Calculators Free | Food Cost, Menu Price, Margin, Tip &amp; VAT | Vendora</h3>
+            <p class="calc-url">/restaurant-calculators/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/invoice-generator/">
+            <h3 class="calc-title">Restaurant Invoice Generator Free Online | Catering &amp; Food Business Invoices</h3>
+            <p class="calc-url">/tools/invoice-generator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/retirement-calculator/">
+            <h3 class="calc-title">Retirement Calculator — Savings Projection &amp; Contributions | Vendora</h3>
+            <p class="calc-url">/calculators/retirement-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/return-on-assets-calculator/">
+            <h3 class="calc-title">Return on assets calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/return-on-assets-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/return-on-equity-calculator/">
+            <h3 class="calc-title">Return on equity calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/return-on-equity-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/return-on-investment-calculator/">
+            <h3 class="calc-title">Return on investment calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/return-on-investment-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/operations/revenue-per-employee-calculator/">
+            <h3 class="calc-title">Revenue per employee calculator | Vendora</h3>
+            <p class="calc-url">/calculator/operations/revenue-per-employee-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/restaurant/revpas-calculator/">
+            <h3 class="calc-title">RevPASh (revenue per seat hour) calculator | Vendora</h3>
+            <p class="calc-url">/calculator/restaurant/revpas-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/roas-calculator/">
+            <h3 class="calc-title">ROAS calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/roas-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/roi-calculator/">
+            <h3 class="calc-title">ROI Calculator — Return on Investment Percent | Vendora</h3>
+            <p class="calc-url">/calculators/roi-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/general/rule-of-72-calculator/">
+            <h3 class="calc-title">Rule of 72 calculator | Vendora</h3>
+            <p class="calc-url">/calculator/general/rule-of-72-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/pace-calculator/">
+            <h3 class="calc-title">Running Pace Calculator — Minutes per Kilometer | Vendora</h3>
+            <p class="calc-url">/calculators/pace-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/runway-net-burn-calculator/">
+            <h3 class="calc-title">Runway net burn calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/runway-net-burn-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/inventory/safety-stock-calculator/">
+            <h3 class="calc-title">Safety stock calculator | Vendora</h3>
+            <p class="calc-url">/calculator/inventory/safety-stock-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/salary-to-hourly-converter/">
+            <h3 class="calc-title">Salary to Hourly Pay Converter — Annual to Per-Hour Rate | Vendora</h3>
+            <p class="calc-url">/calculators/salary-to-hourly-converter/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/sales-commission-calculator/">
+            <h3 class="calc-title">Sales commission calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/sales-commission-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/operations/sales-per-square-foot-calculator/">
+            <h3 class="calc-title">Sales per square foot calculator | Vendora</h3>
+            <p class="calc-url">/calculator/operations/sales-per-square-foot-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/sales-tax-calculator/">
+            <h3 class="calc-title">Sales Tax Calculator — Tax-Inclusive &amp; Tax-Exclusive Prices | Vendora</h3>
+            <p class="calc-url">/calculators/sales-tax-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/sales-tax-exclusive-from-total-calculator/">
+            <h3 class="calc-title">Sales tax: net amount from gross total | Vendora</h3>
+            <p class="calc-url">/calculator/profit/sales-tax-exclusive-from-total-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/periodic-savings-future-value-calculator/">
+            <h3 class="calc-title">Savings future value calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/periodic-savings-future-value-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/savings-goal-monthly-calculator/">
+            <h3 class="calc-title">Savings goal monthly contribution calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/savings-goal-monthly-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/sequential-discount-calculator/">
+            <h3 class="calc-title">Sequential discount calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/sequential-discount-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/operations/shift-premium-pay-calculator/">
+            <h3 class="calc-title">Shift premium pay calculator | Vendora</h3>
+            <p class="calc-url">/calculator/operations/shift-premium-pay-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/shift-scheduler/">
+            <h3 class="calc-title">Shift Scheduler Free Online | Weekly View &amp; Conflict Detection | Vendora</h3>
+            <p class="calc-url">/tools/shift-scheduler/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/operations/shrinkage-cost-calculator/">
+            <h3 class="calc-title">Shrinkage cost calculator | Vendora</h3>
+            <p class="calc-url">/calculator/operations/shrinkage-cost-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/simple-interest-calculator/">
+            <h3 class="calc-title">Simple interest calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/simple-interest-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/simple-interest-calculator/">
+            <h3 class="calc-title">Simple Interest Calculator — I = PRT | Vendora</h3>
+            <p class="calc-url">/calculators/simple-interest-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/sleep-cycle-calculator/">
+            <h3 class="calc-title">Sleep Cycle Calculator — Bedtime &amp; Wake Times (90-Min Cycles) | Vendora</h3>
+            <p class="calc-url">/calculators/sleep-cycle-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/">
+            <h3 class="calc-title">Small Business — calculator manifest</h3>
+            <p class="calc-url">/tools/small-business/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/speed-distance-time/">
+            <h3 class="calc-title">Speed, Distance &amp; Time Solver — v = d ÷ t | Vendora</h3>
+            <p class="calc-url">/calculators/speed-distance-time/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/food/spoilage-waste-percent-calculator/">
+            <h3 class="calc-title">Spoilage waste percent calculator | Vendora</h3>
+            <p class="calc-url">/calculator/food/spoilage-waste-percent-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/standard-deviation/">
+            <h3 class="calc-title">Standard Deviation Calculator — Sample SD for Data Sets | Vendora</h3>
+            <p class="calc-url">/calculators/standard-deviation/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/straight-line-depreciation-calculator/">
+            <h3 class="calc-title">Straight-line depreciation calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/straight-line-depreciation-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/restaurant/table-turn-calculator/">
+            <h3 class="calc-title">Table turn calculator | Vendora</h3>
+            <p class="calc-url">/calculator/restaurant/table-turn-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/target-selling-price-calculator/">
+            <h3 class="calc-title">Target selling price calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/target-selling-price-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/tdee-calculator/">
+            <h3 class="calc-title">TDEE Calculator — Total Daily Energy Expenditure &amp; Activity | Vendora</h3>
+            <p class="calc-url">/calculators/tdee-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/temperature-converter/">
+            <h3 class="calc-title">Temperature Converter — °C, °F, and Kelvin | Vendora</h3>
+            <p class="calc-url">/calculators/temperature-converter/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/time-duration/">
+            <h3 class="calc-title">Time Duration Calculator — Span Across Midnight | Vendora</h3>
+            <p class="calc-url">/calculators/time-duration/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/hours-worked-timesheet/">
+            <h3 class="calc-title">Timesheet Hours Calculator — Mon–Fri Sum &amp; Overtime | Vendora</h3>
+            <p class="calc-url">/calculators/hours-worked-timesheet/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/tip-calculator/">
+            <h3 class="calc-title">Tip Calculator — Split Bill &amp; Gratuity | Vendora</h3>
+            <p class="calc-url">/calculators/tip-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/food/trim-yield-calculator/">
+            <h3 class="calc-title">Trim yield calculator | Vendora</h3>
+            <p class="calc-url">/calculator/food/trim-yield-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/unit-contribution-margin-calculator/">
+            <h3 class="calc-title">Unit contribution margin calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/unit-contribution-margin-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/unit-economics-contribution-calculator/">
+            <h3 class="calc-title">Unit economics contribution calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/unit-economics-contribution-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/time-zone-converter/">
+            <h3 class="calc-title">UTC Offset Time Converter — Wall Clock vs UTC | Vendora</h3>
+            <p class="calc-url">/calculators/time-zone-converter/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/volume-calculator/">
+            <h3 class="calc-title">Volume Calculator — Box, Cylinder, Sphere &amp; More | Vendora</h3>
+            <p class="calc-url">/calculators/volume-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/general/weighted-average-calculator/">
+            <h3 class="calc-title">Weighted average calculator | Vendora</h3>
+            <p class="calc-url">/calculator/general/weighted-average-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/work-hours-overtime-tracker/">
+            <h3 class="calc-title">Work Hours &amp; Overtime Tracker | FLSA &amp; State Daily OT (Free)</h3>
+            <p class="calc-url">/tools/work-hours-overtime-tracker/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/finance/working-capital-calculator/">
+            <h3 class="calc-title">Working capital calculator | Vendora</h3>
+            <p class="calc-url">/calculator/finance/working-capital-calculator/</p>
+          </a>
+      </div>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+</body>
+</html>

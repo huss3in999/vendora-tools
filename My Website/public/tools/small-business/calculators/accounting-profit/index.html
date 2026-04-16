@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accounting Profit Calculator for Small Business | Vendora</title>
+  <meta name="description" content="Find accounting profit from revenue minus operating expenses, interest, depreciation, and taxes. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/accounting-profit/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Accounting Profit Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/accounting-profit/", "description": "Find accounting profit from revenue minus operating expenses, interest, depreciation, and taxes. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Work out accounting profit for a period: revenue minus explicit costs including operating expenses, interest, depreciation, and taxes. You get total explicit costs and accounting profit for a quick bookkeeping-style check."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>Accounting Profit Calculator</h1>
+      <p class="hero-copy">Work out accounting profit for a period: revenue minus explicit costs including operating expenses, interest, depreciation, and taxes. You get total explicit costs and accounting profit for a quick bookkeeping-style check.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Use one currency. Enter the amounts that apply to the same period (same month, quarter, or year).</p>
+
+        <div class="field-grid calculator-fields">
+          <div class="field">
+            <label for="revenue">Total revenue</label>
+            <input id="revenue" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 100000" autocomplete="off">
+            <span class="input-hint">Sales and other revenue for the period.</span>
+          </div>
+          <div class="field">
+            <label for="operatingExp">Operation expenses</label>
+            <input id="operatingExp" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 25000" autocomplete="off">
+            <span class="input-hint">Rent, payroll, utilities, marketing—your OpEx total.</span>
+          </div>
+          <div class="field">
+            <label for="interest">Interest</label>
+            <input id="interest" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 5000" autocomplete="off">
+            <span class="input-hint">Interest expense for the period.</span>
+          </div>
+          <div class="field">
+            <label for="depreciation">Depreciation</label>
+            <input id="depreciation" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 10000" autocomplete="off">
+            <span class="input-hint">Depreciation charged in this period.</span>
+          </div>
+          <div class="field">
+            <label for="taxes">Taxes</label>
+            <input id="taxes" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 12000" autocomplete="off">
+            <span class="input-hint">Income and other taxes allocated to the period.</span>
+          </div>
+          <div class="field">
+            <label for="totalExplicitCosts">Total explicit costs</label>
+            <input id="totalExplicitCosts" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+          <div class="field">
+            <label for="accountingProfit">Accounting profit</label>
+            <input id="accountingProfit" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">Total explicit costs sum operating expenses, interest, depreciation, and taxes. Accounting profit is revenue minus that sum.</p>
+        <div class="result-grid calculator-results" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Accounting profit</span>
+            <span class="metric-value" id="outProfit">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Total explicit costs</span>
+            <span class="metric-value" id="outExplicit">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Revenue is $100,000, operating expenses $25,000, interest $5,000, depreciation $10,000, and taxes $12,000. Total explicit costs are $52,000. Accounting profit is $100,000 − $52,000 = $48,000.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">Total explicit costs = operating expenses + interest + depreciation + taxes. Accounting profit = total revenue − total explicit costs. A negative result is an accounting loss for the period. This is a simplified view; your accountant may use different line items.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Separate operating expenses from interest and taxes so you can see whether the core business is profitable before financing and tax effects.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="../profit/index.html">Profit Calculator</a> (unit-level), <a href="../break-even/index.html">Break-even Calculator</a>, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      function parseNonNeg(el, allowEmptyZero) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return allowEmptyZero ? { value: 0 } : { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0) return { negative: true };
+        return { value: n };
+      }
+
+      function money(n) {
+        return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function interpret(profit) {
+        var el = document.getElementById('interpretation');
+        if (!Number.isFinite(profit)) {
+          el.hidden = true;
+          return;
+        }
+        var text;
+        if (profit < 0) {
+          text = 'Accounting profit is negative—revenue did not cover these explicit costs in the period.';
+        } else if (profit === 0) {
+          text = 'Profit is zero at these inputs—small changes in revenue or costs swing the result.';
+        } else {
+          text = 'Positive accounting profit at these inputs; validate line items with your books and tax advisor.';
+        }
+        el.textContent = text;
+        el.hidden = false;
+      }
+
+      function compute() {
+        var elRev = document.getElementById('revenue');
+        var rv = parseNonNeg(elRev, false);
+        if (rv.empty) return { ok: false, message: 'Enter total revenue.' };
+        if (rv.invalid || rv.negative) return { ok: false, message: 'Revenue must be a valid number that is not negative.' };
+
+        var op = parseNonNeg(document.getElementById('operatingExp'), true);
+        if (op.invalid || op.negative) return { ok: false, message: 'Operating expenses must be a valid number that is not negative.' };
+        var intr = parseNonNeg(document.getElementById('interest'), true);
+        if (intr.invalid || intr.negative) return { ok: false, message: 'Interest must be a valid number that is not negative.' };
+        var dep = parseNonNeg(document.getElementById('depreciation'), true);
+        if (dep.invalid || dep.negative) return { ok: false, message: 'Depreciation must be a valid number that is not negative.' };
+        var tax = parseNonNeg(document.getElementById('taxes'), true);
+        if (tax.invalid || tax.negative) return { ok: false, message: 'Taxes must be a valid number that is not negative.' };
+
+        var revenue = rv.value;
+        var explicit = op.value + intr.value + dep.value + tax.value;
+        var profit = revenue - explicit;
+
+        return { ok: true, revenue: revenue, explicit: explicit, profit: profit };
+      }
+
+      function render(out) {
+        var pEl = document.getElementById('outProfit');
+        pEl.textContent = money(out.profit);
+        pEl.classList.toggle('negative', out.profit < 0);
+        document.getElementById('outExplicit').textContent = money(out.explicit);
+        document.getElementById('totalExplicitCosts').value = money(out.explicit);
+        document.getElementById('accountingProfit').value = money(out.profit);
+        interpret(out.profit);
+      }
+
+      function reset() {
+        ['revenue', 'operatingExp', 'interest', 'depreciation', 'taxes'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('totalExplicitCosts').value = '';
+        document.getElementById('accountingProfit').value = '';
+        document.getElementById('outProfit').textContent = '—';
+        document.getElementById('outProfit').classList.remove('negative');
+        document.getElementById('outExplicit').textContent = '—';
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) {
+          setValidation(r.message, true);
+          return;
+        }
+        setValidation('', false);
+        render(r);
+      });
+
+      document.getElementById('resetBtn').addEventListener('click', reset);
+
+      reset();
+    })();
+  </script>
+</body>
+</html>

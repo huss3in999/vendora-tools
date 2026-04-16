@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amortization Calculator | Small Business | Vendora</title>
+  <meta name="description" content="Compute the periodic payment for an amortized loan with selectable compounding and payment frequencies, and optional extra payments. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/amortization/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script src="../_shared/currency.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Amortization Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/amortization/", "description": "Compute the periodic payment for an amortized loan with selectable compounding and payment frequencies, and optional extra payments. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Estimate the periodic payment on an amortized loan. Choose loan amount, term, interest rate, compounding frequency, payment frequency, and an optional extra payment per period."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>Amortization Calculator</h1>
+      <p class="hero-copy">Estimate the periodic payment on an amortized loan. Choose loan amount, term, interest rate, compounding frequency, payment frequency, and an optional extra payment per period.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Payment is computed using the effective interest rate per payment period. Extra payment reduces principal faster and can shorten payoff time.</p>
+
+        <div class="field-grid calculator-fields">
+          <div class="field">
+            <label for="loanAmount">Loan amount</label>
+            <div class="input-inline">
+              <input id="loanAmount" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 250000" autocomplete="off">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Loan currency"></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="termYears">Amortization term</label>
+            <input id="termYears" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 5" autocomplete="off">
+            <span class="input-hint">Years.</span>
+          </div>
+          <div class="field">
+            <label for="interestRate">Interest rate</label>
+            <input id="interestRate" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 8.5" autocomplete="off">
+            <span class="input-hint">Annual nominal rate (%).</span>
+          </div>
+          <div class="field">
+            <label for="compFreq">Compounding frequency</label>
+            <select id="compFreq">
+              <option value="12">Monthly (12/year)</option>
+              <option value="4">Quarterly (4/year)</option>
+              <option value="2">Semiannual (2/year)</option>
+              <option value="1">Annual (1/year)</option>
+              <option value="365">Daily (365/year)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="payFreq">Payment frequency</label>
+            <select id="payFreq">
+              <option value="12">Monthly (12/year)</option>
+              <option value="26">Biweekly (26/year)</option>
+              <option value="24">Semimonthly (24/year)</option>
+              <option value="52">Weekly (52/year)</option>
+              <option value="4">Quarterly (4/year)</option>
+              <option value="2">Semiannual (2/year)</option>
+              <option value="1">Annual (1/year)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="extraPayment">Extra payment</label>
+            <div class="input-inline">
+              <input id="extraPayment" type="number" inputmode="decimal" step="any" min="0" placeholder="0" autocomplete="off">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Extra payment currency"></select>
+            </div>
+            <span class="input-hint">Optional extra principal per payment period.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">Payment shown is the scheduled amortizing payment (excluding extra). Totals include extra payments if provided.</p>
+        <div class="result-grid calculator-results" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Payment per period</span>
+            <span class="metric-value" id="outPmt">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Total interest (approx.)</span>
+            <span class="metric-value" id="outInterest">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Total paid (approx.)</span>
+            <span class="metric-value" id="outTotal">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Payoff time (periods)</span>
+            <span class="metric-value" id="outPeriods">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">A $250,000 loan for 5 years at 8.5% with monthly payments produces a fixed monthly payment that amortizes the balance to zero by the end of the term.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">We compute an effective interest rate per payment period from the nominal annual rate and selected compounding/payment frequencies, then apply the standard amortizing payment formula. With extra payments, we simulate period-by-period payoff.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Use extra payments strategically: paying principal early usually reduces total interest and improves cash flow flexibility.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="/calculator/finance/loan-payment-calculator/">Loan payment calculator</a>, <a href="/calculator/finance/interest-coverage-calculator/">Interest coverage ratio</a>, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      if (window.VendoraCurrency) window.VendoraCurrency.initSyncedCurrencySelects('global', 'USD');
+
+      function parseReqNonNeg(id, label) {
+        var el = document.getElementById(id);
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { ok: false, message: 'Enter ' + label + '.' };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { ok: false, message: label + ' must be a valid number.' };
+        if (n < 0) return { ok: false, message: label + ' must not be negative.' };
+        return { ok: true, value: n };
+      }
+
+      function parseOptNonNeg(id) {
+        var el = document.getElementById(id);
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { ok: true, value: 0 };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n) || n < 0) return { ok: false };
+        return { ok: true, value: n };
+      }
+
+      function money(n) {
+        return window.VendoraCurrency
+          ? window.VendoraCurrency.formatMoney(n, window.VendoraCurrency.getCurrency('global', 'USD'))
+          : ('$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+      }
+
+      function fmtNum(n) {
+        if (!Number.isFinite(n)) return '—';
+        return n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function effectiveRatePerPayment(nominalRatePct, compPerYear, payPerYear) {
+        var r = nominalRatePct / 100;
+        if (r === 0) return 0;
+        return Math.pow(1 + r / compPerYear, compPerYear / payPerYear) - 1;
+      }
+
+      function payment(principal, i, n) {
+        if (n <= 0) return NaN;
+        if (i === 0) return principal / n;
+        var pow = Math.pow(1 + i, n);
+        return principal * (i * pow) / (pow - 1);
+      }
+
+      function simulatePayoff(principal, i, scheduled, extra) {
+        var bal = principal;
+        var periods = 0;
+        var totalInterest = 0;
+        var totalPaid = 0;
+        var maxIter = 200000;
+        while (bal > 0.00001 && periods < maxIter) {
+          var interest = i * bal;
+          var pay = scheduled + extra;
+          var principalPay = pay - interest;
+          if (principalPay <= 0) return { ok: false, message: 'Payment is not enough to cover interest at these inputs.' };
+          if (principalPay > bal) principalPay = bal;
+          bal -= principalPay;
+          totalInterest += interest;
+          totalPaid += (interest + principalPay);
+          periods += 1;
+        }
+        return { ok: true, periods: periods, totalInterest: totalInterest, totalPaid: totalPaid };
+      }
+
+      function compute() {
+        var P = parseReqNonNeg('loanAmount', 'loan amount');
+        if (!P.ok) return { ok: false, message: P.message };
+        if (P.value === 0) return { ok: false, message: 'Loan amount must be greater than zero.' };
+
+        var T = parseReqNonNeg('termYears', 'amortization term');
+        if (!T.ok) return { ok: false, message: T.message };
+        if (T.value === 0) return { ok: false, message: 'Amortization term must be greater than zero.' };
+
+        var R = parseReqNonNeg('interestRate', 'interest rate');
+        if (!R.ok) return { ok: false, message: R.message };
+
+        var extra = parseOptNonNeg('extraPayment');
+        if (!extra.ok) return { ok: false, message: 'Extra payment must be a valid non-negative number.' };
+
+        var comp = parseInt(document.getElementById('compFreq').value, 10);
+        var pay = parseInt(document.getElementById('payFreq').value, 10);
+        if (!comp || !pay) return { ok: false, message: 'Select compounding and payment frequencies.' };
+
+        var n = Math.round(T.value * pay);
+        if (n <= 0) return { ok: false, message: 'Term is too small for the selected payment frequency.' };
+        var i = effectiveRatePerPayment(R.value, comp, pay);
+        var pmt = payment(P.value, i, n);
+
+        var sim = simulatePayoff(P.value, i, pmt, extra.value);
+        if (!sim.ok) return { ok: false, message: sim.message };
+
+        return { ok: true, pmt: pmt, totalInterest: sim.totalInterest, totalPaid: sim.totalPaid, periods: sim.periods };
+      }
+
+      function render(out) {
+        document.getElementById('outPmt').textContent = money(out.pmt);
+        document.getElementById('outInterest').textContent = money(out.totalInterest);
+        document.getElementById('outTotal').textContent = money(out.totalPaid);
+        document.getElementById('outPeriods').textContent = fmtNum(out.periods);
+        var el = document.getElementById('interpretation');
+        el.textContent = 'Totals are approximate and assume fixed rates and consistent payment timing.';
+        el.hidden = false;
+      }
+
+      function reset() {
+        ['loanAmount', 'termYears', 'interestRate', 'extraPayment'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('compFreq').value = '12';
+        document.getElementById('payFreq').value = '12';
+        ['outPmt', 'outInterest', 'outTotal', 'outPeriods'].forEach(function (id) {
+          document.getElementById(id).textContent = '—';
+        });
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) return setValidation(r.message, true);
+        setValidation('', false);
+        render(r);
+      });
+      document.getElementById('resetBtn').addEventListener('click', reset);
+      reset();
+    })();
+  </script>
+</body>
+</html>
+

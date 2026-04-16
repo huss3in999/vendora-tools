@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bond Price Calculator | Small Business | Vendora</title>
+  <meta name="description" content="Calculate bond price from face value, coupon rate and frequency, years to maturity, and yield to maturity. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/bond-price/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script src="../_shared/currency.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Bond Price Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/bond-price/", "description": "Calculate bond price from face value, coupon rate and frequency, years to maturity, and yield to maturity. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Estimate a bond’s price using face value, coupon rate, coupon frequency, years to maturity, and yield to maturity (YTM). The price is the present value of coupons plus the present value of face value."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>Bond Price Calculator</h1>
+      <p class="hero-copy">Estimate a bond’s price using face value, coupon rate, coupon frequency, years to maturity, and yield to maturity (YTM). The price is the present value of coupons plus the present value of face value.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">All cash flows are discounted using yield per coupon period.</p>
+
+        <div class="field-grid calculator-fields">
+          <div class="field">
+            <label for="faceValue">Face value</label>
+            <div class="input-inline">
+              <input id="faceValue" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 1000" autocomplete="off">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Face value currency"></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="couponRate">Annual coupon rate</label>
+            <input id="couponRate" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 5" autocomplete="off">
+            <span class="input-hint">Percent per year.</span>
+          </div>
+          <div class="field">
+            <label for="couponFreq">Coupon frequency</label>
+            <select id="couponFreq">
+              <option value="1">Annual</option>
+              <option value="2">Semiannual</option>
+              <option value="4">Quarterly</option>
+              <option value="12">Monthly</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="yearsToMaturity">Years to maturity</label>
+            <input id="yearsToMaturity" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 10" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="ytm">Yield to maturity (YTM)</label>
+            <input id="ytm" type="number" inputmode="decimal" step="any" placeholder="e.g. 4.2" autocomplete="off">
+            <span class="input-hint">Annual yield percent.</span>
+          </div>
+
+          <div class="field">
+            <label for="couponPerPeriod">Coupon per period</label>
+            <div class="input-inline">
+              <input id="couponPerPeriod" type="text" inputmode="decimal" readonly value="">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Coupon per period currency"></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="annualCoupon">Annual Coupon</label>
+            <div class="input-inline">
+              <input id="annualCoupon" type="text" inputmode="decimal" readonly value="">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Annual coupon currency"></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="bondPriceField">Bond price</label>
+            <div class="input-inline">
+              <input id="bondPriceField" type="text" inputmode="decimal" readonly value="">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Bond price currency"></select>
+            </div>
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">Bond price is the present value of coupon payments and the redemption (face) value.</p>
+        <div class="result-grid calculator-results" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Bond price</span>
+            <span class="metric-value" id="outPrice">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Coupon per period</span>
+            <span class="metric-value" id="outCpn">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Annual Coupon</span>
+            <span class="metric-value" id="outAnnualCpn">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">A $1,000 face value bond with a 5% annual coupon paid semiannually has $25 coupons each period. Discounting those coupons at the YTM gives the bond’s price.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">Coupon per period = face value × coupon rate ÷ frequency. Price = \(\sum_{t=1}^{n} C/(1+r)^t + F/(1+r)^n\), where \(r\) is YTM per period and \(n\) is total periods.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Use YTM to compare bonds with different coupons and maturities on a consistent basis.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy">See <a href="/calculator/finance/">Finance calculators</a> for discount-rate contexts, <a href="/calculator/profit/return-on-investment-calculator/">Return on investment</a>, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      if (window.VendoraCurrency) window.VendoraCurrency.initSyncedCurrencySelects('global', 'USD');
+
+      function parseReqNonNeg(id, label) {
+        var el = document.getElementById(id);
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { ok: false, message: 'Enter ' + label + '.' };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { ok: false, message: label + ' must be a valid number.' };
+        if (n < 0) return { ok: false, message: label + ' must not be negative.' };
+        return { ok: true, value: n };
+      }
+
+      function parseReqPct(id, label) {
+        var r = parseReqNonNeg(id, label);
+        if (!r.ok) return r;
+        return { ok: true, value: r.value };
+      }
+
+      function money(n) {
+        return window.VendoraCurrency
+          ? window.VendoraCurrency.formatMoney(n, window.VendoraCurrency.getCurrency('global', 'USD'))
+          : ('$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function interpret(price, face, ytmPct) {
+        var el = document.getElementById('interpretation');
+        if (!Number.isFinite(price)) {
+          el.hidden = true;
+          return;
+        }
+        var text = price > face ? 'Price is above par (premium) at this yield.' : (price < face ? 'Price is below par (discount) at this yield.' : 'Price is at par.');
+        if (ytmPct < 0) text = 'Negative yields are unusual; verify your YTM input.';
+        el.textContent = text;
+        el.hidden = false;
+      }
+
+      function compute() {
+        var F = parseReqNonNeg('faceValue', 'face value');
+        if (!F.ok) return { ok: false, message: F.message };
+        if (F.value === 0) return { ok: false, message: 'Face value must be greater than zero.' };
+
+        var cr = parseReqPct('couponRate', 'annual coupon rate');
+        if (!cr.ok) return { ok: false, message: cr.message };
+
+        var y = parseReqPct('ytm', 'yield to maturity');
+        if (!y.ok) return { ok: false, message: y.message };
+
+        var yrs = parseReqNonNeg('yearsToMaturity', 'years to maturity');
+        if (!yrs.ok) return { ok: false, message: yrs.message };
+        if (yrs.value === 0) return { ok: false, message: 'Years to maturity must be greater than zero.' };
+
+        var freq = parseInt(document.getElementById('couponFreq').value, 10);
+        if (!freq) return { ok: false, message: 'Select coupon frequency.' };
+
+        var n = Math.round(yrs.value * freq);
+        if (n <= 0) return { ok: false, message: 'Maturity is too short for the selected frequency.' };
+
+        var annualCoupon = F.value * (cr.value / 100);
+        var C = annualCoupon / freq;
+        var r = (y.value / 100) / freq;
+
+        var price;
+        if (Math.abs(r) < 1e-12) {
+          price = C * n + F.value;
+        } else {
+          var pvCoupons = C * (1 - Math.pow(1 + r, -n)) / r;
+          var pvFace = F.value * Math.pow(1 + r, -n);
+          price = pvCoupons + pvFace;
+        }
+
+        return { ok: true, price: price, couponPerPeriod: C, annualCoupon: annualCoupon, face: F.value, ytmPct: y.value };
+      }
+
+      function render(out) {
+        document.getElementById('outPrice').textContent = money(out.price);
+        document.getElementById('outCpn').textContent = money(out.couponPerPeriod);
+        document.getElementById('outAnnualCpn').textContent = money(out.annualCoupon);
+        document.getElementById('couponPerPeriod').value = money(out.couponPerPeriod);
+        document.getElementById('annualCoupon').value = money(out.annualCoupon);
+        document.getElementById('bondPriceField').value = money(out.price);
+        interpret(out.price, out.face, out.ytmPct);
+      }
+
+      function reset() {
+        ['faceValue', 'couponRate', 'yearsToMaturity', 'ytm'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('couponFreq').value = '2';
+        ['couponPerPeriod', 'annualCoupon', 'bondPriceField'].forEach(function (id) {
+          document.getElementById(id).value = '';
+        });
+        ['outPrice', 'outCpn', 'outAnnualCpn'].forEach(function (id) {
+          document.getElementById(id).textContent = '—';
+        });
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) return setValidation(r.message, true);
+        setValidation('', false);
+        render(r);
+      });
+      document.getElementById('resetBtn').addEventListener('click', reset);
+      reset();
+    })();
+  </script>
+</body>
+</html>
+

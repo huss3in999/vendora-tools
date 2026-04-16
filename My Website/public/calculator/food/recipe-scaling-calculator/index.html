@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe scaling calculator | Vendora</title>
+  <meta name="description" content="Scale an ingredient amount when you change the number of servings a recipe targets.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculator/food/recipe-scaling-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Recipe scaling calculator | Vendora">
+  <meta property="og:description" content="Scale an ingredient amount when you change the number of servings a recipe targets.">
+  <meta property="og:url" content="https://getvendora.net/calculator/food/recipe-scaling-calculator/">
+  <link rel="stylesheet" href="../../../tools/tool-system.css">
+  <link rel="stylesheet" href="../../_shared/vendora-calc.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Recipe scaling calculator | Vendora">
+  <meta name="twitter:description" content="Scale an ingredient amount when you change the number of servings a recipe targets.">
+  <meta name="twitter:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Recipe scaling calculator | Vendora", "url": "https://getvendora.net/calculator/food/recipe-scaling-calculator/", "description": "Scale an ingredient amount when you change the number of servings a recipe targets."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Baker’s percentage?", "acceptedAnswer": {"@type": "Answer", "text": "This is simple linear scaling, not prefermented dough chemistry adjustments."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/calculator/food/">Food calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Food calculator</p>
+      <h1>Recipe scaling calculator</h1>
+      <p class="hero-copy">Scaled amount = original amount × (new servings ÷ old servings).</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Enter valid numbers. Calculations run entirely in your browser.</p>
+        <div class="field-grid calculator-fields" id="inputArea">
+
+          <div class="field">
+            <label for="oldS">Original servings</label>
+            <input id="oldS" type="number" inputmode="decimal" step="any" autocomplete="off" min="0" aria-describedby="h_oldS">
+            <span class="input-hint" id="h_oldS"></span>
+          </div>
+          <div class="field">
+            <label for="newS">New servings</label>
+            <input id="newS" type="number" inputmode="decimal" step="any" autocomplete="off" min="0" aria-describedby="h_newS">
+            <span class="input-hint" id="h_newS"></span>
+          </div>
+          <div class="field">
+            <label for="amt">Ingredient amount (any unit)</label>
+            <input id="amt" type="number" inputmode="decimal" step="any" autocomplete="off" aria-describedby="h_amt">
+            <span class="input-hint" id="h_amt"></span>
+          </div>
+        </div>
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+          
+        </div>
+      </section>
+
+      <section class="card results-card" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <div class="result-grid calculator-results" id="resultSection">
+
+          <div class="metric-card featured">
+            <span class="metric-label">Scaled ingredient amount</span>
+            <span class="metric-value" id="outPrimary">—</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">4 servings → 6, flour 300g → 450g.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Explanation</h2>
+      <p class="section-copy">Multiply the ingredient by the ratio of serving counts.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">FAQ</h2>
+      <div class="faq-item"><h3 class="faq-q">Baker’s percentage?</h3><p class="section-copy">This is simple linear scaling, not prefermented dough chemistry adjustments.</p></div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related calculators</h2>
+      <ul class="related-list"><li><a href="/calculator/food/plate-cost-calculator/">Plate cost</a></li><li><a href="/tools/food-cost-calculator/">Food cost tool</a></li></ul>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/calculator/">Calculators</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+
+<script src="../../_shared/analytics-events.js" defer></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  function tr(name, params) { if (typeof vendoraTrack === 'function') vendoraTrack(name, params || {}); }
+  function run() {
+    var boot = Promise.resolve();
+    if (false && window.VendoraCurrencyGlobal) {
+      boot = window.VendoraCurrencyGlobal.bootstrap('global', 'USD');
+    }
+    boot.then(initCalc).catch(initCalc);
+  }
+  function initCalc() {
+    var valEl = document.getElementById('validationMessage');
+    function setVal(msg, show) {
+      if (!valEl) return;
+      valEl.textContent = msg || '';
+      valEl.hidden = !show;
+    }
+    function parseNum(id) {
+      var el = document.getElementById(id);
+      if (!el) return NaN;
+      var v = el.value.trim();
+      if (v === '') return null;
+      var n = Number(v);
+      return Number.isFinite(n) ? n : NaN;
+    }
+    function fmtNum(n, frac) {
+      if (!Number.isFinite(n)) return '—';
+      return n.toLocaleString(undefined, { maximumFractionDigits: frac !== undefined ? frac : 4 });
+    }
+    function money(n) {
+      if (!window.VendoraCurrencyGlobal || !false) return fmtNum(n, 2);
+      var c = window.VendoraCurrencyGlobal.getCurrency('global', 'USD');
+      return window.VendoraCurrencyGlobal.formatMoney(n, c);
+    }
+
+    var toolSlug = 'recipe-scaling-calculator';
+    function calc() {
+      var o = parseNum('oldS'); var n = parseNum('newS'); var a = parseNum('amt');
+      if (o == null || n == null || a == null) { setVal('Fill all fields.', true); return; }
+      if (o <= 0 || n < 0 || a < 0) { setVal('Original servings positive; amounts non-negative.', true); return; }
+      var s = a * (n / o);
+      document.getElementById('outPrimary').textContent = fmtNum(s, 4);
+      setVal('', false); tr('calculator_calculate', { tool: toolSlug });
+    }
+    document.getElementById('calculateBtn').addEventListener('click', calc);
+    document.getElementById('resetBtn').addEventListener('click', function() {
+      ['oldS','newS','amt'].forEach(function(i){ var e=document.getElementById(i); if(e)e.value=''; });
+      document.getElementById('outPrimary').textContent = '—'; tr('calculator_reset', { tool: toolSlug });
+    });
+
+  }
+  run();
+});
+</script>
+</body>
+</html>

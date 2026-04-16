@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contribution Margin Calculator for Small Business | Vendora</title>
+  <meta name="description" content="Calculate contribution margin per unit, total contribution, contribution margin ratio, and profit after fixed costs. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/contribution-margin/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Contribution Margin Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/contribution-margin/", "description": "Calculate contribution margin per unit, total contribution, contribution margin ratio, and profit after fixed costs. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "See how much each unit contributes after variable costs: enter selling price and variable cost per unit, quantity sold, and fixed costs for the period. You get contribution margin per unit, total contribution, contribution margin ratio, and profit after fixed costs."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>Contribution Margin Calculator</h1>
+      <p class="hero-copy">See how much each unit contributes after variable costs: enter selling price and variable cost per unit, quantity sold, and fixed costs for the period. You get contribution margin per unit, total contribution, contribution margin ratio, and profit after fixed costs.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Use one currency. Variable cost is direct cost that moves with each unit; fixed costs are the period total you want to compare against contribution.</p>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="pricePerUnit">Selling price per unit</label>
+            <input id="pricePerUnit" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 40.00" autocomplete="off">
+            <span class="input-hint">Price before allocating fixed costs.</span>
+          </div>
+          <div class="field">
+            <label for="variableCostPerUnit">Variable cost per unit</label>
+            <input id="variableCostPerUnit" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 16.00" autocomplete="off">
+            <span class="input-hint">Direct materials, labor, shipping per unit—your definition.</span>
+          </div>
+          <div class="field">
+            <label for="quantity">Number of units</label>
+            <input id="quantity" type="number" inputmode="numeric" step="1" min="1" placeholder="e.g. 100" autocomplete="off">
+            <span class="input-hint">Whole units for this period.</span>
+          </div>
+          <div class="field">
+            <label for="fixedCosts">Fixed costs</label>
+            <input id="fixedCosts" type="number" inputmode="decimal" step="any" min="0" placeholder="0" autocomplete="off">
+            <span class="input-hint">Optional. Total fixed costs to subtract from total contribution (use 0 to skip).</span>
+          </div>
+          <div class="field">
+            <label for="contributionMargin">Contribution margin</label>
+            <input id="contributionMargin" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+          <div class="field">
+            <label for="profitGenerated">Profit generated</label>
+            <input id="profitGenerated" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">Contribution margin per unit is price minus variable cost. Total contribution is that margin times quantity. Contribution margin ratio is margin per unit divided by price. Profit is total contribution minus fixed costs.</p>
+        <div class="result-grid" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Total contribution margin</span>
+            <span class="metric-value" id="outTotalCm">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Contribution margin per unit</span>
+            <span class="metric-value" id="outCmUnit">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Contribution margin ratio</span>
+            <span class="metric-value" id="outCmRatio">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Profit (after fixed costs)</span>
+            <span class="metric-value" id="outProfit">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">You sell at $40 per unit, variable cost is $16, you sell 100 units, and fixed costs are $5,000. Contribution margin per unit is $24. Total contribution is $2,400. Contribution margin ratio is $24 ÷ $40 × 100 = 60%. Profit after fixed costs is $2,400 − $5,000 = −$2,600.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">Contribution margin per unit = selling price per unit − variable cost per unit (must be positive for a meaningful ratio at a positive price). Total contribution margin = contribution margin per unit × quantity. Contribution margin ratio = contribution margin per unit ÷ selling price per unit × 100. Profit = total contribution margin − fixed costs. If price is zero, the ratio is not shown.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Raise volume or price, or cut variable cost, to grow total contribution before you add fixed overhead.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="../break-even/index.html">Break-even Calculator</a>, <a href="../profit/index.html">Profit Calculator</a>, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      function parseNonNeg(el, emptyAsZero) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return emptyAsZero ? { value: 0 } : { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0) return { negative: true };
+        return { value: n };
+      }
+
+      function parseQty(el) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0) return { negative: true };
+        if (n === 0) return { zero: true };
+        if (Math.floor(n) !== n) return { fractional: true };
+        return { value: Math.floor(n) };
+      }
+
+      function money(n) {
+        return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function pct(n) {
+        return n.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 }) + '%';
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function interpret(profit, cmUnit, price) {
+        var el = document.getElementById('interpretation');
+        if (!Number.isFinite(profit) || !Number.isFinite(cmUnit)) {
+          el.hidden = true;
+          return;
+        }
+        var text;
+        if (price <= 0) {
+          text = 'Selling price is zero—ratio is not meaningful; check inputs.';
+        } else if (cmUnit <= 0) {
+          text = 'Contribution margin per unit is not positive—raise price or lower variable cost.';
+        } else if (profit < 0) {
+          text = 'Contribution is not enough to cover fixed costs at this volume—sell more, raise price, cut variable or fixed cost.';
+        } else {
+          text = 'Positive contribution and profit at these inputs; compare ratio across products or periods.';
+        }
+        el.textContent = text;
+        el.hidden = false;
+      }
+
+      function compute() {
+        var rp = parseNonNeg(document.getElementById('pricePerUnit'), false);
+        if (rp.empty) return { ok: false, message: 'Enter selling price per unit.' };
+        if (rp.invalid || rp.negative) return { ok: false, message: 'Selling price must be a valid number that is not negative.' };
+
+        var rv = parseNonNeg(document.getElementById('variableCostPerUnit'), false);
+        if (rv.empty) return { ok: false, message: 'Enter variable cost per unit.' };
+        if (rv.invalid || rv.negative) return { ok: false, message: 'Variable cost must be a valid number that is not negative.' };
+
+        var rq = parseQty(document.getElementById('quantity'));
+        if (rq.empty) return { ok: false, message: 'Enter quantity sold.' };
+        if (rq.invalid || rq.negative) return { ok: false, message: 'Quantity must be a valid whole number.' };
+        if (rq.zero) return { ok: false, message: 'Quantity must be at least 1.' };
+        if (rq.fractional) return { ok: false, message: 'Quantity must be a whole number.' };
+
+        var rf = parseNonNeg(document.getElementById('fixedCosts'), true);
+        if (rf.invalid || rf.negative) return { ok: false, message: 'Fixed costs must be a valid number that is not negative.' };
+
+        var price = rp.value;
+        var varCost = rv.value;
+        var qty = rq.value;
+        var fixed = rf.value;
+
+        var cmUnit = price - varCost;
+        if (cmUnit <= 0) {
+          return { ok: false, message: 'Selling price must be greater than variable cost per unit so contribution margin per unit is positive.' };
+        }
+
+        var totalCm = cmUnit * qty;
+        var cmRatioPct = price > 0 ? (cmUnit / price) * 100 : 0;
+        var profit = totalCm - fixed;
+
+        return {
+          ok: true,
+          price: price,
+          cmUnit: cmUnit,
+          totalCm: totalCm,
+          cmRatioPct: cmRatioPct,
+          profit: profit,
+        };
+      }
+
+      function render(out) {
+        document.getElementById('outTotalCm').textContent = money(out.totalCm);
+        document.getElementById('outCmUnit').textContent = money(out.cmUnit);
+        document.getElementById('outCmRatio').textContent = out.price > 0 ? pct(out.cmRatioPct) : '—';
+        var pEl = document.getElementById('outProfit');
+        pEl.textContent = money(out.profit);
+        pEl.classList.toggle('negative', out.profit < 0);
+        document.getElementById('contributionMargin').value = money(out.totalCm);
+        document.getElementById('profitGenerated').value = money(out.profit);
+        interpret(out.profit, out.cmUnit, out.price);
+      }
+
+      function reset() {
+        ['pricePerUnit', 'variableCostPerUnit', 'quantity', 'fixedCosts'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = id === 'fixedCosts' ? '' : '';
+        });
+        document.getElementById('contributionMargin').value = '';
+        document.getElementById('profitGenerated').value = '';
+        document.getElementById('outTotalCm').textContent = '—';
+        document.getElementById('outCmUnit').textContent = '—';
+        document.getElementById('outCmRatio').textContent = '—';
+        document.getElementById('outProfit').textContent = '—';
+        document.getElementById('outProfit').classList.remove('negative');
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) {
+          setValidation(r.message, true);
+          return;
+        }
+        setValidation('', false);
+        render(r);
+      });
+
+      document.getElementById('resetBtn').addEventListener('click', reset);
+
+      reset();
+    })();
+  </script>
+</body>
+</html>

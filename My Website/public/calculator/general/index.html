@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>General calculators | Vendora</title>
+  <meta name="description" content="Browse Vendora general calculators and related tools.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculator/general/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="General calculators | Vendora">
+  <meta property="og:description" content="Browse Vendora general calculators and related tools.">
+  <meta property="og:url" content="https://getvendora.net/calculator/general/">
+  <link rel="stylesheet" href="../../tools/tool-system.css">
+  <style>
+    .calc-hub-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .calc-card {
+      display: block;
+      text-decoration: none;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(15, 23, 42, 0.35);
+      border-radius: 16px;
+      padding: 14px 14px;
+      transition: border-color 120ms ease, transform 120ms ease;
+      color: inherit;
+    }
+    .calc-card:hover {
+      border-color: rgba(0, 208, 132, 0.35);
+      transform: translateY(-1px);
+    }
+    .calc-title {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.35;
+    }
+    .calc-url {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    .crumbs {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .hub-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .hub-links a {
+      color: var(--brand);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .hub-links a:hover { text-decoration: underline; }
+    @media (max-width: 980px) {
+      .calc-hub-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .calc-hub-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "2D Distance Calculator — Euclidean Distance Between Points | Vendora", "url": "https://getvendora.net/calculators/distance-2d-calculator/"}, {"@type": "ListItem", "position": 2, "name": "3D Printer Buy vs Outsource Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/3d-printer-buy-vs-outsource/"}, {"@type": "ListItem", "position": 3, "name": "Age Calculator — Exact Years, Months & Days | Vendora", "url": "https://getvendora.net/calculators/age-calculator/"}, {"@type": "ListItem", "position": 4, "name": "AI Sales Trend Analyzer for Small Businesses", "url": "https://getvendora.net/tools/ai-sales-trend-analyzer/"}, {"@type": "ListItem", "position": 5, "name": "Area Calculator — Circle, Rectangle, Triangle & More | Vendora", "url": "https://getvendora.net/calculators/area-calculator/"}, {"@type": "ListItem", "position": 6, "name": "Aspect Ratio Calculator — Resize Width or Height | Vendora", "url": "https://getvendora.net/calculators/aspect-ratio-calculator/"}, {"@type": "ListItem", "position": 7, "name": "Average Fixed Cost Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/average-fixed-cost/"}, {"@type": "ListItem", "position": 8, "name": "BAC Estimator (Widmark) — Educational Alcohol Metabolism Model | Vendora", "url": "https://getvendora.net/calculators/blood-alcohol-content-bac/"}, {"@type": "ListItem", "position": 9, "name": "BMI Calculator — Body Mass Index (kg/m²) for Adults | Vendora", "url": "https://getvendora.net/calculators/bmi-calculator/"}, {"@type": "ListItem", "position": 10, "name": "BMR Calculator — Basal Metabolic Rate (Mifflin–St Jeor) | Vendora", "url": "https://getvendora.net/calculators/bmr-calculator/"}, {"@type": "ListItem", "position": 11, "name": "Body Fat Calculator — U.S. Navy Method Estimate | Vendora", "url": "https://getvendora.net/calculators/body-fat-calculator/"}, {"@type": "ListItem", "position": 12, "name": "Click-through rate calculator | Vendora", "url": "https://getvendora.net/calculator/general/click-through-rate-calculator/"}, {"@type": "ListItem", "position": 13, "name": "Commission Calculator | Sales Commission %, Total Pay & Target Sales", "url": "https://getvendora.net/tools/commission-calculator/"}, {"@type": "ListItem", "position": 14, "name": "Currency Converter — Illustrative Exchange Rates | Vendora", "url": "https://getvendora.net/calculators/currency-converter/"}, {"@type": "ListItem", "position": 15, "name": "Customer churn rate calculator | Vendora", "url": "https://getvendora.net/calculator/general/customer-churn-rate-calculator/"}, {"@type": "ListItem", "position": 16, "name": "Daily Water Intake Estimator — ml from Weight & Activity | Vendora", "url": "https://getvendora.net/calculators/water-intake-calculator/"}, {"@type": "ListItem", "position": 17, "name": "Date Difference Calculator — Days Between Two Dates | Vendora", "url": "https://getvendora.net/calculators/date-difference/"}, {"@type": "ListItem", "position": 18, "name": "Days Until Event — Countdown to a Future Date | Vendora", "url": "https://getvendora.net/calculators/days-until-event/"}, {"@type": "ListItem", "position": 19, "name": "Density Calculator — ρ = mass ÷ volume | Vendora", "url": "https://getvendora.net/calculators/density-calculator/"}, {"@type": "ListItem", "position": 20, "name": "Discount Calculator — Sale Price from % Off | Vendora", "url": "https://getvendora.net/calculators/discount-calculator/"}, {"@type": "ListItem", "position": 21, "name": "Download Time Estimator — File Size vs Mbps | Vendora", "url": "https://getvendora.net/calculators/bandwidth-download-time/"}, {"@type": "ListItem", "position": 22, "name": "Email open rate calculator | Vendora", "url": "https://getvendora.net/calculator/general/email-open-rate-calculator/"}, {"@type": "ListItem", "position": 23, "name": "Force Calculator — F = ma and Pressure P = F/A | Vendora", "url": "https://getvendora.net/calculators/force-calculator/"}, {"@type": "ListItem", "position": 24, "name": "Fraction Calculator — Add & Simplify Fractions | Vendora", "url": "https://getvendora.net/calculators/fraction-calculator/"}, {"@type": "ListItem", "position": 25, "name": "Free Online Calculators — Health, Finance, Math, Time & Physics | Vendora", "url": "https://getvendora.net/calculators/"}, {"@type": "ListItem", "position": 26, "name": "Fuel Economy Converter — MPG and Liters per 100 km | Vendora", "url": "https://getvendora.net/calculators/fuel-economy-mpg-l-100km/"}, {"@type": "ListItem", "position": 27, "name": "GCD & LCM Calculator — Two or More Integers | Vendora", "url": "https://getvendora.net/calculators/gcd-lcm-calculator/"}, {"@type": "ListItem", "position": 28, "name": "Golden Ratio Divider — φ ≈ 1.618 Split | Vendora", "url": "https://getvendora.net/calculators/golden-ratio/"}, {"@type": "ListItem", "position": 29, "name": "Hourly to Salary Calculator | Convert Hourly Wage & Annual Salary (Free)", "url": "https://getvendora.net/tools/hourly-to-salary-calculator/"}, {"@type": "ListItem", "position": 30, "name": "Ideal Body Weight (Devine Formula) — Calculator | Vendora", "url": "https://getvendora.net/calculators/ideal-body-weight/"}, {"@type": "ListItem", "position": 31, "name": "Kinetic Energy Calculator — KE = ½mv² in Joules | Vendora", "url": "https://getvendora.net/calculators/kinetic-energy/"}, {"@type": "ListItem", "position": 32, "name": "Labor Cost Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/labor-cost/"}, {"@type": "ListItem", "position": 33, "name": "Midpoint price elasticity calculator | Vendora", "url": "https://getvendora.net/calculator/general/midpoint-price-elasticity-calculator/"}, {"@type": "ListItem", "position": 34, "name": "Ohm’s Law Calculator — Voltage, Current, Resistance & Power | Vendora", "url": "https://getvendora.net/calculators/ohms-law/"}, {"@type": "ListItem", "position": 35, "name": "Ovulation Estimator — Cycle Day & 14-Day Rule | Vendora", "url": "https://getvendora.net/calculators/ovulation-calculator/"}, {"@type": "ListItem", "position": 36, "name": "Percentage Calculator — Of, Change, Ratio & Backwards | Vendora", "url": "https://getvendora.net/calculators/percentage-calculator/"}, {"@type": "ListItem", "position": 37, "name": "Point price elasticity calculator | Vendora", "url": "https://getvendora.net/calculator/general/price-elasticity-point-calculator/"}, {"@type": "ListItem", "position": 38, "name": "Pomodoro Planner — Work & Break Blocks | Vendora", "url": "https://getvendora.net/calculators/pomodoro-sprint-calculator/"}, {"@type": "ListItem", "position": 39, "name": "Pregnancy Due Date Estimator — LMP & 40-Week Rule | Vendora", "url": "https://getvendora.net/calculators/pregnancy-due-date/"}, {"@type": "ListItem", "position": 40, "name": "PX to REM Converter — Divide by Root Font Size | Vendora", "url": "https://getvendora.net/calculators/px-to-rem-calculator/"}, {"@type": "ListItem", "position": 41, "name": "Pythagorean Theorem Calculator — Find Missing Right-Triangle Side | Vendora", "url": "https://getvendora.net/calculators/pythagorean-theorem/"}, {"@type": "ListItem", "position": 42, "name": "Quadratic Equation Solver — Roots of ax² + bx + c | Vendora", "url": "https://getvendora.net/calculators/quadratic-equation/"}, {"@type": "ListItem", "position": 43, "name": "Random Integer Generator — Inclusive Range | Vendora", "url": "https://getvendora.net/calculators/random-number-generator/"}, {"@type": "ListItem", "position": 44, "name": "Resistor Color Code Decoder — 4-Band Value | Vendora", "url": "https://getvendora.net/calculators/resistor-color-code/"}, {"@type": "ListItem", "position": 45, "name": "Rule of 72 calculator | Vendora", "url": "https://getvendora.net/calculator/general/rule-of-72-calculator/"}, {"@type": "ListItem", "position": 46, "name": "Running Pace Calculator — Minutes per Kilometer | Vendora", "url": "https://getvendora.net/calculators/pace-calculator/"}, {"@type": "ListItem", "position": 47, "name": "Salary to Hourly Pay Converter — Annual to Per-Hour Rate | Vendora", "url": "https://getvendora.net/calculators/salary-to-hourly-converter/"}, {"@type": "ListItem", "position": 48, "name": "Sleep Cycle Calculator — Bedtime & Wake Times (90-Min Cycles) | Vendora", "url": "https://getvendora.net/calculators/sleep-cycle-calculator/"}, {"@type": "ListItem", "position": 49, "name": "Small Business — calculator manifest", "url": "https://getvendora.net/tools/small-business/"}, {"@type": "ListItem", "position": 50, "name": "Speed, Distance & Time Solver — v = d ÷ t | Vendora", "url": "https://getvendora.net/calculators/speed-distance-time/"}, {"@type": "ListItem", "position": 51, "name": "Standard Deviation Calculator — Sample SD for Data Sets | Vendora", "url": "https://getvendora.net/calculators/standard-deviation/"}, {"@type": "ListItem", "position": 52, "name": "TDEE Calculator — Total Daily Energy Expenditure & Activity | Vendora", "url": "https://getvendora.net/calculators/tdee-calculator/"}, {"@type": "ListItem", "position": 53, "name": "Temperature Converter — °C, °F, and Kelvin | Vendora", "url": "https://getvendora.net/calculators/temperature-converter/"}, {"@type": "ListItem", "position": 54, "name": "Time Duration Calculator — Span Across Midnight | Vendora", "url": "https://getvendora.net/calculators/time-duration/"}, {"@type": "ListItem", "position": 55, "name": "Timesheet Hours Calculator — Mon–Fri Sum & Overtime | Vendora", "url": "https://getvendora.net/calculators/hours-worked-timesheet/"}, {"@type": "ListItem", "position": 56, "name": "UTC Offset Time Converter — Wall Clock vs UTC | Vendora", "url": "https://getvendora.net/calculators/time-zone-converter/"}, {"@type": "ListItem", "position": 57, "name": "Volume Calculator — Box, Cylinder, Sphere & More | Vendora", "url": "https://getvendora.net/calculators/volume-calculator/"}, {"@type": "ListItem", "position": 58, "name": "Weighted average calculator | Vendora", "url": "https://getvendora.net/calculator/general/weighted-average-calculator/"}]}</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy"><a href="/">Home</a> / <a href="/calculator/">Calculators</a> / <a href="/calculator/general/">General calculators</a></p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Calculators</p>
+      <h1>General calculators</h1>
+      <p class="hero-copy">Click-through rate, churn, elasticity, and other general business math on <code>/calculator/general/</code>, alongside cards to the <strong>legacy</strong> <a href="/calculators/">flat calculator hub</a> for health, science, and everyday math on long-standing URLs.</p>
+      <div class="hub-links">
+        <a href="/calculator/finance/">Finance calculators</a>
+        <a href="/calculator/food/">Food calculators</a>
+        <a href="/calculator/restaurant/">Restaurant calculators</a>
+        <a href="/calculator/profit/">Profit calculators</a>
+        <a href="/calculator/operations/">Operations calculators</a>
+        <a href="/calculator/inventory/">Inventory calculators</a>
+      </div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Browse calculators</h2>
+      <div class="calc-hub-grid">
+
+          <a class="calc-card" href="/calculators/distance-2d-calculator/">
+            <h3 class="calc-title">2D Distance Calculator — Euclidean Distance Between Points | Vendora</h3>
+            <p class="calc-url">/calculators/distance-2d-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/3d-printer-buy-vs-outsource/">
+            <h3 class="calc-title">3D Printer Buy vs Outsource Calculator | Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/3d-printer-buy-vs-outsource/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/age-calculator/">
+            <h3 class="calc-title">Age Calculator — Exact Years, Months &amp; Days | Vendora</h3>
+            <p class="calc-url">/calculators/age-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/ai-sales-trend-analyzer/">
+            <h3 class="calc-title">AI Sales Trend Analyzer for Small Businesses</h3>
+            <p class="calc-url">/tools/ai-sales-trend-analyzer/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/area-calculator/">
+            <h3 class="calc-title">Area Calculator — Circle, Rectangle, Triangle &amp; More | Vendora</h3>
+            <p class="calc-url">/calculators/area-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/aspect-ratio-calculator/">
+            <h3 class="calc-title">Aspect Ratio Calculator — Resize Width or Height | Vendora</h3>
+            <p class="calc-url">/calculators/aspect-ratio-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/average-fixed-cost/">
+            <h3 class="calc-title">Average Fixed Cost Calculator | Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/average-fixed-cost/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/blood-alcohol-content-bac/">
+            <h3 class="calc-title">BAC Estimator (Widmark) — Educational Alcohol Metabolism Model | Vendora</h3>
+            <p class="calc-url">/calculators/blood-alcohol-content-bac/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/bmi-calculator/">
+            <h3 class="calc-title">BMI Calculator — Body Mass Index (kg/m²) for Adults | Vendora</h3>
+            <p class="calc-url">/calculators/bmi-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/bmr-calculator/">
+            <h3 class="calc-title">BMR Calculator — Basal Metabolic Rate (Mifflin–St Jeor) | Vendora</h3>
+            <p class="calc-url">/calculators/bmr-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/body-fat-calculator/">
+            <h3 class="calc-title">Body Fat Calculator — U.S. Navy Method Estimate | Vendora</h3>
+            <p class="calc-url">/calculators/body-fat-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/general/click-through-rate-calculator/">
+            <h3 class="calc-title">Click-through rate calculator | Vendora</h3>
+            <p class="calc-url">/calculator/general/click-through-rate-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/commission-calculator/">
+            <h3 class="calc-title">Commission Calculator | Sales Commission %, Total Pay &amp; Target Sales</h3>
+            <p class="calc-url">/tools/commission-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/currency-converter/">
+            <h3 class="calc-title">Currency Converter — Illustrative Exchange Rates | Vendora</h3>
+            <p class="calc-url">/calculators/currency-converter/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/general/customer-churn-rate-calculator/">
+            <h3 class="calc-title">Customer churn rate calculator | Vendora</h3>
+            <p class="calc-url">/calculator/general/customer-churn-rate-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/water-intake-calculator/">
+            <h3 class="calc-title">Daily Water Intake Estimator — ml from Weight &amp; Activity | Vendora</h3>
+            <p class="calc-url">/calculators/water-intake-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/date-difference/">
+            <h3 class="calc-title">Date Difference Calculator — Days Between Two Dates | Vendora</h3>
+            <p class="calc-url">/calculators/date-difference/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/days-until-event/">
+            <h3 class="calc-title">Days Until Event — Countdown to a Future Date | Vendora</h3>
+            <p class="calc-url">/calculators/days-until-event/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/density-calculator/">
+            <h3 class="calc-title">Density Calculator — ρ = mass ÷ volume | Vendora</h3>
+            <p class="calc-url">/calculators/density-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/discount-calculator/">
+            <h3 class="calc-title">Discount Calculator — Sale Price from % Off | Vendora</h3>
+            <p class="calc-url">/calculators/discount-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/bandwidth-download-time/">
+            <h3 class="calc-title">Download Time Estimator — File Size vs Mbps | Vendora</h3>
+            <p class="calc-url">/calculators/bandwidth-download-time/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/general/email-open-rate-calculator/">
+            <h3 class="calc-title">Email open rate calculator | Vendora</h3>
+            <p class="calc-url">/calculator/general/email-open-rate-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/force-calculator/">
+            <h3 class="calc-title">Force Calculator — F = ma and Pressure P = F/A | Vendora</h3>
+            <p class="calc-url">/calculators/force-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/fraction-calculator/">
+            <h3 class="calc-title">Fraction Calculator — Add &amp; Simplify Fractions | Vendora</h3>
+            <p class="calc-url">/calculators/fraction-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/">
+            <h3 class="calc-title">Free Online Calculators — Health, Finance, Math, Time &amp; Physics | Vendora</h3>
+            <p class="calc-url">/calculators/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/fuel-economy-mpg-l-100km/">
+            <h3 class="calc-title">Fuel Economy Converter — MPG and Liters per 100 km | Vendora</h3>
+            <p class="calc-url">/calculators/fuel-economy-mpg-l-100km/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/gcd-lcm-calculator/">
+            <h3 class="calc-title">GCD &amp; LCM Calculator — Two or More Integers | Vendora</h3>
+            <p class="calc-url">/calculators/gcd-lcm-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/golden-ratio/">
+            <h3 class="calc-title">Golden Ratio Divider — φ ≈ 1.618 Split | Vendora</h3>
+            <p class="calc-url">/calculators/golden-ratio/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/hourly-to-salary-calculator/">
+            <h3 class="calc-title">Hourly to Salary Calculator | Convert Hourly Wage &amp; Annual Salary (Free)</h3>
+            <p class="calc-url">/tools/hourly-to-salary-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/ideal-body-weight/">
+            <h3 class="calc-title">Ideal Body Weight (Devine Formula) — Calculator | Vendora</h3>
+            <p class="calc-url">/calculators/ideal-body-weight/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/kinetic-energy/">
+            <h3 class="calc-title">Kinetic Energy Calculator — KE = ½mv² in Joules | Vendora</h3>
+            <p class="calc-url">/calculators/kinetic-energy/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/labor-cost/">
+            <h3 class="calc-title">Labor Cost Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/labor-cost/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/general/midpoint-price-elasticity-calculator/">
+            <h3 class="calc-title">Midpoint price elasticity calculator | Vendora</h3>
+            <p class="calc-url">/calculator/general/midpoint-price-elasticity-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/ohms-law/">
+            <h3 class="calc-title">Ohm’s Law Calculator — Voltage, Current, Resistance &amp; Power | Vendora</h3>
+            <p class="calc-url">/calculators/ohms-law/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/ovulation-calculator/">
+            <h3 class="calc-title">Ovulation Estimator — Cycle Day &amp; 14-Day Rule | Vendora</h3>
+            <p class="calc-url">/calculators/ovulation-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/percentage-calculator/">
+            <h3 class="calc-title">Percentage Calculator — Of, Change, Ratio &amp; Backwards | Vendora</h3>
+            <p class="calc-url">/calculators/percentage-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/general/price-elasticity-point-calculator/">
+            <h3 class="calc-title">Point price elasticity calculator | Vendora</h3>
+            <p class="calc-url">/calculator/general/price-elasticity-point-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/pomodoro-sprint-calculator/">
+            <h3 class="calc-title">Pomodoro Planner — Work &amp; Break Blocks | Vendora</h3>
+            <p class="calc-url">/calculators/pomodoro-sprint-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/pregnancy-due-date/">
+            <h3 class="calc-title">Pregnancy Due Date Estimator — LMP &amp; 40-Week Rule | Vendora</h3>
+            <p class="calc-url">/calculators/pregnancy-due-date/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/px-to-rem-calculator/">
+            <h3 class="calc-title">PX to REM Converter — Divide by Root Font Size | Vendora</h3>
+            <p class="calc-url">/calculators/px-to-rem-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/pythagorean-theorem/">
+            <h3 class="calc-title">Pythagorean Theorem Calculator — Find Missing Right-Triangle Side | Vendora</h3>
+            <p class="calc-url">/calculators/pythagorean-theorem/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/quadratic-equation/">
+            <h3 class="calc-title">Quadratic Equation Solver — Roots of ax² + bx + c | Vendora</h3>
+            <p class="calc-url">/calculators/quadratic-equation/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/random-number-generator/">
+            <h3 class="calc-title">Random Integer Generator — Inclusive Range | Vendora</h3>
+            <p class="calc-url">/calculators/random-number-generator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/resistor-color-code/">
+            <h3 class="calc-title">Resistor Color Code Decoder — 4-Band Value | Vendora</h3>
+            <p class="calc-url">/calculators/resistor-color-code/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/general/rule-of-72-calculator/">
+            <h3 class="calc-title">Rule of 72 calculator | Vendora</h3>
+            <p class="calc-url">/calculator/general/rule-of-72-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/pace-calculator/">
+            <h3 class="calc-title">Running Pace Calculator — Minutes per Kilometer | Vendora</h3>
+            <p class="calc-url">/calculators/pace-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/salary-to-hourly-converter/">
+            <h3 class="calc-title">Salary to Hourly Pay Converter — Annual to Per-Hour Rate | Vendora</h3>
+            <p class="calc-url">/calculators/salary-to-hourly-converter/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/sleep-cycle-calculator/">
+            <h3 class="calc-title">Sleep Cycle Calculator — Bedtime &amp; Wake Times (90-Min Cycles) | Vendora</h3>
+            <p class="calc-url">/calculators/sleep-cycle-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/">
+            <h3 class="calc-title">Small Business — calculator manifest</h3>
+            <p class="calc-url">/tools/small-business/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/speed-distance-time/">
+            <h3 class="calc-title">Speed, Distance &amp; Time Solver — v = d ÷ t | Vendora</h3>
+            <p class="calc-url">/calculators/speed-distance-time/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/standard-deviation/">
+            <h3 class="calc-title">Standard Deviation Calculator — Sample SD for Data Sets | Vendora</h3>
+            <p class="calc-url">/calculators/standard-deviation/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/tdee-calculator/">
+            <h3 class="calc-title">TDEE Calculator — Total Daily Energy Expenditure &amp; Activity | Vendora</h3>
+            <p class="calc-url">/calculators/tdee-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/temperature-converter/">
+            <h3 class="calc-title">Temperature Converter — °C, °F, and Kelvin | Vendora</h3>
+            <p class="calc-url">/calculators/temperature-converter/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/time-duration/">
+            <h3 class="calc-title">Time Duration Calculator — Span Across Midnight | Vendora</h3>
+            <p class="calc-url">/calculators/time-duration/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/hours-worked-timesheet/">
+            <h3 class="calc-title">Timesheet Hours Calculator — Mon–Fri Sum &amp; Overtime | Vendora</h3>
+            <p class="calc-url">/calculators/hours-worked-timesheet/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/time-zone-converter/">
+            <h3 class="calc-title">UTC Offset Time Converter — Wall Clock vs UTC | Vendora</h3>
+            <p class="calc-url">/calculators/time-zone-converter/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/volume-calculator/">
+            <h3 class="calc-title">Volume Calculator — Box, Cylinder, Sphere &amp; More | Vendora</h3>
+            <p class="calc-url">/calculators/volume-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/general/weighted-average-calculator/">
+            <h3 class="calc-title">Weighted average calculator | Vendora</h3>
+            <p class="calc-url">/calculator/general/weighted-average-calculator/</p>
+          </a>
+      </div>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+</body>
+</html>

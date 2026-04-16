@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory Turnover Calculator for Small Business | Vendora</title>
+  <meta name="description" content="Calculate inventory turnover and days of inventory from COGS, beginning and ending inventory, and period length in days. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/inventory-turnover/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Inventory Turnover Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/inventory-turnover/", "description": "Calculate inventory turnover and days of inventory from COGS, beginning and ending inventory, and period length in days. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Estimate how fast inventory moves: enter cost of goods sold for the period, beginning and ending inventory, and how many days that period covers. You get average inventory, turnover times per period, and approximate days of inventory."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>Inventory Turnover Calculator</h1>
+      <p class="hero-copy">Estimate how fast inventory moves: enter cost of goods sold for the period, beginning and ending inventory, and how many days that period covers. You get average inventory, turnover times per period, and approximate days of inventory.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Average inventory = (beginning inventory + ending inventory) ÷ 2. Turnover = COGS ÷ average inventory. Use COGS and inventory valued the same way.</p>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="cogs">Cost of goods sold</label>
+            <input id="cogs" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 450000" autocomplete="off">
+            <span class="input-hint">COGS for the same period as the inventory snapshots.</span>
+          </div>
+          <div class="field">
+            <label for="beginningInv">Beginning inventory</label>
+            <input id="beginningInv" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 10000" autocomplete="off">
+            <span class="input-hint">Inventory at period start.</span>
+          </div>
+          <div class="field">
+            <label for="endingInv">Ending inventory</label>
+            <input id="endingInv" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 15000" autocomplete="off">
+            <span class="input-hint">Inventory at period end.</span>
+          </div>
+          <div class="field">
+            <label for="periodDays">Period</label>
+            <input id="periodDays" type="number" inputmode="numeric" step="1" min="1" placeholder="365" autocomplete="off">
+            <span class="input-hint">Days in the period (e.g. 365 for a year, 90 for a quarter).</span>
+          </div>
+          <div class="field">
+            <label for="averageInventory">Average inventory</label>
+            <input id="averageInventory" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+          <div class="field">
+            <label for="inventoryTurnover">Inventory turnover</label>
+            <input id="inventoryTurnover" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+          <div class="field">
+            <label for="inventoryDays">Inventory days</label>
+            <input id="inventoryDays" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Approximate days of inventory on hand.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">Days of inventory ≈ period days ÷ turnover (times inventory turns in the period).</p>
+        <div class="result-grid" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Inventory turnover</span>
+            <span class="metric-value" id="outTurnover">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Average inventory</span>
+            <span class="metric-value" id="outAvgInv">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Inventory days</span>
+            <span class="metric-value" id="outDays">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">COGS is $450,000, beginning inventory is $10,000, ending inventory is $15,000, and the period is 365 days. Average inventory is $12,500. Turnover is $450,000 ÷ $12,500 = 36 times per year. Days of inventory ≈ 365 ÷ 36 ≈ 10.1 days.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">Average inventory = (beginning inventory + ending inventory) ÷ 2. Inventory turnover = COGS ÷ average inventory (requires average inventory &gt; 0). Days of inventory ≈ period length in days ÷ turnover. Definitions vary by industry; use consistent COGS and inventory valuation.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Compare turnover to your own prior periods before benchmarking unrelated industries.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="../cogs/index.html">COGS Calculator</a>, <a href="../profit/index.html">Profit Calculator</a>, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      function parseNonNeg(el) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0) return { negative: true };
+        return { value: n };
+      }
+
+      function parsePeriodDays(el) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 1) return { tooSmall: true };
+        if (Math.floor(n) !== n) return { fractional: true };
+        return { value: Math.floor(n) };
+      }
+
+      function money(n) {
+        return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function fmtNum(n) {
+        if (!Number.isFinite(n)) return '—';
+        return n.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function interpret(turnover) {
+        var el = document.getElementById('interpretation');
+        if (!Number.isFinite(turnover)) {
+          el.hidden = true;
+          return;
+        }
+        el.textContent =
+          'Higher turnover usually means faster inventory movement; very low turnover may tie up cash—context matters by industry.';
+        el.hidden = false;
+      }
+
+      function compute() {
+        var rc = parseNonNeg(document.getElementById('cogs'));
+        if (rc.empty) return { ok: false, message: 'Enter cost of goods sold.' };
+        if (rc.invalid || rc.negative) return { ok: false, message: 'COGS must be a valid number that is not negative.' };
+
+        var rb = parseNonNeg(document.getElementById('beginningInv'));
+        if (rb.empty) return { ok: false, message: 'Enter beginning inventory.' };
+        if (rb.invalid || rb.negative) return { ok: false, message: 'Beginning inventory must be a valid number that is not negative.' };
+
+        var re = parseNonNeg(document.getElementById('endingInv'));
+        if (re.empty) return { ok: false, message: 'Enter ending inventory.' };
+        if (re.invalid || re.negative) return { ok: false, message: 'Ending inventory must be a valid number that is not negative.' };
+
+        var rp = parsePeriodDays(document.getElementById('periodDays'));
+        if (rp.empty) return { ok: false, message: 'Enter period length in days.' };
+        if (rp.invalid) return { ok: false, message: 'Period days must be a valid number.' };
+        if (rp.tooSmall) return { ok: false, message: 'Period length must be at least 1 day.' };
+        if (rp.fractional) return { ok: false, message: 'Period length must be a whole number of days.' };
+
+        var cogs = rc.value;
+        var avg = (rb.value + re.value) / 2;
+        if (avg <= 0) {
+          return { ok: false, message: 'Average inventory must be greater than zero (check beginning and ending inventory).' };
+        }
+
+        var turnover = cogs / avg;
+        var daysInv = rp.value / turnover;
+
+        return { ok: true, avgInv: avg, turnover: turnover, daysInv: daysInv };
+      }
+
+      function render(out) {
+        document.getElementById('outAvgInv').textContent = money(out.avgInv);
+        document.getElementById('outTurnover').textContent = fmtNum(out.turnover);
+        document.getElementById('outDays').textContent = fmtNum(out.daysInv) + ' days';
+        document.getElementById('averageInventory').value = money(out.avgInv);
+        document.getElementById('inventoryTurnover').value = fmtNum(out.turnover);
+        document.getElementById('inventoryDays').value = fmtNum(out.daysInv);
+        interpret(out.turnover);
+      }
+
+      function reset() {
+        ['cogs', 'beginningInv', 'endingInv', 'periodDays'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = id === 'periodDays' ? '' : '';
+        });
+        ['averageInventory', 'inventoryTurnover', 'inventoryDays'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('outTurnover').textContent = '—';
+        document.getElementById('outAvgInv').textContent = '—';
+        document.getElementById('outDays').textContent = '—';
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) {
+          setValidation(r.message, true);
+          return;
+        }
+        setValidation('', false);
+        render(r);
+      });
+
+      document.getElementById('resetBtn').addEventListener('click', reset);
+
+      reset();
+    })();
+  </script>
+</body>
+</html>

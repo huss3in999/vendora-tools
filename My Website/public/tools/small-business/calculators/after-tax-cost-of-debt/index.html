@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>After-tax Cost of Debt Calculator | Small Business | Vendora</title>
+  <meta name="description" content="Calculate after-tax cost of debt from cost of debt and corporate tax rate, or derive tax rate from net and pre-tax income. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/after-tax-cost-of-debt/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script src="../_shared/currency.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "After-tax Cost of Debt Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/after-tax-cost-of-debt/", "description": "Calculate after-tax cost of debt from cost of debt and corporate tax rate, or derive tax rate from net and pre-tax income. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Estimate the after-tax cost of debt: start with a pre-tax cost of debt and a marginal corporate tax rate. If you don’t know the tax rate, you can derive it from net income and pre-tax income."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>After-tax Cost of Debt Calculator</h1>
+      <p class="hero-copy">Estimate the after-tax cost of debt: start with a pre-tax cost of debt and a marginal corporate tax rate. If you don’t know the tax rate, you can derive it from net income and pre-tax income.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">After-tax cost of debt = cost of debt × (1 − tax rate). If tax rate is blank, we compute it as \(1 - \text{net income}/\text{pre-tax income}\) when possible.</p>
+
+        <div class="field-grid calculator-fields">
+          <div class="field">
+            <label for="netIncome">Net income</label>
+            <div class="input-inline">
+              <input id="netIncome" type="number" inputmode="decimal" step="any" placeholder="e.g. 79000" autocomplete="off">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Net income currency"></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="preTaxIncome">Pre-tax income</label>
+            <div class="input-inline">
+              <input id="preTaxIncome" type="number" inputmode="decimal" step="any" placeholder="e.g. 100000" autocomplete="off">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Pre-tax income currency"></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="taxRate">Marginal corporate tax rate</label>
+            <input id="taxRate" type="number" inputmode="decimal" step="any" min="0" max="100" placeholder="e.g. 21" autocomplete="off">
+            <span class="input-hint">Percent (0–100). Leave blank to derive from incomes.</span>
+          </div>
+          <div class="field">
+            <label for="costDebt">Cost of debt</label>
+            <input id="costDebt" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 7" autocomplete="off">
+            <span class="input-hint">Pre-tax interest rate percent.</span>
+          </div>
+          <div class="field">
+            <label for="afterTax">After-tax cost of debt</label>
+            <input id="afterTax" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">If you fill both incomes, we’ll compute the implied tax rate and use it in the after-tax calculation.</p>
+        <div class="result-grid calculator-results" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">After-tax cost of debt</span>
+            <span class="metric-value" id="outAfterTax">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Tax rate used</span>
+            <span class="metric-value" id="outTax">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Cost of debt</span>
+            <span class="metric-value" id="outCost">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">If cost of debt is 7% and tax rate is 21%, after-tax cost of debt is \(7% × (1 − 0.21) = 5.53%\).</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">After-tax cost of debt = cost of debt × (1 − tax rate). When tax rate is not provided, implied tax rate = 1 − net income ÷ pre-tax income (when pre-tax income is greater than zero).</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Use after-tax cost of debt when comparing financing options; it reflects the tax deductibility of interest in many jurisdictions.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy">See <a href="/calculator/finance/">Finance calculators</a> for related ratios (dedicated cost-of-capital and WACC tools may be added later), or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      if (window.VendoraCurrency) window.VendoraCurrency.initSyncedCurrencySelects('global', 'USD');
+
+      function parseOptNum(id) {
+        var el = document.getElementById(id);
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        return { value: n };
+      }
+
+      function parsePct(id, label, allowEmpty) {
+        var r = parseOptNum(id);
+        if (r.empty) return allowEmpty ? { empty: true } : { invalid: true, message: 'Enter ' + label + '.' };
+        if (r.invalid) return { invalid: true, message: label + ' must be a valid number.' };
+        if (r.value < 0 || r.value > 100) return { invalid: true, message: label + ' must be between 0 and 100.' };
+        return { value: r.value };
+      }
+
+      function pct(n) {
+        return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 }) + '%';
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function interpret(taxRate, afterTax) {
+        var el = document.getElementById('interpretation');
+        if (!Number.isFinite(afterTax)) {
+          el.hidden = true;
+          return;
+        }
+        el.textContent = taxRate > 0 ? 'Higher tax rates reduce after-tax cost of debt; confirm your marginal tax rate assumptions.' : 'With a zero tax rate, after-tax cost equals the pre-tax cost of debt.';
+        el.hidden = false;
+      }
+
+      function compute() {
+        var net = parseOptNum('netIncome');
+        if (net.invalid) return { ok: false, message: 'Net income must be a valid number.' };
+        var pre = parseOptNum('preTaxIncome');
+        if (pre.invalid) return { ok: false, message: 'Pre-tax income must be a valid number.' };
+
+        var tax = parsePct('taxRate', 'Marginal corporate tax rate', true);
+        if (tax.invalid) return { ok: false, message: tax.message };
+
+        var cd = parsePct('costDebt', 'Cost of debt', false);
+        if (cd.invalid) return { ok: false, message: cd.message };
+
+        var taxRatePct;
+        if (!tax.empty) {
+          taxRatePct = tax.value;
+        } else if (!net.empty && !pre.empty) {
+          if (pre.value <= 0) return { ok: false, message: 'Pre-tax income must be greater than zero to derive tax rate.' };
+          var implied = 1 - (net.value / pre.value);
+          taxRatePct = Math.max(0, Math.min(100, implied * 100));
+        } else {
+          return { ok: false, message: 'Enter tax rate, or provide both net income and pre-tax income to derive it.' };
+        }
+
+        var afterTax = cd.value * (1 - taxRatePct / 100);
+        return { ok: true, afterTax: afterTax, taxRatePct: taxRatePct, costDebtPct: cd.value };
+      }
+
+      function render(out) {
+        document.getElementById('outAfterTax').textContent = pct(out.afterTax);
+        document.getElementById('outTax').textContent = pct(out.taxRatePct);
+        document.getElementById('outCost').textContent = pct(out.costDebtPct);
+        document.getElementById('afterTax').value = pct(out.afterTax);
+        interpret(out.taxRatePct, out.afterTax);
+      }
+
+      function reset() {
+        ['netIncome', 'preTaxIncome', 'taxRate', 'costDebt'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('afterTax').value = '';
+        document.getElementById('outAfterTax').textContent = '—';
+        document.getElementById('outTax').textContent = '—';
+        document.getElementById('outCost').textContent = '—';
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) return setValidation(r.message, true);
+        setValidation('', false);
+        render(r);
+      });
+      document.getElementById('resetBtn').addEventListener('click', reset);
+      reset();
+    })();
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profit calculators | Vendora</title>
+  <meta name="description" content="Browse Vendora profit calculators and related tools.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculator/profit/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Profit calculators | Vendora">
+  <meta property="og:description" content="Browse Vendora profit calculators and related tools.">
+  <meta property="og:url" content="https://getvendora.net/calculator/profit/">
+  <link rel="stylesheet" href="../../tools/tool-system.css">
+  <style>
+    .calc-hub-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .calc-card {
+      display: block;
+      text-decoration: none;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      background: rgba(15, 23, 42, 0.35);
+      border-radius: 16px;
+      padding: 14px 14px;
+      transition: border-color 120ms ease, transform 120ms ease;
+      color: inherit;
+    }
+    .calc-card:hover {
+      border-color: rgba(0, 208, 132, 0.35);
+      transform: translateY(-1px);
+    }
+    .calc-title {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.35;
+    }
+    .calc-url {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    .crumbs {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .hub-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .hub-links a {
+      color: var(--brand);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .hub-links a:hover { text-decoration: underline; }
+    @media (max-width: 980px) {
+      .calc-hub-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .calc-hub-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accounting Profit Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/accounting-profit/"}, {"@type": "ListItem", "position": 2, "name": "AI Break-Even Date Calculator", "url": "https://getvendora.net/tools/ai-break-even-date/"}, {"@type": "ListItem", "position": 3, "name": "AI Customer Profitability Calculator", "url": "https://getvendora.net/tools/ai-customer-profitability/"}, {"@type": "ListItem", "position": 4, "name": "AI Profit Leak Finder for Small Businesses | Free Business Tool", "url": "https://getvendora.net/tools/ai-profit-leak-finder/"}, {"@type": "ListItem", "position": 5, "name": "Break-even Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/break-even/"}, {"@type": "ListItem", "position": 6, "name": "Break-Even Calculator — Fixed Cost, Price & Variable Cost | Vendora", "url": "https://getvendora.net/calculators/break-even-point/"}, {"@type": "ListItem", "position": 7, "name": "Break-even units calculator | Vendora", "url": "https://getvendora.net/calculator/profit/break-even-units-calculator/"}, {"@type": "ListItem", "position": 8, "name": "Bundle savings calculator | Vendora", "url": "https://getvendora.net/calculator/profit/bundle-value-calculator/"}, {"@type": "ListItem", "position": 9, "name": "Client effective hourly rate calculator | Vendora", "url": "https://getvendora.net/calculator/profit/client-effective-hourly-calculator/"}, {"@type": "ListItem", "position": 10, "name": "Commission split calculator | Vendora", "url": "https://getvendora.net/calculator/profit/commission-split-calculator/"}, {"@type": "ListItem", "position": 11, "name": "Contribution Margin Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/contribution-margin/"}, {"@type": "ListItem", "position": 12, "name": "Cost-plus pricing calculator | Vendora", "url": "https://getvendora.net/calculator/profit/cost-plus-pricing-calculator/"}, {"@type": "ListItem", "position": 13, "name": "Customer acquisition cost calculator | Vendora", "url": "https://getvendora.net/calculator/profit/customer-acquisition-cost-calculator/"}, {"@type": "ListItem", "position": 14, "name": "Discount impact calculator | Vendora", "url": "https://getvendora.net/calculator/profit/discount-impact-calculator/"}, {"@type": "ListItem", "position": 15, "name": "Discount percent calculator | Vendora", "url": "https://getvendora.net/calculator/profit/discount-percent-calculator/"}, {"@type": "ListItem", "position": 16, "name": "eBay Fee Calculator | Etsy Fees & Net Profit (2026)", "url": "https://getvendora.net/tools/ebay-fee-calculator/"}, {"@type": "ListItem", "position": 17, "name": "EBITDA Margin Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/ebitda-margin/"}, {"@type": "ListItem", "position": 18, "name": "EBITDA margin calculator | Vendora", "url": "https://getvendora.net/calculator/profit/ebitda-margin-calculator/"}, {"@type": "ListItem", "position": 19, "name": "Fixed cost per unit calculator | Vendora", "url": "https://getvendora.net/calculator/profit/fixed-cost-per-unit-calculator/"}, {"@type": "ListItem", "position": 20, "name": "Gross booking value calculator | Vendora", "url": "https://getvendora.net/calculator/profit/gross-booking-value-calculator/"}, {"@type": "ListItem", "position": 21, "name": "Gross Margin Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/gross-margin/"}, {"@type": "ListItem", "position": 22, "name": "Gross profit margin calculator | Vendora", "url": "https://getvendora.net/calculator/profit/gross-profit-margin-calculator/"}, {"@type": "ListItem", "position": 23, "name": "Margin & Markup Calculator — Retail Pricing Math | Vendora", "url": "https://getvendora.net/calculators/margin-markup-calculator/"}, {"@type": "ListItem", "position": 24, "name": "Margin percent calculator | Vendora", "url": "https://getvendora.net/calculator/profit/margin-percent-calculator/"}, {"@type": "ListItem", "position": 25, "name": "Margin to markup bridge calculator | Vendora", "url": "https://getvendora.net/calculator/profit/margin-markup-bridge-calculator/"}, {"@type": "ListItem", "position": 26, "name": "Markup percent calculator | Vendora", "url": "https://getvendora.net/calculator/profit/markup-percent-calculator/"}, {"@type": "ListItem", "position": 27, "name": "Net profit margin calculator | Vendora", "url": "https://getvendora.net/calculator/profit/net-profit-margin-calculator/"}, {"@type": "ListItem", "position": 28, "name": "Operating margin calculator | Vendora", "url": "https://getvendora.net/calculator/profit/operating-margin-calculator/"}, {"@type": "ListItem", "position": 29, "name": "Profit Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/profit/"}, {"@type": "ListItem", "position": 30, "name": "Profit per unit calculator | Vendora", "url": "https://getvendora.net/calculator/profit/profit-per-unit-calculator/"}, {"@type": "ListItem", "position": 31, "name": "Project profit calculator | Vendora", "url": "https://getvendora.net/calculator/profit/project-profit-calculator/"}, {"@type": "ListItem", "position": 32, "name": "Return on investment calculator | Vendora", "url": "https://getvendora.net/calculator/profit/return-on-investment-calculator/"}, {"@type": "ListItem", "position": 33, "name": "ROAS calculator | Vendora", "url": "https://getvendora.net/calculator/profit/roas-calculator/"}, {"@type": "ListItem", "position": 34, "name": "ROI Calculator — Return on Investment Percent | Vendora", "url": "https://getvendora.net/calculators/roi-calculator/"}, {"@type": "ListItem", "position": 35, "name": "Sales commission calculator | Vendora", "url": "https://getvendora.net/calculator/profit/sales-commission-calculator/"}, {"@type": "ListItem", "position": 36, "name": "Sales tax: net amount from gross total | Vendora", "url": "https://getvendora.net/calculator/profit/sales-tax-exclusive-from-total-calculator/"}, {"@type": "ListItem", "position": 37, "name": "Sequential discount calculator | Vendora", "url": "https://getvendora.net/calculator/profit/sequential-discount-calculator/"}, {"@type": "ListItem", "position": 38, "name": "Target selling price calculator | Vendora", "url": "https://getvendora.net/calculator/profit/target-selling-price-calculator/"}, {"@type": "ListItem", "position": 39, "name": "Unit contribution margin calculator | Vendora", "url": "https://getvendora.net/calculator/profit/unit-contribution-margin-calculator/"}, {"@type": "ListItem", "position": 40, "name": "Unit economics contribution calculator | Vendora", "url": "https://getvendora.net/calculator/profit/unit-economics-contribution-calculator/"}]}</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy"><a href="/">Home</a> / <a href="/calculator/">Calculators</a> / <a href="/calculator/profit/">Profit calculators</a></p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Calculators</p>
+      <h1>Profit calculators</h1>
+      <p class="hero-copy">Margins, pricing, and ROI under <code>/calculator/profit/</code>. <strong>Legacy</strong> indexed alternatives (same URLs as always) include <a href="/calculators/margin-markup-calculator/">margin &amp; markup hub</a>, <a href="/calculators/break-even-point/">break-even (flat hub)</a>, <a href="/calculators/roi-calculator/">ROI (flat hub)</a>, and <a href="/tools/small-business/calculators/break-even/">small-business break-even worksheet</a>.</p>
+      <div class="hub-links">
+        <a href="/calculator/finance/">Finance calculators</a>
+        <a href="/calculator/food/">Food calculators</a>
+        <a href="/calculator/restaurant/">Restaurant calculators</a>
+        <a href="/calculator/operations/">Operations calculators</a>
+        <a href="/calculator/inventory/">Inventory calculators</a>
+        <a href="/calculator/general/">General calculators</a>
+      </div>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Browse calculators</h2>
+      <div class="calc-hub-grid">
+
+          <a class="calc-card" href="/tools/small-business/calculators/accounting-profit/">
+            <h3 class="calc-title">Accounting Profit Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/accounting-profit/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/ai-break-even-date/">
+            <h3 class="calc-title">AI Break-Even Date Calculator</h3>
+            <p class="calc-url">/tools/ai-break-even-date/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/ai-customer-profitability/">
+            <h3 class="calc-title">AI Customer Profitability Calculator</h3>
+            <p class="calc-url">/tools/ai-customer-profitability/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/ai-profit-leak-finder/">
+            <h3 class="calc-title">AI Profit Leak Finder for Small Businesses | Free Business Tool</h3>
+            <p class="calc-url">/tools/ai-profit-leak-finder/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/break-even/">
+            <h3 class="calc-title">Break-even Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/break-even/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/break-even-point/">
+            <h3 class="calc-title">Break-Even Calculator — Fixed Cost, Price &amp; Variable Cost | Vendora</h3>
+            <p class="calc-url">/calculators/break-even-point/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/break-even-units-calculator/">
+            <h3 class="calc-title">Break-even units calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/break-even-units-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/bundle-value-calculator/">
+            <h3 class="calc-title">Bundle savings calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/bundle-value-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/client-effective-hourly-calculator/">
+            <h3 class="calc-title">Client effective hourly rate calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/client-effective-hourly-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/commission-split-calculator/">
+            <h3 class="calc-title">Commission split calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/commission-split-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/contribution-margin/">
+            <h3 class="calc-title">Contribution Margin Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/contribution-margin/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/cost-plus-pricing-calculator/">
+            <h3 class="calc-title">Cost-plus pricing calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/cost-plus-pricing-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/customer-acquisition-cost-calculator/">
+            <h3 class="calc-title">Customer acquisition cost calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/customer-acquisition-cost-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/discount-impact-calculator/">
+            <h3 class="calc-title">Discount impact calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/discount-impact-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/discount-percent-calculator/">
+            <h3 class="calc-title">Discount percent calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/discount-percent-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/ebay-fee-calculator/">
+            <h3 class="calc-title">eBay Fee Calculator | Etsy Fees &amp; Net Profit (2026)</h3>
+            <p class="calc-url">/tools/ebay-fee-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/ebitda-margin/">
+            <h3 class="calc-title">EBITDA Margin Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/ebitda-margin/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/ebitda-margin-calculator/">
+            <h3 class="calc-title">EBITDA margin calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/ebitda-margin-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/fixed-cost-per-unit-calculator/">
+            <h3 class="calc-title">Fixed cost per unit calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/fixed-cost-per-unit-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/gross-booking-value-calculator/">
+            <h3 class="calc-title">Gross booking value calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/gross-booking-value-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/gross-margin/">
+            <h3 class="calc-title">Gross Margin Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/gross-margin/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/gross-profit-margin-calculator/">
+            <h3 class="calc-title">Gross profit margin calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/gross-profit-margin-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/margin-markup-calculator/">
+            <h3 class="calc-title">Margin &amp; Markup Calculator — Retail Pricing Math | Vendora</h3>
+            <p class="calc-url">/calculators/margin-markup-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/margin-percent-calculator/">
+            <h3 class="calc-title">Margin percent calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/margin-percent-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/margin-markup-bridge-calculator/">
+            <h3 class="calc-title">Margin to markup bridge calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/margin-markup-bridge-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/markup-percent-calculator/">
+            <h3 class="calc-title">Markup percent calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/markup-percent-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/net-profit-margin-calculator/">
+            <h3 class="calc-title">Net profit margin calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/net-profit-margin-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/operating-margin-calculator/">
+            <h3 class="calc-title">Operating margin calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/operating-margin-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/tools/small-business/calculators/profit/">
+            <h3 class="calc-title">Profit Calculator for Small Business | Vendora</h3>
+            <p class="calc-url">/tools/small-business/calculators/profit/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/profit-per-unit-calculator/">
+            <h3 class="calc-title">Profit per unit calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/profit-per-unit-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/project-profit-calculator/">
+            <h3 class="calc-title">Project profit calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/project-profit-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/return-on-investment-calculator/">
+            <h3 class="calc-title">Return on investment calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/return-on-investment-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/roas-calculator/">
+            <h3 class="calc-title">ROAS calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/roas-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculators/roi-calculator/">
+            <h3 class="calc-title">ROI Calculator — Return on Investment Percent | Vendora</h3>
+            <p class="calc-url">/calculators/roi-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/sales-commission-calculator/">
+            <h3 class="calc-title">Sales commission calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/sales-commission-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/sales-tax-exclusive-from-total-calculator/">
+            <h3 class="calc-title">Sales tax: net amount from gross total | Vendora</h3>
+            <p class="calc-url">/calculator/profit/sales-tax-exclusive-from-total-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/sequential-discount-calculator/">
+            <h3 class="calc-title">Sequential discount calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/sequential-discount-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/target-selling-price-calculator/">
+            <h3 class="calc-title">Target selling price calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/target-selling-price-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/unit-contribution-margin-calculator/">
+            <h3 class="calc-title">Unit contribution margin calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/unit-contribution-margin-calculator/</p>
+          </a>
+
+          <a class="calc-card" href="/calculator/profit/unit-economics-contribution-calculator/">
+            <h3 class="calc-title">Unit economics contribution calculator | Vendora</h3>
+            <p class="calc-url">/calculator/profit/unit-economics-contribution-calculator/</p>
+          </a>
+      </div>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+</body>
+</html>

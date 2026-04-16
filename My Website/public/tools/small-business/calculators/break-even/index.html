@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Break-even Calculator for Small Business | Vendora</title>
+  <meta name="description" content="Find break-even units and revenue from fixed costs, variable cost per unit, and selling price. Contribution margin and ratio included. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/break-even/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script src="../_shared/currency.js"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Break-even Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/break-even/", "description": "Find break-even units and revenue from fixed costs, variable cost per unit, and selling price. Contribution margin and ratio included. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "See how many units you need to sell to cover fixed costs for a line. Enter fixed costs for the period, variable cost per unit, and selling price per unit. You get break-even units, break-even revenue, contribution margin per unit, and contribution margin ratio (percent of price)."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>Break-even Calculator</h1>
+      <p class="hero-copy">See how many units you need to sell to cover fixed costs for a line. Enter fixed costs for the period, variable cost per unit, and selling price per unit. You get break-even units, break-even revenue, contribution margin per unit, and contribution margin ratio (percent of price).</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Use one currency throughout. Fixed costs are what you pay even if you sell nothing (rent, salaries, insurance slice for this line). Variable cost is what changes with each unit sold (materials, direct labor, shipping per item).</p>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="fixedCosts">Fixed costs</label>
+            <div class="input-inline">
+              <input id="fixedCosts" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 8000" autocomplete="off">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Fixed costs currency"></select>
+            </div>
+            <span class="input-hint">Total fixed costs this line must cover (month, quarter, or project).</span>
+          </div>
+          <div class="field">
+            <label for="variableCostPerUnit">Cost per unit</label>
+            <div class="input-inline">
+              <input id="variableCostPerUnit" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 22.50" autocomplete="off">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Cost per unit currency"></select>
+            </div>
+            <span class="input-hint">Extra cost to produce or deliver one more unit.</span>
+          </div>
+          <div class="field">
+            <label for="pricePerUnit">Revenue per unit</label>
+            <div class="input-inline">
+              <input id="pricePerUnit" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 45.00" autocomplete="off">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Revenue per unit currency"></select>
+            </div>
+            <span class="input-hint">What one unit brings in before allocating fixed costs.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card be-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">Contribution margin per unit is selling price minus variable cost. Break-even units divide fixed costs by that margin when it is positive. Break-even revenue multiplies break-even units by selling price. Contribution margin ratio is that margin as a percent of selling price.</p>
+        <div class="result-grid" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Break-even units</span>
+            <span class="metric-value" id="outUnits">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Break-even revenue</span>
+            <span class="metric-value" id="outRevenue">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Contribution margin per unit</span>
+            <span class="metric-value" id="outContribution">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Margin</span>
+            <span class="metric-value" id="outCmPct">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Markup</span>
+            <span class="metric-value" id="outMarkupPct">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Fixed costs are $12,000, variable cost is $16 per unit, and you sell at $40 per unit. Contribution margin per unit is $40 − $16 = $24. Break-even units are $12,000 ÷ $24 = 500 units. Break-even revenue is 500 × $40 = $20,000. Contribution margin ratio is $24 ÷ $40 × 100 = 60%.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">Contribution margin per unit = selling price per unit − variable cost per unit. Break-even units = fixed costs ÷ contribution margin per unit (only when that margin is greater than zero, so you are not dividing by zero). Break-even revenue = break-even units × selling price per unit. Contribution margin ratio = contribution margin per unit ÷ selling price per unit × 100. If selling price is zero, the ratio is not shown.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">If raising price is hard, cutting variable cost or fixed cost both lower break-even volume. Split fixed costs by line carefully so the number reflects what this product really must carry.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="../profit/index.html">Profit Calculator</a> for a sold quantity and line discount, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      function parseNonNeg(el) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0) return { negative: true };
+        return { value: n };
+      }
+
+      function money(n) {
+        return window.VendoraCurrency
+          ? window.VendoraCurrency.formatMoney(n, window.VendoraCurrency.getCurrency('global', 'USD'))
+          : ('$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+      }
+
+      function pct(n) {
+        return n.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 }) + '%';
+      }
+
+      function fmtUnits(n) {
+        if (!Number.isFinite(n)) return '—';
+        return n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function interpret(fixed, price, variable, cm, beUnits) {
+        var el = document.getElementById('interpretation');
+        if (!Number.isFinite(beUnits)) {
+          el.hidden = true;
+          return;
+        }
+        var text;
+        if (fixed === 0 && cm > 0) {
+          text = 'With no fixed costs to recover, you are at or above break-even from the first unit sold (contribution margin is positive).';
+        } else if (cm <= 0) {
+          text = 'Contribution margin per unit is not positive—raise price, lower variable cost, or re-check your inputs before relying on a volume target.';
+        } else {
+          text = 'Compare break-even units to what you realistically sell in the same period to see if the line can carry its share of fixed costs.';
+        }
+        el.textContent = text;
+        el.hidden = false;
+      }
+
+      function compute() {
+        var elF = document.getElementById('fixedCosts');
+        var elV = document.getElementById('variableCostPerUnit');
+        var elP = document.getElementById('pricePerUnit');
+
+        var rf = parseNonNeg(elF);
+        if (rf.empty) return { ok: false, message: 'Enter fixed costs (use 0 if none).' };
+        if (rf.invalid || rf.negative) return { ok: false, message: 'Fixed costs must be a valid number that is not negative.' };
+        var fixed = rf.value;
+
+        var rv = parseNonNeg(elV);
+        if (rv.empty) return { ok: false, message: 'Enter variable cost per unit (use 0 if none).' };
+        if (rv.invalid || rv.negative) return { ok: false, message: 'Variable cost must be a valid number that is not negative.' };
+        var variable = rv.value;
+
+        var rp = parseNonNeg(elP);
+        if (rp.empty) return { ok: false, message: 'Enter selling price per unit.' };
+        if (rp.invalid || rp.negative) return { ok: false, message: 'Selling price must be a valid number that is not negative.' };
+        var price = rp.value;
+
+        var cm = price - variable;
+        if (cm <= 0) {
+          return {
+            ok: false,
+            message: 'Selling price must be greater than variable cost per unit so contribution margin per unit is positive (cannot divide by zero or break even on volume otherwise).',
+          };
+        }
+
+        var beUnits = fixed / cm;
+        var beRev = beUnits * price;
+        var marginPct = price > 0 ? (cm / price) * 100 : 0;
+        var markupPct = variable > 0 ? (cm / variable) * 100 : 0;
+
+        return {
+          ok: true,
+          fixed: fixed,
+          price: price,
+          variable: variable,
+          cm: cm,
+          beUnits: beUnits,
+          beRev: beRev,
+          marginPct: marginPct,
+          markupPct: markupPct,
+        };
+      }
+
+      function render(out) {
+        document.getElementById('outUnits').textContent = fmtUnits(out.beUnits);
+        document.getElementById('outUnits').classList.remove('negative');
+        document.getElementById('outRevenue').textContent = money(out.beRev);
+        document.getElementById('outContribution').textContent = money(out.cm);
+        document.getElementById('outCmPct').textContent = out.price > 0 ? pct(out.marginPct) : '—';
+        document.getElementById('outMarkupPct').textContent = out.variable > 0 ? pct(out.markupPct) : '—';
+        interpret(out.fixed, out.price, out.variable, out.cm, out.beUnits);
+      }
+
+      function reset() {
+        ['fixedCosts', 'variableCostPerUnit', 'pricePerUnit'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('outUnits').textContent = '—';
+        document.getElementById('outRevenue').textContent = '—';
+        document.getElementById('outContribution').textContent = '—';
+        document.getElementById('outCmPct').textContent = '—';
+        document.getElementById('outMarkupPct').textContent = '—';
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) {
+          setValidation(r.message, true);
+          return;
+        }
+        setValidation('', false);
+        render(r);
+      });
+
+      document.getElementById('resetBtn').addEventListener('click', reset);
+
+      if (window.VendoraCurrency) window.VendoraCurrency.initSyncedCurrencySelects('global', 'USD');
+      reset();
+    })();
+  </script>
+</body>
+</html>

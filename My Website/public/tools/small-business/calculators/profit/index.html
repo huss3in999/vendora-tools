@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profit Calculator for Small Business | Vendora</title>
+  <meta name="description" content="Work out dollar profit and margin from unit cost, selling price, quantity, and an optional line discount. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/profit/">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "Profit Calculator for Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/profit/", "description": "Work out dollar profit and margin from unit cost, selling price, quantity, and an optional line discount. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Estimate how much money you keep on a product or line: enter your cost per unit, selling price, units sold, and an optional discount taken off the line total. You get profit, net revenue, total cost, and a simple margin percentage for quick pricing checks."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>Profit Calculator</h1>
+      <p class="hero-copy">Estimate how much money you keep on a product or line: enter your cost per unit, selling price, units sold, and an optional discount taken off the line total. You get profit, net revenue, total cost, and a simple margin percentage for quick pricing checks.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Use the same currency for cost and price. Discount reduces revenue before profit (gross revenue minus discount).</p>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="currency">Currency</label>
+            <select id="currency">
+              <option value="RON">RON</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+              <option value="GBP">GBP</option>
+            </select>
+            <span class="input-hint">Used for formatting outputs.</span>
+          </div>
+          <div class="field">
+            <label for="cost">Cost</label>
+            <input id="cost" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 4.50" autocomplete="off">
+            <span class="input-hint">Your cost for the base quantity.</span>
+          </div>
+          <div class="field">
+            <label for="costPer">per</label>
+            <input id="costPer" type="number" inputmode="decimal" step="any" min="0" placeholder="1" autocomplete="off">
+            <span class="input-hint">Base quantity the cost is for (usually 1).</span>
+          </div>
+          <div class="field">
+            <label for="price">Price</label>
+            <input id="price" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 12.00" autocomplete="off">
+            <span class="input-hint">Selling price for the base quantity.</span>
+          </div>
+          <div class="field">
+            <label for="pricePer">per</label>
+            <input id="pricePer" type="number" inputmode="decimal" step="any" min="0" placeholder="1" autocomplete="off">
+            <span class="input-hint">Base quantity the price is for (usually 1).</span>
+          </div>
+          <div class="field">
+            <label for="quantity">Quantity</label>
+            <input id="quantity" type="number" inputmode="decimal" step="any" min="0" placeholder="e.g. 120" autocomplete="off">
+            <span class="input-hint">How many units you sold.</span>
+          </div>
+          <div class="field">
+            <label for="discount">Discount</label>
+            <input id="discount" type="number" inputmode="decimal" step="any" min="0" max="100" placeholder="0" autocomplete="off">
+            <span class="input-hint">Percent discount applied to revenue (0–100).</span>
+          </div>
+          <div class="field">
+            <label for="totalCost">Total cost</label>
+            <input id="totalCost" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+          <div class="field">
+            <label for="revenue">Revenue</label>
+            <input id="revenue" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after discount.</span>
+          </div>
+          <div class="field">
+            <label for="totalProfit">Total profit</label>
+            <input id="totalProfit" type="text" inputmode="decimal" readonly value="">
+            <span class="input-hint">Calculated after you click Calculate.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card profit-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">Figures update when you calculate. Profit is net revenue minus total cost for this line.</p>
+        <div class="result-grid" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">Total profit</span>
+            <span class="metric-value" id="outProfit">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Revenue</span>
+            <span class="metric-value" id="outNetRev">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Total cost</span>
+            <span class="metric-value" id="outTotalCost">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Discount</span>
+            <span class="metric-value" id="outDiscountAmt">—</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Profit margin (of net revenue)</span>
+            <span class="metric-value" id="outMargin">—</span>
+          </div>
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Cost per unit is $4.50, you sell at $12.00 each, and you move 80 units with a 10% promotion on the line. Gross line is $960.00, discount is $96.00, net revenue is $864.00, total cost is $360.00, so profit is $504.00 and margin on net revenue is about 58.3%.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">Gross line revenue is selling price × quantity. The discount percent reduces that amount to get net revenue. Total cost is cost per unit × quantity. Profit is net revenue minus total cost. Margin divides profit by net revenue (zero if there is no net revenue).</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Before you widen a discount, compare profit and margin at a few price and discount levels. Small changes in price or discount often move profit more than another marketing push.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="../break-even/index.html">Break-even Calculator</a> for fixed and variable costs, or <a href="../../index.html">back to the Small Business calculator list</a>.</p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      function parsePositiveNum(el, allowZero) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0) return { negative: true };
+        if (!allowZero && n === 0) return { zero: true };
+        return { value: n };
+      }
+
+      function parseQtyAny(el) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { empty: true };
+        var n = parseFloat(v.replace(/,/g, ''));
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0) return { negative: true };
+        if (n === 0) return { zero: true };
+        return { value: n };
+      }
+
+      function parsePercent(el) {
+        var v = el && el.value != null ? String(el.value).trim() : '';
+        if (v === '') return { value: 0 };
+        var n = parseFloat(v);
+        if (Number.isNaN(n)) return { invalid: true };
+        if (n < 0 || n > 100) return { range: true };
+        return { value: n };
+      }
+
+      function money(n) {
+        var cur = document.getElementById('currency').value || 'RON';
+        try {
+          return new Intl.NumberFormat(undefined, { style: 'currency', currency: cur, minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+        } catch (e) {
+          return cur + ' ' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+      }
+
+      function pct(n) {
+        return n.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 }) + '%';
+      }
+
+      function setValidation(msg, show) {
+        var box = document.getElementById('validationMessage');
+        box.textContent = msg || '';
+        box.hidden = !show;
+        box.style.display = show ? 'block' : 'none';
+      }
+
+      function interpret(profit, marginPct, netRev) {
+        var el = document.getElementById('interpretation');
+        if (!profit && profit !== 0) {
+          el.hidden = true;
+          return;
+        }
+        var text;
+        if (netRev <= 0) {
+          text = 'Net revenue is zero or negative after discount, so margin is not meaningful for this line.';
+        } else if (profit < 0) {
+          text = 'This line loses money at these numbers—raise price, lower cost, reduce discount, or sell more units elsewhere.';
+        } else if (marginPct < 10) {
+          text = 'Margin is tight on net revenue; watch fixed costs and shocks to cost or price.';
+        } else {
+          text = 'This line is profitable on these inputs; use the margin to compare with other products or channels.';
+        }
+        el.textContent = text;
+        el.hidden = false;
+      }
+
+      function compute() {
+        var c = document.getElementById('cost');
+        var cper = document.getElementById('costPer');
+        var p = document.getElementById('price');
+        var pper = document.getElementById('pricePer');
+        var q = document.getElementById('quantity');
+        var d = document.getElementById('discount');
+
+        var rc = parsePositiveNum(c, true);
+        if (rc.empty) return { ok: false, message: 'Enter cost.' };
+        if (rc.invalid || rc.negative) return { ok: false, message: 'Cost must be a valid number that is not negative.' };
+
+        var rcp = parsePositiveNum(cper, true);
+        if (rcp.empty) return { ok: false, message: 'Enter cost per.' };
+        if (rcp.invalid || rcp.negative) return { ok: false, message: '"Cost per" must be a valid number that is not negative.' };
+        if (rcp.value === 0) return { ok: false, message: '"Cost per" must be greater than zero.' };
+
+        var rp = parsePositiveNum(p, true);
+        if (rp.empty) return { ok: false, message: 'Enter price.' };
+        if (rp.invalid || rp.negative) return { ok: false, message: 'Price must be a valid number that is not negative.' };
+
+        var rpp = parsePositiveNum(pper, true);
+        if (rpp.empty) return { ok: false, message: 'Enter price per.' };
+        if (rpp.invalid || rpp.negative) return { ok: false, message: '"Price per" must be a valid number that is not negative.' };
+        if (rpp.value === 0) return { ok: false, message: '"Price per" must be greater than zero.' };
+
+        var rq = parseQtyAny(q);
+        if (rq.empty) return { ok: false, message: 'Enter quantity.' };
+        if (rq.invalid || rq.negative) return { ok: false, message: 'Quantity must be a valid number that is not negative.' };
+        if (rq.zero) return { ok: false, message: 'Quantity must be greater than zero.' };
+
+        var rd = parsePercent(d);
+        if (rd.invalid) return { ok: false, message: 'Discount must be a valid number.' };
+        if (rd.range) return { ok: false, message: 'Discount must be between 0 and 100 percent.' };
+
+        var costPerUnit = rc.value / rcp.value;
+        var pricePerUnit = rp.value / rpp.value;
+        var qty = rq.value;
+        var discPct = rd.value;
+
+        var grossLine = pricePerUnit * qty;
+        var discountAmt = grossLine * (discPct / 100);
+        var revenue = grossLine - discountAmt;
+        var totalCost = costPerUnit * qty;
+        var profit = revenue - totalCost;
+        var marginPct = revenue > 0 ? (profit / revenue) * 100 : 0;
+
+        return {
+          ok: true,
+          message: '',
+          profit: profit,
+          netRev: revenue,
+          totalCost: totalCost,
+          discountAmt: discountAmt,
+          marginPct: marginPct,
+        };
+      }
+
+      function render(out) {
+        document.getElementById('outProfit').textContent = money(out.profit);
+        document.getElementById('outProfit').classList.toggle('negative', out.profit < 0);
+        document.getElementById('outNetRev').textContent = money(out.netRev);
+        document.getElementById('outTotalCost').textContent = money(out.totalCost);
+        document.getElementById('outDiscountAmt').textContent = money(out.discountAmt || 0);
+        document.getElementById('outMargin').textContent = out.netRev > 0 ? pct(out.marginPct) : '—';
+        document.getElementById('totalCost').value = money(out.totalCost);
+        document.getElementById('revenue').value = money(out.netRev);
+        document.getElementById('totalProfit').value = money(out.profit);
+        interpret(out.profit, out.marginPct, out.netRev);
+      }
+
+      function reset() {
+        ['cost', 'costPer', 'price', 'pricePer', 'quantity', 'discount'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = (id === 'discount' ? '0' : (id === 'costPer' || id === 'pricePer' ? '1' : ''));
+        });
+        ['totalCost', 'revenue', 'totalProfit'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('outProfit').textContent = '—';
+        document.getElementById('outProfit').classList.remove('negative');
+        document.getElementById('outNetRev').textContent = '—';
+        document.getElementById('outTotalCost').textContent = '—';
+        document.getElementById('outDiscountAmt').textContent = '—';
+        document.getElementById('outMargin').textContent = '—';
+        document.getElementById('interpretation').textContent = '';
+        document.getElementById('interpretation').hidden = true;
+        setValidation('', false);
+      }
+
+      document.getElementById('calculateBtn').addEventListener('click', function () {
+        var r = compute();
+        if (!r.ok) {
+          setValidation(r.message, true);
+          return;
+        }
+        setValidation('', false);
+        render(r);
+      });
+
+      document.getElementById('resetBtn').addEventListener('click', reset);
+
+      reset();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+/* Actual cash value calculator — small overrides on top of tool-system.css */
+
+body.vendora-tool .business-tip {
+  border-color: rgba(0, 208, 132, 0.22);
+  background: linear-gradient(135deg, rgba(0, 208, 132, 0.08), rgba(255, 255, 255, 0.02)), var(--panel);
+}
+
+body.vendora-tool .input-inline {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+body.vendora-tool .input-inline input,
+body.vendora-tool .input-inline select {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+body.vendora-tool .currency-select {
+  flex: 0 0 140px;
+  max-width: 140px;
+}
+
+body.vendora-tool select.currency-select {
+  background: rgba(15, 23, 42, 0.75);
+  color: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+body.vendora-tool select.currency-select option {
+  background: #0b1220;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+@media (max-width: 520px) {
+  body.vendora-tool .input-inline {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  body.vendora-tool .currency-select {
+    flex: 0 0 auto;
+    max-width: none;
+    width: 100%;
+  }
+}
+

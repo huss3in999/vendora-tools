@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+<title>Timesheet Hours Calculator — Mon–Fri Sum &amp; Overtime | Vendora</title>
+<meta name="description" content="Sum daily hours for a workweek and flag hours beyond 40 for simple overtime math.">
+<link rel="canonical" href="https://getvendora.net/calculators/hours-worked-timesheet/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Timesheet Hours Calculator — Mon–Fri Sum &amp; Overtime">
+<meta property="og:description" content="Sum daily hours for a workweek and flag hours beyond 40 for simple overtime math.">
+<meta property="og:url" content="https://getvendora.net/calculators/hours-worked-timesheet/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Timesheet Hours Calculator — Mon–Fri Sum &amp; Overtime | Vendora">
+<meta name="twitter:description" content="Sum daily hours for a workweek and flag hours beyond 40 for simple overtime math.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does this follow labor law?","acceptedAnswer":{"@type":"Answer","text":"No. Payroll law varies by jurisdiction and contract."}},{"@type":"Question","name":"Daily overtime?","acceptedAnswer":{"@type":"Answer","text":"Some regions require OT after 8h/day; this model uses a weekly 40h example only."}},{"@type":"Question","name":"Decimal hours?","acceptedAnswer":{"@type":"Answer","text":"Enter 7.5 for 7h30m if the form expects decimals."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Time &amp; Date</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Hours Worked / Timesheet</h1>
+      <p class="text-sm text-vendora-muted mb-6">Mon–Fri in/out (24h), weekly total + &gt;40 OT.</p>
+      <div class="space-y-2 text-sm" id="rows"></div>
+<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Sum week</button>
+      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+      
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Hours Worked / Timesheet</h2>
+      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+          <p>Adds time entries and compares to a 40-hour threshold.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+          <p>Enter hours or clock ranges per weekday as the form allows.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Weekly total = sum of daily hours; OT = max(0, total − 40) if using 40h rule.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+          <p>8+8+8+8+10 = 42 → 2 overtime hours under a simple rule.</p>
+        </div>
+        <div>
+          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+          <div class="space-y-3">
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Does this follow labor law?</p>
+        <p class="text-sm text-vendora-muted mt-1">No. Payroll law varies by jurisdiction and contract.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Daily overtime?</p>
+        <p class="text-sm text-vendora-muted mt-1">Some regions require OT after 8h/day; this model uses a weekly 40h example only.</p>
+      </div>
+      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+        <p class="text-sm font-medium text-vendora-text">Decimal hours?</p>
+        <p class="text-sm text-vendora-muted mt-1">Enter 7.5 for 7h30m if the form expects decimals.</p>
+      </div></div>
+        </div>
+      </div>
+    </section>
+    </main>
+  </div>
+<script>
+const days=['Mon','Tue','Wed','Thu','Fri'];const rows=document.getElementById('rows');days.forEach(d=>{const div=document.createElement('div');div.className='flex gap-2 items-center flex-wrap';div.innerHTML='<span class="w-10">'+d+'</span><input type="time" class="border rounded px-1 in" value="09:00"><input type="time" class="border rounded px-1 out" value="17:00">';rows.appendChild(div);});
+function mins(t){const[p,h]=t.split(':').map(Number);return p*60+h;}
+function run(){let total=0;document.querySelectorAll('#rows > div').forEach(div=>{const ins=div.querySelector('.in').value,ous=div.querySelector('.out').value;let d=mins(ous)-mins(ins);if(d<0)d+=24*60;total+=d;});const h=total/60,ot=Math.max(0,h-40);document.getElementById('out').textContent='Total: '+h.toFixed(2)+' h\nOT (>40): '+ot.toFixed(2)+' h';}
+document.getElementById('go').addEventListener('click',run);run();
+</script>
+</body>
+</html>

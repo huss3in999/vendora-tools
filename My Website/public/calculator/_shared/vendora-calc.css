@@ -1,0 +1,53 @@
+/* Shared styles for /calculator/<category>/<slug>/ pages */
+body.vendora-tool .field-grid.calculator-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem 1.25rem;
+}
+
+body.vendora-tool .input-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+body.vendora-tool select.currency-select-global {
+  flex: 0 1 200px;
+  max-width: min(100%, 220px);
+  min-width: 0;
+  padding: 0.45rem 0.55rem;
+  border-radius: var(--radius-md, 16px);
+  border: 1px solid var(--input-border, rgba(255, 255, 255, 0.1));
+  background: var(--input-bg, rgba(255, 255, 255, 0.04));
+  color: var(--text, #f4f7f6);
+  font-size: 0.9rem;
+}
+
+body.vendora-tool select.currency-select-global option {
+  background: #0b1a30;
+  color: #f4f7f6;
+}
+
+body.vendora-tool .btn-copy {
+  margin-top: 0.5rem;
+}
+
+body.vendora-tool ul.related-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--muted, #9fb1c9);
+}
+
+body.vendora-tool ul.related-list a {
+  color: var(--brand, #00d084);
+  font-weight: 600;
+}
+
+@media (max-width: 520px) {
+  body.vendora-tool select.currency-select-global {
+    flex: 1 1 100%;
+    max-width: none;
+  }
+}
