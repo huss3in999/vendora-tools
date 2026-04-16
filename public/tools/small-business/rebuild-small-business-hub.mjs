@@ -285,10 +285,41 @@ function emitIndex(tools) {
     .sb-cat-block { margin-bottom: 2.25rem; scroll-margin-top: 7rem; }
     .sb-cat-block--hidden { display: none !important; }
     .sb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 1rem; }
-    .sb-card { padding: 1.15rem 1.2rem; border-radius: var(--radius-md); border: 1px solid var(--line); background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015)); display: flex; flex-direction: column; gap: 0.65rem; min-height: 9.5rem; }
-    .sb-card-title { margin: 0; font-size: 1.05rem; line-height: 1.35; letter-spacing: -0.02em; }
-    .sb-card-desc { margin: 0; flex: 1; color: var(--muted); font-size: 0.9rem; line-height: 1.55; }
-    .sb-card-cta { align-self: flex-start; margin-top: auto; }
+    main.page-shell .sb-card {
+      padding: 18px 18px 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      min-height: 9.5rem;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      transition: all 0.18s ease;
+    }
+    main.page-shell .sb-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+    }
+    main.page-shell .sb-card-title {
+      margin: 0 0 8px;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.4;
+      letter-spacing: -0.2px;
+    }
+    main.page-shell .sb-card-desc {
+      margin: 0 0 16px;
+      flex: 1 1 auto;
+      min-height: 0;
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.85);
+    }
+    main.page-shell .sb-card-cta {
+      align-self: flex-start;
+      margin-top: 12px;
+    }
     .sb-card--hidden { display: none !important; }
     .sb-empty { text-align: center; padding: 2rem 1rem; color: var(--muted); border-radius: var(--radius-md); border: 1px dashed var(--line); margin-top: 0.5rem; }
     .sb-empty[hidden] { display: none !important; }
