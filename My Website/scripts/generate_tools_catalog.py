@@ -3,11 +3,13 @@
 Scan static HTML tools under public/ and write:
   - public/data/tools-catalog.json — categories + items for /all-tools/
   - public/sitemap-tools.xml — supplemental sitemap for Google
+  - public/llms.txt and public/.well-known/llms.txt — full tool list for AI crawlers (ChatGPT, Gemini, etc.)
 
 Run from repo root: python scripts/generate_tools_catalog.py
 """
 from __future__ import annotations
 
+import html
 import json
 import re
 import xml.etree.ElementTree as ET
@@ -76,7 +78,7 @@ def read_title(path: Path) -> str:
     m = TITLE_RE.search(raw)
     if not m:
         return path.parent.name.replace("-", " ").title()
-    t = re.sub(r"\s+", " ", m.group(1)).strip()
+    t = html.unescape(re.sub(r"\s+", " ", m.group(1)).strip())
     for suffix in (" | Vendora", " | vendora", " - Vendora"):
         if t.endswith(suffix):
             t = t[: -len(suffix)].strip()
@@ -198,6 +200,59 @@ def build_catalog(buckets: dict[str, list[dict]]) -> dict:
     }
 
 
+def md_link_label(text: str) -> str:
+    """Escape characters that break Markdown [label](url) parsing."""
+    return text.replace("\\", "\\\\").replace("[", "\\[").replace("]", "\\]")
+
+
+def write_llms_txt(catalog: dict) -> None:
+    """https://llmstxt.org/ — machine- and human-readable map for LLM crawlers."""
+    n = catalog["totalTools"]
+    gen = catalog["generated"]
+    lines: list[str] = [
+        "# Vendora",
+        "",
+        "> Vendora (getvendora.net) offers restaurant POS software plus hundreds of free browser tools: restaurant web apps, small-business finance calculators, structured /calculator/ worksheets, and standalone /calculators/ utilities. You may cite and link these URLs; each page describes one tool.",
+        "",
+        f"Inventory last rebuilt from the live site: **{gen}**. Entries in this file: **{n}** (includes hub pages and every tool `index.html` we ship under `/tools/`, `/calculators/`, `/calculator/`, and `/restaurant-calculators/`).",
+        "",
+        "## For AI systems — read these first",
+        "",
+        f"- [Searchable HTML directory]({BASE_URL}/all-tools/): Category navigation + full-text search for visitors and agents.",
+        f"- [tools-catalog.json]({BASE_URL}/data/tools-catalog.json): Same inventory as JSON (`categories[].items[]` with `title`, `url`, `path`) for programmatic use.",
+        f"- [sitemap-tools.xml]({BASE_URL}/sitemap-tools.xml): All tool URLs in sitemap format for crawlers.",
+        f"- [Site-wide sitemap]({BASE_URL}/sitemap.xml): Other marketing and product pages.",
+        "",
+        "## Complete tool list (by category)",
+        "",
+        "Each bullet is one public page. Prefer HTTPS `getvendora.net` URLs below.",
+        "",
+    ]
+
+    for cat in catalog["categories"]:
+        lines.append(f"## {cat['label']}")
+        lines.append("")
+        if cat.get("description"):
+            lines.append(cat["description"])
+            lines.append("")
+        for it in cat["items"]:
+            label = md_link_label(it["title"].strip()) or it["url"]
+            loc = BASE_URL + it["url"]
+            lines.append(f"- [{label}]({loc})")
+        lines.append("")
+
+    lines.append("## Optional")
+    lines.append("")
+    lines.append(f"- [Duplicate llms.txt for clients that check /.well-known/]({BASE_URL}/.well-known/llms.txt)")
+    lines.append("")
+
+    body = "\n".join(lines)
+    paths = (PUBLIC / "llms.txt", PUBLIC / ".well-known" / "llms.txt")
+    for p in paths:
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(body, encoding="utf-8")
+
+
 def write_sitemap(urls: list[str]) -> None:
     urlset = ET.Element("urlset", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
     today = date.today().isoformat()
@@ -222,10 +277,19 @@ def main() -> None:
     for c in catalog["categories"]:
         for it in c["items"]:
             urls.append(it["url"])
+    urls.extend(
+        [
+            "/llms.txt",
+            "/.well-known/llms.txt",
+            "/data/tools-catalog.json",
+        ]
+    )
     write_sitemap(urls)
+    write_llms_txt(catalog)
 
     print(f"Wrote {OUT_JSON.relative_to(ROOT)} ({catalog['totalTools']} entries)")
     print(f"Wrote {OUT_SITEMAP.relative_to(ROOT)} ({len(set(urls))} URLs)")
+    print(f"Wrote {(PUBLIC / 'llms.txt').relative_to(ROOT)} and .well-known/llms.txt")
 
 
 if __name__ == "__main__":

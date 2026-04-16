@@ -13,6 +13,18 @@
     <lastmod>2026-04-09</lastmod>
   </url>
   <url>
+    <loc>https://getvendora.net/llms.txt</loc>
+    <lastmod>2026-04-17</lastmod>
+  </url>
+  <url>
+    <loc>https://getvendora.net/.well-known/llms.txt</loc>
+    <lastmod>2026-04-17</lastmod>
+  </url>
+  <url>
+    <loc>https://getvendora.net/data/tools-catalog.json</loc>
+    <lastmod>2026-04-17</lastmod>
+  </url>
+  <url>
     <loc>https://getvendora.net/bahrain-saudi-gcc-transport/</loc>
     <lastmod>2026-04-09</lastmod>
   </url>

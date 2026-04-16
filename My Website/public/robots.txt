@@ -1,6 +1,11 @@
 User-agent: *
 Allow: /
 
+# AI assistants and crawlers: full tool inventory (Markdown) and JSON machine list
+# https://getvendora.net/llms.txt
+# https://getvendora.net/.well-known/llms.txt
+# https://getvendora.net/data/tools-catalog.json
+
 Sitemap: https://getvendora.net/sitemap.xml
 Sitemap: https://getvendora.net/sitemap-tools.xml
 Sitemap: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap.xml

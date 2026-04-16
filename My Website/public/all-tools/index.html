@@ -151,6 +151,7 @@
       <p class="hero-copy">
         Use the search box to filter by name or path. Jump to a category with the chips below.
         Google Analytics (GA4) records a page view for each tool you open, so you can see traffic per URL in your reports — not individual identities.
+        For AI assistants and crawlers, the same inventory is published at <a href="/llms.txt" style="color:var(--brand);font-weight:700;">/llms.txt</a> and <a href="/data/tools-catalog.json" style="color:var(--brand);font-weight:700;">/data/tools-catalog.json</a>.
       </p>
       <div class="stat-row" id="stats-row" aria-live="polite">
         <span class="stat-pill"><strong>…</strong> indexed entries</span>
@@ -166,7 +167,7 @@
     </section>
 
     <p class="muted-note" id="maintainer-note">
-      Developers: after adding or removing tools, run <code style="color:#bfd0e3;">python scripts/generate_tools_catalog.py</code> to refresh <code style="color:#bfd0e3;">/data/tools-catalog.json</code> and <code style="color:#bfd0e3;">/sitemap-tools.xml</code>.
+      Developers: after adding or removing tools, run <code style="color:#bfd0e3;">python scripts/generate_tools_catalog.py</code> to refresh <code style="color:#bfd0e3;">/data/tools-catalog.json</code>, <code style="color:#bfd0e3;">/sitemap-tools.xml</code>, and <code style="color:#bfd0e3;">/llms.txt</code> (for AI crawlers).
     </p>
     <div class="error-box" id="load-error" hidden></div>
     <div id="catalog-root"></div>
