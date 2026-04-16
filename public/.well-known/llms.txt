@@ -420,6 +420,15 @@ CTR, elasticity, averages, and similar.
 - [Rule of 72 calculator](https://getvendora.net/calculator/general/rule-of-72-calculator/)
 - [Weighted average calculator](https://getvendora.net/calculator/general/weighted-average-calculator/)
 
+## Bahrain Saudi GCC transport (Vendora)
+
+Separate Arabic-first transport and parcel mini-site (not mixed with the calculator inventory above).
+
+- [Section llms.txt](https://getvendora.net/bahrain-saudi-gcc-transport/llms.txt): full URL list + sitemap pointers for AI systems.
+- [Well-known mirror](https://getvendora.net/bahrain-saudi-gcc-transport/.well-known/llms.txt): same content for clients that probe `/.well-known/llms.txt` under this path.
+- [Sitemap index](https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-index.xml): submit this URL in Search Console for the whole section.
+- [Home](https://getvendora.net/bahrain-saudi-gcc-transport/)
+
 ## Optional
 
 - [Duplicate llms.txt for clients that check /.well-known/](https://getvendora.net/.well-known/llms.txt)

@@ -242,6 +242,21 @@ def write_llms_txt(catalog: dict) -> None:
             lines.append(f"- [{label}]({loc})")
         lines.append("")
 
+    # GCC transport mini-site (not in tools scan path): explicit for LLM / crawler discovery
+    lines.extend(
+        [
+            "## Bahrain Saudi GCC transport (Vendora)",
+            "",
+            "Separate Arabic-first transport and parcel mini-site (not mixed with the calculator inventory above).",
+            "",
+            f"- [Section llms.txt]({BASE_URL}/bahrain-saudi-gcc-transport/llms.txt): full URL list + sitemap pointers for AI systems.",
+            f"- [Well-known mirror]({BASE_URL}/bahrain-saudi-gcc-transport/.well-known/llms.txt): same content for clients that probe `/.well-known/llms.txt` under this path.",
+            f"- [Sitemap index]({BASE_URL}/bahrain-saudi-gcc-transport/sitemap-index.xml): submit this URL in Search Console for the whole section.",
+            f"- [Home]({BASE_URL}/bahrain-saudi-gcc-transport/)",
+            "",
+        ]
+    )
+
     lines.append("## Optional")
     lines.append("")
     lines.append(f"- [Duplicate llms.txt for clients that check /.well-known/]({BASE_URL}/.well-known/llms.txt)")
