@@ -1,0 +1,1845 @@
+{
+  "generated": "2026-04-17",
+  "baseUrl": "https://getvendora.net",
+  "totalTools": 350,
+  "categories": [
+    {
+      "id": "hubs",
+      "label": "Hubs & directories",
+      "description": "Start here: full hubs that group related tools.",
+      "count": 6,
+      "items": [
+        {
+          "title": "All Vendora Tools — Searchable Directory by Category",
+          "url": "/all-tools/",
+          "path": "all-tools/index.html"
+        },
+        {
+          "title": "Calculators",
+          "url": "/calculator/",
+          "path": "calculator/index.html"
+        },
+        {
+          "title": "Free Online Calculators — Health, Finance, Math, Time &amp; Physics",
+          "url": "/calculators/",
+          "path": "calculators/index.html"
+        },
+        {
+          "title": "Free Restaurant Tools Online | Food Cost, Menu Price, POS &amp; Invoices",
+          "url": "/tools/",
+          "path": "tools/index.html"
+        },
+        {
+          "title": "Restaurant Calculators Free | Food Cost, Menu Price, Margin, Tip &amp; VAT",
+          "url": "/restaurant-calculators/",
+          "path": "restaurant-calculators/index.html"
+        },
+        {
+          "title": "Small Business — calculator manifest",
+          "url": "/tools/small-business/",
+          "path": "tools/small-business/index.html"
+        }
+      ]
+    },
+    {
+      "id": "restaurant-apps",
+      "label": "Restaurant & business web apps",
+      "description": "Interactive tools under /tools/ (invoices, QR menus, AI helpers, and more).",
+      "count": 21,
+      "items": [
+        {
+          "title": "AI Break-Even Date Calculator",
+          "url": "/tools/ai-break-even-date/",
+          "path": "tools/ai-break-even-date/index.html"
+        },
+        {
+          "title": "AI Cash Flow Risk Detector",
+          "url": "/tools/ai-cash-flow-risk-detector/",
+          "path": "tools/ai-cash-flow-risk-detector/index.html"
+        },
+        {
+          "title": "AI Customer Profitability Calculator",
+          "url": "/tools/ai-customer-profitability/",
+          "path": "tools/ai-customer-profitability/index.html"
+        },
+        {
+          "title": "AI Profit Leak Finder for Small Businesses | Free Business Tool",
+          "url": "/tools/ai-profit-leak-finder/",
+          "path": "tools/ai-profit-leak-finder/index.html"
+        },
+        {
+          "title": "AI Sales Trend Analyzer for Small Businesses",
+          "url": "/tools/ai-sales-trend-analyzer/",
+          "path": "tools/ai-sales-trend-analyzer/index.html"
+        },
+        {
+          "title": "Commission Calculator | Sales Commission %, Total Pay &amp; Target Sales",
+          "url": "/tools/commission-calculator/",
+          "path": "tools/commission-calculator/index.html"
+        },
+        {
+          "title": "Daily Sales Summary Tool | Restaurant Revenue, AOV &amp; Sales Mix",
+          "url": "/tools/daily-sales-summary/",
+          "path": "tools/daily-sales-summary/index.html"
+        },
+        {
+          "title": "Delivery Commission Calculator | Uber Eats, DoorDash &amp; App Fee Estimator",
+          "url": "/tools/delivery-commission-calculator/",
+          "path": "tools/delivery-commission-calculator/index.html"
+        },
+        {
+          "title": "Delivery Cost Calculator Free | Route Cost, Margin &amp; Delivery Fee",
+          "url": "/tools/delivery-cost-calculator/",
+          "path": "tools/delivery-cost-calculator/index.html"
+        },
+        {
+          "title": "eBay Fee Calculator | Etsy Fees &amp; Net Profit (2026)",
+          "url": "/tools/ebay-fee-calculator/",
+          "path": "tools/ebay-fee-calculator/index.html"
+        },
+        {
+          "title": "Food Cost Calculator | Recipe &amp; Menu Food Cost % for Restaurants",
+          "url": "/tools/food-cost-calculator/",
+          "path": "tools/food-cost-calculator/index.html"
+        },
+        {
+          "title": "Hourly to Salary Calculator | Convert Hourly Wage &amp; Annual Salary (Free)",
+          "url": "/tools/hourly-to-salary-calculator/",
+          "path": "tools/hourly-to-salary-calculator/index.html"
+        },
+        {
+          "title": "Menu Price Calculator | Menu Pricing, Food Cost &amp; Margin for Restaurants",
+          "url": "/tools/menu-price-calculator/",
+          "path": "tools/menu-price-calculator/index.html"
+        },
+        {
+          "title": "No Tax on Overtime Calculator | 2026 State Paycheck &amp; Take-Home Pay",
+          "url": "/tools/no-tax-on-overtime-calculator/",
+          "path": "tools/no-tax-on-overtime-calculator/index.html"
+        },
+        {
+          "title": "Offline Inventory Dashboard | Excel Import, Stock History &amp; Reports",
+          "url": "/tools/inventory-tracker/",
+          "path": "tools/inventory-tracker/index.html"
+        },
+        {
+          "title": "Purchase Order Generator Free Online | PO Maker &amp; Printable PO",
+          "url": "/tools/purchase-order-generator/",
+          "path": "tools/purchase-order-generator/index.html"
+        },
+        {
+          "title": "QR Menu Generator Free | Restaurant QR Code Digital Menu",
+          "url": "/tools/qr-menu-generator/",
+          "path": "tools/qr-menu-generator/index.html"
+        },
+        {
+          "title": "Receipt Generator Free Online | Restaurant &amp; Payment Receipt Maker",
+          "url": "/tools/receipt-generator/",
+          "path": "tools/receipt-generator/index.html"
+        },
+        {
+          "title": "Restaurant Invoice Generator Free Online | Catering &amp; Food Business Invoices",
+          "url": "/tools/invoice-generator/",
+          "path": "tools/invoice-generator/index.html"
+        },
+        {
+          "title": "Shift Scheduler Free Online | Weekly View &amp; Conflict Detection",
+          "url": "/tools/shift-scheduler/",
+          "path": "tools/shift-scheduler/index.html"
+        },
+        {
+          "title": "Work Hours &amp; Overtime Tracker | FLSA &amp; State Daily OT (Free)",
+          "url": "/tools/work-hours-overtime-tracker/",
+          "path": "tools/work-hours-overtime-tracker/index.html"
+        }
+      ]
+    },
+    {
+      "id": "smb-calculators",
+      "label": "Small business finance calculators",
+      "description": "Worksheets under /tools/small-business/calculators/ (this list is rebuilt from disk).",
+      "count": 161,
+      "items": [
+        {
+          "title": "3D Printer Buy vs Outsource Calculator | Small Business",
+          "url": "/tools/small-business/calculators/3d-printer-buy-vs-outsource/",
+          "path": "tools/small-business/calculators/3d-printer-buy-vs-outsource/index.html"
+        },
+        {
+          "title": "Accounting Profit Calculator for Small Business",
+          "url": "/tools/small-business/calculators/accounting-profit/",
+          "path": "tools/small-business/calculators/accounting-profit/index.html"
+        },
+        {
+          "title": "Accumulated Depreciation Calculator for Small Business",
+          "url": "/tools/small-business/calculators/accumulated-depreciation/",
+          "path": "tools/small-business/calculators/accumulated-depreciation/index.html"
+        },
+        {
+          "title": "Actual Cash Value Calculator | Small Business",
+          "url": "/tools/small-business/calculators/actual-cash-value/",
+          "path": "tools/small-business/calculators/actual-cash-value/index.html"
+        },
+        {
+          "title": "After-tax Cost of Debt Calculator | Small Business",
+          "url": "/tools/small-business/calculators/after-tax-cost-of-debt/",
+          "path": "tools/small-business/calculators/after-tax-cost-of-debt/index.html"
+        },
+        {
+          "title": "Amortization Calculator | Small Business",
+          "url": "/tools/small-business/calculators/amortization/",
+          "path": "tools/small-business/calculators/amortization/index.html"
+        },
+        {
+          "title": "Average Fixed Cost Calculator | Small Business",
+          "url": "/tools/small-business/calculators/average-fixed-cost/",
+          "path": "tools/small-business/calculators/average-fixed-cost/index.html"
+        },
+        {
+          "title": "Bond Price Calculator | Small Business",
+          "url": "/tools/small-business/calculators/bond-price/",
+          "path": "tools/small-business/calculators/bond-price/index.html"
+        },
+        {
+          "title": "Break-even Calculator for Small Business",
+          "url": "/tools/small-business/calculators/break-even/",
+          "path": "tools/small-business/calculators/break-even/index.html"
+        },
+        {
+          "title": "Budget Calculator | Small Business",
+          "url": "/tools/small-business/calculators/budget/",
+          "path": "tools/small-business/calculators/budget/index.html"
+        },
+        {
+          "title": "Build vs. Buy Calculator | Small Business",
+          "url": "/tools/small-business/calculators/build-or-buy/",
+          "path": "tools/small-business/calculators/build-or-buy/index.html"
+        },
+        {
+          "title": "Burn Rate Calculator | Small Business",
+          "url": "/tools/small-business/calculators/burn-rate/",
+          "path": "tools/small-business/calculators/burn-rate/index.html"
+        },
+        {
+          "title": "Burndown Chart Calculator | Small Business",
+          "url": "/tools/small-business/calculators/burndown-chart/",
+          "path": "tools/small-business/calculators/burndown-chart/index.html"
+        },
+        {
+          "title": "Business Budget Calculator | Small Business",
+          "url": "/tools/small-business/calculators/business-budget/",
+          "path": "tools/small-business/calculators/business-budget/index.html"
+        },
+        {
+          "title": "Business Loan Calculator | Small Business",
+          "url": "/tools/small-business/calculators/business-loan/",
+          "path": "tools/small-business/calculators/business-loan/index.html"
+        },
+        {
+          "title": "Business Valuation Calculator | Small Business",
+          "url": "/tools/small-business/calculators/business-valuation/",
+          "path": "tools/small-business/calculators/business-valuation/index.html"
+        },
+        {
+          "title": "California Sales Tax Calculator | Small Business",
+          "url": "/tools/small-business/calculators/california-sales-tax/",
+          "path": "tools/small-business/calculators/california-sales-tax/index.html"
+        },
+        {
+          "title": "Car Depreciation Calculator | Small Business",
+          "url": "/tools/small-business/calculators/car-depreciation/",
+          "path": "tools/small-business/calculators/car-depreciation/index.html"
+        },
+        {
+          "title": "Cash Conversion Cycle Calculator | Small Business",
+          "url": "/tools/small-business/calculators/cash-conversion-cycle/",
+          "path": "tools/small-business/calculators/cash-conversion-cycle/index.html"
+        },
+        {
+          "title": "Cash Flow to Debt Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/cash-flow-to-debt/",
+          "path": "tools/small-business/calculators/cash-flow-to-debt/index.html"
+        },
+        {
+          "title": "Cash Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/cash-ratio/",
+          "path": "tools/small-business/calculators/cash-ratio/index.html"
+        },
+        {
+          "title": "Churn Rate Calculator | Small Business",
+          "url": "/tools/small-business/calculators/churn-rate/",
+          "path": "tools/small-business/calculators/churn-rate/index.html"
+        },
+        {
+          "title": "Commission Calculator | Small Business",
+          "url": "/tools/small-business/calculators/commission/",
+          "path": "tools/small-business/calculators/commission/index.html"
+        },
+        {
+          "title": "Contribution Margin Calculator for Small Business",
+          "url": "/tools/small-business/calculators/contribution-margin/",
+          "path": "tools/small-business/calculators/contribution-margin/index.html"
+        },
+        {
+          "title": "Conversion Rate Calculator | Small Business",
+          "url": "/tools/small-business/calculators/online-marketing-roi/",
+          "path": "tools/small-business/calculators/online-marketing-roi/index.html"
+        },
+        {
+          "title": "Cost of Capital Calculator | Small Business",
+          "url": "/tools/small-business/calculators/cost-of-capital/",
+          "path": "tools/small-business/calculators/cost-of-capital/index.html"
+        },
+        {
+          "title": "Cost of Doing Business Calculator | Small Business",
+          "url": "/tools/small-business/calculators/cost-of-doing-business/",
+          "path": "tools/small-business/calculators/cost-of-doing-business/index.html"
+        },
+        {
+          "title": "Cost of Equity Calculator | Small Business",
+          "url": "/tools/small-business/calculators/cost-of-equity/",
+          "path": "tools/small-business/calculators/cost-of-equity/index.html"
+        },
+        {
+          "title": "Cost of Goods Sold (COGS) Calculator | Small Business",
+          "url": "/tools/small-business/calculators/cogs/",
+          "path": "tools/small-business/calculators/cogs/index.html"
+        },
+        {
+          "title": "CPA Calculator — Cost per Acquisition | Small Business",
+          "url": "/tools/small-business/calculators/cpa/",
+          "path": "tools/small-business/calculators/cpa/index.html"
+        },
+        {
+          "title": "CPC and CPM Calculator | Small Business",
+          "url": "/tools/small-business/calculators/cpc-cpm/",
+          "path": "tools/small-business/calculators/cpc-cpm/index.html"
+        },
+        {
+          "title": "CPM Calculator | Small Business",
+          "url": "/tools/small-business/calculators/cpm/",
+          "path": "tools/small-business/calculators/cpm/index.html"
+        },
+        {
+          "title": "Cross Price Elasticity Calculator | Small Business",
+          "url": "/tools/small-business/calculators/cross-price-elasticity/",
+          "path": "tools/small-business/calculators/cross-price-elasticity/index.html"
+        },
+        {
+          "title": "Deadweight Loss Calculator | Small Business",
+          "url": "/tools/small-business/calculators/deadweight-loss/",
+          "path": "tools/small-business/calculators/deadweight-loss/index.html"
+        },
+        {
+          "title": "Debt Avalanche Calculator | Small Business",
+          "url": "/tools/small-business/calculators/debt-avalanche/",
+          "path": "tools/small-business/calculators/debt-avalanche/index.html"
+        },
+        {
+          "title": "Debt Calculator | Small Business",
+          "url": "/tools/small-business/calculators/debt/",
+          "path": "tools/small-business/calculators/debt/index.html"
+        },
+        {
+          "title": "Debt Consolidation Calculator | Small Business",
+          "url": "/tools/small-business/calculators/debt-consolidation/",
+          "path": "tools/small-business/calculators/debt-consolidation/index.html"
+        },
+        {
+          "title": "Debt Payoff Calculator | Small Business",
+          "url": "/tools/small-business/calculators/debt-payoff/",
+          "path": "tools/small-business/calculators/debt-payoff/index.html"
+        },
+        {
+          "title": "Debt Payoff Calculator | Small Business",
+          "url": "/tools/small-business/calculators/debt-snowball/",
+          "path": "tools/small-business/calculators/debt-snowball/index.html"
+        },
+        {
+          "title": "Debt to Asset Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/debt-to-asset/",
+          "path": "tools/small-business/calculators/debt-to-asset/index.html"
+        },
+        {
+          "title": "Debt to Equity Calculator | Small Business",
+          "url": "/tools/small-business/calculators/debt-to-equity/",
+          "path": "tools/small-business/calculators/debt-to-equity/index.html"
+        },
+        {
+          "title": "Debt-to-Capital Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/debt-to-capital/",
+          "path": "tools/small-business/calculators/debt-to-capital/index.html"
+        },
+        {
+          "title": "Deferred Payment Loan Calculator | Small Business",
+          "url": "/tools/small-business/calculators/deferred-payment-loan/",
+          "path": "tools/small-business/calculators/deferred-payment-loan/index.html"
+        },
+        {
+          "title": "Degree of Operating Leverage Calculator | Small Business",
+          "url": "/tools/small-business/calculators/degree-of-operating-leverage/",
+          "path": "tools/small-business/calculators/degree-of-operating-leverage/index.html"
+        },
+        {
+          "title": "Depreciation Calculator | Small Business",
+          "url": "/tools/small-business/calculators/depreciation/",
+          "path": "tools/small-business/calculators/depreciation/index.html"
+        },
+        {
+          "title": "DIO Calculator | Small Business",
+          "url": "/tools/small-business/calculators/days-inventory-outstanding/",
+          "path": "tools/small-business/calculators/days-inventory-outstanding/index.html"
+        },
+        {
+          "title": "Direct Material Price Variance Calculator | Small Business",
+          "url": "/tools/small-business/calculators/direct-material-price-variance/",
+          "path": "tools/small-business/calculators/direct-material-price-variance/index.html"
+        },
+        {
+          "title": "Discount Calculator | Small Business",
+          "url": "/tools/small-business/calculators/discount/",
+          "path": "tools/small-business/calculators/discount/index.html"
+        },
+        {
+          "title": "Discount Rate Calculator | Small Business",
+          "url": "/tools/small-business/calculators/discount-rate/",
+          "path": "tools/small-business/calculators/discount-rate/index.html"
+        },
+        {
+          "title": "Discounted Cash Flow Calculator (DCF) | Small Business",
+          "url": "/tools/small-business/calculators/dcf/",
+          "path": "tools/small-business/calculators/dcf/index.html"
+        },
+        {
+          "title": "Dividend Discount Model Calculator | Small Business",
+          "url": "/tools/small-business/calculators/divdend-discount-model/",
+          "path": "tools/small-business/calculators/divdend-discount-model/index.html"
+        },
+        {
+          "title": "Double Discount Calculator | Small Business",
+          "url": "/tools/small-business/calculators/double-discount/",
+          "path": "tools/small-business/calculators/double-discount/index.html"
+        },
+        {
+          "title": "DSO Calculator | Small Business",
+          "url": "/tools/small-business/calculators/days-sales-outstanding/",
+          "path": "tools/small-business/calculators/days-sales-outstanding/index.html"
+        },
+        {
+          "title": "EBIT Calculator | Small Business",
+          "url": "/tools/small-business/calculators/ebit/",
+          "path": "tools/small-business/calculators/ebit/index.html"
+        },
+        {
+          "title": "EBITDA Calculator | Small Business",
+          "url": "/tools/small-business/calculators/ebitda/",
+          "path": "tools/small-business/calculators/ebitda/index.html"
+        },
+        {
+          "title": "EBITDA Margin Calculator for Small Business",
+          "url": "/tools/small-business/calculators/ebitda-margin/",
+          "path": "tools/small-business/calculators/ebitda-margin/index.html"
+        },
+        {
+          "title": "EBITDA Multiple Calculator | Small Business",
+          "url": "/tools/small-business/calculators/ebitda-multiple/",
+          "path": "tools/small-business/calculators/ebitda-multiple/index.html"
+        },
+        {
+          "title": "Economic Injury Disaster Loan Emergency Advance (EIDL) | Small Business",
+          "url": "/tools/small-business/calculators/economic-injury-disaster-loan/",
+          "path": "tools/small-business/calculators/economic-injury-disaster-loan/index.html"
+        },
+        {
+          "title": "Economic Profit Calculator | Small Business",
+          "url": "/tools/small-business/calculators/economic-profit/",
+          "path": "tools/small-business/calculators/economic-profit/index.html"
+        },
+        {
+          "title": "Ending Inventory Calculator | Small Business",
+          "url": "/tools/small-business/calculators/ending-inventory/",
+          "path": "tools/small-business/calculators/ending-inventory/index.html"
+        },
+        {
+          "title": "EV to Sales Calculator — Enterprise Value to Sales | Small Business",
+          "url": "/tools/small-business/calculators/ev-to-sales/",
+          "path": "tools/small-business/calculators/ev-to-sales/index.html"
+        },
+        {
+          "title": "Expense Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/expense-ratio/",
+          "path": "tools/small-business/calculators/expense-ratio/index.html"
+        },
+        {
+          "title": "FCFE Calculator | Small Business",
+          "url": "/tools/small-business/calculators/free-cash-flow-to-equity/",
+          "path": "tools/small-business/calculators/free-cash-flow-to-equity/index.html"
+        },
+        {
+          "title": "FCFF Calculator — Free Cash Flow to Firm | Small Business",
+          "url": "/tools/small-business/calculators/free-cash-flow-to-firm/",
+          "path": "tools/small-business/calculators/free-cash-flow-to-firm/index.html"
+        },
+        {
+          "title": "FIFO Calculator for Inventory | Small Business",
+          "url": "/tools/small-business/calculators/fifo-for-inventories/",
+          "path": "tools/small-business/calculators/fifo-for-inventories/index.html"
+        },
+        {
+          "title": "Financial Leverage Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/financial-leverage-ratio/",
+          "path": "tools/small-business/calculators/financial-leverage-ratio/index.html"
+        },
+        {
+          "title": "Fixed Asset Turnover Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/fixed-asset-turnover/",
+          "path": "tools/small-business/calculators/fixed-asset-turnover/index.html"
+        },
+        {
+          "title": "Florida Sales Tax Calculator | Small Business",
+          "url": "/tools/small-business/calculators/florida-sales-tax/",
+          "path": "tools/small-business/calculators/florida-sales-tax/index.html"
+        },
+        {
+          "title": "Free Cash Flow Calculator | Small Business",
+          "url": "/tools/small-business/calculators/free-cash-flow/",
+          "path": "tools/small-business/calculators/free-cash-flow/index.html"
+        },
+        {
+          "title": "Futures Contracts Calculator | Small Business",
+          "url": "/tools/small-business/calculators/futures-contract/",
+          "path": "tools/small-business/calculators/futures-contract/index.html"
+        },
+        {
+          "title": "GMROI Calculator — Gross Margin Return on Investment | Small Business",
+          "url": "/tools/small-business/calculators/gmroi/",
+          "path": "tools/small-business/calculators/gmroi/index.html"
+        },
+        {
+          "title": "Gross Margin Calculator for Small Business",
+          "url": "/tools/small-business/calculators/gross-margin/",
+          "path": "tools/small-business/calculators/gross-margin/index.html"
+        },
+        {
+          "title": "Gross Rent Multiplier Calculator | Small Business",
+          "url": "/tools/small-business/calculators/gross-rent-multiplier/",
+          "path": "tools/small-business/calculators/gross-rent-multiplier/index.html"
+        },
+        {
+          "title": "Gross to Net Calculator | Small Business",
+          "url": "/tools/small-business/calculators/gross-to-net/",
+          "path": "tools/small-business/calculators/gross-to-net/index.html"
+        },
+        {
+          "title": "Home Improvement Loan Calculator | Small Business",
+          "url": "/tools/small-business/calculators/home-improvement-loan/",
+          "path": "tools/small-business/calculators/home-improvement-loan/index.html"
+        },
+        {
+          "title": "HR Software ROI Calculator | Small Business",
+          "url": "/tools/small-business/calculators/hr-software-roi/",
+          "path": "tools/small-business/calculators/hr-software-roi/index.html"
+        },
+        {
+          "title": "Income Elasticity of Demand Calculator | Small Business",
+          "url": "/tools/small-business/calculators/income-elasticity-demand/",
+          "path": "tools/small-business/calculators/income-elasticity-demand/index.html"
+        },
+        {
+          "title": "Interest Coverage Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/interest-coverage-ratio/",
+          "path": "tools/small-business/calculators/interest-coverage-ratio/index.html"
+        },
+        {
+          "title": "Inventory Turnover Calculator for Small Business",
+          "url": "/tools/small-business/calculators/inventory-turnover/",
+          "path": "tools/small-business/calculators/inventory-turnover/index.html"
+        },
+        {
+          "title": "Labor Cost Calculator for Small Business",
+          "url": "/tools/small-business/calculators/labor-cost/",
+          "path": "tools/small-business/calculators/labor-cost/index.html"
+        },
+        {
+          "title": "Levered Free Cash Flow Calculator | Small Business",
+          "url": "/tools/small-business/calculators/levered-free-cash-flow/",
+          "path": "tools/small-business/calculators/levered-free-cash-flow/index.html"
+        },
+        {
+          "title": "Loan Balance Calculator | Small Business",
+          "url": "/tools/small-business/calculators/loan-balance/",
+          "path": "tools/small-business/calculators/loan-balance/index.html"
+        },
+        {
+          "title": "Loan Calculator | Small Business",
+          "url": "/tools/small-business/calculators/loan-comparison/",
+          "path": "tools/small-business/calculators/loan-comparison/index.html"
+        },
+        {
+          "title": "Loan Calculator | Small Business",
+          "url": "/tools/small-business/calculators/loan/",
+          "path": "tools/small-business/calculators/loan/index.html"
+        },
+        {
+          "title": "Loan Interest Calculator | Small Business",
+          "url": "/tools/small-business/calculators/loan-interest/",
+          "path": "tools/small-business/calculators/loan-interest/index.html"
+        },
+        {
+          "title": "Loan Payment Calculator | Small Business",
+          "url": "/tools/small-business/calculators/loan-payment/",
+          "path": "tools/small-business/calculators/loan-payment/index.html"
+        },
+        {
+          "title": "Loan Repayment Calculator | Loan Payoff Calculator | Small Business",
+          "url": "/tools/small-business/calculators/loan-repayment/",
+          "path": "tools/small-business/calculators/loan-repayment/index.html"
+        },
+        {
+          "title": "Loss Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/loss-ratio/",
+          "path": "tools/small-business/calculators/loss-ratio/index.html"
+        },
+        {
+          "title": "LTV Calculator — Loan to Value | Small Business",
+          "url": "/tools/small-business/calculators/ltv/",
+          "path": "tools/small-business/calculators/ltv/index.html"
+        },
+        {
+          "title": "Margin and Markup Calculator | Small Business",
+          "url": "/tools/small-business/calculators/margin-2-sets/",
+          "path": "tools/small-business/calculators/margin-2-sets/index.html"
+        },
+        {
+          "title": "Margin and Sales Tax Calculator | Small Business",
+          "url": "/tools/small-business/calculators/margin-sales-tax/",
+          "path": "tools/small-business/calculators/margin-sales-tax/index.html"
+        },
+        {
+          "title": "Margin and VAT Calculator | Small Business",
+          "url": "/tools/small-business/calculators/margin-and-vat/",
+          "path": "tools/small-business/calculators/margin-and-vat/index.html"
+        },
+        {
+          "title": "Margin Calculator | Small Business",
+          "url": "/tools/small-business/calculators/margin/",
+          "path": "tools/small-business/calculators/margin/index.html"
+        },
+        {
+          "title": "Margin Interest Calculator | Small Business",
+          "url": "/tools/small-business/calculators/margin-interest/",
+          "path": "tools/small-business/calculators/margin-interest/index.html"
+        },
+        {
+          "title": "Margin of Safety Calculator | Small Business",
+          "url": "/tools/small-business/calculators/margin-of-safety/",
+          "path": "tools/small-business/calculators/margin-of-safety/index.html"
+        },
+        {
+          "title": "Margin With Discount Calculator | Small Business",
+          "url": "/tools/small-business/calculators/margin-discount/",
+          "path": "tools/small-business/calculators/margin-discount/index.html"
+        },
+        {
+          "title": "Marginal Cost Calculator | Small Business",
+          "url": "/tools/small-business/calculators/marginal-cost/",
+          "path": "tools/small-business/calculators/marginal-cost/index.html"
+        },
+        {
+          "title": "Marginal Revenue Calculator | Small Business",
+          "url": "/tools/small-business/calculators/marginal-revenue/",
+          "path": "tools/small-business/calculators/marginal-revenue/index.html"
+        },
+        {
+          "title": "Markup Calculator | Small Business",
+          "url": "/tools/small-business/calculators/markup-beta-feedback/",
+          "path": "tools/small-business/calculators/markup-beta-feedback/index.html"
+        },
+        {
+          "title": "Markup Calculator | Small Business",
+          "url": "/tools/small-business/calculators/markup/",
+          "path": "tools/small-business/calculators/markup/index.html"
+        },
+        {
+          "title": "MIRR Calculator - Modified Internal Rate of Return | Small Business",
+          "url": "/tools/small-business/calculators/modified-irr/",
+          "path": "tools/small-business/calculators/modified-irr/index.html"
+        },
+        {
+          "title": "Missouri Sales Tax Calculator | Small Business",
+          "url": "/tools/small-business/calculators/missouri-sales-tax/",
+          "path": "tools/small-business/calculators/missouri-sales-tax/index.html"
+        },
+        {
+          "title": "Net Debt Calculator | Small Business",
+          "url": "/tools/small-business/calculators/net-debt/",
+          "path": "tools/small-business/calculators/net-debt/index.html"
+        },
+        {
+          "title": "Net Income Calculator | Small Business",
+          "url": "/tools/small-business/calculators/net-income/",
+          "path": "tools/small-business/calculators/net-income/index.html"
+        },
+        {
+          "title": "Net Operating Assets Calculator | Small Business",
+          "url": "/tools/small-business/calculators/net-operating-assets/",
+          "path": "tools/small-business/calculators/net-operating-assets/index.html"
+        },
+        {
+          "title": "Net Operating Income Calculator | Small Business",
+          "url": "/tools/small-business/calculators/net-operating-income/",
+          "path": "tools/small-business/calculators/net-operating-income/index.html"
+        },
+        {
+          "title": "Net Operating Working Capital Calculator | Small Business",
+          "url": "/tools/small-business/calculators/net-operating-working-capital/",
+          "path": "tools/small-business/calculators/net-operating-working-capital/index.html"
+        },
+        {
+          "title": "Net Profit Margin Calculator | Small Business",
+          "url": "/tools/small-business/calculators/net-profit-margin/",
+          "path": "tools/small-business/calculators/net-profit-margin/index.html"
+        },
+        {
+          "title": "Net to Gross Calculator | Small Business",
+          "url": "/tools/small-business/calculators/net-to-gross/",
+          "path": "tools/small-business/calculators/net-to-gross/index.html"
+        },
+        {
+          "title": "Ohio Sales Tax Calculator | Small Business",
+          "url": "/tools/small-business/calculators/ohio-sales-tax/",
+          "path": "tools/small-business/calculators/ohio-sales-tax/index.html"
+        },
+        {
+          "title": "Online Marketing Conversion Calculator | Small Business",
+          "url": "/tools/small-business/calculators/marketing-conversion/",
+          "path": "tools/small-business/calculators/marketing-conversion/index.html"
+        },
+        {
+          "title": "Operating Asset Turnover Calculator | Small Business",
+          "url": "/tools/small-business/calculators/operating-asset-turnover/",
+          "path": "tools/small-business/calculators/operating-asset-turnover/index.html"
+        },
+        {
+          "title": "Operating Cash Flow Calculator | Small Business",
+          "url": "/tools/small-business/calculators/operating-cash-flow/",
+          "path": "tools/small-business/calculators/operating-cash-flow/index.html"
+        },
+        {
+          "title": "Operating Cash Flow Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/operating-cash-flow-ratio/",
+          "path": "tools/small-business/calculators/operating-cash-flow-ratio/index.html"
+        },
+        {
+          "title": "Operating Margin Calculator | Small Business",
+          "url": "/tools/small-business/calculators/operating-margin/",
+          "path": "tools/small-business/calculators/operating-margin/index.html"
+        },
+        {
+          "title": "Opportunity Cost Calculator | Small Business",
+          "url": "/tools/small-business/calculators/opportunity-cost/",
+          "path": "tools/small-business/calculators/opportunity-cost/index.html"
+        },
+        {
+          "title": "Optimal Price Calculator | Small Business",
+          "url": "/tools/small-business/calculators/optimal-price/",
+          "path": "tools/small-business/calculators/optimal-price/index.html"
+        },
+        {
+          "title": "Partially Amortized Loan Calculator | Small Business",
+          "url": "/tools/small-business/calculators/partially-amortized-loan/",
+          "path": "tools/small-business/calculators/partially-amortized-loan/index.html"
+        },
+        {
+          "title": "Payback Period Calculator | Small Business",
+          "url": "/tools/small-business/calculators/payback-period/",
+          "path": "tools/small-business/calculators/payback-period/index.html"
+        },
+        {
+          "title": "Percentage Discount Calculator | Small Business",
+          "url": "/tools/small-business/calculators/percentage-discount/",
+          "path": "tools/small-business/calculators/percentage-discount/index.html"
+        },
+        {
+          "title": "Pre and Post Money Valuation Calculator | Small Business",
+          "url": "/tools/small-business/calculators/pre-and-post-money-valuation/",
+          "path": "tools/small-business/calculators/pre-and-post-money-valuation/index.html"
+        },
+        {
+          "title": "Price / Quantity Calculator | Small Business",
+          "url": "/tools/small-business/calculators/price-quantity/",
+          "path": "tools/small-business/calculators/price-quantity/index.html"
+        },
+        {
+          "title": "Price Elasticity of Demand Calculator | Small Business",
+          "url": "/tools/small-business/calculators/price-elasticity-demand/",
+          "path": "tools/small-business/calculators/price-elasticity-demand/index.html"
+        },
+        {
+          "title": "Price Elasticity of Supply Calculator | Small Business",
+          "url": "/tools/small-business/calculators/price-elasticity-supply/",
+          "path": "tools/small-business/calculators/price-elasticity-supply/index.html"
+        },
+        {
+          "title": "Price Per Share Calculator | Small Business",
+          "url": "/tools/small-business/calculators/price-per-share/",
+          "path": "tools/small-business/calculators/price-per-share/index.html"
+        },
+        {
+          "title": "Price Per Square Foot Calculator | Small Business",
+          "url": "/tools/small-business/calculators/price-per-sqft/",
+          "path": "tools/small-business/calculators/price-per-sqft/index.html"
+        },
+        {
+          "title": "Price per Square Meter Calculator | Small Business",
+          "url": "/tools/small-business/calculators/price-per-square-meter/",
+          "path": "tools/small-business/calculators/price-per-square-meter/index.html"
+        },
+        {
+          "title": "Price to Book Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/price-to-book-ratio/",
+          "path": "tools/small-business/calculators/price-to-book-ratio/index.html"
+        },
+        {
+          "title": "Price to Cash Flow Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/price-to-cash-flow-ratio/",
+          "path": "tools/small-business/calculators/price-to-cash-flow-ratio/index.html"
+        },
+        {
+          "title": "Price to Earnings Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/price-to-earnings/",
+          "path": "tools/small-business/calculators/price-to-earnings/index.html"
+        },
+        {
+          "title": "Price to Sales Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/price-to-sales-ratio/",
+          "path": "tools/small-business/calculators/price-to-sales-ratio/index.html"
+        },
+        {
+          "title": "Profit Calculator for Small Business",
+          "url": "/tools/small-business/calculators/profit/",
+          "path": "tools/small-business/calculators/profit/index.html"
+        },
+        {
+          "title": "Profitability Index Calculator | Small Business",
+          "url": "/tools/small-business/calculators/profitability-index/",
+          "path": "tools/small-business/calculators/profitability-index/index.html"
+        },
+        {
+          "title": "Real Estate Commission Calculator | Small Business",
+          "url": "/tools/small-business/calculators/real-estate-commission/",
+          "path": "tools/small-business/calculators/real-estate-commission/index.html"
+        },
+        {
+          "title": "Realtor Commission Calculator with VAT | Small Business",
+          "url": "/tools/small-business/calculators/real-estate-commission-vat/",
+          "path": "tools/small-business/calculators/real-estate-commission-vat/index.html"
+        },
+        {
+          "title": "Receivables Turnover Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/receivables-turnover/",
+          "path": "tools/small-business/calculators/receivables-turnover/index.html"
+        },
+        {
+          "title": "Rental Commission Calculator | Small Business",
+          "url": "/tools/small-business/calculators/rental-commission/",
+          "path": "tools/small-business/calculators/rental-commission/index.html"
+        },
+        {
+          "title": "Residual Income Calculator | Small Business",
+          "url": "/tools/small-business/calculators/residual-income/",
+          "path": "tools/small-business/calculators/residual-income/index.html"
+        },
+        {
+          "title": "Revenue Calculator | Small Business",
+          "url": "/tools/small-business/calculators/revenue/",
+          "path": "tools/small-business/calculators/revenue/index.html"
+        },
+        {
+          "title": "Revenue Growth Calculator | Small Business",
+          "url": "/tools/small-business/calculators/revenue-growth/",
+          "path": "tools/small-business/calculators/revenue-growth/index.html"
+        },
+        {
+          "title": "Revenue Per Employee Calculator | Small Business",
+          "url": "/tools/small-business/calculators/revenue-per-employee/",
+          "path": "tools/small-business/calculators/revenue-per-employee/index.html"
+        },
+        {
+          "title": "ROAS Calculator | Small Business",
+          "url": "/tools/small-business/calculators/roas/",
+          "path": "tools/small-business/calculators/roas/index.html"
+        },
+        {
+          "title": "ROI Calculator - Return on Investment | Small Business",
+          "url": "/tools/small-business/calculators/roi/",
+          "path": "tools/small-business/calculators/roi/index.html"
+        },
+        {
+          "title": "ROIC Calculator – Return on Invested Capital | Small Business",
+          "url": "/tools/small-business/calculators/roic/",
+          "path": "tools/small-business/calculators/roic/index.html"
+        },
+        {
+          "title": "SaaS Lifetime Value Calculator | Small Business",
+          "url": "/tools/small-business/calculators/saas-ltv/",
+          "path": "tools/small-business/calculators/saas-ltv/index.html"
+        },
+        {
+          "title": "SaaS Lifetime Value Calculator | Small Business",
+          "url": "/tools/small-business/calculators/saas-metrics/",
+          "path": "tools/small-business/calculators/saas-metrics/index.html"
+        },
+        {
+          "title": "Sales Calculator | Small Business",
+          "url": "/tools/small-business/calculators/sales/",
+          "path": "tools/small-business/calculators/sales/index.html"
+        },
+        {
+          "title": "Sales Commission Calculator | Small Business",
+          "url": "/tools/small-business/calculators/sales-commission/",
+          "path": "tools/small-business/calculators/sales-commission/index.html"
+        },
+        {
+          "title": "Sales Tax Calculator New Jersey | Small Business",
+          "url": "/tools/small-business/calculators/new-jersey-sales-tax/",
+          "path": "tools/small-business/calculators/new-jersey-sales-tax/index.html"
+        },
+        {
+          "title": "Sales Tax Calculator | Small Business",
+          "url": "/tools/small-business/calculators/sales-tax/",
+          "path": "tools/small-business/calculators/sales-tax/index.html"
+        },
+        {
+          "title": "Software Contract Value Calculator | Small Business",
+          "url": "/tools/small-business/calculators/software-contract-value/",
+          "path": "tools/small-business/calculators/software-contract-value/index.html"
+        },
+        {
+          "title": "Times Interest Earned Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/times-interest-earned-ratio/",
+          "path": "tools/small-business/calculators/times-interest-earned-ratio/index.html"
+        },
+        {
+          "title": "Total Asset Turnover Calculator | Small Business",
+          "url": "/tools/small-business/calculators/total-asset-turnover/",
+          "path": "tools/small-business/calculators/total-asset-turnover/index.html"
+        },
+        {
+          "title": "Triple Discount Calculator | Small Business",
+          "url": "/tools/small-business/calculators/triple-discount/",
+          "path": "tools/small-business/calculators/triple-discount/index.html"
+        },
+        {
+          "title": "True Cost of Real Estate Commission Calculator | Small Business",
+          "url": "/tools/small-business/calculators/true-cost-of-real-estate-commission/",
+          "path": "tools/small-business/calculators/true-cost-of-real-estate-commission/index.html"
+        },
+        {
+          "title": "Turnover Rate Calculator | Small Business",
+          "url": "/tools/small-business/calculators/turnover-rate/",
+          "path": "tools/small-business/calculators/turnover-rate/index.html"
+        },
+        {
+          "title": "Unlevered Free Cash Flow Calculator | Small Business",
+          "url": "/tools/small-business/calculators/unlevered-free-cash-flow/",
+          "path": "tools/small-business/calculators/unlevered-free-cash-flow/index.html"
+        },
+        {
+          "title": "WACC Calculator (Weighted Average Cost of Capital) | Small Business",
+          "url": "/tools/small-business/calculators/wacc/",
+          "path": "tools/small-business/calculators/wacc/index.html"
+        },
+        {
+          "title": "Website Ad Revenue Calculator | Small Business",
+          "url": "/tools/small-business/calculators/website-ad-revenue/",
+          "path": "tools/small-business/calculators/website-ad-revenue/index.html"
+        },
+        {
+          "title": "Working Capital Calculator | Small Business",
+          "url": "/tools/small-business/calculators/working-capital/",
+          "path": "tools/small-business/calculators/working-capital/index.html"
+        },
+        {
+          "title": "Working Capital Turnover Ratio Calculator | Small Business",
+          "url": "/tools/small-business/calculators/working-capital-turnover-ratio/",
+          "path": "tools/small-business/calculators/working-capital-turnover-ratio/index.html"
+        }
+      ]
+    },
+    {
+      "id": "general-calculators",
+      "label": "General calculators",
+      "description": "Standalone calculators under /calculators/ (math, health, finance basics, utilities).",
+      "count": 55,
+      "items": [
+        {
+          "title": "2D Distance Calculator — Euclidean Distance Between Points",
+          "url": "/calculators/distance-2d-calculator/",
+          "path": "calculators/distance-2d-calculator/index.html"
+        },
+        {
+          "title": "Age Calculator — Exact Years, Months &amp; Days",
+          "url": "/calculators/age-calculator/",
+          "path": "calculators/age-calculator/index.html"
+        },
+        {
+          "title": "Area Calculator — Circle, Rectangle, Triangle &amp; More",
+          "url": "/calculators/area-calculator/",
+          "path": "calculators/area-calculator/index.html"
+        },
+        {
+          "title": "Aspect Ratio Calculator — Resize Width or Height",
+          "url": "/calculators/aspect-ratio-calculator/",
+          "path": "calculators/aspect-ratio-calculator/index.html"
+        },
+        {
+          "title": "Auto Loan Payment Calculator — Monthly Car Payment",
+          "url": "/calculators/auto-loan-calculator/",
+          "path": "calculators/auto-loan-calculator/index.html"
+        },
+        {
+          "title": "BAC Estimator (Widmark) — Educational Alcohol Metabolism Model",
+          "url": "/calculators/blood-alcohol-content-bac/",
+          "path": "calculators/blood-alcohol-content-bac/index.html"
+        },
+        {
+          "title": "BMI Calculator — Body Mass Index (kg/m²) for Adults",
+          "url": "/calculators/bmi-calculator/",
+          "path": "calculators/bmi-calculator/index.html"
+        },
+        {
+          "title": "BMR Calculator — Basal Metabolic Rate (Mifflin–St Jeor)",
+          "url": "/calculators/bmr-calculator/",
+          "path": "calculators/bmr-calculator/index.html"
+        },
+        {
+          "title": "Body Fat Calculator — U.S. Navy Method Estimate",
+          "url": "/calculators/body-fat-calculator/",
+          "path": "calculators/body-fat-calculator/index.html"
+        },
+        {
+          "title": "Break-Even Calculator — Fixed Cost, Price &amp; Variable Cost",
+          "url": "/calculators/break-even-point/",
+          "path": "calculators/break-even-point/index.html"
+        },
+        {
+          "title": "Compound Interest Calculator — Future Value &amp; Growth",
+          "url": "/calculators/compound-interest-calculator/",
+          "path": "calculators/compound-interest-calculator/index.html"
+        },
+        {
+          "title": "Credit Card Payoff Calculator — Months to Zero Debt",
+          "url": "/calculators/credit-card-payoff/",
+          "path": "calculators/credit-card-payoff/index.html"
+        },
+        {
+          "title": "Currency Converter — Illustrative Exchange Rates",
+          "url": "/calculators/currency-converter/",
+          "path": "calculators/currency-converter/index.html"
+        },
+        {
+          "title": "Daily Water Intake Estimator — ml from Weight &amp; Activity",
+          "url": "/calculators/water-intake-calculator/",
+          "path": "calculators/water-intake-calculator/index.html"
+        },
+        {
+          "title": "Date Difference Calculator — Days Between Two Dates",
+          "url": "/calculators/date-difference/",
+          "path": "calculators/date-difference/index.html"
+        },
+        {
+          "title": "Days Until Event — Countdown to a Future Date",
+          "url": "/calculators/days-until-event/",
+          "path": "calculators/days-until-event/index.html"
+        },
+        {
+          "title": "Density Calculator — ρ = mass ÷ volume",
+          "url": "/calculators/density-calculator/",
+          "path": "calculators/density-calculator/index.html"
+        },
+        {
+          "title": "Discount Calculator — Sale Price from % Off",
+          "url": "/calculators/discount-calculator/",
+          "path": "calculators/discount-calculator/index.html"
+        },
+        {
+          "title": "Download Time Estimator — File Size vs Mbps",
+          "url": "/calculators/bandwidth-download-time/",
+          "path": "calculators/bandwidth-download-time/index.html"
+        },
+        {
+          "title": "Force Calculator — F = ma and Pressure P = F/A",
+          "url": "/calculators/force-calculator/",
+          "path": "calculators/force-calculator/index.html"
+        },
+        {
+          "title": "Fraction Calculator — Add &amp; Simplify Fractions",
+          "url": "/calculators/fraction-calculator/",
+          "path": "calculators/fraction-calculator/index.html"
+        },
+        {
+          "title": "Fuel Economy Converter — MPG and Liters per 100 km",
+          "url": "/calculators/fuel-economy-mpg-l-100km/",
+          "path": "calculators/fuel-economy-mpg-l-100km/index.html"
+        },
+        {
+          "title": "GCD &amp; LCM Calculator — Two or More Integers",
+          "url": "/calculators/gcd-lcm-calculator/",
+          "path": "calculators/gcd-lcm-calculator/index.html"
+        },
+        {
+          "title": "Golden Ratio Divider — φ ≈ 1.618 Split",
+          "url": "/calculators/golden-ratio/",
+          "path": "calculators/golden-ratio/index.html"
+        },
+        {
+          "title": "Ideal Body Weight (Devine Formula) — Calculator",
+          "url": "/calculators/ideal-body-weight/",
+          "path": "calculators/ideal-body-weight/index.html"
+        },
+        {
+          "title": "Inflation Calculator — Future &amp; Past Purchasing Power",
+          "url": "/calculators/inflation-calculator/",
+          "path": "calculators/inflation-calculator/index.html"
+        },
+        {
+          "title": "Kinetic Energy Calculator — KE = ½mv² in Joules",
+          "url": "/calculators/kinetic-energy/",
+          "path": "calculators/kinetic-energy/index.html"
+        },
+        {
+          "title": "Margin &amp; Markup Calculator — Retail Pricing Math",
+          "url": "/calculators/margin-markup-calculator/",
+          "path": "calculators/margin-markup-calculator/index.html"
+        },
+        {
+          "title": "Mortgage Payment Calculator — Principal &amp; Interest (Amortizing)",
+          "url": "/calculators/mortgage-calculator/",
+          "path": "calculators/mortgage-calculator/index.html"
+        },
+        {
+          "title": "Ohm’s Law Calculator — Voltage, Current, Resistance &amp; Power",
+          "url": "/calculators/ohms-law/",
+          "path": "calculators/ohms-law/index.html"
+        },
+        {
+          "title": "Ovulation Estimator — Cycle Day &amp; 14-Day Rule",
+          "url": "/calculators/ovulation-calculator/",
+          "path": "calculators/ovulation-calculator/index.html"
+        },
+        {
+          "title": "Percentage Calculator — Of, Change, Ratio &amp; Backwards",
+          "url": "/calculators/percentage-calculator/",
+          "path": "calculators/percentage-calculator/index.html"
+        },
+        {
+          "title": "Pomodoro Planner — Work &amp; Break Blocks",
+          "url": "/calculators/pomodoro-sprint-calculator/",
+          "path": "calculators/pomodoro-sprint-calculator/index.html"
+        },
+        {
+          "title": "Pregnancy Due Date Estimator — LMP &amp; 40-Week Rule",
+          "url": "/calculators/pregnancy-due-date/",
+          "path": "calculators/pregnancy-due-date/index.html"
+        },
+        {
+          "title": "PX to REM Converter — Divide by Root Font Size",
+          "url": "/calculators/px-to-rem-calculator/",
+          "path": "calculators/px-to-rem-calculator/index.html"
+        },
+        {
+          "title": "Pythagorean Theorem Calculator — Find Missing Right-Triangle Side",
+          "url": "/calculators/pythagorean-theorem/",
+          "path": "calculators/pythagorean-theorem/index.html"
+        },
+        {
+          "title": "Quadratic Equation Solver — Roots of ax² + bx + c",
+          "url": "/calculators/quadratic-equation/",
+          "path": "calculators/quadratic-equation/index.html"
+        },
+        {
+          "title": "Random Integer Generator — Inclusive Range",
+          "url": "/calculators/random-number-generator/",
+          "path": "calculators/random-number-generator/index.html"
+        },
+        {
+          "title": "Resistor Color Code Decoder — 4-Band Value",
+          "url": "/calculators/resistor-color-code/",
+          "path": "calculators/resistor-color-code/index.html"
+        },
+        {
+          "title": "Retirement Calculator — Savings Projection &amp; Contributions",
+          "url": "/calculators/retirement-calculator/",
+          "path": "calculators/retirement-calculator/index.html"
+        },
+        {
+          "title": "ROI Calculator — Return on Investment Percent",
+          "url": "/calculators/roi-calculator/",
+          "path": "calculators/roi-calculator/index.html"
+        },
+        {
+          "title": "Running Pace Calculator — Minutes per Kilometer",
+          "url": "/calculators/pace-calculator/",
+          "path": "calculators/pace-calculator/index.html"
+        },
+        {
+          "title": "Salary to Hourly Pay Converter — Annual to Per-Hour Rate",
+          "url": "/calculators/salary-to-hourly-converter/",
+          "path": "calculators/salary-to-hourly-converter/index.html"
+        },
+        {
+          "title": "Sales Tax Calculator — Tax-Inclusive &amp; Tax-Exclusive Prices",
+          "url": "/calculators/sales-tax-calculator/",
+          "path": "calculators/sales-tax-calculator/index.html"
+        },
+        {
+          "title": "Simple Interest Calculator — I = PRT",
+          "url": "/calculators/simple-interest-calculator/",
+          "path": "calculators/simple-interest-calculator/index.html"
+        },
+        {
+          "title": "Sleep Cycle Calculator — Bedtime &amp; Wake Times (90-Min Cycles)",
+          "url": "/calculators/sleep-cycle-calculator/",
+          "path": "calculators/sleep-cycle-calculator/index.html"
+        },
+        {
+          "title": "Speed, Distance &amp; Time Solver — v = d ÷ t",
+          "url": "/calculators/speed-distance-time/",
+          "path": "calculators/speed-distance-time/index.html"
+        },
+        {
+          "title": "Standard Deviation Calculator — Sample SD for Data Sets",
+          "url": "/calculators/standard-deviation/",
+          "path": "calculators/standard-deviation/index.html"
+        },
+        {
+          "title": "TDEE Calculator — Total Daily Energy Expenditure &amp; Activity",
+          "url": "/calculators/tdee-calculator/",
+          "path": "calculators/tdee-calculator/index.html"
+        },
+        {
+          "title": "Temperature Converter — °C, °F, and Kelvin",
+          "url": "/calculators/temperature-converter/",
+          "path": "calculators/temperature-converter/index.html"
+        },
+        {
+          "title": "Time Duration Calculator — Span Across Midnight",
+          "url": "/calculators/time-duration/",
+          "path": "calculators/time-duration/index.html"
+        },
+        {
+          "title": "Timesheet Hours Calculator — Mon–Fri Sum &amp; Overtime",
+          "url": "/calculators/hours-worked-timesheet/",
+          "path": "calculators/hours-worked-timesheet/index.html"
+        },
+        {
+          "title": "Tip Calculator — Split Bill &amp; Gratuity",
+          "url": "/calculators/tip-calculator/",
+          "path": "calculators/tip-calculator/index.html"
+        },
+        {
+          "title": "UTC Offset Time Converter — Wall Clock vs UTC",
+          "url": "/calculators/time-zone-converter/",
+          "path": "calculators/time-zone-converter/index.html"
+        },
+        {
+          "title": "Volume Calculator — Box, Cylinder, Sphere &amp; More",
+          "url": "/calculators/volume-calculator/",
+          "path": "calculators/volume-calculator/index.html"
+        }
+      ]
+    },
+    {
+      "id": "calc-finance",
+      "label": "Finance formulas (/calculator/finance/)",
+      "description": "Focused finance ratios and models.",
+      "count": 44,
+      "items": [
+        {
+          "title": "Accounts receivable turnover calculator",
+          "url": "/calculator/finance/accounts-receivable-turnover-calculator/",
+          "path": "calculator/finance/accounts-receivable-turnover-calculator/index.html"
+        },
+        {
+          "title": "Annual recurring revenue calculator",
+          "url": "/calculator/finance/annual-recurring-revenue-calculator/",
+          "path": "calculator/finance/annual-recurring-revenue-calculator/index.html"
+        },
+        {
+          "title": "Asset turnover calculator",
+          "url": "/calculator/finance/asset-turnover-calculator/",
+          "path": "calculator/finance/asset-turnover-calculator/index.html"
+        },
+        {
+          "title": "Burn rate and cash runway calculator",
+          "url": "/calculator/finance/burn-rate-calculator/",
+          "path": "calculator/finance/burn-rate-calculator/index.html"
+        },
+        {
+          "title": "Cap rate calculator",
+          "url": "/calculator/finance/cap-rate-calculator/",
+          "path": "calculator/finance/cap-rate-calculator/index.html"
+        },
+        {
+          "title": "Cash conversion cycle calculator",
+          "url": "/calculator/finance/cash-conversion-cycle-calculator/",
+          "path": "calculator/finance/cash-conversion-cycle-calculator/index.html"
+        },
+        {
+          "title": "Cash ratio calculator",
+          "url": "/calculator/finance/cash-ratio-calculator/",
+          "path": "calculator/finance/cash-ratio-calculator/index.html"
+        },
+        {
+          "title": "Cash-on-cash return calculator",
+          "url": "/calculator/finance/cash-on-cash-return-calculator/",
+          "path": "calculator/finance/cash-on-cash-return-calculator/index.html"
+        },
+        {
+          "title": "Compound annual growth rate calculator",
+          "url": "/calculator/finance/cagr-calculator/",
+          "path": "calculator/finance/cagr-calculator/index.html"
+        },
+        {
+          "title": "Current ratio calculator",
+          "url": "/calculator/finance/current-ratio-calculator/",
+          "path": "calculator/finance/current-ratio-calculator/index.html"
+        },
+        {
+          "title": "Days payable outstanding calculator",
+          "url": "/calculator/finance/days-payable-outstanding-calculator/",
+          "path": "calculator/finance/days-payable-outstanding-calculator/index.html"
+        },
+        {
+          "title": "Days sales outstanding calculator",
+          "url": "/calculator/finance/days-sales-outstanding-calculator/",
+          "path": "calculator/finance/days-sales-outstanding-calculator/index.html"
+        },
+        {
+          "title": "Debt ratio calculator",
+          "url": "/calculator/finance/debt-ratio-calculator/",
+          "path": "calculator/finance/debt-ratio-calculator/index.html"
+        },
+        {
+          "title": "Debt to equity ratio calculator",
+          "url": "/calculator/finance/debt-to-equity-calculator/",
+          "path": "calculator/finance/debt-to-equity-calculator/index.html"
+        },
+        {
+          "title": "Debt-to-income ratio calculator",
+          "url": "/calculator/finance/debt-to-income-calculator/",
+          "path": "calculator/finance/debt-to-income-calculator/index.html"
+        },
+        {
+          "title": "Dividend payout ratio calculator",
+          "url": "/calculator/finance/dividend-payout-ratio-calculator/",
+          "path": "calculator/finance/dividend-payout-ratio-calculator/index.html"
+        },
+        {
+          "title": "EBIT calculator",
+          "url": "/calculator/finance/ebit-calculator/",
+          "path": "calculator/finance/ebit-calculator/index.html"
+        },
+        {
+          "title": "Effective annual rate calculator",
+          "url": "/calculator/finance/effective-annual-rate-calculator/",
+          "path": "calculator/finance/effective-annual-rate-calculator/index.html"
+        },
+        {
+          "title": "Effective tax rate calculator",
+          "url": "/calculator/finance/effective-tax-rate-calculator/",
+          "path": "calculator/finance/effective-tax-rate-calculator/index.html"
+        },
+        {
+          "title": "Enterprise value calculator",
+          "url": "/calculator/finance/enterprise-value-calculator/",
+          "path": "calculator/finance/enterprise-value-calculator/index.html"
+        },
+        {
+          "title": "Equity ratio calculator",
+          "url": "/calculator/finance/equity-ratio-calculator/",
+          "path": "calculator/finance/equity-ratio-calculator/index.html"
+        },
+        {
+          "title": "Finance calculators",
+          "url": "/calculator/finance/",
+          "path": "calculator/finance/index.html"
+        },
+        {
+          "title": "Financial leverage ratio calculator",
+          "url": "/calculator/finance/financial-leverage-ratio-calculator/",
+          "path": "calculator/finance/financial-leverage-ratio-calculator/index.html"
+        },
+        {
+          "title": "Future value calculator",
+          "url": "/calculator/finance/future-value-calculator/",
+          "path": "calculator/finance/future-value-calculator/index.html"
+        },
+        {
+          "title": "Interest coverage ratio calculator",
+          "url": "/calculator/finance/interest-coverage-calculator/",
+          "path": "calculator/finance/interest-coverage-calculator/index.html"
+        },
+        {
+          "title": "Loan payment calculator — amortizing monthly payment",
+          "url": "/calculator/finance/loan-payment-calculator/",
+          "path": "calculator/finance/loan-payment-calculator/index.html"
+        },
+        {
+          "title": "Loan-to-value calculator",
+          "url": "/calculator/finance/loan-to-value-calculator/",
+          "path": "calculator/finance/loan-to-value-calculator/index.html"
+        },
+        {
+          "title": "Monthly recurring revenue calculator",
+          "url": "/calculator/finance/monthly-recurring-revenue-calculator/",
+          "path": "calculator/finance/monthly-recurring-revenue-calculator/index.html"
+        },
+        {
+          "title": "Net present value calculator",
+          "url": "/calculator/finance/net-present-value-calculator/",
+          "path": "calculator/finance/net-present-value-calculator/index.html"
+        },
+        {
+          "title": "Operating cash flow margin calculator",
+          "url": "/calculator/finance/operating-cash-flow-margin-calculator/",
+          "path": "calculator/finance/operating-cash-flow-margin-calculator/index.html"
+        },
+        {
+          "title": "Operating cash flow ratio calculator",
+          "url": "/calculator/finance/operating-cash-flow-ratio-calculator/",
+          "path": "calculator/finance/operating-cash-flow-ratio-calculator/index.html"
+        },
+        {
+          "title": "Payback period calculator",
+          "url": "/calculator/finance/payback-period-calculator/",
+          "path": "calculator/finance/payback-period-calculator/index.html"
+        },
+        {
+          "title": "Present value calculator",
+          "url": "/calculator/finance/present-value-calculator/",
+          "path": "calculator/finance/present-value-calculator/index.html"
+        },
+        {
+          "title": "Price-to-earnings ratio calculator",
+          "url": "/calculator/finance/price-to-earnings-ratio-calculator/",
+          "path": "calculator/finance/price-to-earnings-ratio-calculator/index.html"
+        },
+        {
+          "title": "Quick ratio calculator",
+          "url": "/calculator/finance/quick-ratio-calculator/",
+          "path": "calculator/finance/quick-ratio-calculator/index.html"
+        },
+        {
+          "title": "Rent to revenue ratio calculator",
+          "url": "/calculator/finance/rent-to-revenue-calculator/",
+          "path": "calculator/finance/rent-to-revenue-calculator/index.html"
+        },
+        {
+          "title": "Return on assets calculator",
+          "url": "/calculator/finance/return-on-assets-calculator/",
+          "path": "calculator/finance/return-on-assets-calculator/index.html"
+        },
+        {
+          "title": "Return on equity calculator",
+          "url": "/calculator/finance/return-on-equity-calculator/",
+          "path": "calculator/finance/return-on-equity-calculator/index.html"
+        },
+        {
+          "title": "Runway net burn calculator",
+          "url": "/calculator/finance/runway-net-burn-calculator/",
+          "path": "calculator/finance/runway-net-burn-calculator/index.html"
+        },
+        {
+          "title": "Savings future value calculator",
+          "url": "/calculator/finance/periodic-savings-future-value-calculator/",
+          "path": "calculator/finance/periodic-savings-future-value-calculator/index.html"
+        },
+        {
+          "title": "Savings goal monthly contribution calculator",
+          "url": "/calculator/finance/savings-goal-monthly-calculator/",
+          "path": "calculator/finance/savings-goal-monthly-calculator/index.html"
+        },
+        {
+          "title": "Simple interest calculator",
+          "url": "/calculator/finance/simple-interest-calculator/",
+          "path": "calculator/finance/simple-interest-calculator/index.html"
+        },
+        {
+          "title": "Straight-line depreciation calculator",
+          "url": "/calculator/finance/straight-line-depreciation-calculator/",
+          "path": "calculator/finance/straight-line-depreciation-calculator/index.html"
+        },
+        {
+          "title": "Working capital calculator",
+          "url": "/calculator/finance/working-capital-calculator/",
+          "path": "calculator/finance/working-capital-calculator/index.html"
+        }
+      ]
+    },
+    {
+      "id": "calc-food",
+      "label": "Food production (/calculator/food/)",
+      "description": "Recipe, yield, spoilage, and plate costing.",
+      "count": 5,
+      "items": [
+        {
+          "title": "Food calculators",
+          "url": "/calculator/food/",
+          "path": "calculator/food/index.html"
+        },
+        {
+          "title": "Plate cost per serving calculator",
+          "url": "/calculator/food/plate-cost-calculator/",
+          "path": "calculator/food/plate-cost-calculator/index.html"
+        },
+        {
+          "title": "Recipe scaling calculator",
+          "url": "/calculator/food/recipe-scaling-calculator/",
+          "path": "calculator/food/recipe-scaling-calculator/index.html"
+        },
+        {
+          "title": "Spoilage waste percent calculator",
+          "url": "/calculator/food/spoilage-waste-percent-calculator/",
+          "path": "calculator/food/spoilage-waste-percent-calculator/index.html"
+        },
+        {
+          "title": "Trim yield calculator",
+          "url": "/calculator/food/trim-yield-calculator/",
+          "path": "calculator/food/trim-yield-calculator/index.html"
+        }
+      ]
+    },
+    {
+      "id": "calc-restaurant",
+      "label": "Restaurant metrics (/calculator/restaurant/)",
+      "description": "Prime cost, labor %, table turns, and similar.",
+      "count": 7,
+      "items": [
+        {
+          "title": "Average check calculator",
+          "url": "/calculator/restaurant/average-check-calculator/",
+          "path": "calculator/restaurant/average-check-calculator/index.html"
+        },
+        {
+          "title": "Food cost percentage calculator",
+          "url": "/calculator/restaurant/food-cost-percent-calculator/",
+          "path": "calculator/restaurant/food-cost-percent-calculator/index.html"
+        },
+        {
+          "title": "Labor cost percentage calculator",
+          "url": "/calculator/restaurant/labor-cost-percent-calculator/",
+          "path": "calculator/restaurant/labor-cost-percent-calculator/index.html"
+        },
+        {
+          "title": "Prime cost percentage calculator",
+          "url": "/calculator/restaurant/prime-cost-calculator/",
+          "path": "calculator/restaurant/prime-cost-calculator/index.html"
+        },
+        {
+          "title": "Restaurant calculators",
+          "url": "/calculator/restaurant/",
+          "path": "calculator/restaurant/index.html"
+        },
+        {
+          "title": "RevPASh (revenue per seat hour) calculator",
+          "url": "/calculator/restaurant/revpas-calculator/",
+          "path": "calculator/restaurant/revpas-calculator/index.html"
+        },
+        {
+          "title": "Table turn calculator",
+          "url": "/calculator/restaurant/table-turn-calculator/",
+          "path": "calculator/restaurant/table-turn-calculator/index.html"
+        }
+      ]
+    },
+    {
+      "id": "calc-profit",
+      "label": "Profit & pricing (/calculator/profit/)",
+      "description": "Margins, markups, discounts, and unit economics.",
+      "count": 28,
+      "items": [
+        {
+          "title": "Break-even units calculator",
+          "url": "/calculator/profit/break-even-units-calculator/",
+          "path": "calculator/profit/break-even-units-calculator/index.html"
+        },
+        {
+          "title": "Bundle savings calculator",
+          "url": "/calculator/profit/bundle-value-calculator/",
+          "path": "calculator/profit/bundle-value-calculator/index.html"
+        },
+        {
+          "title": "Client effective hourly rate calculator",
+          "url": "/calculator/profit/client-effective-hourly-calculator/",
+          "path": "calculator/profit/client-effective-hourly-calculator/index.html"
+        },
+        {
+          "title": "Commission split calculator",
+          "url": "/calculator/profit/commission-split-calculator/",
+          "path": "calculator/profit/commission-split-calculator/index.html"
+        },
+        {
+          "title": "Cost-plus pricing calculator",
+          "url": "/calculator/profit/cost-plus-pricing-calculator/",
+          "path": "calculator/profit/cost-plus-pricing-calculator/index.html"
+        },
+        {
+          "title": "Customer acquisition cost calculator",
+          "url": "/calculator/profit/customer-acquisition-cost-calculator/",
+          "path": "calculator/profit/customer-acquisition-cost-calculator/index.html"
+        },
+        {
+          "title": "Discount impact calculator",
+          "url": "/calculator/profit/discount-impact-calculator/",
+          "path": "calculator/profit/discount-impact-calculator/index.html"
+        },
+        {
+          "title": "Discount percent calculator",
+          "url": "/calculator/profit/discount-percent-calculator/",
+          "path": "calculator/profit/discount-percent-calculator/index.html"
+        },
+        {
+          "title": "EBITDA margin calculator",
+          "url": "/calculator/profit/ebitda-margin-calculator/",
+          "path": "calculator/profit/ebitda-margin-calculator/index.html"
+        },
+        {
+          "title": "Fixed cost per unit calculator",
+          "url": "/calculator/profit/fixed-cost-per-unit-calculator/",
+          "path": "calculator/profit/fixed-cost-per-unit-calculator/index.html"
+        },
+        {
+          "title": "Gross booking value calculator",
+          "url": "/calculator/profit/gross-booking-value-calculator/",
+          "path": "calculator/profit/gross-booking-value-calculator/index.html"
+        },
+        {
+          "title": "Gross profit margin calculator",
+          "url": "/calculator/profit/gross-profit-margin-calculator/",
+          "path": "calculator/profit/gross-profit-margin-calculator/index.html"
+        },
+        {
+          "title": "Margin percent calculator",
+          "url": "/calculator/profit/margin-percent-calculator/",
+          "path": "calculator/profit/margin-percent-calculator/index.html"
+        },
+        {
+          "title": "Margin to markup bridge calculator",
+          "url": "/calculator/profit/margin-markup-bridge-calculator/",
+          "path": "calculator/profit/margin-markup-bridge-calculator/index.html"
+        },
+        {
+          "title": "Markup percent calculator",
+          "url": "/calculator/profit/markup-percent-calculator/",
+          "path": "calculator/profit/markup-percent-calculator/index.html"
+        },
+        {
+          "title": "Net profit margin calculator",
+          "url": "/calculator/profit/net-profit-margin-calculator/",
+          "path": "calculator/profit/net-profit-margin-calculator/index.html"
+        },
+        {
+          "title": "Operating margin calculator",
+          "url": "/calculator/profit/operating-margin-calculator/",
+          "path": "calculator/profit/operating-margin-calculator/index.html"
+        },
+        {
+          "title": "Profit calculators",
+          "url": "/calculator/profit/",
+          "path": "calculator/profit/index.html"
+        },
+        {
+          "title": "Profit per unit calculator",
+          "url": "/calculator/profit/profit-per-unit-calculator/",
+          "path": "calculator/profit/profit-per-unit-calculator/index.html"
+        },
+        {
+          "title": "Project profit calculator",
+          "url": "/calculator/profit/project-profit-calculator/",
+          "path": "calculator/profit/project-profit-calculator/index.html"
+        },
+        {
+          "title": "Return on investment calculator",
+          "url": "/calculator/profit/return-on-investment-calculator/",
+          "path": "calculator/profit/return-on-investment-calculator/index.html"
+        },
+        {
+          "title": "ROAS calculator",
+          "url": "/calculator/profit/roas-calculator/",
+          "path": "calculator/profit/roas-calculator/index.html"
+        },
+        {
+          "title": "Sales commission calculator",
+          "url": "/calculator/profit/sales-commission-calculator/",
+          "path": "calculator/profit/sales-commission-calculator/index.html"
+        },
+        {
+          "title": "Sales tax: net amount from gross total",
+          "url": "/calculator/profit/sales-tax-exclusive-from-total-calculator/",
+          "path": "calculator/profit/sales-tax-exclusive-from-total-calculator/index.html"
+        },
+        {
+          "title": "Sequential discount calculator",
+          "url": "/calculator/profit/sequential-discount-calculator/",
+          "path": "calculator/profit/sequential-discount-calculator/index.html"
+        },
+        {
+          "title": "Target selling price calculator",
+          "url": "/calculator/profit/target-selling-price-calculator/",
+          "path": "calculator/profit/target-selling-price-calculator/index.html"
+        },
+        {
+          "title": "Unit contribution margin calculator",
+          "url": "/calculator/profit/unit-contribution-margin-calculator/",
+          "path": "calculator/profit/unit-contribution-margin-calculator/index.html"
+        },
+        {
+          "title": "Unit economics contribution calculator",
+          "url": "/calculator/profit/unit-economics-contribution-calculator/",
+          "path": "calculator/profit/unit-economics-contribution-calculator/index.html"
+        }
+      ]
+    },
+    {
+      "id": "calc-operations",
+      "label": "Operations & labor (/calculator/operations/)",
+      "description": "Scheduling, utilization, shrinkage, and throughput.",
+      "count": 8,
+      "items": [
+        {
+          "title": "Billable utilization calculator",
+          "url": "/calculator/operations/billable-utilization-calculator/",
+          "path": "calculator/operations/billable-utilization-calculator/index.html"
+        },
+        {
+          "title": "Capacity utilization calculator",
+          "url": "/calculator/operations/capacity-utilization-calculator/",
+          "path": "calculator/operations/capacity-utilization-calculator/index.html"
+        },
+        {
+          "title": "Operations calculators",
+          "url": "/calculator/operations/",
+          "path": "calculator/operations/index.html"
+        },
+        {
+          "title": "Overtime pay estimator calculator",
+          "url": "/calculator/operations/overtime-pay-estimator-calculator/",
+          "path": "calculator/operations/overtime-pay-estimator-calculator/index.html"
+        },
+        {
+          "title": "Revenue per employee calculator",
+          "url": "/calculator/operations/revenue-per-employee-calculator/",
+          "path": "calculator/operations/revenue-per-employee-calculator/index.html"
+        },
+        {
+          "title": "Sales per square foot calculator",
+          "url": "/calculator/operations/sales-per-square-foot-calculator/",
+          "path": "calculator/operations/sales-per-square-foot-calculator/index.html"
+        },
+        {
+          "title": "Shift premium pay calculator",
+          "url": "/calculator/operations/shift-premium-pay-calculator/",
+          "path": "calculator/operations/shift-premium-pay-calculator/index.html"
+        },
+        {
+          "title": "Shrinkage cost calculator",
+          "url": "/calculator/operations/shrinkage-cost-calculator/",
+          "path": "calculator/operations/shrinkage-cost-calculator/index.html"
+        }
+      ]
+    },
+    {
+      "id": "calc-inventory",
+      "label": "Inventory (/calculator/inventory/)",
+      "description": "EOQ, turnover, safety stock, and DIO.",
+      "count": 7,
+      "items": [
+        {
+          "title": "Days inventory outstanding calculator",
+          "url": "/calculator/inventory/days-inventory-outstanding-calculator/",
+          "path": "calculator/inventory/days-inventory-outstanding-calculator/index.html"
+        },
+        {
+          "title": "Economic order quantity calculator",
+          "url": "/calculator/inventory/economic-order-quantity-calculator/",
+          "path": "calculator/inventory/economic-order-quantity-calculator/index.html"
+        },
+        {
+          "title": "Inventory calculators",
+          "url": "/calculator/inventory/",
+          "path": "calculator/inventory/index.html"
+        },
+        {
+          "title": "Inventory sell-through rate calculator",
+          "url": "/calculator/inventory/inventory-sell-through-calculator/",
+          "path": "calculator/inventory/inventory-sell-through-calculator/index.html"
+        },
+        {
+          "title": "Inventory turnover ratio calculator",
+          "url": "/calculator/inventory/inventory-turnover-ratio-calculator/",
+          "path": "calculator/inventory/inventory-turnover-ratio-calculator/index.html"
+        },
+        {
+          "title": "Reorder point calculator",
+          "url": "/calculator/inventory/reorder-point-calculator/",
+          "path": "calculator/inventory/reorder-point-calculator/index.html"
+        },
+        {
+          "title": "Safety stock calculator",
+          "url": "/calculator/inventory/safety-stock-calculator/",
+          "path": "calculator/inventory/safety-stock-calculator/index.html"
+        }
+      ]
+    },
+    {
+      "id": "calc-general",
+      "label": "Marketing & general (/calculator/general/)",
+      "description": "CTR, elasticity, averages, and similar.",
+      "count": 8,
+      "items": [
+        {
+          "title": "Click-through rate calculator",
+          "url": "/calculator/general/click-through-rate-calculator/",
+          "path": "calculator/general/click-through-rate-calculator/index.html"
+        },
+        {
+          "title": "Customer churn rate calculator",
+          "url": "/calculator/general/customer-churn-rate-calculator/",
+          "path": "calculator/general/customer-churn-rate-calculator/index.html"
+        },
+        {
+          "title": "Email open rate calculator",
+          "url": "/calculator/general/email-open-rate-calculator/",
+          "path": "calculator/general/email-open-rate-calculator/index.html"
+        },
+        {
+          "title": "General calculators",
+          "url": "/calculator/general/",
+          "path": "calculator/general/index.html"
+        },
+        {
+          "title": "Midpoint price elasticity calculator",
+          "url": "/calculator/general/midpoint-price-elasticity-calculator/",
+          "path": "calculator/general/midpoint-price-elasticity-calculator/index.html"
+        },
+        {
+          "title": "Point price elasticity calculator",
+          "url": "/calculator/general/price-elasticity-point-calculator/",
+          "path": "calculator/general/price-elasticity-point-calculator/index.html"
+        },
+        {
+          "title": "Rule of 72 calculator",
+          "url": "/calculator/general/rule-of-72-calculator/",
+          "path": "calculator/general/rule-of-72-calculator/index.html"
+        },
+        {
+          "title": "Weighted average calculator",
+          "url": "/calculator/general/weighted-average-calculator/",
+          "path": "calculator/general/weighted-average-calculator/index.html"
+        }
+      ]
+    }
+  ]
+}
