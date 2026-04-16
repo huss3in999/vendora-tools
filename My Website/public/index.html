@@ -521,6 +521,88 @@
     .nav-dd-scroll .tr-all-guides {
       color: var(--home-blue);
     }
+    .home-smb-banner-wrap {
+      margin: 0 auto 24px;
+      max-width: min(1120px, 100%);
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #0b1a30 0%, #143a66 55%, #0b1a30 100%);
+      border: 1px solid rgba(0, 208, 132, 0.45);
+      box-shadow: 0 16px 40px rgba(0, 208, 132, 0.12);
+    }
+    .home-smb-banner-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .home-smb-banner-inner p {
+      margin: 0;
+      flex: 1 1 220px;
+      font-size: 15px;
+      line-height: 1.55;
+      color: #cbd5e1;
+      text-align: left;
+    }
+    .home-smb-banner-inner strong {
+      color: #fff;
+      font-weight: 800;
+    }
+    .home-smb-banner-btn {
+      flex-shrink: 0;
+      min-height: 48px;
+      padding: 0 22px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 800;
+      background: var(--home-blue);
+      color: #0b1a30;
+      text-decoration: none;
+      box-shadow: 0 10px 28px rgba(0, 208, 132, 0.35);
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+    .home-smb-banner-btn:hover {
+      background: var(--home-blue-dark);
+      transform: translateY(-1px);
+    }
+    @media (max-width: 640px) {
+      .home-smb-banner-inner {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+      .home-smb-banner-inner p {
+        text-align: center;
+      }
+      .home-smb-banner-btn {
+        width: 100%;
+      }
+    }
+    .home-tool-card--smb-featured {
+      grid-column: 1 / -1;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      min-height: auto;
+      padding: 22px 18px;
+      font-size: 17px;
+      background: linear-gradient(180deg, #f0fdf9 0%, #ffffff 100%);
+      border-color: rgba(0, 208, 132, 0.45);
+      box-shadow: 0 12px 28px rgba(0, 208, 132, 0.1);
+    }
+    .home-tool-card--smb-featured span {
+      display: block;
+      margin-top: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--home-text-muted);
+      line-height: 1.4;
+    }
     .home-hero {
       padding: 128px 0 48px;
     }
@@ -1017,6 +1099,7 @@
         <div class="home-desktop-nav min-w-0">
           <div class="home-desktop-links min-w-0">
           <a href="./" class="home-nav-link shrink-0 whitespace-nowrap tr-nav-home">Home</a>
+          <a href="tools/small-business/" class="home-nav-link shrink-0 whitespace-nowrap font-bold text-[#0f766e] hover:text-[#0d9488]">Small Business</a>
           <a href="about/" class="hidden shrink-0 whitespace-nowrap font-medium text-gray-300 transition hover:text-brand">About</a>
           <div class="relative shrink-0 group">
             <button type="button" class="home-nav-trigger" aria-expanded="false" aria-haspopup="true">
@@ -1026,9 +1109,9 @@
             <div class="absolute left-0 top-full z-50 hidden pt-2 group-hover:block group-focus-within:block rtl:left-auto rtl:right-0">
               <div class="nav-dd-scroll w-[min(18rem,calc(100vw-2rem))] rounded-xl border border-gray-700/90 bg-[#0c1929]/98 py-1 shadow-2xl backdrop-blur-md">
                 <a href="tools/" class="tr-browse-all-tools block border-b border-gray-700/80 px-3 py-2.5 text-sm font-semibold text-brand hover:bg-white/5">All tools</a>
+                <a href="tools/small-business/" class="block border-b border-gray-700/80 px-3 py-2.5 text-[13px] font-semibold text-brand hover:bg-white/5">161+ small business calculators</a>
                 <a href="all-tools/" class="block px-3 py-2 text-[13px] text-gray-300 hover:bg-white/5 hover:text-white">Complete tool directory</a>
                 <a href="restaurant-calculators/" class="tr-restaurant-calc-hub block px-3 py-2 text-[13px] text-gray-300 hover:bg-white/5 hover:text-white">Restaurant calculator hub</a>
-                <a href="tools/small-business/" class="block px-3 py-2 text-[13px] text-gray-300 hover:bg-white/5 hover:text-white">Small business calculators</a>
                 <a href="tools/food-cost-calculator/" class="block px-3 py-2 text-[13px] text-gray-300 hover:bg-white/5 hover:text-white">Food cost calculator</a>
                 <a href="tools/delivery-commission-calculator/" class="block px-3 py-2 text-[13px] text-gray-300 hover:bg-white/5 hover:text-white">Delivery commission</a>
                 <a href="tools/menu-price-calculator/" class="block px-3 py-2 text-[13px] text-gray-300 hover:bg-white/5 hover:text-white">Menu price calculator</a>
@@ -1140,6 +1223,7 @@
   <div id="mobile-menu" class="fixed inset-x-0 top-20 bottom-0 z-[55] hidden overflow-y-auto border-t border-gray-800 bg-darker shadow-2xl origin-top transition-all lg:hidden">
     <div class="flex min-h-full flex-col space-y-2 px-4 pb-24 pt-4">
       <a href="./" class="block rounded-xl px-3 py-3 text-base font-medium text-gray-300 hover:bg-gray-800 tr-nav-home">Home</a>
+      <a href="tools/small-business/" class="block rounded-xl border border-brand/40 bg-brand/15 px-3 py-3 text-center text-base font-bold text-brand shadow-sm">161+ Small business calculators</a>
       <a href="about/" class="block rounded-xl px-3 py-3 text-base font-medium text-gray-300 hover:bg-gray-800">About</a>
       <details class="group rounded-xl border border-gray-800 bg-gray-900/30 open:bg-gray-900/50">
         <summary class="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-3 text-base font-medium text-gray-200 marker:hidden [&::-webkit-details-marker]:hidden">
@@ -1148,9 +1232,9 @@
         </summary>
         <div class="max-h-[min(60vh,24rem)] space-y-0.5 overflow-y-auto border-t border-gray-800 px-2 py-2">
           <a href="tools/" class="tr-browse-all-tools block rounded-lg px-2 py-2 text-sm font-semibold text-brand hover:bg-gray-800">All tools</a>
+          <a href="tools/small-business/" class="block rounded-lg border border-brand/35 bg-brand/10 px-2 py-2 text-sm font-semibold text-brand hover:bg-gray-800">161+ small business calculators</a>
           <a href="all-tools/" class="block rounded-lg px-2 py-2 text-sm text-gray-300 hover:bg-gray-800">Complete tool directory</a>
           <a href="restaurant-calculators/" class="tr-restaurant-calc-hub block rounded-lg px-2 py-2 text-sm text-gray-300 hover:bg-gray-800">Restaurant calculator hub</a>
-          <a href="tools/small-business/" class="block rounded-lg px-2 py-2 text-sm text-gray-300 hover:bg-gray-800">Small business calculators</a>
           <a href="tools/food-cost-calculator/" class="block rounded-lg px-2 py-2 text-sm text-gray-300 hover:bg-gray-800">Food cost calculator</a>
           <a href="tools/delivery-commission-calculator/" class="block rounded-lg px-2 py-2 text-sm text-gray-300 hover:bg-gray-800">Delivery commission</a>
           <a href="tools/menu-price-calculator/" class="block rounded-lg px-2 py-2 text-sm text-gray-300 hover:bg-gray-800">Menu price calculator</a>
@@ -1348,6 +1432,12 @@
   <!-- HERO SECTION -->
   <section class="home-hero">
     <div class="home-container">
+      <aside class="home-smb-banner-wrap" aria-label="Small business calculator library">
+        <div class="home-smb-banner-inner">
+          <p><strong>New: 161 free small-business calculators</strong> — finance, loans, margins, taxes, HR, valuation, and operations. All open in your browser with no signup.</p>
+          <a href="tools/small-business/" class="home-smb-banner-btn">Browse all calculators</a>
+        </div>
+      </aside>
       <div class="home-panel home-hero-panel">
         <p class="home-kicker">Vendora Free Tools</p>
         <h2 class="home-hero-title tr-hero1">Free Tools for Restaurants &amp; Small Businesses</h2>
@@ -1382,7 +1472,7 @@
           Browse the complete collection of calculators, pricing tools, and practical restaurant resources in a clean, easy-to-scan grid.
         </p>
         <div class="home-tools-grid">
-          <a href="tools/small-business/" class="home-tool-card">Small Business Calculators</a>
+          <a href="tools/small-business/" class="home-tool-card home-tool-card--smb-featured">Small Business Calculators<span>161+ worksheets — loans, COGS, EBITDA, payroll, taxes &amp; more</span></a>
           <a href="calculators/break-even-point/" class="home-tool-card">Break-Even Calculator</a>
           <a href="tools/food-cost-calculator/" class="home-tool-card">Food Cost Calculator</a>
           <a href="tools/menu-price-calculator/" class="home-tool-card">Menu Price Calculator</a>
