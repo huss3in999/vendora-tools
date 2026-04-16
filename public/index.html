@@ -10,7 +10,7 @@
   <meta name="keywords" content="restaurant management system, free restaurant tools, invoice generator, qr menu, food cost calculator, restaurant pos system" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://getvendora.net/" />
-  <link rel="alternate" type="text/markdown" href="https://getvendora.net/llms.txt" title="Vendora free tools — LLM discovery file" />
+  <link rel="alternate" type="text/markdown" href="https://getvendora.net/llms.txt" title="Vendora tools index (Markdown)" />
   <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
   <link rel="dns-prefetch" href="//images.unsplash.com" />
   <meta property="og:type" content="website" />
@@ -696,6 +696,41 @@
       color: var(--home-blue);
       font-weight: 600;
     }
+    .home-cat-strip {
+      margin: 28px auto 0;
+      max-width: 820px;
+      padding-top: 22px;
+      border-top: 1px solid var(--home-border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 10px 12px;
+    }
+    .home-cat-strip-label {
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--home-text-muted);
+    }
+    .home-cat-strip a {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--home-text);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--home-border);
+      background: #fff;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .home-cat-strip a:hover {
+      border-color: rgba(0, 208, 132, 0.45);
+      color: var(--home-blue);
+    }
     .home-section {
       padding: 0 0 48px;
     }
@@ -1110,9 +1145,9 @@
             <div class="absolute left-0 top-full z-50 hidden pt-2 group-hover:block group-focus-within:block rtl:left-auto rtl:right-0">
               <div class="nav-dd-scroll w-[min(18rem,calc(100vw-2rem))] rounded-xl border border-gray-700/90 bg-[#0c1929]/98 py-1 shadow-2xl backdrop-blur-md">
                 <a href="tools/" class="tr-browse-all-tools block border-b border-gray-700/80 px-3 py-2.5 text-sm font-semibold text-brand hover:bg-white/5">All tools</a>
-                <a href="tools/small-business/" class="block border-b border-gray-700/80 px-3 py-2.5 text-[13px] font-semibold text-brand hover:bg-white/5">161+ small business calculators</a>
-                <a href="all-tools/" class="block px-3 py-2 text-[13px] text-gray-300 hover:bg-white/5 hover:text-white">Complete tool directory</a>
-                <a href="restaurant-calculators/" class="tr-restaurant-calc-hub block px-3 py-2 text-[13px] text-gray-300 hover:bg-white/5 hover:text-white">Restaurant calculator hub</a>
+                <a href="tools/small-business/" class="block border-b border-gray-700/80 px-3 py-2.5 text-[13px] font-semibold text-brand hover:bg-white/5">Small business calculators</a>
+                <a href="all-tools/" class="block px-3 py-2 text-[13px] text-gray-300 hover:bg-white/5 hover:text-white">Search all tools</a>
+                <a href="restaurant-calculators/" class="tr-restaurant-calc-hub block px-3 py-2 text-[13px] text-gray-300 hover:bg-white/5 hover:text-white">Restaurant calculators</a>
                 <a href="tools/food-cost-calculator/" class="block px-3 py-2 text-[13px] text-gray-300 hover:bg-white/5 hover:text-white">Food cost calculator</a>
                 <a href="tools/delivery-commission-calculator/" class="block px-3 py-2 text-[13px] text-gray-300 hover:bg-white/5 hover:text-white">Delivery commission</a>
                 <a href="tools/menu-price-calculator/" class="block px-3 py-2 text-[13px] text-gray-300 hover:bg-white/5 hover:text-white">Menu price calculator</a>
@@ -1224,7 +1259,7 @@
   <div id="mobile-menu" class="fixed inset-x-0 top-20 bottom-0 z-[55] hidden overflow-y-auto border-t border-gray-800 bg-darker shadow-2xl origin-top transition-all lg:hidden">
     <div class="flex min-h-full flex-col space-y-2 px-4 pb-24 pt-4">
       <a href="./" class="block rounded-xl px-3 py-3 text-base font-medium text-gray-300 hover:bg-gray-800 tr-nav-home">Home</a>
-      <a href="tools/small-business/" class="block rounded-xl border border-brand/40 bg-brand/15 px-3 py-3 text-center text-base font-bold text-brand shadow-sm">161+ Small business calculators</a>
+      <a href="tools/small-business/" class="block rounded-xl border border-brand/40 bg-brand/15 px-3 py-3 text-center text-base font-bold text-brand shadow-sm">Small business calculators</a>
       <a href="about/" class="block rounded-xl px-3 py-3 text-base font-medium text-gray-300 hover:bg-gray-800">About</a>
       <details class="group rounded-xl border border-gray-800 bg-gray-900/30 open:bg-gray-900/50">
         <summary class="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-3 text-base font-medium text-gray-200 marker:hidden [&::-webkit-details-marker]:hidden">
@@ -1233,9 +1268,9 @@
         </summary>
         <div class="max-h-[min(60vh,24rem)] space-y-0.5 overflow-y-auto border-t border-gray-800 px-2 py-2">
           <a href="tools/" class="tr-browse-all-tools block rounded-lg px-2 py-2 text-sm font-semibold text-brand hover:bg-gray-800">All tools</a>
-          <a href="tools/small-business/" class="block rounded-lg border border-brand/35 bg-brand/10 px-2 py-2 text-sm font-semibold text-brand hover:bg-gray-800">161+ small business calculators</a>
-          <a href="all-tools/" class="block rounded-lg px-2 py-2 text-sm text-gray-300 hover:bg-gray-800">Complete tool directory</a>
-          <a href="restaurant-calculators/" class="tr-restaurant-calc-hub block rounded-lg px-2 py-2 text-sm text-gray-300 hover:bg-gray-800">Restaurant calculator hub</a>
+          <a href="tools/small-business/" class="block rounded-lg border border-brand/35 bg-brand/10 px-2 py-2 text-sm font-semibold text-brand hover:bg-gray-800">Small business calculators</a>
+          <a href="all-tools/" class="block rounded-lg px-2 py-2 text-sm text-gray-300 hover:bg-gray-800">Search all tools</a>
+          <a href="restaurant-calculators/" class="tr-restaurant-calc-hub block rounded-lg px-2 py-2 text-sm text-gray-300 hover:bg-gray-800">Restaurant calculators</a>
           <a href="tools/food-cost-calculator/" class="block rounded-lg px-2 py-2 text-sm text-gray-300 hover:bg-gray-800">Food cost calculator</a>
           <a href="tools/delivery-commission-calculator/" class="block rounded-lg px-2 py-2 text-sm text-gray-300 hover:bg-gray-800">Delivery commission</a>
           <a href="tools/menu-price-calculator/" class="block rounded-lg px-2 py-2 text-sm text-gray-300 hover:bg-gray-800">Menu price calculator</a>
@@ -1424,7 +1459,7 @@
           View All Tools
         </a>
         <a href="restaurant-calculators/" class="inline-flex items-center justify-center rounded-full border border-gray-300 px-7 py-3 text-sm font-bold text-dark transition hover:border-brand hover:text-brand">
-          Restaurant Calculator Hub
+          Restaurant calculators
         </a>
       </div>
     </div>
@@ -1433,10 +1468,10 @@
   <!-- HERO SECTION -->
   <section class="home-hero">
     <div class="home-container">
-      <aside class="home-smb-banner-wrap" aria-label="Small business calculator library">
+      <aside class="home-smb-banner-wrap" aria-label="Small business calculators">
         <div class="home-smb-banner-inner">
-          <p><strong>New: 161 free small-business calculators</strong> — finance, loans, margins, taxes, HR, valuation, and operations. All open in your browser with no signup.</p>
-          <a href="tools/small-business/" class="home-smb-banner-btn">Browse all calculators</a>
+          <p><strong>Small business finance tools</strong> — model cash flow, loans, margins, taxes, payroll, and growth scenarios in your browser. No signup required.</p>
+          <a href="tools/small-business/" class="home-smb-banner-btn">Explore calculators</a>
         </div>
       </aside>
       <div class="home-panel home-hero-panel">
@@ -1448,16 +1483,27 @@
           <span>Instant Results</span>
         </p>
         <p class="home-hero-copy">
-          Use Vendora&apos;s free restaurant and small-business tools to price menu items, check margins, create invoices and receipts, and launch QR menus without signing up.
+          Plan pricing, margins, invoices, receipts, and QR menus with tools built for restaurants, cafés, and small teams—clear layouts and fast answers, with no account required.
         </p>
         <div class="home-tool-row">
-          <a href="all-tools/" class="home-tool-btn" style="border-color:rgba(0,208,132,0.55);color:#00d084;">Full tool directory (by category)</a>
+          <a href="all-tools/" class="home-tool-btn" style="border-color:rgba(0,208,132,0.55);color:#00d084;">Browse by category</a>
           <a href="tools/food-cost-calculator/" class="home-tool-btn">Food Cost Calculator</a>
           <a href="tools/menu-price-calculator/" class="home-tool-btn">Menu Price Calculator</a>
           <a href="calculators/sales-tax-calculator/" class="home-tool-btn">VAT Calculator</a>
           <a href="calculators/margin-markup-calculator/" class="home-tool-btn">Profit Margin Calculator</a>
           <a href="tools/small-business/" class="home-tool-btn">Small Business Calculators</a>
         </div>
+        <nav class="home-cat-strip" aria-label="Calculator categories">
+          <span class="home-cat-strip-label">Calculator categories</span>
+          <a href="calculator/finance/">Finance</a>
+          <a href="calculator/food/">Food</a>
+          <a href="calculator/restaurant/">Restaurant</a>
+          <a href="calculator/profit/">Profit</a>
+          <a href="calculator/operations/">Operations</a>
+          <a href="calculator/inventory/">Inventory</a>
+          <a href="calculator/general/">General</a>
+          <a href="calculator/">All</a>
+        </nav>
         <p class="home-hero-note">
           Looking for Vendora Pro? <a href="#features">See the POS and operations section</a>.
         </p>
@@ -1469,12 +1515,12 @@
   <section class="home-section">
     <div class="home-container">
       <div class="home-panel home-section-panel">
-        <h2 class="home-section-title">Explore All Free Business Tools</h2>
+        <h2 class="home-section-title">Popular free tools</h2>
         <p class="home-section-subtitle">
-          Browse the complete collection of calculators, pricing tools, and practical restaurant resources in a clean, easy-to-scan grid.
+          Jump into the calculators and generators teams use most—then open the full hubs when you want to go deeper.
         </p>
         <div class="home-tools-grid">
-          <a href="tools/small-business/" class="home-tool-card home-tool-card--smb-featured">Small Business Calculators<span>161+ worksheets — loans, COGS, EBITDA, payroll, taxes &amp; more</span></a>
+          <a href="tools/small-business/" class="home-tool-card home-tool-card--smb-featured">Small business calculators<span>Cash flow, loans, margins, taxes, and planning in one organized hub</span></a>
           <a href="calculators/break-even-point/" class="home-tool-card">Break-Even Calculator</a>
           <a href="tools/food-cost-calculator/" class="home-tool-card">Food Cost Calculator</a>
           <a href="tools/menu-price-calculator/" class="home-tool-card">Menu Price Calculator</a>
@@ -1493,9 +1539,9 @@
           <a href="tools/commission-calculator/" class="home-tool-card">Commission Calculator</a>
         </div>
         <div class="home-quick-actions gap-3 flex-wrap">
-          <a href="all-tools/" class="home-secondary-btn" style="border-color:#00d084;color:#0b1a30;background:#00d084;font-weight:800;">Browse all tools by category</a>
-          <a href="tools/" class="home-secondary-btn">Restaurant tools hub</a>
-          <a href="tools/small-business/" class="home-secondary-btn">Small business hub</a>
+          <a href="all-tools/" class="home-secondary-btn" style="border-color:#00d084;color:#0b1a30;background:#00d084;font-weight:800;">Search all tools</a>
+          <a href="tools/" class="home-secondary-btn">Restaurant tools</a>
+          <a href="calculator/" class="home-secondary-btn">All calculator categories</a>
         </div>
       </div>
     </div>
@@ -1541,11 +1587,11 @@
 
           <div class="home-calc-side">
             <h3>Built for quick decisions</h3>
-            <p>This keeps the homepage fast to scan while still giving visitors something genuinely useful the moment they land on Vendora.</p>
+            <p>Sanity-check a service period before you dive into menu engineering or month-end numbers—handy on a phone between rushes.</p>
             <ul class="home-calc-list">
-              <li>Check if today’s sales are healthy enough after food cost and daily expenses.</li>
-              <li>Use it on mobile without a huge form taking over the screen.</li>
-              <li>Jump into the full calculators when you need deeper menu pricing and cost analysis.</li>
+              <li>See whether today’s sales cover food cost and fixed daily spend.</li>
+              <li>Keep inputs short so the layout stays readable on small screens.</li>
+              <li>Open the full food cost and menu pricing tools when you need line-by-line detail.</li>
             </ul>
             <div class="home-quick-actions">
               <a href="tools/food-cost-calculator/" class="home-secondary-btn">Open Full Food Cost Calculator</a>
@@ -2610,7 +2656,7 @@
         'tr-features': 'Features', 'tr-showcase': 'Menu Examples', 'tr-demo': 'Live Demos', 'tr-pricing': 'Pricing', 'tr-login': 'Login', 'tr-getstarted': 'Get Started',
         'tr-nav-home': 'Home', 'tr-nav-tools': 'Tools', 'tr-nav-guides': 'Guides', 'tr-nav-demos': 'Demos',
         'tr-dd-showcase': 'Menu previews', 'tr-dd-demo': 'Interactive demos',
-        'tr-browse-all-tools': 'Browse all tools', 'tr-all-guides': 'All guides', 'tr-restaurant-calc-hub': 'Restaurant calculator hub',
+        'tr-browse-all-tools': 'Browse all tools', 'tr-all-guides': 'All guides', 'tr-restaurant-calc-hub': 'Restaurant calculators',
         'tr-badge': 'Free tools for smarter restaurant decisions', 'tr-hero1': 'Free Tools for Restaurants & Small Businesses', 'tr-hero2': '',
         'tr-herosub': 'No signup required • Instant results',
         'tr-herocta1': 'Start Your Free Trial', 'tr-herocta2': 'View Menus',
@@ -2671,7 +2717,7 @@
         'tr-features': 'المميزات', 'tr-showcase': 'أمثلة الواجهات', 'tr-demo': 'تجارب حية', 'tr-pricing': 'الأسعار', 'tr-login': 'تسجيل الدخول', 'tr-getstarted': 'ابدأ الآن',
         'tr-nav-home': 'الرئيسية', 'tr-nav-tools': 'الأدوات', 'tr-nav-guides': 'الأدلة', 'tr-nav-demos': 'العروض',
         'tr-dd-showcase': 'معاينات القوائم', 'tr-dd-demo': 'تجارب تفاعلية',
-        'tr-browse-all-tools': 'تصفح كل الأدوات', 'tr-all-guides': 'كل الأدلة', 'tr-restaurant-calc-hub': 'مركز حاسبات المطاعم',
+        'tr-browse-all-tools': 'تصفح كل الأدوات', 'tr-all-guides': 'كل الأدلة', 'tr-restaurant-calc-hub': 'حاسبات المطاعم',
         'tr-badge': 'نظام التشغيل الشامل لعملك', 'tr-hero1': 'نظام كاشير للمطاعم ومنيو رقمي وأدوات مجانية للمطاعم الحديثة', 'tr-hero2': '',
         'tr-herosub': 'أطلق نظام كاشير سحابي للمطاعم ومنيو رقمي ونظام طلبات للمطاعم وأدوات مجانية للمطاعم من منصة برمجية واحدة مبنية للمقاهي وعربات الطعام والمطاعم.',
         'tr-herocta1': 'ابدأ تجربتك المجانية', 'tr-herocta2': 'شاهد الواجهات',

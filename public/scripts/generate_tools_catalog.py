@@ -18,7 +18,8 @@ from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC = ROOT / "public"
+# Support both layouts: site root at repo root (./tools/) or nested (./public/tools/).
+PUBLIC = ROOT / "public" if (ROOT / "public" / "tools").is_dir() else ROOT
 OUT_JSON = PUBLIC / "data" / "tools-catalog.json"
 OUT_SITEMAP = PUBLIC / "sitemap-tools.xml"
 BASE_URL = "https://getvendora.net"
@@ -42,7 +43,7 @@ SKIP_SUBSTR = (
 CATEGORY_META: dict[str, tuple[int, str, str]] = {
     "hubs": (0, "Hubs & directories", "Start here: full hubs that group related tools."),
     "restaurant-apps": (1, "Restaurant & business web apps", "Interactive tools under /tools/ (invoices, QR menus, AI helpers, and more)."),
-    "smb-calculators": (2, "Small business finance calculators", "Worksheets under /tools/small-business/calculators/ (this list is rebuilt from disk)."),
+    "smb-calculators": (2, "Small business finance calculators", "Free calculators under /tools/small-business/calculators/ for cash flow, loans, margins, and more."),
     "general-calculators": (3, "General calculators", "Standalone calculators under /calculators/ (math, health, finance basics, utilities)."),
     "calc-finance": (4, "Finance formulas (/calculator/finance/)", "Focused finance ratios and models."),
     "calc-food": (5, "Food production (/calculator/food/)", "Recipe, yield, spoilage, and plate costing."),

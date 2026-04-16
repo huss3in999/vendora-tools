@@ -35,7 +35,7 @@
           "path": "restaurant-calculators/index.html"
         },
         {
-          "title": "Small Business — calculator manifest",
+          "title": "Small Business Calculators | Finance, Pricing & Planning",
           "url": "/tools/small-business/",
           "path": "tools/small-business/index.html"
         }
@@ -157,7 +157,7 @@
     {
       "id": "smb-calculators",
       "label": "Small business finance calculators",
-      "description": "Worksheets under /tools/small-business/calculators/ (this list is rebuilt from disk).",
+      "description": "Free calculators under /tools/small-business/calculators/ for cash flow, loans, margins, and more.",
       "count": 161,
       "items": [
         {

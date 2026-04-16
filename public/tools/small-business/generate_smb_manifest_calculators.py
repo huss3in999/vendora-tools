@@ -11,7 +11,8 @@ from pathlib import Path
 from smb_registry_data import CURRENCY_KINDS, RATIO_LABELS, SLUG_KIND
 
 ROOT = Path(__file__).resolve().parent
-MANIFEST = ROOT / "index.html"
+# Row-level manifest for generator sync (public hub is tools/small-business/index.html).
+ROW_MANIFEST = ROOT / "smb-row-manifest.inc.html"
 CALC = ROOT / "calculators"
 STYLE_SRC = CALC / "average-fixed-cost" / "style.css"
 BASE_URL = "https://getvendora.net"
@@ -1366,7 +1367,7 @@ def emit_page(slug: str, title: str, kind: str) -> str:
 
 
 def main() -> None:
-    text = MANIFEST.read_text(encoding="utf-8")
+    text = ROW_MANIFEST.read_text(encoding="utf-8")
     rows = parse_manifest_rows(text)
     pending = [(t, s) for t, s, st in rows if st == "pending"]
 
@@ -1421,17 +1422,9 @@ def main() -> None:
 
     new_tbody = "\n" + "\n".join(rebuilt) + "\n          "
     new_text = tbody_pat.sub(r"\1" + new_tbody + r"\3", text, count=1)
-    new_text = new_text.replace(
-        "<span class=\"sb-stat\"><strong>145</strong> pending</span>",
-        "<span class=\"sb-stat\"><strong>0</strong> pending</span>",
-    )
-    new_text = new_text.replace(
-        "<span class=\"sb-stat\"><strong>16</strong> done</span>",
-        "<span class=\"sb-stat\"><strong>161</strong> done</span>",
-    )
-
-    MANIFEST.write_text(new_text, encoding="utf-8")
-    print(f"Wrote {out_count} calculator folders; manifest updated (161 done, 0 pending).")
+    ROW_MANIFEST.write_text(new_text, encoding="utf-8")
+    print(f"Wrote {out_count} calculator folders; row manifest updated ({ROW_MANIFEST.name}).")
+    print("Run: node tools/small-business/rebuild-small-business-hub.mjs")
 
 
 if __name__ == "__main__":

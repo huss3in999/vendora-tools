@@ -24,7 +24,7 @@ Start here: full hubs that group related tools.
 - [Free Online Calculators — Health, Finance, Math, Time & Physics](https://getvendora.net/calculators/)
 - [Free Restaurant Tools Online | Food Cost, Menu Price, POS & Invoices](https://getvendora.net/tools/)
 - [Restaurant Calculators Free | Food Cost, Menu Price, Margin, Tip & VAT](https://getvendora.net/restaurant-calculators/)
-- [Small Business — calculator manifest](https://getvendora.net/tools/small-business/)
+- [Small Business Calculators | Finance, Pricing & Planning](https://getvendora.net/tools/small-business/)
 
 ## Restaurant & business web apps
 
@@ -54,7 +54,7 @@ Interactive tools under /tools/ (invoices, QR menus, AI helpers, and more).
 
 ## Small business finance calculators
 
-Worksheets under /tools/small-business/calculators/ (this list is rebuilt from disk).
+Free calculators under /tools/small-business/calculators/ for cash flow, loans, margins, and more.
 
 - [3D Printer Buy vs Outsource Calculator | Small Business](https://getvendora.net/tools/small-business/calculators/3d-printer-buy-vs-outsource/)
 - [Accounting Profit Calculator for Small Business](https://getvendora.net/tools/small-business/calculators/accounting-profit/)

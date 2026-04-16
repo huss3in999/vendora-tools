@@ -6,11 +6,14 @@ const SMB_SAMPLE = [
   '/tools/small-business/calculators/churn-rate/index.html',
 ];
 
-test.describe('Small Business manifest calculators', () => {
-  test('manifest hub shows all done', async ({ page }) => {
+test.describe('Small business calculators', () => {
+  test('public hub lists calculators with search and categories', async ({ page }) => {
     await page.goto('/tools/small-business/index.html');
-    await expect(page.locator('.sb-stat').filter({ hasText: 'pending' })).toContainText('0');
-    await expect(page.locator('.sb-stat').filter({ hasText: 'done' })).toContainText('161');
+    await expect(page.getByRole('heading', { level: 1, name: 'Small Business Calculators' })).toBeVisible();
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /index/);
+    await expect(page.getByRole('button', { name: 'All categories' })).toBeVisible();
+    await expect(page.getByRole('searchbox', { name: 'Search' })).toBeVisible();
+    await expect(page.locator('.sb-card')).toHaveCount(161);
   });
 
   test('budget calculator: currency + net result', async ({ page }) => {
