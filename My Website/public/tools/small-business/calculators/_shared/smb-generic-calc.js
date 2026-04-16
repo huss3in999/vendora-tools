@@ -102,7 +102,6 @@
         err = req('employees', 'Employees', { min: 0 });
         if (err) return { ok: false, message: err.err };
         if (vals.employees === 0) return { ok: false, message: 'Employees must be greater than zero.' };
-        if (!Number.isInteger(vals.employees)) return { ok: false, message: 'Employees should be a whole number.' };
         return { ok: true, primary: vals.revenue / vals.employees, format: 'money' };
 
       case 'margin_pct':

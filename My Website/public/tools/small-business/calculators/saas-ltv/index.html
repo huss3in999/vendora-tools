@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaaS Lifetime Value Calculator | Small Business | Vendora</title>
+  <meta name="description" content="SaaS Lifetime Value Calculator: quick SMB estimate using the same inputs as typical saas ltv models. Runs locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/small-business/calculators/saas-ltv/">
+  <meta property="og:title" content="SaaS Lifetime Value Calculator | Small Business | Vendora">
+  <meta property="og:description" content="SaaS Lifetime Value Calculator: quick SMB estimate using the same inputs as typical saas ltv models. Runs locally in your browser.">
+  <meta property="og:url" content="https://getvendora.net/tools/small-business/calculators/saas-ltv/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../../../tool-system.css">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">[{"@context": "https://schema.org", "@type": "WebPage", "name": "SaaS Lifetime Value Calculator | Small Business | Vendora", "url": "https://getvendora.net/tools/small-business/calculators/saas-ltv/", "description": "SaaS Lifetime Value Calculator: quick SMB estimate using the same inputs as typical saas ltv models. Runs locally in your browser."}, {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where do calculations run?", "acceptedAnswer": {"@type": "Answer", "text": "This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently."}}, {"@type": "Question", "name": "What does this calculator estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Estimates for saas lifetime value calculator: enter the fields above and click Calculate."}}, {"@type": "Question", "name": "How should I use the result?", "acceptedAnswer": {"@type": "Answer", "text": "Use results for directional planning; confirm material decisions with your accountant or advisor."}}]}]</script>
+</head>
+<body class="vendora-tool">
+  <main class="page-shell">
+    <header class="card faq site-nav">
+      <a class="site-nav-brand" href="/">Vendora</a>
+      <nav aria-label="Primary">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="../../index.html">Small Business Calculators</a>
+        </p>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Small business calculator</p>
+      <h1>SaaS Lifetime Value Calculator</h1>
+      <p class="hero-copy">SaaS Lifetime Value Calculator: quick SMB estimate using the same inputs as typical saas ltv models. Runs locally in your browser.</p>
+    </section>
+
+    <section class="tool-layout">
+      <section class="card input-card" aria-labelledby="calc-heading">
+        <h2 class="section-title" id="calc-heading">Inputs</h2>
+        <p class="section-copy">Enter values in consistent units, then click Calculate.</p>
+
+        <div class="field-grid calculator-fields">
+          <div class="field">
+            <label for="arpu">Average revenue per user (period)</label>
+            <div class="input-inline">
+              <input id="arpu" type="number" inputmode="decimal" step="any" placeholder="e.g. 120" autocomplete="off">
+              <select class="currency-select" data-currency-sync="global" data-currency-default="USD" aria-label="Average revenue per user (period) currency"></select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="margin">Gross margin %</label>
+            <input id="margin" type="number" inputmode="decimal" step="any" placeholder="e.g. 75" autocomplete="off">
+            <span class="input-hint">Percent.</span>
+          </div>
+          <div class="field">
+            <label for="churn">Churn rate per period</label>
+            <input id="churn" type="number" inputmode="decimal" step="any" placeholder="e.g. 3" autocomplete="off">
+            <span class="input-hint">Percent.</span>
+          </div>
+        </div>
+
+        <div class="validation" id="validationMessage" role="status" aria-live="polite" hidden></div>
+
+        <div class="actions calculator-actions">
+          <button type="button" class="btn btn-primary" id="calculateBtn">Calculate</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">Reset</button>
+        </div>
+      </section>
+
+      <section class="card results-card sb-results" aria-labelledby="results-heading">
+        <h2 class="section-title" id="results-heading">Results</h2>
+        <p class="section-copy">Primary output updates after you calculate.</p>
+        <div class="result-grid calculator-results" id="resultSection">
+          <div class="metric-card featured">
+            <span class="metric-label">LTV (simple)</span>
+            <span class="metric-value" id="outPrimary">—</span>
+          </div>
+
+        </div>
+        <p class="summary-note metric-value interpret" id="interpretation" hidden></p>
+      </section>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Example</h2>
+      <p class="section-copy">Use round numbers that match your business (for example revenue of 100,000 and costs of 65,000) to sanity-check the math before relying on live inputs.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-copy">This page uses the standard definition for this metric. Confirm definitions match your reporting (GAAP/IFRS, cash vs accrual) before using outputs in filings.</p>
+    </section>
+
+    <aside class="card faq business-tip" aria-label="Business tip">
+      <h2 class="section-title">Business tip</h2>
+      <p class="section-copy">Re-run scenarios with conservative and optimistic inputs; small changes in growth, margin, or discount rates often move valuations more than a single expense line item.</p>
+    </aside>
+
+    <section class="card faq">
+      <h2 class="section-title">FAQ</h2>
+      <h3 class="section-title" style="font-size:1rem;margin-top:0.5rem;">Where do calculations run?</h3>
+      <p class="section-copy">This tool runs in your browser for quick estimates. Use consistent units and verify critical figures independently.</p>
+      <h3 class="section-title" style="font-size:1rem;margin-top:0.75rem;">What does this calculator estimate?</h3>
+      <p class="section-copy">Estimates for saas lifetime value calculator: enter the fields above and click Calculate.</p>
+      <h3 class="section-title" style="font-size:1rem;margin-top:0.75rem;">How should I use the result?</h3>
+      <p class="section-copy">Use results for directional planning; confirm material decisions with your accountant or advisor.</p>
+    </section>
+
+    <section class="card faq">
+      <h2 class="section-title">Related tools</h2>
+      <p class="section-copy"><a href="../break-even/index.html">Break-even</a>, <a href="../gross-margin/index.html">Gross margin</a>, <a href="../../index.html">back to the Small Business calculator list</a></p>
+    </section>
+
+    <footer class="card faq site-nav">
+      <nav aria-label="Footer">
+        <p class="section-copy">
+          <a href="/">Home</a> |
+          <a href="/tools/">Tools</a> |
+          <a href="/privacy-policy/">Privacy Policy</a>
+        </p>
+      </nav>
+    </footer>
+  </main>
+
+  <script>
+    window.__SMB_CALC__ = {"kind": "saas_ltv", "useCurrency": true, "fieldIds": ["arpu", "margin", "churn"]};
+  </script>
+
+  <script src="../_shared/currency.js"></script>
+  <script src="../_shared/smb-generic-calc.js"></script>
+</body>
+</html>
