@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
+Sitemap: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-index.xml
 Sitemap: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap.xml

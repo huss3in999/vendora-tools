@@ -2,6 +2,8 @@
 
 Vendora provides Arabic-first transport and delivery services from Bahrain to Saudi Arabia, Kuwait, UAE, Dubai, Qatar, Oman, and Iraq.
 
+Sitemaps for crawlers (submit the index in Google Search Console): https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-index.xml — child: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-gcc-transport.xml (all public URLs with lastmod). Legacy: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap.xml
+
 Primary pages:
 - https://getvendora.net/bahrain-saudi-gcc-transport/about/
 - https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/
