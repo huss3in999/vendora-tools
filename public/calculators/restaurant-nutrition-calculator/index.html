@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-DFY197R2MS');
+</script>
+<title>Restaurant Nutrition Calculator — Meal Totals &amp; Data Trust | Vendora</title>
+<meta name="description" content="Build a quick restaurant-style meal from items you enter (calories and optional macros). Learn why official chain calculators publish provenance—and what Vendora does not claim to host yet.">
+<link rel="canonical" href="https://getvendora.net/calculators/restaurant-nutrition-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Restaurant Nutrition Calculator — Meal Totals &amp; Data Trust | Vendora">
+<meta property="og:description" content="Manual meal builder plus guidance on official nutrition data, rounding, and menu changes for chain restaurants.">
+<meta property="og:url" content="https://getvendora.net/calculators/restaurant-nutrition-calculator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Restaurant Nutrition Calculator","applicationCategory":"HealthApplication","operatingSystem":"Web","url":"https://getvendora.net/calculators/restaurant-nutrition-calculator/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does Vendora host official McDonald's or Chipotle menus?","acceptedAnswer":{"@type":"Answer","text":"Not in this version. Chain menus change; this page explains trust signals and offers a manual basket so you can type values from the brand's own PDF or calculator."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-4 text-sm text-vendora-muted flex flex-wrap gap-x-3 gap-y-1" aria-label="Breadcrumb">
+      <a href="../" class="text-vendora-brand hover:underline font-medium">All calculators</a>
+      <span aria-hidden="true">/</span>
+      <a href="../../calculator/food/nutrition-calculators/" class="text-vendora-brand hover:underline font-medium">Nutrition calculators</a>
+    </nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Food &amp; nutrition</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Restaurant nutrition calculator</h1>
+      <p class="text-sm text-vendora-muted mb-4">High-traffic searches like “Chipotle nutrition calculator” expect <strong class="text-vendora-text">live chain menus</strong>. Those databases require constant refresh, regional variants, and clear <strong class="text-vendora-text">data provenance</strong>. This release gives you a <strong class="text-vendora-text">transparent manual basket</strong>: type calories (and optional macros) from the restaurant’s own nutrition PDF or on-site tool, and we sum them deterministically—no mystery scraping.</p>
+      <section class="mb-6 p-4 rounded-lg border border-vendora-brand/25 bg-vendora-brand/5 text-sm text-vendora-muted leading-relaxed">
+        <h2 class="text-base font-semibold text-vendora-text mb-2">Trust checklist (copy the pattern major chains use)</h2>
+        <ul class="list-disc pl-5 space-y-1">
+          <li>State whether values come from accredited-lab testing, published tables, or supplier data.</li>
+          <li>Explain standard portions vs real-line variation (dressings, soda ice, well-done trims).</li>
+          <li>Show last-reviewed date when you maintain a database.</li>
+          <li>Round per FDA-style rules so in-app sums may differ slightly from exact arithmetic.</li>
+        </ul>
+        <p class="mt-3 text-xs">In the United States, large chains already participate in a disclosure ecosystem (menu calorie labels and written nutrition). Partner APIs such as Nutritionix or direct ingestion of official PDFs are the sustainable engineering path—planned as a follow-on once a refresh workflow exists.</p>
+      </section>
+
+      <h2 class="text-lg font-semibold text-vendora-text mb-2">Manual meal basket</h2>
+      <p class="text-xs text-vendora-muted mb-3">Paste numbers from the brand’s official nutrition source.</p>
+      <div class="overflow-x-auto border border-white/10 rounded-lg">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-vendora-bg/70 text-vendora-muted text-left"><th class="p-2">Item</th><th class="p-2">Calories</th><th class="p-2">Carb g</th><th class="p-2">Fat g</th><th class="p-2">Protein g</th><th class="p-2"></th></tr></thead>
+          <tbody id="x-body"></tbody>
+        </table>
+      </div>
+      <button type="button" id="x-add" class="mt-3 border border-white/20 px-3 py-2 rounded text-sm font-semibold text-vendora-brand hover:bg-vendora-panel">+ Add item</button>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <button type="button" id="x-go" class="bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Sum meal</button>
+        <button type="button" id="x-clear" class="border border-white/20 px-4 py-2 rounded font-semibold text-vendora-muted hover:bg-vendora-panel">Clear</button>
+      </div>
+      <div id="x-out" class="mt-4 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-sm" role="status" aria-live="polite"></div>
+
+      <nav class="mt-8 pt-6 border-t border-white/10 text-sm" aria-label="Official chain nutrition (external)">
+        <p class="font-semibold text-vendora-text mb-2">Official calculators (open in new tab)</p>
+        <ul class="flex flex-wrap gap-x-4 gap-y-2 text-vendora-brand">
+          <li><a class="hover:underline font-medium" href="https://www.mcdonalds.com/us/en-us/about-our-food/nutrition-calculator.html" rel="noopener noreferrer">McDonald’s nutrition calculator</a></li>
+          <li><a class="hover:underline font-medium" href="https://www.chipotle.com/nutrition-calculator" rel="noopener noreferrer">Chipotle nutrition calculator</a></li>
+        </ul>
+      </nav>
+      <nav class="mt-6 text-sm" aria-label="Related nutrition calculators">
+        <p class="font-semibold text-vendora-text mb-2">More on Vendora</p>
+        <ul class="flex flex-wrap gap-x-4 gap-y-2">
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../recipe-nutrition-calculator/">Recipe nutrition</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../calorie-calculator/">Calorie calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../../calculator/restaurant/">Restaurant business calculators</a></li>
+        </ul>
+      </nav>
+      <p class="text-xs text-vendora-muted/80 mt-8">Educational. Not affiliated with any restaurant brand. Totals are only as accurate as the numbers you type.</p>
+    </main>
+  </div>
+<script>
+(function () {
+  var body = document.getElementById('x-body');
+  function row() {
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td class="p-1"><input type="text" class="w-full border rounded px-2 py-1 x-n" placeholder="Item name"></td>' +
+      '<td class="p-1"><input type="number" class="w-24 border rounded px-2 py-1 x-k" min="0" step="1"></td>' +
+      '<td class="p-1"><input type="number" class="w-16 border rounded px-2 py-1 x-c" min="0" step="0.1"></td>' +
+      '<td class="p-1"><input type="number" class="w-16 border rounded px-2 py-1 x-f" min="0" step="0.1"></td>' +
+      '<td class="p-1"><input type="number" class="w-16 border rounded px-2 py-1 x-p" min="0" step="0.1"></td>' +
+      '<td class="p-1"><button type="button" class="text-xs text-red-300 x-d">✕</button></td>';
+    tr.querySelector('.x-d').addEventListener('click', function () { tr.remove(); });
+    return tr;
+  }
+  function add() { body.appendChild(row()); }
+  document.getElementById('x-add').addEventListener('click', add);
+  for (var i = 0; i < 2; i++) add();
+  function sum() {
+    var k = 0, c = 0, f = 0, p = 0, n = 0;
+    body.querySelectorAll('tr').forEach(function (tr) {
+      var kk = +tr.querySelector('.x-k').value;
+      if (!kk) return;
+      k += kk; c += +tr.querySelector('.x-c').value || 0; f += +tr.querySelector('.x-f').value || 0; p += +tr.querySelector('.x-p').value || 0; n++;
+    });
+    var out = document.getElementById('x-out');
+    if (!n || k <= 0) { out.textContent = 'Enter at least one item with calories.'; return; }
+    out.innerHTML = '<p>Meal total: <strong class="text-vendora-brand text-xl">' + Math.round(k) + '</strong> kcal</p>' +
+      (c + f + p > 0 ? '<p class="text-vendora-muted mt-1">Carbs ≈ ' + Math.round(c) + ' g · Fat ≈ ' + Math.round(f) + ' g · Protein ≈ ' + Math.round(p) + ' g</p>' : '') +
+      '<p class="text-xs text-vendora-muted mt-2">If macros are blank, we only sum calories.</p>';
+  }
+  document.getElementById('x-go').addEventListener('click', sum);
+  document.getElementById('x-clear').addEventListener('click', function () {
+    body.innerHTML = '';
+    add(); add();
+    document.getElementById('x-out').innerHTML = '';
+  });
+})();
+</script>
+</body>
+</html>

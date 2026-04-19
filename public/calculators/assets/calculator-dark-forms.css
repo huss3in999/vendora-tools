@@ -1,0 +1,33 @@
+/**
+ * Dark-theme form fixes for /calculators/* tools.
+ * Native <select> / <option> often render with OS light colors (invisible text on white).
+ */
+.vendora-calc-shell select,
+.vendora-calc-shell select option,
+.vendora-calc-shell select optgroup {
+  color: #f4f7f6;
+  background-color: #0c1b31;
+}
+
+.vendora-calc-shell select {
+  max-width: min(22rem, 100%);
+  width: 100%;
+  color-scheme: dark;
+  border-color: hsla(0, 0%, 100%, 0.22);
+}
+
+.vendora-calc-shell select:focus {
+  color: #f4f7f6;
+  background-color: #0c1b31;
+}
+
+.vendora-calc-shell select.nut-select {
+  max-width: min(20rem, 100%);
+}
+
+.vendora-calc-shell input[type="date"] {
+  color: #f4f7f6;
+  background-color: rgba(8, 19, 36, 0.85);
+  border-color: hsla(0, 0%, 100%, 0.22);
+  color-scheme: dark;
+}

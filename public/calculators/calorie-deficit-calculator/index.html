@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-DFY197R2MS');
+</script>
+<title>Calorie Deficit Calculator — Fat Loss Target From TDEE | Vendora</title>
+<meta name="description" content="Plan a calorie deficit from your estimated TDEE: pick a daily deficit, see target intake, and optionally benchmark a goal-date average. Browser-only, free.">
+<link rel="canonical" href="https://getvendora.net/calculators/calorie-deficit-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Calorie Deficit Calculator — Fat Loss Target From TDEE | Vendora">
+<meta property="og:description" content="Turn an estimated TDEE into a sustainable daily calorie target for fat loss. Includes optional goal-date heuristic.">
+<meta property="og:url" content="https://getvendora.net/calculators/calorie-deficit-calculator/">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Calorie Deficit Calculator","applicationCategory":"HealthApplication","operatingSystem":"Web","url":"https://getvendora.net/calculators/calorie-deficit-calculator/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is a larger deficit always better?","acceptedAnswer":{"@type":"Answer","text":"Not usually. Very large deficits are harder to sustain and may increase lean-mass loss risk. Many people start near a moderate daily deficit and adjust using weight trends."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-3xl mx-auto">
+    <nav class="mb-4 text-sm text-vendora-muted flex flex-wrap gap-x-3 gap-y-1" aria-label="Breadcrumb">
+      <a href="../" class="text-vendora-brand hover:underline font-medium">All calculators</a>
+      <span aria-hidden="true">/</span>
+      <a href="../../calculator/food/nutrition-calculators/" class="text-vendora-brand hover:underline font-medium">Nutrition calculators</a>
+    </nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Food &amp; nutrition</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Calorie deficit calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">We default to a <strong class="text-vendora-text">fat-loss goal</strong> so you can translate TDEE into a daily calorie target. Add a <strong class="text-vendora-text">goal weight and date</strong> to see a rough average deficit implied by that timeline—use it as a sanity check, not a rigid prescription. For balanced macro grams on your target calories, open the <a class="text-vendora-brand hover:underline" href="../macro-calculator/">macro calculator</a> next.</p>
+      <div id="nutrition-daily-root" data-mode="deficit"></div>
+      <nav class="mt-8 pt-6 border-t border-white/10 text-sm" aria-label="Related nutrition calculators">
+        <p class="font-semibold text-vendora-text mb-2">Related tools</p>
+        <ul class="flex flex-wrap gap-x-4 gap-y-2">
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../calorie-calculator/">Calorie calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../maintenance-calorie-calculator/">Maintenance calories</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../tdee-calculator/">TDEE calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../macro-calculator/">Macro calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../protein-calculator/">Protein calculator</a></li>
+        </ul>
+      </nav>
+      <section class="mt-10 pt-8 border-t border-white/10 text-sm text-vendora-muted leading-relaxed">
+        <h2 class="text-lg font-semibold text-vendora-text mb-3">Classic rule vs real life</h2>
+        <p>The old “3,500 kcal per pound” shortcut often <em>overpredicts</em> how fast weight changes. Dynamic models (for example the NIH Body Weight Planner) account for adaptive metabolism. Our goal-date line uses a simple energy-density band so you can compare your chosen deficit with the calendar—not replace clinical planning.</p>
+      </section>
+      <p class="text-xs text-vendora-muted/80 mt-8">Educational estimates only. Not medical advice.</p>
+    </main>
+  </div>
+<script src="../assets/nutrition-engine.js"></script>
+<script src="../assets/nutrition-daily-ui.js"></script>
+</body>
+</html>

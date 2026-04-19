@@ -39,6 +39,21 @@ SKIP_SUBSTR = (
     "/node_modules/",
 )
 
+# Slugs under /calculators/ that belong to the personal nutrition cluster (SEO hub).
+NUTRITION_CALC_SLUGS = frozenset(
+    {
+        "bmr-calculator",
+        "calorie-calculator",
+        "calorie-deficit-calculator",
+        "maintenance-calorie-calculator",
+        "macro-calculator",
+        "protein-calculator",
+        "recipe-nutrition-calculator",
+        "restaurant-nutrition-calculator",
+        "tdee-calculator",
+    }
+)
+
 # category_id -> sort order, nav label, description
 CATEGORY_META: dict[str, tuple[int, str, str]] = {
     "hubs": (0, "Hubs & directories", "Start here: full hubs that group related tools."),
@@ -52,6 +67,11 @@ CATEGORY_META: dict[str, tuple[int, str, str]] = {
     "calc-operations": (8, "Operations & labor (/calculator/operations/)", "Scheduling, utilization, shrinkage, and throughput."),
     "calc-inventory": (9, "Inventory (/calculator/inventory/)", "EOQ, turnover, safety stock, and DIO."),
     "calc-general": (10, "Marketing & general (/calculator/general/)", "CTR, elasticity, averages, and similar."),
+    "nutrition-personal": (
+        11,
+        "Food & nutrition (personal)",
+        "Calories, TDEE, deficits, macros, protein, recipe nutrition, and restaurant meal math.",
+    ),
     "other": (99, "Other", "Additional calculator pages."),
 }
 
@@ -114,6 +134,9 @@ def category_for(rel_posix: str) -> str:
     if rel_posix.startswith("tools/") and rel_posix.endswith("/index.html"):
         return "restaurant-apps"
     if rel_posix.startswith("calculators/") and rel_posix.endswith("/index.html"):
+        parts = rel_posix.split("/")
+        if len(parts) >= 2 and parts[1] in NUTRITION_CALC_SLUGS:
+            return "nutrition-personal"
         return "general-calculators"
     if rel_posix.startswith("calculator/finance/") and rel_posix.endswith("/index.html"):
         return "calc-finance"

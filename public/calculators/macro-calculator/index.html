@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-DFY197R2MS');
+</script>
+<title>Macro Calculator — Protein, Carbs &amp; Fat Grams | Vendora</title>
+<meta name="description" content="Split daily calories into protein, carbohydrate, and fat grams: presets aligned with AMDR-style defaults or your own custom ratio. Uses 4/4/9 kcal per gram.">
+<link rel="canonical" href="https://getvendora.net/calculators/macro-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Macro Calculator — Protein, Carbs &amp; Fat Grams | Vendora">
+<meta property="og:description" content="Turn a calorie target into macro grams with balanced presets or custom percentages. Runs locally in your browser.">
+<meta property="og:url" content="https://getvendora.net/calculators/macro-calculator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Macro Calculator","applicationCategory":"HealthApplication","operatingSystem":"Web","url":"https://getvendora.net/calculators/macro-calculator/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How are calories converted to grams?","acceptedAnswer":{"@type":"Answer","text":"Protein and carbohydrate use 4 kcal per gram; fat uses 9 kcal per gram—the usual Atwater general factors."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-3xl mx-auto">
+    <nav class="mb-4 text-sm text-vendora-muted flex flex-wrap gap-x-3 gap-y-1" aria-label="Breadcrumb">
+      <a href="../" class="text-vendora-brand hover:underline font-medium">All calculators</a>
+      <span aria-hidden="true">/</span>
+      <a href="../../calculator/food/nutrition-calculators/" class="text-vendora-brand hover:underline font-medium">Nutrition calculators</a>
+    </nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Food &amp; nutrition</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Macro calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Estimate a <strong class="text-vendora-text">daily calorie target</strong> the same way as our calorie tools, then split it into <strong class="text-vendora-text">protein, carbohydrate, and fat grams</strong>. Presets stay near common AMDR-style ranges; custom mode lets advanced users type any positive split.</p>
+
+      <div class="grid gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <label class="block"><span class="text-sm font-medium">Age</span><input type="number" id="m-age" class="mt-1 w-full border rounded px-3 py-2" value="32"></label>
+          <label class="block"><span class="text-sm font-medium">Sex (for RMR)</span><select id="m-sex" class="mt-1 border rounded px-3 py-2 nut-select"><option value="m" selected>Male</option><option value="f">Female</option></select></label>
+          <label class="block"><span class="text-sm font-medium">Weight (kg)</span><input type="number" id="m-kg" class="mt-1 w-full border rounded px-3 py-2" step="0.1" value="78"></label>
+          <label class="block"><span class="text-sm font-medium">Height (cm)</span><input type="number" id="m-cm" class="mt-1 w-full border rounded px-3 py-2" step="0.1" value="178"></label>
+          <label class="block md:col-span-2"><span class="text-sm font-medium">Activity</span><select id="m-act" class="mt-1 border rounded px-3 py-2 nut-select">
+            <option value="sedentary">Sedentary</option><option value="light">Light</option><option value="moderate" selected>Moderate</option><option value="active">Active</option><option value="extra">Very active</option>
+          </select></label>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <label class="block"><span class="text-sm font-medium">Goal</span><select id="m-goal" class="mt-1 border rounded px-3 py-2 nut-select">
+            <option value="maintain">Maintain</option><option value="lose" selected>Fat loss</option><option value="gain">Controlled surplus</option>
+          </select></label>
+          <label class="block"><span class="text-sm font-medium">Deficit / surplus (kcal/day)</span><input type="number" id="m-delta" class="mt-1 w-full border rounded px-3 py-2" value="500"></label>
+        </div>
+        <label class="block"><span class="text-sm font-medium">Macro preset</span><select id="m-preset" class="mt-1 border rounded px-3 py-2 nut-select">
+          <option value="balanced" selected>Balanced (P 25%, C 50%, F 25%)</option>
+          <option value="higherP">Higher protein (P 35%, C 40%, F 25%)</option>
+          <option value="lowerC">Lower carb (P 30%, C 35%, F 35%)</option>
+          <option value="zone">40 / 30 / 30 style</option>
+          <option value="custom">Custom %</option>
+        </select></label>
+        <div id="m-custom" class="hidden grid grid-cols-3 gap-2">
+          <label class="block"><span class="text-sm font-medium">Protein %</span><input type="number" id="m-p" class="mt-1 w-full border rounded px-3 py-2" value="30"></label>
+          <label class="block"><span class="text-sm font-medium">Carb %</span><input type="number" id="m-c" class="mt-1 w-full border rounded px-3 py-2" value="40"></label>
+          <label class="block"><span class="text-sm font-medium">Fat %</span><input type="number" id="m-f" class="mt-1 w-full border rounded px-3 py-2" value="30"></label>
+        </div>
+        <button type="button" id="m-go" class="bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate macros</button>
+        <div id="m-out" class="mt-2 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-sm text-vendora-text" role="status" aria-live="polite"></div>
+      </div>
+
+      <nav class="mt-8 pt-6 border-t border-white/10 text-sm" aria-label="Related nutrition calculators">
+        <p class="font-semibold text-vendora-text mb-2">Related tools</p>
+        <ul class="flex flex-wrap gap-x-4 gap-y-2">
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../calorie-calculator/">Calorie calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../protein-calculator/">Protein calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../recipe-nutrition-calculator/">Recipe nutrition</a></li>
+        </ul>
+      </nav>
+      <section class="mt-10 pt-8 border-t border-white/10 text-sm text-vendora-muted leading-relaxed">
+        <h2 class="text-lg font-semibold text-vendora-text mb-3">Logic</h2>
+        <p>Calorie target = TDEE (Mifflin RMR × activity) adjusted by your deficit or surplus selection. Grams = calorie fractions × (1 kcal per gram rules: 4 / 4 / 9). This is a planning split, not a diagnosis of how your body partitions nutrients.</p>
+      </section>
+      <p class="text-xs text-vendora-muted/80 mt-8">Educational only. Not medical or sports nutrition advice tailored to you.</p>
+    </main>
+  </div>
+<script src="../assets/nutrition-engine.js"></script>
+<script>
+(function () {
+  var E = window.NutritionEngine;
+  var presets = {
+    balanced: [25, 50, 25],
+    higherP: [35, 40, 25],
+    lowerC: [30, 35, 35],
+    zone: [30, 40, 30],
+    custom: null
+  };
+  function pct() {
+    var key = document.getElementById('m-preset').value;
+    if (key === 'custom') {
+      return [+document.getElementById('m-p').value, +document.getElementById('m-c').value, +document.getElementById('m-f').value];
+    }
+    return presets[key];
+  }
+  function run() {
+    var age = +document.getElementById('m-age').value;
+    var male = document.getElementById('m-sex').value === 'm';
+    var w = +document.getElementById('m-kg').value;
+    var h = +document.getElementById('m-cm').value;
+    var act = document.getElementById('m-act').value;
+    var goal = document.getElementById('m-goal').value;
+    var delta = +document.getElementById('m-delta').value;
+    var out = document.getElementById('m-out');
+    if (age < 15 || w < 30 || h < 120) { out.textContent = 'Check inputs.'; return; }
+    var rmr = E.restingMetabolicRates(age, male, w, h, null).mifflin;
+    var td = E.tdee(rmr, act);
+    var tgt = E.goalTargetCalories(td, goal, delta).target;
+    var pcf = pct();
+    if (!pcf || pcf[0] + pcf[1] + pcf[2] <= 0) { out.textContent = 'Enter positive custom percentages.'; return; }
+    var g = E.macroGramsFromPercent(tgt, pcf[0], pcf[1], pcf[2]);
+    out.innerHTML = '<p class="text-vendora-muted mb-2">Target calories ≈ <strong class="text-vendora-brand">' + Math.round(tgt) + '</strong> kcal/day (from TDEE ≈ ' + Math.round(td) + ').</p>' +
+      '<ul class="list-disc pl-5 space-y-1 text-vendora-text"><li>Protein ≈ <strong>' + Math.round(g.proteinG) + '</strong> g</li><li>Carbohydrate ≈ <strong>' + Math.round(g.carbG) + '</strong> g</li><li>Fat ≈ <strong>' + Math.round(g.fatG) + '</strong> g</li></ul>' +
+      '<p class="text-xs text-vendora-muted mt-3">Preset ratios are starting points near common dietary patterns—not prescriptions.</p>';
+  }
+  document.getElementById('m-preset').addEventListener('change', function () {
+    document.getElementById('m-custom').classList.toggle('hidden', document.getElementById('m-preset').value !== 'custom');
+    run();
+  });
+  document.getElementById('m-go').addEventListener('click', run);
+  ['m-age','m-sex','m-kg','m-cm','m-act','m-goal','m-delta','m-p','m-c','m-f'].forEach(function (id) {
+    var n = document.getElementById(id);
+    if (n) n.addEventListener('input', run);
+  });
+  run();
+})();
+</script>
+</body>
+</html>

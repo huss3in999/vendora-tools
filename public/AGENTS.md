@@ -77,6 +77,31 @@ Keep prompt short, strict, and structured
 ### Step 5
 Return clean JSON whenever possible
 
+## Site structure — where new tools go (mandatory)
+
+This repo historically mixed **`/tools/`**, **`/calculators/`**, **`/calculator/`** (hubs), **`/all-tools/`**, and deep trees such as **`/tools/small-business/calculators/...`**. That is hard to browse and duplicates “index” pages. **For every new tool you add from now on, follow this layout and do not invent new folder chains.**
+
+### One directory per tool type (flat paths)
+
+- **Restaurant / business web apps and interactive tools** that ship as their own mini-site: put them under **`/tools/<tool-slug>/`** only (one folder depth under `tools/`, with `index.html` inside). Example: `tools/menu-price-calculator/`.
+- **Single-purpose formula calculators** (static math pages): put them under **`/calculators/<tool-slug>/`** only. Example: `calculators/tdee-calculator/`.
+- **Themed hubs** (copy + curated links only, not a second full catalog): **`/calculator/<theme>/`** — e.g. `calculator/food/`, `calculator/finance/`. These pages group links by topic; they do **not** replace the global directory.
+
+### One global discovery page (categories live there, not in new trees)
+
+- **`/all-tools/index.html`** is the **canonical searchable directory** for “everything in one place” with categories and search. When you add a tool, **register it there** (and in generated catalog data such as `tools-catalog.json` / sitemap scripts if the project uses them). Do **not** create another standalone “full tools index” for the same purpose.
+- **`/tools/index.html`** may stay as a **restaurant-focused** landing page: it should **link to** `all-tools/` for “see everything”, not grow into a competing full duplicate of the entire site map unless intentionally maintained as one source of truth.
+
+### Do not do this on new work
+
+- Do **not** nest new tools under **`tools/<category>/calculators/<tool>/`** (or similar deep `category → calculators → tool` paths). That pattern is legacy; it multiplies index pages and breaks mental models.
+- Do **not** add “yet another” top-level folder that means “all tools” beside `all-tools/`.
+- Do **not** add a new category-only `index.html` that re-lists dozens of tools by hand **unless** it is a short hub (a handful of links) pointing at the flat tool URLs and at **`/all-tools/`**.
+
+### Legacy paths
+
+- Existing URLs under **`tools/small-business/`** and elsewhere remain for backward compatibility; **do not add new siblings** that extend the same deep structure. Prefer new **`tools/<slug>/`** or **`calculators/<slug>/`** entries plus a row in **`all-tools/`** (and catalog generation if applicable).
+
 ## UI rule
 
 - Make tools look simple, clean, and fast
@@ -85,6 +110,14 @@ Return clean JSON whenever possible
 - Show result in cards, not raw JSON
 - Add reset button
 - Add copy button when useful
+
+### Static HTML calculators (`/calculators/` and related)
+
+- **Navigation links must be relative** to each `index.html` file (for example `../tdee-calculator/`, `../../calculator/food/nutrition-calculators/`), not root-absolute paths like `/calculators/...`. Root-absolute URLs break when the site is opened from disk or from a non-root base path.
+- **Dark theme forms:** after `calculators.css`, also link `calculators/assets/calculator-dark-forms.css` on any new calculator page. Native `<select>` / `<option>` often render with a light menu and invisible text on Windows unless `option` gets an explicit dark background and light text; `color-scheme: dark` on the `<select>` helps.
+- **Select width:** avoid `w-full` stretching every dropdown edge-to-edge unless the layout needs it; use the shared `nut-select` class (max-width) for compact fields.
+- **No white dropdown surfaces on dark tools:** do not leave `<select>` / `<option>` styling to the browser default. Use opaque dark backgrounds and light body text on both the closed control and `option` / `optgroup` (see `tools/tool-system.css` and `calculator/_shared/vendora-calc.css`). Avoid semi-transparent `background` on selects where the OS paints the list against white.
+- **Currency list data:** pages that use `calculator/_shared/currency-global.js` load `data/currencies.json`. The script resolves the JSON URL from its own `src` (so `fetch` works on `file://`), falls back to `../../../data/currencies.json` from the page on `file:`, and otherwise uses `/data/currencies.json`. For unusual hosting, set `window.__VENDORA_CURRENCIES_JSON__` to an absolute URL string before the script runs.
 
 ## Before building any new AI tool, always explain
 

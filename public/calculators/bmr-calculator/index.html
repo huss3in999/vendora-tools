@@ -24,6 +24,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/calculators.css">
+<link rel="stylesheet" href="../assets/calculator-dark-forms.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is BMR the same as my calorie target?","acceptedAnswer":{"@type":"Answer","text":"No. Total daily energy needs add activity (TDEE). BMR is only the resting component."}},{"@type":"Question","name":"Why might my real metabolism differ?","acceptedAnswer":{"@type":"Answer","text":"Equations are averages. Medications, thyroid, lean mass, and genetics can shift actual needs."}},{"@type":"Question","name":"Which units does this calculator expect?","acceptedAnswer":{"@type":"Answer","text":"Metric inputs as labeled in the form (kg, cm, years)."}}]}</script>
 </head>
 <body class="vendora-calc-shell min-h-screen p-4 md:p-8">
@@ -35,13 +36,20 @@
       <p class="text-sm text-vendora-muted mb-6">Mifflin–St Jeor: resting calories per day.</p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <label class="block"><span class="text-sm font-medium">Age</span><input type="number" id="age" class="mt-1 w-full border rounded px-3 py-2" min="15" max="100" value="30"></label>
-<label class="block"><span class="text-sm font-medium">Sex</span><select id="sex" class="mt-1 w-full border rounded px-3 py-2"><option value="m">Male</option><option value="f">Female</option></select></label>
+<label class="block"><span class="text-sm font-medium">Sex</span><select id="sex" class="mt-1 border rounded px-3 py-2 nut-select"><option value="m">Male</option><option value="f">Female</option></select></label>
 <label class="block"><span class="text-sm font-medium">Weight (kg)</span><input type="number" id="bw" class="mt-1 w-full border rounded px-3 py-2" step="0.1" value="80"></label>
 <label class="block"><span class="text-sm font-medium">Height (cm)</span><input type="number" id="ht" class="mt-1 w-full border rounded px-3 py-2" step="0.1" value="180"></label></div>
 <button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
       <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
       <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
-      
+      <nav class="mt-6 pt-6 border-t border-white/10 text-sm" aria-label="Related nutrition calculators">
+        <p class="font-semibold text-vendora-text mb-2">Next steps</p>
+        <ul class="flex flex-wrap gap-x-4 gap-y-2">
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../tdee-calculator/">TDEE calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../calorie-calculator/">Calorie calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../../calculator/food/nutrition-calculators/">Nutrition hub</a></li>
+        </ul>
+      </nav>
     <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
       <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: BMR Calculator</h2>
       <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">

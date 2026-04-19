@@ -3,90 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-DFY197R2MS');
-  </script>
-<title>TDEE Calculator — Total Daily Energy Expenditure &amp; Activity | Vendora</title>
-<meta name="description" content="Estimate TDEE (total daily energy expenditure) from BMR and an activity factor. Useful for rough calorie planning—not a personalized medical plan.">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-DFY197R2MS');
+</script>
+<title>TDEE Calculator — Total Daily Energy Expenditure | Vendora</title>
+<meta name="description" content="Calculate TDEE from age, sex, height, weight, and activity: Mifflin–St Jeor RMR × standard activity factors. Optional Katch–McArdle comparison when body fat % is known.">
 <link rel="canonical" href="https://getvendora.net/calculators/tdee-calculator/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="TDEE Calculator — Total Daily Energy Expenditure &amp; Activity">
-<meta property="og:description" content="Estimate TDEE (total daily energy expenditure) from BMR and an activity factor. Useful for rough calorie planning—not a personalized medical plan.">
+<meta property="og:title" content="TDEE Calculator — Total Daily Energy Expenditure | Vendora">
+<meta property="og:description" content="Estimate total daily energy expenditure (TDEE) for calorie planning. Educational only—not medical advice.">
 <meta property="og:url" content="https://getvendora.net/calculators/tdee-calculator/">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TDEE Calculator — Total Daily Energy Expenditure &amp; Activity | Vendora">
-<meta name="twitter:description" content="Estimate TDEE (total daily energy expenditure) from BMR and an activity factor. Useful for rough calorie planning—not a personalized medical plan.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/calculators.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I pick an activity level?","acceptedAnswer":{"@type":"Answer","text":"Choose the description closest to your average week, not your single hardest day."}},{"@type":"Question","name":"Why is my TDEE different from my fitness tracker?","acceptedAnswer":{"@type":"Answer","text":"Different models and inputs. Use TDEE as a starting point and adjust based on real weight changes over weeks."}},{"@type":"Question","name":"Should I eat exactly my TDEE to maintain weight?","acceptedAnswer":{"@type":"Answer","text":"Often close, but individual tracking matters. Treat TDEE as an educated estimate."}},{"@type":"Question","name":"Does this tool store my information?","acceptedAnswer":{"@type":"Answer","text":"Calculations run locally in the page; no account is required."}}]}</script>
+<link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"TDEE Calculator","applicationCategory":"HealthApplication","operatingSystem":"Web","url":"https://getvendora.net/calculators/tdee-calculator/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I pick an activity level?","acceptedAnswer":{"@type":"Answer","text":"Match your average week—not only your hardest workout day."}},{"@type":"Question","name":"Why is TDEE different from my watch?","acceptedAnswer":{"@type":"Answer","text":"Wearables use proprietary motion and heart-rate models. Use TDEE as a starting calorie anchor, then adjust using weight change over several weeks."}}]}</script>
 </head>
 <body class="vendora-calc-shell min-h-screen p-4 md:p-8">
-  <div class="max-w-2xl mx-auto">
-    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+  <div class="max-w-3xl mx-auto">
+    <nav class="mb-4 text-sm text-vendora-muted flex flex-wrap gap-x-3 gap-y-1" aria-label="Breadcrumb">
+      <a href="../" class="text-vendora-brand hover:underline font-medium">All calculators</a>
+      <span aria-hidden="true">/</span>
+      <a href="../../calculator/food/nutrition-calculators/" class="text-vendora-brand hover:underline font-medium">Nutrition calculators</a>
+    </nav>
     <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
-      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Health &amp; Fitness</p>
-      <h1 class="text-2xl font-bold text-vendora-text mb-2">TDEE Calculator</h1>
-      <p class="text-sm text-vendora-muted mb-6">Total daily energy = BMR × activity factor.</p>
-      <div class="grid gap-4">
-<label class="block"><span class="text-sm font-medium">BMR (kcal/day)</span><input type="number" id="bmr" class="mt-1 w-full border rounded px-3 py-2" value="1800"></label>
-<label class="block"><span class="text-sm font-medium">Activity</span><select id="act" class="mt-1 w-full border rounded px-3 py-2">
-<option value="1.2">Sedentary 1.2</option><option value="1.375">Light 1.375</option><option value="1.55" selected>Moderate 1.55</option><option value="1.725">Active 1.725</option><option value="1.9">Very active 1.9</option></select></label></div>
-<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
-      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
-      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
-      
-    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
-      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: TDEE Calculator</h2>
-      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
-        <div>
-          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
-          <p>Combines a BMR estimate with an activity multiplier to approximate total daily calorie needs.</p>
-        </div>
-        <div>
-          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
-          <p>Enter your stats, pick an activity level that best matches your typical week, then calculate.</p>
-        </div>
-        <div>
-          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
-          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">TDEE ≈ BMR × activity factor (sedentary to very active).</p>
-        </div>
-        <div>
-          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
-          <p>If BMR ≈ 1,600 kcal and you choose “moderate” activity (~1.55), TDEE ≈ 2,480 kcal/day.</p>
-        </div>
-        <div>
-          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
-          <div class="space-y-3">
-      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
-        <p class="text-sm font-medium text-vendora-text">How do I pick an activity level?</p>
-        <p class="text-sm text-vendora-muted mt-1">Choose the description closest to your average week, not your single hardest day.</p>
-      </div>
-      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
-        <p class="text-sm font-medium text-vendora-text">Why is my TDEE different from my fitness tracker?</p>
-        <p class="text-sm text-vendora-muted mt-1">Different models and inputs. Use TDEE as a starting point and adjust based on real weight changes over weeks.</p>
-      </div>
-      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
-        <p class="text-sm font-medium text-vendora-text">Should I eat exactly my TDEE to maintain weight?</p>
-        <p class="text-sm text-vendora-muted mt-1">Often close, but individual tracking matters. Treat TDEE as an educated estimate.</p>
-      </div>
-      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
-        <p class="text-sm font-medium text-vendora-text">Does this tool store my information?</p>
-        <p class="text-sm text-vendora-muted mt-1">Calculations run locally in the page; no account is required.</p>
-      </div></div>
-        </div>
-      </div>
-    </section>
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Food &amp; nutrition</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">TDEE calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Enter your body stats once: we estimate <strong class="text-vendora-text">RMR with Mifflin–St Jeor</strong>, multiply by a standard <strong class="text-vendora-text">activity factor</strong>, and show <strong class="text-vendora-text">TDEE</strong>. If you know <strong class="text-vendora-text">body fat %</strong>, we also display a <strong class="text-vendora-text">Katch–McArdle</strong>-based TDEE for comparison. For maintenance or deficit <em>targets</em>, continue to the <a class="text-vendora-brand hover:underline" href="../calorie-calculator/">calorie calculator</a>.</p>
+      <div id="nutrition-daily-root" data-mode="tdee"></div>
+      <nav class="mt-8 pt-6 border-t border-white/10 text-sm" aria-label="Related nutrition calculators">
+        <p class="font-semibold text-vendora-text mb-2">Related tools</p>
+        <ul class="flex flex-wrap gap-x-4 gap-y-2">
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../bmr-calculator/">BMR calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../calorie-calculator/">Calorie calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../maintenance-calorie-calculator/">Maintenance calories</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../macro-calculator/">Macro calculator</a></li>
+        </ul>
+      </nav>
+      <section class="mt-10 pt-8 border-t border-white/10 text-sm text-vendora-muted leading-relaxed" aria-labelledby="tdee-guide">
+        <h2 id="tdee-guide" class="text-lg font-semibold text-vendora-text mb-3">Formula notes</h2>
+        <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2 text-xs">TDEE ≈ RMR × activity factor (1.2 sedentary … 1.9 very active).</p>
+        <p class="mt-3">RMR defaults to Mifflin–St Jeor. With body fat %, lean mass can drive a Katch–McArdle RMR (370 + 21.6 × lean kg) shown as a secondary TDEE.</p>
+      </section>
+      <p class="text-xs text-vendora-muted/80 mt-8">Educational estimates only. Not medical advice.</p>
     </main>
   </div>
-<script>
-function run(){const b=+document.getElementById('bmr').value,m=+document.getElementById('act').value;document.getElementById('out').textContent=b>0?'TDEE: ~'+Math.round(b*m)+' kcal/day':'Enter BMR.';}
-document.getElementById('go').addEventListener('click',run);run();
-</script>
+<script src="../assets/nutrition-engine.js"></script>
+<script src="../assets/nutrition-daily-ui.js"></script>
 </body>
 </html>

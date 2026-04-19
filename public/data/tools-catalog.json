@@ -1,7 +1,7 @@
 {
-  "generated": "2026-04-17",
+  "generated": "2026-04-20",
   "baseUrl": "https://getvendora.net",
-  "totalTools": 350,
+  "totalTools": 359,
   "categories": [
     {
       "id": "hubs",
@@ -45,7 +45,7 @@
       "id": "restaurant-apps",
       "label": "Restaurant & business web apps",
       "description": "Interactive tools under /tools/ (invoices, QR menus, AI helpers, and more).",
-      "count": 21,
+      "count": 22,
       "items": [
         {
           "title": "AI Break-Even Date Calculator",
@@ -136,6 +136,11 @@
           "title": "Receipt Generator Free Online | Restaurant & Payment Receipt Maker",
           "url": "/tools/receipt-generator/",
           "path": "tools/receipt-generator/index.html"
+        },
+        {
+          "title": "Restaurant Profit Dashboard | Revenue, Expenses & Margin Calculator",
+          "url": "/tools/restaurant-profit-dashboard/",
+          "path": "tools/restaurant-profit-dashboard/index.html"
         },
         {
           "title": "Restaurant Invoice Generator Free Online | Catering & Food Business Invoices",
@@ -971,7 +976,7 @@
       "id": "general-calculators",
       "label": "General calculators",
       "description": "Standalone calculators under /calculators/ (math, health, finance basics, utilities).",
-      "count": 55,
+      "count": 53,
       "items": [
         {
           "title": "2D Distance Calculator — Euclidean Distance Between Points",
@@ -1007,11 +1012,6 @@
           "title": "BMI Calculator — Body Mass Index (kg/m²) for Adults",
           "url": "/calculators/bmi-calculator/",
           "path": "calculators/bmi-calculator/index.html"
-        },
-        {
-          "title": "BMR Calculator — Basal Metabolic Rate (Mifflin–St Jeor)",
-          "url": "/calculators/bmr-calculator/",
-          "path": "calculators/bmr-calculator/index.html"
         },
         {
           "title": "Body Fat Calculator — U.S. Navy Method Estimate",
@@ -1212,11 +1212,6 @@
           "title": "Standard Deviation Calculator — Sample SD for Data Sets",
           "url": "/calculators/standard-deviation/",
           "path": "calculators/standard-deviation/index.html"
-        },
-        {
-          "title": "TDEE Calculator — Total Daily Energy Expenditure & Activity",
-          "url": "/calculators/tdee-calculator/",
-          "path": "calculators/tdee-calculator/index.html"
         },
         {
           "title": "Temperature Converter — °C, °F, and Kelvin",
@@ -1482,8 +1477,13 @@
       "id": "calc-food",
       "label": "Food production (/calculator/food/)",
       "description": "Recipe, yield, spoilage, and plate costing.",
-      "count": 5,
+      "count": 6,
       "items": [
+        {
+          "title": "Food & nutrition calculators — calories, TDEE, macros & recipes",
+          "url": "/calculator/food/nutrition-calculators/",
+          "path": "calculator/food/nutrition-calculators/index.html"
+        },
         {
           "title": "Food calculators",
           "url": "/calculator/food/",
@@ -1838,6 +1838,59 @@
           "title": "Weighted average calculator",
           "url": "/calculator/general/weighted-average-calculator/",
           "path": "calculator/general/weighted-average-calculator/index.html"
+        }
+      ]
+    },
+    {
+      "id": "nutrition-personal",
+      "label": "Food & nutrition (personal)",
+      "description": "Calories, TDEE, deficits, macros, protein, recipe nutrition, and restaurant meal math.",
+      "count": 9,
+      "items": [
+        {
+          "title": "BMR Calculator — Basal Metabolic Rate (Mifflin–St Jeor)",
+          "url": "/calculators/bmr-calculator/",
+          "path": "calculators/bmr-calculator/index.html"
+        },
+        {
+          "title": "Calorie Calculator — Daily Target, TDEE & Weight Goals",
+          "url": "/calculators/calorie-calculator/",
+          "path": "calculators/calorie-calculator/index.html"
+        },
+        {
+          "title": "Calorie Deficit Calculator — Fat Loss Target From TDEE",
+          "url": "/calculators/calorie-deficit-calculator/",
+          "path": "calculators/calorie-deficit-calculator/index.html"
+        },
+        {
+          "title": "Macro Calculator — Protein, Carbs & Fat Grams",
+          "url": "/calculators/macro-calculator/",
+          "path": "calculators/macro-calculator/index.html"
+        },
+        {
+          "title": "Maintenance Calorie Calculator — TDEE & Weight Stability",
+          "url": "/calculators/maintenance-calorie-calculator/",
+          "path": "calculators/maintenance-calorie-calculator/index.html"
+        },
+        {
+          "title": "Protein Calculator — Daily Protein Range (DRI vs Training)",
+          "url": "/calculators/protein-calculator/",
+          "path": "calculators/protein-calculator/index.html"
+        },
+        {
+          "title": "Recipe Nutrition Calculator — Per Serving & Label-Style Totals",
+          "url": "/calculators/recipe-nutrition-calculator/",
+          "path": "calculators/recipe-nutrition-calculator/index.html"
+        },
+        {
+          "title": "Restaurant Nutrition Calculator — Meal Totals & Data Trust",
+          "url": "/calculators/restaurant-nutrition-calculator/",
+          "path": "calculators/restaurant-nutrition-calculator/index.html"
+        },
+        {
+          "title": "TDEE Calculator — Total Daily Energy Expenditure",
+          "url": "/calculators/tdee-calculator/",
+          "path": "calculators/tdee-calculator/index.html"
         }
       ]
     }

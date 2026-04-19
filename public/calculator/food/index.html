@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Food calculators | Vendora</title>
-  <meta name="description" content="Browse Vendora food calculators and related tools.">
+  <meta name="description" content="Food calculators for kitchens and businesses, plus a linked nutrition suite: calories, TDEE, macros, protein, recipe nutrition, and restaurant meal planning.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://getvendora.net/calculator/food/">
   <meta property="og:type" content="website">
@@ -59,6 +59,14 @@
       font-weight: 700;
     }
     .hub-links a:hover { text-decoration: underline; }
+    .food-cat-label {
+      margin: 0 0 8px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--brand);
+    }
     @media (max-width: 980px) {
       .calc-hub-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
@@ -66,7 +74,7 @@
       .calc-hub-grid { grid-template-columns: 1fr; }
     }
   </style>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Delivery Commission Calculator | Uber Eats, DoorDash & App Fee Estimator", "url": "https://getvendora.net/tools/delivery-commission-calculator/"}, {"@type": "ListItem", "position": 2, "name": "Delivery Cost Calculator Free | Route Cost, Margin & Delivery Fee | Vendora", "url": "https://getvendora.net/tools/delivery-cost-calculator/"}, {"@type": "ListItem", "position": 3, "name": "Plate cost per serving calculator | Vendora", "url": "https://getvendora.net/calculator/food/plate-cost-calculator/"}, {"@type": "ListItem", "position": 4, "name": "Recipe scaling calculator | Vendora", "url": "https://getvendora.net/calculator/food/recipe-scaling-calculator/"}, {"@type": "ListItem", "position": 5, "name": "Spoilage waste percent calculator | Vendora", "url": "https://getvendora.net/calculator/food/spoilage-waste-percent-calculator/"}, {"@type": "ListItem", "position": 6, "name": "Tip Calculator — Split Bill & Gratuity | Vendora", "url": "https://getvendora.net/calculators/tip-calculator/"}, {"@type": "ListItem", "position": 7, "name": "Trim yield calculator | Vendora", "url": "https://getvendora.net/calculator/food/trim-yield-calculator/"}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ItemList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Delivery Commission Calculator | Uber Eats, DoorDash & App Fee Estimator", "url": "https://getvendora.net/tools/delivery-commission-calculator/"}, {"@type": "ListItem", "position": 2, "name": "Delivery Cost Calculator Free | Route Cost, Margin & Delivery Fee | Vendora", "url": "https://getvendora.net/tools/delivery-cost-calculator/"}, {"@type": "ListItem", "position": 3, "name": "Plate cost per serving calculator | Vendora", "url": "https://getvendora.net/calculator/food/plate-cost-calculator/"}, {"@type": "ListItem", "position": 4, "name": "Recipe scaling calculator | Vendora", "url": "https://getvendora.net/calculator/food/recipe-scaling-calculator/"}, {"@type": "ListItem", "position": 5, "name": "Spoilage waste percent calculator | Vendora", "url": "https://getvendora.net/calculator/food/spoilage-waste-percent-calculator/"}, {"@type": "ListItem", "position": 6, "name": "Tip Calculator — Split Bill & Gratuity | Vendora", "url": "https://getvendora.net/calculators/tip-calculator/"}, {"@type": "ListItem", "position": 7, "name": "Trim yield calculator | Vendora", "url": "https://getvendora.net/calculator/food/trim-yield-calculator/"}, {"@type": "ListItem", "position": 8, "name": "Food and nutrition calculators hub | Vendora", "url": "https://getvendora.net/calculator/food/nutrition-calculators/"}, {"@type": "ListItem", "position": 9, "name": "Calorie Calculator — Daily Target, TDEE & Weight Goals | Vendora", "url": "https://getvendora.net/calculators/calorie-calculator/"}, {"@type": "ListItem", "position": 10, "name": "TDEE Calculator — Total Daily Energy Expenditure | Vendora", "url": "https://getvendora.net/calculators/tdee-calculator/"}, {"@type": "ListItem", "position": 11, "name": "Maintenance Calorie Calculator — TDEE & Weight Stability | Vendora", "url": "https://getvendora.net/calculators/maintenance-calorie-calculator/"}, {"@type": "ListItem", "position": 12, "name": "Calorie Deficit Calculator — Fat Loss Target From TDEE | Vendora", "url": "https://getvendora.net/calculators/calorie-deficit-calculator/"}, {"@type": "ListItem", "position": 13, "name": "Macro Calculator — Protein, Carbs & Fat Grams | Vendora", "url": "https://getvendora.net/calculators/macro-calculator/"}, {"@type": "ListItem", "position": 14, "name": "Protein Calculator — Daily Protein Range (DRI vs Training) | Vendora", "url": "https://getvendora.net/calculators/protein-calculator/"}, {"@type": "ListItem", "position": 15, "name": "Recipe Nutrition Calculator — Per Serving & Label-Style Totals | Vendora", "url": "https://getvendora.net/calculators/recipe-nutrition-calculator/"}, {"@type": "ListItem", "position": 16, "name": "Restaurant Nutrition Calculator — Meal Totals & Data Trust | Vendora", "url": "https://getvendora.net/calculators/restaurant-nutrition-calculator/"}, {"@type": "ListItem", "position": 17, "name": "BMR Calculator — Basal Metabolic Rate (Mifflin–St Jeor) | Vendora", "url": "https://getvendora.net/calculators/bmr-calculator/"}]}</script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -78,63 +86,114 @@
 <body class="vendora-tool">
   <main class="page-shell">
     <header class="card faq site-nav">
-      <a class="site-nav-brand" href="/">Vendora</a>
+      <a class="site-nav-brand" href="../../index.html">Vendora</a>
       <nav aria-label="Primary">
-        <p class="section-copy"><a href="/">Home</a> / <a href="/calculator/">Calculators</a> / <a href="/calculator/food/">Food calculators</a></p>
+        <p class="section-copy"><a href="../../index.html">Home</a> / <a href="../index.html">Calculators</a> / <a href="index.html">Food calculators</a></p>
       </nav>
     </header>
 
     <section class="hero">
       <p class="eyebrow">Calculators</p>
       <h1>Food calculators</h1>
-      <p class="hero-copy">Food costing and kitchen math under <code>/calculator/food/</code>. Linked <strong>legacy</strong> tools keep their original URLs, including <a href="/tools/food-cost-calculator/">food cost (restaurant tool)</a> and the <a href="/calculators/">general calculators hub</a> for additional recipe-style math.</p>
+      <p class="hero-copy">This page is the <strong>single food directory</strong>: calculators are grouped into categories so visitors are not sent hunting across the site. <strong>Personal nutrition</strong> (calories, TDEE, macros, protein, recipes) has its own hub plus direct links below. <strong>Kitchen &amp; costing</strong> tools stay on <code>/calculator/food/</code>. For restaurant business math (prime cost, labour %), use <a href="../restaurant/">restaurant calculators</a> or <a href="../../tools/food-cost-calculator/">food cost</a> under tools.</p>
       <div class="hub-links">
-        <a href="/calculator/finance/">Finance calculators</a>
-        <a href="/calculator/restaurant/">Restaurant calculators</a>
-        <a href="/calculator/profit/">Profit calculators</a>
-        <a href="/calculator/operations/">Operations calculators</a>
-        <a href="/calculator/inventory/">Inventory calculators</a>
-        <a href="/calculator/general/">General calculators</a>
+        <a href="nutrition-calculators/">Nutrition calculators</a>
+        <a href="../finance/">Finance calculators</a>
+        <a href="../restaurant/">Restaurant calculators</a>
+        <a href="../profit/">Profit calculators</a>
+        <a href="../operations/">Operations calculators</a>
+        <a href="../inventory/">Inventory calculators</a>
+        <a href="../general/">General calculators</a>
       </div>
     </section>
 
     <section class="card faq">
-      <h2 class="section-title">Browse calculators</h2>
+      <p class="food-cat-label">Category 1 — Personal nutrition</p>
+      <h2 class="section-title">Calories, macros &amp; body-fuel tools</h2>
+      <p class="section-copy" style="margin-top:-6px;margin-bottom:14px;color:var(--muted);max-width:820px;">Start at the hub for the full list and short descriptions, or jump straight to a topic. These pages share one math engine but use separate URLs for clearer SEO.</p>
       <div class="calc-hub-grid">
-
-          <a class="calc-card" href="/tools/delivery-commission-calculator/">
-            <h3 class="calc-title">Delivery Commission Calculator | Uber Eats, DoorDash &amp; App Fee Estimator</h3>
-            <p class="calc-url">/tools/delivery-commission-calculator/</p>
+          <a class="calc-card" href="nutrition-calculators/">
+            <h3 class="calc-title">Nutrition calculators hub (start here)</h3>
+            <p class="calc-url">/calculator/food/nutrition-calculators/</p>
           </a>
-
-          <a class="calc-card" href="/tools/delivery-cost-calculator/">
-            <h3 class="calc-title">Delivery Cost Calculator Free | Route Cost, Margin &amp; Delivery Fee | Vendora</h3>
-            <p class="calc-url">/tools/delivery-cost-calculator/</p>
+          <a class="calc-card" href="../../calculators/calorie-calculator/">
+            <h3 class="calc-title">Calorie calculator</h3>
+            <p class="calc-url">/calculators/calorie-calculator/</p>
           </a>
+          <a class="calc-card" href="../../calculators/tdee-calculator/">
+            <h3 class="calc-title">TDEE calculator</h3>
+            <p class="calc-url">/calculators/tdee-calculator/</p>
+          </a>
+          <a class="calc-card" href="../../calculators/maintenance-calorie-calculator/">
+            <h3 class="calc-title">Maintenance calories</h3>
+            <p class="calc-url">/calculators/maintenance-calorie-calculator/</p>
+          </a>
+          <a class="calc-card" href="../../calculators/calorie-deficit-calculator/">
+            <h3 class="calc-title">Calorie deficit</h3>
+            <p class="calc-url">/calculators/calorie-deficit-calculator/</p>
+          </a>
+          <a class="calc-card" href="../../calculators/macro-calculator/">
+            <h3 class="calc-title">Macro calculator</h3>
+            <p class="calc-url">/calculators/macro-calculator/</p>
+          </a>
+          <a class="calc-card" href="../../calculators/protein-calculator/">
+            <h3 class="calc-title">Protein calculator</h3>
+            <p class="calc-url">/calculators/protein-calculator/</p>
+          </a>
+          <a class="calc-card" href="../../calculators/bmr-calculator/">
+            <h3 class="calc-title">BMR calculator</h3>
+            <p class="calc-url">/calculators/bmr-calculator/</p>
+          </a>
+          <a class="calc-card" href="../../calculators/recipe-nutrition-calculator/">
+            <h3 class="calc-title">Recipe nutrition calculator</h3>
+            <p class="calc-url">/calculators/recipe-nutrition-calculator/</p>
+          </a>
+          <a class="calc-card" href="../../calculators/restaurant-nutrition-calculator/">
+            <h3 class="calc-title">Restaurant nutrition (manual meal builder)</h3>
+            <p class="calc-url">/calculators/restaurant-nutrition-calculator/</p>
+          </a>
+      </div>
+    </section>
 
-          <a class="calc-card" href="/calculator/food/plate-cost-calculator/">
-            <h3 class="calc-title">Plate cost per serving calculator | Vendora</h3>
+    <section class="card faq">
+      <p class="food-cat-label">Category 2 — Kitchen costing &amp; recipe math</p>
+      <h2 class="section-title">Plate cost, scaling, yield &amp; waste</h2>
+      <p class="section-copy" style="margin-top:-6px;margin-bottom:14px;color:var(--muted);max-width:820px;">Operational food math for recipes and portions. Currency dropdowns load ISO codes from <code>data/currencies.json</code> (works offline when you open the file from disk).</p>
+      <div class="calc-hub-grid">
+          <a class="calc-card" href="plate-cost-calculator/">
+            <h3 class="calc-title">Plate cost per serving</h3>
             <p class="calc-url">/calculator/food/plate-cost-calculator/</p>
           </a>
-
-          <a class="calc-card" href="/calculator/food/recipe-scaling-calculator/">
-            <h3 class="calc-title">Recipe scaling calculator | Vendora</h3>
+          <a class="calc-card" href="recipe-scaling-calculator/">
+            <h3 class="calc-title">Recipe scaling</h3>
             <p class="calc-url">/calculator/food/recipe-scaling-calculator/</p>
           </a>
-
-          <a class="calc-card" href="/calculator/food/spoilage-waste-percent-calculator/">
-            <h3 class="calc-title">Spoilage waste percent calculator | Vendora</h3>
+          <a class="calc-card" href="trim-yield-calculator/">
+            <h3 class="calc-title">Trim yield</h3>
+            <p class="calc-url">/calculator/food/trim-yield-calculator/</p>
+          </a>
+          <a class="calc-card" href="spoilage-waste-percent-calculator/">
+            <h3 class="calc-title">Spoilage waste %</h3>
             <p class="calc-url">/calculator/food/spoilage-waste-percent-calculator/</p>
           </a>
+      </div>
+    </section>
 
-          <a class="calc-card" href="/calculators/tip-calculator/">
-            <h3 class="calc-title">Tip Calculator — Split Bill &amp; Gratuity | Vendora</h3>
-            <p class="calc-url">/calculators/tip-calculator/</p>
+    <section class="card faq">
+      <p class="food-cat-label">Category 3 — Delivery &amp; guest check</p>
+      <h2 class="section-title">Apps fee, route cost &amp; tips</h2>
+      <div class="calc-hub-grid">
+          <a class="calc-card" href="../../tools/delivery-commission-calculator/">
+            <h3 class="calc-title">Delivery commission (Uber Eats, DoorDash…)</h3>
+            <p class="calc-url">/tools/delivery-commission-calculator/</p>
           </a>
-
-          <a class="calc-card" href="/calculator/food/trim-yield-calculator/">
-            <h3 class="calc-title">Trim yield calculator | Vendora</h3>
-            <p class="calc-url">/calculator/food/trim-yield-calculator/</p>
+          <a class="calc-card" href="../../tools/delivery-cost-calculator/">
+            <h3 class="calc-title">Delivery cost</h3>
+            <p class="calc-url">/tools/delivery-cost-calculator/</p>
+          </a>
+          <a class="calc-card" href="../../calculators/tip-calculator/">
+            <h3 class="calc-title">Tip calculator — split bill</h3>
+            <p class="calc-url">/calculators/tip-calculator/</p>
           </a>
       </div>
     </section>
@@ -142,9 +201,9 @@
     <footer class="card faq site-nav">
       <nav aria-label="Footer">
         <p class="section-copy">
-          <a href="/">Home</a> |
-          <a href="/tools/">Tools</a> |
-          <a href="/privacy-policy/">Privacy Policy</a>
+          <a href="../../index.html">Home</a> |
+          <a href="../../tools/index.html">Tools</a> |
+          <a href="../../privacy-policy/index.html">Privacy Policy</a>
         </p>
       </nav>
     </footer>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-DFY197R2MS');
+</script>
+<title>Protein Calculator — Daily Protein Range (DRI vs Training) | Vendora</title>
+<meta name="description" content="Estimate how much protein per day: adult DRI baseline (~0.8 g/kg) vs higher training-oriented bands. Separate from full macro planning—answers “how much protein?” quickly.">
+<link rel="canonical" href="https://getvendora.net/calculators/protein-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Protein Calculator — Daily Protein Range | Vendora">
+<meta property="og:description" content="Baseline health range plus higher active/training-oriented protein grams per day from body weight.">
+<meta property="og:url" content="https://getvendora.net/calculators/protein-calculator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Protein Calculator","applicationCategory":"HealthApplication","operatingSystem":"Web","url":"https://getvendora.net/calculators/protein-calculator/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-3xl mx-auto">
+    <nav class="mb-4 text-sm text-vendora-muted flex flex-wrap gap-x-3 gap-y-1" aria-label="Breadcrumb">
+      <a href="../" class="text-vendora-brand hover:underline font-medium">All calculators</a>
+      <span aria-hidden="true">/</span>
+      <a href="../../calculator/food/nutrition-calculators/" class="text-vendora-brand hover:underline font-medium">Nutrition calculators</a>
+    </nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Food &amp; nutrition</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Protein calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Many people search protein alone before they care about full macros. This tool shows a <strong class="text-vendora-text">general adult baseline</strong> near the DRI-style <strong class="text-vendora-text">0.8 g/kg/day</strong> and a <strong class="text-vendora-text">higher band</strong> that tracks typical sports-nutrition practice for resistance training and performance goals (not individualised medical advice).</p>
+      <div class="grid gap-4 max-w-xl">
+        <label class="block"><span class="text-sm font-medium">Body weight (kg)</span><input type="number" id="p-kg" class="mt-1 w-full border rounded px-3 py-2" step="0.1" value="78"></label>
+        <label class="block"><span class="text-sm font-medium">Training / activity level</span><select id="p-tier" class="mt-1 border rounded px-3 py-2 nut-select">
+          <option value="sedentary">Mostly sedentary</option>
+          <option value="moderate" selected>Moderate exercise several days/week</option>
+          <option value="trained">Heavier training most days</option>
+          <option value="athlete">High-volume athlete phase</option>
+        </select></label>
+        <label class="block"><span class="text-sm font-medium">Primary goal</span><select id="p-goal" class="mt-1 border rounded px-3 py-2 nut-select">
+          <option value="maintain">Maintain weight &amp; health</option>
+          <option value="fat_loss" selected>Fat loss while keeping muscle</option>
+          <option value="muscle">Muscle gain emphasis</option>
+        </select></label>
+        <button type="button" id="p-go" class="bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+        <div id="p-out" class="p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-sm" role="status" aria-live="polite"></div>
+      </div>
+      <nav class="mt-8 pt-6 border-t border-white/10 text-sm" aria-label="Related nutrition calculators">
+        <p class="font-semibold text-vendora-text mb-2">Related tools</p>
+        <ul class="flex flex-wrap gap-x-4 gap-y-2">
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../macro-calculator/">Macro calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../calorie-calculator/">Calorie calculator</a></li>
+        </ul>
+      </nav>
+      <section class="mt-10 pt-8 border-t border-white/10 text-sm text-vendora-muted leading-relaxed">
+        <h2 class="text-lg font-semibold text-vendora-text mb-3">Sources in plain language</h2>
+        <p>U.S.–style adult protein reference intakes cluster near <strong class="text-vendora-text">0.8 g/kg/day</strong> for general adequacy. Sports nutrition reviews often cite roughly <strong class="text-vendora-text">1.4–2.0 g/kg/day</strong> for many people doing serious resistance training, depending on phase, total calories, and protein quality. Your lab markers, kidney history, and clinician guidance still come first.</p>
+      </section>
+      <p class="text-xs text-vendora-muted/80 mt-8">Educational only. Not medical advice.</p>
+    </main>
+  </div>
+<script src="../assets/nutrition-engine.js"></script>
+<script>
+(function () {
+  var E = window.NutritionEngine;
+  function run() {
+    var w = +document.getElementById('p-kg').value;
+    var tier = document.getElementById('p-tier').value;
+    var goal = document.getElementById('p-goal').value;
+    var out = document.getElementById('p-out');
+    if (!w || w < 30 || w > 200) { out.textContent = 'Enter a realistic weight in kg.'; return; }
+    var b = E.proteinBands(w, tier, goal);
+    out.innerHTML = '<p class="mb-2"><span class="text-vendora-muted">General baseline (near DRI-style 0.8 g/kg):</span><br><strong class="text-xl text-vendora-brand">~' + Math.round(b.dri) + ' g/day</strong></p>' +
+      '<p><span class="text-vendora-muted">Broader planning band shown for your selections:</span><br><strong class="text-vendora-text">' + Math.round(b.low) + '–' + Math.round(b.high) + ' g/day</strong></p>' +
+      '<p class="text-xs text-vendora-muted mt-3">Band widens with training stressors and muscle-oriented goals; it is still a population-style estimate.</p>';
+  }
+  document.getElementById('p-go').addEventListener('click', run);
+  ['p-kg','p-tier','p-goal'].forEach(function (id) { document.getElementById(id).addEventListener('input', run); });
+  run();
+})();
+</script>
+</body>
+</html>

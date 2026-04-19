@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-DFY197R2MS');
+</script>
+<title>Calorie Calculator — Daily Target, TDEE &amp; Weight Goals | Vendora</title>
+<meta name="description" content="Free calorie calculator: Mifflin–St Jeor RMR, activity-based TDEE, maintenance, deficit or surplus targets, optional goal-date planning. Runs in your browser.">
+<link rel="canonical" href="https://getvendora.net/calculators/calorie-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Calorie Calculator — Daily Target, TDEE &amp; Weight Goals | Vendora">
+<meta property="og:description" content="Estimate maintenance calories and daily targets from age, sex, height, weight, activity, and goals. Educational only—not medical advice.">
+<meta property="og:url" content="https://getvendora.net/calculators/calorie-calculator/">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Calorie Calculator","applicationCategory":"HealthApplication","operatingSystem":"Web","url":"https://getvendora.net/calculators/calorie-calculator/","description":"Estimate daily calorie needs from anthropometrics, activity level, and weight goals using common predictive equations.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this the same as a medical calorie prescription?","acceptedAnswer":{"@type":"Answer","text":"No. It is an educational estimate. Medications, genetics, thyroid, and training all shift real needs—track weight and adjust."}},{"@type":"Question","name":"What equation do you use?","acceptedAnswer":{"@type":"Answer","text":"Resting metabolism defaults to Mifflin–St Jeor. When body fat percent is entered, we also show Katch–McArdle-based TDEE for comparison."}},{"@type":"Question","name":"Do you store my data?","acceptedAnswer":{"@type":"Answer","text":"Calculations run locally in your browser; nothing is sent to Vendora for this tool."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-3xl mx-auto">
+    <nav class="mb-4 text-sm text-vendora-muted flex flex-wrap gap-x-3 gap-y-1" aria-label="Breadcrumb">
+      <a href="../" class="text-vendora-brand hover:underline font-medium">All calculators</a>
+      <span aria-hidden="true">/</span>
+      <a href="../../calculator/food/nutrition-calculators/" class="text-vendora-brand hover:underline font-medium">Nutrition calculators</a>
+    </nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Food &amp; nutrition</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Calorie calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Estimate resting metabolism (RMR), total daily energy (TDEE), and a practical calorie target for maintenance, fat loss, or controlled gain. Optional body-fat % unlocks a Katch–McArdle comparison. Goal-date mode shows a <em>rough</em> average daily deficit—not a laboratory or NIH dynamic model.</p>
+      <div id="nutrition-daily-root" data-mode="calorie"></div>
+      <nav class="mt-8 pt-6 border-t border-white/10 text-sm" aria-label="Related nutrition calculators">
+        <p class="font-semibold text-vendora-text mb-2">Related tools</p>
+        <ul class="flex flex-wrap gap-x-4 gap-y-2">
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../tdee-calculator/">TDEE calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../maintenance-calorie-calculator/">Maintenance calories</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../calorie-deficit-calculator/">Calorie deficit</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../macro-calculator/">Macro calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../protein-calculator/">Protein calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../recipe-nutrition-calculator/">Recipe nutrition</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../bmr-calculator/">BMR only</a></li>
+        </ul>
+      </nav>
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="guide-cal">
+        <h2 id="guide-cal" class="text-lg font-semibold text-vendora-text mb-4">How to read your result</h2>
+        <div class="space-y-4 text-sm text-vendora-muted leading-relaxed">
+          <p><strong class="text-vendora-text">TDEE</strong> is your estimated burn including typical daily movement and exercise, built from an RMR equation and a standard activity factor (1.2–1.9).</p>
+          <p><strong class="text-vendora-text">Target intake</strong> adjusts TDEE by the deficit or surplus you choose. Very large deficits are not shown as safe recommendations—work with a clinician for aggressive plans.</p>
+          <p><strong class="text-vendora-text">Goal-date row</strong> divides estimated energy stored in the weight you want to lose by the number of days until your target date. Energy-per-kg changes with physiology; treat the band as orientation, not a promise.</p>
+        </div>
+      </section>
+      <section class="mt-8 pt-8 border-t border-white/10" aria-labelledby="faq-cal">
+        <h2 id="faq-cal" class="text-lg font-semibold text-vendora-text mb-4">FAQs</h2>
+        <div class="space-y-3 text-sm text-vendora-muted">
+          <div class="border-b border-white/10 pb-3"><p class="font-medium text-vendora-text">Is this the same as a medical calorie prescription?</p><p class="mt-1">No. It is an educational estimate. Medications, genetics, thyroid, and training all shift real needs—track weight and adjust.</p></div>
+          <div class="border-b border-white/10 pb-3"><p class="font-medium text-vendora-text">What equation do you use?</p><p class="mt-1">Resting metabolism defaults to Mifflin–St Jeor. When body fat percent is entered, we also show Katch–McArdle-based TDEE for comparison.</p></div>
+          <div><p class="font-medium text-vendora-text">Do you store my data?</p><p class="mt-1">Calculations run locally in your browser; nothing is sent to Vendora for this tool.</p></div>
+        </div>
+      </section>
+      <p class="text-xs text-vendora-muted/80 mt-8">Educational estimates only. Not medical, dietary, or personalised coaching advice.</p>
+    </main>
+  </div>
+<script src="../assets/nutrition-engine.js"></script>
+<script src="../assets/nutrition-daily-ui.js"></script>
+</body>
+</html>

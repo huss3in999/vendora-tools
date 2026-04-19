@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-DFY197R2MS');
+</script>
+<title>Maintenance Calorie Calculator — TDEE &amp; Weight Stability | Vendora</title>
+<meta name="description" content="Estimate maintenance calories (TDEE) to keep weight stable: Mifflin–St Jeor RMR with standard activity factors. Optional body fat for Katch–McArdle comparison.">
+<link rel="canonical" href="https://getvendora.net/calculators/maintenance-calorie-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Maintenance Calorie Calculator — TDEE &amp; Weight Stability | Vendora">
+<meta property="og:description" content="Find a starting maintenance calorie level from your stats and activity—not a guarantee, but a common planning anchor.">
+<meta property="og:url" content="https://getvendora.net/calculators/maintenance-calorie-calculator/">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Maintenance Calorie Calculator","applicationCategory":"HealthApplication","operatingSystem":"Web","url":"https://getvendora.net/calculators/maintenance-calorie-calculator/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Should I eat exactly my TDEE to maintain?","acceptedAnswer":{"@type":"Answer","text":"Often close, but real maintenance drifts with NEAT, sleep, and stress. Use TDEE as a starting point and adjust using your weight trend."}}]}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-3xl mx-auto">
+    <nav class="mb-4 text-sm text-vendora-muted flex flex-wrap gap-x-3 gap-y-1" aria-label="Breadcrumb">
+      <a href="../" class="text-vendora-brand hover:underline font-medium">All calculators</a>
+      <span aria-hidden="true">/</span>
+      <a href="../../calculator/food/nutrition-calculators/" class="text-vendora-brand hover:underline font-medium">Nutrition calculators</a>
+    </nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Food &amp; nutrition</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Maintenance calorie calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">This page focuses on <strong class="text-vendora-text">weight stability</strong>: we default the goal to maintenance so you can read TDEE as your rough calorie budget. If you later want fat loss or surplus targets, use the <a class="text-vendora-brand hover:underline" href="../calorie-deficit-calculator/">deficit</a> or full <a class="text-vendora-brand hover:underline" href="../calorie-calculator/">calorie calculator</a>.</p>
+      <div id="nutrition-daily-root" data-mode="maintenance"></div>
+      <nav class="mt-8 pt-6 border-t border-white/10 text-sm" aria-label="Related nutrition calculators">
+        <p class="font-semibold text-vendora-text mb-2">Related tools</p>
+        <ul class="flex flex-wrap gap-x-4 gap-y-2">
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../calorie-calculator/">Calorie calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../tdee-calculator/">TDEE calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../calorie-deficit-calculator/">Calorie deficit</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../macro-calculator/">Macro calculator</a></li>
+        </ul>
+      </nav>
+      <section class="mt-10 pt-8 border-t border-white/10 text-sm text-vendora-muted leading-relaxed">
+        <h2 class="text-lg font-semibold text-vendora-text mb-3">Why a separate maintenance page?</h2>
+        <p>Search intent for “maintenance calories” is distinct from deficit or TDEE education. Same underlying math, different explanation—so you can land on the answer you searched for without wading through weight-loss defaults.</p>
+      </section>
+      <p class="text-xs text-vendora-muted/80 mt-8">Educational estimates only. Not medical advice.</p>
+    </main>
+  </div>
+<script src="../assets/nutrition-engine.js"></script>
+<script src="../assets/nutrition-daily-ui.js"></script>
+</body>
+</html>

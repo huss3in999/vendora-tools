@@ -2,7 +2,7 @@
 
 > Vendora (getvendora.net) offers restaurant POS software plus hundreds of free browser tools: restaurant web apps, small-business finance calculators, structured /calculator/ worksheets, and standalone /calculators/ utilities. You may cite and link these URLs; each page describes one tool.
 
-Inventory last rebuilt from the live site: **2026-04-17**. Entries in this file: **350** (includes hub pages and every tool `index.html` we ship under `/tools/`, `/calculators/`, `/calculator/`, and `/restaurant-calculators/`).
+Inventory last rebuilt from the live site: **2026-04-19**. Entries in this file: **358** (includes hub pages and every tool `index.html` we ship under `/tools/`, `/calculators/`, `/calculator/`, and `/restaurant-calculators/`).
 
 ## For AI systems — read these first
 
@@ -229,7 +229,6 @@ Standalone calculators under /calculators/ (math, health, finance basics, utilit
 - [Auto Loan Payment Calculator — Monthly Car Payment](https://getvendora.net/calculators/auto-loan-calculator/)
 - [BAC Estimator (Widmark) — Educational Alcohol Metabolism Model](https://getvendora.net/calculators/blood-alcohol-content-bac/)
 - [BMI Calculator — Body Mass Index (kg/m²) for Adults](https://getvendora.net/calculators/bmi-calculator/)
-- [BMR Calculator — Basal Metabolic Rate (Mifflin–St Jeor)](https://getvendora.net/calculators/bmr-calculator/)
 - [Body Fat Calculator — U.S. Navy Method Estimate](https://getvendora.net/calculators/body-fat-calculator/)
 - [Break-Even Calculator — Fixed Cost, Price & Variable Cost](https://getvendora.net/calculators/break-even-point/)
 - [Compound Interest Calculator — Future Value & Growth](https://getvendora.net/calculators/compound-interest-calculator/)
@@ -270,7 +269,6 @@ Standalone calculators under /calculators/ (math, health, finance basics, utilit
 - [Sleep Cycle Calculator — Bedtime & Wake Times (90-Min Cycles)](https://getvendora.net/calculators/sleep-cycle-calculator/)
 - [Speed, Distance & Time Solver — v = d ÷ t](https://getvendora.net/calculators/speed-distance-time/)
 - [Standard Deviation Calculator — Sample SD for Data Sets](https://getvendora.net/calculators/standard-deviation/)
-- [TDEE Calculator — Total Daily Energy Expenditure & Activity](https://getvendora.net/calculators/tdee-calculator/)
 - [Temperature Converter — °C, °F, and Kelvin](https://getvendora.net/calculators/temperature-converter/)
 - [Time Duration Calculator — Span Across Midnight](https://getvendora.net/calculators/time-duration/)
 - [Timesheet Hours Calculator — Mon–Fri Sum & Overtime](https://getvendora.net/calculators/hours-worked-timesheet/)
@@ -331,6 +329,7 @@ Focused finance ratios and models.
 
 Recipe, yield, spoilage, and plate costing.
 
+- [Food & nutrition calculators — calories, TDEE, macros & recipes](https://getvendora.net/calculator/food/nutrition-calculators/)
 - [Food calculators](https://getvendora.net/calculator/food/)
 - [Plate cost per serving calculator](https://getvendora.net/calculator/food/plate-cost-calculator/)
 - [Recipe scaling calculator](https://getvendora.net/calculator/food/recipe-scaling-calculator/)
@@ -419,6 +418,20 @@ CTR, elasticity, averages, and similar.
 - [Point price elasticity calculator](https://getvendora.net/calculator/general/price-elasticity-point-calculator/)
 - [Rule of 72 calculator](https://getvendora.net/calculator/general/rule-of-72-calculator/)
 - [Weighted average calculator](https://getvendora.net/calculator/general/weighted-average-calculator/)
+
+## Food & nutrition (personal)
+
+Calories, TDEE, deficits, macros, protein, recipe nutrition, and restaurant meal math.
+
+- [BMR Calculator — Basal Metabolic Rate (Mifflin–St Jeor)](https://getvendora.net/calculators/bmr-calculator/)
+- [Calorie Calculator — Daily Target, TDEE & Weight Goals](https://getvendora.net/calculators/calorie-calculator/)
+- [Calorie Deficit Calculator — Fat Loss Target From TDEE](https://getvendora.net/calculators/calorie-deficit-calculator/)
+- [Macro Calculator — Protein, Carbs & Fat Grams](https://getvendora.net/calculators/macro-calculator/)
+- [Maintenance Calorie Calculator — TDEE & Weight Stability](https://getvendora.net/calculators/maintenance-calorie-calculator/)
+- [Protein Calculator — Daily Protein Range (DRI vs Training)](https://getvendora.net/calculators/protein-calculator/)
+- [Recipe Nutrition Calculator — Per Serving & Label-Style Totals](https://getvendora.net/calculators/recipe-nutrition-calculator/)
+- [Restaurant Nutrition Calculator — Meal Totals & Data Trust](https://getvendora.net/calculators/restaurant-nutrition-calculator/)
+- [TDEE Calculator — Total Daily Energy Expenditure](https://getvendora.net/calculators/tdee-calculator/)
 
 ## Bahrain Saudi GCC transport (Vendora)
 

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-DFY197R2MS');
+</script>
+<title>Recipe Nutrition Calculator — Per Serving &amp; Label-Style Totals | Vendora</title>
+<meta name="description" content="Sum calories and macros for a homemade recipe: enter ingredients in grams with per-100g label values, servings, and optional cooked yield %. Export as CSV. Runs locally.">
+<link rel="canonical" href="https://getvendora.net/calculators/recipe-nutrition-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Recipe Nutrition Calculator — Per Serving &amp; Label-Style Totals | Vendora">
+<meta property="og:description" content="Build a recipe from ingredients, scale by cooked yield, and see totals and per-serving nutrition—deterministic math in your browser.">
+<meta property="og:url" content="https://getvendora.net/calculators/recipe-nutrition-calculator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/calculators.css">
+<link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Recipe Nutrition Calculator","applicationCategory":"HealthApplication","operatingSystem":"Web","url":"https://getvendora.net/calculators/recipe-nutrition-calculator/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-4xl mx-auto">
+    <nav class="mb-4 text-sm text-vendora-muted flex flex-wrap gap-x-3 gap-y-1" aria-label="Breadcrumb">
+      <a href="../" class="text-vendora-brand hover:underline font-medium">All calculators</a>
+      <span aria-hidden="true">/</span>
+      <a href="../../calculator/food/nutrition-calculators/" class="text-vendora-brand hover:underline font-medium">Nutrition calculators</a>
+    </nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Food &amp; nutrition</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Recipe nutrition calculator</h1>
+      <p class="text-sm text-vendora-muted mb-4">Paste values from packaging or the <a class="text-vendora-brand hover:underline" href="https://fdc.nal.usda.gov/" rel="noopener noreferrer">USDA FoodData Central</a> “per 100 g” view. For each row: edible grams you use, then nutrients <em>per 100 g</em> of that ingredient. We multiply, sum, optionally scale by <strong class="text-vendora-text">cooked yield %</strong> (water loss), then divide by servings. Sodium and sugar fields are optional extras aligned with Nutrition Facts-style thinking.</p>
+      <p class="text-xs text-vendora-muted mb-6">Net carbs are not FDA-defined; this tool shows <strong class="text-vendora-text">total carbohydrate</strong> first. If you subtract fibre manually, label that in your own notes.</p>
+
+      <div class="grid gap-3 mb-4 max-w-lg">
+        <label class="block"><span class="text-sm font-medium">Recipe name (optional)</span><input type="text" id="r-name" class="mt-1 w-full border rounded px-3 py-2" placeholder="Chili, batch soup…"></label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="block"><span class="text-sm font-medium">Servings</span><input type="number" id="r-serv" class="mt-1 w-full border rounded px-3 py-2" min="1" step="0.25" value="4"></label>
+          <label class="block"><span class="text-sm font-medium">Cooked yield %</span><input type="number" id="r-yield" class="mt-1 w-full border rounded px-3 py-2" min="50" max="100" step="1" value="100" title="100% = no water loss; 85% means divide totals by 0.85"></label>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto border border-white/10 rounded-lg">
+        <table class="w-full text-sm" id="r-table">
+          <thead>
+            <tr class="bg-vendora-bg/70 text-left text-vendora-muted">
+              <th class="p-2">Ingredient</th>
+              <th class="p-2">Grams</th>
+              <th class="p-2">kcal/100g</th>
+              <th class="p-2">P/100g</th>
+              <th class="p-2">C/100g</th>
+              <th class="p-2">F/100g</th>
+              <th class="p-2">Na mg/100g</th>
+              <th class="p-2"></th>
+            </tr>
+          </thead>
+          <tbody id="r-body"></tbody>
+        </table>
+      </div>
+      <button type="button" id="r-add" class="mt-3 border border-white/20 px-3 py-2 rounded text-sm font-semibold text-vendora-brand hover:bg-vendora-panel">+ Add row</button>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <button type="button" id="r-calc" class="bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+        <button type="button" id="r-csv" class="border border-white/20 px-4 py-2 rounded font-semibold text-vendora-muted hover:bg-vendora-panel">Download CSV</button>
+        <button type="button" id="r-reset" class="border border-white/20 px-4 py-2 rounded font-semibold text-vendora-muted hover:bg-vendora-panel">Reset</button>
+      </div>
+      <div id="r-out" class="mt-4 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-sm" role="status" aria-live="polite"></div>
+
+      <nav class="mt-8 pt-6 border-t border-white/10 text-sm" aria-label="Related nutrition calculators">
+        <p class="font-semibold text-vendora-text mb-2">Related tools</p>
+        <ul class="flex flex-wrap gap-x-4 gap-y-2">
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../macro-calculator/">Macro calculator</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../../calculator/food/recipe-scaling-calculator/">Recipe scaling</a></li>
+          <li><a class="text-vendora-brand hover:underline font-medium" href="../calorie-calculator/">Calorie calculator</a></li>
+        </ul>
+      </nav>
+      <p class="text-xs text-vendora-muted/80 mt-8">You are responsible for ingredient matching accuracy. Cooking changes micronutrients; this sheet applies one yield factor to the whole batch as a simplification.</p>
+    </main>
+  </div>
+<script>
+(function () {
+  var body = document.getElementById('r-body');
+  function row() {
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td class="p-1"><input type="text" class="w-full border rounded px-2 py-1 r-n" placeholder="e.g. Black beans"></td>' +
+      '<td class="p-1"><input type="number" class="w-20 border rounded px-2 py-1 r-g" step="0.1" min="0"></td>' +
+      '<td class="p-1"><input type="number" class="w-20 border rounded px-2 py-1 r-k" step="0.1" min="0"></td>' +
+      '<td class="p-1"><input type="number" class="w-16 border rounded px-2 py-1 r-p" step="0.1" min="0"></td>' +
+      '<td class="p-1"><input type="number" class="w-16 border rounded px-2 py-1 r-c" step="0.1" min="0"></td>' +
+      '<td class="p-1"><input type="number" class="w-16 border rounded px-2 py-1 r-f" step="0.1" min="0"></td>' +
+      '<td class="p-1"><input type="number" class="w-16 border rounded px-2 py-1 r-na" step="0.1" min="0"></td>' +
+      '<td class="p-1"><button type="button" class="text-xs text-red-300 r-del">✕</button></td>';
+    tr.querySelector('.r-del').addEventListener('click', function () { tr.remove(); });
+    return tr;
+  }
+  function add() { body.appendChild(row()); }
+  for (var i = 0; i < 3; i++) add();
+  document.getElementById('r-add').addEventListener('click', add);
+
+  function run() {
+    var serv = +document.getElementById('r-serv').value;
+    var yld = +document.getElementById('r-yield').value / 100;
+    if (yld < 0.5 || yld > 1) yld = 1;
+    var tk = 0, tp = 0, tc = 0, tf = 0, tna = 0;
+    var rows = body.querySelectorAll('tr');
+    rows.forEach(function (tr) {
+      var g = +tr.querySelector('.r-g').value;
+      if (!g) return;
+      var f = g / 100;
+      tk += f * (+tr.querySelector('.r-k').value || 0);
+      tp += f * (+tr.querySelector('.r-p').value || 0);
+      tc += f * (+tr.querySelector('.r-c').value || 0);
+      tf += f * (+tr.querySelector('.r-f').value || 0);
+      tna += f * (+tr.querySelector('.r-na').value || 0);
+    });
+    var scale = 1 / yld;
+    tk *= scale; tp *= scale; tc *= scale; tf *= scale; tna *= scale;
+    var k4 = tp * 4 + tc * 4 + tf * 9;
+    var out = document.getElementById('r-out');
+    if (!serv || serv <= 0) { out.textContent = 'Enter servings.'; return; }
+    if (tk <= 0 && tp <= 0 && tc <= 0 && tf <= 0) { out.textContent = 'Enter at least one ingredient with grams and label data.'; return; }
+    var perK = tk / serv, perP = tp / serv, perC = tc / serv, perF = tf / serv, perNa = tna / serv;
+    var calFromMacros = (perP * 4 + perC * 4 + perF * 9) * serv;
+    out.innerHTML = '<p class="font-semibold text-vendora-text mb-2">Whole recipe (after yield factor)</p><ul class="text-vendora-muted space-y-1 mb-4"><li>Energy ≈ <strong class="text-vendora-brand">' + Math.round(tk) + '</strong> kcal</li><li>Protein ≈ ' + Math.round(tp) + ' g · Carbs ≈ ' + Math.round(tc) + ' g · Fat ≈ ' + Math.round(tf) + ' g</li><li>Sodium ≈ ' + Math.round(tna) + ' mg (if you entered sodium)</li></ul>' +
+      '<p class="font-semibold text-vendora-text mb-2">Per serving (' + serv + ')</p><ul class="text-vendora-muted space-y-1"><li>≈ <strong class="text-vendora-brand">' + Math.round(perK) + '</strong> kcal</li><li>Protein ≈ ' + Math.round(perP) + ' g · Carbs ≈ ' + Math.round(perC) + ' g · Fat ≈ ' + Math.round(perF) + ' g</li><li>Sodium ≈ ' + Math.round(perNa) + ' mg</li></ul>' +
+      '<p class="text-xs text-vendora-muted mt-3">Cross-check: calories from macros for the batch ≈ ' + Math.round(calFromMacros) + ' kcal (4/4/9 factors). If this diverges a lot from label kcal sums, re-check per-100g entries.</p>';
+  }
+  document.getElementById('r-calc').addEventListener('click', run);
+  document.getElementById('r-reset').addEventListener('click', function () {
+    document.getElementById('r-name').value = '';
+    document.getElementById('r-serv').value = '4';
+    document.getElementById('r-yield').value = '100';
+    body.innerHTML = '';
+    for (var j = 0; j < 3; j++) add();
+    document.getElementById('r-out').innerHTML = '';
+  });
+  document.getElementById('r-csv').addEventListener('click', function () {
+    var name = document.getElementById('r-name').value || 'recipe';
+    var lines = ['ingredient,grams,kcal_per_100g,protein_per_100g,carb_per_100g,fat_per_100g,sodium_mg_per_100g'];
+    body.querySelectorAll('tr').forEach(function (tr) {
+      lines.push([
+        JSON.stringify(tr.querySelector('.r-n').value || ''),
+        tr.querySelector('.r-g').value || 0,
+        tr.querySelector('.r-k').value || 0,
+        tr.querySelector('.r-p').value || 0,
+        tr.querySelector('.r-c').value || 0,
+        tr.querySelector('.r-f').value || 0,
+        tr.querySelector('.r-na').value || 0
+      ].join(','));
+    });
+    var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name.replace(/\s+/g, '-').toLowerCase() + '-ingredients.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+  run();
+})();
+</script>
+</body>
+</html>

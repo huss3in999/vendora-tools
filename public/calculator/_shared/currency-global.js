@@ -9,9 +9,31 @@
   var LOAD = null;
   var CODE_INDEX = null;
 
+  /** Resolves currencies.json for both https:// and file:// (script lives under /calculator/_shared/). */
+  function currenciesJsonUrl() {
+    if (typeof window.__VENDORA_CURRENCIES_JSON__ === 'string' && window.__VENDORA_CURRENCIES_JSON__) {
+      return window.__VENDORA_CURRENCIES_JSON__;
+    }
+    var nodes = document.getElementsByTagName('script');
+    for (var i = nodes.length - 1; i >= 0; i--) {
+      var src = nodes[i].src || '';
+      if (src.indexOf('currency-global.js') !== -1) {
+        try {
+          return new URL('../../data/currencies.json', src).href;
+        } catch (e) {}
+      }
+    }
+    if (window.location.protocol === 'file:') {
+      try {
+        return new URL('../../../data/currencies.json', window.location.href).href;
+      } catch (e2) {}
+    }
+    return '/data/currencies.json';
+  }
+
   function load() {
     if (LOAD) return LOAD;
-    LOAD = fetch('/data/currencies.json', { credentials: 'same-origin' })
+    LOAD = fetch(currenciesJsonUrl(), { credentials: 'same-origin' })
       .then(function (r) {
         if (!r.ok) throw new Error('currencies load failed');
         return r.json();

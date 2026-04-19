@@ -255,16 +255,30 @@ body.vendora-tool .group-title {
 }
 
 body.vendora-tool input,
-body.vendora-tool select,
 body.vendora-tool textarea,
 body.vendora-tool .readonly-output,
 body.vendora-tool .line-total-box,
-body.vendora-tool .custom-input,
-body.vendora-tool .custom-select {
+body.vendora-tool .custom-input {
   background: var(--input-bg);
   color: var(--text);
   border: 1px solid var(--input-border);
   min-height: 50px;
+}
+
+/* Opaque select surface — transparent "input-bg" makes Windows native lists unreadable (white on white). */
+body.vendora-tool select,
+body.vendora-tool .custom-select {
+  background-color: #0c1b31;
+  color: #f4f7f6;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  min-height: 50px;
+}
+
+body.vendora-tool select option,
+body.vendora-tool select optgroup,
+body.vendora-tool .custom-select option {
+  background-color: #081324;
+  color: #f4f7f6;
 }
 
 body.vendora-tool textarea {
@@ -277,14 +291,23 @@ body.vendora-tool textarea::placeholder {
 }
 
 body.vendora-tool input:focus,
-body.vendora-tool select:focus,
 body.vendora-tool textarea:focus,
-body.vendora-tool .custom-input:focus,
-body.vendora-tool .custom-select:focus {
+body.vendora-tool .custom-input:focus {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(0, 208, 132, 0.55);
   box-shadow: 0 0 0 4px rgba(0, 208, 132, 0.15);
   outline: none;
+}
+
+body.vendora-tool select:focus,
+body.vendora-tool .custom-select:focus {
+  background-color: #0f213d;
+  color: #f4f7f6;
+  border-color: rgba(0, 208, 132, 0.55);
+  box-shadow: 0 0 0 4px rgba(0, 208, 132, 0.15);
+  outline: none;
+  z-index: 4;
+  position: relative;
 }
 
 body.vendora-tool select,
@@ -385,7 +408,7 @@ body.vendora-tool .input-card {
 
 body.vendora-tool .results-card,
 body.vendora-tool .preview-card {
-  overflow: hidden;
+  overflow: visible;
 }
 
 body.vendora-tool .result-grid .metric-card,

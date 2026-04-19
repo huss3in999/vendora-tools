@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restaurant Profit Dashboard | Revenue, Expenses &amp; Margin Calculator</title>
+  <meta name="description" content="Free restaurant profit dashboard for cafés, food trucks, and small food businesses. Enter revenue and expenses, see gross profit, net profit, margins, and break-even status. Saves locally in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/restaurant-profit-dashboard/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does the Restaurant Profit Dashboard calculate?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It totals your revenue streams, subtracts discounts, groups variable and fixed costs, and shows gross profit, net profit, profit margin, food cost percentage, labor cost percentage, and whether you are in profit, loss, or break-even for the period you selected."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my financial data sent to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Version 1 runs entirely in your browser. Numbers you enter are stored in localStorage on your device so they persist after refresh, unless you clear them."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How should I use the daily, weekly, and monthly period selector?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Choose the period that matches the numbers you are entering. The math is the same; the label helps you interpret totals consistently, for example weekly revenue against weekly rent and labor."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is gross profit versus net profit in this tool?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Gross profit is total revenue minus variable costs (food, packaging, and delivery fees). Net profit is total revenue minus all expenses, including labor, rent, utilities, marketing, and miscellaneous costs."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is my profit margin zero when revenue is zero?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Margin divides net profit by revenue. If revenue is zero, the tool shows zero percent margin instead of dividing by zero, which keeps the dashboard readable and mathematically safe."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <h1>Restaurant Profit Dashboard</h1>
+      <p class="lead">
+        Enter your sales and costs for a single period to see revenue, expenses, margins, and profit status.
+        Built for restaurants, cafés, food trucks, and small food businesses. Nothing leaves your device in version 1.
+      </p>
+    </div>
+  </header>
+
+  <main id="main" class="wrap main-grid">
+    <div class="panels">
+      <section class="card" aria-labelledby="period-heading">
+        <h2 id="period-heading" class="card-title">Time period</h2>
+        <p class="hint" id="period-hint">Pick the period that matches the figures you are entering (daily, weekly, or monthly).</p>
+        <div class="field">
+          <label for="period">Reporting period</label>
+          <select id="period" name="period" class="input input-select" aria-describedby="period-hint">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly" selected>Monthly</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="revenue-heading">
+        <h2 id="revenue-heading" class="card-title">Revenue</h2>
+        <p class="hint" id="currency-note">Amounts are formatted in USD for display. Enter numbers only; commas are allowed.</p>
+        <fieldset class="fieldset-reset">
+          <legend class="visually-hidden">Revenue inputs</legend>
+          <div class="field">
+            <label for="foodSales">Food sales</label>
+            <input id="foodSales" name="foodSales" type="text" inputmode="decimal" class="input" autocomplete="off" aria-describedby="currency-note">
+            <p class="field-error" id="foodSales-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="beverageSales">Beverage sales</label>
+            <input id="beverageSales" name="beverageSales" type="text" inputmode="decimal" class="input" autocomplete="off">
+            <p class="field-error" id="beverageSales-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="deliverySales">Delivery sales</label>
+            <input id="deliverySales" name="deliverySales" type="text" inputmode="decimal" class="input" autocomplete="off">
+            <p class="field-error" id="deliverySales-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="otherSales">Other sales</label>
+            <input id="otherSales" name="otherSales" type="text" inputmode="decimal" class="input" autocomplete="off">
+            <p class="field-error" id="otherSales-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="discountsRefunds">Discounts &amp; refunds (entered as a positive total to subtract)</label>
+            <input id="discountsRefunds" name="discountsRefunds" type="text" inputmode="decimal" class="input" autocomplete="off">
+            <p class="field-error" id="discountsRefunds-error" role="alert" hidden></p>
+          </div>
+        </fieldset>
+      </section>
+
+      <section class="card" aria-labelledby="expense-heading">
+        <h2 id="expense-heading" class="card-title">Expenses</h2>
+        <fieldset class="fieldset-reset">
+          <legend class="visually-hidden">Expense inputs</legend>
+          <div class="field">
+            <label for="foodCost">Food cost</label>
+            <input id="foodCost" name="foodCost" type="text" inputmode="decimal" class="input" autocomplete="off">
+            <p class="field-error" id="foodCost-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="packagingCost">Packaging cost</label>
+            <input id="packagingCost" name="packagingCost" type="text" inputmode="decimal" class="input" autocomplete="off">
+            <p class="field-error" id="packagingCost-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="deliveryFees">Delivery fees</label>
+            <input id="deliveryFees" name="deliveryFees" type="text" inputmode="decimal" class="input" autocomplete="off">
+            <p class="field-error" id="deliveryFees-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="laborCost">Labor cost</label>
+            <input id="laborCost" name="laborCost" type="text" inputmode="decimal" class="input" autocomplete="off">
+            <p class="field-error" id="laborCost-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="rent">Rent</label>
+            <input id="rent" name="rent" type="text" inputmode="decimal" class="input" autocomplete="off">
+            <p class="field-error" id="rent-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="utilities">Utilities</label>
+            <input id="utilities" name="utilities" type="text" inputmode="decimal" class="input" autocomplete="off">
+            <p class="field-error" id="utilities-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="marketing">Marketing</label>
+            <input id="marketing" name="marketing" type="text" inputmode="decimal" class="input" autocomplete="off">
+            <p class="field-error" id="marketing-error" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="miscellaneousExpenses">Miscellaneous expenses</label>
+            <input id="miscellaneousExpenses" name="miscellaneousExpenses" type="text" inputmode="decimal" class="input" autocomplete="off">
+            <p class="field-error" id="miscellaneousExpenses-error" role="alert" hidden></p>
+          </div>
+        </fieldset>
+      </section>
+
+      <section class="card card-actions" aria-labelledby="actions-heading">
+        <h2 id="actions-heading" class="card-title">Actions</h2>
+        <div class="btn-row">
+          <button type="button" id="btn-example" class="btn btn-secondary">Load example data</button>
+          <button type="button" id="btn-clear" class="btn btn-danger">Clear all data</button>
+        </div>
+      </section>
+    </div>
+
+    <aside class="summary-aside" aria-labelledby="summary-heading">
+      <div class="summary-sticky">
+        <section class="card summary-card" aria-labelledby="summary-heading">
+          <h2 id="summary-heading" class="card-title">Results</h2>
+          <p class="period-badge" id="periodLabel" aria-live="polite">Period: Monthly</p>
+          <div id="kpiRegion" class="kpi-grid" aria-live="polite" aria-atomic="true">
+            <!-- KPI cards filled by script.js -->
+          </div>
+        </section>
+      </div>
+    </aside>
+  </main>
+
+  <div class="wrap prose-sections">
+    <section class="card prose" aria-labelledby="how-heading">
+      <h2 id="how-heading">How to use</h2>
+      <ol>
+        <li>Select <strong>daily</strong>, <strong>weekly</strong>, or <strong>monthly</strong> to match how you are thinking about the numbers.</li>
+        <li>Enter every revenue line you use in your operation, then enter discounts and refunds as a positive total (they reduce revenue).</li>
+        <li>Enter variable costs (food, packaging, delivery fees) and fixed-style costs (labor, rent, utilities, marketing, miscellaneous).</li>
+        <li>Watch the result cards update as you type. Your entries auto-save in this browser unless you clear them.</li>
+      </ol>
+    </section>
+
+    <section class="card prose" aria-labelledby="formula-heading">
+      <h2 id="formula-heading">Formulas used</h2>
+      <ul>
+        <li><strong>Total revenue</strong> = food + beverage + delivery + other sales − discounts/refunds</li>
+        <li><strong>Total variable costs</strong> = food cost + packaging + delivery fees</li>
+        <li><strong>Total fixed costs</strong> = labor + rent + utilities + marketing + miscellaneous</li>
+        <li><strong>Total expenses</strong> = variable costs + fixed costs</li>
+        <li><strong>Gross profit</strong> = total revenue − total variable costs</li>
+        <li><strong>Net profit</strong> = total revenue − total expenses</li>
+        <li><strong>Profit margin</strong> = net profit ÷ total revenue (0% if revenue is 0)</li>
+        <li><strong>Food cost %</strong> = food cost ÷ total revenue (0% if revenue is 0)</li>
+        <li><strong>Labor cost %</strong> = labor cost ÷ total revenue (0% if revenue is 0)</li>
+        <li><strong>Break-even revenue target</strong> = total expenses (revenue needed for net profit ≈ 0 with the same cost structure)</li>
+        <li><strong>Status</strong>: profit if net &gt; 0, loss if net &lt; 0, break-even if net = 0</li>
+      </ul>
+    </section>
+
+    <section class="card prose" aria-labelledby="example-heading">
+      <h2 id="example-heading">Example</h2>
+      <p>
+        Tap <strong>Load example data</strong> to fill the form with a realistic small restaurant month:
+        solid food and beverage sales, delivery channel, typical discounts, ingredient and packaging spend,
+        third-party delivery fees, payroll, occupancy, utilities, light marketing, and a miscellaneous buffer.
+        Use it to see how the dashboard reads before replacing values with your own books.
+      </p>
+    </section>
+
+    <section class="card prose" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">Frequently asked questions</h2>
+      <dl class="faq-dl">
+        <dt>Does this replace my accountant or POS reports?</dt>
+        <dd>No. It is a quick planning and teaching view. Always reconcile with your point of sale, bank feeds, and professional advice.</dd>
+        <dt>Why do percentages show 0% when revenue is 0?</dt>
+        <dd>Percentages divide by revenue. The tool avoids division by zero and shows 0% so you never see <code>NaN</code> or <code>Infinity</code> on screen.</dd>
+        <dt>Can I use this for a food truck or café?</dt>
+        <dd>Yes. The line items are generic enough for most small food operations; rename categories mentally if your chart of accounts differs.</dd>
+        <dt>Where is data stored?</dt>
+        <dd>In your browser’s <strong>localStorage</strong> for this site origin. Clearing site data or using another device starts fresh.</dd>
+      </dl>
+    </section>
+  </div>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="footer-note">Restaurant Profit Dashboard — client-side calculator. No warranty; verify all business decisions independently.</p>
+    </div>
+  </footer>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>
