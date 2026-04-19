@@ -7,6 +7,15 @@
   <meta name="description" content="Free restaurant profit dashboard for cafés, food trucks, and small food businesses. Enter revenue and expenses, see gross profit, net profit, margins, and break-even status. Saves locally in your browser.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://getvendora.net/tools/restaurant-profit-dashboard/">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -58,9 +67,9 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to main content</a>
+  <a class="skip-link no-print" href="#main">Skip to main content</a>
 
-  <header class="site-header">
+  <header class="site-header no-print">
     <div class="wrap">
       <h1>Restaurant Profit Dashboard</h1>
       <p class="lead">
@@ -70,7 +79,7 @@
     </div>
   </header>
 
-  <main id="main" class="wrap main-grid">
+  <main id="main" class="wrap main-grid no-print">
     <div class="panels">
       <section class="card" aria-labelledby="period-heading">
         <h2 id="period-heading" class="card-title">Time period</h2>
@@ -179,15 +188,35 @@
         <section class="card summary-card" aria-labelledby="summary-heading">
           <h2 id="summary-heading" class="card-title">Results</h2>
           <p class="period-badge" id="periodLabel" aria-live="polite">Period: Monthly</p>
+          <div class="summary-actions btn-row">
+            <button type="button" id="btn-print-summary" class="btn btn-secondary">Print Summary</button>
+            <button type="button" id="btn-export-summary" class="btn btn-secondary">Export Summary Text</button>
+          </div>
+          <p id="exportStatus" class="export-status" role="status" aria-live="polite" hidden></p>
           <div id="kpiRegion" class="kpi-grid" aria-live="polite" aria-atomic="true">
             <!-- KPI cards filled by script.js -->
           </div>
+          <section class="visual-summary-wrap" aria-labelledby="visualSummaryHeading">
+            <h3 id="visualSummaryHeading" class="visual-summary-heading">Visual summary</h3>
+            <div id="visualSummary" class="visual-summary-body" aria-label="Chart-style summary of revenue, expenses, and ratios"></div>
+          </section>
+          <section class="compare-wrap" aria-labelledby="compareHeading">
+            <h3 id="compareHeading" class="compare-section-heading">Previous period comparison</h3>
+            <div class="compare-actions btn-row">
+              <button type="button" id="btn-save-previous" class="btn btn-secondary">
+                Save current as previous period
+              </button>
+              <button type="button" id="btn-clear-previous" class="btn btn-danger">Clear previous period</button>
+            </div>
+            <p id="compareActionStatus" class="export-status" role="status" aria-live="polite" hidden></p>
+            <div id="compareSummary" class="compare-summary" aria-live="polite"></div>
+          </section>
         </section>
       </div>
     </aside>
   </main>
 
-  <div class="wrap prose-sections">
+  <div class="wrap prose-sections no-print">
     <section class="card prose" aria-labelledby="how-heading">
       <h2 id="how-heading">How to use</h2>
       <ol>
@@ -240,7 +269,27 @@
     </section>
   </div>
 
-  <footer class="site-footer">
+  <div id="printSummaryHost" class="print-summary-host" aria-hidden="true"></div>
+
+  <div
+    id="exportFallback"
+    class="export-fallback"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="exportFallbackTitle"
+    hidden
+  >
+    <div class="export-fallback-panel">
+      <h2 id="exportFallbackTitle" class="export-fallback-title">Copy summary</h2>
+      <p class="export-fallback-hint">Clipboard access is not available. Select the text below and copy manually.</p>
+      <textarea id="exportFallbackText" class="export-fallback-textarea" readonly rows="14" aria-label="Exported summary text"></textarea>
+      <div class="export-fallback-actions">
+        <button type="button" id="exportFallbackClose" class="btn btn-primary">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer no-print">
     <div class="wrap">
       <p class="footer-note">Restaurant Profit Dashboard — client-side calculator. No warranty; verify all business decisions independently.</p>
     </div>

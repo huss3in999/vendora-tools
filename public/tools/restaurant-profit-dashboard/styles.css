@@ -222,6 +222,279 @@ body {
 .kpi-grid {
   display: grid;
   gap: 12px;
+  margin-bottom: 4px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Visual summary (CSS-only bars)                                             */
+/* -------------------------------------------------------------------------- */
+
+.visual-summary-wrap {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.visual-summary-heading {
+  margin: 0 0 14px;
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.visual-summary-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.visual-block {
+  margin: 0;
+}
+
+.visual-block-title {
+  margin: 0 0 4px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.visual-block-desc {
+  margin: 0 0 10px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.visual-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.visual-row-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.visual-row-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.visual-row-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.visual-row-value--profit {
+  color: var(--profit);
+}
+
+.visual-row-value--loss {
+  color: var(--loss);
+}
+
+.visual-row-value--even {
+  color: var(--warn);
+}
+
+.visual-track {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  background: #e8ecf4;
+  overflow: hidden;
+  min-height: 10px;
+}
+
+.visual-track--thick {
+  min-height: 14px;
+}
+
+.visual-track--net-loss {
+  background: #fde8e8;
+  box-shadow: inset 0 0 0 1px rgba(155, 28, 28, 0.2);
+}
+
+.visual-fill {
+  height: 100%;
+  min-width: 0;
+  border-radius: inherit;
+  transition: width 0.2s ease;
+}
+
+.visual-fill--revenue {
+  background: linear-gradient(90deg, #2563eb, #1f4fa3);
+}
+
+.visual-fill--expense {
+  background: linear-gradient(90deg, #64748b, #475569);
+}
+
+.visual-fill--profit {
+  background: linear-gradient(90deg, #0f9d6a, #0f6a45);
+}
+
+.visual-fill--loss {
+  background: linear-gradient(90deg, #dc2626, #9b1c1c);
+}
+
+.visual-fill--even {
+  background: linear-gradient(90deg, #94a3b8, #64748b);
+}
+
+.visual-fill--food {
+  background: linear-gradient(90deg, #d97706, #b45309);
+}
+
+.visual-fill--labor {
+  background: linear-gradient(90deg, #7c3aed, #5b21b6);
+}
+
+.visual-row-note {
+  margin: 6px 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Previous period comparison                                                 */
+/* -------------------------------------------------------------------------- */
+
+.compare-wrap {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.compare-section-heading {
+  margin: 0 0 12px;
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.compare-actions.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.compare-summary {
+  margin-top: 4px;
+}
+
+.compare-empty {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border);
+  background: #f8f9fc;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.compare-meta {
+  margin: 0 0 12px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.compare-cards {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+}
+
+.compare-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px 14px;
+  background: #fafbff;
+}
+
+.compare-card-title {
+  margin: 0 0 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.compare-dl {
+  margin: 0;
+  padding: 0;
+}
+
+.compare-dl-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 16px;
+  padding: 6px 0;
+  border-bottom: 1px solid #e8ecf4;
+  font-size: 0.88rem;
+}
+
+.compare-dl-row:last-of-type {
+  border-bottom: 0;
+}
+
+.compare-dl-row dt {
+  margin: 0;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.compare-dl-row dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.compare-trend {
+  margin: 10px 0 0;
+}
+
+.compare-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.compare-chip--up {
+  background: var(--profit-bg);
+  color: var(--profit);
+}
+
+.compare-chip--down {
+  background: var(--loss-bg);
+  color: var(--loss);
+}
+
+.compare-chip--same {
+  background: #eef1f6;
+  color: var(--muted);
 }
 
 .kpi {
@@ -377,4 +650,180 @@ body {
 
 code {
   font-size: 0.92em;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Summary actions (print / export) + clipboard status                        */
+/* -------------------------------------------------------------------------- */
+
+.summary-actions.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.export-status {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--profit);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Export fallback dialog (clipboard unavailable)                             */
+/* -------------------------------------------------------------------------- */
+
+.export-fallback {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(20, 24, 36, 0.45);
+}
+
+.export-fallback[hidden] {
+  display: none !important;
+}
+
+.export-fallback-panel {
+  width: min(100%, 520px);
+  max-height: min(90vh, 640px);
+  overflow: auto;
+  padding: 22px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.export-fallback-title {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+}
+
+.export-fallback-hint {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.export-fallback-textarea {
+  width: 100%;
+  min-height: 220px;
+  padding: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  resize: vertical;
+  color: var(--text);
+  background: #fbfcfe;
+}
+
+.export-fallback-actions {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Print host: hidden on screen, populated only for window.print()            */
+/* -------------------------------------------------------------------------- */
+
+.print-summary-host {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media print {
+  @page {
+    margin: 14mm;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-summary-host {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .print-summary-inner {
+    font-family: var(--font);
+    font-size: 11pt;
+    line-height: 1.45;
+    color: #000;
+    max-width: 100%;
+  }
+
+  .print-title {
+    margin: 0 0 12pt;
+    font-size: 18pt;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .print-meta {
+    margin: 0 0 6pt;
+    font-size: 10pt;
+  }
+
+  .print-section-title {
+    margin: 14pt 0 6pt;
+    font-size: 12pt;
+    font-weight: 700;
+    border-bottom: 1pt solid #ccc;
+    padding-bottom: 3pt;
+  }
+
+  .print-muted {
+    margin: 0 0 8pt;
+    font-size: 10pt;
+    color: #444;
+  }
+
+  .print-list {
+    margin: 0 0 10pt;
+    padding-left: 14pt;
+    list-style: disc;
+  }
+
+  .print-list li {
+    margin-bottom: 4pt;
+    break-inside: avoid;
+  }
+
+  .print-line-label {
+    font-weight: 600;
+  }
+
+  .print-line-value {
+    margin-left: 6pt;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .print-kpi .print-line-value {
+    font-weight: 600;
+  }
 }
