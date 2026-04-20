@@ -35,6 +35,7 @@ body.vendora-tool .page-shell {
   width: min(1180px, calc(100% - 32px));
   max-width: 100%;
   min-width: 0;
+  margin: 0 auto;
   padding: 20px 0 56px;
   box-sizing: border-box;
 }
