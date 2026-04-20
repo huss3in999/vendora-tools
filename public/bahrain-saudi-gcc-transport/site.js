@@ -413,12 +413,118 @@
     ['Vendora Transport', 'Vendora Transport'],
     ['البحرين إلى السعودية ودول مجلس التعاون الخليجي', 'Bahrain to Saudi Arabia and GCC destinations'],
     ['البحرين إلى السعودية والكويت والإمارات وقطر وعمان والعراق', 'Bahrain to Saudi Arabia, Kuwait, UAE, Qatar, Oman, and Iraq'],
+    ['خدمة نقل خاصة 24 ساعة من البحرين إلى السعودية ودول الخليج', 'Private transport service 24 hours a day from Bahrain to Saudi Arabia and the GCC'],
+    ['من نحن: نقل خاص موثوق بين البحرين ودول الخليج', 'About us: trusted private transport between Bahrain and the GCC'],
+    ['تواصل معنا لحجز النقل الخاص في أي وقت', 'Contact us to book private transport at any time'],
+    ['دليل وجهات الخليج للحجز من البحرين', 'GCC destination guide for bookings from Bahrain'],
+    ['خدمة نقل ركاب خاصة 24 ساعة بين البحرين ودول الخليج', 'Private passenger transport 24 hours a day between Bahrain and the GCC'],
+    ['خدمة توصيل طرود بين البحرين والسعودية ودول الخليج', 'Parcel delivery between Bahrain, Saudi Arabia, and the GCC'],
+    ['النقل من البحرين إلى الدمام', 'Private transport from Bahrain to Dammam'],
+    ['حجز بري خاص من البحرين إلى دبي', 'Book private road transport from Bahrain to Dubai'],
+    ['حجز نقل خاص من البحرين إلى العراق', 'Book private transport from Bahrain to Iraq'],
+    ['النقل من البحرين إلى الخبر', 'Private transport from Bahrain to Khobar'],
+    ['حجز نقل خاص من البحرين إلى الكويت', 'Book private transport from Bahrain to Kuwait'],
+    ['حجز رحلة خاصة من البحرين إلى عمان', 'Book a private trip from Bahrain to Oman'],
+    ['النقل من البحرين إلى قطر', 'Private transport from Bahrain to Qatar'],
+    ['النقل من البحرين إلى الرياض', 'Private transport from Bahrain to Riyadh'],
+    ['النقل من البحرين إلى السعودية', 'Private transport from Bahrain to Saudi Arabia'],
+    ['حجز من البحرين إلى الإمارات (دبي وأبوظبي وغيرها)', 'Bookings from Bahrain to the UAE (Dubai, Abu Dhabi, and more)'],
+    ['حجز عودة خاص من الدمام إلى البحرين', 'Book private return transport from Dammam to Bahrain'],
+    ['حجز نقل خاص من الخبر إلى البحرين', 'Book private transport from Khobar to Bahrain'],
+    ['حجز رحلة خاصة من الرياض إلى البحرين', 'Book a private trip from Riyadh to Bahrain'],
+    ['حجز نقل خاص من السعودية إلى البحرين', 'Book private transport from Saudi Arabia to Bahrain'],
+    ['مدة الطريق إلى الدمام عبر جسر الملك فهد', 'Road time to Dammam via the King Fahd Causeway'],
+    ['مدة الرحلة من البحرين إلى الدمام', 'Trip duration from Bahrain to Dammam'],
+    ['رحلات VIP يومية من البحرين إلى الدمام عبر جسر الملك فهد بسيارة GMC XL عائلية (حتى 7 ركاب) وSUV واسعة للركاب والنقل المؤسسي وتشغيل المطار (BAH / DMM) ونقل طرود خليجي، مع توصيل مباشر من الجفير أو السيف أو الفنادق وخيارات ذهاب وعودة مناسبة لتجديد التأشيرة.', 'Daily VIP trips from Bahrain to Dammam via the King Fahd Causeway in a GMC XL family vehicle (up to 7 passengers) and a spacious SUV for passengers, corporate transport, and airport runs (BAH / DMM), plus GCC parcel handoffs, with direct pickup from Juffair, Seef, or hotels and same-day return options suitable for visa renewals.'],
+    ['الوقت المعتاد من 1 إلى 2 ساعة تقريباً بعد عبور جسر الملك فهد، لذلك يمكن ترتيب مشاوير نفس اليوم ذهاباً وعودة حسب جدولك أو رحلات مطار DMM.', 'The usual travel time is about 1 to 2 hours after crossing the King Fahd Causeway, so same-day return trips can be arranged to suit your schedule or DMM airport runs.'],
+    ['المدة المتوقعة من البحرين إلى الدمام بعد جسر الملك فهد: 1 إلى 2 ساعة، مناسبة لتشغيل المطار أو النقل المؤسسي بنفس اليوم.', 'The expected duration from Bahrain to Dammam after the King Fahd Causeway is 1 to 2 hours, suitable for airport runs or corporate transport on the same day.'],
+    ['يتوفر استقبال وتوصيل من وإلى مطار البحرين (BAH) ومطار الدمام (DMM) وبقية مطارات الخليج حسب الطلب.', 'Pickup and drop-off are available to and from Bahrain Airport (BAH), Dammam Airport (DMM), and other GCC airports on request.'],
+    ['نقل خاص للركاب وتوصيل الطرود الصغيرة والمتوسطة التي تتسع داخل سيارة GMC XL أو SUV عائلية، بما يشمل نقل طرود خليجي داخل حدود السعة الآمنة.', 'Private passenger transport and small to medium parcels that fit inside a GMC XL or family SUV, including GCC parcel handoffs within safe capacity limits.'],
+    ['سعة 6 إلى 7 ركاب في تكوين SUV عائلية مع مساحة أمتعة وحامل خلفي مناسب للأمتعة والطرود الصغيرة.', 'Seating for 6 to 7 passengers in a family SUV layout with luggage space and a rear rack suited to bags and small parcels.'],
+    ['تفاصيل النقل الخاص من البحرين إلى الخبر', 'Private transport details from Bahrain to Khobar'],
+    ['مراجعة مسار البحرين إلى الدمام', 'Review the Bahrain to Dammam route'],
+    ['تفاصيل النقل الخاص من البحرين إلى الرياض', 'Private transport details from Bahrain to Riyadh'],
+    ['تفاصيل النقل الخاص من البحرين إلى الدوحة', 'Private transport details from Bahrain to Doha'],
+    ['يمكن الحجز قبل 1 إلى 3 ساعات، والخدمة متوفرة طوال اليوم، والحجز السريع عبر واتساب.', 'You can book 1 to 3 hours ahead, the service is available all day, and fast booking is available via WhatsApp.'],
+    ['صفحات مرتبطة لمقارنة المسارات وحجز رحلة العودة.', 'Related pages to compare routes and book a return trip.'],
+    ['الأسئلة الشائعة', 'Frequently asked questions'],
+    ['أهم الأسئلة قبل الحجز إلى الدمام.', 'Key questions before booking to Dammam.'],
+    ['هل الخدمة متوفرة 24 ساعة؟', 'Is the service available 24 hours a day?'],
+    ['نعم، الخدمة متوفرة 24 ساعة و7 أيام في الأسبوع.', 'Yes, the service is available 24 hours a day, 7 days a week.'],
+    ['كم تستغرق الرحلة؟', 'How long does the trip take?'],
+    ['المدة المتوقعة من البحرين إلى الدمام: 1 إلى 2 ساعة.', 'Expected travel time from Bahrain to Dammam is 1 to 2 hours.'],
+    ['هل يمكن نقل الأمتعة؟', 'Can luggage be transported?'],
+    ['نعم، توجد مساحة أمتعة وحامل خلفي متاح حسب حجم الحمولة.', 'Yes, there is luggage space and a rear rack available depending on load size.'],
+    ['هل يمكن الحجز في نفس اليوم؟', 'Can I book on the same day?'],
+    ['نعم، ويمكن الحجز قبل 1 إلى 3 ساعات حسب وقت الرحلة.', 'Yes, and you can book 1 to 3 hours before the trip time.'],
+    ['هل توجد خدمة توصيل من المطار؟', 'Is airport pickup available?'],
+    ['نعم، يتوفر استقبال وتوصيل من وإلى جميع مطارات الخليج.', 'Yes, pickup and drop-off are available from and to all GCC airports.'],
+    ['معلومات الحجز', 'Booking information'],
+    ['موعد الحجز', 'Booking timing'],
+    ['يفضّل إرسال الحجز قبل 1 إلى 3 ساعات من وقت الرحلة.', 'Prefer sending your booking 1 to 3 hours before trip time.'],
+    ['تأكيد سريع', 'Fast confirmation'],
+    ['أرسل نقطة الاستلام والوجهة وعدد الركاب عبر واتساب لتأكيد الطلب بسرعة.', 'Send pickup point, destination, and passenger count via WhatsApp to confirm quickly.'],
+    ['روابط داخلية مفيدة', 'Useful internal links'],
+    ['تفاصيل الوقت', 'Time details'],
+    ['الوقت تقريبي ويتأثر بوقت الانطلاق وحركة الطريق ونقطة الاستلام.', 'Timing is approximate and depends on departure time, traffic, and pickup point.'],
+    ['خدمة مطارات الخليج', 'GCC airport service'],
+    ['تفاصيل الخدمة', 'Service details'],
+    ['24 ساعة يومياً', '24 hours a day'],
+    ['الخدمة متاحة 24 ساعة و7 أيام في الأسبوع.', 'The service is available 24 hours a day, 7 days a week.'],
+    ['سيارة GMC / XL', 'GMC / XL vehicle'],
+    ['من الباب إلى الباب', 'Door to door'],
+    ['استلام من المنزل أو الفندق أو المطار أو المكتب.', 'Pickup from home, hotel, airport, or office.'],
+    ['الدفع والعودة', 'Payment and return trips'],
+    ['الدفع نقداً أو BenefitPay مع توفر رحلات ذهاب وعودة.', 'Cash or BenefitPay payment with round-trip options available.'],
+    ['اختر الخدمة ونقطة الانطلاق والوجهة، ثم أرسل الطلب مباشرة إلى الواتساب.', 'Choose the service, pickup point, and destination, then send the request directly to WhatsApp.'],
+    ['أضف الوقت أو عدد الركاب أو أي ملاحظة مفيدة.', 'Add the time, passenger count, or any useful note.'],
   ].sort((a, b) => b[0].length - a[0].length);
   const exactTranslations = new Map(translations.map(([ar, en]) => [ar.trim(), en]));
-  const shortLabelTranslations = translations.filter(([ar]) => ar.length <= 32);
 
   const textNodeMap = new WeakMap();
   const attrMap = new WeakMap();
+  const headOriginal = {
+    cached: false,
+    title: '',
+    description: '',
+    ogTitle: '',
+    ogDescription: '',
+    twitterTitle: '',
+    twitterDescription: '',
+  };
+
+  function cacheHeadStrings() {
+    if (headOriginal.cached) return;
+    headOriginal.cached = true;
+    headOriginal.title = document.title || '';
+    const desc = document.querySelector('meta[name="description"]');
+    headOriginal.description = desc ? desc.getAttribute('content') || '' : '';
+    const ogT = document.querySelector('meta[property="og:title"]');
+    headOriginal.ogTitle = ogT ? ogT.getAttribute('content') || '' : '';
+    const ogD = document.querySelector('meta[property="og:description"]');
+    headOriginal.ogDescription = ogD ? ogD.getAttribute('content') || '' : '';
+    const twT = document.querySelector('meta[name="twitter:title"]');
+    headOriginal.twitterTitle = twT ? twT.getAttribute('content') || '' : '';
+    const twD = document.querySelector('meta[name="twitter:description"]');
+    headOriginal.twitterDescription = twD ? twD.getAttribute('content') || '' : '';
+  }
+
+  function translateHeadStrings() {
+    cacheHeadStrings();
+    const useEn = state.lang === 'en';
+    document.title = useEn ? translateString(headOriginal.title) : headOriginal.title;
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc) desc.setAttribute('content', useEn ? translateString(headOriginal.description) : headOriginal.description);
+    const ogT = document.querySelector('meta[property="og:title"]');
+    if (ogT && headOriginal.ogTitle) ogT.setAttribute('content', useEn ? translateString(headOriginal.ogTitle) : headOriginal.ogTitle);
+    const ogD = document.querySelector('meta[property="og:description"]');
+    if (ogD && headOriginal.ogDescription) ogD.setAttribute('content', useEn ? translateString(headOriginal.ogDescription) : headOriginal.ogDescription);
+    const twT = document.querySelector('meta[name="twitter:title"]');
+    if (twT && headOriginal.twitterTitle) twT.setAttribute('content', useEn ? translateString(headOriginal.twitterTitle) : headOriginal.twitterTitle);
+    const twD = document.querySelector('meta[name="twitter:description"]');
+    if (twD && headOriginal.twitterDescription) twD.setAttribute('content', useEn ? translateString(headOriginal.twitterDescription) : headOriginal.twitterDescription);
+  }
+
   const headerLabels = [
     { match: '/bahrain-saudi-gcc-transport/', ar: 'الرئيسية', en: 'Home' },
     { match: '/bahrain-saudi-gcc-transport/passenger-transport/', ar: 'نقل الركاب', en: 'Passenger transport' },
@@ -529,15 +635,15 @@
       return exactTranslations.get(normalized);
     }
 
-    const isShortLabel = normalized.length <= 32 && !/[.!؟،:\n]/.test(normalized);
-    if (!isShortLabel) {
-      return source;
-    }
-
+    // Longest Arabic phrases first so route names and full sentences win over short tokens.
     let output = normalized;
-    shortLabelTranslations.forEach(([ar, en]) => {
+    for (let i = 0; i < translations.length; i++) {
+      const ar = translations[i][0].trim();
+      const en = translations[i][1];
+      if (!ar) continue;
       output = output.split(ar).join(en);
-    });
+      if (!/[\u0600-\u06FF]/.test(output)) break;
+    }
     return output;
   }
 
@@ -819,6 +925,7 @@
     document.documentElement.lang = state.lang === 'en' ? 'en' : 'ar';
     document.documentElement.dir = state.lang === 'en' ? 'ltr' : 'rtl';
     syncStaticUi();
+    translateHeadStrings();
     translateTextNodes();
     translateAttributes();
     const toggle = document.querySelector('.lang-toggle span');
