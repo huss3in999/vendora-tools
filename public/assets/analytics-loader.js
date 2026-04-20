@@ -76,4 +76,13 @@
   } else {
     window.addEventListener("load", scheduleLoad, { once: true });
   }
+
+  /** Non-PII tool interaction events (call only with static event names; never pass user text). */
+  window.vendoraToolEvent = function (name, params) {
+    try {
+      window.gtag("event", name, params || {});
+    } catch (e) {
+      /* ignore */
+    }
+  };
 })();

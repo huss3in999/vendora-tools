@@ -710,6 +710,7 @@
   }
 
   function handlePrintSummary() {
+    gtagEvent('rpd_print', { event_category: 'restaurant_profit_dashboard' });
     var host = document.getElementById('printSummaryHost');
     if (!host) return;
     var data = buildSummaryData();
@@ -719,6 +720,7 @@
   }
 
   function handleExportSummaryText() {
+    gtagEvent('rpd_export_summary', { event_category: 'restaurant_profit_dashboard' });
     var data = buildSummaryData();
     var text = buildSummaryText(data);
     var statusEl = document.getElementById('exportStatus');
@@ -745,6 +747,128 @@
         });
     } else {
       showExportFallback(text);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // CSV export (current inputs + KPI snapshot)
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Escape a cell for RFC-style CSV (quotes, commas, CR/LF).
+   * @param {string|number|null|undefined} value
+   * @returns {string}
+   */
+  function escapeCsvValue(value) {
+    var s = value == null || value === undefined ? '' : String(value);
+    if (/[",\r\n]/.test(s)) {
+      return '"' + s.replace(/"/g, '""') + '"';
+    }
+    return s;
+  }
+
+  /**
+   * @param {string[]} parts
+   * @returns {string}
+   */
+  function pushCsvRow(parts) {
+    return parts.map(escapeCsvValue).join(',');
+  }
+
+  function formatCsvNumber(n) {
+    var v = Number(n);
+    if (!Number.isFinite(v)) {
+      return '0';
+    }
+    return String(v);
+  }
+
+  function formatCsvPercentOneDec(n) {
+    var v = Number(n);
+    if (!Number.isFinite(v)) {
+      return '0.0';
+    }
+    return (Math.round(v * 10) / 10).toFixed(1);
+  }
+
+  /**
+   * @returns {string}
+   */
+  function buildCsvRows() {
+    var data = getInputs();
+    var m = calculateMetrics(data.numbers);
+    var periodLabel = PERIOD_LABELS[data.period] || data.period || 'Monthly';
+    var iso = new Date().toISOString();
+    var lines = [];
+
+    lines.push(pushCsvRow(['Category', 'Field', 'Value']));
+    lines.push(pushCsvRow(['Meta', 'Tool title', 'Restaurant Profit Dashboard']));
+    lines.push(pushCsvRow(['Meta', 'Generated (ISO-8601)', iso]));
+    lines.push(pushCsvRow(['Meta', 'Period', periodLabel]));
+
+    REVENUE_IDS.forEach(function (id) {
+      lines.push(pushCsvRow(['Revenue', getInputLabel(id), formatCsvNumber(data.numbers[id])]));
+    });
+    EXPENSE_IDS.forEach(function (id) {
+      lines.push(pushCsvRow(['Expense', getInputLabel(id), formatCsvNumber(data.numbers[id])]));
+    });
+
+    lines.push(pushCsvRow(['KPI', 'Total revenue', formatCsvNumber(m.totalRevenue)]));
+    lines.push(pushCsvRow(['KPI', 'Total expenses', formatCsvNumber(m.totalExpenses)]));
+    lines.push(pushCsvRow(['KPI', 'Gross profit', formatCsvNumber(m.grossProfit)]));
+    lines.push(pushCsvRow(['KPI', 'Net profit', formatCsvNumber(m.netProfit)]));
+    lines.push(pushCsvRow(['KPI', 'Profit margin %', formatCsvPercentOneDec(m.profitMargin)]));
+    lines.push(pushCsvRow(['KPI', 'Food cost %', formatCsvPercentOneDec(m.foodCostPct)]));
+    lines.push(pushCsvRow(['KPI', 'Labor cost %', formatCsvPercentOneDec(m.laborCostPct)]));
+    lines.push(pushCsvRow(['KPI', 'Status', String(m.statusText || 'Break-even')]));
+
+    return lines.join('\r\n');
+  }
+
+  function pad2(n) {
+    return n < 10 ? '0' + n : String(n);
+  }
+
+  /**
+   * @param {Date} d
+   * @returns {string} YYYY-MM-DD local
+   */
+  function formatDateForCsvFilename(d) {
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+  }
+
+  /**
+   * @param {string} filename
+   * @param {string} csvContent
+   */
+  function downloadCsvFile(filename, csvContent) {
+    var body = '\uFEFF' + csvContent;
+    var blob = new Blob([body], { type: 'text/csv;charset=utf-8;' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function handleExportCsv() {
+    var csv = buildCsvRows();
+    var filename = 'restaurant-profit-dashboard-' + formatDateForCsvFilename(new Date()) + '.csv';
+    downloadCsvFile(filename, csv);
+    gtagEvent('rpd_export_csv', { event_category: 'restaurant_profit_dashboard' });
+    var statusEl = document.getElementById('exportStatus');
+    if (statusEl) {
+      statusEl.textContent = 'CSV file download started.';
+      statusEl.hidden = false;
+      window.setTimeout(function () {
+        if (statusEl) {
+          statusEl.hidden = true;
+        }
+      }, 4000);
     }
   }
 
@@ -1131,6 +1255,7 @@
     var periodEl = document.getElementById('period');
     if (periodEl) periodEl.value = 'monthly';
     refreshAll();
+    gtagEvent('rpd_load_example', { event_category: 'restaurant_profit_dashboard' });
   }
 
   // ---------------------------------------------------------------------------
@@ -1180,6 +1305,7 @@
       btnClear.addEventListener('click', function () {
         clearState();
         refreshAll({ persist: false });
+        gtagEvent('rpd_clear_all', { event_category: 'restaurant_profit_dashboard' });
       });
     }
 
@@ -1201,6 +1327,13 @@
     if (btnExport) {
       btnExport.addEventListener('click', function () {
         handleExportSummaryText();
+      });
+    }
+
+    var btnExportCsv = document.getElementById('btn-export-csv');
+    if (btnExportCsv) {
+      btnExportCsv.addEventListener('click', function () {
+        handleExportCsv();
       });
     }
 

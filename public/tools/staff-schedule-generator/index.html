@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Schedule Generator | Weekly Shift Planner for Restaurants &amp; Small Business</title>
+  <meta name="description" content="Free weekly staff schedule generator: add employees, plan Monday–Sunday shifts with breaks, see hours per person and per day, warnings, print, and CSV export. Saves in your browser.">
+  <meta name="robots" content="index, follow">
+  <!-- Update href when the live URL is finalized. -->
+  <link rel="canonical" href="https://getvendora.net/tools/staff-schedule-generator/">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the Staff Schedule Generator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It is a browser-based weekly planner where you add staff, assign shifts Monday through Sunday with start and end times and breaks, and see total hours per employee and per day with simple validation warnings."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where is my schedule stored?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Version 1 stores everything in localStorage on your device. Clearing site data or using another browser starts fresh unless you export a copy."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How are shift hours calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Hours equal end time minus start time minus break minutes, converted to decimal hours. Negative or invalid ranges are treated as zero hours and flagged in the warnings panel."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can multiple people work the same day?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Each day supports multiple shift rows. Add a shift with the button for that day and pick a staff member for each row."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <h1>Staff Schedule Generator</h1>
+      <p class="lead">
+        Plan a full week of shifts for restaurants, retail, cafés, salons, clinics, and small teams.
+        Add staff, drop shifts by day, track hours and warnings, then print or export. Everything stays in your browser in version 1.
+      </p>
+    </div>
+  </header>
+
+  <main id="main" class="wrap layout">
+    <div class="layout-primary">
+      <section class="card" aria-labelledby="setup-heading">
+        <h2 id="setup-heading" class="card-title">Setup</h2>
+        <div class="field">
+          <label for="businessName">Business name</label>
+          <input id="businessName" class="input" type="text" autocomplete="organization" maxlength="120">
+        </div>
+        <div class="field">
+          <label for="weekLabel">Week label</label>
+          <input id="weekLabel" class="input" type="text" placeholder="e.g. Week of Apr 14, 2026" maxlength="120">
+        </div>
+        <div class="field">
+          <label for="setupNotes">Notes (optional)</label>
+          <textarea id="setupNotes" class="input textarea" rows="2" maxlength="500" placeholder="Holiday hours, training, reminders…"></textarea>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="staff-heading">
+        <div class="card-head">
+          <h2 id="staff-heading" class="card-title">Staff</h2>
+          <button type="button" id="btn-add-staff" class="btn btn-secondary btn-compact">Add staff member</button>
+        </div>
+        <p class="hint">Each person can have a role, optional max hours for the week, and notes. Shifts link to staff from the dropdowns below.</p>
+        <div id="staffList" class="staff-list" aria-live="polite"></div>
+      </section>
+
+      <section class="card" aria-labelledby="schedule-heading">
+        <h2 id="schedule-heading" class="card-title">Weekly schedule</h2>
+        <p class="hint">Add one or more shifts per day. Hours update as you type. Same-day shifts only in version 1 (end after start).</p>
+        <div id="daySections" class="day-sections"></div>
+      </section>
+    </div>
+
+    <aside class="layout-side">
+      <section class="card" aria-labelledby="tools-heading">
+        <h2 id="tools-heading" class="card-title">Actions</h2>
+        <div class="btn-stack">
+          <button type="button" id="btn-example" class="btn btn-secondary">Load example schedule</button>
+          <button type="button" id="btn-clear" class="btn btn-danger">Clear all schedule data</button>
+          <button type="button" id="btn-print" class="btn btn-secondary">Print schedule</button>
+          <button type="button" id="btn-csv" class="btn btn-secondary">Export CSV</button>
+          <button type="button" id="btn-summary" class="btn btn-secondary">Export summary text</button>
+        </div>
+        <p id="actionStatus" class="action-status" role="status" aria-live="polite" hidden></p>
+      </section>
+
+      <section class="card" aria-labelledby="totals-staff-heading">
+        <h2 id="totals-staff-heading" class="card-title">Totals by staff</h2>
+        <div id="totalsStaff" class="totals-block" aria-live="polite"></div>
+      </section>
+
+      <section class="card" aria-labelledby="totals-day-heading">
+        <h2 id="totals-day-heading" class="card-title">Totals by day</h2>
+        <div id="totalsDay" class="totals-block" aria-live="polite"></div>
+      </section>
+
+      <section class="card card-warnings" aria-labelledby="warnings-heading">
+        <h2 id="warnings-heading" class="card-title">Warnings</h2>
+        <div id="warningsPanel" class="warnings-list" aria-live="polite"></div>
+      </section>
+    </aside>
+  </main>
+
+  <div class="wrap prose">
+    <section class="card">
+      <h2>How to use</h2>
+      <ol>
+        <li>Enter your <strong>business name</strong> and <strong>week label</strong>, then add <strong>staff members</strong> with roles and optional max hours.</li>
+        <li>For each weekday, use <strong>Add shift</strong> to create rows. Pick staff, set times with the time pickers, break minutes, and role text for that shift.</li>
+        <li>Review <strong>Totals by staff</strong> and <strong>Totals by day</strong>, and fix anything flagged under <strong>Warnings</strong>.</li>
+        <li>Use <strong>Print</strong> for a paper copy, or <strong>Export CSV</strong> / <strong>Export summary text</strong> to share outside the tool.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Frequently asked questions</h2>
+      <dl class="faq-dl">
+        <dt>Does this send data to a server?</dt>
+        <dd>No. Version 1 runs fully in the browser and saves to <strong>localStorage</strong> on this device.</dd>
+        <dt>What if end time is before start time?</dt>
+        <dd>The row is marked invalid; hours show as zero until the range is fixed. Overnight shifts are not modeled in version 1.</dd>
+        <dt>How do I reset everything?</dt>
+        <dd>Use <strong>Clear all schedule data</strong> to wipe the saved schedule from this browser.</dd>
+      </dl>
+    </section>
+  </div>
+
+  <div id="printArea" class="print-area" aria-hidden="true"></div>
+
+  <div id="exportFallback" class="export-fallback" role="dialog" aria-modal="true" aria-labelledby="exportFbTitle" hidden>
+    <div class="export-fallback-panel">
+      <h2 id="exportFbTitle" class="export-fallback-title">Copy summary</h2>
+      <p class="export-fallback-hint">Clipboard is not available. Copy the text below manually.</p>
+      <textarea id="exportFbText" class="export-fallback-textarea" readonly rows="12" aria-label="Exported summary"></textarea>
+      <button type="button" id="exportFbClose" class="btn btn-primary">Close</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="footer-note">Staff Schedule Generator — for planning only. Verify labor rules and payroll with your own policies and tools.</p>
+    </div>
+  </footer>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>

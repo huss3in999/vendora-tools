@@ -178,6 +178,50 @@ test.describe('Restaurant Profit Dashboard', () => {
     expect(failures, failures.join('\n')).toEqual([]);
   });
 
+  test('csv export: download with dated filename and expected columns', async ({ page }) => {
+    const failures = attachConsoleFailureGuards(page);
+    const fs = require('fs');
+    const path = require('path');
+    const os = require('os');
+
+    await page.goto(PAGE_PATH);
+
+    await page.getByLabel('Food sales').fill('3200');
+    await page.getByLabel('Beverage sales').fill('400');
+    await page.getByLabel('Food cost').fill('900');
+    await page.getByLabel(/^Labor cost$/).fill('700');
+
+    const downloadPromise = page.waitForEvent('download');
+    await page.getByRole('button', { name: /^Export CSV$/i }).click();
+    const download = await downloadPromise;
+
+    expect(await download.failure()).toBeNull();
+    const suggested = download.suggestedFilename();
+    expect(suggested).toMatch(/^restaurant-profit-dashboard-\d{4}-\d{2}-\d{2}\.csv$/);
+
+    const targetPath = path.join(os.tmpdir(), `playwright-rpd-csv-${Date.now()}.csv`);
+    await download.saveAs(targetPath);
+    const raw = fs.readFileSync(targetPath, 'utf8');
+    const content = raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw;
+
+    expect(content).toContain('Category,Field,Value');
+    expect(content).toContain('Restaurant Profit Dashboard');
+    expect(content).toContain('Total revenue');
+    expect(content).toContain('Total expenses');
+    expect(content).toContain('Net profit');
+    expect(content).toMatch(/KPI,Status,/);
+    expect(content).not.toMatch(/NaN|Infinity/i);
+
+    try {
+      fs.unlinkSync(targetPath);
+    } catch (e) {
+      /* ignore */
+    }
+
+    await expectKpiRegionHasNoBadNumbers(page);
+    expect(failures, failures.join('\n')).toEqual([]);
+  });
+
   test('previous period comparison: save baseline, see diffs, clear returns empty state', async ({ page }) => {
     const failures = attachConsoleFailureGuards(page);
     await page.goto(PAGE_PATH);

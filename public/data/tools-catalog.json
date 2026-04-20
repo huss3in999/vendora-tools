@@ -1,7 +1,7 @@
 {
   "generated": "2026-04-20",
   "baseUrl": "https://getvendora.net",
-  "totalTools": 359,
+  "totalTools": 362,
   "categories": [
     {
       "id": "hubs",
@@ -45,7 +45,7 @@
       "id": "restaurant-apps",
       "label": "Restaurant & business web apps",
       "description": "Interactive tools under /tools/ (invoices, QR menus, AI helpers, and more).",
-      "count": 22,
+      "count": 25,
       "items": [
         {
           "title": "AI Break-Even Date Calculator",
@@ -133,6 +133,11 @@
           "path": "tools/qr-menu-generator/index.html"
         },
         {
+          "title": "Quotation Generator Free Online | Estimates, Line Items, Tax & Print",
+          "url": "/tools/quotation-generator/",
+          "path": "tools/quotation-generator/index.html"
+        },
+        {
           "title": "Receipt Generator Free Online | Restaurant & Payment Receipt Maker",
           "url": "/tools/receipt-generator/",
           "path": "tools/receipt-generator/index.html"
@@ -151,6 +156,16 @@
           "title": "Shift Scheduler Free Online | Weekly View & Conflict Detection",
           "url": "/tools/shift-scheduler/",
           "path": "tools/shift-scheduler/index.html"
+        },
+        {
+          "title": "Staff Schedule Generator Free | Weekly Shifts, Hours, Warnings & CSV Export",
+          "url": "/tools/staff-schedule-generator/",
+          "path": "tools/staff-schedule-generator/index.html"
+        },
+        {
+          "title": "Work Hours & Overtime Calculator | Shift Hours, Regular & OT Pay (Free)",
+          "url": "/tools/work-hours-overtime-calculator/",
+          "path": "tools/work-hours-overtime-calculator/index.html"
         },
         {
           "title": "Work Hours & Overtime Tracker | FLSA & State Daily OT (Free)",

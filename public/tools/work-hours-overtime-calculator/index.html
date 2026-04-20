@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Work Hours &amp; Overtime Calculator Free | Hours, Pay &amp; OT Rate | Vendora</title>
+  <meta name="description" content="Free calculator: enter start and end time, unpaid break, hourly rate, overtime threshold and multiplier. See regular hours, overtime hours, and total pay. Saves in your browser.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/work-hours-overtime-calculator/">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What does the Work Hours & Overtime Calculator do?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It estimates total time between a start and end clock time, subtracts unpaid break minutes, splits total hours into regular and overtime using your threshold, and computes regular pay, overtime pay, and total pay using your hourly rate and overtime multiplier."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this handle overnight shifts?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Version 1 assumes the end time is on the same calendar day as the start time. If the end is before the start, the row is treated as invalid for planning purposes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where is my data stored?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Inputs are saved in localStorage on your device in version 1. Clearing site data removes them unless you export a copy."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <h1>Work Hours &amp; Overtime Calculator</h1>
+      <p class="lead">
+        Enter a shift window, unpaid break, pay rate, and overtime rules. The calculator shows worked hours split into regular and overtime,
+        then regular pay, overtime pay, and total pay. Everything stays in your browser in version 1.
+      </p>
+    </div>
+  </header>
+
+  <main id="main" class="wrap layout no-print">
+    <div class="layout-primary">
+      <section class="card" aria-labelledby="inputs-heading">
+        <h2 id="inputs-heading" class="card-title">Shift &amp; pay inputs</h2>
+        <div class="field-grid">
+          <div class="field field-span-2">
+            <label for="dayLabel">Date or day label (optional)</label>
+            <input id="dayLabel" class="input" type="text" maxlength="120" placeholder="e.g. Apr 20, 2026 or Monday">
+          </div>
+          <div class="field">
+            <label for="startTime">Start time</label>
+            <input id="startTime" class="input" type="time" required>
+          </div>
+          <div class="field">
+            <label for="endTime">End time</label>
+            <input id="endTime" class="input" type="time" required>
+          </div>
+          <div class="field">
+            <label for="breakMinutes">Unpaid break (minutes)</label>
+            <input id="breakMinutes" class="input" type="number" min="0" step="5" inputmode="numeric" value="0">
+          </div>
+          <div class="field">
+            <label for="hourlyRate">Hourly rate</label>
+            <input id="hourlyRate" class="input" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="otThreshold">Overtime threshold (hours)</label>
+            <input id="otThreshold" class="input" type="text" inputmode="decimal" placeholder="8" value="8">
+          </div>
+          <div class="field">
+            <label for="otMultiplier">Overtime multiplier</label>
+            <input id="otMultiplier" class="input" type="text" inputmode="decimal" placeholder="1.5" value="1.5">
+          </div>
+          <div class="field field-span-2">
+            <label for="notes">Notes (optional)</label>
+            <textarea id="notes" class="input textarea" rows="2" maxlength="500" placeholder="Shift name, client, or reminders…"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="warnings-heading">
+        <h2 id="warnings-heading" class="card-title">Checks</h2>
+        <div id="warningsPanel" class="warnings-panel" role="region" aria-live="polite"></div>
+      </section>
+
+      <section class="card" aria-labelledby="formula-heading">
+        <h2 id="formula-heading" class="card-title">How totals are computed</h2>
+        <ul class="formula-list">
+          <li><strong>Worked minutes</strong> = end time − start time − unpaid break (minutes).</li>
+          <li><strong>Worked hours</strong> = max(worked minutes ÷ 60, 0).</li>
+          <li><strong>Regular hours</strong> = min(worked hours, overtime threshold).</li>
+          <li><strong>Overtime hours</strong> = max(worked hours − overtime threshold, 0).</li>
+          <li><strong>Regular pay</strong> = regular hours × hourly rate.</li>
+          <li><strong>Overtime pay</strong> = overtime hours × hourly rate × overtime multiplier.</li>
+          <li><strong>Total pay</strong> = regular pay + overtime pay.</li>
+        </ul>
+      </section>
+    </div>
+
+    <aside class="layout-side">
+      <section class="card" aria-labelledby="actions-heading">
+        <h2 id="actions-heading" class="card-title">Actions</h2>
+        <div class="btn-stack">
+          <button type="button" id="btn-example" class="btn btn-secondary">Load example</button>
+          <button type="button" id="btn-clear" class="btn btn-danger">Clear all</button>
+          <button type="button" id="btn-print" class="btn btn-secondary">Print summary</button>
+          <button type="button" id="btn-csv" class="btn btn-secondary">Export CSV</button>
+          <button type="button" id="btn-summary" class="btn btn-secondary">Export summary text</button>
+        </div>
+        <p id="actionStatus" class="action-status" role="status" aria-live="polite" hidden></p>
+      </section>
+    </aside>
+  </main>
+
+  <section class="wrap results-wrap no-print" aria-labelledby="results-heading">
+    <h2 id="results-heading" class="section-heading">Results</h2>
+    <div class="kpi-grid" id="kpiRegion">
+      <article class="kpi-card">
+        <h3 class="kpi-label">Worked hours</h3>
+        <p class="kpi-value" id="outWorkedHours">—</p>
+      </article>
+      <article class="kpi-card">
+        <h3 class="kpi-label">Regular hours</h3>
+        <p class="kpi-value" id="outRegularHours">—</p>
+      </article>
+      <article class="kpi-card">
+        <h3 class="kpi-label">Overtime hours</h3>
+        <p class="kpi-value" id="outOvertimeHours">—</p>
+      </article>
+      <article class="kpi-card">
+        <h3 class="kpi-label">Regular pay</h3>
+        <p class="kpi-value" id="outRegularPay">—</p>
+      </article>
+      <article class="kpi-card">
+        <h3 class="kpi-label">Overtime pay</h3>
+        <p class="kpi-value" id="outOvertimePay">—</p>
+      </article>
+      <article class="kpi-card kpi-card-accent">
+        <h3 class="kpi-label">Total pay</h3>
+        <p class="kpi-value" id="outTotalPay">—</p>
+      </article>
+    </div>
+    <div class="split-bar-wrap" id="splitBarWrap" hidden>
+      <p class="split-bar-label">Hours split: regular vs overtime</p>
+      <div class="split-bar" role="img" aria-label="Visual ratio of regular to overtime hours">
+        <span class="split-bar-reg" id="splitBarReg"></span>
+        <span class="split-bar-ot" id="splitBarOt"></span>
+      </div>
+    </div>
+  </section>
+
+  <div id="printArea" class="print-area" aria-hidden="true"></div>
+
+  <div id="exportFallback" class="export-fallback" role="dialog" aria-modal="true" aria-labelledby="exportFbTitle" hidden>
+    <div class="export-fallback-panel">
+      <h2 id="exportFbTitle" class="export-fallback-title">Copy summary</h2>
+      <p class="export-fallback-hint">Clipboard is not available. Copy the text below manually.</p>
+      <textarea id="exportFbText" class="export-fallback-textarea" readonly rows="12" aria-label="Exported summary"></textarea>
+      <button type="button" id="exportFbClose" class="btn btn-primary">Close</button>
+    </div>
+  </div>
+
+  <div class="wrap prose no-print">
+    <section class="card">
+      <h2>How to use</h2>
+      <ol>
+        <li>Optionally enter a <strong>date or day label</strong> for your records.</li>
+        <li>Set <strong>start</strong> and <strong>end</strong> times for the same day, then <strong>unpaid break</strong> in whole minutes.</li>
+        <li>Enter your <strong>hourly rate</strong>, the <strong>overtime threshold</strong> in hours (for example 8), and the <strong>overtime multiplier</strong> (for example 1.5).</li>
+        <li>Review the <strong>Results</strong> cards and any messages under <strong>Checks</strong>. Use export or print when you need a copy.</li>
+      </ol>
+    </section>
+    <section class="card">
+      <h2>Frequently asked questions</h2>
+      <dl class="faq-dl">
+        <dt>Why does it say my time range is invalid?</dt>
+        <dd>Version 1 requires the end time to be after the start time on the same day. Overnight shifts are not modeled here.</dd>
+        <dt>What if break is longer than the shift?</dt>
+        <dd>Worked time is treated as zero and a warning is shown until break fits inside the start–end window.</dd>
+        <dt>Can I reset the form?</dt>
+        <dd>Use <strong>Clear all</strong> to wipe fields and local storage for this tool in this browser.</dd>
+      </dl>
+    </section>
+  </div>
+
+  <footer class="site-footer no-print">
+    <div class="wrap">
+      <p class="footer-note">Work Hours &amp; Overtime Calculator — for estimates only. Verify pay rules with your employer, contract, and local labor law.</p>
+    </div>
+  </footer>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>

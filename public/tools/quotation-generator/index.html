@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quotation Generator Free Online | Estimates & Quotes for Small Business | Vendora</title>
+  <meta name="description" content="Free quotation and estimate generator: business and customer details, line items, taxes, discounts, live preview, print, CSV export, and browser save. No signup.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/tools/quotation-generator/">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the Quotation Generator?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It is a browser-based tool to build professional quotations or estimates with your business details, customer information, line items, discounts, taxes, notes, and terms. You get a live preview, print layout, and exports without a server in version 1."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where is my quotation data stored?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Version 1 saves your form data in localStorage on your device. Clearing site data or using another browser starts fresh unless you export a copy."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How are totals calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Each line total is quantity times unit price. Subtotal is the sum of line totals. Grand total is subtotal minus the discount amount plus the tax amount. Invalid or empty numbers are treated as zero."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I print or share my quotation?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Use Print quotation for a formal layout, Export summary text for a plain-text overview, or Export CSV for spreadsheet use."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <h1>Quotation Generator</h1>
+      <p class="lead">
+        Build clear, professional quotations for clients and suppliers. Enter your business and customer details,
+        add line items, set discount and tax, then preview, print, or export. Everything stays in your browser in version 1.
+      </p>
+    </div>
+  </header>
+
+  <main id="main" class="wrap layout no-print">
+    <div class="layout-primary no-print">
+      <section class="card" aria-labelledby="biz-heading">
+        <h2 id="biz-heading" class="card-title">Your business</h2>
+        <div class="field-grid">
+          <div class="field field-span-2">
+            <label for="bizName">Business name</label>
+            <input id="bizName" class="input" type="text" autocomplete="organization" maxlength="160">
+          </div>
+          <div class="field">
+            <label for="bizPhone">Phone</label>
+            <input id="bizPhone" class="input" type="tel" autocomplete="tel" maxlength="80">
+          </div>
+          <div class="field">
+            <label for="bizEmail">Email</label>
+            <input id="bizEmail" class="input" type="email" autocomplete="email" maxlength="120">
+          </div>
+          <div class="field field-span-2">
+            <label for="bizAddress">Address</label>
+            <textarea id="bizAddress" class="input textarea" rows="2" maxlength="400"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="cust-heading">
+        <h2 id="cust-heading" class="card-title">Customer</h2>
+        <div class="field-grid">
+          <div class="field field-span-2">
+            <label for="custName">Customer name</label>
+            <input id="custName" class="input" type="text" autocomplete="name" maxlength="160">
+          </div>
+          <div class="field">
+            <label for="custPhone">Phone</label>
+            <input id="custPhone" class="input" type="tel" maxlength="80">
+          </div>
+          <div class="field">
+            <label for="custEmail">Email</label>
+            <input id="custEmail" class="input" type="email" maxlength="120">
+          </div>
+          <div class="field field-span-2">
+            <label for="custAddress">Address</label>
+            <textarea id="custAddress" class="input textarea" rows="2" maxlength="400"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="meta-heading">
+        <h2 id="meta-heading" class="card-title">Quotation details</h2>
+        <div class="field-grid">
+          <div class="field">
+            <label for="quoteNumber">Quotation number</label>
+            <input id="quoteNumber" class="input" type="text" maxlength="80" placeholder="e.g. Q-2026-0142">
+          </div>
+          <div class="field">
+            <label for="quoteDate">Quotation date</label>
+            <input id="quoteDate" class="input" type="date">
+          </div>
+          <div class="field">
+            <label for="validUntil">Valid until</label>
+            <input id="validUntil" class="input" type="date">
+          </div>
+          <div class="field">
+            <label for="currency">Currency</label>
+            <select id="currency" class="input input-select" aria-label="Currency">
+              <option value="USD">USD — US Dollar</option>
+              <option value="EUR">EUR — Euro</option>
+              <option value="GBP">GBP — British Pound</option>
+              <option value="SAR">SAR — Saudi Riyal</option>
+              <option value="AED">AED — UAE Dirham</option>
+              <option value="BHD">BHD — Bahraini Dinar</option>
+              <option value="INR">INR — Indian Rupee</option>
+              <option value="CAD">CAD — Canadian Dollar</option>
+              <option value="AUD">AUD — Australian Dollar</option>
+              <option value="OTHER">Other (symbol only)</option>
+            </select>
+          </div>
+          <div class="field field-span-2">
+            <label for="statusLabel">Status (optional)</label>
+            <input id="statusLabel" class="input" type="text" maxlength="80" placeholder="e.g. Draft, Sent, Accepted">
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="lines-heading">
+        <div class="card-head">
+          <h2 id="lines-heading" class="card-title">Line items</h2>
+          <button type="button" id="btn-add-line" class="btn btn-secondary btn-compact">Add line</button>
+        </div>
+        <p class="hint">Description, quantity, and unit price. Line totals update automatically.</p>
+        <div class="table-wrap" role="region" aria-label="Quotation line items" tabindex="0">
+          <table class="lines-table" id="linesTable">
+            <caption class="visually-hidden">Editable line items for the quotation</caption>
+            <thead>
+              <tr>
+                <th scope="col">Description</th>
+                <th scope="col" class="col-narrow">Qty</th>
+                <th scope="col" class="col-mid">Unit price</th>
+                <th scope="col" class="col-mid">Line total</th>
+                <th scope="col" class="col-action"><span class="visually-hidden">Remove</span></th>
+              </tr>
+            </thead>
+            <tbody id="linesBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="totals-heading">
+        <h2 id="totals-heading" class="card-title">Discount &amp; tax</h2>
+        <div class="field-grid totals-inputs">
+          <div class="field">
+            <label for="discountAmount">Discount amount</label>
+            <input id="discountAmount" class="input" type="text" inputmode="decimal" placeholder="0" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="taxAmount">Tax amount</label>
+            <input id="taxAmount" class="input" type="text" inputmode="decimal" placeholder="0" autocomplete="off">
+          </div>
+        </div>
+        <p class="hint">Grand total = subtotal − discount + tax. Use amounts in your selected currency.</p>
+      </section>
+
+      <section class="card" aria-labelledby="notes-heading">
+        <h2 id="notes-heading" class="card-title">Notes &amp; terms</h2>
+        <div class="field">
+          <label for="notes">Notes</label>
+          <textarea id="notes" class="input textarea" rows="3" maxlength="2000" placeholder="Payment instructions, delivery, or context for the customer…"></textarea>
+        </div>
+        <div class="field">
+          <label for="terms">Terms and conditions</label>
+          <textarea id="terms" class="input textarea" rows="4" maxlength="4000" placeholder="Validity, liability, cancellation, or standard terms…"></textarea>
+        </div>
+      </section>
+    </div>
+
+    <aside class="layout-side no-print">
+      <section class="card" aria-labelledby="actions-heading">
+        <h2 id="actions-heading" class="card-title">Actions</h2>
+        <div class="btn-stack">
+          <button type="button" id="btn-example" class="btn btn-secondary">Load example quotation</button>
+          <button type="button" id="btn-clear" class="btn btn-danger">Clear all data</button>
+          <button type="button" id="btn-print" class="btn btn-secondary">Print quotation</button>
+          <button type="button" id="btn-csv" class="btn btn-secondary">Export CSV</button>
+          <button type="button" id="btn-summary" class="btn btn-secondary">Export summary text</button>
+        </div>
+        <p id="actionStatus" class="action-status" role="status" aria-live="polite" hidden></p>
+      </section>
+
+      <section class="card card-totals" aria-labelledby="live-totals-heading">
+        <h2 id="live-totals-heading" class="card-title">Totals</h2>
+        <dl class="totals-dl">
+          <div><dt>Subtotal</dt><dd id="dispSubtotal">—</dd></div>
+          <div><dt>Discount</dt><dd id="dispDiscount">—</dd></div>
+          <div><dt>Tax</dt><dd id="dispTax">—</dd></div>
+          <div class="totals-grand"><dt>Grand total</dt><dd id="dispGrand">—</dd></div>
+        </dl>
+      </section>
+    </aside>
+  </main>
+
+  <section class="wrap preview-wrap" aria-labelledby="preview-heading">
+    <h2 id="preview-heading" class="section-heading no-print">Live preview</h2>
+    <div id="quotationPreview" class="quotation-doc" aria-live="polite"></div>
+  </section>
+
+  <div id="exportFallback" class="export-fallback" role="dialog" aria-modal="true" aria-labelledby="exportFbTitle" hidden>
+    <div class="export-fallback-panel">
+      <h2 id="exportFbTitle" class="export-fallback-title">Copy summary</h2>
+      <p class="export-fallback-hint">Clipboard is not available. Copy the text below manually.</p>
+      <textarea id="exportFbText" class="export-fallback-textarea" readonly rows="14" aria-label="Exported summary"></textarea>
+      <button type="button" id="exportFbClose" class="btn btn-primary">Close</button>
+    </div>
+  </div>
+
+  <div class="wrap prose no-print">
+    <section class="card">
+      <h2>How to use</h2>
+      <ol>
+        <li>Fill in <strong>your business</strong> and the <strong>customer</strong> so the quotation header is complete.</li>
+        <li>Set <strong>quotation number</strong>, <strong>dates</strong>, and <strong>currency</strong>. Add an optional <strong>status</strong> label if you use internal workflow names.</li>
+        <li>Use <strong>Add line</strong> for each product or service row. Enter <strong>quantity</strong> and <strong>unit price</strong>; line totals and the summary update instantly.</li>
+        <li>Enter <strong>discount</strong> and <strong>tax</strong> as fixed amounts (not percentages). Adjust until the <strong>grand total</strong> matches your policy.</li>
+        <li>Add <strong>notes</strong> and <strong>terms</strong>, then use <strong>Print</strong> or <strong>Export</strong> to share with your customer.</li>
+      </ol>
+    </section>
+    <section class="card">
+      <h2>Frequently asked questions</h2>
+      <dl class="faq-dl">
+        <dt>Does this send data to a server?</dt>
+        <dd>No. Version 1 runs fully in the browser and saves to localStorage on this device.</dd>
+        <dt>How do I reset the form?</dt>
+        <dd>Use <strong>Clear all data</strong> to remove the saved quotation from this browser.</dd>
+        <dt>What if my numbers look wrong?</dt>
+        <dd>Empty or invalid fields are treated as zero. Use digits and at most one decimal point per amount.</dd>
+      </dl>
+    </section>
+  </div>
+
+  <footer class="site-footer no-print">
+    <div class="wrap">
+      <p class="footer-note">Quotation Generator — for planning and documentation only. Verify tax and legal wording with your own advisors.</p>
+    </div>
+  </footer>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>
