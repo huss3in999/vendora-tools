@@ -8,4 +8,4 @@ Allow: /
 
 Sitemap: https://getvendora.net/sitemap.xml
 Sitemap: https://getvendora.net/sitemap-tools.xml
-Sitemap: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap.xml
+Sitemap: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-index.xml
