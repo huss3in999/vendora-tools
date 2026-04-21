@@ -111,6 +111,19 @@ This repo historically mixed **`/tools/`**, **`/calculators/`**, **`/calculator/
 - Add reset button
 - Add copy button when useful
 
+## Bilingual transport-site rule
+
+For `bahrain-saudi-gcc-transport`, Arabic and English must never be mixed in the user-facing UI.
+
+- Arabic mode must be 100% Arabic for visible customer copy, with `html lang="ar"` and `dir="rtl"`.
+- English mode must be 100% English for visible customer copy, with `html lang="en"` and `dir="ltr"`.
+- If you add or change Arabic text in any transport HTML page, you must add the matching English phrase to `bahrain-saudi-gcc-transport/site.js` in the translation map during the same change.
+- After any transport copy update, run the Playwright audit. The English-language audit must have zero visible Arabic characters.
+- Do not rely on partial word replacement such as only translating city names. Translate the full sentence or heading.
+- SEO metadata must also be language-aware: titles, descriptions, Open Graph, Twitter metadata, `lang`, `dir`, and structured data should match the active language.
+- For true English SEO indexing, use dedicated crawlable English URLs with proper `hreflang` alternates. A JavaScript-only language toggle is useful for users, but it is not enough by itself to guarantee separate English search indexing.
+- Keep route keywords clear in both languages, for example: `Bahrain to Saudi Arabia transport`, `Bahrain to Khobar`, `Bahrain to Dammam`, `Bahrain to Riyadh`, and the Arabic equivalents.
+
 ### Static HTML calculators (`/calculators/` and related)
 
 - **Navigation links must be relative** to each `index.html` file (for example `../tdee-calculator/`, `../../calculator/food/nutrition-calculators/`), not root-absolute paths like `/calculators/...`. Root-absolute URLs break when the site is opened from disk or from a non-root base path.

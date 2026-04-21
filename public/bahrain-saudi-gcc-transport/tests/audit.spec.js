@@ -66,6 +66,37 @@ test.describe('Interactive UI', () => {
     await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   });
 
+  for (const path of ROUTES) {
+    test(`English mode has no visible Arabic on ${path}`, async ({ page }) => {
+      await page.goto(path, { waitUntil: 'domcontentloaded' });
+      await page.evaluate(() => localStorage.removeItem('vendora_lang'));
+      await page.reload({ waitUntil: 'domcontentloaded' });
+      await page.locator('[data-language-toggle]').click();
+      await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+
+      const visibleArabic = await page.locator('body *:visible').evaluateAll((elements) => {
+        const arabic = /[\u0600-\u06FF]/;
+        const leaks = [];
+
+        for (const element of elements) {
+          const text = [...element.childNodes]
+            .filter((node) => node.nodeType === Node.TEXT_NODE)
+            .map((node) => node.nodeValue.trim())
+            .filter(Boolean)
+            .join(' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+          if (text && arabic.test(text)) leaks.push(text);
+        }
+
+        return [...new Set(leaks)].slice(0, 20);
+      });
+
+      expect(visibleArabic, `Untranslated Arabic visible on ${path}`).toEqual([]);
+    });
+  }
+
   test('booking form submit builds wa.me link', async ({ page }) => {
     await page.goto('/bahrain-saudi-gcc-transport/');
     const submit = page.locator('[data-booking-submit]');
