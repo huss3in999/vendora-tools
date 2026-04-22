@@ -3,6 +3,7 @@
   const phoneNumber = config.phoneNumber || '97333225954';
   const siteSegment = '/bahrain-saudi-gcc-transport/';
   const defaultArabicMessage = config.defaultWhatsAppMessage || 'مرحباً، أود معرفة تفاصيل الحجز والخدمة.';
+  const leadEndpoint = config.leadEndpoint || '/api/transport/whatsapp-lead';
   const pageUrl = window.location.href;
   const state = {
     lang: localStorage.getItem('vendora_lang') || 'ar',
@@ -761,6 +762,94 @@
     return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
   }
 
+  function getRouteSlug() {
+    const path = window.location.pathname.replace(/\\/g, '/');
+    const match = path.match(/\/bahrain-saudi-gcc-transport\/([^/]+)?/);
+    return match && match[1] ? match[1] : 'home';
+  }
+
+  function getUtmParams() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      utmSource: params.get('utm_source') || '',
+      utmMedium: params.get('utm_medium') || '',
+      utmCampaign: params.get('utm_campaign') || '',
+      utmTerm: params.get('utm_term') || '',
+      utmContent: params.get('utm_content') || '',
+    };
+  }
+
+  function getDeviceType() {
+    const ua = navigator.userAgent || '';
+    if (/ipad|tablet|playbook|silk/i.test(ua)) return 'tablet';
+    if (/mobile|iphone|ipod|android|blackberry|phone/i.test(ua)) return 'mobile';
+    return 'desktop';
+  }
+
+  function getBookingDataFromLink(link) {
+    const form = link.closest('[data-booking-form]');
+    if (!form) return {};
+    const getValue = (name) => form.querySelector(`[data-booking="${name}"]`)?.value || '';
+    return {
+      serviceType: getValue('service'),
+      fromCountry: getValue('from-country'),
+      fromCity: getValue('from-city'),
+      toCountry: getValue('to-country'),
+      toCity: getValue('to-city'),
+    };
+  }
+
+  function buildLeadPayload(link) {
+    const routeSlug = getRouteSlug();
+    return {
+      timestamp: new Date().toISOString(),
+      routeSlug,
+      routeLabel: document.querySelector('h1')?.textContent?.trim() || routeSlug,
+      pageUrl,
+      pagePath: window.location.pathname,
+      targetUrl: link.href || '',
+      language: document.documentElement.lang || state.lang || 'ar',
+      deviceType: getDeviceType(),
+      viewportWidth: window.innerWidth || 0,
+      viewportHeight: window.innerHeight || 0,
+      referrer: document.referrer || '',
+      ...getUtmParams(),
+      ...getBookingDataFromLink(link),
+    };
+  }
+
+  function sendLeadPayload(payload) {
+    const body = JSON.stringify(payload);
+    if (navigator.sendBeacon) {
+      const blob = new Blob([body], { type: 'application/json' });
+      if (navigator.sendBeacon(leadEndpoint, blob)) return;
+    }
+
+    fetch(leadEndpoint, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body,
+      keepalive: true,
+      credentials: 'omit',
+    }).catch(() => {});
+  }
+
+  function setupWhatsAppLeadInterceptor() {
+    if (document.body.dataset.leadInterceptorReady === 'true') return;
+    document.body.dataset.leadInterceptorReady = 'true';
+
+    document.addEventListener('click', (event) => {
+      const link = event.target.closest('a[href]');
+      if (!link) return;
+      const href = link.getAttribute('href') || '';
+      if (!href.includes('wa.me/') && !href.includes('api.whatsapp.com/') && !link.hasAttribute('data-wa-message') && !link.hasAttribute('data-booking-submit')) {
+        return;
+      }
+
+      sendLeadPayload(buildLeadPayload(link));
+    }, { capture: true });
+  }
+
   function translateString(value) {
     const source = `${value || ''}`;
     const normalized = source.replace(/\s+/g, ' ').trim();
@@ -1079,6 +1168,7 @@
     setStaticLinks();
     insertLanguageToggle();
     setupForms();
+    setupWhatsAppLeadInterceptor();
     injectFlagImages();
     applyLanguage();
     renderIcons();

@@ -1,0 +1,25 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "vendora-tools",
+  "main": "worker.js",
+  "compatibility_date": "2026-04-22",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "_site"
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  },
+  "d1_databases": [
+    {
+      "binding": "TRANSPORT_DB",
+      "database_name": "vendora-db",
+      "database_id": "8c48ebba-660a-4677-b281-61b6d0b402c3",
+      "migrations_dir": "migrations"
+    }
+  ]
+}
