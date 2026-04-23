@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
+  <link rel="icon" type="image/png" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png" />
+  <link rel="apple-touch-icon" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
@@ -11,7 +13,7 @@
       theme: {
         extend: {
           colors: {
-            ink: '#121826',
+            ink: '#101828',
             muted: '#667085',
             line: '#e5e7eb',
             brand: '#22543d',
@@ -26,15 +28,13 @@
   <main class="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 py-5 sm:px-6 lg:px-8">
     <section id="loginView" class="m-auto w-full max-w-md">
       <div class="rounded-2xl border border-line bg-white p-6 shadow-sm">
-        <div class="mb-6">
-          <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand">Vendora Transport</p>
-          <h1 class="mt-2 text-2xl font-semibold tracking-tight">Control Room</h1>
-          <p class="mt-2 text-sm text-muted">Enter your admin token to view leads and manage route pricing.</p>
-        </div>
-        <form id="loginForm" class="space-y-4">
+        <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand">Vendora Transport</p>
+        <h1 class="mt-2 text-2xl font-semibold tracking-tight">Control Room</h1>
+        <p class="mt-2 text-sm text-muted">Enter your admin password to view WhatsApp leads, campaign performance, and route pricing.</p>
+        <form id="loginForm" class="mt-6 space-y-4">
           <label class="block">
-            <span class="text-sm font-medium">Admin token</span>
-            <input id="tokenInput" type="password" autocomplete="current-password" class="mt-2 w-full rounded-xl border border-line bg-white px-4 py-3 text-base outline-none ring-brand/20 transition focus:border-brand focus:ring-4" placeholder="Enter token" required />
+            <span class="text-sm font-medium">Admin password</span>
+            <input id="tokenInput" type="password" autocomplete="current-password" class="mt-2 w-full rounded-xl border border-line bg-white px-4 py-3 text-base outline-none ring-brand/20 transition focus:border-brand focus:ring-4" placeholder="Enter password" required />
           </label>
           <button class="w-full rounded-xl bg-brand px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-800" type="submit">Unlock dashboard</button>
           <p id="loginError" class="hidden rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700"></p>
@@ -47,52 +47,124 @@
         <div>
           <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand">Admin Control Room</p>
           <h1 class="mt-1 text-2xl font-semibold tracking-tight">Transport dashboard</h1>
-          <p class="mt-1 text-sm text-muted">Lead tracking and live route pricing for the GCC transport site.</p>
+          <p class="mt-1 text-sm text-muted">WhatsApp lead tracking, campaign reporting, and route pricing.</p>
         </div>
-        <div class="flex items-center gap-2">
-          <button id="refreshBtn" class="rounded-xl border border-line px-4 py-2 text-sm font-semibold text-ink transition hover:bg-slate-50" type="button">Refresh</button>
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="exportBtn" class="rounded-xl border border-line px-4 py-2 text-sm font-semibold transition hover:bg-slate-50" type="button">Export CSV</button>
+          <button id="refreshBtn" class="rounded-xl border border-line px-4 py-2 text-sm font-semibold transition hover:bg-slate-50" type="button">Refresh</button>
           <button id="logoutBtn" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-black" type="button">Lock</button>
         </div>
       </header>
 
-      <div class="mb-5 grid gap-3 sm:grid-cols-3">
+      <p id="statusLine" class="mb-4 hidden rounded-xl border px-4 py-3 text-sm"></p>
+
+      <nav class="mb-5 grid grid-cols-3 rounded-2xl border border-line bg-white p-1 shadow-sm">
+        <button class="tab-btn rounded-xl px-3 py-3 text-sm font-semibold transition" data-tab="leads" type="button">Leads</button>
+        <button class="tab-btn rounded-xl px-3 py-3 text-sm font-semibold transition" data-tab="reports" type="button">Reports</button>
+        <button class="tab-btn rounded-xl px-3 py-3 text-sm font-semibold transition" data-tab="pricing" type="button">Pricing</button>
+      </nav>
+
+      <section class="mb-5 rounded-2xl border border-line bg-white p-4 shadow-sm">
+        <div class="mb-3 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 class="text-base font-semibold">Lead filters</h2>
+            <p class="text-sm text-muted">Use this when you run ads. Filter by route, source, campaign, country, device, or date.</p>
+          </div>
+          <button id="clearFiltersBtn" class="self-start rounded-xl border border-line px-3 py-2 text-sm font-semibold transition hover:bg-slate-50 sm:self-auto" type="button">Clear</button>
+        </div>
+        <form id="filtersForm" class="grid gap-3 md:grid-cols-3 xl:grid-cols-6">
+          <label class="block">
+            <span class="text-xs font-semibold uppercase tracking-wide text-muted">Search</span>
+            <input name="search" class="mt-1 w-full rounded-xl border border-line px-3 py-2 text-sm outline-none focus:border-brand" placeholder="route, city, campaign" />
+          </label>
+          <label class="block">
+            <span class="text-xs font-semibold uppercase tracking-wide text-muted">Route</span>
+            <select name="route" class="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2 text-sm outline-none focus:border-brand"></select>
+          </label>
+          <label class="block">
+            <span class="text-xs font-semibold uppercase tracking-wide text-muted">Source</span>
+            <select name="source" class="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2 text-sm outline-none focus:border-brand"></select>
+          </label>
+          <label class="block">
+            <span class="text-xs font-semibold uppercase tracking-wide text-muted">Campaign</span>
+            <select name="campaign" class="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2 text-sm outline-none focus:border-brand"></select>
+          </label>
+          <label class="block">
+            <span class="text-xs font-semibold uppercase tracking-wide text-muted">Country</span>
+            <select name="country" class="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2 text-sm outline-none focus:border-brand"></select>
+          </label>
+          <label class="block">
+            <span class="text-xs font-semibold uppercase tracking-wide text-muted">Device</span>
+            <select name="device" class="mt-1 w-full rounded-xl border border-line bg-white px-3 py-2 text-sm outline-none focus:border-brand"></select>
+          </label>
+          <label class="block">
+            <span class="text-xs font-semibold uppercase tracking-wide text-muted">From date</span>
+            <input name="from" type="date" class="mt-1 w-full rounded-xl border border-line px-3 py-2 text-sm outline-none focus:border-brand" />
+          </label>
+          <label class="block">
+            <span class="text-xs font-semibold uppercase tracking-wide text-muted">To date</span>
+            <input name="to" type="date" class="mt-1 w-full rounded-xl border border-line px-3 py-2 text-sm outline-none focus:border-brand" />
+          </label>
+          <label class="block">
+            <span class="text-xs font-semibold uppercase tracking-wide text-muted">Min seconds</span>
+            <input name="min_seconds" type="number" min="0" step="1" class="mt-1 w-full rounded-xl border border-line px-3 py-2 text-sm outline-none focus:border-brand" placeholder="Before click" />
+          </label>
+          <label class="block">
+            <span class="text-xs font-semibold uppercase tracking-wide text-muted">Max seconds</span>
+            <input name="max_seconds" type="number" min="0" step="1" class="mt-1 w-full rounded-xl border border-line px-3 py-2 text-sm outline-none focus:border-brand" placeholder="Before click" />
+          </label>
+          <button class="rounded-xl bg-brand px-4 py-2 text-sm font-semibold text-white md:self-end" type="submit">Apply filters</button>
+        </form>
+      </section>
+
+      <div class="mb-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-6">
         <div class="rounded-2xl border border-line bg-white p-4 shadow-sm">
-          <p class="text-sm text-muted">Total loaded leads</p>
-          <p id="statLeads" class="mt-2 text-3xl font-semibold">0</p>
+          <p class="text-sm text-muted">Filtered leads</p>
+          <p id="statTotal" class="mt-2 text-3xl font-semibold">0</p>
         </div>
         <div class="rounded-2xl border border-line bg-white p-4 shadow-sm">
-          <p class="text-sm text-muted">Live priced routes</p>
-          <p id="statLiveRoutes" class="mt-2 text-3xl font-semibold">0</p>
+          <p class="text-sm text-muted">Today</p>
+          <p id="statToday" class="mt-2 text-3xl font-semibold">0</p>
+        </div>
+        <div class="rounded-2xl border border-line bg-white p-4 shadow-sm">
+          <p class="text-sm text-muted">Last 7 days</p>
+          <p id="statWeek" class="mt-2 text-3xl font-semibold">0</p>
         </div>
         <div class="rounded-2xl border border-line bg-white p-4 shadow-sm">
           <p class="text-sm text-muted">Last click</p>
           <p id="statLastClick" class="mt-2 text-lg font-semibold">-</p>
         </div>
+        <div class="rounded-2xl border border-line bg-white p-4 shadow-sm">
+          <p class="text-sm text-muted">Avg before click</p>
+          <p id="statAvgTime" class="mt-2 text-3xl font-semibold">0s</p>
+        </div>
+        <div class="rounded-2xl border border-line bg-white p-4 shadow-sm">
+          <p class="text-sm text-muted">Avg scroll</p>
+          <p id="statAvgScroll" class="mt-2 text-3xl font-semibold">0%</p>
+        </div>
       </div>
-
-      <nav class="mb-5 grid grid-cols-2 rounded-2xl border border-line bg-white p-1 shadow-sm">
-        <button class="tab-btn rounded-xl px-4 py-3 text-sm font-semibold transition" data-tab="leads" type="button">Leads Tracker</button>
-        <button class="tab-btn rounded-xl px-4 py-3 text-sm font-semibold transition" data-tab="pricing" type="button">Pricing Engine</button>
-      </nav>
-
-      <p id="statusLine" class="mb-4 hidden rounded-xl border px-4 py-3 text-sm"></p>
 
       <section id="leadsPanel" class="tab-panel">
         <div class="overflow-hidden rounded-2xl border border-line bg-white shadow-sm">
-          <div class="border-b border-line p-4">
-            <h2 class="text-lg font-semibold">Latest WhatsApp clicks</h2>
-            <p class="mt-1 text-sm text-muted">Newest captured leads from the public booking buttons.</p>
+          <div class="flex flex-col gap-2 border-b border-line p-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 class="text-lg font-semibold">WhatsApp lead log</h2>
+              <p class="mt-1 text-sm text-muted">Every WhatsApp button click captured from the public transport pages.</p>
+            </div>
+            <p class="text-xs text-muted">Location comes from Cloudflare network data; it is city/country level, not exact address.</p>
           </div>
           <div id="leadsMobile" class="grid gap-3 p-4 md:hidden"></div>
           <div class="hidden overflow-x-auto md:block">
             <table class="min-w-full divide-y divide-line text-left text-sm">
               <thead class="bg-slate-50 text-xs uppercase tracking-wide text-muted">
                 <tr>
-                  <th class="px-4 py-3 font-semibold">Timestamp</th>
-                  <th class="px-4 py-3 font-semibold">Route</th>
+                  <th class="px-4 py-3 font-semibold">Time</th>
+                  <th class="px-4 py-3 font-semibold">Route / page</th>
+                  <th class="px-4 py-3 font-semibold">Campaign</th>
+                  <th class="px-4 py-3 font-semibold">Engagement</th>
                   <th class="px-4 py-3 font-semibold">Device</th>
-                  <th class="px-4 py-3 font-semibold">UTM</th>
-                  <th class="px-4 py-3 font-semibold">City / Country</th>
+                  <th class="px-4 py-3 font-semibold">Location</th>
+                  <th class="px-4 py-3 font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody id="leadsTable" class="divide-y divide-line"></tbody>
@@ -101,14 +173,50 @@
         </div>
       </section>
 
+      <section id="reportsPanel" class="tab-panel hidden">
+        <div class="grid gap-4 lg:grid-cols-2">
+          <div class="rounded-2xl border border-line bg-white p-4 shadow-sm">
+            <h2 class="text-lg font-semibold">Top routes</h2>
+            <div id="chartRoutes" class="mt-4 space-y-3"></div>
+          </div>
+          <div class="rounded-2xl border border-line bg-white p-4 shadow-sm">
+            <h2 class="text-lg font-semibold">Top ad sources</h2>
+            <div id="chartSources" class="mt-4 space-y-3"></div>
+          </div>
+          <div class="rounded-2xl border border-line bg-white p-4 shadow-sm">
+            <h2 class="text-lg font-semibold">Top campaigns</h2>
+            <div id="chartCampaigns" class="mt-4 space-y-3"></div>
+          </div>
+          <div class="rounded-2xl border border-line bg-white p-4 shadow-sm">
+            <h2 class="text-lg font-semibold">Countries</h2>
+            <div id="chartCountries" class="mt-4 space-y-3"></div>
+          </div>
+          <div class="rounded-2xl border border-line bg-white p-4 shadow-sm">
+            <h2 class="text-lg font-semibold">Devices</h2>
+            <div id="chartDevices" class="mt-4 space-y-3"></div>
+          </div>
+          <div class="rounded-2xl border border-line bg-white p-4 shadow-sm lg:col-span-2">
+            <h2 class="text-lg font-semibold">Daily trend</h2>
+            <div id="chartDays" class="mt-4 grid min-h-48 grid-cols-7 items-end gap-2 sm:grid-cols-14"></div>
+          </div>
+          <div class="rounded-2xl border border-line bg-white p-4 shadow-sm lg:col-span-2">
+            <h2 class="text-lg font-semibold">Best click hours</h2>
+            <div id="chartHours" class="mt-4 grid min-h-48 grid-cols-12 items-end gap-2 sm:grid-cols-24"></div>
+          </div>
+        </div>
+      </section>
+
       <section id="pricingPanel" class="tab-panel hidden">
         <div class="rounded-2xl border border-line bg-white p-4 shadow-sm">
           <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 class="text-lg font-semibold">Route pricing</h2>
-              <p class="mt-1 text-sm text-muted">Set BD prices and choose whether each route is visible on the public site.</p>
+              <h2 class="text-lg font-semibold">Pricing engine</h2>
+              <p class="mt-1 text-sm text-muted">Prices are stored in D1 table routes_pricing. In the next phase, public pages can fetch these prices automatically.</p>
             </div>
-            <button id="addRouteToggle" class="rounded-xl border border-line px-4 py-2 text-sm font-semibold transition hover:bg-slate-50" type="button">Add route</button>
+            <div class="flex flex-wrap gap-2">
+              <button id="seedRoutesBtn" class="rounded-xl border border-line px-4 py-2 text-sm font-semibold transition hover:bg-slate-50" type="button">Add common routes</button>
+              <button id="addRouteToggle" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-black" type="button">Custom route</button>
+            </div>
           </div>
 
           <form id="addRouteForm" class="mb-4 hidden grid gap-3 rounded-2xl bg-slate-50 p-4 sm:grid-cols-5">
@@ -125,14 +233,44 @@
     </section>
   </main>
 
+  <dialog id="leadDialog" class="w-[min(720px,calc(100vw-32px))] rounded-2xl border border-line p-0 shadow-2xl">
+    <div class="border-b border-line p-4">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-semibold">Lead details</h2>
+          <p class="text-sm text-muted">Use this to understand the customer click and campaign source.</p>
+        </div>
+        <button id="closeDialogBtn" class="rounded-xl border border-line px-3 py-2 text-sm font-semibold" type="button">Close</button>
+      </div>
+    </div>
+    <div id="leadDetails" class="max-h-[70vh] overflow-auto p-4"></div>
+  </dialog>
+
   <script>
     const API_URL = '/api/transport/admin';
     const TOKEN_KEY = 'vendora_transport_admin_token';
+    const COMMON_ROUTES = [
+      ['home', 'Main transport page', 'صفحة النقل الرئيسية', 0],
+      ['bahrain-to-saudi', 'Bahrain to Saudi Arabia', 'من البحرين إلى السعودية', 10],
+      ['bahrain-to-khobar', 'Bahrain to Khobar', 'من البحرين إلى الخبر', 20],
+      ['bahrain-to-dammam', 'Bahrain to Dammam', 'من البحرين إلى الدمام', 30],
+      ['bahrain-to-riyadh', 'Bahrain to Riyadh', 'من البحرين إلى الرياض', 40],
+      ['saudi-to-bahrain', 'Saudi Arabia to Bahrain', 'من السعودية إلى البحرين', 50],
+      ['khobar-to-bahrain', 'Khobar to Bahrain', 'من الخبر إلى البحرين', 60],
+      ['dammam-to-bahrain', 'Dammam to Bahrain', 'من الدمام إلى البحرين', 70],
+      ['riyadh-to-bahrain', 'Riyadh to Bahrain', 'من الرياض إلى البحرين', 80],
+      ['bahrain-to-qatar', 'Bahrain to Qatar', 'من البحرين إلى قطر', 90],
+      ['bahrain-to-kuwait', 'Bahrain to Kuwait', 'من البحرين إلى الكويت', 100],
+      ['bahrain-to-dubai', 'Bahrain to Dubai', 'من البحرين إلى دبي', 110]
+    ];
+
     const state = {
       token: sessionStorage.getItem(TOKEN_KEY) || '',
       tab: 'leads',
       leads: [],
-      routes: []
+      routes: [],
+      summary: {},
+      filters: {}
     };
 
     const loginView = document.getElementById('loginView');
@@ -141,11 +279,7 @@
 
     function escapeHtml(value) {
       return String(value ?? '').replace(/[&<>"']/g, (char) => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
       }[char]));
     }
 
@@ -156,14 +290,21 @@
       return date.toLocaleString('en-BH', { dateStyle: 'medium', timeStyle: 'short' });
     }
 
+    function formatDuration(ms) {
+      const seconds = Math.max(0, Math.round(Number(ms || 0) / 1000));
+      if (!seconds) return '0s';
+      if (seconds < 60) return `${seconds}s`;
+      const minutes = Math.floor(seconds / 60);
+      const rest = seconds % 60;
+      return rest ? `${minutes}m ${rest}s` : `${minutes}m`;
+    }
+
     function showStatus(message, type = 'info') {
       statusLine.textContent = message;
       statusLine.className = 'mb-4 rounded-xl border px-4 py-3 text-sm ' + (
-        type === 'error'
-          ? 'border-red-200 bg-red-50 text-red-700'
-          : type === 'success'
-            ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
-            : 'border-line bg-white text-muted'
+        type === 'error' ? 'border-red-200 bg-red-50 text-red-700' :
+        type === 'success' ? 'border-emerald-200 bg-emerald-50 text-emerald-800' :
+        'border-line bg-white text-muted'
       );
       statusLine.classList.remove('hidden');
       window.clearTimeout(showStatus.timer);
@@ -174,16 +315,22 @@
       const response = await fetch(`${API_URL}${path}`, {
         ...options,
         headers: {
-          'authorization': `Bearer ${state.token}`,
+          authorization: `Bearer ${state.token}`,
           'content-type': 'application/json',
           ...(options.headers || {})
         }
       });
       const data = await response.json().catch(() => ({}));
-      if (!response.ok || data.ok === false) {
-        throw new Error(data.error || `Request failed (${response.status})`);
-      }
+      if (!response.ok || data.ok === false) throw new Error(data.error || `Request failed (${response.status})`);
       return data;
+    }
+
+    function queryFromFilters(extra = {}) {
+      const params = new URLSearchParams({ ...state.filters, ...extra });
+      [...params.entries()].forEach(([key, value]) => {
+        if (!value) params.delete(key);
+      });
+      return `?${params.toString()}`;
     }
 
     function setTab(tab) {
@@ -198,51 +345,129 @@
       document.getElementById(`${tab}Panel`).classList.remove('hidden');
     }
 
+    function fillSelect(name, values, label) {
+      const select = document.querySelector(`[name="${name}"]`);
+      const current = select.value;
+      select.innerHTML = `<option value="">${label}</option>` + values
+        .filter(Boolean)
+        .sort((a, b) => String(a).localeCompare(String(b)))
+        .map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`)
+        .join('');
+      select.value = current;
+    }
+
+    function renderFilterOptions() {
+      fillSelect('route', [...new Set(state.leads.map((lead) => lead.route_slug))], 'All routes');
+      fillSelect('source', [...new Set(state.leads.map((lead) => lead.utm_source || 'direct/unknown'))], 'All sources');
+      fillSelect('campaign', [...new Set(state.leads.map((lead) => lead.utm_campaign))], 'All campaigns');
+      fillSelect('country', [...new Set(state.leads.map((lead) => lead.cf_country))], 'All countries');
+      fillSelect('device', [...new Set(state.leads.map((lead) => lead.device_type))], 'All devices');
+    }
+
     function renderStats() {
-      document.getElementById('statLeads').textContent = state.leads.length;
-      document.getElementById('statLiveRoutes').textContent = state.routes.filter((route) => Number(route.is_visible) === 1).length;
-      document.getElementById('statLastClick').textContent = state.leads[0] ? formatDate(state.leads[0].clicked_at) : '-';
+      const summary = state.summary || {};
+      document.getElementById('statTotal').textContent = summary.total || 0;
+      document.getElementById('statToday').textContent = summary.today || 0;
+      document.getElementById('statWeek').textContent = summary.last_7_days || 0;
+      document.getElementById('statLastClick').textContent = summary.last_click ? formatDate(summary.last_click) : '-';
+      document.getElementById('statAvgTime').textContent = formatDuration(summary.avg_time_on_page_ms || 0);
+      document.getElementById('statAvgScroll').textContent = `${Math.round(summary.avg_scroll_depth_percent || 0)}%`;
+    }
+
+    function campaignText(lead) {
+      return [lead.utm_source || 'direct/unknown', lead.utm_medium, lead.utm_campaign].filter(Boolean).join(' / ');
+    }
+
+    function locationText(lead) {
+      return [lead.cf_city, lead.cf_region, lead.cf_country].filter(Boolean).join(', ') || '-';
+    }
+
+    function engagementText(lead) {
+      return `${formatDuration(lead.time_on_page_ms)} | ${lead.scroll_depth_percent ?? 0}% scroll`;
     }
 
     function renderLeads() {
-      const rows = state.leads.map((lead) => {
-        const utm = [lead.utm_source, lead.utm_medium, lead.utm_campaign].filter(Boolean).join(' / ') || '-';
-        const place = [lead.cf_city, lead.cf_country].filter(Boolean).join(', ') || '-';
-        return `
-          <tr>
-            <td class="px-4 py-3 text-muted">${escapeHtml(formatDate(lead.clicked_at))}</td>
-            <td class="px-4 py-3">
-              <div class="font-semibold">${escapeHtml(lead.route_label || lead.route_slug || '-')}</div>
-              <div class="text-xs text-muted">${escapeHtml(lead.page_path || '')}</div>
-            </td>
-            <td class="px-4 py-3">${escapeHtml(lead.device_type || '-')}</td>
-            <td class="px-4 py-3">${escapeHtml(utm)}</td>
-            <td class="px-4 py-3">${escapeHtml(place)}</td>
-          </tr>
-        `;
-      }).join('');
-
-      document.getElementById('leadsTable').innerHTML = rows || '<tr><td class="px-4 py-8 text-center text-muted" colspan="5">No leads captured yet.</td></tr>';
-
-      document.getElementById('leadsMobile').innerHTML = state.leads.map((lead) => {
-        const utm = [lead.utm_source, lead.utm_medium, lead.utm_campaign].filter(Boolean).join(' / ') || '-';
-        const place = [lead.cf_city, lead.cf_country].filter(Boolean).join(', ') || '-';
-        return `
-          <article class="rounded-2xl border border-line p-4">
-            <div class="flex items-start justify-between gap-3">
-              <div>
-                <h3 class="font-semibold">${escapeHtml(lead.route_label || lead.route_slug || '-')}</h3>
-                <p class="mt-1 text-xs text-muted">${escapeHtml(formatDate(lead.clicked_at))}</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">${escapeHtml(lead.device_type || '-')}</span>
+      const empty = '<tr><td class="px-4 py-8 text-center text-muted" colspan="7">No leads match these filters.</td></tr>';
+      document.getElementById('leadsTable').innerHTML = state.leads.map((lead) => `
+        <tr>
+          <td class="px-4 py-3 text-muted">${escapeHtml(formatDate(lead.clicked_at))}</td>
+          <td class="px-4 py-3">
+            <div class="font-semibold">${escapeHtml(lead.route_label || lead.route_slug || '-')}</div>
+            <div class="text-xs text-muted">${escapeHtml(lead.page_path || '')}</div>
+          </td>
+          <td class="px-4 py-3">${escapeHtml(campaignText(lead))}</td>
+          <td class="px-4 py-3">${escapeHtml(engagementText(lead))}</td>
+          <td class="px-4 py-3">${escapeHtml(lead.device_type || '-')}</td>
+          <td class="px-4 py-3">${escapeHtml(locationText(lead))}</td>
+          <td class="px-4 py-3">
+            <div class="flex flex-wrap gap-2">
+              <button class="rounded-lg border border-line px-2.5 py-1.5 text-xs font-semibold" data-view-lead="${lead.id}" type="button">View</button>
+              <button class="rounded-lg border border-red-200 px-2.5 py-1.5 text-xs font-semibold text-red-700" data-delete-lead="${lead.id}" type="button">Delete</button>
             </div>
-            <dl class="mt-4 grid grid-cols-2 gap-3 text-sm">
-              <div><dt class="text-xs text-muted">UTM</dt><dd class="font-medium">${escapeHtml(utm)}</dd></div>
-              <div><dt class="text-xs text-muted">Location</dt><dd class="font-medium">${escapeHtml(place)}</dd></div>
-            </dl>
-          </article>
-        `;
-      }).join('') || '<p class="py-8 text-center text-sm text-muted">No leads captured yet.</p>';
+          </td>
+        </tr>
+      `).join('') || empty;
+
+      document.getElementById('leadsMobile').innerHTML = state.leads.map((lead) => `
+        <article class="rounded-2xl border border-line p-4">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="font-semibold">${escapeHtml(lead.route_label || lead.route_slug || '-')}</h3>
+              <p class="mt-1 text-xs text-muted">${escapeHtml(formatDate(lead.clicked_at))}</p>
+            </div>
+            <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">${escapeHtml(lead.device_type || '-')}</span>
+          </div>
+          <dl class="mt-4 grid gap-3 text-sm">
+            <div><dt class="text-xs text-muted">Campaign</dt><dd class="font-medium">${escapeHtml(campaignText(lead))}</dd></div>
+            <div><dt class="text-xs text-muted">Engagement</dt><dd class="font-medium">${escapeHtml(engagementText(lead))}</dd></div>
+            <div><dt class="text-xs text-muted">Location</dt><dd class="font-medium">${escapeHtml(locationText(lead))}</dd></div>
+            <div><dt class="text-xs text-muted">Page</dt><dd class="font-medium">${escapeHtml(lead.page_path || '-')}</dd></div>
+          </dl>
+          <div class="mt-4 flex gap-2">
+            <button class="rounded-lg border border-line px-3 py-2 text-xs font-semibold" data-view-lead="${lead.id}" type="button">View</button>
+            <button class="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-700" data-delete-lead="${lead.id}" type="button">Delete</button>
+          </div>
+        </article>
+      `).join('') || '<p class="py-8 text-center text-sm text-muted">No leads match these filters.</p>';
+    }
+
+    function barList(rows, targetId) {
+      const max = Math.max(...rows.map((row) => row.count || 0), 1);
+      document.getElementById(targetId).innerHTML = rows.map((row) => `
+        <div>
+          <div class="mb-1 flex items-center justify-between gap-3 text-sm">
+            <span class="truncate font-medium">${escapeHtml(row.label)}</span>
+            <span class="text-muted">${row.count}</span>
+          </div>
+          <div class="h-2 rounded-full bg-slate-100"><div class="h-2 rounded-full bg-brand" style="width:${Math.max(6, (row.count / max) * 100)}%"></div></div>
+        </div>
+      `).join('') || '<p class="text-sm text-muted">No data yet.</p>';
+    }
+
+    function renderReports() {
+      const summary = state.summary || {};
+      barList(summary.by_route || [], 'chartRoutes');
+      barList(summary.by_source || [], 'chartSources');
+      barList(summary.by_campaign || [], 'chartCampaigns');
+      barList(summary.by_country || [], 'chartCountries');
+      barList(summary.by_device || [], 'chartDevices');
+      const days = summary.by_day || [];
+      const max = Math.max(...days.map((row) => row.count || 0), 1);
+      document.getElementById('chartDays').innerHTML = days.map((row) => `
+        <div class="flex h-48 flex-col justify-end gap-2">
+          <div class="rounded-t-lg bg-brand" style="height:${Math.max(8, (row.count / max) * 160)}px" title="${escapeHtml(row.label)}: ${row.count}"></div>
+          <div class="truncate text-center text-[11px] text-muted">${escapeHtml(row.label.slice(5))}<br>${row.count}</div>
+        </div>
+      `).join('') || '<p class="text-sm text-muted">No daily data yet.</p>';
+
+      const hours = summary.by_hour || [];
+      const maxHour = Math.max(...hours.map((row) => row.count || 0), 1);
+      document.getElementById('chartHours').innerHTML = hours.map((row) => `
+        <div class="flex h-48 flex-col justify-end gap-2">
+          <div class="rounded-t-lg bg-slate-900" style="height:${Math.max(8, (row.count / maxHour) * 160)}px" title="${escapeHtml(row.label)}: ${row.count}"></div>
+          <div class="truncate text-center text-[11px] text-muted">${escapeHtml(row.label.replace(':00', ''))}<br>${row.count}</div>
+        </div>
+      `).join('') || '<p class="text-sm text-muted">No hourly data yet.</p>';
     }
 
     function routeCard(route) {
@@ -254,7 +479,7 @@
             <div>
               <h3 class="font-semibold">${escapeHtml(route.route_name_en || route.route_slug)}</h3>
               <p class="mt-1 text-sm text-muted">${escapeHtml(route.route_name_ar || '')}</p>
-              <p class="mt-1 text-xs text-muted">${escapeHtml(route.route_slug)}</p>
+              <p class="mt-1 text-xs text-muted">${escapeHtml(route.route_slug)} ${route.updated_at ? 'Updated ' + escapeHtml(formatDate(route.updated_at)) : ''}</p>
             </div>
             <label class="block">
               <span class="text-xs font-semibold uppercase tracking-wide text-muted">Price BD</span>
@@ -272,18 +497,22 @@
 
     function renderRoutes() {
       document.getElementById('routesList').innerHTML = state.routes.map(routeCard).join('')
-        || '<p class="rounded-2xl border border-dashed border-line p-8 text-center text-sm text-muted">No pricing routes yet. Add the first route above.</p>';
+        || '<p class="rounded-2xl border border-dashed border-line p-8 text-center text-sm text-muted">No pricing routes yet. Click "Add common routes" to create the normal transport route list.</p>';
     }
 
     async function loadDashboard() {
-      const [leadsData, routesData] = await Promise.all([
-        api('?resource=leads&limit=100'),
-        api('?resource=routes')
+      const [leadsData, routesData, summaryData] = await Promise.all([
+        api(queryFromFilters({ resource: 'leads', limit: 500 })),
+        api('?resource=routes'),
+        api(queryFromFilters({ resource: 'summary' }))
       ]);
       state.leads = leadsData.leads || [];
       state.routes = routesData.routes || [];
+      state.summary = summaryData.summary || {};
+      renderFilterOptions();
       renderStats();
       renderLeads();
+      renderReports();
       renderRoutes();
     }
 
@@ -294,6 +523,56 @@
       loginView.classList.add('hidden');
       dashboardView.classList.remove('hidden');
       setTab(state.tab);
+    }
+
+    function showLeadDetails(id) {
+      const lead = state.leads.find((item) => String(item.id) === String(id));
+      if (!lead) return;
+      const rows = [
+        ['Time', formatDate(lead.clicked_at)],
+        ['Route', lead.route_label || lead.route_slug],
+        ['Page', lead.page_url || lead.page_path],
+        ['WhatsApp target', lead.target_url],
+        ['Campaign', campaignText(lead)],
+        ['UTM term/content', [lead.utm_term, lead.utm_content].filter(Boolean).join(' / ') || '-'],
+        ['Time before WhatsApp click', formatDuration(lead.time_on_page_ms)],
+        ['Scroll depth before click', `${lead.scroll_depth_percent ?? 0}%`],
+        ['Interactions before click', lead.interaction_count ?? '-'],
+        ['Clicked text', lead.click_text || '-'],
+        ['Click position', `${lead.click_x ?? '-'}, ${lead.click_y ?? '-'}`],
+        ['Session ID', lead.session_id || '-'],
+        ['Device', `${lead.device_type || '-'} (${lead.viewport_width || '-'} x ${lead.viewport_height || '-'})`],
+        ['Screen', `${lead.screen_width || '-'} x ${lead.screen_height || '-'}`],
+        ['Browser language', lead.browser_language || '-'],
+        ['Location', locationText(lead)],
+        ['Timezone', lead.cf_timezone || '-'],
+        ['Referrer', lead.referrer || '-'],
+        ['User agent', lead.user_agent || '-'],
+        ['Cloudflare Ray', lead.request_ray_id || '-']
+      ];
+      document.getElementById('leadDetails').innerHTML = `
+        <dl class="grid gap-3">
+          ${rows.map(([label, value]) => `
+            <div class="rounded-xl bg-slate-50 p-3">
+              <dt class="text-xs font-semibold uppercase tracking-wide text-muted">${escapeHtml(label)}</dt>
+              <dd class="mt-1 break-words text-sm font-medium">${escapeHtml(value || '-')}</dd>
+            </div>
+          `).join('')}
+        </dl>
+      `;
+      document.getElementById('leadDialog').showModal();
+    }
+
+    function exportCsv() {
+      const headers = ['clicked_at', 'route_slug', 'route_label', 'page_path', 'utm_source', 'utm_medium', 'utm_campaign', 'time_on_page_ms', 'scroll_depth_percent', 'interaction_count', 'click_text', 'device_type', 'browser_language', 'cf_city', 'cf_region', 'cf_country', 'referrer'];
+      const rows = state.leads.map((lead) => headers.map((key) => `"${String(lead[key] ?? '').replace(/"/g, '""')}"`).join(','));
+      const blob = new Blob([[headers.join(','), ...rows].join('\n')], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `transport-leads-${new Date().toISOString().slice(0, 10)}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
     }
 
     document.getElementById('loginForm').addEventListener('submit', async (event) => {
@@ -324,8 +603,41 @@
       }
     });
 
-    document.querySelectorAll('.tab-btn').forEach((button) => {
-      button.addEventListener('click', () => setTab(button.dataset.tab));
+    document.getElementById('exportBtn').addEventListener('click', exportCsv);
+    document.getElementById('closeDialogBtn').addEventListener('click', () => document.getElementById('leadDialog').close());
+    document.querySelectorAll('.tab-btn').forEach((button) => button.addEventListener('click', () => setTab(button.dataset.tab)));
+
+    document.getElementById('filtersForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      state.filters = Object.fromEntries(new FormData(event.currentTarget).entries());
+      try {
+        await loadDashboard();
+        showStatus('Filters applied.', 'success');
+      } catch (err) {
+        showStatus(err.message, 'error');
+      }
+    });
+
+    document.getElementById('clearFiltersBtn').addEventListener('click', async () => {
+      document.getElementById('filtersForm').reset();
+      state.filters = {};
+      await loadDashboard();
+      showStatus('Filters cleared.', 'success');
+    });
+
+    document.getElementById('leadsPanel').addEventListener('click', async (event) => {
+      const view = event.target.closest('[data-view-lead]');
+      const del = event.target.closest('[data-delete-lead]');
+      if (view) showLeadDetails(view.dataset.viewLead);
+      if (!del) return;
+      if (!confirm('Delete this lead record? Use this only for tests or duplicate records.')) return;
+      try {
+        await api(`?id=${encodeURIComponent(del.dataset.deleteLead)}`, { method: 'DELETE' });
+        await loadDashboard();
+        showStatus('Lead deleted.', 'success');
+      } catch (err) {
+        showStatus(err.message, 'error');
+      }
     });
 
     document.getElementById('routesList').addEventListener('click', async (event) => {
@@ -340,18 +652,41 @@
         price_bd: card.querySelector('[data-field="price_bd"]').value,
         is_visible: card.querySelector('[data-field="is_visible"]').checked
       };
-
       button.disabled = true;
       button.textContent = 'Saving...';
       try {
         await api('', { method: 'PUT', body: JSON.stringify(payload) });
         await loadDashboard();
-        showStatus('Route saved.', 'success');
+        showStatus('Route price saved.', 'success');
       } catch (err) {
         showStatus(err.message, 'error');
       } finally {
         button.disabled = false;
         button.textContent = 'Save';
+      }
+    });
+
+    document.getElementById('seedRoutesBtn').addEventListener('click', async () => {
+      if (!confirm('Create/update the common transport route list? Existing prices will stay if you already entered them.')) return;
+      try {
+        for (const [route_slug, route_name_en, route_name_ar, sort_order] of COMMON_ROUTES) {
+          const existing = state.routes.find((route) => route.route_slug === route_slug) || {};
+          await api('', {
+            method: 'POST',
+            body: JSON.stringify({
+              route_slug,
+              route_name_en,
+              route_name_ar,
+              price_bd: existing.price_bd ?? '',
+              is_visible: existing.is_visible ?? false,
+              sort_order
+            })
+          });
+        }
+        await loadDashboard();
+        showStatus('Common routes are ready for pricing.', 'success');
+      } catch (err) {
+        showStatus(err.message, 'error');
       }
     });
 
@@ -362,15 +697,14 @@
     document.getElementById('addRouteForm').addEventListener('submit', async (event) => {
       event.preventDefault();
       const form = event.currentTarget;
-      const formData = new FormData(form);
-      const payload = Object.fromEntries(formData.entries());
+      const payload = Object.fromEntries(new FormData(form).entries());
       payload.is_visible = false;
       try {
         await api('', { method: 'POST', body: JSON.stringify(payload) });
         form.reset();
         form.classList.add('hidden');
         await loadDashboard();
-        showStatus('Route created.', 'success');
+        showStatus('Custom route created.', 'success');
       } catch (err) {
         showStatus(err.message, 'error');
       }

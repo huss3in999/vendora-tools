@@ -20,6 +20,7 @@ async function dispatchPagesFunction(module, request, env, ctx) {
   if (method === 'GET' && module.onRequestGet) return module.onRequestGet(context);
   if (method === 'POST' && module.onRequestPost) return module.onRequestPost(context);
   if (method === 'PUT' && module.onRequestPut) return module.onRequestPut(context);
+  if (method === 'DELETE' && module.onRequestDelete) return module.onRequestDelete(context);
   if (module.onRequest) return module.onRequest(context);
 
   return new Response('Method not allowed', { status: 405 });

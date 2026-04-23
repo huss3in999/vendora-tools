@@ -54,6 +54,12 @@ function cleanInteger(value) {
   return Math.max(0, Math.min(10000, Math.round(number)));
 }
 
+function cleanBoundedInteger(value, min, max) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return null;
+  return Math.max(min, Math.min(max, Math.round(number)));
+}
+
 function getClientIp(request) {
   return request.headers.get('cf-connecting-ip')
     || request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
@@ -111,8 +117,20 @@ async function storeLead(request, env, payload, leadUuid) {
       cf_timezone,
       user_agent,
       request_ray_id,
+      session_id,
+      page_loaded_at,
+      time_on_page_ms,
+      scroll_depth_percent,
+      click_x,
+      click_y,
+      click_text,
+      browser_language,
+      screen_width,
+      screen_height,
+      timezone_offset_minutes,
+      interaction_count,
       raw_payload
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   await stmt.bind(
@@ -145,6 +163,18 @@ async function storeLead(request, env, payload, leadUuid) {
     cleanText(cf.timezone, 80),
     cleanText(request.headers.get('user-agent'), 600),
     cleanText(request.headers.get('cf-ray'), 120),
+    getPayloadValue(payload, 'sessionId', 120),
+    getPayloadValue(payload, 'pageLoadedAt', 80),
+    cleanBoundedInteger(payload.timeOnPageMs, 0, 86400000),
+    cleanBoundedInteger(payload.scrollDepthPercent, 0, 100),
+    cleanBoundedInteger(payload.clickX, 0, 10000),
+    cleanBoundedInteger(payload.clickY, 0, 10000),
+    getPayloadValue(payload, 'clickText', 240),
+    getPayloadValue(payload, 'browserLanguage', 40),
+    cleanInteger(payload.screenWidth),
+    cleanInteger(payload.screenHeight),
+    cleanBoundedInteger(payload.timezoneOffsetMinutes, -1440, 1440),
+    cleanBoundedInteger(payload.interactionCount, 0, 10000),
     JSON.stringify(payload).slice(0, 4000),
   ).run();
 }

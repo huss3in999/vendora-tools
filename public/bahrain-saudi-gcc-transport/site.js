@@ -5,8 +5,15 @@
   const defaultArabicMessage = config.defaultWhatsAppMessage || 'مرحباً، أود معرفة تفاصيل الحجز والخدمة.';
   const leadEndpoint = config.leadEndpoint || '/api/transport/whatsapp-lead';
   const pageUrl = window.location.href;
+  const pageLoadedAt = new Date().toISOString();
+  const pageStartedAt = Date.now();
+  const sessionIdKey = 'vendora_transport_session_id';
   const state = {
     lang: localStorage.getItem('vendora_lang') || 'ar',
+  };
+  const leadState = {
+    maxScrollDepth: 0,
+    interactionCount: 0,
   };
 
   const translations = [
@@ -786,6 +793,49 @@
     return 'desktop';
   }
 
+  function getSessionId() {
+    try {
+      const existing = sessionStorage.getItem(sessionIdKey);
+      if (existing) return existing;
+      const next = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      sessionStorage.setItem(sessionIdKey, next);
+      return next;
+    } catch {
+      return '';
+    }
+  }
+
+  function getScrollDepthPercent() {
+    const doc = document.documentElement;
+    const body = document.body;
+    const scrollTop = window.scrollY || doc.scrollTop || body.scrollTop || 0;
+    const scrollHeight = Math.max(
+      body.scrollHeight || 0,
+      doc.scrollHeight || 0,
+      body.offsetHeight || 0,
+      doc.offsetHeight || 0,
+      body.clientHeight || 0,
+      doc.clientHeight || 0,
+    );
+    const viewport = window.innerHeight || doc.clientHeight || 0;
+    const total = Math.max(1, scrollHeight - viewport);
+    return Math.max(0, Math.min(100, Math.round((scrollTop / total) * 100)));
+  }
+
+  function setupEngagementTracking() {
+    const updateScrollDepth = () => {
+      leadState.maxScrollDepth = Math.max(leadState.maxScrollDepth, getScrollDepthPercent());
+    };
+    ['click', 'input', 'change', 'pointerdown', 'keydown'].forEach((eventName) => {
+      document.addEventListener(eventName, () => {
+        leadState.interactionCount += 1;
+      }, { passive: true });
+    });
+    window.addEventListener('scroll', updateScrollDepth, { passive: true });
+    window.addEventListener('resize', updateScrollDepth, { passive: true });
+    updateScrollDepth();
+  }
+
   function getBookingDataFromLink(link) {
     const form = link.closest('[data-booking-form]');
     if (!form) return {};
@@ -799,8 +849,9 @@
     };
   }
 
-  function buildLeadPayload(link) {
+  function buildLeadPayload(link, event) {
     const routeSlug = getRouteSlug();
+    const rect = link.getBoundingClientRect ? link.getBoundingClientRect() : null;
     return {
       timestamp: new Date().toISOString(),
       routeSlug,
@@ -808,10 +859,22 @@
       pageUrl,
       pagePath: window.location.pathname,
       targetUrl: link.href || '',
+      sessionId: getSessionId(),
+      pageLoadedAt,
+      timeOnPageMs: Date.now() - pageStartedAt,
+      scrollDepthPercent: Math.max(leadState.maxScrollDepth, getScrollDepthPercent()),
+      clickX: Number.isFinite(event?.clientX) ? Math.round(event.clientX) : Math.round((rect?.left || 0) + (rect?.width || 0) / 2),
+      clickY: Number.isFinite(event?.clientY) ? Math.round(event.clientY) : Math.round((rect?.top || 0) + (rect?.height || 0) / 2),
+      clickText: link.textContent?.replace(/\s+/g, ' ').trim().slice(0, 240) || '',
       language: document.documentElement.lang || state.lang || 'ar',
+      browserLanguage: navigator.language || '',
       deviceType: getDeviceType(),
       viewportWidth: window.innerWidth || 0,
       viewportHeight: window.innerHeight || 0,
+      screenWidth: window.screen?.width || 0,
+      screenHeight: window.screen?.height || 0,
+      timezoneOffsetMinutes: new Date().getTimezoneOffset(),
+      interactionCount: leadState.interactionCount,
       referrer: document.referrer || '',
       ...getUtmParams(),
       ...getBookingDataFromLink(link),
@@ -846,7 +909,7 @@
         return;
       }
 
-      sendLeadPayload(buildLeadPayload(link));
+      sendLeadPayload(buildLeadPayload(link, event));
     }, { capture: true });
   }
 
@@ -1165,6 +1228,7 @@
   function init() {
     normalizeInternalLinks();
     injectStructuredData();
+    setupEngagementTracking();
     setStaticLinks();
     insertLanguageToggle();
     setupForms();
