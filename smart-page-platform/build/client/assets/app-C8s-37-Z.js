@@ -1,0 +1,1 @@
+import{j as o}from"./jsx-runtime-56DGgGmo.js";import{A as t}from"./AppShell-Cppzia-3.js";import"./Logo-BCozcDfA.js";import"./cn-DOIGBiOF.js";import"./components-BMLruC94.js";const i=()=>[{name:"robots",content:"noindex, nofollow"}];function s(){return o.jsx(t,{mode:"owner"})}export{s as default,i as meta};

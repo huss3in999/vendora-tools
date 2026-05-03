@@ -1,0 +1,1 @@
+﻿ALTER TABLE pages ADD COLUMN theme_json TEXT NOT NULL DEFAULT '{}';

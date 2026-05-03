@@ -1,0 +1,42 @@
+{
+  "name": "smart-page-platform",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "remix vite:dev",
+    "build": "remix vite:build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "playwright test",
+    "lint": "echo \"(phase-1) add lint later\"",
+    "db:migrate:local": "wrangler d1 migrations apply smart-page-platform --local",
+    "db:migrate:remote": "wrangler d1 migrations apply smart-page-platform --remote",
+    "seed:super-admin": "node scripts/seed-super-admin.mjs",
+    "seed:demos": "node scripts/seed-demo-pages.mjs",
+    "cf:dev": "wrangler dev",
+    "cf:deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@remix-run/cloudflare": "^2.12.1",
+    "@remix-run/react": "^2.12.1",
+    "clsx": "^2.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^2.6.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260410.0",
+    "@playwright/test": "^1.59.1",
+    "@remix-run/dev": "^2.12.1",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.7.3",
+    "vite": "^5.4.11",
+    "wrangler": "^3.114.0"
+  }
+}

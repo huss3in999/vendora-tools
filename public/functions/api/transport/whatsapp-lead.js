@@ -66,6 +66,40 @@ function getClientIp(request) {
     || null;
 }
 
+function getHeaderValue(request, names, maxLength = 120) {
+  for (const name of names) {
+    const value = cleanText(request.headers.get(name), maxLength);
+    if (!value) continue;
+    try {
+      return decodeURIComponent(value.replace(/\+/g, ' ')).slice(0, maxLength);
+    } catch {
+      return value;
+    }
+  }
+  return null;
+}
+
+function normalizeCountryCode(value) {
+  const code = cleanText(value, 8);
+  if (!code) return null;
+  const normalized = code.toUpperCase();
+  return normalized === 'XX' ? null : normalized;
+}
+
+function getRequestGeo(request) {
+  const cf = request.cf || {};
+  return {
+    city: cleanText(cf.city, 120) || getHeaderValue(request, ['x-vercel-ip-city'], 120),
+    region: cleanText(cf.region, 120)
+      || cleanText(cf.regionCode, 120)
+      || getHeaderValue(request, ['x-vercel-ip-country-region', 'x-vercel-ip-country-region-name'], 120),
+    country: normalizeCountryCode(cf.country)
+      || normalizeCountryCode(getHeaderValue(request, ['cf-ipcountry', 'x-vercel-ip-country', 'x-appengine-country', 'cloudfront-viewer-country'], 8)),
+    timezone: cleanText(cf.timezone, 80) || getHeaderValue(request, ['x-vercel-ip-timezone'], 80),
+    rayId: cleanText(request.headers.get('cf-ray'), 120) || getHeaderValue(request, ['x-request-id', 'x-vercel-id'], 120),
+  };
+}
+
 function getPayloadValue(payload, key, maxLength) {
   return cleanText(payload && payload[key], maxLength);
 }
@@ -85,7 +119,7 @@ async function parseJsonBody(request) {
 }
 
 async function storeLead(request, env, payload, leadUuid) {
-  const cf = request.cf || {};
+  const geo = getRequestGeo(request);
   const stmt = env.TRANSPORT_DB.prepare(`
     INSERT INTO whatsapp_leads (
       lead_uuid,
@@ -157,12 +191,12 @@ async function storeLead(request, env, payload, leadUuid) {
     getPayloadValue(payload, 'utmTerm', 160),
     getPayloadValue(payload, 'utmContent', 160),
     getClientIp(request),
-    cleanText(cf.city, 120),
-    cleanText(cf.region, 120),
-    cleanText(cf.country, 8),
-    cleanText(cf.timezone, 80),
+    geo.city,
+    geo.region,
+    geo.country,
+    geo.timezone,
     cleanText(request.headers.get('user-agent'), 600),
-    cleanText(request.headers.get('cf-ray'), 120),
+    geo.rayId,
     getPayloadValue(payload, 'sessionId', 120),
     getPayloadValue(payload, 'pageLoadedAt', 80),
     cleanBoundedInteger(payload.timeOnPageMs, 0, 86400000),

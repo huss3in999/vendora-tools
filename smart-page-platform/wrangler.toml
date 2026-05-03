@@ -1,0 +1,16 @@
+name = "smart-page-platform"
+main = "./server.ts"
+compatibility_date = "2026-04-23"
+
+[[routes]]
+pattern = "smart.getvendora.net"
+custom_domain = true
+
+[assets]
+directory = "./build/client"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "smart-page-platform"
+database_id = "3f326482-77f2-4116-b96d-601c819d5226"
+migrations_dir = "./migrations"

@@ -264,6 +264,10 @@
       ['bahrain-to-dubai', 'Bahrain to Dubai', 'من البحرين إلى دبي', 110]
     ];
 
+    const countryNameFormatter = typeof Intl !== 'undefined' && Intl.DisplayNames
+      ? new Intl.DisplayNames(['en'], { type: 'region' })
+      : null;
+
     const state = {
       token: sessionStorage.getItem(TOKEN_KEY) || '',
       tab: 'leads',
@@ -281,6 +285,24 @@
       return String(value ?? '').replace(/[&<>"']/g, (char) => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
       }[char]));
+    }
+
+    function normalizeCountryCode(value) {
+      return String(value || '').trim().toUpperCase();
+    }
+
+    function countryFlag(code) {
+      const country = normalizeCountryCode(code);
+      if (!/^[A-Z]{2}$/.test(country)) return '';
+      return [...country].map((char) => String.fromCodePoint(char.charCodeAt(0) + 127397)).join('');
+    }
+
+    function countryLabel(value) {
+      const country = normalizeCountryCode(value);
+      if (!country || country === 'UNKNOWN') return 'Unknown';
+      if (!/^[A-Z]{2}$/.test(country)) return value;
+      const name = countryNameFormatter ? countryNameFormatter.of(country) : country;
+      return `${countryFlag(country)} ${name} (${country})`;
     }
 
     function formatDate(value) {
@@ -345,13 +367,13 @@
       document.getElementById(`${tab}Panel`).classList.remove('hidden');
     }
 
-    function fillSelect(name, values, label) {
+    function fillSelect(name, values, label, formatter = (value) => value) {
       const select = document.querySelector(`[name="${name}"]`);
       const current = select.value;
       select.innerHTML = `<option value="">${label}</option>` + values
         .filter(Boolean)
         .sort((a, b) => String(a).localeCompare(String(b)))
-        .map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`)
+        .map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(formatter(value))}</option>`)
         .join('');
       select.value = current;
     }
@@ -360,7 +382,7 @@
       fillSelect('route', [...new Set(state.leads.map((lead) => lead.route_slug))], 'All routes');
       fillSelect('source', [...new Set(state.leads.map((lead) => lead.utm_source || 'direct/unknown'))], 'All sources');
       fillSelect('campaign', [...new Set(state.leads.map((lead) => lead.utm_campaign))], 'All campaigns');
-      fillSelect('country', [...new Set(state.leads.map((lead) => lead.cf_country))], 'All countries');
+      fillSelect('country', [...new Set(state.leads.map((lead) => normalizeCountryCode(lead.cf_country)))], 'All countries', countryLabel);
       fillSelect('device', [...new Set(state.leads.map((lead) => lead.device_type))], 'All devices');
     }
 
@@ -379,7 +401,7 @@
     }
 
     function locationText(lead) {
-      return [lead.cf_city, lead.cf_region, lead.cf_country].filter(Boolean).join(', ') || '-';
+      return [lead.cf_city, lead.cf_region, lead.cf_country ? countryLabel(lead.cf_country) : ''].filter(Boolean).join(', ') || '-';
     }
 
     function engagementText(lead) {
@@ -449,7 +471,7 @@
       barList(summary.by_route || [], 'chartRoutes');
       barList(summary.by_source || [], 'chartSources');
       barList(summary.by_campaign || [], 'chartCampaigns');
-      barList(summary.by_country || [], 'chartCountries');
+      barList((summary.by_country || []).map((row) => ({ ...row, label: countryLabel(row.label) })), 'chartCountries');
       barList(summary.by_device || [], 'chartDevices');
       const days = summary.by_day || [];
       const max = Math.max(...days.map((row) => row.count || 0), 1);
@@ -544,6 +566,7 @@
         ['Device', `${lead.device_type || '-'} (${lead.viewport_width || '-'} x ${lead.viewport_height || '-'})`],
         ['Screen', `${lead.screen_width || '-'} x ${lead.screen_height || '-'}`],
         ['Browser language', lead.browser_language || '-'],
+        ['Country', lead.cf_country ? countryLabel(lead.cf_country) : '-'],
         ['Location', locationText(lead)],
         ['Timezone', lead.cf_timezone || '-'],
         ['Referrer', lead.referrer || '-'],

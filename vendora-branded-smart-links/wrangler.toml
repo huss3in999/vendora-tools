@@ -1,0 +1,35 @@
+﻿name = "vendora-branded-smart-links"
+main = "src/index.js"
+compatibility_date = "2026-04-30"
+compatibility_flags = ["nodejs_compat"]
+
+workers_dev = true
+
+[[routes]]
+pattern = "go.getvendora.net"
+custom_domain = true
+
+[[routes]]
+pattern = "g.getvendora.net"
+custom_domain = true
+
+[[routes]]
+pattern = "links.getvendora.net"
+custom_domain = true
+
+[[routes]]
+pattern = "smart.getvendora.net"
+custom_domain = true
+
+[[kv_namespaces]]
+binding = "LINKS_KV"
+id = "69be59a35c834d599aaea83ea4ff5fc8"
+
+[vars]
+APP_ORIGIN = "https://links.getvendora.net"
+SHORT_ORIGIN = "https://go.getvendora.net"
+ULTRA_SHORT_ORIGIN = "https://g.getvendora.net"
+SMART_ORIGIN = "https://smart.getvendora.net"
+TURNSTILE_SITE_KEY = ""
+SESSION_TTL_SECONDS = "86400"
+

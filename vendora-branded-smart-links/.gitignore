@@ -1,0 +1,7 @@
+node_modules/
+.wrangler/
+test-results/
+.wrangler-dev-test*.log
+.playwright-test.log
+.admin-password.local.txt
+.dev.vars
