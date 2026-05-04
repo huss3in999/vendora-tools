@@ -8,6 +8,8 @@ import {
 } from "@remix-run/react";
 import tailwindCss from "~/styles/tailwind.css?url";
 
+const GOOGLE_ANALYTICS_MEASUREMENT_ID = "G-DFY197R2MS";
+
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: tailwindCss }];
 
 export const meta: MetaFunction = () => {
@@ -32,6 +34,12 @@ export default function App() {
         <meta charSet="utf-8" />
         <Meta />
         <Links />
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_MEASUREMENT_ID}`} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GOOGLE_ANALYTICS_MEASUREMENT_ID}');`
+          }}
+        />
       </head>
       <body className="h-full text-slate-900">
         <Outlet />

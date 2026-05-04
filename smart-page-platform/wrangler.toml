@@ -10,7 +10,7 @@ custom_domain = true
 directory = "./build/client"
 
 [vars]
-GOOGLE_ANALYTICS_MEASUREMENT_ID = ""
+GOOGLE_ANALYTICS_MEASUREMENT_ID = "G-DFY197R2MS"
 ELASTIC_TRACKER_URL = ""
 
 [[d1_databases]]
