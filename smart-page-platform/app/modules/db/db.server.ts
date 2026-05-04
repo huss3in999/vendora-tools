@@ -3,6 +3,10 @@ import type { AppLoadContext } from "@remix-run/cloudflare";
 export type AppBindings = {
   DB?: D1Database;
   SESSION_SECRET?: string;
+  GOOGLE_ANALYTICS_MEASUREMENT_ID?: string;
+  GOOGLE_ANALYTICS_API_SECRET?: string;
+  ELASTIC_TRACKER_URL?: string;
+  ELASTIC_API_KEY?: string;
 };
 
 type CloudflareLoadContext = AppLoadContext & {
@@ -152,6 +156,11 @@ export type LeadSubmissionRow = {
 export function getD1Database(context: AppLoadContext): D1Database | null {
   const cloudflareContext = context as CloudflareLoadContext;
   return cloudflareContext.cloudflare?.env?.DB ?? cloudflareContext.env?.DB ?? null;
+}
+
+export function getAppEnv(context: AppLoadContext): AppBindings | undefined {
+  const cloudflareContext = context as CloudflareLoadContext;
+  return cloudflareContext.cloudflare?.env ?? cloudflareContext.env;
 }
 
 export function requireD1Database(context: AppLoadContext): D1Database {

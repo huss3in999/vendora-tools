@@ -19,8 +19,12 @@ import {
 import { pageRepository } from "~/modules/page-builder/page-repository.server";
 import { leadRepository } from "~/modules/leads/lead-repository.server";
 import { DEFAULT_PAGE_THEME, type PageTheme } from "~/modules/page-builder/theme";
-import { getD1Database } from "~/modules/db/db.server";
-import { analyticsRepository, getOrCreateVisitorId } from "~/modules/analytics/analytics.server";
+import { getAppEnv, getD1Database } from "~/modules/db/db.server";
+import {
+  analyticsRepository,
+  forwardExternalAnalytics,
+  getOrCreateVisitorId
+} from "~/modules/analytics/analytics.server";
 
 export type PublicPageLoaderData = {
   code: string;
@@ -175,7 +179,7 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
 
       try {
         if (publishedPage.shortLink) {
-          await analyticsRepository(db).trackEvent({
+          const event = {
             workspaceId: publishedPage.page.workspace_id,
             pageId: publishedPage.page.id,
             shortLinkId: publishedPage.shortLink.id,
@@ -186,7 +190,9 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
             metadata: {
               short_code: code
             }
-          });
+          } as const;
+          await analyticsRepository(db).trackEvent(event);
+          await forwardExternalAnalytics(getAppEnv(context), event);
         }
       } catch {
         // Public pages should render even if analytics write fails.
@@ -329,7 +335,7 @@ export async function action({ request, params, context }: ActionFunctionArgs) {
     }
 
     const visitor = await getOrCreateVisitorId(request);
-    await analyticsRepository(db).trackEvent({
+    const event = {
       workspaceId: publishedPage.page.workspace_id,
       pageId: publishedPage.page.id,
       shortLinkId: publishedPage.shortLink.id,
@@ -343,7 +349,10 @@ export async function action({ request, params, context }: ActionFunctionArgs) {
         target_kind: trackedBlock.type === "whatsapp_button" ? "contact" : "link",
         short_code: code
       }
-    });
+    } as const;
+
+    await analyticsRepository(db).trackEvent(event);
+    await forwardExternalAnalytics(getAppEnv(context), event);
 
     return new Response(null, {
       status: 204,

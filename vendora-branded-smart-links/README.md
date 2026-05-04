@@ -125,6 +125,15 @@ TURNSTILE_SITE_KEY = "YOUR_SITE_KEY"
 
 If `TURNSTILE_SECRET_KEY` is missing, local/free creation still works but the homepage shows a setup note. Add Turnstile before real public traffic.
 
+Optional Google and Elastic trackers:
+
+```bash
+wrangler secret put GOOGLE_ANALYTICS_API_SECRET
+wrangler secret put ELASTIC_API_KEY
+```
+
+Set `GOOGLE_ANALYTICS_MEASUREMENT_ID` and `ELASTIC_TRACKER_URL` in `wrangler.toml`. Every short-link click, including instant redirects created by customers, is forwarded server-side when those values are configured.
+
 ## Local Dev
 
 ```bash

@@ -2342,6 +2342,11 @@ function getD1Database(context) {
   const cloudflareContext = context;
   return ((_b = (_a = cloudflareContext.cloudflare) == null ? void 0 : _a.env) == null ? void 0 : _b.DB) ?? ((_c = cloudflareContext.env) == null ? void 0 : _c.DB) ?? null;
 }
+function getAppEnv(context) {
+  var _a;
+  const cloudflareContext = context;
+  return ((_a = cloudflareContext.cloudflare) == null ? void 0 : _a.env) ?? cloudflareContext.env;
+}
 function requireD1Database(context) {
   const db2 = getD1Database(context);
   if (!db2) {
@@ -4322,6 +4327,71 @@ function sanitizeMetadata(metadata) {
   const safeEntries = Object.entries(metadata).filter(([key]) => ["block_id", "block_type", "target_kind", "short_code"].includes(key)).map(([key, value]) => [key, value]);
   return JSON.stringify(Object.fromEntries(safeEntries));
 }
+function cleanEventName(eventType) {
+  return eventType.replace(/[^a-zA-Z0-9_]/g, "_");
+}
+function clientIdFromVisitor(visitorId) {
+  return (visitorId == null ? void 0 : visitorId.replace(/^vis_/, "")) || crypto.randomUUID();
+}
+function trackerPayload(input) {
+  return {
+    service: "smart-page-platform",
+    event_type: input.eventType,
+    workspace_id: input.workspaceId,
+    page_id: input.pageId,
+    short_link_id: input.shortLinkId ?? null,
+    visitor_id: input.visitorId ?? null,
+    referrer: input.referrer ?? null,
+    user_agent: input.userAgent ?? null,
+    metadata: input.metadata ?? {},
+    timestamp: (/* @__PURE__ */ new Date()).toISOString()
+  };
+}
+async function forwardExternalAnalytics(env, input) {
+  if (!env) return;
+  const jobs = [];
+  const googleMeasurementId = env.GOOGLE_ANALYTICS_MEASUREMENT_ID;
+  const googleApiSecret = env.GOOGLE_ANALYTICS_API_SECRET;
+  if (googleMeasurementId && googleApiSecret) {
+    const url = `https://www.google-analytics.com/mp/collect?measurement_id=${encodeURIComponent(
+      googleMeasurementId
+    )}&api_secret=${encodeURIComponent(googleApiSecret)}`;
+    jobs.push(
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          client_id: clientIdFromVisitor(input.visitorId),
+          events: [
+            {
+              name: cleanEventName(input.eventType),
+              params: {
+                workspace_id: input.workspaceId,
+                page_id: input.pageId,
+                short_link_id: input.shortLinkId ?? void 0,
+                referrer: input.referrer ?? void 0,
+                ...input.metadata
+              }
+            }
+          ]
+        })
+      })
+    );
+  }
+  if (env.ELASTIC_TRACKER_URL) {
+    jobs.push(
+      fetch(env.ELASTIC_TRACKER_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...env.ELASTIC_API_KEY ? { Authorization: `ApiKey ${env.ELASTIC_API_KEY}` } : {}
+        },
+        body: JSON.stringify(trackerPayload(input))
+      })
+    );
+  }
+  await Promise.allSettled(jobs);
+}
 async function getOrCreateVisitorId(request) {
   const cookieHeader = request.headers.get("Cookie");
   const existing = await visitorCookie.parse(cookieHeader);
@@ -5291,7 +5361,7 @@ async function loader$2({ request, params, context }) {
       const robots = publishedPage.page.status === "published" && allowIndexing ? "index, follow" : "noindex, nofollow";
       try {
         if (publishedPage.shortLink) {
-          await analyticsRepository(db2).trackEvent({
+          const event = {
             workspaceId: publishedPage.page.workspace_id,
             pageId: publishedPage.page.id,
             shortLinkId: publishedPage.shortLink.id,
@@ -5302,7 +5372,9 @@ async function loader$2({ request, params, context }) {
             metadata: {
               short_code: code
             }
-          });
+          };
+          await analyticsRepository(db2).trackEvent(event);
+          await forwardExternalAnalytics(getAppEnv(context), event);
         }
       } catch {
       }
@@ -5427,7 +5499,7 @@ async function action$3({ request, params, context }) {
       return new Response(null, { status: 204 });
     }
     const visitor = await getOrCreateVisitorId(request);
-    await analyticsRepository(db2).trackEvent({
+    const event = {
       workspaceId: publishedPage.page.workspace_id,
       pageId: publishedPage.page.id,
       shortLinkId: publishedPage.shortLink.id,
@@ -5441,7 +5513,9 @@ async function action$3({ request, params, context }) {
         target_kind: trackedBlock.type === "whatsapp_button" ? "contact" : "link",
         short_code: code
       }
-    });
+    };
+    await analyticsRepository(db2).trackEvent(event);
+    await forwardExternalAnalytics(getAppEnv(context), event);
     return new Response(null, {
       status: 204,
       headers: visitor.setCookie ? { "Set-Cookie": visitor.setCookie } : void 0

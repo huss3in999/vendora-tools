@@ -73,7 +73,8 @@ async function handleShortLink(request, env, ctx) {
   }
 
   return htmlPage(`${link.brandName || "Opening link"} - Smart Link`, previewPage(link), {
-    extraHead: `<meta http-equiv="refresh" content="1.2;url=${escapeAttr(link.url)}">`
+    extraHead: `<meta http-equiv="refresh" content="1.2;url=${escapeAttr(link.url)}">`,
+    googleMeasurementId: env.GOOGLE_ANALYTICS_MEASUREMENT_ID
   });
 }
 
@@ -289,6 +290,7 @@ async function trackClick(env, request, link) {
   const country = request.cf?.country || "XX";
   const referrer = cleanReferrer(request.headers.get("Referer") || "direct");
   const device = detectDevice(request.headers.get("User-Agent") || "");
+  const visitorId = await getIpHash(request, env);
 
   link.clicks = Number(link.clicks || 0) + 1;
   link.lastClickAt = now;
@@ -306,8 +308,81 @@ async function trackClick(env, request, link) {
   await Promise.all([
     putLink(env, link),
     putExpiringJson(env, `${ANALYTICS_PREFIX}${link.slug}`, analytics, link.expiresAt),
-    putExpiringText(env, dailyKey, String(daily), link.expiresAt)
+    putExpiringText(env, dailyKey, String(daily), link.expiresAt),
+    forwardExternalAnalytics(env, {
+      eventType: "smart_link_click",
+      visitorId,
+      link,
+      shortUrl: shortUrl(env, link),
+      country,
+      referrer,
+      device,
+      userAgent: request.headers.get("User-Agent") || "",
+      timestamp: now
+    })
   ]);
+}
+
+async function forwardExternalAnalytics(env, event) {
+  const jobs = [];
+  if (env.GOOGLE_ANALYTICS_MEASUREMENT_ID && env.GOOGLE_ANALYTICS_API_SECRET) {
+    const url = `https://www.google-analytics.com/mp/collect?measurement_id=${encodeURIComponent(
+      env.GOOGLE_ANALYTICS_MEASUREMENT_ID
+    )}&api_secret=${encodeURIComponent(env.GOOGLE_ANALYTICS_API_SECRET)}`;
+    jobs.push(
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          client_id: event.visitorId,
+          events: [
+            {
+              name: event.eventType,
+              params: {
+                slug: event.link.slug,
+                brand_name: event.link.brandName,
+                short_url: event.shortUrl,
+                destination_url: event.link.url,
+                redirect_mode: event.link.redirectMode,
+                country: event.country,
+                referrer: event.referrer,
+                device: event.device
+              }
+            }
+          ]
+        })
+      })
+    );
+  }
+
+  if (env.ELASTIC_TRACKER_URL) {
+    jobs.push(
+      fetch(env.ELASTIC_TRACKER_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(env.ELASTIC_API_KEY ? { Authorization: `ApiKey ${env.ELASTIC_API_KEY}` } : {})
+        },
+        body: JSON.stringify({
+          service: "vendora-branded-smart-links",
+          event_type: event.eventType,
+          slug: event.link.slug,
+          brand_name: event.link.brandName,
+          short_url: event.shortUrl,
+          destination_url: event.link.url,
+          redirect_mode: event.link.redirectMode,
+          country: event.country,
+          referrer: event.referrer,
+          device: event.device,
+          visitor_id: event.visitorId,
+          user_agent: event.userAgent,
+          timestamp: event.timestamp
+        })
+      })
+    );
+  }
+
+  await Promise.allSettled(jobs);
 }
 
 async function putLink(env, link) {
@@ -609,8 +684,11 @@ function escapeAttr(value) {
 }
 
 function htmlPage(title, body, options = {}) {
+  const googleTag = options.googleMeasurementId
+    ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${escapeAttr(options.googleMeasurementId)}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${escapeAttr(options.googleMeasurementId)}');</script>`
+    : "";
   return new Response(
-    `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title><meta name="description" content="Create branded short links, QR codes, and smart redirect pages for your business.">${options.extraHead || ""}<style>${CSS}</style></head><body>${body}<script>${CLIENT_JS}</script></body></html>`,
+    `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title><meta name="description" content="Create branded short links, QR codes, and smart redirect pages for your business.">${googleTag}${options.extraHead || ""}<style>${CSS}</style></head><body>${body}<script>${CLIENT_JS}</script></body></html>`,
     {
       status: options.status || 200,
       headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" }
@@ -624,6 +702,8 @@ function publicCreatorPage(env) {
   return htmlPage(
     "Vendora Branded Smart Links",
     `${turnstileScript}<main class="shell"><nav class="topbar"><div class="brandmark"><span></span><div><b>Vendora Smart Links</b><small>Branded short links</small></div></div><a class="ghost" href="/admin">Admin</a></nav><section class="hero"><div><p class="eyebrow">Free smart links for small businesses</p><h1>Create short links customers trust.</h1><p class="lead">Share menus, offers, WhatsApp, Instagram, and campaign URLs with a clean link and an optional brand preview before redirect.</p><div class="plans"><span>Free: 3 links/day</span><span>Auto-deleted after 30 days</span><span>QR included</span></div></div><div class="preview-card" id="livePreview"><div class="preview-logo">V</div><h2>Your Brand</h2><p>Opening your link</p><button>Continue</button><footer>Powered lightly by Vendora</footer></div></section><section class="creator-grid"><form id="createForm" class="card"><h2>Create a free smart link</h2><label>Destination URL<input required name="url" type="url" placeholder="https://yourbusiness.com/menu"></label><label>Brand name (optional)<input name="brandName" maxlength="80" placeholder="Other Stories"></label><label>Logo URL (optional)<input name="brandLogo" type="url" placeholder="https://.../logo.png"></label><label>Custom slug<input required name="slug" pattern="[a-z0-9-]{2,60}" placeholder="other-stories-menu"><small id="slugHelp">Your free link will use ${escapeHtml(shortOrigin(env))}/your-slug.</small></label><label>Brand color<input name="brandColor" type="color" value="#2563eb"></label><label>Redirect mode<select name="redirectMode"><option value="preview">Preview page</option><option value="instant">Instant redirect</option></select></label><details><summary>Optional contact links</summary><label>WhatsApp number<input name="whatsapp" placeholder="+973..." /></label><label>Instagram link<input name="instagram" type="url" placeholder="https://instagram.com/brand" /></label><label>Slack (optional)<input name="slack" type="url" placeholder="https://join.slack.com/..." /></label><label>Website link<input name="website" type="url" placeholder="https://brand.com" /></label></details>${siteKey ? `<div class="cf-turnstile" data-sitekey="${escapeAttr(siteKey)}"></div>` : `<p class="setup-note">Turnstile is not configured yet. Add keys before production traffic.</p>`}<button class="primary" type="submit">Create smart link</button><p id="formMessage" class="message"></p></form><aside class="card"><h2>Working URL options</h2><ul class="feature-list"><li><b>Ultra (1-letter):</b> ${escapeHtml(ultraShortOrigin(env))}/other-stories-menu</li><li><b>Professional:</b> ${escapeHtml(smartOrigin(env))}/other-stories-menu</li><li><b>Standard:</b> ${escapeHtml(shortOrigin(env))}/other-stories-menu</li><li><b>Slash style also works:</b> ${escapeHtml(ultraShortOrigin(env))}/other-stories/menu</li><li>No fake customer domains are shown. Every option here works on Vendora domains.</li></ul><div id="createdResult" class="result hidden"></div></aside></section><section class="pricing"><article><b>Free</b><p>3 links per day, 30-day auto-delete, Vendora short domain.</p></article><article><b>Pro</b><p>100 links, ultra-short links, QR code, analytics, brand page.</p></article><article><b>Business</b><p>Verified custom domains after DNS connection.</p></article></section><footer class="footer">Vendora branded smart links - built for trusted customer sharing.</footer></main>`
+    ,
+    { googleMeasurementId: env.GOOGLE_ANALYTICS_MEASUREMENT_ID }
   );
 }
 

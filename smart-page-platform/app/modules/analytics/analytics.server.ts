@@ -14,6 +14,13 @@ export type TrackEventInput = {
   metadata?: Record<string, string | number | boolean | null>;
 };
 
+export type TrackerEnv = {
+  GOOGLE_ANALYTICS_MEASUREMENT_ID?: string;
+  GOOGLE_ANALYTICS_API_SECRET?: string;
+  ELASTIC_TRACKER_URL?: string;
+  ELASTIC_API_KEY?: string;
+};
+
 export type OwnerAnalyticsSummary = {
   totalPageViews: number;
   totalClicks: number;
@@ -54,6 +61,78 @@ function sanitizeMetadata(metadata: TrackEventInput["metadata"]) {
     .map(([key, value]) => [key, value]);
 
   return JSON.stringify(Object.fromEntries(safeEntries));
+}
+
+function cleanEventName(eventType: AnalyticsEventType) {
+  return eventType.replace(/[^a-zA-Z0-9_]/g, "_");
+}
+
+function clientIdFromVisitor(visitorId?: string | null) {
+  return visitorId?.replace(/^vis_/, "") || crypto.randomUUID();
+}
+
+function trackerPayload(input: TrackEventInput) {
+  return {
+    service: "smart-page-platform",
+    event_type: input.eventType,
+    workspace_id: input.workspaceId,
+    page_id: input.pageId,
+    short_link_id: input.shortLinkId ?? null,
+    visitor_id: input.visitorId ?? null,
+    referrer: input.referrer ?? null,
+    user_agent: input.userAgent ?? null,
+    metadata: input.metadata ?? {},
+    timestamp: new Date().toISOString()
+  };
+}
+
+export async function forwardExternalAnalytics(env: TrackerEnv | undefined, input: TrackEventInput) {
+  if (!env) return;
+
+  const jobs: Promise<unknown>[] = [];
+  const googleMeasurementId = env.GOOGLE_ANALYTICS_MEASUREMENT_ID;
+  const googleApiSecret = env.GOOGLE_ANALYTICS_API_SECRET;
+  if (googleMeasurementId && googleApiSecret) {
+    const url = `https://www.google-analytics.com/mp/collect?measurement_id=${encodeURIComponent(
+      googleMeasurementId
+    )}&api_secret=${encodeURIComponent(googleApiSecret)}`;
+    jobs.push(
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          client_id: clientIdFromVisitor(input.visitorId),
+          events: [
+            {
+              name: cleanEventName(input.eventType),
+              params: {
+                workspace_id: input.workspaceId,
+                page_id: input.pageId,
+                short_link_id: input.shortLinkId ?? undefined,
+                referrer: input.referrer ?? undefined,
+                ...input.metadata
+              }
+            }
+          ]
+        })
+      })
+    );
+  }
+
+  if (env.ELASTIC_TRACKER_URL) {
+    jobs.push(
+      fetch(env.ELASTIC_TRACKER_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(env.ELASTIC_API_KEY ? { Authorization: `ApiKey ${env.ELASTIC_API_KEY}` } : {})
+        },
+        body: JSON.stringify(trackerPayload(input))
+      })
+    );
+  }
+
+  await Promise.allSettled(jobs);
 }
 
 export async function getOrCreateVisitorId(request: Request) {

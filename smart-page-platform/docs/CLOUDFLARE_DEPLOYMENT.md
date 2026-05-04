@@ -33,6 +33,16 @@ Required production Worker secret:
 
 - `SESSION_SECRET`: long random string used to sign session cookies.
 
+Optional production tracker secrets:
+
+- `GOOGLE_ANALYTICS_API_SECRET`: GA4 Measurement Protocol API secret.
+- `ELASTIC_API_KEY`: Elastic API key for the configured tracker endpoint.
+
+Optional production tracker variables in `wrangler.toml`:
+
+- `GOOGLE_ANALYTICS_MEASUREMENT_ID`: GA4 measurement id, for example `G-...`.
+- `ELASTIC_TRACKER_URL`: HTTPS endpoint that accepts JSON analytics events.
+
 Seed-only environment variables, used by `scripts/seed-super-admin.mjs` and not required at runtime:
 
 - `SPP_ADMIN_EMAIL`
@@ -94,6 +104,15 @@ Use a long random value. Do not commit it.
 
 ```bash
 npx wrangler secret put SESSION_SECRET
+```
+
+## Set optional tracker secrets
+
+When these are present, public page views and clicks are forwarded to Google Analytics and Elastic in addition to D1 analytics:
+
+```bash
+npx wrangler secret put GOOGLE_ANALYTICS_API_SECRET
+npx wrangler secret put ELASTIC_API_KEY
 ```
 
 ## Run local dev

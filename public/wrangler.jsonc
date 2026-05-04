@@ -13,6 +13,16 @@
       "/api/*"
     ]
   },
+  "routes": [
+    {
+      "pattern": "getvendora.net/*",
+      "zone_name": "getvendora.net"
+    },
+    {
+      "pattern": "www.getvendora.net/*",
+      "zone_name": "getvendora.net"
+    }
+  ],
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1
