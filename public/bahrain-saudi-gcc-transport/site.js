@@ -8,12 +8,17 @@
   const pageLoadedAt = new Date().toISOString();
   const pageStartedAt = Date.now();
   const sessionIdKey = 'vendora_transport_session_id';
+  const firstTouchKey = 'vendora_transport_first_touch';
+  const sessionPageViewsKey = 'vendora_transport_session_page_views';
+  const previousPathKey = 'vendora_transport_previous_path';
   const state = {
     lang: localStorage.getItem('vendora_lang') || 'ar',
   };
   const leadState = {
     maxScrollDepth: 0,
     interactionCount: 0,
+    sessionPageViews: 1,
+    previousPagePath: '',
   };
 
   const translations = [
@@ -786,6 +791,65 @@
     };
   }
 
+  function getHostFromUrl(value) {
+    if (!value) return '';
+    try {
+      return new URL(value).hostname.replace(/^www\./, '');
+    } catch {
+      return '';
+    }
+  }
+
+  function inferTrafficSource(utm, referrer) {
+    if (utm.utmSource) return utm.utmSource;
+    const host = getHostFromUrl(referrer).toLowerCase();
+    if (!host) return 'direct/unknown';
+    if (host.includes('google.')) return 'google';
+    if (host.includes('instagram.')) return 'instagram';
+    if (host.includes('facebook.') || host.includes('fb.')) return 'facebook';
+    if (host.includes('tiktok.')) return 'tiktok';
+    if (host.includes('bing.')) return 'bing';
+    if (host.includes('yahoo.')) return 'yahoo';
+    if (host.includes('whatsapp.')) return 'whatsapp';
+    return host;
+  }
+
+  function getFirstTouch() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(firstTouchKey) || 'null');
+      return saved && typeof saved === 'object' ? saved : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function setupAttributionTracking() {
+    const utm = getUtmParams();
+    const trafficSource = inferTrafficSource(utm, document.referrer || '');
+    try {
+      if (!localStorage.getItem(firstTouchKey)) {
+        localStorage.setItem(firstTouchKey, JSON.stringify({
+          firstSeenAt: pageLoadedAt,
+          landingPage: pageUrl,
+          landingPath: window.location.pathname,
+          referrer: document.referrer || '',
+          referrerHost: getHostFromUrl(document.referrer || ''),
+          trafficSource,
+          ...utm,
+        }));
+      }
+    } catch {}
+
+    try {
+      const previous = sessionStorage.getItem(previousPathKey) || '';
+      const currentCount = Number(sessionStorage.getItem(sessionPageViewsKey) || 0);
+      leadState.previousPagePath = previous;
+      leadState.sessionPageViews = Math.max(1, currentCount + 1);
+      sessionStorage.setItem(sessionPageViewsKey, String(leadState.sessionPageViews));
+      sessionStorage.setItem(previousPathKey, window.location.pathname);
+    } catch {}
+  }
+
   function getDeviceType() {
     const ua = navigator.userAgent || '';
     if (/ipad|tablet|playbook|silk/i.test(ua)) return 'tablet';
@@ -852,12 +916,17 @@
   function buildLeadPayload(link, event) {
     const routeSlug = getRouteSlug();
     const rect = link.getBoundingClientRect ? link.getBoundingClientRect() : null;
+    const utm = getUtmParams();
+    const firstTouch = getFirstTouch();
+    const referrer = document.referrer || '';
     return {
       timestamp: new Date().toISOString(),
       routeSlug,
       routeLabel: document.querySelector('h1')?.textContent?.trim() || routeSlug,
       pageUrl,
       pagePath: window.location.pathname,
+      pageTitle: document.title || '',
+      pageQuery: window.location.search || '',
       targetUrl: link.href || '',
       sessionId: getSessionId(),
       pageLoadedAt,
@@ -875,8 +944,18 @@
       screenHeight: window.screen?.height || 0,
       timezoneOffsetMinutes: new Date().getTimezoneOffset(),
       interactionCount: leadState.interactionCount,
-      referrer: document.referrer || '',
-      ...getUtmParams(),
+      sessionPageViews: leadState.sessionPageViews,
+      previousPagePath: leadState.previousPagePath,
+      referrer,
+      referrerHost: getHostFromUrl(referrer),
+      trafficSource: inferTrafficSource(utm, referrer),
+      firstSeenAt: firstTouch.firstSeenAt || '',
+      firstLandingPage: firstTouch.landingPage || '',
+      firstLandingPath: firstTouch.landingPath || '',
+      firstReferrer: firstTouch.referrer || '',
+      firstReferrerHost: firstTouch.referrerHost || '',
+      firstTrafficSource: firstTouch.trafficSource || '',
+      ...utm,
       ...getBookingDataFromLink(link),
     };
   }
@@ -1228,6 +1307,7 @@
   function init() {
     normalizeInternalLinks();
     injectStructuredData();
+    setupAttributionTracking();
     setupEngagementTracking();
     setStaticLinks();
     insertLanguageToggle();

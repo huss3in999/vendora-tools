@@ -142,7 +142,8 @@ async function getLeads(env, request) {
       screen_height,
       timezone_offset_minutes,
       interaction_count,
-      request_ray_id
+      request_ray_id,
+      raw_payload
     FROM whatsapp_leads
     ${whereSql}
     ORDER BY clicked_at DESC

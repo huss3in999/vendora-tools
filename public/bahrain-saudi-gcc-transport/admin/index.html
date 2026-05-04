@@ -400,6 +400,34 @@
       return [lead.utm_source || 'direct/unknown', lead.utm_medium, lead.utm_campaign].filter(Boolean).join(' / ');
     }
 
+    function leadPayload(lead) {
+      if (!lead.raw_payload) return {};
+      try {
+        const parsed = JSON.parse(lead.raw_payload);
+        return parsed && typeof parsed === 'object' ? parsed : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function discoveryText(lead) {
+      const payload = leadPayload(lead);
+      const source = payload.firstTrafficSource || payload.trafficSource || lead.utm_source || 'direct/unknown';
+      const campaign = lead.utm_campaign || payload.utmCampaign || '';
+      const host = payload.firstReferrerHost || payload.referrerHost || '';
+      const parts = [source];
+      if (campaign) parts.push(campaign);
+      if (host && !String(source).includes(host)) parts.push(host);
+      return parts.filter(Boolean).join(' / ') || 'direct/unknown';
+    }
+
+    function pageJourneyText(lead) {
+      const payload = leadPayload(lead);
+      const views = payload.sessionPageViews ? `${payload.sessionPageViews} page view${Number(payload.sessionPageViews) === 1 ? '' : 's'}` : '';
+      const previous = payload.previousPagePath ? `previous: ${payload.previousPagePath}` : '';
+      return [views, previous].filter(Boolean).join(' | ') || '-';
+    }
+
     function locationText(lead) {
       return [lead.cf_city, lead.cf_region, lead.cf_country ? countryLabel(lead.cf_country) : ''].filter(Boolean).join(', ') || '-';
     }
@@ -417,8 +445,14 @@
             <div class="font-semibold">${escapeHtml(lead.route_label || lead.route_slug || '-')}</div>
             <div class="text-xs text-muted">${escapeHtml(lead.page_path || '')}</div>
           </td>
-          <td class="px-4 py-3">${escapeHtml(campaignText(lead))}</td>
-          <td class="px-4 py-3">${escapeHtml(engagementText(lead))}</td>
+          <td class="px-4 py-3">
+            <div class="font-medium">${escapeHtml(discoveryText(lead))}</div>
+            <div class="text-xs text-muted">${escapeHtml(lead.referrer || 'No referrer')}</div>
+          </td>
+          <td class="px-4 py-3">
+            <div>${escapeHtml(engagementText(lead))}</div>
+            <div class="text-xs text-muted">${escapeHtml(pageJourneyText(lead))}</div>
+          </td>
           <td class="px-4 py-3">${escapeHtml(lead.device_type || '-')}</td>
           <td class="px-4 py-3">${escapeHtml(locationText(lead))}</td>
           <td class="px-4 py-3">
@@ -440,8 +474,9 @@
             <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">${escapeHtml(lead.device_type || '-')}</span>
           </div>
           <dl class="mt-4 grid gap-3 text-sm">
-            <div><dt class="text-xs text-muted">Campaign</dt><dd class="font-medium">${escapeHtml(campaignText(lead))}</dd></div>
+            <div><dt class="text-xs text-muted">How found us</dt><dd class="font-medium">${escapeHtml(discoveryText(lead))}</dd></div>
             <div><dt class="text-xs text-muted">Engagement</dt><dd class="font-medium">${escapeHtml(engagementText(lead))}</dd></div>
+            <div><dt class="text-xs text-muted">Journey</dt><dd class="font-medium">${escapeHtml(pageJourneyText(lead))}</dd></div>
             <div><dt class="text-xs text-muted">Location</dt><dd class="font-medium">${escapeHtml(locationText(lead))}</dd></div>
             <div><dt class="text-xs text-muted">Page</dt><dd class="font-medium">${escapeHtml(lead.page_path || '-')}</dd></div>
           </dl>
@@ -550,13 +585,21 @@
     function showLeadDetails(id) {
       const lead = state.leads.find((item) => String(item.id) === String(id));
       if (!lead) return;
+      const payload = leadPayload(lead);
       const rows = [
         ['Time', formatDate(lead.clicked_at)],
         ['Route', lead.route_label || lead.route_slug],
         ['Page', lead.page_url || lead.page_path],
+        ['Page title', payload.pageTitle || '-'],
         ['WhatsApp target', lead.target_url],
+        ['How they found us', discoveryText(lead)],
         ['Campaign', campaignText(lead)],
         ['UTM term/content', [lead.utm_term, lead.utm_content].filter(Boolean).join(' / ') || '-'],
+        ['First landing page', payload.firstLandingPage || payload.firstLandingPath || '-'],
+        ['First referrer', payload.firstReferrer || '-'],
+        ['First traffic source', payload.firstTrafficSource || '-'],
+        ['Current referrer host', payload.referrerHost || '-'],
+        ['Session journey', pageJourneyText(lead)],
         ['Time before WhatsApp click', formatDuration(lead.time_on_page_ms)],
         ['Scroll depth before click', `${lead.scroll_depth_percent ?? 0}%`],
         ['Interactions before click', lead.interaction_count ?? '-'],
@@ -570,6 +613,7 @@
         ['Location', locationText(lead)],
         ['Timezone', lead.cf_timezone || '-'],
         ['Referrer', lead.referrer || '-'],
+        ['IP address', lead.ip_address || '-'],
         ['User agent', lead.user_agent || '-'],
         ['Cloudflare Ray', lead.request_ray_id || '-']
       ];
@@ -587,9 +631,33 @@
     }
 
     function exportCsv() {
-      const headers = ['clicked_at', 'route_slug', 'route_label', 'page_path', 'utm_source', 'utm_medium', 'utm_campaign', 'time_on_page_ms', 'scroll_depth_percent', 'interaction_count', 'click_text', 'device_type', 'browser_language', 'cf_city', 'cf_region', 'cf_country', 'referrer'];
-      const rows = state.leads.map((lead) => headers.map((key) => `"${String(lead[key] ?? '').replace(/"/g, '""')}"`).join(','));
-      const blob = new Blob([[headers.join(','), ...rows].join('\n')], { type: 'text/csv;charset=utf-8' });
+      const headers = [
+        ['clicked_at', (lead) => lead.clicked_at],
+        ['route_slug', (lead) => lead.route_slug],
+        ['route_label', (lead) => lead.route_label],
+        ['page_path', (lead) => lead.page_path],
+        ['how_found_us', (lead) => discoveryText(lead)],
+        ['utm_source', (lead) => lead.utm_source],
+        ['utm_medium', (lead) => lead.utm_medium],
+        ['utm_campaign', (lead) => lead.utm_campaign],
+        ['first_landing_page', (lead) => leadPayload(lead).firstLandingPage],
+        ['first_referrer', (lead) => leadPayload(lead).firstReferrer],
+        ['previous_page', (lead) => leadPayload(lead).previousPagePath],
+        ['session_page_views', (lead) => leadPayload(lead).sessionPageViews],
+        ['time_on_page_ms', (lead) => lead.time_on_page_ms],
+        ['scroll_depth_percent', (lead) => lead.scroll_depth_percent],
+        ['interaction_count', (lead) => lead.interaction_count],
+        ['click_text', (lead) => lead.click_text],
+        ['device_type', (lead) => lead.device_type],
+        ['browser_language', (lead) => lead.browser_language],
+        ['cf_city', (lead) => lead.cf_city],
+        ['cf_region', (lead) => lead.cf_region],
+        ['cf_country', (lead) => lead.cf_country],
+        ['ip_address', (lead) => lead.ip_address],
+        ['referrer', (lead) => lead.referrer],
+      ];
+      const rows = state.leads.map((lead) => headers.map(([, getValue]) => `"${String(getValue(lead) ?? '').replace(/"/g, '""')}"`).join(','));
+      const blob = new Blob([[headers.map(([label]) => label).join(','), ...rows].join('\n')], { type: 'text/csv;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
