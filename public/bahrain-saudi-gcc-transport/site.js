@@ -776,7 +776,14 @@
 
   function getRouteSlug() {
     const path = window.location.pathname.replace(/\\/g, '/');
-    const match = path.match(/\/bahrain-saudi-gcc-transport\/([^/]+)?/);
+    const enMatch = path.match(/\/bahrain-saudi-gcc-transport\/en\/([^?#]*)/);
+    if (enMatch) {
+      const segments = enMatch[1].replace(/\/+$/, '').split('/').filter(Boolean);
+      const folder = segments[0] || '';
+      if (!folder || folder === 'index.html') return 'english-home';
+      return folder.replace(/\.html$/i, '');
+    }
+    const match = path.match(/\/bahrain-saudi-gcc-transport\/([^/]+)/);
     return match && match[1] ? match[1] : 'home';
   }
 
@@ -914,7 +921,8 @@
   }
 
   function buildLeadPayload(link, event) {
-    const routeSlug = getRouteSlug();
+    const dataRoute = link.getAttribute('data-route') || '';
+    const routeSlug = (dataRoute ? dataRoute.replace(/-en$/i, '') : '') || getRouteSlug();
     const rect = link.getBoundingClientRect ? link.getBoundingClientRect() : null;
     const utm = getUtmParams();
     const firstTouch = getFirstTouch();
@@ -988,7 +996,17 @@
         return;
       }
 
-      sendLeadPayload(buildLeadPayload(link, event));
+      const payload = buildLeadPayload(link, event);
+      sendLeadPayload(payload);
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'transport_whatsapp_click', {
+          route_name: payload.routeSlug,
+          button_label: payload.clickText,
+          language: payload.language,
+          page_path: payload.pagePath,
+          page_url: payload.pageUrl,
+        });
+      }
     }, { capture: true });
   }
 
@@ -1357,7 +1375,20 @@
     renderIcons();
   }
 
-  if (document.readyState === 'loading') {
+  function initLeadOnly() {
+    normalizeInternalLinks();
+    setupAttributionTracking();
+    setupEngagementTracking();
+    setupWhatsAppLeadInterceptor();
+  }
+
+  if (window.pageConfig && window.pageConfig.leadOnly === true) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initLeadOnly, { once: true });
+    } else {
+      initLeadOnly();
+    }
+  } else if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init, { once: true });
   } else {
     init();

@@ -9,6 +9,7 @@
   <meta name="description" content="Private transport from Bahrain to Kuwait for passengers, families, business travel, and parcels with direct WhatsApp coordination." />
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
   <meta name="theme-color" content="#10071d" />
+  <meta name="ga4-measurement-id" content="G-DFY197R2MS" />
   <link rel="canonical" href="https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/" />
   <link rel="alternate" type="text/markdown" href="https://getvendora.net/bahrain-saudi-gcc-transport/llms.txt" title="Vendora GCC transport - AI discovery" />
   <link rel="alternate" hreflang="en" href="https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/" />
@@ -303,49 +304,9 @@
   </footer>
 
   <a class="floating-wa" href="https://wa.me/97333225954?text=Hello%2C%20I%20would%20like%20to%20book%20private%20transport%20from%20Bahrain%20to%20Kuwait." target="_blank" rel="noopener" aria-label="Book on WhatsApp" data-track-wa data-route="bahrain-to-kuwait-en">WA</a>
-  <script>
-    (function () {
-      function sendWhatsAppEvent(link) {
-        var payload = {
-          timestamp: new Date().toISOString(),
-          pageUrl: window.location.href,
-          routeName: link.getAttribute('data-route') || 'bahrain-to-kuwait-en',
-          buttonLabel: (link.textContent || link.getAttribute('aria-label') || 'WhatsApp').replace(/\s+/g, ' ').trim(),
-          language: 'en'
-        };
-
-        if (typeof window.gtag === 'function') {
-          window.gtag('event', 'transport_whatsapp_click', {
-            route_name: payload.routeName,
-            button_label: payload.buttonLabel,
-            language: payload.language,
-            page_url: payload.pageUrl
-          });
-        }
-
-        try {
-          var body = JSON.stringify(payload);
-          if (navigator.sendBeacon) {
-            navigator.sendBeacon('/api/transport/whatsapp-lead', new Blob([body], { type: 'application/json' }));
-          } else {
-            fetch('/api/transport/whatsapp-lead', {
-              method: 'POST',
-              headers: { 'content-type': 'application/json' },
-              body: body,
-              keepalive: true,
-              credentials: 'omit'
-            }).catch(function () {});
-          }
-        } catch (error) {}
-      }
-
-      document.addEventListener('click', function (event) {
-        var link = event.target.closest && event.target.closest('a[data-track-wa]');
-        if (link) sendWhatsAppEvent(link);
-      }, { capture: true });
-    })();
-  </script>
+  <script>window.pageConfig = Object.assign(window.pageConfig || {}, { leadOnly: true });</script>
+  <script src="../../site.js"></script>
   <script defer src="../../file-protocol-links.js"></script>
-  <script defer src="../../../assets/analytics-loader.js"></script>
+  <script defer src="../../assets/analytics-loader.js"></script>
 </body>
 </html>

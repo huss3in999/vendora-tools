@@ -7,7 +7,9 @@
 - **Machine-readable map (this file):** same folder as the site; stable path: `https://getvendora.net/bahrain-saudi-gcc-transport/llms.txt`
 - **Mirror for clients that request `/.well-known/` under this path:** `https://getvendora.net/bahrain-saudi-gcc-transport/.well-known/llms.txt`
 - **Sitemap index (submit in Google Search Console):** `https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-index.xml`
-- **All URLs with lastmod:** `https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-gcc-transport.xml`
+- **English pages only (url list):** `https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-gcc-transport-en.xml`
+- **English sitemap (domain root, for Google Search Console):** `https://getvendora.net/sitemap-gcc-transport-en.xml` — sitemap index that points to the English urlset under `/bahrain-saudi-gcc-transport/` (deploy from parent `public/` repo).
+- **All Arabic corridor URLs with lastmod:** `https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-gcc-transport.xml`
 - **Legacy sitemap (no lastmod):** `https://getvendora.net/bahrain-saudi-gcc-transport/sitemap.xml`
 - **Robots:** `https://getvendora.net/bahrain-saudi-gcc-transport/robots.txt`
 

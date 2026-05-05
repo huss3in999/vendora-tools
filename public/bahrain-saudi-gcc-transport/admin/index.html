@@ -31,6 +31,7 @@
         <p class="text-xs font-semibold uppercase tracking-[0.24em] text-brand">Vendora Transport</p>
         <h1 class="mt-2 text-2xl font-semibold tracking-tight">Control Room</h1>
         <p class="mt-2 text-sm text-muted">Enter your admin password to view WhatsApp leads, campaign performance, and route pricing.</p>
+        <p class="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-950 border border-amber-100">The password must match the secret configured on your API (for example Cloudflare Worker env <code class="rounded bg-white px-1">TRANSPORT_ADMIN_TOKEN</code>). Do not commit passwords into this repository.</p>
         <form id="loginForm" class="mt-6 space-y-4">
           <label class="block">
             <span class="text-sm font-medium">Admin password</span>
@@ -251,6 +252,7 @@
     const TOKEN_KEY = 'vendora_transport_admin_token';
     const COMMON_ROUTES = [
       ['home', 'Main transport page', 'صفحة النقل الرئيسية', 0],
+      ['english-home', 'English transport hub', 'المركز الإنجليزي للنقل', 5],
       ['bahrain-to-saudi', 'Bahrain to Saudi Arabia', 'من البحرين إلى السعودية', 10],
       ['bahrain-to-khobar', 'Bahrain to Khobar', 'من البحرين إلى الخبر', 20],
       ['bahrain-to-dammam', 'Bahrain to Dammam', 'من البحرين إلى الدمام', 30],
@@ -261,7 +263,10 @@
       ['riyadh-to-bahrain', 'Riyadh to Bahrain', 'من الرياض إلى البحرين', 80],
       ['bahrain-to-qatar', 'Bahrain to Qatar', 'من البحرين إلى قطر', 90],
       ['bahrain-to-kuwait', 'Bahrain to Kuwait', 'من البحرين إلى الكويت', 100],
-      ['bahrain-to-dubai', 'Bahrain to Dubai', 'من البحرين إلى دبي', 110]
+      ['bahrain-to-uae', 'Bahrain to UAE', 'من البحرين إلى الإمارات', 105],
+      ['bahrain-to-dubai', 'Bahrain to Dubai', 'من البحرين إلى دبي', 110],
+      ['bahrain-to-oman', 'Bahrain to Oman', 'من البحرين إلى عمان', 115],
+      ['bahrain-to-iraq', 'Bahrain to Iraq', 'من البحرين إلى العراق', 118]
     ];
 
     const countryNameFormatter = typeof Intl !== 'undefined' && Intl.DisplayNames
