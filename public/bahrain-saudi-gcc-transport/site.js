@@ -3,7 +3,7 @@
   const phoneNumber = config.phoneNumber || '97333225954';
   const siteSegment = '/bahrain-saudi-gcc-transport/';
   const defaultArabicMessage = config.defaultWhatsAppMessage || 'مرحباً، أود معرفة تفاصيل الحجز والخدمة.';
-  const leadEndpoint = config.leadEndpoint || '/api/transport/whatsapp-lead';
+  const leadEndpoint = config.leadEndpoint || (`${siteSegment.replace(/\/$/, '')}/api/transport/whatsapp-lead`);
   const pageUrl = window.location.href;
   const pageLoadedAt = new Date().toISOString();
   const pageStartedAt = Date.now();

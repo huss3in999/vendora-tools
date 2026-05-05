@@ -248,7 +248,13 @@
   </dialog>
 
   <script>
-    const API_URL = '/api/transport/admin';
+    function transportSiteRoot() {
+      const segments = window.location.pathname.split('/').filter(Boolean);
+      const adminIdx = segments.lastIndexOf('admin');
+      if (adminIdx === -1) return '';
+      return '/' + segments.slice(0, adminIdx).join('/');
+    }
+    const API_URL = `${transportSiteRoot()}/api/transport/admin`;
     const TOKEN_KEY = 'vendora_transport_admin_token';
     const COMMON_ROUTES = [
       ['home', 'Main transport page', 'صفحة النقل الرئيسية', 0],

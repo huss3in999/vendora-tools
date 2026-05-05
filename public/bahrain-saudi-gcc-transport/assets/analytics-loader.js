@@ -1,10 +1,11 @@
 /**
- * Vendora marketing analytics (same stack as getvendora.net Arabic pages).
- * GA4 ID matches production: https://getvendora.net/assets/analytics-loader.js
+ * Vendora marketing analytics (same Measurement ID as getvendora.net).
+ * GA4 sends hits as soon as this script runs — do not defer until window.load
+ * or Realtime / debugging will look empty while images still load.
  *
  * Optional overrides:
  *   <meta name="ga4-measurement-id" content="G-XXXX" />
- *   <script>window.__GA4_MEASUREMENT_ID__ = 'G-XXXX';</script>  (before this file)
+ *   <script>window.__GA4_MEASUREMENT_ID__ = 'G-XXXX';</script>
  */
 (function () {
   if (typeof window === 'undefined' || typeof document === 'undefined') return;
@@ -50,13 +51,16 @@
     window.location.hostname === '127.0.0.1' ||
     window.location.hostname === 'localhost';
 
-  function loadAnalytics() {
-    if (gaId && gaId.indexOf('G-') === 0) {
-      appendScript('https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(gaId));
-      window.gtag('js', new Date());
-      window.gtag('config', gaId);
-    }
+  /** GA4: fire immediately (recommended GA behaviour). */
+  function loadGa4() {
+    if (!gaId || gaId.indexOf('G-') !== 0) return;
+    appendScript('https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(gaId));
+    window.gtag('js', new Date());
+    window.gtag('config', gaId, { send_page_view: true });
+  }
 
+  /** Clarity + CF Web Analytics: non-blocking, after GA. */
+  function loadSecondaryTools() {
     appendScript('https://www.clarity.ms/tag/w28z01fb1p');
 
     if (isLocalPreview) return;
@@ -73,18 +77,12 @@
     );
   }
 
-  function scheduleLoad() {
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(loadAnalytics, { timeout: 3000 });
-      return;
-    }
-    window.setTimeout(loadAnalytics, 1500);
-  }
+  loadGa4();
 
-  if (document.readyState === 'complete') {
-    scheduleLoad();
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(loadSecondaryTools, { timeout: 2500 });
   } else {
-    window.addEventListener('load', scheduleLoad, { once: true });
+    window.setTimeout(loadSecondaryTools, 1);
   }
 
   window.vendoraToolEvent = function (name, params) {
