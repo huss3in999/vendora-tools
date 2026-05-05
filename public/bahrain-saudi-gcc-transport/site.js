@@ -1055,10 +1055,18 @@
   function makeRelativeToRoot(targetPath) {
     const depth = getCurrentDepth();
     const prefix = depth === 0 ? './' : '../'.repeat(depth);
-    if (!targetPath) {
-      return `${prefix}index.html`;
+    let hash = '';
+    let pathOnly = targetPath || '';
+    const hashIndex = pathOnly.indexOf('#');
+    if (hashIndex >= 0) {
+      hash = pathOnly.slice(hashIndex);
+      pathOnly = pathOnly.slice(0, hashIndex);
     }
-    return `${prefix}${targetPath.replace(/\/$/, '')}/index.html`;
+    pathOnly = pathOnly.replace(/\/+$/, '');
+    if (!pathOnly) {
+      return `${prefix}index.html${hash}`;
+    }
+    return `${prefix}${pathOnly}/index.html${hash}`;
   }
 
   function normalizeInternalLinks() {
@@ -1233,22 +1241,53 @@
     });
   }
 
+  function computeEnglishSiteHref() {
+    const raw = window.location.pathname.replace(/\\/g, '/');
+    if (!raw.includes('bahrain-saudi-gcc-transport')) {
+      return `${siteSegment}en/`;
+    }
+    if (raw.includes('/en/')) {
+      return null;
+    }
+    const tail = raw.split('bahrain-saudi-gcc-transport')[1] || '/';
+    const trimmed = tail.replace(/^\/+|\/+$/g, '');
+    const segments = trimmed.split('/').filter((s) => s && s !== 'index.html');
+    const first = segments[0] || '';
+    const noEnglishMirror = new Set([
+      'passenger-transport',
+      'parcel-delivery',
+      'gcc-destinations',
+      'about',
+      'contact',
+      'admin',
+      'scripts',
+      'tests',
+      'test-results',
+    ]);
+    if (!first) {
+      return `${siteSegment}en/`;
+    }
+    if (noEnglishMirror.has(first)) {
+      return `${siteSegment}en/`;
+    }
+    return `${siteSegment}en/${first}/`;
+  }
+
   function insertLanguageToggle() {
     const quickLinks = document.querySelector('.quick-links');
     if (!quickLinks || quickLinks.querySelector('.lang-toggle')) return;
 
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'lang-toggle';
-    button.setAttribute('data-language-toggle', '');
-    button.setAttribute('aria-label', 'Language toggle');
-    button.innerHTML = '<i data-lucide="languages"></i><span></span>';
-    button.addEventListener('click', () => {
-      state.lang = state.lang === 'ar' ? 'en' : 'ar';
-      localStorage.setItem('vendora_lang', state.lang);
-      applyLanguage();
-    });
-    quickLinks.appendChild(button);
+    const englishHref = computeEnglishSiteHref();
+    if (!englishHref) return;
+
+    const link = document.createElement('a');
+    link.className = 'lang-toggle';
+    link.href = englishHref;
+    link.setAttribute('data-language-nav', '');
+    link.setAttribute('data-language-toggle', '');
+    link.setAttribute('aria-label', 'Open English site');
+    link.innerHTML = '<i data-lucide="languages"></i><span>EN</span>';
+    quickLinks.appendChild(link);
   }
 
   function translateTextNodes() {
@@ -1297,7 +1336,7 @@
     translateTextNodes();
     translateAttributes();
     const toggle = document.querySelector('.lang-toggle span');
-    if (toggle) toggle.textContent = state.lang === 'en' ? 'AR' : 'EN';
+    if (toggle) toggle.textContent = 'EN';
     setupForms();
     normalizeInternalLinks();
     injectFlagImages();

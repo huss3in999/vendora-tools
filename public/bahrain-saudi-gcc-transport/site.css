@@ -132,9 +132,11 @@ img, svg { max-width: 100%; }
 
 .nav-menu {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  row-gap: 8px;
   padding: 2px 0;
   overflow-x: auto;
   scrollbar-width: none;
@@ -229,7 +231,8 @@ img, svg { max-width: 100%; }
 
 .premium-hero-copy {
   min-height: 520px;
-  overflow: hidden;
+  /* Allow trust strip + long headings to scroll; hidden clipped English/GCC copy */
+  overflow: visible;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(242, 246, 251, 0.94)),
     radial-gradient(circle at top left, rgba(181, 138, 82, 0.15), transparent 32%);
@@ -1246,11 +1249,93 @@ body.lang-en .nav {
 
 body.lang-en .brand-sub {
   max-width: 34ch;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+/* English nav: tighter pills so seven links + WhatsApp fit without clipping */
+body.lang-en .nav-link,
+body.lang-en .lang-toggle {
+  padding: 8px 12px;
+  font-size: 12px;
+  min-height: 38px;
+  gap: 6px;
+}
+
+/* In-page EN mode: eyebrow strong is translated; hide duplicate English subtitle */
+body.lang-en .eyebrow .en-sub {
+  display: none;
+}
+
+/* Arabic header: allow brand label to shrink so nav + WhatsApp keep space */
+html[dir="rtl"] .brand-sub {
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 body.lang-en .section-head h2::after {
   inset-inline-start: auto;
   inset-inline-end: 0;
+}
+
+/* English pages: flag emojis in h3::before often render as "SA", "KW" (regional letters) on Windows */
+body.lang-en .route-card h3::before,
+body.lang-en .country-card h3::before {
+  content: none;
+  display: none;
+  margin: 0;
+}
+
+body.home-premium main {
+  padding-bottom: 96px;
+}
+
+@media (max-width: 900px) {
+  body.lang-en .nav-menu {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 520px) {
+  .home-premium #gcc-routes .route-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .home-premium #gcc-routes .route-card .ghost-btn {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .home-premium .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .home-premium .hero-actions .primary-btn,
+  .home-premium .hero-actions .wa-inline {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 400px) {
+  .home-premium .premium-hero {
+    padding-top: 16px;
+  }
+
+  .home-premium .premium-hero-grid {
+    gap: 12px;
+  }
+}
+
+body.home-premium.lang-en .hero-media-card {
+  background: linear-gradient(160deg, #1a2836 0%, #0b1016 45%, #141c26 100%);
 }
 
 @media (max-width: 1100px) {
@@ -1370,4 +1455,71 @@ body.lang-en .section-head h2::after {
   h1 {
     font-size: clamp(1.65rem, 8vw, 2.3rem);
   }
+}
+
+/* EN ↔ AR route cross-links (compact notice below header) */
+.lang-crosslink {
+  padding: 6px 0 2px;
+}
+.lang-crosslink-box {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+}
+.lang-crosslink-text {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.lang-crosslink-text a {
+  color: var(--accent-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+.lang-crosslink-text a:hover {
+  opacity: 0.9;
+}
+
+/* English pages: plain-language query hints for discovery */
+body.lang-en .seo-common-searches {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 10px;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+body.lang-en .seo-common-searches li {
+  padding-inline-start: 2px;
+}
+
+/* Route details: search hints list matches card body typography */
+.route-card .seo-route-details-searches {
+  margin: 0;
+  padding-inline-start: 1.2rem;
+  display: grid;
+  gap: 10px;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.route-card .seo-route-details-searches li {
+  padding-inline-start: 2px;
+}
+
+/* Hero trust strip: one full-width card above primary CTAs */
+.route-hero-trust {
+  margin: 0 0 14px;
+}
+.route-hero-trust .route-grid {
+  grid-template-columns: 1fr;
+}
+.route-hero-trust-card h3 {
+  margin-top: 0;
+}
+.route-hero-trust-card h3::before {
+  content: none;
+  display: none;
 }

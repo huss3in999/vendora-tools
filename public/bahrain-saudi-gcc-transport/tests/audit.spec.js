@@ -54,48 +54,35 @@ test.describe('SEO & page shell', () => {
 });
 
 test.describe('Interactive UI', () => {
-  test('language toggle switches dir and lang', async ({ page }) => {
+  test('Arabic home: EN pill links to English hub (crawlable)', async ({ page }) => {
     await page.goto('/bahrain-saudi-gcc-transport/');
     await page.evaluate(() => localStorage.removeItem('vendora_lang'));
     await page.reload({ waitUntil: 'domcontentloaded' });
     await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
-    await page.locator('[data-language-toggle]').click();
-    await expect(page.locator('html')).toHaveAttribute('dir', 'ltr');
+    const link = page.locator('a.lang-toggle[href*="bahrain-saudi-gcc-transport/en/"]');
+    await expect(link).toHaveCount(1);
+    const href = await link.getAttribute('href');
+    expect(href).toMatch(/\/bahrain-saudi-gcc-transport\/en\/$/);
+    await link.click();
+    await expect(page).toHaveURL(/\/bahrain-saudi-gcc-transport\/en\/?/);
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-    await page.locator('[data-language-toggle]').click();
-    await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   });
 
-  for (const path of ROUTES) {
-    test(`English mode has no visible Arabic on ${path}`, async ({ page }) => {
-      await page.goto(path, { waitUntil: 'domcontentloaded' });
-      await page.evaluate(() => localStorage.removeItem('vendora_lang'));
-      await page.reload({ waitUntil: 'domcontentloaded' });
-      await page.locator('[data-language-toggle]').click();
-      await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  test('Arabic route: EN pill links to matching English route', async ({ page }) => {
+    await page.goto('/bahrain-saudi-gcc-transport/bahrain-to-khobar/');
+    const link = page.locator('a.lang-toggle[href*="bahrain-saudi-gcc-transport/en/bahrain-to-khobar/"]');
+    await expect(link).toHaveCount(1);
+    await link.click();
+    await expect(page).toHaveURL(/\/en\/bahrain-to-khobar\/?/);
+  });
 
-      const visibleArabic = await page.locator('body *:visible').evaluateAll((elements) => {
-        const arabic = /[\u0600-\u06FF]/;
-        const leaks = [];
-
-        for (const element of elements) {
-          const text = [...element.childNodes]
-            .filter((node) => node.nodeType === Node.TEXT_NODE)
-            .map((node) => node.nodeValue.trim())
-            .filter(Boolean)
-            .join(' ')
-            .replace(/\s+/g, ' ')
-            .trim();
-
-          if (text && arabic.test(text)) leaks.push(text);
-        }
-
-        return [...new Set(leaks)].slice(0, 20);
-      });
-
-      expect(visibleArabic, `Untranslated Arabic visible on ${path}`).toEqual([]);
-    });
-  }
+  test('Arabic contact: EN pill falls back to English hub', async ({ page }) => {
+    await page.goto('/bahrain-saudi-gcc-transport/contact/');
+    const link = page.locator('a.lang-toggle[href*="bahrain-saudi-gcc-transport/en/"]');
+    await expect(link).toHaveCount(1);
+    const href = await link.getAttribute('href');
+    expect(href).toMatch(/\/bahrain-saudi-gcc-transport\/en\/$/);
+  });
 
   test('booking form submit builds wa.me link', async ({ page }) => {
     await page.goto('/bahrain-saudi-gcc-transport/');
