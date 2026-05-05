@@ -970,10 +970,11 @@
 
   function sendLeadPayload(payload) {
     const body = JSON.stringify(payload);
-    if (navigator.sendBeacon) {
+    const beaconFallback = () => {
+      if (!navigator.sendBeacon) return;
       const blob = new Blob([body], { type: 'application/json' });
-      if (navigator.sendBeacon(leadEndpoint, blob)) return;
-    }
+      navigator.sendBeacon(leadEndpoint, blob);
+    };
 
     fetch(leadEndpoint, {
       method: 'POST',
@@ -981,7 +982,7 @@
       body,
       keepalive: true,
       credentials: 'omit',
-    }).catch(() => {});
+    }).catch(beaconFallback);
   }
 
   function setupWhatsAppLeadInterceptor() {
