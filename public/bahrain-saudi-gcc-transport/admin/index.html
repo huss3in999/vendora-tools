@@ -249,10 +249,21 @@
 
   <script>
     function transportSiteRoot() {
-      const segments = window.location.pathname.split('/').filter(Boolean);
-      const adminIdx = segments.lastIndexOf('admin');
-      if (adminIdx === -1) return '';
-      return '/' + segments.slice(0, adminIdx).join('/');
+      const parts = window.location.pathname.split('/').filter(Boolean);
+      const adminIdx = parts.lastIndexOf('admin');
+      if (adminIdx !== -1) {
+        const rootParts = parts.slice(0, adminIdx);
+        return rootParts.length ? '/' + rootParts.join('/') : '';
+      }
+      const href = window.location.href;
+      const marker = '/bahrain-saudi-gcc-transport';
+      const i = href.indexOf(marker);
+      if (i !== -1) {
+        const beforeQuery = href.slice(i).split(/[?#]/)[0];
+        const seg = beforeQuery.replace(/\/+$/, '').replace(/\/admin$/i, '');
+        return seg || marker;
+      }
+      return '';
     }
     const API_URL = `${transportSiteRoot()}/api/transport/admin`;
     const TOKEN_KEY = 'vendora_transport_admin_token';
