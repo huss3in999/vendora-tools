@@ -248,24 +248,8 @@
   </dialog>
 
   <script>
-    function transportSiteRoot() {
-      const parts = window.location.pathname.split('/').filter(Boolean);
-      const adminIdx = parts.lastIndexOf('admin');
-      if (adminIdx !== -1) {
-        const rootParts = parts.slice(0, adminIdx);
-        return rootParts.length ? '/' + rootParts.join('/') : '';
-      }
-      const href = window.location.href;
-      const marker = '/bahrain-saudi-gcc-transport';
-      const i = href.indexOf(marker);
-      if (i !== -1) {
-        const beforeQuery = href.slice(i).split(/[?#]/)[0];
-        const seg = beforeQuery.replace(/\/+$/, '').replace(/\/admin$/i, '');
-        return seg || marker;
-      }
-      return '';
-    }
-    const API_URL = `${transportSiteRoot()}/api/transport/admin`;
+    /** Calls public/worker.js — must stay under /api/* (wrangler.jsonc run_worker_first). */
+    const API_URL = '/api/transport/admin';
     const TOKEN_KEY = 'vendora_transport_admin_token';
     const COMMON_ROUTES = [
       ['home', 'Main transport page', 'صفحة النقل الرئيسية', 0],

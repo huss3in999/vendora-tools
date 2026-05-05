@@ -1,6 +1,17 @@
 import * as adminApi from './functions/api/transport/admin.js';
 import * as leadApi from './functions/api/transport/whatsapp-lead.js';
 
+const SITE_PATH_PREFIX = '/bahrain-saudi-gcc-transport';
+
+/** Match Worker routes to Pages-style URLs (optional prefix, no trailing slash). */
+function logicalPathname(url) {
+  let p = url.pathname.replace(/\/+$/, '') || '/';
+  if (p === SITE_PATH_PREFIX || p.startsWith(`${SITE_PATH_PREFIX}/`)) {
+    p = p.slice(SITE_PATH_PREFIX.length) || '/';
+  }
+  return p;
+}
+
 function createContext(request, env, ctx) {
   return {
     request,
@@ -29,12 +40,13 @@ async function dispatchPagesFunction(module, request, env, ctx) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    const path = logicalPathname(url);
 
-    if (url.pathname === '/api/transport/admin') {
+    if (path === '/api/transport/admin') {
       return dispatchPagesFunction(adminApi, request, env, ctx);
     }
 
-    if (url.pathname === '/api/transport/whatsapp-lead') {
+    if (path === '/api/transport/whatsapp-lead') {
       return dispatchPagesFunction(leadApi, request, env, ctx);
     }
 
