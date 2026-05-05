@@ -9,9 +9,7 @@
   "assets": {
     "binding": "ASSETS",
     "directory": "_site",
-    "run_worker_first": [
-      "/api/*"
-    ]
+    "run_worker_first": true
   },
   "routes": [
     {
