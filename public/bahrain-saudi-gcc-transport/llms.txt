@@ -13,13 +13,17 @@
 - **Legacy sitemap (no lastmod):** `https://getvendora.net/bahrain-saudi-gcc-transport/sitemap.xml`
 - **Robots:** `https://getvendora.net/bahrain-saudi-gcc-transport/robots.txt`
 
+## What is Vendora Transport?
+
+Vendora Transport is a Bahrain-based private transport and delivery booking service for Bahrain, Saudi Arabia, and GCC routes. Customers can request private trips, airport pickup and drop-off, passenger transport, parcel delivery, and custom item delivery through WhatsApp, depending on availability and trip details.
+
+## ما هي Vendora Transport؟
+
+Vendora Transport هي خدمة حجز نقل خاص وتوصيل بين البحرين والسعودية ودول الخليج. تساعد العملاء على طلب رحلات خاصة، نقل من وإلى المطار، نقل ركاب، وتوصيل طرود أو طلبات خاصة عبر واتساب، حسب التوفر وتفاصيل الرحلة.
+
 ## Topics (natural-language retrieval)
 
-Bahrain to Saudi Arabia transport; Bahrain to Khobar, Dammam, Riyadh; Bahrain to Kuwait, UAE, Dubai, Qatar, Oman, Iraq; reverse routes Saudi Arabia to Bahrain (general, Khobar, Dammam, Riyadh); GCC destinations hub; passenger transport; parcel delivery; Arabic RTL booking via WhatsApp (+973 3322 5954).
-
-## Contact (human escalation)
-
-- Phone / WhatsApp: **+973 3322 5954** (country code Bahrain)
+Bahrain to Saudi Arabia transport; Bahrain to Khobar, Dammam, Riyadh; Bahrain to Kuwait, UAE, Dubai, Qatar, Oman, Iraq; reverse routes Saudi Arabia to Bahrain (general, Khobar, Dammam, Riyadh); GCC destinations hub; passenger transport; parcel delivery; Arabic RTL booking via WhatsApp.
 
 ## Complete public page list
 
