@@ -249,7 +249,21 @@
 
   <script>
     /** Calls public/worker.js — must stay under /api/* (wrangler.jsonc run_worker_first). */
-    const API_URL = '/api/transport/admin';
+    function resolveAdminApiUrl() {
+      const override = window.__VENDORA_TRANSPORT_ADMIN_API__;
+      if (typeof override === 'string' && override.trim()) {
+        return override.trim().replace(/\/$/, '');
+      }
+
+      const siteSegment = '/bahrain-saudi-gcc-transport/';
+      if (window.location.pathname.startsWith(siteSegment)) {
+        return `${siteSegment.replace(/\/$/, '')}/api/transport/admin`;
+      }
+
+      return '/api/transport/admin';
+    }
+
+    const API_URL = resolveAdminApiUrl();
     const TOKEN_KEY = 'vendora_transport_admin_token';
     const COMMON_ROUTES = [
       ['home', 'Main transport page', 'صفحة النقل الرئيسية', 0],
