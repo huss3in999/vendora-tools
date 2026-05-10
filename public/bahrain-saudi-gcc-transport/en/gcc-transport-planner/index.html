@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <link rel="icon" type="image/png" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png" />
+  <link rel="apple-touch-icon" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GCC Transport Planner | Bahrain Saudi Kuwait Qatar UAE Oman</title>
+  <meta name="description" content="Plan private GCC transport between Bahrain, Saudi Arabia, Kuwait, Qatar, UAE and Oman. Estimate travel time, distance, airport transfer, luggage and parcel details before WhatsApp booking." />
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+  <meta name="theme-color" content="#10071d" />
+  <meta name="ga4-measurement-id" content="G-DFY197R2MS" />
+  <link rel="canonical" href="https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/" />
+  <link rel="alternate" type="text/markdown" href="https://getvendora.net/bahrain-saudi-gcc-transport/llms.txt" title="Vendora GCC transport - AI discovery" />
+  <link rel="alternate" hreflang="en" href="https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/" />
+  <link rel="alternate" hreflang="ar-BH" href="https://getvendora.net/bahrain-saudi-gcc-transport/gcc-transport-planner/" />
+  <link rel="alternate" hreflang="x-default" href="https://getvendora.net/bahrain-saudi-gcc-transport/gcc-transport-planner/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/" />
+  <meta property="og:title" content="GCC Transport Planner | Vendora Transport" />
+  <meta property="og:description" content="Plan Bahrain, Saudi Arabia, Kuwait, Qatar, UAE and Oman private transport with approximate route notes and WhatsApp booking." />
+  <meta property="og:image" content="https://getvendora.net/bahrain-saudi-gcc-transport/assets/images/gcc-transport-planner-hero.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="GCC Transport Planner | Vendora Transport" />
+  <meta name="twitter:description" content="Choose pickup and destination to estimate GCC route details before WhatsApp booking." />
+  <meta name="twitter:image" content="https://getvendora.net/bahrain-saudi-gcc-transport/assets/images/gcc-transport-planner-hero.webp" />
+  <link rel="stylesheet" href="../../site.css" />
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <style>
+    .planner-page { overflow-x: hidden; }
+    .planner-hero { padding-top: 86px; }
+    .planner-hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(300px, .95fr); gap: 22px; align-items: stretch; }
+    .planner-hero-copy { display: grid; align-content: center; gap: 18px; }
+    .planner-hero-copy h1 { margin: 0; max-width: 920px; font-size: clamp(2.25rem, 5vw, 5.4rem); line-height: 1.04; letter-spacing: 0; }
+    .planner-hero-copy .lead { max-width: 780px; }
+    .planner-media-stack { display: grid; gap: 14px; }
+    .planner-media-frame { position: relative; overflow: hidden; min-height: 360px; border-radius: 28px; border: 1px solid rgba(245, 194, 107, .22); background: #130d22; box-shadow: 0 24px 80px rgba(0, 0, 0, .32); }
+    .planner-media-frame img { width: 100%; height: 100%; min-height: 360px; object-fit: cover; display: block; }
+    .planner-media-caption { position: absolute; left: 18px; right: 18px; bottom: 18px; padding: 14px 16px; border: 1px solid rgba(255, 255, 255, .18); border-radius: 18px; background: rgba(12, 7, 24, .74); backdrop-filter: blur(14px); display: grid; gap: 4px; }
+    .planner-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .planner-stat { padding: 14px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, .12); background: rgba(255, 255, 255, .06); }
+    .planner-stat strong { display: block; color: #f7d38c; font-size: 1.1rem; }
+    .planner-stat span { color: var(--muted); font-size: .88rem; }
+    .gcc-flag-wrap { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .gcc-flag-chip { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 9px 12px; border-radius: 999px; border: 1px solid rgba(245, 194, 107, .24); background: rgba(255, 255, 255, .07); color: #fff3d4; font-weight: 800; line-height: 1.1; box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08); }
+    .gcc-flag-chip .flag { font-size: 1.35rem; line-height: 1; }
+    .gcc-flag-chip small { display: block; color: var(--muted); font-size: .74rem; font-weight: 700; margin-top: 2px; }
+    .gcc-flag-band { padding: 16px; border-radius: 22px; border: 1px solid rgba(255, 255, 255, .12); background: linear-gradient(135deg, rgba(245, 194, 107, .1), rgba(255, 255, 255, .045)); }
+    .gcc-flag-band h3 { margin: 0 0 12px; }
+    .planner-tool-grid { display: grid; grid-template-columns: minmax(0, .82fr) minmax(300px, 1.18fr); gap: 18px; align-items: start; }
+    .planner-panel { border: 1px solid rgba(255, 255, 255, .12); border-radius: 24px; background: linear-gradient(145deg, rgba(255, 255, 255, .09), rgba(255, 255, 255, .045)); box-shadow: 0 18px 55px rgba(0, 0, 0, .22); padding: 20px; }
+    .planner-form { display: grid; gap: 16px; }
+    .planner-field { display: grid; gap: 8px; }
+    .planner-field label { color: #f8e7c0; font-weight: 800; }
+    .planner-field select, .planner-field input, .planner-field textarea { width: 100%; border: 1px solid rgba(255, 255, 255, .16); border-radius: 16px; background: rgba(11, 7, 21, .88); color: #fff7e6; padding: 12px 14px; font: inherit; color-scheme: dark; }
+    .planner-field select option { background: #120b21; color: #fff7e6; }
+    .planner-field textarea { min-height: 92px; resize: vertical; }
+    .planner-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .planner-result { display: grid; gap: 14px; min-height: 100%; }
+    .result-metric-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .result-metric { padding: 15px; border-radius: 18px; background: rgba(245, 194, 107, .08); border: 1px solid rgba(245, 194, 107, .18); }
+    .result-metric span { display: block; color: var(--muted); font-size: .88rem; margin-bottom: 5px; }
+    .result-metric strong { color: #ffe4a7; font-size: 1.2rem; }
+    .planner-note-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+    .planner-note-list li { display: flex; gap: 9px; align-items: flex-start; color: rgba(255, 247, 230, .86); }
+    .planner-note-list i { color: #f7d38c; width: 18px; height: 18px; margin-top: 3px; flex: 0 0 auto; }
+    .planner-warning { padding: 14px 16px; border-radius: 18px; background: rgba(245, 194, 107, .1); border: 1px solid rgba(245, 194, 107, .22); color: #ffeac0; }
+    .planner-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .planner-route-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .planner-route-card { display: grid; gap: 10px; }
+    .planner-route-card h3 { margin-bottom: 0; }
+    .planner-country-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .country-card { padding: 0; overflow: hidden; }
+    .country-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+    .country-card-body { padding: 18px; display: grid; gap: 12px; }
+    .country-links { display: flex; flex-wrap: wrap; gap: 8px; }
+    .country-links a { color: #ffe1a0; text-decoration: none; border-bottom: 1px solid rgba(255, 225, 160, .28); }
+    .planner-info-band { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .planner-link-cloud { columns: 3 220px; column-gap: 28px; }
+    .planner-link-cloud a { display: block; break-inside: avoid; color: #ffe1a0; text-decoration: none; margin: 0 0 9px; }
+    .faq-wrap.planner-faq { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (max-width: 980px) {
+      .planner-hero-grid, .planner-tool-grid, .planner-info-band, .planner-country-grid { grid-template-columns: 1fr; }
+      .planner-route-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .faq-wrap.planner-faq { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .planner-page .topbar { position: sticky; }
+      .planner-page .nav { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; padding: 10px 0; align-items: center; }
+      .planner-page .brand { justify-self: stretch; gap: 8px; min-width: 0; }
+      .planner-page .logo { width: 38px; height: 38px; border-radius: 14px; font-size: 17px; flex: 0 0 auto; }
+      .planner-page .brand-copy { min-width: 0; max-width: 140px; }
+      .planner-page .brand-title { font-size: 15px; }
+      .planner-page .brand-title,
+      .planner-page .brand-sub { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .planner-page .brand-sub { font-size: 11px; max-width: 140px; line-height: 1.25; }
+      .planner-page .nav-menu {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        gap: 8px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0 0 4px;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+      .planner-page .quick-links {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 4px;
+        overflow: visible;
+        padding: 0;
+      }
+      .planner-page .nav-menu::-webkit-scrollbar,
+      .planner-page .quick-links::-webkit-scrollbar { display: none; }
+      .planner-page .nav-link,
+      .planner-page .lang-toggle,
+      .planner-page .quick-links .wa-inline {
+        min-height: 36px;
+        padding: 8px 12px;
+        font-size: 12px;
+        flex: 0 0 auto;
+      }
+      .planner-page .quick-links .wa-inline { width: 36px; min-width: 36px; padding-inline: 0; }
+      .planner-page .quick-links .wa-inline span { display: none; }
+      .planner-page .quick-links .lang-toggle { min-width: 36px; width: 36px; padding-inline: 0; }
+      .planner-page .lang-crosslink { padding-top: 6px; }
+      .planner-page .lang-crosslink-box { padding: 9px 12px; }
+      .planner-page .lang-crosslink-text { font-size: .82rem; line-height: 1.45; }
+      .planner-hero { padding-top: 58px; }
+      .planner-hero-copy { order: 1; }
+      .planner-media-stack { order: 2; }
+      .planner-media-frame, .planner-media-frame img { min-height: 210px; }
+      .planner-stat-row, .planner-field-row, .result-metric-grid, .planner-route-grid { grid-template-columns: 1fr; }
+      .planner-panel { padding: 16px; border-radius: 18px; }
+      .planner-hero-copy h1 { font-size: clamp(2rem, 12vw, 3.4rem); }
+      .gcc-flag-chip { min-height: 36px; padding: 8px 10px; font-size: .88rem; }
+    }
+  </style>
+  <script type="application/ld+json" data-vendora-schema>
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/#organization",
+      "name": "Vendora Transport",
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/en/",
+      "logo": "https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png"
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/#webpage",
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/",
+      "name": "GCC Transport Planner",
+      "description": "English GCC transport planner for private transport between Bahrain, Saudi Arabia, Kuwait, Qatar, UAE and Oman with approximate route notes and WhatsApp booking.",
+      "inLanguage": "en",
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/#website",
+        "url": "https://getvendora.net/bahrain-saudi-gcc-transport/en/",
+        "name": "Vendora Transport"
+      },
+      "breadcrumb": {
+        "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/#breadcrumb"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/#service",
+      "name": "GCC private transport planner",
+      "serviceType": "Private GCC transport, airport transfer, passenger transport, parcel and custom delivery coordination",
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/",
+      "provider": { "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/#organization" },
+      "areaServed": [
+        { "@type": "Country", "name": "Bahrain" },
+        { "@type": "Country", "name": "Saudi Arabia" },
+        { "@type": "Country", "name": "Kuwait" },
+        { "@type": "Country", "name": "Qatar" },
+        { "@type": "Country", "name": "United Arab Emirates" },
+        { "@type": "Country", "name": "Oman" }
+      ],
+      "description": "Coordination for private trips, family and passenger transport, airport pickup and drop-off, and parcel or custom item delivery between Bahrain, Saudi Arabia and GCC destinations depending on availability, regulations and request details."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/#breadcrumb",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://getvendora.net/bahrain-saudi-gcc-transport/en/" },
+        { "@type": "ListItem", "position": 2, "name": "GCC Transport Planner", "item": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/#faq",
+      "mainEntity": [
+        { "@type": "Question", "name": "How long does Bahrain to Khobar take?", "acceptedAnswer": { "@type": "Answer", "text": "Bahrain or Manama to Khobar is often around 45 minutes to 1.5 hours, but timing is approximate and changes with King Fahd Causeway, border procedures, traffic and final drop-off point." } },
+        { "@type": "Question", "name": "How far is Bahrain to Dammam?", "acceptedAnswer": { "@type": "Answer", "text": "Bahrain or Manama to Dammam is usually around 90 to 130 km depending on the pickup point and final destination." } },
+        { "@type": "Question", "name": "Can I book Saudi to Bahrain transport?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Saudi to Bahrain transport requests can be checked depending on city, timing and availability, including Khobar, Dammam and Riyadh to Bahrain." } },
+        { "@type": "Question", "name": "Can I book Dammam Airport to Bahrain?", "acceptedAnswer": { "@type": "Answer", "text": "Dammam Airport to Bahrain pickup or drop-off can be coordinated depending on flight time, passenger count, luggage and vehicle availability." } },
+        { "@type": "Question", "name": "Can families travel with luggage?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Family trips with luggage can be arranged depending on passenger count, luggage size and the suitable vehicle available." } },
+        { "@type": "Question", "name": "Can I request parcel delivery between Bahrain and Saudi Arabia?", "acceptedAnswer": { "@type": "Answer", "text": "Parcel or document delivery may be requested depending on item type, size, destination, regulations and availability. Prohibited or restricted items are not accepted." } },
+        { "@type": "Question", "name": "Are prices fixed?", "acceptedAnswer": { "@type": "Answer", "text": "Fixed prices are not listed here because pricing depends on route, timing, passengers, luggage, request type and availability. Send the details on WhatsApp to confirm." } },
+        { "@type": "Question", "name": "Why are times only estimates?", "acceptedAnswer": { "@type": "Answer", "text": "Travel time depends on pickup point, final destination, traffic, King Fahd Causeway, border procedures, stops and travel time." } },
+        { "@type": "Question", "name": "Can I request Kuwait, Qatar or UAE to Bahrain transport?", "acceptedAnswer": { "@type": "Answer", "text": "Some return trips to Bahrain can be coordinated depending on route, availability and regulations. Send pickup point, destination and date on WhatsApp to confirm." } },
+        { "@type": "Question", "name": "Can I request GCC-to-GCC transport?", "acceptedAnswer": { "@type": "Answer", "text": "Some GCC-to-GCC requests may be coordinated depending on availability, route, pickup point, destination and regulations. Send details on WhatsApp to confirm." } }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body class="home-premium planner-page lang-en">
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="/bahrain-saudi-gcc-transport/en/">
+        <span class="logo">V</span>
+        <span class="brand-copy">
+          <span class="brand-title">Vendora Transport</span>
+          <span class="brand-sub">Bahrain to Saudi Arabia and GCC destinations</span>
+        </span>
+      </a>
+      <nav class="nav-menu" aria-label="Primary">
+        <a class="nav-link" href="/bahrain-saudi-gcc-transport/en/">Home</a>
+        <a class="nav-link active" href="/bahrain-saudi-gcc-transport/en/gcc-transport-planner/">Planner</a>
+        <a class="nav-link" href="/bahrain-saudi-gcc-transport/en/passenger-transport/">Passenger</a>
+        <a class="nav-link" href="/bahrain-saudi-gcc-transport/en/parcel-delivery/">Parcel</a>
+        <a class="nav-link" href="/bahrain-saudi-gcc-transport/en/gcc-destinations/">GCC</a>
+        <a class="nav-link" href="/bahrain-saudi-gcc-transport/en/contact/">Contact</a>
+      </nav>
+      <div class="quick-links">
+        <a class="wa-inline" href="https://wa.me/97333225954?text=Hello%20Vendora%2C%20I%20need%20a%20GCC%20transport%20request." target="_blank" rel="noopener" data-track-wa data-route="en-gcc-planner-top">
+          <i data-lucide="message-circle"></i>
+          <span>WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="section lang-crosslink" aria-label="Arabic version">
+    <div class="container">
+      <div class="glass lang-crosslink-box">
+        <p class="lang-crosslink-text">Looking for this page in Arabic? <a href="/bahrain-saudi-gcc-transport/gcc-transport-planner/">Open the Arabic GCC planner</a></p>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="premium-hero planner-hero">
+      <div class="container planner-hero-grid">
+        <div class="premium-hero-copy planner-hero-copy glass">
+          <h1>GCC Transport Planner for Bahrain, Saudi Arabia and Gulf Routes</h1>
+          <p class="lead">Plan private transport between Bahrain, Saudi Arabia, Kuwait, Qatar, UAE, Oman and nearby GCC destinations. Choose your pickup and destination to see estimated travel time, distance, border notes, airport notes, luggage support and WhatsApp booking details.</p>
+          <div class="hero-actions">
+            <a class="primary-btn" href="#planner">
+              <i data-lucide="route"></i>
+              <span>Try the planner</span>
+            </a>
+            <a class="wa-inline" href="https://wa.me/97333225954?text=Hello%20Vendora%2C%20I%20need%20a%20GCC%20transport%20request." target="_blank" rel="noopener" data-track-wa data-route="en-gcc-planner-hero">
+              <i data-lucide="message-circle"></i>
+              <span>Book on WhatsApp</span>
+            </a>
+          </div>
+          <div class="planner-stat-row" aria-label="Coverage summary">
+            <div class="planner-stat"><strong>6 countries</strong><span>Bahrain, Saudi Arabia, Kuwait, Qatar, UAE and Oman</span></div>
+            <div class="planner-stat"><strong>Airports</strong><span>BAH, DMM, Riyadh, Kuwait, Doha, Dubai and Abu Dhabi</span></div>
+            <div class="planner-stat"><strong>Trips and parcels</strong><span>Families, luggage, documents and gifts depending on availability</span></div>
+          </div>
+          <div class="gcc-flag-wrap" aria-label="GCC country flags">
+            <span class="gcc-flag-chip"><span class="flag" aria-hidden="true">🇧🇭</span><span>Bahrain</span></span>
+            <span class="gcc-flag-chip"><span class="flag" aria-hidden="true">🇸🇦</span><span>Saudi Arabia</span></span>
+            <span class="gcc-flag-chip"><span class="flag" aria-hidden="true">🇰🇼</span><span>Kuwait</span></span>
+            <span class="gcc-flag-chip"><span class="flag" aria-hidden="true">🇶🇦</span><span>Qatar</span></span>
+            <span class="gcc-flag-chip"><span class="flag" aria-hidden="true">🇦🇪</span><span>UAE</span></span>
+            <span class="gcc-flag-chip"><span class="flag" aria-hidden="true">🇴🇲</span><span>Oman</span></span>
+          </div>
+        </div>
+        <aside class="planner-media-stack">
+          <div class="planner-media-frame">
+            <img src="../../assets/images/gcc-transport-planner-hero.webp" alt="Luxury private transport SUV on a Gulf road between Bahrain and Saudi Arabia" width="1672" height="941" loading="eager" />
+            <div class="planner-media-caption">
+              <strong>Private GCC routes</strong>
+              <span>Clear estimates before sending your WhatsApp booking request.</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="planner">
+      <div class="container section-shell">
+        <div class="section-head">
+          <h2>Travel Time and Distance Planner</h2>
+          <p>Version 1 uses fixed local route data. No external API and no AI are used for calculations or filtering.</p>
+        </div>
+        <div class="planner-tool-grid">
+          <form class="planner-panel planner-form" data-planner-form>
+            <div class="planner-field-row">
+              <div class="planner-field">
+                <label for="planner-from">From</label>
+                <select id="planner-from" data-planner-from></select>
+              </div>
+              <div class="planner-field">
+                <label for="planner-to">To</label>
+                <select id="planner-to" data-planner-to></select>
+              </div>
+            </div>
+            <div class="planner-field-row">
+              <div class="planner-field">
+                <label for="planner-passengers">Passengers</label>
+                <input id="planner-passengers" data-planner-passengers type="number" min="1" max="7" value="2" />
+              </div>
+              <div class="planner-field">
+                <label for="planner-luggage">Luggage count</label>
+                <input id="planner-luggage" data-planner-luggage type="number" min="0" max="12" value="2" />
+              </div>
+            </div>
+            <div class="planner-field">
+              <label for="planner-type">Trip type</label>
+              <select id="planner-type" data-planner-type>
+                <option value="passenger">Passenger transport</option>
+                <option value="airport">Airport transfer</option>
+                <option value="parcel">Parcel or documents</option>
+                <option value="family">Family with luggage</option>
+                <option value="business">Business trip</option>
+              </select>
+            </div>
+            <div class="planner-field-row">
+              <div class="planner-field">
+                <label for="planner-date">Date</label>
+                <input id="planner-date" data-planner-date type="date" />
+              </div>
+              <div class="planner-field">
+                <label for="planner-time">Time</label>
+                <input id="planner-time" data-planner-time type="time" />
+              </div>
+            </div>
+            <div class="planner-field">
+              <label for="planner-notes">Notes</label>
+              <textarea id="planner-notes" data-planner-notes placeholder="Example: airport pickup, extra luggage, small parcel, family trip."></textarea>
+            </div>
+          </form>
+
+          <div class="planner-panel planner-result" aria-live="polite">
+            <div>
+              <h3 data-result-title>Choose pickup and destination</h3>
+              <p data-result-summary>Approximate time, distance and booking notes will appear here.</p>
+            </div>
+            <div class="result-metric-grid">
+              <div class="result-metric"><span>Approx. distance</span><strong data-result-distance>--</strong></div>
+              <div class="result-metric"><span>Approx. time</span><strong data-result-time>--</strong></div>
+              <div class="result-metric"><span>Route type</span><strong data-result-type>--</strong></div>
+              <div class="result-metric"><span>Data status</span><strong data-result-support>--</strong></div>
+            </div>
+            <ul class="planner-note-list">
+              <li><i data-lucide="traffic-cone"></i><span data-result-border>Choose a route to see causeway or border notes.</span></li>
+              <li><i data-lucide="plane"></i><span data-result-airport>Airport notes appear when an airport or airport trip type is selected.</span></li>
+              <li><i data-lucide="briefcase"></i><span data-result-family>Add passengers and luggage for a clearer request.</span></li>
+              <li><i data-lucide="package-check"></i><span data-result-parcel>Parcel requests depend on item type, size, regulations and availability.</span></li>
+            </ul>
+            <p class="planner-warning">Estimates are approximate only and may change depending on pickup point, final destination, traffic, King Fahd Causeway, border procedures, travel time, stops and vehicle availability.</p>
+            <div class="planner-actions">
+              <a class="wa-inline" data-planner-whatsapp target="_blank" rel="noopener" data-track-wa data-route="en-gcc-planner-result">
+                <i data-lucide="message-circle"></i>
+                <span>Send request on WhatsApp</span>
+              </a>
+              <button class="ghost-btn" type="button" data-planner-copy>
+                <i data-lucide="copy"></i>
+                <span>Copy request details</span>
+              </button>
+              <button class="ghost-btn" type="button" data-planner-reset>
+                <i data-lucide="rotate-ccw"></i>
+                <span>Reset</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container section-shell">
+        <div class="section-head">
+          <h2>Popular GCC Routes</h2>
+          <p>Internal links point to existing Vendora route pages. Routes without a dedicated reverse page use WhatsApp confirmation.</p>
+        </div>
+        <article class="route-card">
+          <img class="responsive-media" src="../../assets/images/gcc-route-map-bahrain-saudi-kuwait-qatar-uae-oman.webp" alt="Abstract GCC route map connecting Bahrain with Saudi Arabia, Kuwait, Qatar, UAE and Oman" width="1672" height="941" loading="lazy" />
+          <h3>Route overview</h3>
+          <p>Use the planner to choose pickup and destination, then open the closest route page or send details directly on WhatsApp.</p>
+        </article>
+        <div class="planner-route-grid">
+          <article class="route-card planner-route-card"><h3>Bahrain to Khobar</h3><p>A shorter causeway route depending on traffic.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/en/bahrain-to-khobar/">Open page</a></article>
+          <article class="route-card planner-route-card"><h3>Khobar to Bahrain</h3><p>Reverse route from Khobar to Bahrain.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/en/khobar-to-bahrain/">Open page</a></article>
+          <article class="route-card planner-route-card"><h3>Bahrain to Dammam</h3><p>Useful for city or airport requests.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/en/bahrain-to-dammam/">Open page</a></article>
+          <article class="route-card planner-route-card"><h3>Dammam to Bahrain</h3><p>Requests from Dammam or Dammam Airport.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/en/dammam-to-bahrain/">Open page</a></article>
+          <article class="route-card planner-route-card"><h3>Bahrain to Riyadh</h3><p>A longer route that needs clearer planning.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/en/bahrain-to-riyadh/">Open page</a></article>
+          <article class="route-card planner-route-card"><h3>Riyadh to Bahrain</h3><p>Long return route depending on timing and stops.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/en/riyadh-to-bahrain/">Open page</a></article>
+          <article class="route-card planner-route-card"><h3>Bahrain to Kuwait</h3><p>Longer trip with border and stop planning.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/">Open page</a></article>
+          <article class="route-card planner-route-card"><h3>Kuwait to Bahrain</h3><p>Send details to check availability.</p><a class="ghost-btn" href="https://wa.me/97333225954?text=Hello%20Vendora%2C%20I%20need%20Kuwait%20to%20Bahrain%20transport." target="_blank" rel="noopener" data-track-wa data-route="en-kuwait-to-bahrain-planner">Ask on WhatsApp</a></article>
+          <article class="route-card planner-route-card"><h3>Bahrain to Qatar</h3><p>Qatar and Doha requests depending on availability.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/en/bahrain-to-qatar/">Open page</a></article>
+          <article class="route-card planner-route-card"><h3>Qatar to Bahrain</h3><p>Reverse requests are confirmed on WhatsApp.</p><a class="ghost-btn" href="https://wa.me/97333225954?text=Hello%20Vendora%2C%20I%20need%20Qatar%20or%20Doha%20to%20Bahrain%20transport." target="_blank" rel="noopener" data-track-wa data-route="en-qatar-to-bahrain-planner">Ask on WhatsApp</a></article>
+          <article class="route-card planner-route-card"><h3>Bahrain to UAE</h3><p>Includes Dubai or Abu Dhabi depending on request.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/en/bahrain-to-uae/">Open page</a></article>
+          <article class="route-card planner-route-card"><h3>UAE to Bahrain</h3><p>Share city and timing to confirm.</p><a class="ghost-btn" href="https://wa.me/97333225954?text=Hello%20Vendora%2C%20I%20need%20UAE%20to%20Bahrain%20transport." target="_blank" rel="noopener" data-track-wa data-route="en-uae-to-bahrain-planner">Ask on WhatsApp</a></article>
+          <article class="route-card planner-route-card"><h3>Bahrain to Oman</h3><p>A long route that benefits from early planning.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/en/bahrain-to-oman/">Open page</a></article>
+          <article class="route-card planner-route-card"><h3>Oman to Bahrain</h3><p>Some requests can be checked by route.</p><a class="ghost-btn" href="https://wa.me/97333225954?text=Hello%20Vendora%2C%20I%20need%20Oman%20or%20Muscat%20to%20Bahrain%20transport." target="_blank" rel="noopener" data-track-wa data-route="en-oman-to-bahrain-planner">Ask on WhatsApp</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container section-shell">
+        <div class="section-head">
+          <h2>Airport, Family, Luggage and Parcel Help</h2>
+          <p>Practical details before sending a request: flight time, passengers, luggage and item type for parcel requests.</p>
+        </div>
+        <div class="planner-info-band">
+          <article class="route-card">
+            <img class="responsive-media" src="../../assets/images/gcc-airport-transfer.webp" alt="GCC airport pickup and drop-off by private vehicle" width="1672" height="941" loading="lazy" />
+            <h3>Airport pickup and drop-off</h3>
+            <p>Airport pickup can be coordinated for Bahrain Airport, Dammam Airport, Riyadh Airport, Kuwait Airport, Doha Airport, Dubai Airport and Abu Dhabi Airport depending on flight time, luggage, passengers and availability.</p>
+          </article>
+          <article class="route-card">
+            <img class="responsive-media" src="../../assets/images/gcc-family-luggage-transport.webp" alt="Family and luggage private GCC transport" width="1672" height="941" loading="lazy" />
+            <h3>Families and extra luggage</h3>
+            <p>The service can fit families, business travelers and longer trips when passenger count and luggage size are shared. A larger vehicle can be checked depending on availability.</p>
+          </article>
+          <article class="route-card">
+            <img class="responsive-media" src="../../assets/images/gcc-parcel-delivery.webp" alt="Parcel and document delivery between GCC destinations" width="1672" height="941" loading="lazy" />
+            <h3>Parcels and documents</h3>
+            <p>Parcel acceptance depends on item type, size, destination, regulations, request timing and trip availability. Prohibited or restricted items are not accepted.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container section-shell">
+        <div class="section-head">
+          <h2>GCC Country Cards</h2>
+          <p>Short country notes connected to current Vendora pages.</p>
+        </div>
+        <div class="gcc-flag-band">
+          <h3>GCC flags in this planner</h3>
+          <div class="gcc-flag-wrap" aria-label="All GCC countries available in the planner">
+            <span class="gcc-flag-chip"><span class="flag" aria-hidden="true">🇧🇭</span><span>Bahrain</span></span>
+            <span class="gcc-flag-chip"><span class="flag" aria-hidden="true">🇸🇦</span><span>Saudi Arabia</span></span>
+            <span class="gcc-flag-chip"><span class="flag" aria-hidden="true">🇰🇼</span><span>Kuwait</span></span>
+            <span class="gcc-flag-chip"><span class="flag" aria-hidden="true">🇶🇦</span><span>Qatar</span></span>
+            <span class="gcc-flag-chip"><span class="flag" aria-hidden="true">🇦🇪</span><span>UAE</span></span>
+            <span class="gcc-flag-chip"><span class="flag" aria-hidden="true">🇴🇲</span><span>Oman</span></span>
+          </div>
+        </div>
+        <div class="planner-country-grid">
+          <article class="route-card country-card"><img src="../../assets/images/gcc-country-bahrain-transport.webp" alt="Private transport inside Bahrain and from Bahrain to GCC destinations" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇧🇭 Bahrain</h3><p>A common starting point for trips to Saudi Arabia, Kuwait, Qatar, UAE and Oman.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/en/">Home</a><a href="/bahrain-saudi-gcc-transport/en/contact/">Contact</a></div><a class="wa-inline" href="https://wa.me/97333225954?text=Hello%20Vendora%2C%20I%20need%20transport%20from%20Bahrain%20to%20a%20GCC%20destination." target="_blank" rel="noopener" data-track-wa data-route="en-country-bahrain">WhatsApp</a></div></article>
+          <article class="route-card country-card"><img src="../../assets/images/gcc-country-saudi-transport.webp" alt="Transport from Bahrain to Saudi Arabia, Khobar, Dammam and Riyadh" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇸🇦 Saudi Arabia</h3><p>Common requests include Khobar, Dammam and Riyadh, plus reverse trips to Bahrain.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/en/bahrain-to-saudi/">Bahrain to Saudi</a><a href="/bahrain-saudi-gcc-transport/en/saudi-to-bahrain/">Saudi to Bahrain</a></div><a class="wa-inline" href="https://wa.me/97333225954?text=Hello%20Vendora%2C%20I%20need%20transport%20between%20Bahrain%20and%20Saudi%20Arabia." target="_blank" rel="noopener" data-track-wa data-route="en-country-saudi">WhatsApp</a></div></article>
+          <article class="route-card country-card"><img src="../../assets/images/gcc-country-kuwait-transport.webp" alt="Transport from Bahrain to Kuwait or Kuwait to Bahrain" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇰🇼 Kuwait</h3><p>A longer route where departure time, stops and border conditions matter.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/">Bahrain to Kuwait</a></div><a class="wa-inline" href="https://wa.me/97333225954?text=Hello%20Vendora%2C%20I%20need%20transport%20between%20Bahrain%20and%20Kuwait." target="_blank" rel="noopener" data-track-wa data-route="en-country-kuwait">WhatsApp</a></div></article>
+          <article class="route-card country-card"><img src="../../assets/images/gcc-country-qatar-transport.webp" alt="Transport from Bahrain to Qatar and Doha or Qatar to Bahrain" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇶🇦 Qatar</h3><p>Qatar and Doha requests depend on route, timing and availability.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/en/bahrain-to-qatar/">Bahrain to Qatar</a></div><a class="wa-inline" href="https://wa.me/97333225954?text=Hello%20Vendora%2C%20I%20need%20transport%20between%20Bahrain%20and%20Qatar%20or%20Doha." target="_blank" rel="noopener" data-track-wa data-route="en-country-qatar">WhatsApp</a></div></article>
+          <article class="route-card country-card"><img src="../../assets/images/gcc-country-uae-transport.webp" alt="Transport from Bahrain to UAE, Dubai and Abu Dhabi" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇦🇪 UAE</h3><p>Dubai, Abu Dhabi or other UAE destinations can be requested with trip details.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/en/bahrain-to-uae/">Bahrain to UAE</a><a href="/bahrain-saudi-gcc-transport/en/bahrain-to-dubai/">Bahrain to Dubai</a></div><a class="wa-inline" href="https://wa.me/97333225954?text=Hello%20Vendora%2C%20I%20need%20transport%20between%20Bahrain%20and%20UAE." target="_blank" rel="noopener" data-track-wa data-route="en-country-uae">WhatsApp</a></div></article>
+          <article class="route-card country-card"><img src="../../assets/images/gcc-country-oman-transport.webp" alt="Transport from Bahrain to Oman and Muscat or Oman to Bahrain" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇴🇲 Oman</h3><p>A long route to Oman or Muscat that needs clear timing and stop planning.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/en/bahrain-to-oman/">Bahrain to Oman</a></div><a class="wa-inline" href="https://wa.me/97333225954?text=Hello%20Vendora%2C%20I%20need%20transport%20between%20Bahrain%20and%20Oman%20or%20Muscat." target="_blank" rel="noopener" data-track-wa data-route="en-country-oman">WhatsApp</a></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container section-shell">
+        <div class="section-head">
+          <h2>People Also Ask</h2>
+          <p>Quick answers before requesting a trip or delivery on WhatsApp.</p>
+        </div>
+        <div class="faq-wrap planner-faq">
+          <details class="faq-item"><summary>How long does Bahrain to Khobar take?</summary><p>Bahrain or Manama to Khobar is often around 45 minutes to 1.5 hours, but timing is approximate and changes with King Fahd Causeway, border procedures, traffic and final drop-off point.</p></details>
+          <details class="faq-item"><summary>How far is Bahrain to Dammam?</summary><p>Bahrain or Manama to Dammam is usually around 90 to 130 km depending on the pickup point and final destination.</p></details>
+          <details class="faq-item"><summary>Can I book Saudi to Bahrain transport?</summary><p>Yes. Saudi to Bahrain transport requests can be checked depending on city, timing and availability, including Khobar, Dammam and Riyadh to Bahrain.</p></details>
+          <details class="faq-item"><summary>Can I book Dammam Airport to Bahrain?</summary><p>Dammam Airport to Bahrain pickup or drop-off can be coordinated depending on flight time, passenger count, luggage and vehicle availability.</p></details>
+          <details class="faq-item"><summary>Can families travel with luggage?</summary><p>Yes. Family trips with luggage can be arranged depending on passenger count, luggage size and the suitable vehicle available.</p></details>
+          <details class="faq-item"><summary>Can I request parcel delivery between Bahrain and Saudi Arabia?</summary><p>Parcel or document delivery may be requested depending on item type, size, destination, regulations and availability. Prohibited or restricted items are not accepted.</p></details>
+          <details class="faq-item"><summary>Are prices fixed?</summary><p>Fixed prices are not listed here because pricing depends on route, timing, passengers, luggage, request type and availability. Send the details on WhatsApp to confirm.</p></details>
+          <details class="faq-item"><summary>Why are times only estimates?</summary><p>Travel time depends on pickup point, final destination, traffic, King Fahd Causeway, border procedures, stops and travel time.</p></details>
+          <details class="faq-item"><summary>Can I request Kuwait, Qatar or UAE to Bahrain transport?</summary><p>Some return trips to Bahrain can be coordinated depending on route, availability and regulations. Send pickup point, destination and date on WhatsApp to confirm.</p></details>
+          <details class="faq-item"><summary>Can I request GCC-to-GCC transport?</summary><p>Some GCC-to-GCC requests may be coordinated depending on availability, route, pickup point, destination and regulations. Send details on WhatsApp to confirm.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container section-shell">
+        <div class="section-head">
+          <h2>Internal Route Links</h2>
+          <p>All links below point to existing Vendora Transport pages.</p>
+        </div>
+        <div class="planner-panel planner-link-cloud">
+          <a href="/bahrain-saudi-gcc-transport/en/">Home</a>
+          <a href="/bahrain-saudi-gcc-transport/en/about/">About</a>
+          <a href="/bahrain-saudi-gcc-transport/en/contact/">Contact</a>
+          <a href="/bahrain-saudi-gcc-transport/en/gcc-destinations/">GCC destinations</a>
+          <a href="/bahrain-saudi-gcc-transport/en/passenger-transport/">Passenger transport</a>
+          <a href="/bahrain-saudi-gcc-transport/en/parcel-delivery/">Parcel delivery</a>
+          <a href="/bahrain-saudi-gcc-transport/en/bahrain-to-saudi/">Bahrain to Saudi Arabia</a>
+          <a href="/bahrain-saudi-gcc-transport/en/saudi-to-bahrain/">Saudi Arabia to Bahrain</a>
+          <a href="/bahrain-saudi-gcc-transport/en/bahrain-to-khobar/">Bahrain to Khobar</a>
+          <a href="/bahrain-saudi-gcc-transport/en/bahrain-to-dammam/">Bahrain to Dammam</a>
+          <a href="/bahrain-saudi-gcc-transport/en/bahrain-to-riyadh/">Bahrain to Riyadh</a>
+          <a href="/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/">Bahrain to Kuwait</a>
+          <a href="/bahrain-saudi-gcc-transport/en/bahrain-to-uae/">Bahrain to UAE</a>
+          <a href="/bahrain-saudi-gcc-transport/en/bahrain-to-dubai/">Bahrain to Dubai</a>
+          <a href="/bahrain-saudi-gcc-transport/en/bahrain-to-qatar/">Bahrain to Qatar</a>
+          <a href="/bahrain-saudi-gcc-transport/en/bahrain-to-oman/">Bahrain to Oman</a>
+          <a href="/bahrain-saudi-gcc-transport/en/khobar-to-bahrain/">Khobar to Bahrain</a>
+          <a href="/bahrain-saudi-gcc-transport/en/dammam-to-bahrain/">Dammam to Bahrain</a>
+          <a href="/bahrain-saudi-gcc-transport/en/riyadh-to-bahrain/">Riyadh to Bahrain</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-card glass">
+        <h3>Vendora Bahrain GCC Transport</h3>
+        <p class="footer-copy">One planner page for estimated route time and distance, airports, families, luggage, parcels and GCC route links.</p>
+      </div>
+      <div class="footer-card glass">
+        <h3>Booking</h3>
+        <p class="footer-copy">Send pickup point, destination, passengers, luggage, date and time to confirm availability and details.</p>
+        <a class="wa-inline" href="https://wa.me/97333225954?text=Hello%20Vendora%2C%20I%20need%20a%20GCC%20transport%20request." target="_blank" rel="noopener" data-track-wa data-route="en-gcc-planner-footer">
+          <i data-lucide="message-circle"></i>
+          <span>Book on WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <a class="floating-wa" href="https://wa.me/97333225954?text=Hello%20Vendora%2C%20I%20need%20a%20GCC%20transport%20request." target="_blank" rel="noopener" aria-label="WhatsApp" data-track-wa data-route="en-gcc-planner-floating">
+    <i data-lucide="message-circle"></i>
+  </a>
+  <script>
+    window.pageConfig = Object.assign(window.pageConfig || {}, { leadOnly: true });
+  </script>
+  <script>
+    (() => {
+      const phoneNumber = '97333225954';
+      const locations = [
+        { id: 'bahrain', label: '🇧🇭 Bahrain', group: 'bahrain' },
+        { id: 'manama', label: '🇧🇭 Manama', group: 'bahrain' },
+        { id: 'bah', label: '🇧🇭 Bahrain International Airport BAH', group: 'bahrain', airport: true },
+        { id: 'saudi', label: '🇸🇦 Saudi Arabia', group: 'saudi' },
+        { id: 'khobar', label: '🇸🇦 Khobar', group: 'saudi' },
+        { id: 'dammam', label: '🇸🇦 Dammam', group: 'saudi' },
+        { id: 'dmm', label: '🇸🇦 Dammam Airport DMM', group: 'saudi', airport: true },
+        { id: 'riyadh', label: '🇸🇦 Riyadh', group: 'saudi' },
+        { id: 'kuwait', label: '🇰🇼 Kuwait', group: 'kuwait' },
+        { id: 'qatar', label: '🇶🇦 Qatar', group: 'qatar' },
+        { id: 'doha', label: '🇶🇦 Doha', group: 'qatar' },
+        { id: 'uae', label: '🇦🇪 UAE', group: 'uae' },
+        { id: 'dubai', label: '🇦🇪 Dubai', group: 'uae' },
+        { id: 'abu-dhabi', label: '🇦🇪 Abu Dhabi', group: 'uae' },
+        { id: 'oman', label: '🇴🇲 Oman', group: 'oman' },
+        { id: 'muscat', label: '🇴🇲 Muscat', group: 'oman' }
+      ];
+      const routeData = {
+        'bahrain|khobar': ['45 to 95 km', '45 minutes to 1.5 hours', 'Bahrain to Khobar via King Fahd Causeway'],
+        'manama|khobar': ['55 to 100 km', '45 minutes to 1.5 hours', 'Manama to Khobar via King Fahd Causeway'],
+        'bah|khobar': ['65 to 115 km', '1 hour to 1 hour 45 minutes', 'Bahrain Airport to Khobar'],
+        'bahrain|dammam': ['90 to 130 km', '1 to 2 hours', 'Bahrain to Dammam'],
+        'manama|dammam': ['95 to 135 km', '1 to 2 hours', 'Manama to Dammam'],
+        'bah|dammam': ['105 to 150 km', '1 hour 15 minutes to 2 hours', 'Bahrain Airport to Dammam'],
+        'bahrain|dmm': ['105 to 145 km', '1 hour to 1 hour 45 minutes', 'Bahrain to Dammam Airport'],
+        'manama|dmm': ['110 to 150 km', '1 hour to 1 hour 45 minutes', 'Manama to Dammam Airport'],
+        'bah|dmm': ['120 to 165 km', '1 hour 15 minutes to 2 hours', 'Bahrain Airport to Dammam Airport'],
+        'bahrain|riyadh': ['460 to 520 km', '4.5 to 6 hours', 'Bahrain to Riyadh'],
+        'manama|riyadh': ['470 to 530 km', '4.5 to 6 hours', 'Manama to Riyadh'],
+        'bah|riyadh': ['480 to 545 km', '4.75 to 6.25 hours', 'Bahrain Airport to Riyadh'],
+        'bahrain|kuwait': ['430 to 520 km', '5.5 to 7 hours', 'Bahrain to Kuwait'],
+        'manama|kuwait': ['440 to 530 km', '5.5 to 7 hours', 'Manama to Kuwait'],
+        'bahrain|qatar': ['420 to 520 km', '4.5 to 6 hours', 'Bahrain to Qatar'],
+        'bahrain|doha': ['440 to 540 km', '4.5 to 6 hours', 'Bahrain to Doha'],
+        'manama|doha': ['450 to 550 km', '4.5 to 6 hours', 'Manama to Doha'],
+        'bahrain|uae': ['760 to 900 km', '8 to 11 hours', 'Bahrain to UAE'],
+        'bahrain|dubai': ['850 to 980 km', '9 to 11 hours', 'Bahrain to Dubai'],
+        'manama|dubai': ['860 to 990 km', '9 to 11 hours', 'Manama to Dubai'],
+        'bahrain|abu-dhabi': ['760 to 900 km', '8 to 10 hours', 'Bahrain to Abu Dhabi'],
+        'bahrain|oman': ['1050 to 1250 km', '12 to 15 hours', 'Bahrain to Oman'],
+        'bahrain|muscat': ['1100 to 1300 km', '12 to 15 hours', 'Bahrain to Muscat'],
+        'khobar|bahrain': ['45 to 95 km', '45 minutes to 1.5 hours', 'Khobar to Bahrain'],
+        'khobar|manama': ['55 to 100 km', '45 minutes to 1.5 hours', 'Khobar to Manama'],
+        'dammam|bahrain': ['90 to 130 km', '1 to 2 hours', 'Dammam to Bahrain'],
+        'dmm|bahrain': ['105 to 145 km', '1 hour to 1 hour 45 minutes', 'Dammam Airport to Bahrain'],
+        'riyadh|bahrain': ['460 to 520 km', '4.5 to 6 hours', 'Riyadh to Bahrain'],
+        'saudi|bahrain': ['Depends on city', 'Approx. 1 to 6 hours', 'Saudi Arabia to Bahrain']
+      };
+      const reverse = (from, to) => routeData[`${to}|${from}`];
+      const $ = (selector) => document.querySelector(selector);
+      const fromSelect = $('[data-planner-from]');
+      const toSelect = $('[data-planner-to]');
+      const typeSelect = $('[data-planner-type]');
+      const passengersInput = $('[data-planner-passengers]');
+      const luggageInput = $('[data-planner-luggage]');
+      const dateInput = $('[data-planner-date]');
+      const timeInput = $('[data-planner-time]');
+      const notesInput = $('[data-planner-notes]');
+      const waLink = $('[data-planner-whatsapp]');
+      const copyButton = $('[data-planner-copy]');
+      const resetButton = $('[data-planner-reset]');
+
+      function fillSelect(select) {
+        select.innerHTML = locations.map((item) => `<option value="${item.id}">${item.label}</option>`).join('');
+      }
+      function loc(id) {
+        return locations.find((item) => item.id === id) || locations[0];
+      }
+      function currentRoute() {
+        const from = loc(fromSelect.value);
+        const to = loc(toSelect.value);
+        const key = `${from.id}|${to.id}`;
+        const data = routeData[key] || reverse(from.id, to.id);
+        const unsupported = from.id === to.id || !data;
+        return { from, to, data, unsupported };
+      }
+      function tripTypeLabel(value) {
+        return {
+          passenger: 'Passenger transport',
+          airport: 'Airport transfer',
+          parcel: 'Parcel or documents',
+          family: 'Family with luggage',
+          business: 'Business trip'
+        }[value] || 'Passenger transport';
+      }
+      function buildMessage(route) {
+        return [
+          'Hello Vendora, I need a transport request:',
+          `From: ${route.from.label}`,
+          `To: ${route.to.label}`,
+          `Trip type: ${tripTypeLabel(typeSelect.value)}`,
+          `Passengers: ${passengersInput.value || ''}`,
+          `Luggage: ${luggageInput.value || ''}`,
+          `Date: ${dateInput.value || ''}`,
+          `Time: ${timeInput.value || ''}`,
+          `Notes: ${notesInput.value || ''}`
+        ].join('\n');
+      }
+      function airportNote(route) {
+        if (route.from.airport || route.to.airport || typeSelect.value === 'airport') {
+          return 'Airport requests depend on flight time, flight number if available, meeting point, luggage count and vehicle availability.';
+        }
+        return 'If the trip is airport-related, add the airport name and arrival or departure time in the notes.';
+      }
+      function familyNote() {
+        const passengers = Number(passengersInput.value || 0);
+        const luggage = Number(luggageInput.value || 0);
+        if (typeSelect.value === 'family' || passengers >= 4 || luggage >= 4) {
+          return 'For family trips or extra luggage, send passenger count and approximate luggage size to confirm a suitable vehicle.';
+        }
+        return 'Passengers and luggage can be coordinated depending on count, size and availability.';
+      }
+      function parcelNote() {
+        if (typeSelect.value === 'parcel') {
+          return 'Parcel acceptance depends on item type, size, destination, regulations, request time and trip availability. Prohibited or restricted items are not accepted.';
+        }
+        return 'If you have a parcel or documents with the trip, mention the item type and size before confirmation.';
+      }
+      function update() {
+        const route = currentRoute();
+        const message = buildMessage(route);
+        $('[data-result-title]').textContent = `${route.from.label} to ${route.to.label}`;
+        if (route.unsupported) {
+          $('[data-result-summary]').textContent = 'Some GCC-to-GCC requests may be coordinated depending on availability, route, pickup point, destination and regulations. Send details on WhatsApp to confirm.';
+          $('[data-result-distance]').textContent = 'Depends on route';
+          $('[data-result-time]').textContent = 'Confirm on WhatsApp';
+          $('[data-result-type]').textContent = 'Custom request';
+          $('[data-result-support]').textContent = 'Needs confirmation';
+          $('[data-result-border]').textContent = 'The request may involve border procedures or long-distance routing depending on country and city.';
+        } else {
+          $('[data-result-summary]').textContent = route.data[2];
+          $('[data-result-distance]').textContent = route.data[0];
+          $('[data-result-time]').textContent = route.data[1];
+          $('[data-result-type]').textContent = route.data[2];
+          $('[data-result-support]').textContent = 'Local estimate';
+          $('[data-result-border]').textContent = 'Trip time may be affected by King Fahd Causeway, border procedures, traffic or stops.';
+        }
+        $('[data-result-airport]').textContent = airportNote(route);
+        $('[data-result-family]').textContent = familyNote();
+        $('[data-result-parcel]').textContent = parcelNote();
+        waLink.href = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+      }
+      fillSelect(fromSelect);
+      fillSelect(toSelect);
+      fromSelect.value = 'manama';
+      toSelect.value = 'khobar';
+      [fromSelect, toSelect, typeSelect, passengersInput, luggageInput, dateInput, timeInput, notesInput].forEach((el) => {
+        el.addEventListener('input', update);
+        el.addEventListener('change', update);
+      });
+      copyButton.addEventListener('click', async () => {
+        const text = decodeURIComponent((waLink.href.split('text=')[1] || '').replace(/\+/g, ' '));
+        try {
+          await navigator.clipboard.writeText(text);
+          copyButton.querySelector('span').textContent = 'Copied';
+          setTimeout(() => { copyButton.querySelector('span').textContent = 'Copy request details'; }, 1800);
+        } catch {
+          copyButton.querySelector('span').textContent = 'Copy from WhatsApp message';
+        }
+      });
+      resetButton.addEventListener('click', () => {
+        fromSelect.value = 'manama';
+        toSelect.value = 'khobar';
+        typeSelect.value = 'passenger';
+        passengersInput.value = '2';
+        luggageInput.value = '2';
+        dateInput.value = '';
+        timeInput.value = '';
+        notesInput.value = '';
+        update();
+      });
+      update();
+    })();
+  </script>
+  <script src="../../site.js"></script>
+  <script defer src="../../file-protocol-links.js"></script>
+  <script defer src="../../assets/analytics-loader.js"></script>
+</body>
+</html>
