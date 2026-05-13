@@ -40,7 +40,7 @@ test.describe('English site', () => {
 
 test.describe('English hub route grid', () => {
   test('every EN route from sitemap is linked from #gcc-routes', async ({ page }) => {
-    await page.goto('/bahrain-saudi-gcc-transport/en/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/bahrain-saudi-gcc-transport/', { waitUntil: 'domcontentloaded' });
     const routePaths = EN_ROUTES.filter((p) => p.includes('/en/') && !p.endsWith('/en/'));
     expect(routePaths.length).toBeGreaterThan(0);
     for (const path of routePaths) {
@@ -57,7 +57,7 @@ test.describe('Mobile layout smoke', () => {
   test.use({ viewport: { width: 390, height: 844 } });
 
   test('English home: nav and hero fit without horizontal page scroll', async ({ page }) => {
-    await page.goto('/bahrain-saudi-gcc-transport/en/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/bahrain-saudi-gcc-transport/', { waitUntil: 'domcontentloaded' });
     const scrollOverflow = await page.evaluate(() => {
       return document.documentElement.scrollWidth - document.documentElement.clientWidth;
     });
@@ -77,7 +77,7 @@ test.describe('English home very narrow', () => {
   test.use({ viewport: { width: 320, height: 568 } });
 
   test('no horizontal page overflow at 320px', async ({ page }) => {
-    await page.goto('/bahrain-saudi-gcc-transport/en/', { waitUntil: 'domcontentloaded' });
+    await page.goto('/bahrain-saudi-gcc-transport/', { waitUntil: 'domcontentloaded' });
     const scrollOverflow = await page.evaluate(() => {
       return document.documentElement.scrollWidth - document.documentElement.clientWidth;
     });
