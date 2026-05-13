@@ -28,3 +28,27 @@
 /calculators/retirement-savings                /calculators/retirement-calculator/                301
 /calculators/retirement-savings/               /calculators/retirement-calculator/               301
 # --- calc-slug-301-end ---
+
+# GCC transport English trailing-slash canonicalization (SEO-safe)
+/bahrain-saudi-gcc-transport/en /bahrain-saudi-gcc-transport/en/ 301
+/bahrain-saudi-gcc-transport/en/about /bahrain-saudi-gcc-transport/en/about/ 301
+/bahrain-saudi-gcc-transport/en/contact /bahrain-saudi-gcc-transport/en/contact/ 301
+/bahrain-saudi-gcc-transport/en/gcc-destinations /bahrain-saudi-gcc-transport/en/gcc-destinations/ 301
+/bahrain-saudi-gcc-transport/en/passenger-transport /bahrain-saudi-gcc-transport/en/passenger-transport/ 301
+/bahrain-saudi-gcc-transport/en/parcel-delivery /bahrain-saudi-gcc-transport/en/parcel-delivery/ 301
+/bahrain-saudi-gcc-transport/en/gcc-transport-planner /bahrain-saudi-gcc-transport/en/gcc-transport-planner/ 301
+/bahrain-saudi-gcc-transport/en/airport-pickup-planner /bahrain-saudi-gcc-transport/en/airport-pickup-planner/ 301
+/bahrain-saudi-gcc-transport/en/bahrain-to-saudi /bahrain-saudi-gcc-transport/en/bahrain-to-saudi/ 301
+/bahrain-saudi-gcc-transport/en/bahrain-to-khobar /bahrain-saudi-gcc-transport/en/bahrain-to-khobar/ 301
+/bahrain-saudi-gcc-transport/en/bahrain-to-dammam /bahrain-saudi-gcc-transport/en/bahrain-to-dammam/ 301
+/bahrain-saudi-gcc-transport/en/bahrain-to-riyadh /bahrain-saudi-gcc-transport/en/bahrain-to-riyadh/ 301
+/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait /bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/ 301
+/bahrain-saudi-gcc-transport/en/bahrain-to-qatar /bahrain-saudi-gcc-transport/en/bahrain-to-qatar/ 301
+/bahrain-saudi-gcc-transport/en/bahrain-to-oman /bahrain-saudi-gcc-transport/en/bahrain-to-oman/ 301
+/bahrain-saudi-gcc-transport/en/bahrain-to-uae /bahrain-saudi-gcc-transport/en/bahrain-to-uae/ 301
+/bahrain-saudi-gcc-transport/en/bahrain-to-dubai /bahrain-saudi-gcc-transport/en/bahrain-to-dubai/ 301
+/bahrain-saudi-gcc-transport/en/bahrain-to-iraq /bahrain-saudi-gcc-transport/en/bahrain-to-iraq/ 301
+/bahrain-saudi-gcc-transport/en/saudi-to-bahrain /bahrain-saudi-gcc-transport/en/saudi-to-bahrain/ 301
+/bahrain-saudi-gcc-transport/en/khobar-to-bahrain /bahrain-saudi-gcc-transport/en/khobar-to-bahrain/ 301
+/bahrain-saudi-gcc-transport/en/dammam-to-bahrain /bahrain-saudi-gcc-transport/en/dammam-to-bahrain/ 301
+/bahrain-saudi-gcc-transport/en/riyadh-to-bahrain /bahrain-saudi-gcc-transport/en/riyadh-to-bahrain/ 301
