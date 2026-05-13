@@ -8,7 +8,7 @@
   ],
   "assets": {
     "binding": "ASSETS",
-    "directory": "_site",
+    "directory": ".",
     "run_worker_first": true
   },
   "routes": [
