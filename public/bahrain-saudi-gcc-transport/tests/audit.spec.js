@@ -76,6 +76,16 @@ test.describe('Interactive UI', () => {
     await expect(page).toHaveURL(/\/en\/bahrain-to-khobar\/?/);
   });
 
+  test('Arabic route ignores old saved English preference', async ({ page }) => {
+    await page.goto('/bahrain-saudi-gcc-transport/');
+    await page.evaluate(() => localStorage.setItem('vendora_lang', 'en'));
+    await page.goto('/bahrain-saudi-gcc-transport/bahrain-to-dammam/', { waitUntil: 'domcontentloaded' });
+
+    await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
+    await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+    await expect(page.locator('h1').first()).toContainText('تاكسي خاص من البحرين إلى الدمام');
+  });
+
   test('Arabic contact: EN pill falls back to English hub', async ({ page }) => {
     await page.goto('/bahrain-saudi-gcc-transport/contact/');
     const link = page.locator('a.lang-toggle[href*="bahrain-saudi-gcc-transport/en/"]');

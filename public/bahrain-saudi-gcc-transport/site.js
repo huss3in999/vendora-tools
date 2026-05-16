@@ -11,8 +11,18 @@
   const firstTouchKey = 'vendora_transport_first_touch';
   const sessionPageViewsKey = 'vendora_transport_session_page_views';
   const previousPathKey = 'vendora_transport_previous_path';
+
+  function getPageLanguage() {
+    const path = window.location.pathname.replace(/\\/g, '/');
+    const htmlLang = (document.documentElement.getAttribute('lang') || '').toLowerCase();
+    if (path.includes('/bahrain-saudi-gcc-transport/en/') || htmlLang.startsWith('en')) {
+      return 'en';
+    }
+    return 'ar';
+  }
+
   const state = {
-    lang: localStorage.getItem('vendora_lang') || 'ar',
+    lang: getPageLanguage(),
   };
   const leadState = {
     maxScrollDepth: 0,
