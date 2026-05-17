@@ -1,8 +1,29 @@
 import { test, expect } from '@playwright/test';
 import { existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = 'public/bahrain-saudi-gcc-transport';
+const testDir = dirname(fileURLToPath(import.meta.url));
+
+function findProjectRoot() {
+  const cwd = process.cwd();
+  const candidates = [
+    cwd,
+    join(cwd, 'bahrain-saudi-gcc-transport'),
+    join(cwd, 'public', 'bahrain-saudi-gcc-transport'),
+    join(testDir, '..'),
+  ].map((candidate) => resolve(candidate));
+
+  for (const candidate of candidates) {
+    if (existsSync(join(candidate, 'index.html')) && existsSync(join(candidate, 'site.js'))) {
+      return candidate;
+    }
+  }
+
+  throw new Error(`Could not find bahrain-saudi-gcc-transport root from ${cwd}`);
+}
+
+const root = findProjectRoot();
 
 const mustExist = [
   'index.html',
