@@ -10,7 +10,7 @@
 - Availability positioning: 24/7 private transport requests, subject to vehicle, driver, timing, passenger, luggage, border, and route availability.
 - Primary geography: Bahrain, Saudi Arabia, King Fahd Causeway, Eastern Province, Khobar, Dammam, Riyadh, Jubail, Qatar, Kuwait, United Arab Emirates, Dubai, Oman, and selected wider GCC corridors.
 - Causeway capability: Bahrain-to-Saudi and Saudi-to-Bahrain routes are built around King Fahd Causeway transit, with traveler guidance for border timing, passports, visas, GCC residence status, and private cross-border door-to-door coordination.
-- Structured data status: route pages use verified geo-structured JSON-LD mapping with `TaxiService` / route service entities, Wikidata-backed `areaServed` objects, and `AggregateRating` placeholders for TaxiService nodes.
+- Structured data status: route pages use verified geo-structured JSON-LD mapping with `TaxiService` / route service entities and Wikidata-backed `areaServed` objects. Rating markup is not used unless supported by visible real review or rating evidence on the same page.
 
 ## Structured geo entities used by the route schema
 

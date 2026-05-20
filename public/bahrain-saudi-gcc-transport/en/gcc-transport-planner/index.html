@@ -177,14 +177,34 @@
       "name": "GCC private transport planner",
       "serviceType": "Private GCC transport, airport transfer, passenger transport, parcel and custom delivery coordination",
       "url": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/",
-      "provider": { "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/#organization" },
+      "provider": {
+        "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/#organization"
+      },
       "areaServed": [
-        { "@type": "Country", "name": "Bahrain" },
-        { "@type": "Country", "name": "Saudi Arabia" },
-        { "@type": "Country", "name": "Kuwait" },
-        { "@type": "Country", "name": "Qatar" },
-        { "@type": "Country", "name": "United Arab Emirates" },
-        { "@type": "Country", "name": "Oman" }
+        {
+          "@type": "Country",
+          "name": "Bahrain"
+        },
+        {
+          "@type": "Country",
+          "name": "Saudi Arabia"
+        },
+        {
+          "@type": "Country",
+          "name": "Kuwait"
+        },
+        {
+          "@type": "Country",
+          "name": "Qatar"
+        },
+        {
+          "@type": "Country",
+          "name": "United Arab Emirates"
+        },
+        {
+          "@type": "Country",
+          "name": "Oman"
+        }
       ],
       "description": "Coordination for private trips, family and passenger transport, airport pickup and drop-off, and parcel or custom item delivery between Bahrain, Saudi Arabia and GCC destinations depending on availability, regulations and request details."
     },
@@ -192,29 +212,109 @@
       "@type": "BreadcrumbList",
       "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/#breadcrumb",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://getvendora.net/bahrain-saudi-gcc-transport/en/" },
-        { "@type": "ListItem", "position": 2, "name": "GCC Transport Planner", "item": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/" }
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://getvendora.net/bahrain-saudi-gcc-transport/en/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "GCC Transport Planner",
+          "item": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/"
+        }
       ]
     },
     {
       "@type": "FAQPage",
       "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/#faq",
       "mainEntity": [
-        { "@type": "Question", "name": "How long does Bahrain to Khobar take?", "acceptedAnswer": { "@type": "Answer", "text": "Bahrain or Manama to Khobar is often around 45 minutes to 1.5 hours, but timing is approximate and changes with King Fahd Causeway, border procedures, traffic and final drop-off point." } },
-        { "@type": "Question", "name": "How far is Bahrain to Dammam?", "acceptedAnswer": { "@type": "Answer", "text": "Bahrain or Manama to Dammam is usually around 90 to 130 km depending on the pickup point and final destination." } },
-        { "@type": "Question", "name": "Can I book Saudi to Bahrain transport?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Saudi to Bahrain transport requests can be checked depending on city, timing and availability, including Khobar, Dammam and Riyadh to Bahrain." } },
-        { "@type": "Question", "name": "Can I book Dammam Airport to Bahrain?", "acceptedAnswer": { "@type": "Answer", "text": "Dammam Airport to Bahrain pickup or drop-off can be coordinated depending on flight time, passenger count, luggage and vehicle availability." } },
-        { "@type": "Question", "name": "Can families travel with luggage?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Family trips with luggage can be arranged depending on passenger count, luggage size and the suitable vehicle available." } },
-        { "@type": "Question", "name": "Can I request parcel delivery between Bahrain and Saudi Arabia?", "acceptedAnswer": { "@type": "Answer", "text": "Parcel or document delivery may be requested depending on item type, size, destination, regulations and availability. Prohibited or restricted items are not accepted." } },
-        { "@type": "Question", "name": "Are prices fixed?", "acceptedAnswer": { "@type": "Answer", "text": "Fixed prices are not listed here because pricing depends on route, timing, passengers, luggage, request type and availability. Send the details on WhatsApp to confirm." } },
-        { "@type": "Question", "name": "Why are times only estimates?", "acceptedAnswer": { "@type": "Answer", "text": "Travel time depends on pickup point, final destination, traffic, King Fahd Causeway, border procedures, stops and travel time." } },
-        { "@type": "Question", "name": "Can I request Kuwait, Qatar or UAE to Bahrain transport?", "acceptedAnswer": { "@type": "Answer", "text": "Some return trips to Bahrain can be coordinated depending on route, availability and regulations. Send pickup point, destination and date on WhatsApp to confirm." } },
-        { "@type": "Question", "name": "Can I request GCC-to-GCC transport?", "acceptedAnswer": { "@type": "Answer", "text": "Some GCC-to-GCC requests may be coordinated depending on availability, route, pickup point, destination and regulations. Send details on WhatsApp to confirm." } }
+        {
+          "@type": "Question",
+          "name": "How long does Bahrain to Khobar take?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bahrain or Manama to Khobar is often around 45 minutes to 1.5 hours, but timing is approximate and changes with King Fahd Causeway, border procedures, traffic and final drop-off point."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How far is Bahrain to Dammam?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bahrain or Manama to Dammam is usually around 90 to 130 km depending on the pickup point and final destination."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I book Saudi to Bahrain transport?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Saudi to Bahrain transport requests can be checked depending on city, timing and availability, including Khobar, Dammam and Riyadh to Bahrain."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I book Dammam Airport to Bahrain?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Dammam Airport to Bahrain pickup or drop-off can be coordinated depending on flight time, passenger count, luggage and vehicle availability."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can families travel with luggage?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Family trips with luggage can be arranged depending on passenger count, luggage size and the suitable vehicle available."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I request parcel delivery between Bahrain and Saudi Arabia?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Parcel or document delivery may be requested depending on item type, size, destination, regulations and availability. Prohibited or restricted items are not accepted."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are prices fixed?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Fixed prices are not listed here because pricing depends on route, timing, passengers, luggage, request type and availability. Send the details on WhatsApp to confirm."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why are times only estimates?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Travel time depends on pickup point, final destination, traffic, King Fahd Causeway, border procedures, stops and travel time."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I request Kuwait, Qatar or UAE to Bahrain transport?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Some return trips to Bahrain can be coordinated depending on route, availability and regulations. Send pickup point, destination and date on WhatsApp to confirm."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I request GCC-to-GCC transport?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Some GCC-to-GCC requests may be coordinated depending on availability, route, pickup point, destination and regulations. Send details on WhatsApp to confirm."
+          }
+        }
       ]
     }
   ]
 }
-  </script>
+</script>
 </head>
 <body class="home-premium planner-page lang-en">
   <header class="topbar">

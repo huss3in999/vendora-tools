@@ -33,25 +33,174 @@
 {
   "@context": "https://schema.org",
   "@graph": [
-    {"@type":"Organization","@id":"https://getvendora.net/bahrain-saudi-gcc-transport/#organization","name":"Vendora Transport","url":"https://getvendora.net/bahrain-saudi-gcc-transport/","logo":"https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png"},
-    {"@type":"WebPage","@id":"https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/#webpage","url":"https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/","name":"مخطط توصيل واستقبال المطار","description":"أداة عربية لتخطيط طلبات توصيل واستقبال مطارات البحرين والسعودية ودول الخليج مع رسالة واتساب جاهزة.","inLanguage":"ar-BH","isPartOf":{"@type":"WebSite","@id":"https://getvendora.net/bahrain-saudi-gcc-transport/#website","url":"https://getvendora.net/bahrain-saudi-gcc-transport/","name":"Vendora Transport"},"breadcrumb":{"@id":"https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/#breadcrumb"}},
-    {"@type":"Service","@id":"https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/#service","name":"توصيل واستقبال مطارات الخليج","serviceType":"Airport pickup and drop-off coordination","url":"https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/","provider":{"@id":"https://getvendora.net/bahrain-saudi-gcc-transport/#organization"},"areaServed":[{"@type":"Country","name":"Bahrain"},{"@type":"Country","name":"Saudi Arabia"},{"@type":"Country","name":"Kuwait"},{"@type":"Country","name":"Qatar"},{"@type":"Country","name":"United Arab Emirates"},{"@type":"Country","name":"Oman"}],"description":"تنسيق توصيل واستقبال من وإلى مطارات البحرين والسعودية والكويت وقطر والإمارات وعمان حسب التوفر ووقت الرحلة والشنط والركاب."},
-    {"@type":"BreadcrumbList","@id":"https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"الرئيسية","item":"https://getvendora.net/bahrain-saudi-gcc-transport/"},{"@type":"ListItem","position":2,"name":"مخطط توصيل المطار","item":"https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/"}]},
-    {"@type":"FAQPage","@id":"https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/#faq","mainEntity":[
-      {"@type":"Question","name":"هل يوجد توصيل إلى مطار الدمام من البحرين؟","acceptedAnswer":{"@type":"Answer","text":"نعم، يمكن طلب توصيل من البحرين أو المنامة إلى مطار الدمام حسب التوقيت والتوفر، والمدة غالباً تقديرية بسبب الجسر والحدود وحركة المرور."}},
-      {"@type":"Question","name":"هل يمكن الاستقبال من مطار الدمام إلى البحرين؟","acceptedAnswer":{"@type":"Answer","text":"يمكن تنسيق استقبال من مطار الدمام إلى البحرين حسب وقت الرحلة وعدد الركاب والشنط وتوفر المركبة."}},
-      {"@type":"Question","name":"هل يمكن التوصيل من الخبر أو الدمام إلى مطار البحرين؟","acceptedAnswer":{"@type":"Answer","text":"نعم، يمكن طلب رحلات من الخبر أو الدمام إلى مطار البحرين مع مشاركة نقطة الاستلام ووقت الرحلة."}},
-      {"@type":"Question","name":"هل أحتاج إرسال رقم الرحلة؟","acceptedAnswer":{"@type":"Answer","text":"إرسال رقم الرحلة يساعد على تنسيق الاستقبال أو التوصيل، خصوصاً عند الوصول أو التأخير."}},
-      {"@type":"Question","name":"هل يمكن التوصيل مع شنط كثيرة؟","acceptedAnswer":{"@type":"Answer","text":"يمكن ذلك حسب عدد الشنط وحجمها وعدد الركاب ونوع المركبة المتاحة."}},
-      {"@type":"Question","name":"هل السعر ثابت؟","acceptedAnswer":{"@type":"Answer","text":"لا يوجد سعر ثابت في هذه الصفحة، لأن السعر يعتمد على المسار والوقت والركاب والشنط والتوفر."}},
-      {"@type":"Question","name":"لماذا الوقت تقديري؟","acceptedAnswer":{"@type":"Answer","text":"لأن الوقت يتغير حسب نقطة الانطلاق والوجهة وحركة المرور وإجراءات المطار والجسر والحدود."}},
-      {"@type":"Question","name":"هل يمكن طلب سيارة عائلية للمطار؟","acceptedAnswer":{"@type":"Answer","text":"يمكن طلب سيارة مناسبة للعائلة حسب عدد الركاب والشنط والتوفر."}},
-      {"@type":"Question","name":"هل يمكن التوصيل إلى مطارات الكويت أو قطر أو الإمارات؟","acceptedAnswer":{"@type":"Answer","text":"يمكن تنسيق بعض طلبات مطارات الخليج حسب المسار والتوفر والأنظمة."}},
-      {"@type":"Question","name":"كيف أحجز عبر واتساب؟","acceptedAnswer":{"@type":"Answer","text":"استخدم المخطط واختر المطار ونوع الخدمة ثم أرسل رسالة واتساب الجاهزة مع الرحلة والركاب والشنط."}}
-    ]}
+    {
+      "@type": "Organization",
+      "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/#organization",
+      "name": "Vendora Transport",
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/",
+      "logo": "https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png"
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/#webpage",
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/",
+      "name": "مخطط توصيل واستقبال المطار",
+      "description": "أداة عربية لتخطيط طلبات توصيل واستقبال مطارات البحرين والسعودية ودول الخليج مع رسالة واتساب جاهزة.",
+      "inLanguage": "ar-BH",
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/#website",
+        "url": "https://getvendora.net/bahrain-saudi-gcc-transport/",
+        "name": "Vendora Transport"
+      },
+      "breadcrumb": {
+        "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/#breadcrumb"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/#service",
+      "name": "توصيل واستقبال مطارات الخليج",
+      "serviceType": "Airport pickup and drop-off coordination",
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/",
+      "provider": {
+        "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/#organization"
+      },
+      "areaServed": [
+        {
+          "@type": "Country",
+          "name": "Bahrain"
+        },
+        {
+          "@type": "Country",
+          "name": "Saudi Arabia"
+        },
+        {
+          "@type": "Country",
+          "name": "Kuwait"
+        },
+        {
+          "@type": "Country",
+          "name": "Qatar"
+        },
+        {
+          "@type": "Country",
+          "name": "United Arab Emirates"
+        },
+        {
+          "@type": "Country",
+          "name": "Oman"
+        }
+      ],
+      "description": "تنسيق توصيل واستقبال من وإلى مطارات البحرين والسعودية والكويت وقطر والإمارات وعمان حسب التوفر ووقت الرحلة والشنط والركاب."
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://getvendora.net/bahrain-saudi-gcc-transport/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مخطط توصيل المطار",
+          "item": "https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل يوجد توصيل إلى مطار الدمام من البحرين؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، يمكن طلب توصيل من البحرين أو المنامة إلى مطار الدمام حسب التوقيت والتوفر، والمدة غالباً تقديرية بسبب الجسر والحدود وحركة المرور."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل يمكن الاستقبال من مطار الدمام إلى البحرين؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "يمكن تنسيق استقبال من مطار الدمام إلى البحرين حسب وقت الرحلة وعدد الركاب والشنط وتوفر المركبة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل يمكن التوصيل من الخبر أو الدمام إلى مطار البحرين؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، يمكن طلب رحلات من الخبر أو الدمام إلى مطار البحرين مع مشاركة نقطة الاستلام ووقت الرحلة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل أحتاج إرسال رقم الرحلة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "إرسال رقم الرحلة يساعد على تنسيق الاستقبال أو التوصيل، خصوصاً عند الوصول أو التأخير."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل يمكن التوصيل مع شنط كثيرة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "يمكن ذلك حسب عدد الشنط وحجمها وعدد الركاب ونوع المركبة المتاحة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل السعر ثابت؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا يوجد سعر ثابت في هذه الصفحة، لأن السعر يعتمد على المسار والوقت والركاب والشنط والتوفر."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "لماذا الوقت تقديري؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لأن الوقت يتغير حسب نقطة الانطلاق والوجهة وحركة المرور وإجراءات المطار والجسر والحدود."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل يمكن طلب سيارة عائلية للمطار؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "يمكن طلب سيارة مناسبة للعائلة حسب عدد الركاب والشنط والتوفر."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل يمكن التوصيل إلى مطارات الكويت أو قطر أو الإمارات؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "يمكن تنسيق بعض طلبات مطارات الخليج حسب المسار والتوفر والأنظمة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف أحجز عبر واتساب؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "استخدم المخطط واختر المطار ونوع الخدمة ثم أرسل رسالة واتساب الجاهزة مع الرحلة والركاب والشنط."
+          }
+        }
+      ]
+    }
   ]
 }
-  </script>
+</script>
 </head>
 <body class="home-premium airport-page">
   <header class="topbar">
