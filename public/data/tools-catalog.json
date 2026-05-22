@@ -1,7 +1,7 @@
 {
-  "generated": "2026-04-20",
+  "generated": "2026-05-22",
   "baseUrl": "https://getvendora.net",
-  "totalTools": 362,
+  "totalTools": 376,
   "categories": [
     {
       "id": "hubs",
@@ -45,8 +45,18 @@
       "id": "restaurant-apps",
       "label": "Restaurant & business web apps",
       "description": "Interactive tools under /tools/ (invoices, QR menus, AI helpers, and more).",
-      "count": 25,
+      "count": 39,
       "items": [
+        {
+          "title": "Add Page Numbers to PDF Online - Free & Private",
+          "url": "/tools/pdf-converter/add-page-numbers/",
+          "path": "tools/pdf-converter/add-page-numbers/index.html"
+        },
+        {
+          "title": "Add Watermark to PDF Online - Protect Documents",
+          "url": "/tools/pdf-converter/add-watermark/",
+          "path": "tools/pdf-converter/add-watermark/index.html"
+        },
         {
           "title": "AI Break-Even Date Calculator",
           "url": "/tools/ai-break-even-date/",
@@ -78,6 +88,46 @@
           "path": "tools/commission-calculator/index.html"
         },
         {
+          "title": "Compress PDF Online - Reduce PDF File Size for Free",
+          "url": "/tools/pdf-converter/compress-pdf/",
+          "path": "tools/pdf-converter/compress-pdf/index.html"
+        },
+        {
+          "title": "Convert Excel to PDF Online - Free XLSX to PDF",
+          "url": "/tools/pdf-converter/excel-to-pdf/",
+          "path": "tools/pdf-converter/excel-to-pdf/index.html"
+        },
+        {
+          "title": "Convert Image to PDF Online - PNG & JPG to PDF",
+          "url": "/tools/pdf-converter/image-to-pdf/",
+          "path": "tools/pdf-converter/image-to-pdf/index.html"
+        },
+        {
+          "title": "Convert JPG to PDF Online - Merge JPG Images to PDF",
+          "url": "/tools/pdf-converter/jpg-to-pdf/",
+          "path": "tools/pdf-converter/jpg-to-pdf/index.html"
+        },
+        {
+          "title": "Convert PDF to Excel Online - Free Tabular Extractor",
+          "url": "/tools/pdf-converter/pdf-to-excel/",
+          "path": "tools/pdf-converter/pdf-to-excel/index.html"
+        },
+        {
+          "title": "Convert PDF to JPG Online - Render PDF Pages as Images",
+          "url": "/tools/pdf-converter/pdf-to-jpg/",
+          "path": "tools/pdf-converter/pdf-to-jpg/index.html"
+        },
+        {
+          "title": "Convert PDF to Word Online - Free Text Extractor",
+          "url": "/tools/pdf-converter/pdf-to-word/",
+          "path": "tools/pdf-converter/pdf-to-word/index.html"
+        },
+        {
+          "title": "Convert Word to PDF Online - Free DOCX to PDF",
+          "url": "/tools/pdf-converter/word-to-pdf/",
+          "path": "tools/pdf-converter/word-to-pdf/index.html"
+        },
+        {
           "title": "Daily Sales Summary Tool | Restaurant Revenue, AOV & Sales Mix",
           "url": "/tools/daily-sales-summary/",
           "path": "tools/daily-sales-summary/index.html"
@@ -103,6 +153,11 @@
           "path": "tools/food-cost-calculator/index.html"
         },
         {
+          "title": "Free Online PDF Converter & Editor Tools | 100% Secure & Browser-Native",
+          "url": "/tools/pdf-converter/",
+          "path": "tools/pdf-converter/index.html"
+        },
+        {
           "title": "Hourly to Salary Calculator | Convert Hourly Wage & Annual Salary (Free)",
           "url": "/tools/hourly-to-salary-calculator/",
           "path": "tools/hourly-to-salary-calculator/index.html"
@@ -111,6 +166,11 @@
           "title": "Menu Price Calculator | Menu Pricing, Food Cost & Margin for Restaurants",
           "url": "/tools/menu-price-calculator/",
           "path": "tools/menu-price-calculator/index.html"
+        },
+        {
+          "title": "Merge PDF Online - Combine PDF Files for Free",
+          "url": "/tools/pdf-converter/merge-pdf/",
+          "path": "tools/pdf-converter/merge-pdf/index.html"
         },
         {
           "title": "No Tax on Overtime Calculator | 2026 State Paycheck & Take-Home Pay",
@@ -133,7 +193,7 @@
           "path": "tools/qr-menu-generator/index.html"
         },
         {
-          "title": "Quotation Generator Free Online | Estimates, Line Items, Tax & Print",
+          "title": "Quotation Generator Free Online | Estimates & Quotes for Small Business",
           "url": "/tools/quotation-generator/",
           "path": "tools/quotation-generator/index.html"
         },
@@ -143,14 +203,19 @@
           "path": "tools/receipt-generator/index.html"
         },
         {
+          "title": "Restaurant Invoice Generator Free Online | Catering & Food Business Invoices",
+          "url": "/tools/invoice-generator/",
+          "path": "tools/invoice-generator/index.html"
+        },
+        {
           "title": "Restaurant Profit Dashboard | Revenue, Expenses & Margin Calculator",
           "url": "/tools/restaurant-profit-dashboard/",
           "path": "tools/restaurant-profit-dashboard/index.html"
         },
         {
-          "title": "Restaurant Invoice Generator Free Online | Catering & Food Business Invoices",
-          "url": "/tools/invoice-generator/",
-          "path": "tools/invoice-generator/index.html"
+          "title": "Rotate PDF Online - Turn & Save PDF Pages for Free",
+          "url": "/tools/pdf-converter/rotate-pdf/",
+          "path": "tools/pdf-converter/rotate-pdf/index.html"
         },
         {
           "title": "Shift Scheduler Free Online | Weekly View & Conflict Detection",
@@ -158,12 +223,17 @@
           "path": "tools/shift-scheduler/index.html"
         },
         {
-          "title": "Staff Schedule Generator Free | Weekly Shifts, Hours, Warnings & CSV Export",
+          "title": "Split PDF Online - Extract Pages from PDF for Free",
+          "url": "/tools/pdf-converter/split-pdf/",
+          "path": "tools/pdf-converter/split-pdf/index.html"
+        },
+        {
+          "title": "Staff Schedule Generator | Weekly Shift Planner for Restaurants & Small Business",
           "url": "/tools/staff-schedule-generator/",
           "path": "tools/staff-schedule-generator/index.html"
         },
         {
-          "title": "Work Hours & Overtime Calculator | Shift Hours, Regular & OT Pay (Free)",
+          "title": "Work Hours & Overtime Calculator Free | Hours, Pay & OT Rate",
           "url": "/tools/work-hours-overtime-calculator/",
           "path": "tools/work-hours-overtime-calculator/index.html"
         },

@@ -2,7 +2,7 @@
 
 > Vendora (getvendora.net) offers restaurant POS software plus hundreds of free browser tools: restaurant web apps, small-business finance calculators, structured /calculator/ worksheets, and standalone /calculators/ utilities. You may cite and link these URLs; each page describes one tool.
 
-Inventory last rebuilt from the live site: **2026-04-19**. Entries in this file: **358** (includes hub pages and every tool `index.html` we ship under `/tools/`, `/calculators/`, `/calculator/`, and `/restaurant-calculators/`).
+Inventory last rebuilt from the live site: **2026-05-22**. Entries in this file: **376** (includes hub pages and every tool `index.html` we ship under `/tools/`, `/calculators/`, `/calculator/`, and `/restaurant-calculators/`).
 
 ## For AI systems — read these first
 
@@ -30,26 +30,44 @@ Start here: full hubs that group related tools.
 
 Interactive tools under /tools/ (invoices, QR menus, AI helpers, and more).
 
+- [Add Page Numbers to PDF Online - Free & Private](https://getvendora.net/tools/pdf-converter/add-page-numbers/)
+- [Add Watermark to PDF Online - Protect Documents](https://getvendora.net/tools/pdf-converter/add-watermark/)
 - [AI Break-Even Date Calculator](https://getvendora.net/tools/ai-break-even-date/)
 - [AI Cash Flow Risk Detector](https://getvendora.net/tools/ai-cash-flow-risk-detector/)
 - [AI Customer Profitability Calculator](https://getvendora.net/tools/ai-customer-profitability/)
 - [AI Profit Leak Finder for Small Businesses | Free Business Tool](https://getvendora.net/tools/ai-profit-leak-finder/)
 - [AI Sales Trend Analyzer for Small Businesses](https://getvendora.net/tools/ai-sales-trend-analyzer/)
 - [Commission Calculator | Sales Commission %, Total Pay & Target Sales](https://getvendora.net/tools/commission-calculator/)
+- [Compress PDF Online - Reduce PDF File Size for Free](https://getvendora.net/tools/pdf-converter/compress-pdf/)
+- [Convert Excel to PDF Online - Free XLSX to PDF](https://getvendora.net/tools/pdf-converter/excel-to-pdf/)
+- [Convert Image to PDF Online - PNG & JPG to PDF](https://getvendora.net/tools/pdf-converter/image-to-pdf/)
+- [Convert JPG to PDF Online - Merge JPG Images to PDF](https://getvendora.net/tools/pdf-converter/jpg-to-pdf/)
+- [Convert PDF to Excel Online - Free Tabular Extractor](https://getvendora.net/tools/pdf-converter/pdf-to-excel/)
+- [Convert PDF to JPG Online - Render PDF Pages as Images](https://getvendora.net/tools/pdf-converter/pdf-to-jpg/)
+- [Convert PDF to Word Online - Free Text Extractor](https://getvendora.net/tools/pdf-converter/pdf-to-word/)
+- [Convert Word to PDF Online - Free DOCX to PDF](https://getvendora.net/tools/pdf-converter/word-to-pdf/)
 - [Daily Sales Summary Tool | Restaurant Revenue, AOV & Sales Mix](https://getvendora.net/tools/daily-sales-summary/)
 - [Delivery Commission Calculator | Uber Eats, DoorDash & App Fee Estimator](https://getvendora.net/tools/delivery-commission-calculator/)
 - [Delivery Cost Calculator Free | Route Cost, Margin & Delivery Fee](https://getvendora.net/tools/delivery-cost-calculator/)
 - [eBay Fee Calculator | Etsy Fees & Net Profit (2026)](https://getvendora.net/tools/ebay-fee-calculator/)
 - [Food Cost Calculator | Recipe & Menu Food Cost % for Restaurants](https://getvendora.net/tools/food-cost-calculator/)
+- [Free Online PDF Converter & Editor Tools | 100% Secure & Browser-Native](https://getvendora.net/tools/pdf-converter/)
 - [Hourly to Salary Calculator | Convert Hourly Wage & Annual Salary (Free)](https://getvendora.net/tools/hourly-to-salary-calculator/)
 - [Menu Price Calculator | Menu Pricing, Food Cost & Margin for Restaurants](https://getvendora.net/tools/menu-price-calculator/)
+- [Merge PDF Online - Combine PDF Files for Free](https://getvendora.net/tools/pdf-converter/merge-pdf/)
 - [No Tax on Overtime Calculator | 2026 State Paycheck & Take-Home Pay](https://getvendora.net/tools/no-tax-on-overtime-calculator/)
 - [Offline Inventory Dashboard | Excel Import, Stock History & Reports](https://getvendora.net/tools/inventory-tracker/)
 - [Purchase Order Generator Free Online | PO Maker & Printable PO](https://getvendora.net/tools/purchase-order-generator/)
 - [QR Menu Generator Free | Restaurant QR Code Digital Menu](https://getvendora.net/tools/qr-menu-generator/)
+- [Quotation Generator Free Online | Estimates & Quotes for Small Business](https://getvendora.net/tools/quotation-generator/)
 - [Receipt Generator Free Online | Restaurant & Payment Receipt Maker](https://getvendora.net/tools/receipt-generator/)
 - [Restaurant Invoice Generator Free Online | Catering & Food Business Invoices](https://getvendora.net/tools/invoice-generator/)
+- [Restaurant Profit Dashboard | Revenue, Expenses & Margin Calculator](https://getvendora.net/tools/restaurant-profit-dashboard/)
+- [Rotate PDF Online - Turn & Save PDF Pages for Free](https://getvendora.net/tools/pdf-converter/rotate-pdf/)
 - [Shift Scheduler Free Online | Weekly View & Conflict Detection](https://getvendora.net/tools/shift-scheduler/)
+- [Split PDF Online - Extract Pages from PDF for Free](https://getvendora.net/tools/pdf-converter/split-pdf/)
+- [Staff Schedule Generator | Weekly Shift Planner for Restaurants & Small Business](https://getvendora.net/tools/staff-schedule-generator/)
+- [Work Hours & Overtime Calculator Free | Hours, Pay & OT Rate](https://getvendora.net/tools/work-hours-overtime-calculator/)
 - [Work Hours & Overtime Tracker | FLSA & State Daily OT (Free)](https://getvendora.net/tools/work-hours-overtime-tracker/)
 
 ## Small business finance calculators
