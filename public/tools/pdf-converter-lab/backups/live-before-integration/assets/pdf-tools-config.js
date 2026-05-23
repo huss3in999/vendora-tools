@@ -229,7 +229,7 @@ window.PdfToolsConfig = {
       supportedFormats: ".pdf",
       privacy: "Extracted entirely inside your browser.",
       status: "basic",
-      limitations: "Creates a real editable .docx from selectable PDF text. Complex layout, exact spacing, tables, images, and scanned pages may require OCR, Accuracy Mode, or manual review."
+      limitations: "Creates a real .docx from selectable PDF text. Complex text boxes, multi-column design, images, and scanned pages may require OCR or manual review."
     },
     {
       id: "pdf-to-powerpoint",
@@ -240,7 +240,7 @@ window.PdfToolsConfig = {
       supportedFormats: ".pdf",
       privacy: "Processed entirely inside your browser.",
       status: "basic",
-      limitations: "Creates a real .pptx file with one image-based slide per PDF page. Visual layout is preserved, but slide text and objects are not fully editable yet."
+      limitations: "Converts PDF pages into graphic slide backdrops. Fully editable vector PowerPoint converter is a future feature requiring a pro conversion engine."
     },
     {
       id: "pdf-to-excel",
@@ -251,7 +251,7 @@ window.PdfToolsConfig = {
       supportedFormats: ".pdf",
       privacy: "Processed entirely inside your browser.",
       status: "basic",
-      limitations: "Creates a real .xlsx workbook with editable cells from detected text positions. Borderless tables, merged cells, scanned PDFs, images, formulas, and complex layouts may require Accuracy Mode or OCR."
+      limitations: "Creates a real .xlsx workbook from detected text positions and table rows. Complex merged cells, images, colors, and scanned pages may require review or OCR."
     },
     {
       id: "pdf-to-pdfa",

@@ -1,0 +1,58 @@
+{
+  "project": "Vendora PDF Converter Lab",
+  "reportType": "diagnostic-report",
+  "mode": "known-fixtures",
+  "generatedAt": "2026-05-22T17:45:00+03:00",
+  "summary": {
+    "totalFiles": 3,
+    "passed": 3,
+    "failed": 0,
+    "recommendations": {
+      "docx": 1,
+      "xlsx": 1,
+      "ocr": 1
+    }
+  },
+  "rows": [
+    {
+      "fileName": "invoice-text.pdf",
+      "filePath": "../../e2e/fixtures/invoice-text.pdf",
+      "pageCount": 1,
+      "selectableText": "yes",
+      "recommendedOutput": "docx",
+      "difficulty": "easy",
+      "confidenceScore": 62,
+      "warnings": [],
+      "status": "pass",
+      "notes": "Diagnostic completed. This report checks signal extraction only, not recommendation accuracy. Existing e2e selectable text fixture."
+    },
+    {
+      "fileName": "table-heavy.pdf",
+      "filePath": "../../e2e/fixtures/table-heavy.pdf",
+      "pageCount": 1,
+      "selectableText": "yes",
+      "recommendedOutput": "xlsx",
+      "difficulty": "medium",
+      "confidenceScore": 78,
+      "warnings": [
+        "Tables are detected by alignment signals only. Merged cells and borderless tables may still be wrong."
+      ],
+      "status": "pass",
+      "notes": "Diagnostic completed. This report checks signal extraction only, not recommendation accuracy. Existing e2e table-heavy fixture."
+    },
+    {
+      "fileName": "invoice-scanned.pdf",
+      "filePath": "../../e2e/fixtures/invoice-scanned.pdf",
+      "pageCount": 1,
+      "selectableText": "no",
+      "recommendedOutput": "ocr",
+      "difficulty": "hard",
+      "confidenceScore": 86,
+      "warnings": [
+        "This PDF looks scanned or has very little selectable text. OCR accuracy is not guaranteed."
+      ],
+      "status": "pass",
+      "notes": "Diagnostic completed. This report checks signal extraction only, not recommendation accuracy. Existing e2e scanned/low-text fixture."
+    }
+  ]
+}

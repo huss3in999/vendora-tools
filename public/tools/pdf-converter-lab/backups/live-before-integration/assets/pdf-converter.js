@@ -844,21 +844,18 @@ document.addEventListener('DOMContentLoaded', () => {
         this.dom.optionsSidebar.prepend(panel);
       }
 
-      // 3. Safeguard rules for browser Office extraction tools
-      const activeToolId = this.state.activeTool ? this.state.activeTool.id : '';
-      const officeExtractionNeedsText = activeToolId === 'pdf-to-excel' || activeToolId === 'pdf-to-word';
-      if (officeExtractionNeedsText && analysis.ocrRequired) {
+      // 3. Safeguard rules for PDF to Excel
+      if (this.state.activeTool && this.state.activeTool.id === 'pdf-to-excel' && analysis.ocrRequired) {
         const warningBox = document.createElement('div');
         warningBox.className = 'scanned-warning-box';
-        const isWord = activeToolId === 'pdf-to-word';
         warningBox.innerHTML = `
           <h5>⚠️ Scanned Document Warning</h5>
-          <p>This document appears to be image-based or scanned. OCR is required before ${isWord ? 'editable Word text' : 'editable Excel cell'} extraction can be trusted.</p>
+          <p>This document appears to be image-based or scanned. OCR/table detection is required. Browser conversion may not perfectly preserve complex tables.</p>
           <div class="roadmap-block">
             <strong>Phase 2 Local OCR Roadmap:</strong>
             <ul>
               <li>OCR Engine (Tesseract.js integration)</li>
-              <li>${isWord ? 'Reading-order reconstruction' : 'OpenCV cell border parser'}</li>
+              <li>OpenCV cell border parser</li>
               <li>Layout preservation algorithms</li>
             </ul>
           </div>
@@ -886,7 +883,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Disable execution button
         this.dom.btnActionExecute.disabled = true;
-        this.dom.btnActionExecute.innerText = isWord ? "Word Extractor (OCR needed)" : "Excel Extractor (No text)";
+        this.dom.btnActionExecute.innerText = "Excel Extractor (No text)";
         this.dom.btnActionExecute.classList.add('disabled');
       } else {
         // Reset execution button
@@ -1214,7 +1211,7 @@ document.addEventListener('DOMContentLoaded', () => {
           case 'pdf-to-word':
             this.showSpinner("Building editable Word document client-side...");
             await window.PdfEngine.pdfToWordBasicText(files[0]);
-            this.renderSuccessPanel("Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use.", () => {
+            this.renderSuccessPanel("Editable Word .docx extraction complete. Review complex layouts, images, and scanned pages before final use.", () => {
               window.PdfEngine.pdfToWordBasicText(files[0]);
             });
             return;
@@ -1224,17 +1221,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const labelName = selectedExcelMode === 'data' ? 'Excel Workbook Table Extraction' : 'Excel Workbook Layout Grid';
             this.showSpinner("Creating editable Excel workbook...");
             await window.PdfEngine.pdfToExcelBasicTable(files[0], selectedExcelMode);
-            this.renderSuccessPanel(`${labelName} compiled successfully as a real .xlsx workbook with editable cells. Review borderless tables, merged cells, images, scanned pages, and styling before final use.`, () => {
+            this.renderSuccessPanel(`${labelName} compiled successfully as .xlsx. Review complex merged cells, images, and styling before final use.`, () => {
               window.PdfEngine.pdfToExcelBasicTable(files[0], selectedExcelMode);
             });
             return;
 
           case 'pdf-to-powerpoint':
-            this.showSpinner("Creating real PowerPoint slides...");
+            this.showSpinner("Converting pages to graphic slide backdrops...");
             await window.PdfEngine.pdfToPowerPointBasicImages(files[0], (idx, tot) => {
-              this.updateSpinner(`Rendering page ${idx} of ${tot} into a PowerPoint slide...`);
+              this.updateSpinner(`Rendering slide backdrop ${idx} of ${tot}...`);
             });
-            this.renderSuccessPanel("Real .pptx created successfully. Slides are image-based for visual fidelity and are not fully editable yet.", () => {
+            this.renderSuccessPanel("PowerPoint slide packages zipped successfully.", () => {
               window.PdfEngine.pdfToPowerPointBasicImages(files[0]);
             });
             return;

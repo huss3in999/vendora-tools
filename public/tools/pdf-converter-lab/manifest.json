@@ -1,0 +1,25 @@
+{
+  "project": "Vendora PDF Converter Lab",
+  "status": "setup-only",
+  "createdFor": "safe isolated testing",
+  "rules": {
+    "doNotModifyLiveTools": true,
+    "doNotDeleteExistingFiles": true,
+    "browserFirst": true
+  },
+  "folders": [
+    "01-simple-text",
+    "02-invoice",
+    "03-table-bordered",
+    "04-table-borderless",
+    "05-arabic",
+    "06-mixed-arabic-english",
+    "07-scanned-ocr",
+    "08-images-heavy",
+    "09-multi-column",
+    "10-presentation-style",
+    "11-forms",
+    "12-broken-edge-cases"
+  ],
+  "files": []
+}

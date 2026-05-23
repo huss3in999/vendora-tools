@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PDF Converter Lab - Real PDF to PPTX Prototype</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07111f;
+      --panel: #102039;
+      --panel-2: #132845;
+      --line: #274565;
+      --text: #f5f7fb;
+      --muted: #b6c4d8;
+      --accent: #17d9a3;
+      --warn: #ffc857;
+      --danger: #ff6b6b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    main {
+      width: min(980px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    p {
+      color: var(--muted);
+    }
+
+    .panel {
+      margin-top: 24px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .warning {
+      border-color: rgba(255, 200, 87, 0.6);
+      background: rgba(255, 200, 87, 0.1);
+      color: var(--text);
+    }
+
+    .warning strong {
+      color: var(--warn);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 14px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      background: #08172a;
+      color: var(--text);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    button {
+      min-height: 44px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #001b13;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--text);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    .diagnostics {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .metric {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0a182b;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 4px;
+      overflow-wrap: anywhere;
+    }
+
+    .recommendation {
+      display: inline-flex;
+      align-items: center;
+      min-height: 52px;
+      margin-top: 12px;
+      padding: 10px 18px;
+      border: 1px solid rgba(23, 217, 163, 0.55);
+      border-radius: 8px;
+      background: rgba(23, 217, 163, 0.12);
+      color: var(--text);
+      font-size: 1.5rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .warning-box {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid rgba(255, 200, 87, 0.55);
+      border-radius: 8px;
+      background: rgba(255, 200, 87, 0.1);
+    }
+
+    .warning-box h3,
+    .reasoning-box h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .warning-box ul,
+    .reasoning-box ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .reasoning-box {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0a182b;
+    }
+
+    .report-table-wrap {
+      width: 100%;
+      margin-top: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+      background: #0a182b;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--text);
+      background: var(--panel-2);
+    }
+
+    .small-note {
+      margin-top: 10px;
+      font-size: 0.92rem;
+    }
+
+    .batch-box {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .status {
+      min-height: 28px;
+      margin-top: 16px;
+      color: var(--muted);
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    .preview {
+      max-width: 100%;
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #06101d;
+    }
+
+    @media (max-width: 640px) {
+      main {
+        width: min(100% - 20px, 980px);
+        padding: 28px 0;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+
+      .diagnostics {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>PDF Converter Lab</h1>
+    <p>This isolated lab tests real Office output before any live converter code is touched.</p>
+
+    <section class="panel warning" aria-label="Prototype warning">
+      <strong>Warning:</strong>
+      This first PPTX lab version creates real PowerPoint slides, but the slide content is image-based and not fully editable yet.
+    </section>
+
+    <section class="panel warning" aria-label="DOCX prototype warning">
+      <strong>DOCX warning:</strong>
+      This DOCX lab version creates editable Word text from selectable PDFs. Complex layout, exact spacing, tables, and scanned PDFs may need Accuracy Mode.
+    </section>
+
+    <section class="panel warning" aria-label="XLSX prototype warning">
+      <strong>XLSX warning:</strong>
+      This XLSX lab version creates editable Excel cells from selectable PDFs. Borderless tables, merged cells, scanned PDFs, and complex layouts may need Accuracy Mode.
+    </section>
+
+    <section class="panel" aria-label="PDF upload">
+      <label for="pdf-file">Upload a PDF</label>
+      <input id="pdf-file" type="file" accept="application/pdf,.pdf">
+
+      <div class="actions">
+        <button id="convert-button" type="button" disabled>Convert to Real PPTX</button>
+        <button id="convert-docx-button" type="button" class="secondary" disabled>Convert to Editable DOCX</button>
+        <button id="convert-xlsx-button" type="button" class="secondary" disabled>Convert to Editable XLSX</button>
+        <button id="reset-button" type="button" class="secondary">Reset</button>
+      </div>
+
+      <p id="status" class="status" role="status" aria-live="polite">Choose a PDF to begin.</p>
+      <p id="docx-status" class="status" role="status" aria-live="polite">DOCX conversion needs a selectable-text PDF.</p>
+      <p id="xlsx-status" class="status" role="status" aria-live="polite">XLSX conversion needs a selectable-text PDF.</p>
+    </section>
+
+    <section class="panel" aria-label="Diagnostics">
+      <h2>Diagnostic Panel</h2>
+      <p>Recommended output</p>
+      <div id="recommended-output" class="recommendation">Unknown</div>
+      <div class="diagnostics">
+        <div class="metric">
+          <span>Page count</span>
+          <strong id="page-count">Not detected</strong>
+        </div>
+        <div class="metric">
+          <span>Output type</span>
+          <strong id="output-type">.pptx</strong>
+        </div>
+        <div class="metric">
+          <span>Real PPTX output</span>
+          <strong id="real-pptx">Yes, using PptxGenJS</strong>
+        </div>
+        <div class="metric">
+          <span>Conversion mode</span>
+          <strong id="conversion-mode">page-image-to-slide</strong>
+        </div>
+        <div class="metric">
+          <span>Confidence score</span>
+          <strong id="confidence-score">0 / 100</strong>
+        </div>
+        <div class="metric">
+          <span>Difficulty</span>
+          <strong id="difficulty">Unknown</strong>
+        </div>
+      </div>
+
+      <div class="detail-grid" aria-label="PDF diagnostic flags">
+        <div class="metric">
+          <span>Selectable text</span>
+          <strong id="has-selectable-text">Unknown</strong>
+        </div>
+        <div class="metric">
+          <span>Text item count</span>
+          <strong id="text-item-count">0</strong>
+        </div>
+        <div class="metric">
+          <span>Estimated language</span>
+          <strong id="estimated-language">unknown</strong>
+        </div>
+        <div class="metric">
+          <span>Likely scanned</span>
+          <strong id="is-likely-scanned">Unknown</strong>
+        </div>
+        <div class="metric">
+          <span>Image heavy</span>
+          <strong id="image-heavy">Unknown</strong>
+        </div>
+        <div class="metric">
+          <span>Likely tables</span>
+          <strong id="likely-has-tables">Unknown</strong>
+        </div>
+        <div class="metric">
+          <span>Likely columns</span>
+          <strong id="likely-has-columns">Unknown</strong>
+        </div>
+        <div class="metric">
+          <span>Presentation style</span>
+          <strong id="likely-presentation-style">Unknown</strong>
+        </div>
+        <div class="metric">
+          <span>Analyzed pages</span>
+          <strong id="analyzed-pages">0</strong>
+        </div>
+      </div>
+
+      <div id="warnings-box" class="warning-box" hidden>
+        <h3>Warnings</h3>
+        <ul id="warnings-list"></ul>
+      </div>
+
+      <div class="reasoning-box">
+        <h3>Reasoning</h3>
+        <ul id="reasoning-list">
+          <li>Upload a PDF to see why the lab recommends Word, Excel, PowerPoint, OCR, or unknown.</li>
+        </ul>
+      </div>
+
+      <canvas id="preview-canvas" class="preview" hidden></canvas>
+    </section>
+
+    <section class="panel" aria-label="Diagnostic test report">
+      <h2>Diagnostic Test Report</h2>
+      <p>Run a simple lab report against known safe fixtures or upload multiple PDFs manually.</p>
+
+      <div class="actions">
+        <button id="run-fixture-report" type="button">Run Diagnostic Test Report</button>
+      </div>
+
+      <div class="batch-box">
+        <label for="batch-pdfs">Upload Multiple PDFs for Batch Diagnostic Report</label>
+        <input id="batch-pdfs" type="file" accept="application/pdf,.pdf" multiple>
+        <div class="actions">
+          <button id="run-batch-report" type="button" class="secondary" disabled>Generate Batch Report</button>
+        </div>
+      </div>
+
+      <p id="report-status" class="status" role="status" aria-live="polite">No report generated in this browser session yet.</p>
+      <p class="small-note">Browser mode can download `latest-report.html` and `latest-report.json`. It cannot always overwrite files inside the `reports/` folder without backend access.</p>
+
+      <div id="report-output" class="report-table-wrap" hidden></div>
+    </section>
+  </main>
+
+  <!-- Lab-only CDN dependencies:
+       pdf.js renders PDF pages to canvas in the browser.
+       PptxGenJS creates a real .pptx file in the browser.
+       docx creates a real .docx file in the browser.
+       SheetJS/XLSX creates a real .xlsx file in the browser.
+       No npm dependencies are added for this prototype. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+  <script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="src/pdf-diagnostic.js"></script>
+  <script src="src/pdf-to-pptx.js"></script>
+  <script src="src/pdf-to-docx.js"></script>
+  <script src="src/pdf-to-xlsx.js"></script>
+  <script src="src/pdf-test-runner.js"></script>
+  <script src="src/lab-app.js"></script>
+</body>
+</html>

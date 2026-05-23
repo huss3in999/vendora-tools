@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PDF Converter Lab Diagnostic Report</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 32px;
+      background: #07111f;
+      color: #f5f7fb;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+    }
+
+    p {
+      color: #b6c4d8;
+    }
+
+    .summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .card {
+      min-width: 140px;
+      padding: 14px;
+      border: 1px solid #274565;
+      border-radius: 8px;
+      background: #102039;
+    }
+
+    .card span {
+      display: block;
+      color: #b6c4d8;
+      font-size: 13px;
+    }
+
+    .card strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 20px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid #274565;
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      min-width: 980px;
+      border-collapse: collapse;
+      background: #102039;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #274565;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #132845;
+    }
+
+    td {
+      color: #dbe5f5;
+    }
+  </style>
+</head>
+<body>
+  <h1>PDF Converter Lab Diagnostic Report</h1>
+  <p>Generated: 2026-05-22T17:45:00+03:00</p>
+  <p>Mode: known-fixtures</p>
+
+  <div class="summary">
+    <div class="card"><span>Total files</span><strong>3</strong></div>
+    <div class="card"><span>Passed</span><strong>3</strong></div>
+    <div class="card"><span>Failed</span><strong>0</strong></div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>File name</th>
+          <th>File path</th>
+          <th>Page count</th>
+          <th>Selectable text</th>
+          <th>Recommended output</th>
+          <th>Difficulty</th>
+          <th>Confidence</th>
+          <th>Warnings</th>
+          <th>Status</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>invoice-text.pdf</td>
+          <td>../../e2e/fixtures/invoice-text.pdf</td>
+          <td>1</td>
+          <td>yes</td>
+          <td>docx</td>
+          <td>easy</td>
+          <td>62</td>
+          <td>None</td>
+          <td>pass</td>
+          <td>Diagnostic completed. This report checks signal extraction only, not recommendation accuracy. Existing e2e selectable text fixture.</td>
+        </tr>
+        <tr>
+          <td>table-heavy.pdf</td>
+          <td>../../e2e/fixtures/table-heavy.pdf</td>
+          <td>1</td>
+          <td>yes</td>
+          <td>xlsx</td>
+          <td>medium</td>
+          <td>78</td>
+          <td>Tables are detected by alignment signals only. Merged cells and borderless tables may still be wrong.</td>
+          <td>pass</td>
+          <td>Diagnostic completed. This report checks signal extraction only, not recommendation accuracy. Existing e2e table-heavy fixture.</td>
+        </tr>
+        <tr>
+          <td>invoice-scanned.pdf</td>
+          <td>../../e2e/fixtures/invoice-scanned.pdf</td>
+          <td>1</td>
+          <td>no</td>
+          <td>ocr</td>
+          <td>hard</td>
+          <td>86</td>
+          <td>This PDF looks scanned or has very little selectable text. OCR accuracy is not guaranteed.</td>
+          <td>pass</td>
+          <td>Diagnostic completed. This report checks signal extraction only, not recommendation accuracy. Existing e2e scanned/low-text fixture.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

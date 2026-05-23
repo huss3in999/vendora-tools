@@ -28,14 +28,6 @@ window.PdfEngine = {
       url: 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
       global: 'XLSX'
     },
-    'pptxgenjs': {
-      url: 'https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js',
-      global: 'PptxGenJS'
-    },
-    'docx': {
-      url: 'https://unpkg.com/docx@8.5.0/build/index.umd.js',
-      global: 'docx'
-    },
     'tesseract': {
       url: 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js',
       global: 'Tesseract'
@@ -64,10 +56,6 @@ window.PdfEngine = {
         // Handle UMD naming quirks
         if (name === 'jspdf') {
           libObj = window.jspdf || (window.window && window.window.jspdf);
-        }
-
-        if (name === 'pptxgenjs') {
-          libObj = window.PptxGenJS || window.pptxgen || window.pptxgenjs;
         }
 
         if (!libObj) {
@@ -961,205 +949,37 @@ window.PdfEngine = {
    * PDF to Word client-side conversion.
    * Extracts selectable text and writes a real .docx package.
    */
-  getSafeOfficeBaseName: function(file) {
-    return (file.name || 'converted')
-      .replace(/\.[^.]+$/, '')
-      .replace(/[\\/:*?"<>|]+/g, '-')
-      .trim() || 'converted';
-  },
-
-  getFontSizeFromTransform: function(transform) {
-    const t = transform || [];
-    const vertical = Math.abs(Number(t[3] || 0));
-    const horizontal = Math.abs(Number(t[0] || 0));
-    return Number((vertical || horizontal || 10).toFixed(2));
-  },
-
-  isBoldLikeFont: function(fontName) {
-    return /bold|black|heavy|semibold|demi/i.test(String(fontName || ''));
-  },
-
-  medianNumber: function(values) {
-    const sorted = values.filter(value => Number.isFinite(value)).sort((a, b) => a - b);
-    if (!sorted.length) return 10;
-    return sorted[Math.floor(sorted.length / 2)];
-  },
-
-  groupTextItemsIntoLines: function(items, tolerance = 5) {
-    const sorted = (items || [])
-      .filter(item => item && item.str && item.str.trim())
-      .map(item => ({
-        text: String(item.str || '').trim(),
-        x: Number((item.transform || [])[4] || 0),
-        y: Number((item.transform || [])[5] || 0),
-        width: Number(item.width || 0),
-        fontSize: this.getFontSizeFromTransform(item.transform),
-        fontName: item.fontName || ''
-      }))
-      .sort((a, b) => {
-        if (Math.abs(b.y - a.y) > tolerance) return b.y - a.y;
-        return a.x - b.x;
-      });
-
-    const rows = [];
-    sorted.forEach(item => {
-      const last = rows[rows.length - 1];
-      if (!last || Math.abs(last.y - item.y) > tolerance) {
-        rows.push({ y: item.y, items: [item] });
-        return;
-      }
-      last.items.push(item);
-      last.y = (last.y + item.y) / 2;
-    });
-
-    return rows.map(row => {
-      const ordered = row.items.sort((a, b) => a.x - b.x);
-      const text = ordered.map((item, index) => {
-        const previous = ordered[index - 1];
-        const gap = previous ? item.x - (previous.x + previous.width) : 0;
-        const spacer = gap > item.fontSize * 1.2 ? '  ' : ' ';
-        return index === 0 ? item.text : `${spacer}${item.text}`;
-      }).join('').replace(/\s+/g, ' ').trim();
-
-      return {
-        text,
-        x: ordered[0] ? ordered[0].x : 0,
-        y: row.y,
-        fontSize: Math.max(...ordered.map(item => item.fontSize), 10),
-        fontName: ordered.map(item => item.fontName).join(' '),
-        boldSignal: ordered.some(item => this.isBoldLikeFont(item.fontName))
-      };
-    }).filter(line => line.text);
-  },
-
-  classifyDocxLine: function(line, bodyFontSize) {
-    const text = line.text.trim();
-    return {
-      isHeading: (line.fontSize >= bodyFontSize * 1.18 && text.length <= 120) ||
-        (line.boldSignal && text.length <= 90 && !/[.!?]$/.test(text)),
-      isBullet: /^([*+\-•‣◦])\s+/.test(text)
-    };
-  },
-
-  groupExcelRows: function(items, tolerance = 6) {
-    const sorted = (items || []).filter(item => item.text).sort((a, b) => {
-      if (Math.abs(b.y - a.y) > tolerance) return b.y - a.y;
-      return a.x - b.x;
-    });
-    const rows = [];
-
-    sorted.forEach(item => {
-      const last = rows[rows.length - 1];
-      if (!last || Math.abs(last.y - item.y) > tolerance) {
-        rows.push({ y: item.y, items: [item] });
-        return;
-      }
-      last.items.push(item);
-      last.y = (last.y + item.y) / 2;
-    });
-
-    return rows.map(row => ({
-      y: row.y,
-      items: row.items.sort((a, b) => a.x - b.x)
-    }));
-  },
-
-  clusterExcelColumns: function(items, tolerance = 22) {
-    const xs = (items || []).filter(item => item.text).map(item => item.x).sort((a, b) => a - b);
-    const clusters = [];
-
-    xs.forEach(x => {
-      const last = clusters[clusters.length - 1];
-      if (!last || Math.abs(last.center - x) > tolerance) {
-        clusters.push({ center: x, values: [x] });
-        return;
-      }
-      last.values.push(x);
-      last.center = last.values.reduce((sum, value) => sum + value, 0) / last.values.length;
-    });
-
-    return clusters.map(cluster => Number(cluster.center.toFixed(2)));
-  },
-
-  nearestExcelColumnIndex: function(columns, x) {
-    let bestIndex = 0;
-    let bestDistance = Infinity;
-    columns.forEach((column, index) => {
-      const distance = Math.abs(column - x);
-      if (distance < bestDistance) {
-        bestDistance = distance;
-        bestIndex = index;
-      }
-    });
-    return bestIndex;
-  },
-
-  hasCurrencySignal: function(value) {
-    return /[$€£¥₹]|BHD|SAR|AED|QAR|KWD|OMR|USD|EUR|GBP/i.test(value);
-  },
-
-  parseExcelCellValue: function(raw) {
-    const value = String(raw || '').trim();
-    if (!value) return { value: '' };
-
-    if (/^-?\d{1,3}(,\d{3})*(\.\d+)?%$|^-?\d+(\.\d+)?%$/.test(value) && !this.hasCurrencySignal(value)) {
-      return { value: Number(value.replace(/,/g, '').replace('%', '')) / 100, format: '0.00%' };
-    }
-
-    if (/^-?\d{1,3}(,\d{3})*(\.\d+)?$|^-?\d+(\.\d+)?$/.test(value) && !this.hasCurrencySignal(value)) {
-      return { value: Number(value.replace(/,/g, '')) };
-    }
-
-    return { value };
-  },
-
-  excelRowsToSheetData: function(rows, columns) {
-    return rows.map(row => {
-      const cells = Array.from({ length: Math.max(columns.length, row.items.length) }, () => '');
-      row.items.forEach(item => {
-        const index = columns.length ? this.nearestExcelColumnIndex(columns, item.x) : cells.findIndex(cell => cell === '');
-        const safeIndex = index >= 0 ? index : cells.length;
-        cells[safeIndex] = cells[safeIndex] ? `${cells[safeIndex]} ${item.text}` : item.text;
-      });
-      return cells.map(cell => this.parseExcelCellValue(cell));
-    });
-  },
-
-  applyExcelSheetFormats: function(sheet, parsedRows, XLSX) {
-    const widths = [];
-
-    for (let rowIndex = 0; rowIndex < parsedRows.length; rowIndex++) {
-      for (let colIndex = 0; colIndex < parsedRows[rowIndex].length; colIndex++) {
-        const address = XLSX.utils.encode_cell({ r: rowIndex, c: colIndex });
-        const cell = sheet[address];
-        const parsed = parsedRows[rowIndex][colIndex];
-        const displayLength = String(parsed.value ?? '').length;
-
-        widths[colIndex] = Math.max(widths[colIndex] || 10, Math.min(42, displayLength + 2));
-        if (cell && parsed.format) cell.z = parsed.format;
-      }
-    }
-
-    sheet['!cols'] = widths.map(width => ({ wch: width || 12 }));
-  },
-
   pdfToWordBasicText: async function(file) {
     const pdfjsLib = await this.loadLibrary('pdfjs-dist');
-    const docx = await this.loadLibrary('docx');
     const arrayBuffer = await this.readFileAsArrayBuffer(file);
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const pageCount = pdf.numPages;
     const pages = [];
-    const fontSizes = [];
     let totalTextChars = 0;
 
-    for (let i = 1; i <= pdf.numPages; i++) {
+    for (let i = 1; i <= pageCount; i++) {
       const page = await pdf.getPage(i);
       const content = await page.getTextContent();
-      const lines = this.groupTextItemsIntoLines(content.items || []);
-      lines.forEach(line => {
-        totalTextChars += line.text.length;
-        fontSizes.push(line.fontSize);
-      });
+      const sortedItems = (content.items || [])
+        .filter(item => item && item.str && item.str.trim())
+        .sort((a, b) => {
+          const yDiff = b.transform[5] - a.transform[5];
+          return Math.abs(yDiff) > 4 ? yDiff : a.transform[4] - b.transform[4];
+        });
+
+      const lines = [];
+      let currentLine = '';
+      let lastY;
+      for (const item of sortedItems) {
+        if (lastY !== undefined && Math.abs(item.transform[5] - lastY) > 8) {
+          if (currentLine.trim()) lines.push(currentLine.trim());
+          currentLine = '';
+        }
+        currentLine += item.str + ' ';
+        totalTextChars += item.str.trim().length;
+        lastY = item.transform[5];
+      }
+      if (currentLine.trim()) lines.push(currentLine.trim());
       pages.push({ page: i, lines });
     }
 
@@ -1167,47 +987,8 @@ window.PdfEngine = {
       throw new Error("This PDF appears to be scanned or image-based. No selectable text was found, so OCR is required before creating an editable Word file.");
     }
 
-    const bodyFontSize = this.medianNumber(fontSizes);
-    const children = [];
-
-    pages.forEach((page, pageIndex) => {
-      if (pageIndex > 0) {
-        children.push(new docx.Paragraph({ children: [new docx.PageBreak()] }));
-      }
-
-      page.lines.forEach(line => {
-        const kind = this.classifyDocxLine(line, bodyFontSize);
-        const text = kind.isBullet ? line.text.replace(/^([*+\-•‣◦])\s+/, '').trim() : line.text;
-        const paragraphOptions = {
-          children: [
-            new docx.TextRun({
-              text,
-              bold: kind.isHeading || line.boldSignal,
-              size: Math.max(18, Math.min(36, Math.round(line.fontSize * 2)))
-            })
-          ],
-          spacing: { after: kind.isHeading ? 180 : 90 }
-        };
-
-        if (kind.isHeading) paragraphOptions.heading = docx.HeadingLevel.HEADING_2;
-        if (!kind.isHeading && kind.isBullet) paragraphOptions.bullet = { level: 0 };
-        children.push(new docx.Paragraph(paragraphOptions));
-      });
-    });
-
-    if (!children.length) {
-      throw new Error("No selectable text could be converted into editable Word paragraphs.");
-    }
-
-    const document = new docx.Document({
-      creator: "Vendora PDF Toolkit",
-      title: `PDF to Word - ${file.name}`,
-      description: "Editable DOCX generated in the browser from selectable PDF text.",
-      sections: [{ properties: {}, children }]
-    });
-    const blob = await docx.Packer.toBlob(document);
-    const name = `${this.getSafeOfficeBaseName(file)}_editable.docx`;
-    this.downloadFile(blob, name, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    const name = file.name.replace(/\.pdf$/i, '') + '_extracted.docx';
+    await this.makeDocxFromPages(pages, name);
   },
 
   /**
@@ -1219,40 +1000,147 @@ window.PdfEngine = {
     const XLSX = await this.loadLibrary('xlsx');
     const arrayBuffer = await this.readFileAsArrayBuffer(file);
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-    let totalTextChars = 0;
-    const workbook = XLSX.utils.book_new();
+    const pageCount = pdf.numPages;
 
-    for (let i = 1; i <= pdf.numPages; i++) {
+    const workbookRows = [];
+    let totalTextChars = 0;
+
+    for (let i = 1; i <= pageCount; i++) {
       const page = await pdf.getPage(i);
       const content = await page.getTextContent();
-      const items = (content.items || [])
-        .filter(item => item && item.str && item.str.trim())
-        .map(item => ({
-          text: String(item.str || '').trim(),
-          x: Number((item.transform || [])[4] || 0),
-          y: Number((item.transform || [])[5] || 0),
-          width: Number(item.width || 0)
-        }));
+      const rawItems = content.items || [];
+      const items = rawItems.filter(item => item && item.str && item.str.trim() !== '');
+      
+      items.forEach(item => {
+        totalTextChars += (item.str || '').trim().length;
+      });
 
-      items.forEach(item => { totalTextChars += item.text.length; });
-      const rows = this.groupExcelRows(items);
-      const columns = this.clusterExcelColumns(items);
-      const parsedRows = this.excelRowsToSheetData(rows, columns);
-      const aoa = parsedRows.length ? parsedRows.map(row => row.map(cell => cell.value)) : [['No selectable text detected on this page']];
-      const worksheet = XLSX.utils.aoa_to_sheet(aoa);
-      this.applyExcelSheetFormats(worksheet, parsedRows.length ? parsedRows : [[{ value: 'No selectable text detected on this page' }]], XLSX);
-      XLSX.utils.book_append_sheet(workbook, worksheet, `Page ${i}`);
+      if (items.length === 0) continue;
+
+      // Group items by vertical height (Y coordinate) within a tolerance of 6px
+      const rowsMap = {};
+      items.forEach(item => {
+        const y = Math.round(item.transform[5]);
+        let found = false;
+        for (const heightKey of Object.keys(rowsMap)) {
+          if (Math.abs(Number(heightKey) - y) < 6) {
+            rowsMap[heightKey].push(item);
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          rowsMap[y] = [item];
+        }
+      });
+
+      // Sort vertical row heights top-to-bottom (descending Y)
+      const heights = Object.keys(rowsMap).map(Number).sort((a, b) => b - a);
+
+      if (mode === 'data') {
+        // --- DATA MODE ---
+        workbookRows.push([`Page ${i} Table Data`]);
+
+        heights.forEach(h => {
+          const rowItems = rowsMap[h];
+          rowItems.sort((a, b) => a.transform[4] - b.transform[4]);
+
+          const mergedText = rowItems.map(item => item.str).join(' ').trim();
+          const hasNumbers = /[0-9]/.test(mergedText);
+          const hasDescription = rowItems.some(item => item.str.length > 5);
+
+          // Filtering visual noise
+          if (rowItems.length >= 3 || (rowItems.length >= 2 && hasNumbers && hasDescription)) {
+            const cells = rowItems.map(item => item.str.trim());
+            workbookRows.push(cells);
+          }
+        });
+
+      } else {
+        // --- LAYOUT MODE (Coordinate Grid Alignment) ---
+        const xCoords = [];
+        items.forEach(item => {
+          xCoords.push(item.transform[4]);
+        });
+
+        xCoords.sort((a, b) => a - b);
+
+        // Cluster X coords within a 15pt threshold
+        const uniqueColumns = [];
+        xCoords.forEach(x => {
+          let matched = false;
+          for (const col of uniqueColumns) {
+            if (Math.abs(col - x) < 15) {
+              matched = true;
+              break;
+            }
+          }
+          if (!matched) {
+            uniqueColumns.push(x);
+          }
+        });
+
+        // Unique columns are sorted ascending (left-to-right)
+        uniqueColumns.sort((a, b) => a - b);
+
+        workbookRows.push([`Page ${i} Visual Layout`]);
+
+        heights.forEach(h => {
+          const rowItems = rowsMap[h];
+          
+          // Build aligned row cells mapping to the unique virtual column slots
+          const rowCells = new Array(uniqueColumns.length).fill('');
+
+          rowItems.forEach(item => {
+            const itemX = item.transform[4];
+            
+            // Find closest column track index
+            let closestIdx = 0;
+            let minDiff = Infinity;
+            for (let c = 0; c < uniqueColumns.length; c++) {
+              const diff = Math.abs(uniqueColumns[c] - itemX);
+              if (diff < minDiff) {
+                minDiff = diff;
+                closestIdx = c;
+              }
+            }
+
+            // Clean cell value
+            let val = item.str.trim();
+            
+            // If another item maps to the same column slot, combine them
+            if (rowCells[closestIdx] !== '') {
+              rowCells[closestIdx] = `${rowCells[closestIdx]} ${val}`;
+            } else {
+              rowCells[closestIdx] = val;
+            }
+          });
+
+          workbookRows.push(rowCells);
+        });
+      }
     }
 
     if (totalTextChars === 0) {
       throw new Error("This PDF appears to be image-based or scanned. No selectable text was found, so table extraction is not possible. OCR is required.");
     }
 
+    const worksheet = XLSX.utils.aoa_to_sheet(workbookRows);
+    worksheet['!cols'] = workbookRows.reduce((cols, row) => {
+      row.forEach((cell, idx) => {
+        const width = Math.min(Math.max(String(cell || '').length + 2, 10), 36);
+        cols[idx] = { wch: Math.max(cols[idx]?.wch || 10, width) };
+      });
+      return cols;
+    }, []);
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, mode === 'data' ? 'Extracted Data' : 'Visual Layout');
     const buffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
     const blob = new Blob([buffer], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     });
-    const name = `${this.getSafeOfficeBaseName(file)}_editable_${mode}.xlsx`;
+    const name = file.name.replace(/\.pdf$/i, '') + `_extracted_${mode}.xlsx`;
     this.downloadFile(blob, name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   },
 
@@ -1300,56 +1188,71 @@ window.PdfEngine = {
   },
 
   /**
-   * PDF to PowerPoint client-side conversion.
-   * Creates a real .pptx package with one image-based slide per PDF page.
+   * PDF to PowerPoint Client-Side Fallback.
+   * Grabs PDF pages as JPEGs and downloads as basic HTML slide deck or packages as PPTX templates if possible.
+   * For V1 client-side, we download zipped images representing each slide backdrop.
    */
   pdfToPowerPointBasicImages: async function(file, onProgress) {
-    const pdfjsLib = await this.loadLibrary('pdfjs-dist');
-    const PptxGenJS = await this.loadLibrary('pptxgenjs');
-    const arrayBuffer = await this.readFileAsArrayBuffer(file);
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-    const firstPage = await pdf.getPage(1);
-    const firstViewport = firstPage.getViewport({ scale: 1 });
-    const slideWidth = Math.max(4, Math.min(13.333, firstViewport.width / 72));
-    const slideHeight = Math.max(4, Math.min(13.333, firstViewport.height / 72));
-    const pptx = new PptxGenJS();
-
-    pptx.author = 'Vendora PDF Toolkit';
-    pptx.company = 'Vendora';
-    pptx.subject = 'Browser PDF to PowerPoint conversion';
-    pptx.title = `PDF to PowerPoint - ${file.name}`;
-    pptx.lang = 'en-US';
-    pptx.defineLayout({
-      name: 'PDF_PAGE',
-      width: Number(slideWidth.toFixed(3)),
-      height: Number(slideHeight.toFixed(3))
+    const images = await this.pdfToJpg(file, onProgress);
+    
+    // Packages images into a ZIP archive labeled slide backdrops
+    const JSZip = await this.loadLibrary('jszip');
+    const zip = new JSZip();
+    
+    images.forEach((item) => {
+      const num = String(item.pageNum).padStart(3, '0');
+      zip.file(`slide-${num}.jpg`, item.blob);
     });
-    pptx.layout = 'PDF_PAGE';
 
-    for (let i = 1; i <= pdf.numPages; i++) {
-      if (typeof onProgress === 'function') onProgress(i, pdf.numPages);
-      const page = i === 1 ? firstPage : await pdf.getPage(i);
-      const viewportBase = page.getViewport({ scale: 1 });
-      const scale = Math.min(2.5, Math.max(1, 1800 / viewportBase.width));
-      const viewport = page.getViewport({ scale });
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d', { alpha: false });
-      canvas.width = Math.ceil(viewport.width);
-      canvas.height = Math.ceil(viewport.height);
-      await page.render({ canvasContext: context, viewport }).promise;
-
-      const slide = pptx.addSlide();
-      slide.background = { color: 'FFFFFF' };
-      slide.addImage({
-        data: canvas.toDataURL('image/jpeg', 0.92),
-        x: 0,
-        y: 0,
-        w: Number(slideWidth.toFixed(3)),
-        h: Number(slideHeight.toFixed(3))
-      });
-    }
-
-    const name = `${this.getSafeOfficeBaseName(file)}_slides.pptx`;
-    await pptx.writeFile({ fileName: name });
+    // Also inject a basic HTML slideshow viewer
+    const slideshowHtml = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Presentation Slides</title>
+        <style>
+          body { margin: 0; background: #0b1329; color: #fff; font-family: system-ui; display: grid; place-items: center; min-height: 100vh; overflow: hidden; }
+          .slide-container { position: relative; width: 80vw; aspect-ratio: 16/9; box-shadow: 0 20px 50px rgba(0,0,0,0.5); background: #000; border-radius: 8px; overflow: hidden; }
+          img { width: 100%; height: 100%; object-fit: contain; }
+          .controls { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; background: rgba(0,0,0,0.6); padding: 8px 16px; border-radius: 30px; backdrop-filter: blur(10px); }
+          button { background: none; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+          button:hover { background: rgba(255,255,255,0.1); }
+          .counter { padding-top: 4px; font-size: 0.9rem; }
+        </style>
+      </head>
+      <body>
+        <div class="slide-container">
+          <img id="slideImg" src="slide-001.jpg" alt="Slide">
+          <div class="controls">
+            <button onclick="prev()">Prev</button>
+            <span class="counter" id="counter">1 / ${images.length}</span>
+            <button onclick="next()">Next</button>
+          </div>
+        </div>
+        <script>
+          let current = 1;
+          const total = ${images.length};
+          function update() {
+            const num = String(current).padStart(3, '0');
+            document.getElementById('slideImg').src = 'slide-' + num + '.jpg';
+            document.getElementById('counter').innerText = current + ' / ' + total;
+          }
+          function next() { if (current < total) { current++; update(); } }
+          function prev() { if (current > 1) { current--; update(); } }
+          document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === ' ') next();
+            if (e.key === 'ArrowLeft') prev();
+          });
+        <\\/script>
+      </body>
+      </html>
+    `;
+    
+    zip.file('slideshow_viewer.html', slideshowHtml);
+    
+    const archive = await zip.generateAsync({ type: 'blob' });
+    const name = file.name.replace(/\.pdf$/i, '') + '_slides.zip';
+    this.downloadFile(archive, name, 'application/zip');
   }
 };
