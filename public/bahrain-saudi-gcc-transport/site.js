@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
   const config = window.pageConfig || {};
   const phoneNumber = config.phoneNumber || '97333225954';
   const siteSegment = '/bahrain-saudi-gcc-transport/';
@@ -328,7 +328,7 @@
     ['الدمام إلى البحرين', 'Dammam to Bahrain'],
     ['الرياض إلى البحرين', 'Riyadh to Bahrain'],
     ['النقل البحريني والسعودي ودول مجلس التعاون الخليجي', 'Bahrain, Saudi and GCC transport'],
-    ['واجهة عربية واضحة ومهنية لرحلات الركاب وتوصيل الطرود والحجز المباشر عبر واتساب، مع ربط داخلي يساعد Google والزائر على الوصول إلى كل صفحة مناسبة.', 'A clear Arabic-first interface for passenger trips, parcel delivery, and direct WhatsApp booking, with internal linking that helps both Google and visitors reach the right page.'],
+    ['واجهة عربية واضحة ومهنية لرحلات الركاب وتوصيل الطرود والحجز المباشر عبر واتساب، مع روابط تساعد العميل على الوصول إلى الصفحة المناسبة.', 'A clear Arabic-first interface for passenger trips, parcel delivery, and direct WhatsApp booking, with links that help customers reach the right page.'],
     ['ما الذي يغطيه هذا المشروع؟', 'What does this project cover?'],
     ['الصفحة الرئيسية تربط خدمات الركاب والطرود والوجهات الخليجية وصفحات السعودية إلى البحرين، لذلك هي نقطة دخول إلى المشروع كله وليست صفحة منفصلة فقط.', 'The homepage connects passenger services, parcel delivery, GCC destination pages, and Saudi-to-Bahrain pages, so it works as the main entry point for the whole project rather than a standalone page.'],
     ['مسارات العودة من السعودية إلى البحرين', 'Return routes from Saudi Arabia to Bahrain'],
@@ -346,16 +346,16 @@
     ['نعم. أضفنا صفحات مستقلة للمسار العكسي من السعودية إلى البحرين، وكذلك صفحات الخبر والدمام والرياض إلى البحرين.', 'Yes. We added dedicated pages for the reverse route from Saudi Arabia to Bahrain, as well as Khobar-to-Bahrain, Dammam-to-Bahrain, and Riyadh-to-Bahrain pages.'],
     ['هل كل الصفحات مرتبطة ببعضها؟', 'Are all the pages linked together?'],
     ['نعم. الصفحة الرئيسية ومركز وجهات الخليج وصفحات الدول وصفحات السعودية إلى البحرين مرتبطة بروابط داخلية واضحة.', 'Yes. The homepage, GCC hub, country pages, and Saudi-to-Bahrain pages are connected through clear internal links.'],
-    ['هذا المشروع يربط صفحات النقل بين البحرين والسعودية وبقية دول الخليج بروابط واضحة، ونموذج حجز سريع، ورسائل واتساب جاهزة لتسهيل الوصول إلى الخدمة.', 'This project links transport pages between Bahrain, Saudi Arabia, and the rest of the GCC with clear internal links, a fast booking form, and ready WhatsApp messages.'],
-    ['كل صفحة ترتبط بالصفحات الأقرب لها حتى يبقى التنقل منطقياً وواضحاً للزائر ولمحركات البحث.', 'Each page links to the most relevant nearby pages so navigation stays logical and clear for both visitors and search engines.'],
+    ['تساعد فندورا ترانسبورت العملاء على طلب نقل خاص بين البحرين والسعودية وبقية دول الخليج عبر صفحات مسارات واضحة، ونموذج حجز سريع، ورسائل واتساب جاهزة.', 'Vendora Transport helps customers request private transport between Bahrain, Saudi Arabia, and the rest of the GCC through clear route pages, a fast booking form, and ready WhatsApp messages.'],
+    ['يمكنك الانتقال من كل صفحة إلى أقرب المسارات والخدمات حتى تصل إلى الوجهة المناسبة بسرعة.', 'Each page links to nearby routes and services so customers can reach the right destination quickly.'],
     ['المشروع يشمل البحرين إلى السعودية والكويت والإمارات ودبي وقطر وعمان والعراق، مع مسارات عكسية من السعودية إلى البحرين.', 'The project covers Bahrain to Saudi Arabia, Kuwait, UAE, Dubai, Qatar, Oman, and Iraq, with reverse routes from Saudi Arabia to Bahrain as well.'],
     ['روابط المشروع', 'Project links'],
     ['صفحات مرتبطة', 'Related pages'],
     ['حول المشروع', 'About the project'],
     ['مشروع نقل وتوصيل عربي يربط البحرين والسعودية ودول الخليج بواجهة أوضح', 'An Arabic-first transport and delivery project connecting Bahrain, Saudi Arabia, and the GCC through a clearer interface.'],
-    ['هدف المشروع هو تقديم صفحات خفيفة ومهنية تصل العميل بسرعة إلى الخدمة والوجهة ورسالة الحجز، مع بنية واضحة تساعد محركات البحث على فهم كل مسار.', 'The goal is to provide light, professional pages that quickly guide the customer to the service, destination, and booking message, with a clear structure that helps search engines understand each route.'],
+    ['الهدف هو تقديم صفحات خفيفة ومهنية تصل العميل بسرعة إلى الخدمة والوجهة ورسالة الحجز، مع بنية واضحة تسهل اختيار المسار المناسب.', 'The goal is to provide light, professional pages that quickly guide the customer to the service, destination, and booking message, with a clear structure that makes route choice easier.'],
     ['ما فائدة هذه الصفحة؟', 'What is this page for?'],
-    ['صفحة من نحن تبني الثقة وتعطي سياقاً واضحاً عن المشروع وتدعم SEO للمستخدم الذي يريد فهم الخدمة قبل الحجز.', 'The about page builds trust, gives clear project context, and supports SEO for users who want to understand the service before booking.'],
+    ['صفحة من نحن تبني الثقة وتعطي سياقاً واضحاً عن الخدمة للمستخدم الذي يريد فهمها قبل الحجز.', 'The about page builds trust and gives clear service context for users who want to understand the service before booking.'],
     ['صفحات مهمة داخل المشروع', 'Important pages inside the project'],
     ['يمكنك الانتقال مباشرة من صفحة من نحن إلى أهم صفحات الحجز والخدمات.', 'You can move directly from the about page to the most important booking and service pages.'],
     ['نقطة الدخول الأساسية للمشروع بالكامل.', 'The main entry point for the whole project.'],
@@ -395,8 +395,8 @@
     ['وجهات الخليج من البحرين', 'GCC destinations from Bahrain'],
     ['صفحة مركزية لربط جميع وجهات الخليج من البحرين', 'A central page linking all GCC destinations from Bahrain.'],
     ['هذه الصفحة تجمع مسارات السعودية والكويت والإمارات ودبي وقطر وعمان والعراق، حتى ينتقل الزائر بسرعة من أي صفحة إلى الصفحة المناسبة.', 'This page gathers Saudi Arabia, Kuwait, UAE, Dubai, Qatar, Oman, and Iraq routes so the visitor can quickly move from any page to the right one.'],
-    ['لماذا هذه الصفحة مهمة؟', 'Why is this page important?'],
-    ['لأنها تعمل كحلقة وصل بين الصفحة الرئيسية وصفحات الدول وصفحات الخدمات، وتمنح Google والزائر مساراً أوضح بين جميع الصفحات المهمة.', 'It acts as a connecting hub between the homepage, country pages, and service pages, giving both Google and visitors a clearer path across the important pages.'],
+    ['متى تستخدم هذه الصفحة؟', 'When should you use this page?'],
+    ['تجمع هذه الصفحة أهم الوجهات والخدمات في مكان واحد حتى تختار المسار المناسب بسرعة.', 'It acts as a connecting hub between the homepage, country pages, and service pages, giving both Google and visitors a clearer path across the important pages.'],
     ['كل دولة مرتبطة مباشرة من هذه الصفحة، ويمكن استخدامها كنقطة بداية أو نقطة انتقال إلى بقية الصفحات.', 'Each country is linked directly from this page, and it can work as either a starting point or a navigation hub to the rest of the pages.'],
     ['الصفحة الرئيسية للسعودية مع روابط الخبر والدمام والرياض.', 'The main Saudi Arabia page with links to Khobar, Dammam, and Riyadh.'],
     ['صفحة مستقلة للكويت مع خدمة الركاب والطرود والحجز السريع.', 'A dedicated Kuwait page with passenger service, parcel delivery, and fast booking.'],

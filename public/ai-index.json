@@ -1,0 +1,125 @@
+{
+  "siteName": "Vendora",
+  "siteUrl": "https://getvendora.net",
+  "description": "Vendora offers free online tools, calculators, PDF tools, small business tools, restaurant tools, and Bahrain/Saudi/GCC transport pages.",
+  "languages": ["en", "ar"],
+  "mainSections": [
+    {
+      "name": "All Tools",
+      "description": "Searchable directory of Vendora tools and calculators.",
+      "importantUrls": [
+        "https://getvendora.net/all-tools/",
+        "https://getvendora.net/tools/",
+        "https://getvendora.net/calculator/",
+        "https://getvendora.net/calculators/",
+        "https://getvendora.net/restaurant-calculators/"
+      ]
+    },
+    {
+      "name": "PDF Tools",
+      "description": "Browser-based PDF tools for conversion, merge, split, compress, rotate, watermark and page numbering.",
+      "importantUrls": [
+        "https://getvendora.net/tools/pdf-converter/",
+        "https://getvendora.net/tools/pdf-converter/pdf-to-word/",
+        "https://getvendora.net/tools/pdf-converter/pdf-to-excel/",
+        "https://getvendora.net/tools/pdf-converter/word-to-pdf/",
+        "https://getvendora.net/tools/pdf-converter/excel-to-pdf/",
+        "https://getvendora.net/tools/pdf-converter/image-to-pdf/",
+        "https://getvendora.net/tools/pdf-converter/jpg-to-pdf/",
+        "https://getvendora.net/tools/pdf-converter/pdf-to-jpg/",
+        "https://getvendora.net/tools/pdf-converter/merge-pdf/",
+        "https://getvendora.net/tools/pdf-converter/split-pdf/",
+        "https://getvendora.net/tools/pdf-converter/compress-pdf/",
+        "https://getvendora.net/tools/pdf-converter/rotate-pdf/",
+        "https://getvendora.net/tools/pdf-converter/add-watermark/",
+        "https://getvendora.net/tools/pdf-converter/add-page-numbers/"
+      ]
+    },
+    {
+      "name": "Small Business Tools",
+      "description": "Calculators and tools for pricing, profit, schedules, quotations, invoices, work hours and operations.",
+      "importantUrls": [
+        "https://getvendora.net/tools/small-business/",
+        "https://getvendora.net/tools/quotation-generator/",
+        "https://getvendora.net/tools/staff-schedule-generator/",
+        "https://getvendora.net/tools/work-hours-overtime-calculator/",
+        "https://getvendora.net/tools/invoice-generator/",
+        "https://getvendora.net/tools/receipt-generator/",
+        "https://getvendora.net/tools/purchase-order-generator/"
+      ]
+    },
+    {
+      "name": "Restaurant Tools",
+      "description": "Tools for food cost, menu pricing, daily sales, invoices, receipts, QR menus and profit dashboards.",
+      "importantUrls": [
+        "https://getvendora.net/tools/",
+        "https://getvendora.net/restaurant-calculators/",
+        "https://getvendora.net/tools/food-cost-calculator/",
+        "https://getvendora.net/tools/menu-price-calculator/",
+        "https://getvendora.net/tools/daily-sales-summary/",
+        "https://getvendora.net/tools/restaurant-profit-dashboard/",
+        "https://getvendora.net/tools/qr-menu-generator/",
+        "https://getvendora.net/tools/delivery-cost-calculator/"
+      ]
+    },
+    {
+      "name": "Vendora Transport",
+      "description": "Bahrain, Saudi and GCC transport route pages for private taxi, driver, passenger transport, parcel delivery where applicable, and WhatsApp booking information.",
+      "importantUrls": [
+        "https://getvendora.net/bahrain-saudi-gcc-transport/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/passenger-transport/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/parcel-delivery/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-destinations/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/contact/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-saudi/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-khobar/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-riyadh/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-qatar/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-uae/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dubai/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-iraq/"
+      ]
+    }
+  ],
+  "keywordsEnglish": [
+    "free online tools",
+    "free calculators",
+    "PDF tools",
+    "PDF to Word",
+    "PDF to Excel",
+    "merge PDF",
+    "split PDF",
+    "business calculators",
+    "small business tools",
+    "restaurant tools",
+    "food cost calculator",
+    "menu price calculator",
+    "quotation generator",
+    "invoice generator",
+    "Bahrain to Saudi Arabia transport",
+    "Bahrain to Khobar",
+    "Bahrain to Dammam",
+    "Bahrain to Riyadh",
+    "Bahrain to Dubai"
+  ],
+  "keywordsArabic": [
+    "أدوات PDF مجانية",
+    "تحويل PDF إلى Word",
+    "تحويل PDF إلى Excel",
+    "حاسبات مجانية",
+    "حاسبة أرباح",
+    "حاسبة ساعات العمل",
+    "إنشاء عرض سعر",
+    "توصيل من البحرين إلى السعودية",
+    "سيارة خاصة من البحرين إلى السعودية",
+    "تاكسي خاص من البحرين إلى الخبر",
+    "تاكسي من البحرين إلى الدمام",
+    "توصيل من البحرين إلى العراق",
+    "سيارة خاصة من البحرين إلى العراق",
+    "نقل ركاب من البحرين إلى السعودية",
+    "نقل طرود من البحرين إلى السعودية"
+  ]
+}

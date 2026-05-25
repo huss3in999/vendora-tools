@@ -5,6 +5,7 @@ Allow: /
 # https://getvendora.net/llms.txt
 # https://getvendora.net/.well-known/llms.txt
 # https://getvendora.net/data/tools-catalog.json
+# https://getvendora.net/ai-index.json
 
 Sitemap: https://getvendora.net/sitemap.xml
 Sitemap: https://getvendora.net/sitemap-tools.xml
