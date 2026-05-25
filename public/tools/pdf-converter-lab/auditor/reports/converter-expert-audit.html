@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phase 3 PDF / Document Converter Expert Audit</title>
+  <style>
+    body { margin: 0; padding: 32px; background: #07111f; color: #f5f7fb; font-family: Arial, Helvetica, sans-serif; line-height: 1.5; }
+    p { color: #b6c4d8; }
+    .summary { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
+    .card { border: 1px solid #274565; border-radius: 8px; background: #102039; padding: 14px; min-width: 150px; }
+    .card span { display: block; color: #b6c4d8; font-size: 13px; }
+    .card strong { display: block; margin-top: 4px; font-size: 22px; }
+    .table-wrap { overflow-x: auto; border: 1px solid #274565; border-radius: 8px; }
+    table { min-width: 1800px; width: 100%; border-collapse: collapse; background: #102039; }
+    th, td { border-bottom: 1px solid #274565; padding: 10px; vertical-align: top; text-align: left; }
+    th { background: #132845; }
+    td { color: #dbe5f5; }
+    .pass { color: #17d9a3; font-weight: 700; }
+    .warning { color: #ffc857; font-weight: 700; }
+    .fail { color: #ff6b6b; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <h1>Phase 3 PDF / Document Converter Expert Audit</h1>
+  <p>Generated: 2026-05-24T17:09:47.625Z</p>
+  <p>Strict audit for fidelity, editability, screenshot-only ratio, language coverage, OCR need detection, table cells, images/logos, and output format correctness.</p>
+  <div class="summary">
+    <div class="card"><span>Total checks</span><strong>70</strong></div>
+    <div class="card"><span>Pass</span><strong>28</strong></div>
+    <div class="card"><span>Warning</span><strong>42</strong></div>
+    <div class="card"><span>Fail</span><strong>0</strong></div>
+    <div class="card"><span>Average score</span><strong>66/100</strong></div>
+  </div>
+  <h2>Fix First</h2>
+  <ol><li>Build editable PPTX Accuracy Mode instead of screenshot-only slides.</li><li>Add OCR Accuracy Mode with multi-language recognition and searchable/editable output.</li><li>Add DOCX layout preservation with images, logos, tables, headers, footers, colors, and reading order.</li><li>Add Excel table reconstruction for merged cells, borders, formulas, and currency/number formats.</li><li>Add before/after visual rendering through LibreOffice or Office automation.</li></ol>
+  <h2>Expert Recommendations</h2>
+  <ul><li><strong>Critical - Editable PPTX Accuracy Mode:</strong> Create text boxes, preserve images/logos as objects, and map fonts/colors instead of only using slide screenshots.</li><li><strong>Critical - Multi-language OCR Accuracy Mode:</strong> Support Arabic, Urdu, Hindi, Bengali, CJK, Cyrillic, Latin accents, and mixed RTL/LTR reading order.</li><li><strong>High - Office output visual renderer:</strong> Render DOCX/PPTX/XLSX outputs to images and compare against source PDF page renders.</li><li><strong>High - Layout and image preservation:</strong> Extract images/logos, preserve headers/footers, page size, spacing, columns, backgrounds, and colors.</li><li><strong>High - Advanced table engine:</strong> Detect borders, borderless tables, merged cells, formulas, numeric/currency formats, and scanned table grids.</li></ul>
+  <h2>Audit Results</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Tool</th><th>Fixture</th><th>Status</th><th>Score</th><th>Priority</th><th>Metrics</th><th>Worked</th><th>Failed</th><th>Missing</th><th>Why it matters</th><th>Suggested fix</th></tr></thead>
+      <tbody>
+    <tr>
+      <td>PDF to Word</td>
+      <td>simple-english.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>catalog.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>63</td>
+      <td>High</td>
+      <td>{&quot;editableTextRatio&quot;:98,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>Layout/image/logo/table fidelity is not professionally preserved yet.</td>
+      <td>Accuracy Mode with positioned layout, image extraction, logo preservation, table reconstruction, colors, and headers/footers.; Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>menu.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>High</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>Layout/image/logo/table fidelity is not professionally preserved yet.</td>
+      <td>Accuracy Mode with positioned layout, image extraction, logo preservation, table reconstruction, colors, and headers/footers.; Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>brochure.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>62</td>
+      <td>High</td>
+      <td>{&quot;editableTextRatio&quot;:95,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>Layout/image/logo/table fidelity is not professionally preserved yet.</td>
+      <td>Accuracy Mode with positioned layout, image extraction, logo preservation, table reconstruction, colors, and headers/footers.; Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>invoice.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>form.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>High</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>Layout/image/logo/table fidelity is not professionally preserved yet.</td>
+      <td>Accuracy Mode with positioned layout, image extraction, logo preservation, table reconstruction, colors, and headers/footers.; Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>logo-image-heavy.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>High</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>Layout/image/logo/table fidelity is not professionally preserved yet.</td>
+      <td>Accuracy Mode with positioned layout, image extraction, logo preservation, table reconstruction, colors, and headers/footers.; Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>chart.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>High</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>Layout/image/logo/table fidelity is not professionally preserved yet.</td>
+      <td>Accuracy Mode with positioned layout, image extraction, logo preservation, table reconstruction, colors, and headers/footers.; Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>table.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>mixed-fonts.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>english.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>arabic.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>urdu.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>hindi.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>bengali.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>chinese.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>japanese.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>korean.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>russian.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>french.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>spanish.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>turkish.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>mixed-rtl-ltr.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>multi-page.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>64</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;screenshotOnlyRatio&quot;:0,&quot;layoutSimilarity&quot;:35,&quot;imageLogoPreservation&quot;:0,&quot;pageCountMatch&quot;:70,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real DOCX package was generated with editable Word text.</td>
+      <td>None</td>
+      <td>Visual before/after rendering of DOCX output via LibreOffice or Office automation.</td>
+      <td>PDF to Word must preserve visual layout while keeping selectable PDF text editable.</td>
+      <td>Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to PowerPoint Visual Export</td>
+      <td>catalog.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>84</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:0,&quot;screenshotOnlyRatio&quot;:100,&quot;layoutSimilarity&quot;:70,&quot;imageLogoPreservation&quot;:70,&quot;pageCountMatch&quot;:100,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real PPTX package was generated and page count is represented as slides.; Public copy honestly labels this as image-based PowerPoint Visual Export.</td>
+      <td>None</td>
+      <td>Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.; Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation.</td>
+      <td>Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.</td>
+      <td>Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to PowerPoint Visual Export</td>
+      <td>menu.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>84</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:0,&quot;screenshotOnlyRatio&quot;:100,&quot;layoutSimilarity&quot;:70,&quot;imageLogoPreservation&quot;:70,&quot;pageCountMatch&quot;:100,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real PPTX package was generated and page count is represented as slides.; Public copy honestly labels this as image-based PowerPoint Visual Export.</td>
+      <td>None</td>
+      <td>Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.; Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation.</td>
+      <td>Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.</td>
+      <td>Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to PowerPoint Visual Export</td>
+      <td>brochure.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>84</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:0,&quot;screenshotOnlyRatio&quot;:100,&quot;layoutSimilarity&quot;:70,&quot;imageLogoPreservation&quot;:70,&quot;pageCountMatch&quot;:100,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real PPTX package was generated and page count is represented as slides.; Public copy honestly labels this as image-based PowerPoint Visual Export.</td>
+      <td>None</td>
+      <td>Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.; Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation.</td>
+      <td>Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.</td>
+      <td>Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to PowerPoint Visual Export</td>
+      <td>invoice.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>84</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:0,&quot;screenshotOnlyRatio&quot;:100,&quot;layoutSimilarity&quot;:70,&quot;imageLogoPreservation&quot;:70,&quot;pageCountMatch&quot;:100,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real PPTX package was generated and page count is represented as slides.; Public copy honestly labels this as image-based PowerPoint Visual Export.</td>
+      <td>None</td>
+      <td>Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.; Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation.</td>
+      <td>Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.</td>
+      <td>Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to PowerPoint Visual Export</td>
+      <td>logo-image-heavy.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>84</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:0,&quot;screenshotOnlyRatio&quot;:100,&quot;layoutSimilarity&quot;:70,&quot;imageLogoPreservation&quot;:70,&quot;pageCountMatch&quot;:100,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real PPTX package was generated and page count is represented as slides.; Public copy honestly labels this as image-based PowerPoint Visual Export.</td>
+      <td>None</td>
+      <td>Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.; Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation.</td>
+      <td>Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.</td>
+      <td>Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to PowerPoint Visual Export</td>
+      <td>chart.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>84</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:0,&quot;screenshotOnlyRatio&quot;:100,&quot;layoutSimilarity&quot;:70,&quot;imageLogoPreservation&quot;:70,&quot;pageCountMatch&quot;:100,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real PPTX package was generated and page count is represented as slides.; Public copy honestly labels this as image-based PowerPoint Visual Export.</td>
+      <td>None</td>
+      <td>Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.; Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation.</td>
+      <td>Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.</td>
+      <td>Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to PowerPoint Visual Export</td>
+      <td>mixed-fonts.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>84</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:0,&quot;screenshotOnlyRatio&quot;:100,&quot;layoutSimilarity&quot;:70,&quot;imageLogoPreservation&quot;:70,&quot;pageCountMatch&quot;:100,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real PPTX package was generated and page count is represented as slides.; Public copy honestly labels this as image-based PowerPoint Visual Export.</td>
+      <td>None</td>
+      <td>Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.; Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation.</td>
+      <td>Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.</td>
+      <td>Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to PowerPoint Visual Export</td>
+      <td>arabic.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>84</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:0,&quot;screenshotOnlyRatio&quot;:100,&quot;layoutSimilarity&quot;:70,&quot;imageLogoPreservation&quot;:70,&quot;pageCountMatch&quot;:100,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real PPTX package was generated and page count is represented as slides.; Public copy honestly labels this as image-based PowerPoint Visual Export.</td>
+      <td>None</td>
+      <td>Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.; Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation.</td>
+      <td>Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.</td>
+      <td>Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to PowerPoint Visual Export</td>
+      <td>mixed-rtl-ltr.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>84</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:0,&quot;screenshotOnlyRatio&quot;:100,&quot;layoutSimilarity&quot;:70,&quot;imageLogoPreservation&quot;:70,&quot;pageCountMatch&quot;:100,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real PPTX package was generated and page count is represented as slides.; Public copy honestly labels this as image-based PowerPoint Visual Export.</td>
+      <td>None</td>
+      <td>Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.; Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation.</td>
+      <td>Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.</td>
+      <td>Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to PowerPoint Visual Export</td>
+      <td>multi-page.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>84</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:0,&quot;screenshotOnlyRatio&quot;:100,&quot;layoutSimilarity&quot;:70,&quot;imageLogoPreservation&quot;:70,&quot;pageCountMatch&quot;:100,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true}</td>
+      <td>Real PPTX package was generated and page count is represented as slides.; Public copy honestly labels this as image-based PowerPoint Visual Export.</td>
+      <td>None</td>
+      <td>Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.; Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation.</td>
+      <td>Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.</td>
+      <td>Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Excel</td>
+      <td>table.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>91</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;tableCellPreservation&quot;:75,&quot;screenshotOnlyRatio&quot;:0,&quot;pageCountMatch&quot;:100,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true,&quot;numericCellCount&quot;:20}</td>
+      <td>Real XLSX package was generated with editable cells.</td>
+      <td>None</td>
+      <td>Merged-cell detection, borderless table parsing, formulas, styling, and OCR table extraction.</td>
+      <td>PDF to Excel is only useful when tables become structured cells with numbers preserved as numbers.</td>
+      <td>Add table grid detection, merged-cell inference, numeric/currency typing, and OCR table mode.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Excel</td>
+      <td>invoice.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>90</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:96,&quot;tableCellPreservation&quot;:75,&quot;screenshotOnlyRatio&quot;:0,&quot;pageCountMatch&quot;:100,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true,&quot;numericCellCount&quot;:9}</td>
+      <td>Real XLSX package was generated with editable cells.</td>
+      <td>None</td>
+      <td>Merged-cell detection, borderless table parsing, formulas, styling, and OCR table extraction.</td>
+      <td>PDF to Excel is only useful when tables become structured cells with numbers preserved as numbers.</td>
+      <td>Add table grid detection, merged-cell inference, numeric/currency typing, and OCR table mode.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Excel</td>
+      <td>menu.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>91</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;tableCellPreservation&quot;:75,&quot;screenshotOnlyRatio&quot;:0,&quot;pageCountMatch&quot;:100,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true,&quot;numericCellCount&quot;:6}</td>
+      <td>Real XLSX package was generated with editable cells.</td>
+      <td>None</td>
+      <td>Merged-cell detection, borderless table parsing, formulas, styling, and OCR table extraction.</td>
+      <td>PDF to Excel is only useful when tables become structured cells with numbers preserved as numbers.</td>
+      <td>Add table grid detection, merged-cell inference, numeric/currency typing, and OCR table mode.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Excel</td>
+      <td>large.pdf</td>
+      <td class="warning">WARNING</td>
+      <td>91</td>
+      <td>Medium</td>
+      <td>{&quot;editableTextRatio&quot;:100,&quot;tableCellPreservation&quot;:75,&quot;screenshotOnlyRatio&quot;:0,&quot;pageCountMatch&quot;:100,&quot;outputFormatCorrect&quot;:true,&quot;fileSizeReasonable&quot;:true,&quot;numericCellCount&quot;:900}</td>
+      <td>Real XLSX package was generated with editable cells.</td>
+      <td>None</td>
+      <td>Merged-cell detection, borderless table parsing, formulas, styling, and OCR table extraction.</td>
+      <td>PDF to Excel is only useful when tables become structured cells with numbers preserved as numbers.</td>
+      <td>Add table grid detection, merged-cell inference, numeric/currency typing, and OCR table mode.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word input handling</td>
+      <td>scanned.pdf</td>
+      <td class="pass">PASS</td>
+      <td>75</td>
+      <td>Critical</td>
+      <td>{}</td>
+      <td>Problem input produced an error instead of a fake successful conversion.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Unsupported or unreadable files must show clear warnings and must not generate fake output.</td>
+      <td>Keep explicit unsupported-file states and route scanned PDFs to OCR Accuracy Mode.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Excel input handling</td>
+      <td>scanned.pdf</td>
+      <td class="pass">PASS</td>
+      <td>75</td>
+      <td>Critical</td>
+      <td>{}</td>
+      <td>Problem input produced an error instead of a fake successful conversion.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Unsupported or unreadable files must show clear warnings and must not generate fake output.</td>
+      <td>Keep explicit unsupported-file states and route scanned PDFs to OCR Accuracy Mode.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word input handling</td>
+      <td>password-protected.pdf</td>
+      <td class="pass">PASS</td>
+      <td>75</td>
+      <td>High</td>
+      <td>{}</td>
+      <td>Problem input produced an error instead of a fake successful conversion.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Unsupported or unreadable files must show clear warnings and must not generate fake output.</td>
+      <td>Keep explicit unsupported-file states and route scanned PDFs to OCR Accuracy Mode.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word input handling</td>
+      <td>corrupted.pdf</td>
+      <td class="pass">PASS</td>
+      <td>75</td>
+      <td>High</td>
+      <td>{}</td>
+      <td>Problem input produced an error instead of a fake successful conversion.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Unsupported or unreadable files must show clear warnings and must not generate fake output.</td>
+      <td>Keep explicit unsupported-file states and route scanned PDFs to OCR Accuracy Mode.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Word</td>
+      <td>tool-discovery</td>
+      <td class="pass">PASS</td>
+      <td>45</td>
+      <td>Medium</td>
+      <td>{}</td>
+      <td>Tool exists with status &#39;basic&#39;.</td>
+      <td>None</td>
+      <td>Best for simple files. Creates a real editable .docx from selectable PDF text. Complex layouts, scanned PDFs, tables, images, and multi-language documents may need manual review.</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Add tool-specific visual and output-fidelity tests.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to PowerPoint Visual Export</td>
+      <td>tool-discovery</td>
+      <td class="pass">PASS</td>
+      <td>45</td>
+      <td>Medium</td>
+      <td>{}</td>
+      <td>Tool exists with status &#39;basic&#39;.</td>
+      <td>None</td>
+      <td>This creates image-based slides to preserve the look of the PDF. Text may not be editable yet. This is a visual export, not an editable PowerPoint rebuild.</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Add tool-specific visual and output-fidelity tests.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to Excel</td>
+      <td>tool-discovery</td>
+      <td class="pass">PASS</td>
+      <td>45</td>
+      <td>Medium</td>
+      <td>{}</td>
+      <td>Tool exists with status &#39;basic&#39;.</td>
+      <td>None</td>
+      <td>Best for simple files. Creates a real .xlsx workbook with editable cells from detected text positions. Complex layouts, scanned PDFs, tables, images, merged cells, formulas, and multi-language documents may need manual review.</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Add tool-specific visual and output-fidelity tests.</td>
+    </tr>
+  
+    <tr>
+      <td>PDF to JPG</td>
+      <td>tool-discovery</td>
+      <td class="pass">PASS</td>
+      <td>74</td>
+      <td>Medium</td>
+      <td>{}</td>
+      <td>Tool exists with status &#39;active&#39;.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Add tool-specific visual and output-fidelity tests.</td>
+    </tr>
+  
+    <tr>
+      <td>Image to PDF</td>
+      <td>tool-discovery</td>
+      <td class="pass">PASS</td>
+      <td>74</td>
+      <td>Medium</td>
+      <td>{}</td>
+      <td>Tool exists with status &#39;active&#39;.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Add tool-specific visual and output-fidelity tests.</td>
+    </tr>
+  
+    <tr>
+      <td>Word to PDF</td>
+      <td>tool-discovery</td>
+      <td class="pass">PASS</td>
+      <td>45</td>
+      <td>Medium</td>
+      <td>{}</td>
+      <td>Tool exists with status &#39;basic&#39;.</td>
+      <td>None</td>
+      <td>Complex layout tables or custom Microsoft word fonts may undergo styling shifts. For critical layouts, a server conversion engine is recommended.</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Add tool-specific visual and output-fidelity tests.</td>
+    </tr>
+  
+    <tr>
+      <td>PowerPoint to PDF</td>
+      <td>tool-discovery</td>
+      <td class="warning">WARNING</td>
+      <td>10</td>
+      <td>Medium</td>
+      <td>{}</td>
+      <td>Tool is present but gated as future.</td>
+      <td>None</td>
+      <td>Working implementation and fixture tests.</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Keep gated until implementation is real.</td>
+    </tr>
+  
+    <tr>
+      <td>Excel to PDF</td>
+      <td>tool-discovery</td>
+      <td class="warning">WARNING</td>
+      <td>10</td>
+      <td>Medium</td>
+      <td>{}</td>
+      <td>Tool is present but gated as future.</td>
+      <td>None</td>
+      <td>Working implementation and fixture tests.</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Keep gated until implementation is real.</td>
+    </tr>
+  
+    <tr>
+      <td>OCR PDF</td>
+      <td>tool-discovery</td>
+      <td class="pass">PASS</td>
+      <td>45</td>
+      <td>Medium</td>
+      <td>{}</td>
+      <td>Tool exists with status &#39;basic&#39;.</td>
+      <td>None</td>
+      <td>Best for simple files. English OCR runs locally in the browser. Complex layouts, scanned PDFs, tables, images, and multi-language documents may need manual review. OCR accuracy depends on image clarity, resolution, and page rotation.</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Add tool-specific visual and output-fidelity tests.</td>
+    </tr>
+  
+    <tr>
+      <td>Merge PDF</td>
+      <td>tool-discovery</td>
+      <td class="pass">PASS</td>
+      <td>74</td>
+      <td>Medium</td>
+      <td>{}</td>
+      <td>Tool exists with status &#39;active&#39;.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Add tool-specific visual and output-fidelity tests.</td>
+    </tr>
+  
+    <tr>
+      <td>Split PDF</td>
+      <td>tool-discovery</td>
+      <td class="pass">PASS</td>
+      <td>74</td>
+      <td>Medium</td>
+      <td>{}</td>
+      <td>Tool exists with status &#39;active&#39;.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Add tool-specific visual and output-fidelity tests.</td>
+    </tr>
+  
+    <tr>
+      <td>Compress PDF</td>
+      <td>tool-discovery</td>
+      <td class="pass">PASS</td>
+      <td>45</td>
+      <td>Medium</td>
+      <td>{}</td>
+      <td>Tool exists with status &#39;basic&#39;.</td>
+      <td>None</td>
+      <td>Best for simple files. Complex layouts, scanned PDFs, tables, images, and multi-language documents may need manual review. Compression may flatten pages and reduce editability.</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Add tool-specific visual and output-fidelity tests.</td>
+    </tr>
+  
+    <tr>
+      <td>Rotate PDF</td>
+      <td>tool-discovery</td>
+      <td class="pass">PASS</td>
+      <td>74</td>
+      <td>Medium</td>
+      <td>{}</td>
+      <td>Tool exists with status &#39;active&#39;.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Add tool-specific visual and output-fidelity tests.</td>
+    </tr>
+  
+    <tr>
+      <td>extract-text</td>
+      <td>tool-discovery</td>
+      <td class="warning">WARNING</td>
+      <td>0</td>
+      <td>High</td>
+      <td>{}</td>
+      <td>None</td>
+      <td>Requested professional converter tool was not found in live configuration.</td>
+      <td>Working implementation and test coverage.</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Add only after a real implementation exists.</td>
+    </tr>
+  
+    <tr>
+      <td>extract-images</td>
+      <td>tool-discovery</td>
+      <td class="warning">WARNING</td>
+      <td>0</td>
+      <td>High</td>
+      <td>{}</td>
+      <td>None</td>
+      <td>Requested professional converter tool was not found in live configuration.</td>
+      <td>Working implementation and test coverage.</td>
+      <td>A professional suite needs honest support states and coverage for every advertised converter.</td>
+      <td>Add only after a real implementation exists.</td>
+    </tr>
+  
+    <tr>
+      <td>Global language fixture coverage</td>
+      <td>english.pdf</td>
+      <td class="pass">PASS</td>
+      <td>70</td>
+      <td>High</td>
+      <td>{&quot;path&quot;:&quot;E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\english.pdf&quot;,&quot;fileName&quot;:&quot;english.pdf&quot;,&quot;exists&quot;:true,&quot;size&quot;:29078,&quot;validPdf&quot;:true,&quot;encrypted&quot;:false,&quot;pageCount&quot;:1,&quot;textChars&quot;:113,&quot;hasSelectableText&quot;:true,&quot;error&quot;:null}</td>
+      <td>Language fixture exists and can be parsed as PDF.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.</td>
+      <td>Add per-language expected outputs and compare editability and reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>Global language fixture coverage</td>
+      <td>arabic.pdf</td>
+      <td class="pass">PASS</td>
+      <td>70</td>
+      <td>High</td>
+      <td>{&quot;path&quot;:&quot;E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\arabic.pdf&quot;,&quot;fileName&quot;:&quot;arabic.pdf&quot;,&quot;exists&quot;:true,&quot;size&quot;:72690,&quot;validPdf&quot;:true,&quot;encrypted&quot;:false,&quot;pageCount&quot;:1,&quot;textChars&quot;:115,&quot;hasSelectableText&quot;:true,&quot;error&quot;:null}</td>
+      <td>Language fixture exists and can be parsed as PDF.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.</td>
+      <td>Add per-language expected outputs and compare editability and reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>Global language fixture coverage</td>
+      <td>urdu.pdf</td>
+      <td class="pass">PASS</td>
+      <td>70</td>
+      <td>High</td>
+      <td>{&quot;path&quot;:&quot;E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\urdu.pdf&quot;,&quot;fileName&quot;:&quot;urdu.pdf&quot;,&quot;exists&quot;:true,&quot;size&quot;:49414,&quot;validPdf&quot;:true,&quot;encrypted&quot;:false,&quot;pageCount&quot;:1,&quot;textChars&quot;:93,&quot;hasSelectableText&quot;:true,&quot;error&quot;:null}</td>
+      <td>Language fixture exists and can be parsed as PDF.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.</td>
+      <td>Add per-language expected outputs and compare editability and reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>Global language fixture coverage</td>
+      <td>hindi.pdf</td>
+      <td class="pass">PASS</td>
+      <td>70</td>
+      <td>High</td>
+      <td>{&quot;path&quot;:&quot;E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\hindi.pdf&quot;,&quot;fileName&quot;:&quot;hindi.pdf&quot;,&quot;exists&quot;:true,&quot;size&quot;:52598,&quot;validPdf&quot;:true,&quot;encrypted&quot;:false,&quot;pageCount&quot;:1,&quot;textChars&quot;:95,&quot;hasSelectableText&quot;:true,&quot;error&quot;:null}</td>
+      <td>Language fixture exists and can be parsed as PDF.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.</td>
+      <td>Add per-language expected outputs and compare editability and reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>Global language fixture coverage</td>
+      <td>bengali.pdf</td>
+      <td class="pass">PASS</td>
+      <td>70</td>
+      <td>High</td>
+      <td>{&quot;path&quot;:&quot;E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\bengali.pdf&quot;,&quot;fileName&quot;:&quot;bengali.pdf&quot;,&quot;exists&quot;:true,&quot;size&quot;:53699,&quot;validPdf&quot;:true,&quot;encrypted&quot;:false,&quot;pageCount&quot;:1,&quot;textChars&quot;:98,&quot;hasSelectableText&quot;:true,&quot;error&quot;:null}</td>
+      <td>Language fixture exists and can be parsed as PDF.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.</td>
+      <td>Add per-language expected outputs and compare editability and reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>Global language fixture coverage</td>
+      <td>chinese.pdf</td>
+      <td class="pass">PASS</td>
+      <td>70</td>
+      <td>High</td>
+      <td>{&quot;path&quot;:&quot;E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\chinese.pdf&quot;,&quot;fileName&quot;:&quot;chinese.pdf&quot;,&quot;exists&quot;:true,&quot;size&quot;:38569,&quot;validPdf&quot;:true,&quot;encrypted&quot;:false,&quot;pageCount&quot;:1,&quot;textChars&quot;:67,&quot;hasSelectableText&quot;:true,&quot;error&quot;:null}</td>
+      <td>Language fixture exists and can be parsed as PDF.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.</td>
+      <td>Add per-language expected outputs and compare editability and reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>Global language fixture coverage</td>
+      <td>japanese.pdf</td>
+      <td class="pass">PASS</td>
+      <td>70</td>
+      <td>High</td>
+      <td>{&quot;path&quot;:&quot;E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\japanese.pdf&quot;,&quot;fileName&quot;:&quot;japanese.pdf&quot;,&quot;exists&quot;:true,&quot;size&quot;:38572,&quot;validPdf&quot;:true,&quot;encrypted&quot;:false,&quot;pageCount&quot;:1,&quot;textChars&quot;:77,&quot;hasSelectableText&quot;:true,&quot;error&quot;:null}</td>
+      <td>Language fixture exists and can be parsed as PDF.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.</td>
+      <td>Add per-language expected outputs and compare editability and reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>Global language fixture coverage</td>
+      <td>korean.pdf</td>
+      <td class="pass">PASS</td>
+      <td>70</td>
+      <td>High</td>
+      <td>{&quot;path&quot;:&quot;E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\korean.pdf&quot;,&quot;fileName&quot;:&quot;korean.pdf&quot;,&quot;exists&quot;:true,&quot;size&quot;:49450,&quot;validPdf&quot;:true,&quot;encrypted&quot;:false,&quot;pageCount&quot;:1,&quot;textChars&quot;:79,&quot;hasSelectableText&quot;:true,&quot;error&quot;:null}</td>
+      <td>Language fixture exists and can be parsed as PDF.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.</td>
+      <td>Add per-language expected outputs and compare editability and reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>Global language fixture coverage</td>
+      <td>russian.pdf</td>
+      <td class="pass">PASS</td>
+      <td>70</td>
+      <td>High</td>
+      <td>{&quot;path&quot;:&quot;E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\russian.pdf&quot;,&quot;fileName&quot;:&quot;russian.pdf&quot;,&quot;exists&quot;:true,&quot;size&quot;:30269,&quot;validPdf&quot;:true,&quot;encrypted&quot;:false,&quot;pageCount&quot;:1,&quot;textChars&quot;:104,&quot;hasSelectableText&quot;:true,&quot;error&quot;:null}</td>
+      <td>Language fixture exists and can be parsed as PDF.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.</td>
+      <td>Add per-language expected outputs and compare editability and reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>Global language fixture coverage</td>
+      <td>french.pdf</td>
+      <td class="pass">PASS</td>
+      <td>70</td>
+      <td>High</td>
+      <td>{&quot;path&quot;:&quot;E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\french.pdf&quot;,&quot;fileName&quot;:&quot;french.pdf&quot;,&quot;exists&quot;:true,&quot;size&quot;:29312,&quot;validPdf&quot;:true,&quot;encrypted&quot;:false,&quot;pageCount&quot;:1,&quot;textChars&quot;:112,&quot;hasSelectableText&quot;:true,&quot;error&quot;:null}</td>
+      <td>Language fixture exists and can be parsed as PDF.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.</td>
+      <td>Add per-language expected outputs and compare editability and reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>Global language fixture coverage</td>
+      <td>spanish.pdf</td>
+      <td class="pass">PASS</td>
+      <td>70</td>
+      <td>High</td>
+      <td>{&quot;path&quot;:&quot;E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\spanish.pdf&quot;,&quot;fileName&quot;:&quot;spanish.pdf&quot;,&quot;exists&quot;:true,&quot;size&quot;:29233,&quot;validPdf&quot;:true,&quot;encrypted&quot;:false,&quot;pageCount&quot;:1,&quot;textChars&quot;:109,&quot;hasSelectableText&quot;:true,&quot;error&quot;:null}</td>
+      <td>Language fixture exists and can be parsed as PDF.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.</td>
+      <td>Add per-language expected outputs and compare editability and reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>Global language fixture coverage</td>
+      <td>turkish.pdf</td>
+      <td class="pass">PASS</td>
+      <td>70</td>
+      <td>High</td>
+      <td>{&quot;path&quot;:&quot;E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\turkish.pdf&quot;,&quot;fileName&quot;:&quot;turkish.pdf&quot;,&quot;exists&quot;:true,&quot;size&quot;:29606,&quot;validPdf&quot;:true,&quot;encrypted&quot;:false,&quot;pageCount&quot;:1,&quot;textChars&quot;:113,&quot;hasSelectableText&quot;:true,&quot;error&quot;:null}</td>
+      <td>Language fixture exists and can be parsed as PDF.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.</td>
+      <td>Add per-language expected outputs and compare editability and reading order.</td>
+    </tr>
+  
+    <tr>
+      <td>Global language fixture coverage</td>
+      <td>mixed-rtl-ltr.pdf</td>
+      <td class="pass">PASS</td>
+      <td>70</td>
+      <td>High</td>
+      <td>{&quot;path&quot;:&quot;E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\mixed-rtl-ltr.pdf&quot;,&quot;fileName&quot;:&quot;mixed-rtl-ltr.pdf&quot;,&quot;exists&quot;:true,&quot;size&quot;:71549,&quot;validPdf&quot;:true,&quot;encrypted&quot;:false,&quot;pageCount&quot;:1,&quot;textChars&quot;:74,&quot;hasSelectableText&quot;:true,&quot;error&quot;:null}</td>
+      <td>Language fixture exists and can be parsed as PDF.</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.</td>
+      <td>Add per-language expected outputs and compare editability and reading order.</td>
+    </tr>
+  </tbody>
+    </table>
+  </div>
+</body>
+</html>

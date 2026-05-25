@@ -1099,13 +1099,62 @@ window.PdfEngine = {
   },
 
   parseExcelCellValue: function(raw) {
-    const value = String(raw || '').trim();
+    let value = String(raw || '').trim();
     if (!value) return { value: '' };
 
+    // 1. Check Date formats
+    // YYYY-MM-DD
+    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return { value, format: 'yyyy-mm-dd' };
+    }
+    // DD/MM/YYYY or MM/DD/YYYY
+    if (/^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(value)) {
+      return { value, format: 'dd/mm/yyyy' };
+    }
+    // DD-MM-YYYY
+    if (/^\d{1,2}-\d{1,2}-\d{2,4}$/.test(value)) {
+      return { value, format: 'dd-mm-yyyy' };
+    }
+
+    // 2. Check Currency formats
+    const currencyPrefixRegex = /^([$€£¥₹]|BHD|SAR|AED|QAR|KWD|OMR|USD|EUR|GBP)\s*(-?\d{1,3}(,\d{3})*(\.\d+)?|-?\d+(\.\d+)?)$/i;
+    const currencySuffixRegex = /^(-?\d{1,3}(,\d{3})*(\.\d+)?|-?\d+(\.\d+)?)\s*([$€£¥₹]|BHD|SAR|AED|QAR|KWD|OMR|USD|EUR|GBP)$/i;
+
+    let currencyMatch = value.match(currencyPrefixRegex);
+    let isPrefix = true;
+    if (!currencyMatch) {
+      currencyMatch = value.match(currencySuffixRegex);
+      isPrefix = false;
+    }
+
+    if (currencyMatch) {
+      const symbol = isPrefix ? currencyMatch[1] : currencyMatch[6];
+      const numStr = isPrefix ? currencyMatch[2] : currencyMatch[1];
+      const cleanNum = Number(numStr.replace(/,/g, ''));
+      if (!isNaN(cleanNum)) {
+        let format = '';
+        const upperSym = symbol.toUpperCase();
+        if (['BHD', 'KWD', 'OMR'].includes(upperSym)) {
+          format = `"${upperSym}" #,##0.000`;
+        } else if (symbol === '$' || upperSym === 'USD') {
+          format = '$#,##0.00';
+        } else if (symbol === '€' || upperSym === 'EUR') {
+          format = '[$€-2] #,##0.00';
+        } else if (symbol === '£' || upperSym === 'GBP') {
+          format = '[$£-809] #,##0.00';
+        } else {
+          format = `"${upperSym}" #,##0.00`;
+        }
+        return { value: cleanNum, format };
+      }
+    }
+
+    // 3. Percentage formats
     if (/^-?\d{1,3}(,\d{3})*(\.\d+)?%$|^-?\d+(\.\d+)?%$/.test(value) && !this.hasCurrencySignal(value)) {
       return { value: Number(value.replace(/,/g, '').replace('%', '')) / 100, format: '0.00%' };
     }
 
+    // 4. Standard Number format
     if (/^-?\d{1,3}(,\d{3})*(\.\d+)?$|^-?\d+(\.\d+)?$/.test(value) && !this.hasCurrencySignal(value)) {
       return { value: Number(value.replace(/,/g, '')) };
     }
@@ -1113,16 +1162,54 @@ window.PdfEngine = {
     return { value };
   },
 
-  excelRowsToSheetData: function(rows, columns) {
-    return rows.map(row => {
-      const cells = Array.from({ length: Math.max(columns.length, row.items.length) }, () => '');
-      row.items.forEach(item => {
-        const index = columns.length ? this.nearestExcelColumnIndex(columns, item.x) : cells.findIndex(cell => cell === '');
-        const safeIndex = index >= 0 ? index : cells.length;
-        cells[safeIndex] = cells[safeIndex] ? `${cells[safeIndex]} ${item.text}` : item.text;
+  excelRowsToSheetData: function(rows, columns, rowIndexOffset = 0) {
+    const merges = [];
+    const parsedRows = rows.map((row, rIdx) => {
+      const actualRowIndex = rowIndexOffset + rIdx;
+      const cells = Array.from({ length: columns.length || 1 }, () => ({ value: '', format: undefined }));
+
+      const sortedItems = [...row.items].sort((a, b) => a.x - b.x);
+      sortedItems.forEach(item => {
+        if (!columns.length) {
+          cells.push(this.parseExcelCellValue(item.text));
+          return;
+        }
+
+        const startCol = this.nearestExcelColumnIndex(columns, item.x);
+        const itemRight = item.x + item.width;
+        let endCol = startCol;
+        for (let c = startCol + 1; c < columns.length; c++) {
+          if (columns[c] < itemRight - 10) {
+            endCol = c;
+          } else {
+            break;
+          }
+        }
+
+        const parsed = this.parseExcelCellValue(item.text);
+        if (cells[startCol] && cells[startCol].value) {
+          cells[startCol].value = `${cells[startCol].value} ${parsed.value}`;
+        } else {
+          cells[startCol] = parsed;
+        }
+
+        if (endCol > startCol) {
+          merges.push({
+            s: { r: actualRowIndex, c: startCol },
+            e: { r: actualRowIndex, c: endCol }
+          });
+          for (let c = startCol + 1; c <= endCol; c++) {
+            if (!cells[c] || !cells[c].value) {
+              cells[c] = { value: '' };
+            }
+          }
+        }
       });
-      return cells.map(cell => this.parseExcelCellValue(cell));
+
+      return cells;
     });
+
+    return { parsedRows, merges };
   },
 
   applyExcelSheetFormats: function(sheet, parsedRows, XLSX) {
@@ -1237,9 +1324,12 @@ window.PdfEngine = {
       items.forEach(item => { totalTextChars += item.text.length; });
       const rows = this.groupExcelRows(items);
       const columns = this.clusterExcelColumns(items);
-      const parsedRows = this.excelRowsToSheetData(rows, columns);
+      const { parsedRows, merges } = this.excelRowsToSheetData(rows, columns);
       const aoa = parsedRows.length ? parsedRows.map(row => row.map(cell => cell.value)) : [['No selectable text detected on this page']];
       const worksheet = XLSX.utils.aoa_to_sheet(aoa);
+      if (merges && merges.length > 0) {
+        worksheet['!merges'] = merges;
+      }
       this.applyExcelSheetFormats(worksheet, parsedRows.length ? parsedRows : [[{ value: 'No selectable text detected on this page' }]], XLSX);
       XLSX.utils.book_append_sheet(workbook, worksheet, `Page ${i}`);
     }
@@ -1252,7 +1342,7 @@ window.PdfEngine = {
     const blob = new Blob([buffer], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     });
-    const name = `${this.getSafeOfficeBaseName(file)}_editable_${mode}.xlsx`;
+    const name = `${this.getSafeOfficeBaseName(file)}_extracted_${mode}.xlsx`;
     this.downloadFile(blob, name, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
   },
 
@@ -1260,17 +1350,24 @@ window.PdfEngine = {
    * OCR PDF client-side conversion.
    * Renders pages to canvas and extracts text with Tesseract.js.
    */
-  ocrPdfToText: async function(file, onProgress) {
+  ocrPdfToText: async function(file, onProgress, options = {}) {
     const pdfjsLib = await this.loadLibrary('pdfjs-dist');
     const Tesseract = await this.loadLibrary('tesseract');
     const arrayBuffer = await this.readFileAsArrayBuffer(file);
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
     const pages = [];
+    
+    const lang = options.lang || 'eng';
+    const scale = options.scale !== undefined ? Number(options.scale) : 2.0;
+    const format = options.format || 'txt';
+    
+    let confidenceSum = 0;
+    let confidenceCount = 0;
 
     for (let i = 1; i <= pdf.numPages; i++) {
       if (typeof onProgress === 'function') onProgress(i, pdf.numPages, 'render');
       const page = await pdf.getPage(i);
-      const viewport = page.getViewport({ scale: 2.0 });
+      const viewport = page.getViewport({ scale });
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
       canvas.height = viewport.height;
@@ -1278,11 +1375,17 @@ window.PdfEngine = {
       await page.render({ canvasContext: context, viewport }).promise;
 
       if (typeof onProgress === 'function') onProgress(i, pdf.numPages, 'ocr');
-      const result = await Tesseract.recognize(canvas, 'eng');
+      const result = await Tesseract.recognize(canvas, lang);
       const text = (result?.data?.text || '').trim();
+      const pageConfidence = result?.data?.confidence || 0;
+      
+      confidenceSum += pageConfidence;
+      confidenceCount++;
+      
       pages.push({
         page: i,
-        lines: text.split(/\r?\n/).map(line => line.trim()).filter(Boolean)
+        lines: text.split(/\r?\n/).map(line => line.trim()).filter(Boolean),
+        confidence: pageConfidence
       });
     }
 
@@ -1294,16 +1397,29 @@ window.PdfEngine = {
       throw new Error("OCR finished but no readable text was detected. Try a higher-resolution scan or a clearer document.");
     }
 
-    const txtName = file.name.replace(/\.pdf$/i, '') + '_ocr.txt';
-    const blob = new Blob([textOutput], { type: 'text/plain;charset=utf-8' });
-    this.downloadFile(blob, txtName, 'text/plain;charset=utf-8');
+    const avgConfidence = confidenceCount > 0 ? Math.round(confidenceSum / confidenceCount) : 0;
+
+    if (format === 'docx') {
+      const docxName = this.getSafeOfficeBaseName(file) + '_ocr.docx';
+      await this.makeDocxFromPages(pages, docxName);
+    } else if (format === 'txt') {
+      const txtName = file.name.replace(/\.pdf$/i, '') + '_ocr.txt';
+      const blob = new Blob([textOutput], { type: 'text/plain;charset=utf-8' });
+      this.downloadFile(blob, txtName, 'text/plain;charset=utf-8');
+    }
+
+    return {
+      textOutput,
+      pages,
+      avgConfidence
+    };
   },
 
   /**
    * PDF to PowerPoint client-side conversion.
    * Creates a real .pptx package with one image-based slide per PDF page.
    */
-  pdfToPowerPointBasicImages: async function(file, onProgress) {
+  pdfToPowerPointBasicImages: async function(file, onProgress, mode = 'image') {
     const pdfjsLib = await this.loadLibrary('pdfjs-dist');
     const PptxGenJS = await this.loadLibrary('pptxgenjs');
     const arrayBuffer = await this.readFileAsArrayBuffer(file);
@@ -1329,6 +1445,7 @@ window.PdfEngine = {
     for (let i = 1; i <= pdf.numPages; i++) {
       if (typeof onProgress === 'function') onProgress(i, pdf.numPages);
       const page = i === 1 ? firstPage : await pdf.getPage(i);
+      
       const viewportBase = page.getViewport({ scale: 1 });
       const scale = Math.min(2.5, Math.max(1, 1800 / viewportBase.width));
       const viewport = page.getViewport({ scale });
@@ -1336,20 +1453,364 @@ window.PdfEngine = {
       const context = canvas.getContext('2d', { alpha: false });
       canvas.width = Math.ceil(viewport.width);
       canvas.height = Math.ceil(viewport.height);
-      await page.render({ canvasContext: context, viewport }).promise;
+      
+      const textContent = await page.getTextContent();
+      const items = textContent.items || [];
 
-      const slide = pptx.addSlide();
-      slide.background = { color: 'FFFFFF' };
-      slide.addImage({
-        data: canvas.toDataURL('image/jpeg', 0.92),
-        x: 0,
-        y: 0,
-        w: Number(slideWidth.toFixed(3)),
-        h: Number(slideHeight.toFixed(3))
-      });
+      if (mode === 'editable') {
+        // Redraw canvas with whited-out text zones
+        await page.render({ canvasContext: context, viewport }).promise;
+
+        const viewBox = page.viewBox || [0, 0, 595.3, 841.9];
+        const pageWidth = viewBox[2] || 595.3;
+        const pageHeight = viewBox[3] || 841.9;
+
+        // Perform text coordinate whiteouts on the template canvas
+        context.fillStyle = '#ffffff'; // standard template white background
+        
+        items.forEach(item => {
+          if (!item.str || !item.str.trim()) return;
+          
+          const fontSize = this.getFontSizeFromTransform(item.transform);
+          const x = item.transform[4];
+          const y = item.transform[5];
+          
+          // Convert to canvas space
+          const x_canvas = x * scale;
+          const y_canvas = (pageHeight - y - fontSize) * scale;
+          const w_canvas = item.width * scale;
+          const h_canvas = fontSize * scale;
+          
+          context.fillRect(x_canvas - 2, y_canvas - 2, w_canvas + 4, h_canvas + 4);
+        });
+
+        const slide = pptx.addSlide();
+        slide.background = { color: 'FFFFFF' };
+        slide.addImage({
+          data: canvas.toDataURL('image/jpeg', 0.88),
+          x: 0,
+          y: 0,
+          w: Number(slideWidth.toFixed(3)),
+          h: Number(slideHeight.toFixed(3))
+        });
+
+        // Add editable text overlay
+        items.forEach(item => {
+          if (!item.str || !item.str.trim()) return;
+          
+          const fontSize = this.getFontSizeFromTransform(item.transform);
+          const x = item.transform[4];
+          const y = item.transform[5];
+          
+          // Map to slide inches (PDF scale: 72 points = 1 inch)
+          const x_in = (x / pageWidth) * slideWidth;
+          const y_in = ((pageHeight - y - fontSize) / pageHeight) * slideHeight;
+          const w_in = (item.width / pageWidth) * slideWidth;
+          const h_in = (fontSize / pageHeight) * slideHeight;
+          
+          const isBold = this.isBoldLikeFont(item.fontName);
+          
+          slide.addText(item.str, {
+            x: Number(x_in.toFixed(3)),
+            y: Number(y_in.toFixed(3)),
+            w: Number(w_in.toFixed(3)),
+            h: Number(h_in.toFixed(3)),
+            fontSize: Math.max(5, Math.round(fontSize * 0.95)),
+            fontFace: 'Arial',
+            color: '000000',
+            bold: isBold,
+            margin: 0
+          });
+        });
+
+      } else {
+        await page.render({ canvasContext: context, viewport }).promise;
+
+        const slide = pptx.addSlide();
+        slide.background = { color: 'FFFFFF' };
+        slide.addImage({
+          data: canvas.toDataURL('image/jpeg', 0.92),
+          x: 0,
+          y: 0,
+          w: Number(slideWidth.toFixed(3)),
+          h: Number(slideHeight.toFixed(3))
+        });
+      }
     }
 
     const name = `${this.getSafeOfficeBaseName(file)}_slides.pptx`;
     await pptx.writeFile({ fileName: name });
+  },
+
+  /**
+   * PDF to Word client-side conversion preserving visual template formatting.
+   * Renders each page, whites out digital text bounding boxes, and layers editable text in absolute coordinates over the template.
+   */
+  pdfToWordLayoutMode: async function(file) {
+    const pdfjsLib = await this.loadLibrary('pdfjs-dist');
+    const arrayBuffer = await this.readFileAsArrayBuffer(file);
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const pagesMarkup = [];
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale: 2.0 }); // high-fidelity template scaling
+      
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({ canvasContext: context, viewport: viewport }).promise;
+
+      // Extract text content and coordinates
+      const textContent = await page.getTextContent();
+      const items = textContent.items || [];
+      const textLinesMarkup = [];
+
+      const viewBox = page.viewBox || [0, 0, 595.3, 841.9];
+      const pageWidth = viewBox[2] || 595.3;
+      const pageHeight = viewBox[3] || 841.9;
+
+      // Perform text coordinate whiteouts on the template canvas
+      context.fillStyle = '#ffffff'; // standard template white background
+      
+      items.forEach(item => {
+        if (!item.str || !item.str.trim()) return;
+        
+        const fontSize = this.getFontSizeFromTransform(item.transform);
+        const x = item.transform[4];
+        const y = item.transform[5];
+        
+        // Convert to canvas space
+        const x_canvas = x * 2.0;
+        const y_canvas = (pageHeight - y - fontSize) * 2.0;
+        const w_canvas = item.width * 2.0;
+        const h_canvas = fontSize * 2.0;
+        
+        // Whiteout text on template canvas
+        context.fillRect(x_canvas - 2, y_canvas - 2, w_canvas + 4, h_canvas + 4);
+        
+        // Map to Word points (A4 size: 595.3 x 841.9)
+        const x_word = (x / pageWidth) * 595.3;
+        const y_word = ((pageHeight - y - fontSize) / pageHeight) * 841.9;
+        const w_word = (item.width / pageWidth) * 595.3;
+        const h_word = (fontSize / pageHeight) * 841.9;
+        
+        const isBold = this.isBoldLikeFont(item.fontName);
+        
+        textLinesMarkup.push(`
+          <div class="ocr-text-line" style="left: ${x_word.toFixed(1)}pt; top: ${y_word.toFixed(1)}pt; width: ${w_word.toFixed(1)}pt; height: ${h_word.toFixed(1)}pt; font-size: ${Math.max(6, Math.round(fontSize * 0.95))}pt; font-weight: ${isBold ? 'bold' : 'normal'};">
+            ${this.escapeXml(item.str)}
+          </div>
+        `);
+      });
+
+      // Export whiteout template canvas as JPEG
+      const bgImgUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+      pagesMarkup.push(`
+        <table class="page-container" cellpadding="0" cellspacing="0" border="0" width="100%" style="width: 595.3pt; height: 841.9pt; page-break-after: always; border-collapse: collapse;">
+          <tr>
+            <td background="${bgImgUrl}" valign="top" style="background-image: url('${bgImgUrl}'); background-size: 595.3pt 841.9pt; background-repeat: no-repeat; width: 595.3pt; height: 841.9pt; padding: 0; position: relative;">
+              <div style="position: relative; width: 595.3pt; height: 841.9pt; margin: 0; padding: 0;">
+                ${textLinesMarkup.join('\n')}
+              </div>
+            </td>
+          </tr>
+        </table>
+      `);
+    }
+
+    const htmlContent = `
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<!--[if gte mso 9]>
+<xml>
+ <w:WordDocument>
+  <w:View>Print</w:View>
+  <w:Zoom>100</w:Zoom>
+ </w:WordDocument>
+</xml>
+<![endif]-->
+<style>
+@page PageSection {
+  size: 595.3pt 841.9pt;
+  margin: 0in 0in 0in 0in;
+}
+.page-container {
+  page: PageSection;
+  width: 595.3pt;
+  height: 841.9pt;
+  position: relative;
+  page-break-after: always;
+}
+.page-container:last-child {
+  page-break-after: avoid;
+}
+.ocr-text-line {
+  position: absolute;
+  font-family: Arial, sans-serif;
+  color: #000000;
+  background: transparent;
+  border: none;
+  white-space: nowrap;
+}
+</style>
+</head>
+<body style="margin: 0; padding: 0;">
+  ${pagesMarkup.join('\n')}
+</body>
+</html>
+    `;
+
+    const blob = new Blob([htmlContent], { type: 'application/msword;charset=utf-8' });
+    const name = `${this.getSafeOfficeBaseName(file)}_layout.doc`;
+    this.downloadFile(blob, name, 'application/msword;charset=utf-8');
+    return { htmlContent };
+  },
+
+  /**
+   * OCR PDF to Word client-side conversion preserving visual template formatting.
+   * Renders each page, runs OCR, whites out OCR text bounding boxes, and layers editable text in absolute coordinates over the template.
+   */
+  ocrToWordLayoutMode: async function(file, onProgress, options = {}) {
+    const pdfjsLib = await this.loadLibrary('pdfjs-dist');
+    const Tesseract = await this.loadLibrary('tesseract');
+    const arrayBuffer = await this.readFileAsArrayBuffer(file);
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const pagesMarkup = [];
+    
+    const lang = options.lang || 'eng';
+    const scale = options.scale !== undefined ? Number(options.scale) : 2.0;
+
+    let confidenceSum = 0;
+    let confidenceCount = 0;
+    const allTextLines = [];
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      if (typeof onProgress === 'function') onProgress(i, pdf.numPages, 'render');
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({ canvasContext: context, viewport }).promise;
+
+      // Extract text content and coordinates via OCR
+      if (typeof onProgress === 'function') onProgress(i, pdf.numPages, 'ocr');
+      const result = await Tesseract.recognize(canvas, lang);
+      const lines = result?.data?.lines || [];
+      const textLinesMarkup = [];
+
+      const pageConfidence = result?.data?.confidence || 0;
+      confidenceSum += pageConfidence;
+      confidenceCount++;
+
+      // Perform text coordinate whiteouts on the template canvas
+      context.fillStyle = '#ffffff'; // standard template white background
+      
+      lines.forEach(line => {
+        if (!line.text || !line.text.trim()) return;
+        
+        const bbox = line.bbox;
+        if (!bbox) return;
+        
+        const w_pixel = bbox.x1 - bbox.x0;
+        const h_pixel = bbox.y1 - bbox.y0;
+        
+        // Whiteout text on template canvas
+        context.fillRect(bbox.x0 - 2, bbox.y0 - 2, w_pixel + 4, h_pixel + 4);
+        
+        // Map to Word points (A4 size: 595.3 x 841.9)
+        const x_word = (bbox.x0 / canvas.width) * 595.3;
+        const y_word = (bbox.y0 / canvas.height) * 841.9;
+        const w_word = (w_pixel / canvas.width) * 595.3;
+        const h_word = (h_pixel / canvas.height) * 841.9;
+        
+        textLinesMarkup.push(`
+          <div class="ocr-text-line" style="left: ${x_word.toFixed(1)}pt; top: ${y_word.toFixed(1)}pt; width: ${w_word.toFixed(1)}pt; height: ${h_word.toFixed(1)}pt; font-size: ${Math.max(6, Math.round(h_word * 0.7))}pt;">
+            ${this.escapeXml(line.text)}
+          </div>
+        `);
+
+        allTextLines.push(line.text);
+      });
+
+      // Export whiteout template canvas as JPEG
+      const bgImgUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+      pagesMarkup.push(`
+        <table class="page-container" cellpadding="0" cellspacing="0" border="0" width="100%" style="width: 595.3pt; height: 841.9pt; page-break-after: always; border-collapse: collapse;">
+          <tr>
+            <td background="${bgImgUrl}" valign="top" style="background-image: url('${bgImgUrl}'); background-size: 595.3pt 841.9pt; background-repeat: no-repeat; width: 595.3pt; height: 841.9pt; padding: 0; position: relative;">
+              <div style="position: relative; width: 595.3pt; height: 841.9pt; margin: 0; padding: 0;">
+                ${textLinesMarkup.join('\n')}
+              </div>
+            </td>
+          </tr>
+        </table>
+      `);
+    }
+
+    const htmlContent = `
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<!--[if gte mso 9]>
+<xml>
+ <w:WordDocument>
+  <w:View>Print</w:View>
+  <w:Zoom>100</w:Zoom>
+ </w:WordDocument>
+</xml>
+<![endif]-->
+<style>
+@page PageSection {
+  size: 595.3pt 841.9pt;
+  margin: 0in 0in 0in 0in;
+}
+.page-container {
+  page: PageSection;
+  width: 595.3pt;
+  height: 841.9pt;
+  position: relative;
+  page-break-after: always;
+}
+.page-container:last-child {
+  page-break-after: avoid;
+}
+.ocr-text-line {
+  position: absolute;
+  font-family: Arial, sans-serif;
+  color: #000000;
+  background: transparent;
+  border: none;
+  white-space: nowrap;
+}
+</style>
+</head>
+<body style="margin: 0; padding: 0;">
+  ${pagesMarkup.join('\n')}
+</body>
+</html>
+    `;
+
+    const blob = new Blob([htmlContent], { type: 'application/msword;charset=utf-8' });
+    const name = `${this.getSafeOfficeBaseName(file)}_ocr_layout.doc`;
+    this.downloadFile(blob, name, 'application/msword;charset=utf-8');
+
+    const textOutput = allTextLines.join('\n');
+    const avgConfidence = confidenceCount > 0 ? Math.round(confidenceSum / confidenceCount) : 0;
+    
+    return {
+      textOutput,
+      avgConfidence,
+      pages: allTextLines.map(line => ({ lines: [line] })),
+      htmlContent: htmlContent
+    };
   }
 };

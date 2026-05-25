@@ -1,0 +1,2871 @@
+{
+  "project": "Vendora PDF / Document Converter Expert Auditor - Phase 3 Safe Release Copy Audit",
+  "generatedAt": "2026-05-24T17:09:47.625Z",
+  "fixtureFolder": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures",
+  "sourceAnalyses": {
+    "simple": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\simple-english.pdf",
+      "fileName": "simple-english.pdf",
+      "exists": true,
+      "size": 29269,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 357,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "catalog": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\catalog.pdf",
+      "fileName": "catalog.pdf",
+      "exists": true,
+      "size": 45902,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 246,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "menu": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\menu.pdf",
+      "fileName": "menu.pdf",
+      "exists": true,
+      "size": 48814,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 225,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "brochure": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\brochure.pdf",
+      "fileName": "brochure.pdf",
+      "exists": true,
+      "size": 34022,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 200,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "invoice": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\invoice.pdf",
+      "fileName": "invoice.pdf",
+      "exists": true,
+      "size": 29468,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 228,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "form": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\form.pdf",
+      "fileName": "form.pdf",
+      "exists": true,
+      "size": 31415,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 110,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "logoImageHeavy": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\logo-image-heavy.pdf",
+      "fileName": "logo-image-heavy.pdf",
+      "exists": true,
+      "size": 39696,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 146,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "chart": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\chart.pdf",
+      "fileName": "chart.pdf",
+      "exists": true,
+      "size": 29218,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 83,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "table": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\table.pdf",
+      "fileName": "table.pdf",
+      "exists": true,
+      "size": 29493,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 204,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "mixedFonts": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\mixed-fonts.pdf",
+      "fileName": "mixed-fonts.pdf",
+      "exists": true,
+      "size": 48791,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 208,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "english": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\english.pdf",
+      "fileName": "english.pdf",
+      "exists": true,
+      "size": 29078,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 113,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "arabic": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\arabic.pdf",
+      "fileName": "arabic.pdf",
+      "exists": true,
+      "size": 72690,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 115,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "urdu": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\urdu.pdf",
+      "fileName": "urdu.pdf",
+      "exists": true,
+      "size": 49414,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 93,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "hindi": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\hindi.pdf",
+      "fileName": "hindi.pdf",
+      "exists": true,
+      "size": 52598,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 95,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "bengali": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\bengali.pdf",
+      "fileName": "bengali.pdf",
+      "exists": true,
+      "size": 53699,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 98,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "chinese": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\chinese.pdf",
+      "fileName": "chinese.pdf",
+      "exists": true,
+      "size": 38569,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 67,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "japanese": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\japanese.pdf",
+      "fileName": "japanese.pdf",
+      "exists": true,
+      "size": 38572,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 77,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "korean": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\korean.pdf",
+      "fileName": "korean.pdf",
+      "exists": true,
+      "size": 49450,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 79,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "russian": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\russian.pdf",
+      "fileName": "russian.pdf",
+      "exists": true,
+      "size": 30269,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 104,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "french": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\french.pdf",
+      "fileName": "french.pdf",
+      "exists": true,
+      "size": 29312,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 112,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "spanish": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\spanish.pdf",
+      "fileName": "spanish.pdf",
+      "exists": true,
+      "size": 29233,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 109,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "turkish": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\turkish.pdf",
+      "fileName": "turkish.pdf",
+      "exists": true,
+      "size": 29606,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 113,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "mixedRtlLtr": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\mixed-rtl-ltr.pdf",
+      "fileName": "mixed-rtl-ltr.pdf",
+      "exists": true,
+      "size": 71549,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 74,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "scanned": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\scanned.pdf",
+      "fileName": "scanned.pdf",
+      "exists": true,
+      "size": 17620,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 1,
+      "textChars": 0,
+      "hasSelectableText": false,
+      "error": null
+    },
+    "password": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\password-protected.pdf",
+      "fileName": "password-protected.pdf",
+      "exists": true,
+      "size": 29361,
+      "validPdf": true,
+      "encrypted": true,
+      "pageCount": 1,
+      "textChars": 228,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "corrupted": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\corrupted.pdf",
+      "fileName": "corrupted.pdf",
+      "exists": true,
+      "size": 82,
+      "validPdf": false,
+      "encrypted": false,
+      "pageCount": 0,
+      "textChars": 0,
+      "hasSelectableText": false,
+      "error": "Stream has ended unexpectedly"
+    },
+    "large": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\large.pdf",
+      "fileName": "large.pdf",
+      "exists": true,
+      "size": 64538,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 30,
+      "textChars": 1859,
+      "hasSelectableText": true,
+      "error": null
+    },
+    "multiPage": {
+      "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\multi-page.pdf",
+      "fileName": "multi-page.pdf",
+      "exists": true,
+      "size": 32829,
+      "validPdf": true,
+      "encrypted": false,
+      "pageCount": 5,
+      "textChars": 4183,
+      "hasSelectableText": true,
+      "error": null
+    }
+  },
+  "liveToolsFound": [
+    {
+      "id": "merge-pdf",
+      "name": "Merge PDF",
+      "status": "active",
+      "releaseLabel": "Ready",
+      "category": "organize",
+      "limitations": ""
+    },
+    {
+      "id": "split-pdf",
+      "name": "Split PDF",
+      "status": "active",
+      "releaseLabel": "Ready",
+      "category": "organize",
+      "limitations": ""
+    },
+    {
+      "id": "remove-pages",
+      "name": "Remove Pages",
+      "status": "active",
+      "releaseLabel": "Ready",
+      "category": "organize",
+      "limitations": ""
+    },
+    {
+      "id": "extract-pages",
+      "name": "Extract Pages",
+      "status": "active",
+      "releaseLabel": "Ready",
+      "category": "organize",
+      "limitations": ""
+    },
+    {
+      "id": "organize-pdf",
+      "name": "Organize Pages",
+      "status": "active",
+      "releaseLabel": "Ready",
+      "category": "organize",
+      "limitations": ""
+    },
+    {
+      "id": "rotate-pdf",
+      "name": "Rotate PDF",
+      "status": "active",
+      "releaseLabel": "Ready",
+      "category": "organize",
+      "limitations": ""
+    },
+    {
+      "id": "compress-pdf",
+      "name": "Compress PDF",
+      "status": "basic",
+      "releaseLabel": "Basic",
+      "category": "optimize",
+      "limitations": "Best for simple files. Complex layouts, scanned PDFs, tables, images, and multi-language documents may need manual review. Compression may flatten pages and reduce editability."
+    },
+    {
+      "id": "repair-pdf",
+      "name": "Repair PDF",
+      "status": "future",
+      "releaseLabel": "",
+      "category": "optimize",
+      "limitations": "Corrupted PDF repairs require structural rebuilding. This tool is a preview; pro-grade repair engine coming soon."
+    },
+    {
+      "id": "jpg-to-pdf",
+      "name": "JPG to PDF",
+      "status": "active",
+      "releaseLabel": "Ready",
+      "category": "convertTo",
+      "limitations": ""
+    },
+    {
+      "id": "png-to-pdf",
+      "name": "PNG to PDF",
+      "status": "active",
+      "releaseLabel": "Ready",
+      "category": "convertTo",
+      "limitations": ""
+    },
+    {
+      "id": "image-to-pdf",
+      "name": "Image to PDF",
+      "status": "active",
+      "releaseLabel": "Ready",
+      "category": "convertTo",
+      "limitations": ""
+    },
+    {
+      "id": "word-to-pdf",
+      "name": "Word to PDF",
+      "status": "basic",
+      "releaseLabel": "",
+      "category": "convertTo",
+      "limitations": "Complex layout tables or custom Microsoft word fonts may undergo styling shifts. For critical layouts, a server conversion engine is recommended."
+    },
+    {
+      "id": "powerpoint-to-pdf",
+      "name": "PowerPoint to PDF",
+      "status": "future",
+      "releaseLabel": "",
+      "category": "convertTo",
+      "limitations": "Slideshow layout rendering requires dedicated Microsoft Office libraries. Available as a preview; full layout-preserving engine coming soon."
+    },
+    {
+      "id": "excel-to-pdf",
+      "name": "Excel to PDF",
+      "status": "future",
+      "releaseLabel": "",
+      "category": "convertTo",
+      "limitations": "Multi-column sheets often wrap or shrink in complex grid layouts. Standardized grid export requires advanced sizing engine. Preview mode only."
+    },
+    {
+      "id": "html-to-pdf",
+      "name": "HTML to PDF",
+      "status": "basic",
+      "releaseLabel": "",
+      "category": "convertTo",
+      "limitations": "Renders local markup structure directly. External styles or dynamic scripts are restricted due to sandbox privacy rules."
+    },
+    {
+      "id": "pdf-to-jpg",
+      "name": "PDF to JPG",
+      "status": "active",
+      "releaseLabel": "Ready",
+      "category": "convertFrom",
+      "limitations": ""
+    },
+    {
+      "id": "pdf-to-word",
+      "name": "PDF to Word",
+      "status": "basic",
+      "releaseLabel": "Basic",
+      "category": "convertFrom",
+      "limitations": "Best for simple files. Creates a real editable .docx from selectable PDF text. Complex layouts, scanned PDFs, tables, images, and multi-language documents may need manual review."
+    },
+    {
+      "id": "pdf-to-powerpoint",
+      "name": "PDF to PowerPoint Visual Export",
+      "status": "basic",
+      "releaseLabel": "Beta",
+      "category": "convertFrom",
+      "limitations": "This creates image-based slides to preserve the look of the PDF. Text may not be editable yet. This is a visual export, not an editable PowerPoint rebuild."
+    },
+    {
+      "id": "pdf-to-excel",
+      "name": "PDF to Excel",
+      "status": "basic",
+      "releaseLabel": "Basic",
+      "category": "convertFrom",
+      "limitations": "Best for simple files. Creates a real .xlsx workbook with editable cells from detected text positions. Complex layouts, scanned PDFs, tables, images, merged cells, formulas, and multi-language documents may need manual review."
+    },
+    {
+      "id": "pdf-to-pdfa",
+      "name": "PDF to PDF/A",
+      "status": "future",
+      "releaseLabel": "",
+      "category": "convertFrom",
+      "limitations": "PDF/A conformance requires compliance standard embedding (ICC Profiles, metadata headers). Full validator and encoder engine coming soon."
+    },
+    {
+      "id": "add-watermark",
+      "name": "Add Watermark",
+      "status": "active",
+      "releaseLabel": "",
+      "category": "edit",
+      "limitations": ""
+    },
+    {
+      "id": "add-page-numbers",
+      "name": "Add Page Numbers",
+      "status": "active",
+      "releaseLabel": "",
+      "category": "edit",
+      "limitations": ""
+    },
+    {
+      "id": "crop-pdf",
+      "name": "Crop PDF",
+      "status": "basic",
+      "releaseLabel": "",
+      "category": "edit",
+      "limitations": "Applies basic page crop bounding box locally. Real-time visual canvas cropping fits best in desktop browsers."
+    },
+    {
+      "id": "protect-pdf",
+      "name": "Protect PDF",
+      "status": "active",
+      "releaseLabel": "",
+      "category": "security",
+      "limitations": ""
+    },
+    {
+      "id": "unlock-pdf",
+      "name": "Unlock PDF",
+      "status": "active",
+      "releaseLabel": "",
+      "category": "security",
+      "limitations": ""
+    },
+    {
+      "id": "sign-pdf",
+      "name": "Sign PDF",
+      "status": "basic",
+      "releaseLabel": "",
+      "category": "security",
+      "limitations": "Basic visual signature stamping. This tool does not embed legal digital certificates (PKI) or audit logs."
+    },
+    {
+      "id": "redact-pdf",
+      "name": "Redact PDF",
+      "status": "future",
+      "releaseLabel": "",
+      "category": "security",
+      "limitations": "True redaction requires wiping binary stream structures, not just drawing black rectangles (which can be bypassed). Safe redaction tool is coming soon."
+    },
+    {
+      "id": "ocr-pdf",
+      "name": "OCR PDF",
+      "status": "basic",
+      "releaseLabel": "Beta",
+      "category": "intelligence",
+      "limitations": "Best for simple files. English OCR runs locally in the browser. Complex layouts, scanned PDFs, tables, images, and multi-language documents may need manual review. OCR accuracy depends on image clarity, resolution, and page rotation."
+    },
+    {
+      "id": "pdf-summarizer",
+      "name": "AI Summarizer",
+      "status": "future",
+      "releaseLabel": "",
+      "category": "intelligence",
+      "limitations": "Next-gen AI Tool. Undergoing privacy audits for secure corporate document scanning. Coming soon."
+    },
+    {
+      "id": "translate-pdf",
+      "name": "Translate PDF",
+      "status": "future",
+      "releaseLabel": "",
+      "category": "intelligence",
+      "limitations": "AI Layout Translation Tool. Currently under development."
+    },
+    {
+      "id": "compare-pdf",
+      "name": "Compare PDF",
+      "status": "future",
+      "releaseLabel": "",
+      "category": "intelligence",
+      "limitations": "Requires advanced visual canvas diff engine. Coming soon."
+    },
+    {
+      "id": "pdf-forms",
+      "name": "PDF Forms",
+      "status": "future",
+      "releaseLabel": "",
+      "category": "intelligence",
+      "limitations": "Interactive AcroForm fields support is currently being validated. Coming soon."
+    }
+  ],
+  "summary": {
+    "total": 70,
+    "pass": 28,
+    "warning": 42,
+    "fail": 0,
+    "averageQualityScore": 66
+  },
+  "consoleMessages": [
+    {
+      "type": "error",
+      "text": "PasswordException"
+    }
+  ],
+  "pageErrors": [],
+  "expertRecommendations": [
+    {
+      "priority": "Critical",
+      "title": "Editable PPTX Accuracy Mode",
+      "detail": "Create text boxes, preserve images/logos as objects, and map fonts/colors instead of only using slide screenshots."
+    },
+    {
+      "priority": "Critical",
+      "title": "Multi-language OCR Accuracy Mode",
+      "detail": "Support Arabic, Urdu, Hindi, Bengali, CJK, Cyrillic, Latin accents, and mixed RTL/LTR reading order."
+    },
+    {
+      "priority": "High",
+      "title": "Office output visual renderer",
+      "detail": "Render DOCX/PPTX/XLSX outputs to images and compare against source PDF page renders."
+    },
+    {
+      "priority": "High",
+      "title": "Layout and image preservation",
+      "detail": "Extract images/logos, preserve headers/footers, page size, spacing, columns, backgrounds, and colors."
+    },
+    {
+      "priority": "High",
+      "title": "Advanced table engine",
+      "detail": "Detect borders, borderless tables, merged cells, formulas, numeric/currency formats, and scanned table grids."
+    }
+  ],
+  "priorityList": {
+    "safeToPublish": [
+      "Merge PDF",
+      "Split PDF",
+      "Rotate PDF",
+      "Image to PDF",
+      "PDF to Image/JPG for basic browser use"
+    ],
+    "basicAcceptableWithWarning": [
+      "PDF to Word",
+      "PDF to Excel",
+      "PDF to PowerPoint Visual Export",
+      "Compress PDF",
+      "OCR text extraction"
+    ],
+    "shouldNotPublishYet": [
+      "PDF to PowerPoint as professional editable conversion",
+      "PowerPoint to PDF",
+      "Excel to PDF",
+      "Extract images if not implemented",
+      "Full multi-language OCR Accuracy Mode"
+    ],
+    "firstFixes": [
+      "Build editable PPTX Accuracy Mode instead of screenshot-only slides.",
+      "Add OCR Accuracy Mode with multi-language recognition and searchable/editable output.",
+      "Add DOCX layout preservation with images, logos, tables, headers, footers, colors, and reading order.",
+      "Add Excel table reconstruction for merged cells, borders, formulas, and currency/number formats.",
+      "Add before/after visual rendering through LibreOffice or Office automation."
+    ]
+  },
+  "results": [
+    {
+      "toolName": "PDF to Word",
+      "testFile": "simple-english.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-simple-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-simple-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "simple-english_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-simple-simple-english_editable.docx",
+        "size": 7767,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-simple-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-simple-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "catalog.pdf",
+      "status": "WARNING",
+      "qualityScore": 63,
+      "metrics": {
+        "editableTextRatio": 98,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [
+        "Layout/image/logo/table fidelity is not professionally preserved yet."
+      ],
+      "whatIsMissing": [
+        "Accuracy Mode with positioned layout, image extraction, logo preservation, table reconstruction, colors, and headers/footers.",
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "High",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-catalog-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-catalog-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "catalog_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-catalog-catalog_editable.docx",
+        "size": 7655,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-catalog-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-catalog-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "menu.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [
+        "Layout/image/logo/table fidelity is not professionally preserved yet."
+      ],
+      "whatIsMissing": [
+        "Accuracy Mode with positioned layout, image extraction, logo preservation, table reconstruction, colors, and headers/footers.",
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "High",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-menu-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-menu-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "menu_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-menu-menu_editable.docx",
+        "size": 7695,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-menu-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-menu-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "brochure.pdf",
+      "status": "WARNING",
+      "qualityScore": 62,
+      "metrics": {
+        "editableTextRatio": 95,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [
+        "Layout/image/logo/table fidelity is not professionally preserved yet."
+      ],
+      "whatIsMissing": [
+        "Accuracy Mode with positioned layout, image extraction, logo preservation, table reconstruction, colors, and headers/footers.",
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "High",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-brochure-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-brochure-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "brochure_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-brochure-brochure_editable.docx",
+        "size": 7734,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-brochure-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-brochure-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "invoice.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-invoice-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-invoice-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "invoice_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-invoice-invoice_editable.docx",
+        "size": 7709,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-invoice-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-invoice-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "form.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [
+        "Layout/image/logo/table fidelity is not professionally preserved yet."
+      ],
+      "whatIsMissing": [
+        "Accuracy Mode with positioned layout, image extraction, logo preservation, table reconstruction, colors, and headers/footers.",
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "High",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-form-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-form-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "form_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-form-form_editable.docx",
+        "size": 7612,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-form-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-form-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "logo-image-heavy.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [
+        "Layout/image/logo/table fidelity is not professionally preserved yet."
+      ],
+      "whatIsMissing": [
+        "Accuracy Mode with positioned layout, image extraction, logo preservation, table reconstruction, colors, and headers/footers.",
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "High",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-logoimageheavy-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-logoimageheavy-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "logo-image-heavy_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-logoimageheavy-logo-image-heavy_editable.docx",
+        "size": 7623,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-logoimageheavy-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-logoimageheavy-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "chart.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [
+        "Layout/image/logo/table fidelity is not professionally preserved yet."
+      ],
+      "whatIsMissing": [
+        "Accuracy Mode with positioned layout, image extraction, logo preservation, table reconstruction, colors, and headers/footers.",
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "High",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-chart-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-chart-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "chart_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-chart-chart_editable.docx",
+        "size": 7592,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-chart-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-chart-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "table.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-table-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-table-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "table_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-table-table_editable.docx",
+        "size": 7689,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-table-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-table-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "mixed-fonts.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-mixedfonts-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-mixedfonts-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "mixed-fonts_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-mixedfonts-mixed-fonts_editable.docx",
+        "size": 7689,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-mixedfonts-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-mixedfonts-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "english.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-english-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-english-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "english_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-english-english_editable.docx",
+        "size": 7613,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-english-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-english-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "arabic.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-arabic-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-arabic-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "arabic_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-arabic-arabic_editable.docx",
+        "size": 7672,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-arabic-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-arabic-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "urdu.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-urdu-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-urdu-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "urdu_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-urdu-urdu_editable.docx",
+        "size": 7576,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-urdu-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-urdu-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "hindi.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-hindi-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-hindi-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "hindi_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-hindi-hindi_editable.docx",
+        "size": 7678,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-hindi-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-hindi-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "bengali.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-bengali-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-bengali-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "bengali_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-bengali-bengali_editable.docx",
+        "size": 7684,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-bengali-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-bengali-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "chinese.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-chinese-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-chinese-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "chinese_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-chinese-chinese_editable.docx",
+        "size": 7574,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-chinese-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-chinese-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "japanese.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-japanese-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-japanese-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "japanese_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-japanese-japanese_editable.docx",
+        "size": 7579,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-japanese-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-japanese-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "korean.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-korean-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-korean-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "korean_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-korean-korean_editable.docx",
+        "size": 7666,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-korean-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-korean-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "russian.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-russian-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-russian-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "russian_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-russian-russian_editable.docx",
+        "size": 7669,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-russian-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-russian-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "french.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-french-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-french-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "french_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-french-french_editable.docx",
+        "size": 7621,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-french-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-french-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "spanish.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-spanish-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-spanish-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "spanish_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-spanish-spanish_editable.docx",
+        "size": 7614,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-spanish-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-spanish-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "turkish.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-turkish-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-turkish-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "turkish_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-turkish-turkish_editable.docx",
+        "size": 7643,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-turkish-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-turkish-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "mixed-rtl-ltr.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-mixedrtlltr-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-mixedrtlltr-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "mixed-rtl-ltr_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-mixedrtlltr-mixed-rtl-ltr_editable.docx",
+        "size": 7663,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-mixedrtlltr-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-mixedrtlltr-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "multi-page.pdf",
+      "status": "WARNING",
+      "qualityScore": 64,
+      "metrics": {
+        "editableTextRatio": 100,
+        "screenshotOnlyRatio": 0,
+        "layoutSimilarity": 35,
+        "imageLogoPreservation": 0,
+        "pageCountMatch": 70,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real DOCX package was generated with editable Word text."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Visual before/after rendering of DOCX output via LibreOffice or Office automation."
+      ],
+      "whyItMatters": "PDF to Word must preserve visual layout while keeping selectable PDF text editable.",
+      "suggestedFix": "Add DOCX Accuracy Mode that maps PDF text positions, extracts images/logos, rebuilds tables, and validates reading order.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-multipage-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-multipage-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "multi-page_editable.docx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-docx-multipage-multi-page_editable.docx",
+        "size": 7974,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-multipage-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-docx-multipage-after.png",
+        "successText": "Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use."
+      }
+    },
+    {
+      "toolName": "PDF to PowerPoint Visual Export",
+      "testFile": "catalog.pdf",
+      "status": "WARNING",
+      "qualityScore": 84,
+      "metrics": {
+        "editableTextRatio": 0,
+        "screenshotOnlyRatio": 100,
+        "layoutSimilarity": 70,
+        "imageLogoPreservation": 70,
+        "pageCountMatch": 100,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real PPTX package was generated and page count is represented as slides.",
+        "Public copy honestly labels this as image-based PowerPoint Visual Export."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.",
+        "Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation."
+      ],
+      "whyItMatters": "Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.",
+      "suggestedFix": "Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-catalog-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-catalog-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "catalog_slides.pptx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-pptx-catalog-catalog_slides.pptx",
+        "size": 195769,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-catalog-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-catalog-after.png",
+        "successText": "Real .pptx created successfully. Slides are image-based for visual fidelity and are not fully editable yet."
+      }
+    },
+    {
+      "toolName": "PDF to PowerPoint Visual Export",
+      "testFile": "menu.pdf",
+      "status": "WARNING",
+      "qualityScore": 84,
+      "metrics": {
+        "editableTextRatio": 0,
+        "screenshotOnlyRatio": 100,
+        "layoutSimilarity": 70,
+        "imageLogoPreservation": 70,
+        "pageCountMatch": 100,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real PPTX package was generated and page count is represented as slides.",
+        "Public copy honestly labels this as image-based PowerPoint Visual Export."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.",
+        "Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation."
+      ],
+      "whyItMatters": "Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.",
+      "suggestedFix": "Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-menu-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-menu-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "menu_slides.pptx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-pptx-menu-menu_slides.pptx",
+        "size": 141257,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-menu-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-menu-after.png",
+        "successText": "Real .pptx created successfully. Slides are image-based for visual fidelity and are not fully editable yet."
+      }
+    },
+    {
+      "toolName": "PDF to PowerPoint Visual Export",
+      "testFile": "brochure.pdf",
+      "status": "WARNING",
+      "qualityScore": 84,
+      "metrics": {
+        "editableTextRatio": 0,
+        "screenshotOnlyRatio": 100,
+        "layoutSimilarity": 70,
+        "imageLogoPreservation": 70,
+        "pageCountMatch": 100,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real PPTX package was generated and page count is represented as slides.",
+        "Public copy honestly labels this as image-based PowerPoint Visual Export."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.",
+        "Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation."
+      ],
+      "whyItMatters": "Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.",
+      "suggestedFix": "Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-brochure-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-brochure-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "brochure_slides.pptx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-pptx-brochure-brochure_slides.pptx",
+        "size": 155509,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-brochure-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-brochure-after.png",
+        "successText": "Real .pptx created successfully. Slides are image-based for visual fidelity and are not fully editable yet."
+      }
+    },
+    {
+      "toolName": "PDF to PowerPoint Visual Export",
+      "testFile": "invoice.pdf",
+      "status": "WARNING",
+      "qualityScore": 84,
+      "metrics": {
+        "editableTextRatio": 0,
+        "screenshotOnlyRatio": 100,
+        "layoutSimilarity": 70,
+        "imageLogoPreservation": 70,
+        "pageCountMatch": 100,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real PPTX package was generated and page count is represented as slides.",
+        "Public copy honestly labels this as image-based PowerPoint Visual Export."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.",
+        "Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation."
+      ],
+      "whyItMatters": "Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.",
+      "suggestedFix": "Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-invoice-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-invoice-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "invoice_slides.pptx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-pptx-invoice-invoice_slides.pptx",
+        "size": 138025,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-invoice-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-invoice-after.png",
+        "successText": "Real .pptx created successfully. Slides are image-based for visual fidelity and are not fully editable yet."
+      }
+    },
+    {
+      "toolName": "PDF to PowerPoint Visual Export",
+      "testFile": "logo-image-heavy.pdf",
+      "status": "WARNING",
+      "qualityScore": 84,
+      "metrics": {
+        "editableTextRatio": 0,
+        "screenshotOnlyRatio": 100,
+        "layoutSimilarity": 70,
+        "imageLogoPreservation": 70,
+        "pageCountMatch": 100,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real PPTX package was generated and page count is represented as slides.",
+        "Public copy honestly labels this as image-based PowerPoint Visual Export."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.",
+        "Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation."
+      ],
+      "whyItMatters": "Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.",
+      "suggestedFix": "Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-logoimageheavy-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-logoimageheavy-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "logo-image-heavy_slides.pptx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-pptx-logoimageheavy-logo-image-heavy_slides.pptx",
+        "size": 137261,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-logoimageheavy-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-logoimageheavy-after.png",
+        "successText": "Real .pptx created successfully. Slides are image-based for visual fidelity and are not fully editable yet."
+      }
+    },
+    {
+      "toolName": "PDF to PowerPoint Visual Export",
+      "testFile": "chart.pdf",
+      "status": "WARNING",
+      "qualityScore": 84,
+      "metrics": {
+        "editableTextRatio": 0,
+        "screenshotOnlyRatio": 100,
+        "layoutSimilarity": 70,
+        "imageLogoPreservation": 70,
+        "pageCountMatch": 100,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real PPTX package was generated and page count is represented as slides.",
+        "Public copy honestly labels this as image-based PowerPoint Visual Export."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.",
+        "Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation."
+      ],
+      "whyItMatters": "Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.",
+      "suggestedFix": "Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-chart-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-chart-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "chart_slides.pptx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-pptx-chart-chart_slides.pptx",
+        "size": 101477,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-chart-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-chart-after.png",
+        "successText": "Real .pptx created successfully. Slides are image-based for visual fidelity and are not fully editable yet."
+      }
+    },
+    {
+      "toolName": "PDF to PowerPoint Visual Export",
+      "testFile": "mixed-fonts.pdf",
+      "status": "WARNING",
+      "qualityScore": 84,
+      "metrics": {
+        "editableTextRatio": 0,
+        "screenshotOnlyRatio": 100,
+        "layoutSimilarity": 70,
+        "imageLogoPreservation": 70,
+        "pageCountMatch": 100,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real PPTX package was generated and page count is represented as slides.",
+        "Public copy honestly labels this as image-based PowerPoint Visual Export."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.",
+        "Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation."
+      ],
+      "whyItMatters": "Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.",
+      "suggestedFix": "Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-mixedfonts-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-mixedfonts-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "mixed-fonts_slides.pptx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-pptx-mixedfonts-mixed-fonts_slides.pptx",
+        "size": 134848,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-mixedfonts-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-mixedfonts-after.png",
+        "successText": "Real .pptx created successfully. Slides are image-based for visual fidelity and are not fully editable yet."
+      }
+    },
+    {
+      "toolName": "PDF to PowerPoint Visual Export",
+      "testFile": "arabic.pdf",
+      "status": "WARNING",
+      "qualityScore": 84,
+      "metrics": {
+        "editableTextRatio": 0,
+        "screenshotOnlyRatio": 100,
+        "layoutSimilarity": 70,
+        "imageLogoPreservation": 70,
+        "pageCountMatch": 100,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real PPTX package was generated and page count is represented as slides.",
+        "Public copy honestly labels this as image-based PowerPoint Visual Export."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.",
+        "Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation."
+      ],
+      "whyItMatters": "Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.",
+      "suggestedFix": "Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-arabic-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-arabic-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "arabic_slides.pptx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-pptx-arabic-arabic_slides.pptx",
+        "size": 103555,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-arabic-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-arabic-after.png",
+        "successText": "Real .pptx created successfully. Slides are image-based for visual fidelity and are not fully editable yet."
+      }
+    },
+    {
+      "toolName": "PDF to PowerPoint Visual Export",
+      "testFile": "mixed-rtl-ltr.pdf",
+      "status": "WARNING",
+      "qualityScore": 84,
+      "metrics": {
+        "editableTextRatio": 0,
+        "screenshotOnlyRatio": 100,
+        "layoutSimilarity": 70,
+        "imageLogoPreservation": 70,
+        "pageCountMatch": 100,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real PPTX package was generated and page count is represented as slides.",
+        "Public copy honestly labels this as image-based PowerPoint Visual Export."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.",
+        "Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation."
+      ],
+      "whyItMatters": "Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.",
+      "suggestedFix": "Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-mixedrtlltr-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-mixedrtlltr-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "mixed-rtl-ltr_slides.pptx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-pptx-mixedrtlltr-mixed-rtl-ltr_slides.pptx",
+        "size": 108652,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-mixedrtlltr-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-mixedrtlltr-after.png",
+        "successText": "Real .pptx created successfully. Slides are image-based for visual fidelity and are not fully editable yet."
+      }
+    },
+    {
+      "toolName": "PDF to PowerPoint Visual Export",
+      "testFile": "multi-page.pdf",
+      "status": "WARNING",
+      "qualityScore": 84,
+      "metrics": {
+        "editableTextRatio": 0,
+        "screenshotOnlyRatio": 100,
+        "layoutSimilarity": 70,
+        "imageLogoPreservation": 70,
+        "pageCountMatch": 100,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true
+      },
+      "whatWorked": [
+        "Real PPTX package was generated and page count is represented as slides.",
+        "Public copy honestly labels this as image-based PowerPoint Visual Export."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Editable PowerPoint conversion is not released yet, but the public label no longer falsely promises it.",
+        "Editable text boxes, shape extraction, image/logo object extraction, font/color mapping, and reading-order preservation."
+      ],
+      "whyItMatters": "Visual PowerPoint export can be published only when the screenshot-based limitation is visible before conversion.",
+      "suggestedFix": "Add PPTX Accuracy Mode that creates text boxes from PDF text items and adds images as separate slide objects.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-multipage-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-multipage-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "multi-page_slides.pptx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-pptx-multipage-multi-page_slides.pptx",
+        "size": 1202333,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-multipage-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-pptx-multipage-after.png",
+        "successText": "Real .pptx created successfully. Slides are image-based for visual fidelity and are not fully editable yet."
+      }
+    },
+    {
+      "toolName": "PDF to Excel",
+      "testFile": "table.pdf",
+      "status": "WARNING",
+      "qualityScore": 91,
+      "metrics": {
+        "editableTextRatio": 100,
+        "tableCellPreservation": 75,
+        "screenshotOnlyRatio": 0,
+        "pageCountMatch": 100,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true,
+        "numericCellCount": 20
+      },
+      "whatWorked": [
+        "Real XLSX package was generated with editable cells."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Merged-cell detection, borderless table parsing, formulas, styling, and OCR table extraction."
+      ],
+      "whyItMatters": "PDF to Excel is only useful when tables become structured cells with numbers preserved as numbers.",
+      "suggestedFix": "Add table grid detection, merged-cell inference, numeric/currency typing, and OCR table mode.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-table-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-table-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "table_editable_layout.xlsx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-xlsx-table-table_editable_layout.xlsx",
+        "size": 17815,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-table-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-table-after.png",
+        "successText": "Excel Workbook Layout Grid compiled successfully as a real .xlsx workbook with editable cells. Review borderless tables, merged cells, images, scanned pages, and styling before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Excel",
+      "testFile": "invoice.pdf",
+      "status": "WARNING",
+      "qualityScore": 90,
+      "metrics": {
+        "editableTextRatio": 96,
+        "tableCellPreservation": 75,
+        "screenshotOnlyRatio": 0,
+        "pageCountMatch": 100,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true,
+        "numericCellCount": 9
+      },
+      "whatWorked": [
+        "Real XLSX package was generated with editable cells."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Merged-cell detection, borderless table parsing, formulas, styling, and OCR table extraction."
+      ],
+      "whyItMatters": "PDF to Excel is only useful when tables become structured cells with numbers preserved as numbers.",
+      "suggestedFix": "Add table grid detection, merged-cell inference, numeric/currency typing, and OCR table mode.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-invoice-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-invoice-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "invoice_editable_layout.xlsx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-xlsx-invoice-invoice_editable_layout.xlsx",
+        "size": 17765,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-invoice-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-invoice-after.png",
+        "successText": "Excel Workbook Layout Grid compiled successfully as a real .xlsx workbook with editable cells. Review borderless tables, merged cells, images, scanned pages, and styling before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Excel",
+      "testFile": "menu.pdf",
+      "status": "WARNING",
+      "qualityScore": 91,
+      "metrics": {
+        "editableTextRatio": 100,
+        "tableCellPreservation": 75,
+        "screenshotOnlyRatio": 0,
+        "pageCountMatch": 100,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true,
+        "numericCellCount": 6
+      },
+      "whatWorked": [
+        "Real XLSX package was generated with editable cells."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Merged-cell detection, borderless table parsing, formulas, styling, and OCR table extraction."
+      ],
+      "whyItMatters": "PDF to Excel is only useful when tables become structured cells with numbers preserved as numbers.",
+      "suggestedFix": "Add table grid detection, merged-cell inference, numeric/currency typing, and OCR table mode.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-menu-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-menu-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "menu_editable_layout.xlsx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-xlsx-menu-menu_editable_layout.xlsx",
+        "size": 17270,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-menu-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-menu-after.png",
+        "successText": "Excel Workbook Layout Grid compiled successfully as a real .xlsx workbook with editable cells. Review borderless tables, merged cells, images, scanned pages, and styling before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Excel",
+      "testFile": "large.pdf",
+      "status": "WARNING",
+      "qualityScore": 91,
+      "metrics": {
+        "editableTextRatio": 100,
+        "tableCellPreservation": 75,
+        "screenshotOnlyRatio": 0,
+        "pageCountMatch": 100,
+        "outputFormatCorrect": true,
+        "fileSizeReasonable": true,
+        "numericCellCount": 900
+      },
+      "whatWorked": [
+        "Real XLSX package was generated with editable cells."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Merged-cell detection, borderless table parsing, formulas, styling, and OCR table extraction."
+      ],
+      "whyItMatters": "PDF to Excel is only useful when tables become structured cells with numbers preserved as numbers.",
+      "suggestedFix": "Add table grid detection, merged-cell inference, numeric/currency typing, and OCR table mode.",
+      "priority": "Medium",
+      "evidence": [
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-large-before.png",
+        "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-large-after.png"
+      ],
+      "output": {
+        "blocked": false,
+        "suggested": "large_editable_layout.xlsx",
+        "savePath": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\downloads\\phase2-xlsx-large-large_editable_layout.xlsx",
+        "size": 88222,
+        "beforeScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-large-before.png",
+        "afterScreenshot": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\reports\\screenshots\\phase2-xlsx-large-after.png",
+        "successText": "Excel Workbook Layout Grid compiled successfully as a real .xlsx workbook with editable cells. Review borderless tables, merged cells, images, scanned pages, and styling before final use."
+      }
+    },
+    {
+      "toolName": "PDF to Word input handling",
+      "testFile": "scanned.pdf",
+      "status": "PASS",
+      "qualityScore": 75,
+      "metrics": {},
+      "whatWorked": [
+        "Problem input produced an error instead of a fake successful conversion."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Unsupported or unreadable files must show clear warnings and must not generate fake output.",
+      "suggestedFix": "Keep explicit unsupported-file states and route scanned PDFs to OCR Accuracy Mode.",
+      "priority": "Critical",
+      "evidence": [
+        "page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#btn-action-execute')\u001b[22m\n\u001b[2m    - locator resolved to <button id=\"btn-action-execute\" class=\"btn btn-primary\">PDF to Word Now</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div id=\"progress-overlay\" class=\"progress-overlay\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <div id=\"progress-overlay\" class=\"progress-overlay\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m  2 × retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m      - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m  56 × retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\u001b[2m       - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not enabled\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 500ms\u001b[22m\n"
+      ],
+      "output": null
+    },
+    {
+      "toolName": "PDF to Excel input handling",
+      "testFile": "scanned.pdf",
+      "status": "PASS",
+      "qualityScore": 75,
+      "metrics": {},
+      "whatWorked": [
+        "Problem input produced an error instead of a fake successful conversion."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Unsupported or unreadable files must show clear warnings and must not generate fake output.",
+      "suggestedFix": "Keep explicit unsupported-file states and route scanned PDFs to OCR Accuracy Mode.",
+      "priority": "Critical",
+      "evidence": [
+        "page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#btn-action-execute')\u001b[22m\n\u001b[2m    - locator resolved to <button id=\"btn-action-execute\" class=\"btn btn-primary\">PDF to Excel Now</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - <div id=\"progress-overlay\" class=\"progress-overlay\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is not stable\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    57 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not enabled\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+      ],
+      "output": null
+    },
+    {
+      "toolName": "PDF to Word input handling",
+      "testFile": "password-protected.pdf",
+      "status": "PASS",
+      "qualityScore": 75,
+      "metrics": {},
+      "whatWorked": [
+        "Problem input produced an error instead of a fake successful conversion."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Unsupported or unreadable files must show clear warnings and must not generate fake output.",
+      "suggestedFix": "Keep explicit unsupported-file states and route scanned PDFs to OCR Accuracy Mode.",
+      "priority": "High",
+      "evidence": [
+        "page.waitForSelector: Timeout 240000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#success-overlay:not(.hidden)') to be visible\u001b[22m\n"
+      ],
+      "output": null
+    },
+    {
+      "toolName": "PDF to Word input handling",
+      "testFile": "corrupted.pdf",
+      "status": "PASS",
+      "qualityScore": 75,
+      "metrics": {},
+      "whatWorked": [
+        "Problem input produced an error instead of a fake successful conversion."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Unsupported or unreadable files must show clear warnings and must not generate fake output.",
+      "suggestedFix": "Keep explicit unsupported-file states and route scanned PDFs to OCR Accuracy Mode.",
+      "priority": "High",
+      "evidence": [
+        "page.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#btn-action-execute')\u001b[22m\n\u001b[2m    - locator resolved to <button id=\"btn-action-execute\" class=\"btn btn-primary\">PDF to Word Now</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div id=\"progress-overlay\" class=\"progress-overlay\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not visible\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    56 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not visible\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+      ],
+      "output": null
+    },
+    {
+      "toolName": "PDF to Word",
+      "testFile": "tool-discovery",
+      "status": "PASS",
+      "qualityScore": 45,
+      "metrics": {},
+      "whatWorked": [
+        "Tool exists with status 'basic'."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Best for simple files. Creates a real editable .docx from selectable PDF text. Complex layouts, scanned PDFs, tables, images, and multi-language documents may need manual review."
+      ],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Add tool-specific visual and output-fidelity tests.",
+      "priority": "Medium",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "PDF to PowerPoint Visual Export",
+      "testFile": "tool-discovery",
+      "status": "PASS",
+      "qualityScore": 45,
+      "metrics": {},
+      "whatWorked": [
+        "Tool exists with status 'basic'."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "This creates image-based slides to preserve the look of the PDF. Text may not be editable yet. This is a visual export, not an editable PowerPoint rebuild."
+      ],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Add tool-specific visual and output-fidelity tests.",
+      "priority": "Medium",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "PDF to Excel",
+      "testFile": "tool-discovery",
+      "status": "PASS",
+      "qualityScore": 45,
+      "metrics": {},
+      "whatWorked": [
+        "Tool exists with status 'basic'."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Best for simple files. Creates a real .xlsx workbook with editable cells from detected text positions. Complex layouts, scanned PDFs, tables, images, merged cells, formulas, and multi-language documents may need manual review."
+      ],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Add tool-specific visual and output-fidelity tests.",
+      "priority": "Medium",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "PDF to JPG",
+      "testFile": "tool-discovery",
+      "status": "PASS",
+      "qualityScore": 74,
+      "metrics": {},
+      "whatWorked": [
+        "Tool exists with status 'active'."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Add tool-specific visual and output-fidelity tests.",
+      "priority": "Medium",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Image to PDF",
+      "testFile": "tool-discovery",
+      "status": "PASS",
+      "qualityScore": 74,
+      "metrics": {},
+      "whatWorked": [
+        "Tool exists with status 'active'."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Add tool-specific visual and output-fidelity tests.",
+      "priority": "Medium",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Word to PDF",
+      "testFile": "tool-discovery",
+      "status": "PASS",
+      "qualityScore": 45,
+      "metrics": {},
+      "whatWorked": [
+        "Tool exists with status 'basic'."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Complex layout tables or custom Microsoft word fonts may undergo styling shifts. For critical layouts, a server conversion engine is recommended."
+      ],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Add tool-specific visual and output-fidelity tests.",
+      "priority": "Medium",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "PowerPoint to PDF",
+      "testFile": "tool-discovery",
+      "status": "WARNING",
+      "qualityScore": 10,
+      "metrics": {},
+      "whatWorked": [
+        "Tool is present but gated as future."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Working implementation and fixture tests."
+      ],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Keep gated until implementation is real.",
+      "priority": "Medium",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Excel to PDF",
+      "testFile": "tool-discovery",
+      "status": "WARNING",
+      "qualityScore": 10,
+      "metrics": {},
+      "whatWorked": [
+        "Tool is present but gated as future."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Working implementation and fixture tests."
+      ],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Keep gated until implementation is real.",
+      "priority": "Medium",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "OCR PDF",
+      "testFile": "tool-discovery",
+      "status": "PASS",
+      "qualityScore": 45,
+      "metrics": {},
+      "whatWorked": [
+        "Tool exists with status 'basic'."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Best for simple files. English OCR runs locally in the browser. Complex layouts, scanned PDFs, tables, images, and multi-language documents may need manual review. OCR accuracy depends on image clarity, resolution, and page rotation."
+      ],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Add tool-specific visual and output-fidelity tests.",
+      "priority": "Medium",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Merge PDF",
+      "testFile": "tool-discovery",
+      "status": "PASS",
+      "qualityScore": 74,
+      "metrics": {},
+      "whatWorked": [
+        "Tool exists with status 'active'."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Add tool-specific visual and output-fidelity tests.",
+      "priority": "Medium",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Split PDF",
+      "testFile": "tool-discovery",
+      "status": "PASS",
+      "qualityScore": 74,
+      "metrics": {},
+      "whatWorked": [
+        "Tool exists with status 'active'."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Add tool-specific visual and output-fidelity tests.",
+      "priority": "Medium",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Compress PDF",
+      "testFile": "tool-discovery",
+      "status": "PASS",
+      "qualityScore": 45,
+      "metrics": {},
+      "whatWorked": [
+        "Tool exists with status 'basic'."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [
+        "Best for simple files. Complex layouts, scanned PDFs, tables, images, and multi-language documents may need manual review. Compression may flatten pages and reduce editability."
+      ],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Add tool-specific visual and output-fidelity tests.",
+      "priority": "Medium",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Rotate PDF",
+      "testFile": "tool-discovery",
+      "status": "PASS",
+      "qualityScore": 74,
+      "metrics": {},
+      "whatWorked": [
+        "Tool exists with status 'active'."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Add tool-specific visual and output-fidelity tests.",
+      "priority": "Medium",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "extract-text",
+      "testFile": "tool-discovery",
+      "status": "WARNING",
+      "qualityScore": 0,
+      "metrics": {},
+      "whatWorked": [],
+      "whatFailed": [
+        "Requested professional converter tool was not found in live configuration."
+      ],
+      "whatIsMissing": [
+        "Working implementation and test coverage."
+      ],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Add only after a real implementation exists.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "extract-images",
+      "testFile": "tool-discovery",
+      "status": "WARNING",
+      "qualityScore": 0,
+      "metrics": {},
+      "whatWorked": [],
+      "whatFailed": [
+        "Requested professional converter tool was not found in live configuration."
+      ],
+      "whatIsMissing": [
+        "Working implementation and test coverage."
+      ],
+      "whyItMatters": "A professional suite needs honest support states and coverage for every advertised converter.",
+      "suggestedFix": "Add only after a real implementation exists.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Global language fixture coverage",
+      "testFile": "english.pdf",
+      "status": "PASS",
+      "qualityScore": 70,
+      "metrics": {
+        "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\english.pdf",
+        "fileName": "english.pdf",
+        "exists": true,
+        "size": 29078,
+        "validPdf": true,
+        "encrypted": false,
+        "pageCount": 1,
+        "textChars": 113,
+        "hasSelectableText": true,
+        "error": null
+      },
+      "whatWorked": [
+        "Language fixture exists and can be parsed as PDF."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.",
+      "suggestedFix": "Add per-language expected outputs and compare editability and reading order.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Global language fixture coverage",
+      "testFile": "arabic.pdf",
+      "status": "PASS",
+      "qualityScore": 70,
+      "metrics": {
+        "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\arabic.pdf",
+        "fileName": "arabic.pdf",
+        "exists": true,
+        "size": 72690,
+        "validPdf": true,
+        "encrypted": false,
+        "pageCount": 1,
+        "textChars": 115,
+        "hasSelectableText": true,
+        "error": null
+      },
+      "whatWorked": [
+        "Language fixture exists and can be parsed as PDF."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.",
+      "suggestedFix": "Add per-language expected outputs and compare editability and reading order.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Global language fixture coverage",
+      "testFile": "urdu.pdf",
+      "status": "PASS",
+      "qualityScore": 70,
+      "metrics": {
+        "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\urdu.pdf",
+        "fileName": "urdu.pdf",
+        "exists": true,
+        "size": 49414,
+        "validPdf": true,
+        "encrypted": false,
+        "pageCount": 1,
+        "textChars": 93,
+        "hasSelectableText": true,
+        "error": null
+      },
+      "whatWorked": [
+        "Language fixture exists and can be parsed as PDF."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.",
+      "suggestedFix": "Add per-language expected outputs and compare editability and reading order.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Global language fixture coverage",
+      "testFile": "hindi.pdf",
+      "status": "PASS",
+      "qualityScore": 70,
+      "metrics": {
+        "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\hindi.pdf",
+        "fileName": "hindi.pdf",
+        "exists": true,
+        "size": 52598,
+        "validPdf": true,
+        "encrypted": false,
+        "pageCount": 1,
+        "textChars": 95,
+        "hasSelectableText": true,
+        "error": null
+      },
+      "whatWorked": [
+        "Language fixture exists and can be parsed as PDF."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.",
+      "suggestedFix": "Add per-language expected outputs and compare editability and reading order.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Global language fixture coverage",
+      "testFile": "bengali.pdf",
+      "status": "PASS",
+      "qualityScore": 70,
+      "metrics": {
+        "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\bengali.pdf",
+        "fileName": "bengali.pdf",
+        "exists": true,
+        "size": 53699,
+        "validPdf": true,
+        "encrypted": false,
+        "pageCount": 1,
+        "textChars": 98,
+        "hasSelectableText": true,
+        "error": null
+      },
+      "whatWorked": [
+        "Language fixture exists and can be parsed as PDF."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.",
+      "suggestedFix": "Add per-language expected outputs and compare editability and reading order.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Global language fixture coverage",
+      "testFile": "chinese.pdf",
+      "status": "PASS",
+      "qualityScore": 70,
+      "metrics": {
+        "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\chinese.pdf",
+        "fileName": "chinese.pdf",
+        "exists": true,
+        "size": 38569,
+        "validPdf": true,
+        "encrypted": false,
+        "pageCount": 1,
+        "textChars": 67,
+        "hasSelectableText": true,
+        "error": null
+      },
+      "whatWorked": [
+        "Language fixture exists and can be parsed as PDF."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.",
+      "suggestedFix": "Add per-language expected outputs and compare editability and reading order.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Global language fixture coverage",
+      "testFile": "japanese.pdf",
+      "status": "PASS",
+      "qualityScore": 70,
+      "metrics": {
+        "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\japanese.pdf",
+        "fileName": "japanese.pdf",
+        "exists": true,
+        "size": 38572,
+        "validPdf": true,
+        "encrypted": false,
+        "pageCount": 1,
+        "textChars": 77,
+        "hasSelectableText": true,
+        "error": null
+      },
+      "whatWorked": [
+        "Language fixture exists and can be parsed as PDF."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.",
+      "suggestedFix": "Add per-language expected outputs and compare editability and reading order.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Global language fixture coverage",
+      "testFile": "korean.pdf",
+      "status": "PASS",
+      "qualityScore": 70,
+      "metrics": {
+        "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\korean.pdf",
+        "fileName": "korean.pdf",
+        "exists": true,
+        "size": 49450,
+        "validPdf": true,
+        "encrypted": false,
+        "pageCount": 1,
+        "textChars": 79,
+        "hasSelectableText": true,
+        "error": null
+      },
+      "whatWorked": [
+        "Language fixture exists and can be parsed as PDF."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.",
+      "suggestedFix": "Add per-language expected outputs and compare editability and reading order.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Global language fixture coverage",
+      "testFile": "russian.pdf",
+      "status": "PASS",
+      "qualityScore": 70,
+      "metrics": {
+        "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\russian.pdf",
+        "fileName": "russian.pdf",
+        "exists": true,
+        "size": 30269,
+        "validPdf": true,
+        "encrypted": false,
+        "pageCount": 1,
+        "textChars": 104,
+        "hasSelectableText": true,
+        "error": null
+      },
+      "whatWorked": [
+        "Language fixture exists and can be parsed as PDF."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.",
+      "suggestedFix": "Add per-language expected outputs and compare editability and reading order.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Global language fixture coverage",
+      "testFile": "french.pdf",
+      "status": "PASS",
+      "qualityScore": 70,
+      "metrics": {
+        "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\french.pdf",
+        "fileName": "french.pdf",
+        "exists": true,
+        "size": 29312,
+        "validPdf": true,
+        "encrypted": false,
+        "pageCount": 1,
+        "textChars": 112,
+        "hasSelectableText": true,
+        "error": null
+      },
+      "whatWorked": [
+        "Language fixture exists and can be parsed as PDF."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.",
+      "suggestedFix": "Add per-language expected outputs and compare editability and reading order.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Global language fixture coverage",
+      "testFile": "spanish.pdf",
+      "status": "PASS",
+      "qualityScore": 70,
+      "metrics": {
+        "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\spanish.pdf",
+        "fileName": "spanish.pdf",
+        "exists": true,
+        "size": 29233,
+        "validPdf": true,
+        "encrypted": false,
+        "pageCount": 1,
+        "textChars": 109,
+        "hasSelectableText": true,
+        "error": null
+      },
+      "whatWorked": [
+        "Language fixture exists and can be parsed as PDF."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.",
+      "suggestedFix": "Add per-language expected outputs and compare editability and reading order.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Global language fixture coverage",
+      "testFile": "turkish.pdf",
+      "status": "PASS",
+      "qualityScore": 70,
+      "metrics": {
+        "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\turkish.pdf",
+        "fileName": "turkish.pdf",
+        "exists": true,
+        "size": 29606,
+        "validPdf": true,
+        "encrypted": false,
+        "pageCount": 1,
+        "textChars": 113,
+        "hasSelectableText": true,
+        "error": null
+      },
+      "whatWorked": [
+        "Language fixture exists and can be parsed as PDF."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.",
+      "suggestedFix": "Add per-language expected outputs and compare editability and reading order.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    },
+    {
+      "toolName": "Global language fixture coverage",
+      "testFile": "mixed-rtl-ltr.pdf",
+      "status": "PASS",
+      "qualityScore": 70,
+      "metrics": {
+        "path": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\tools\\pdf-converter-lab\\auditor\\fixtures\\mixed-rtl-ltr.pdf",
+        "fileName": "mixed-rtl-ltr.pdf",
+        "exists": true,
+        "size": 71549,
+        "validPdf": true,
+        "encrypted": false,
+        "pageCount": 1,
+        "textChars": 74,
+        "hasSelectableText": true,
+        "error": null
+      },
+      "whatWorked": [
+        "Language fixture exists and can be parsed as PDF."
+      ],
+      "whatFailed": [],
+      "whatIsMissing": [],
+      "whyItMatters": "Global conversion must handle script shaping, font fallback, RTL/LTR direction, and mixed-language reading order.",
+      "suggestedFix": "Add per-language expected outputs and compare editability and reading order.",
+      "priority": "High",
+      "evidence": [],
+      "output": null
+    }
+  ]
+}

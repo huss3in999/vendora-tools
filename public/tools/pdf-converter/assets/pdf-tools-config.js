@@ -57,7 +57,8 @@ window.PdfToolsConfig = {
       description: "Combine multiple PDF documents into a single file in seconds.",
       supportedFormats: ".pdf",
       privacy: "Processed entirely inside your browser. No files are uploaded.",
-      status: "active"
+      status: "active",
+      releaseLabel: "Ready"
     },
     {
       id: "split-pdf",
@@ -67,7 +68,8 @@ window.PdfToolsConfig = {
       description: "Extract specific page ranges or split each page into a separate PDF file.",
       supportedFormats: ".pdf",
       privacy: "Processed entirely inside your browser. No files are uploaded.",
-      status: "active"
+      status: "active",
+      releaseLabel: "Ready"
     },
     {
       id: "remove-pages",
@@ -77,7 +79,8 @@ window.PdfToolsConfig = {
       description: "Select and delete unwanted pages from your PDF document.",
       supportedFormats: ".pdf",
       privacy: "Processed entirely inside your browser.",
-      status: "active"
+      status: "active",
+      releaseLabel: "Ready"
     },
     {
       id: "extract-pages",
@@ -87,7 +90,8 @@ window.PdfToolsConfig = {
       description: "Choose specific pages and extract them into a brand-new PDF.",
       supportedFormats: ".pdf",
       privacy: "Processed entirely inside your browser.",
-      status: "active"
+      status: "active",
+      releaseLabel: "Ready"
     },
     {
       id: "organize-pdf",
@@ -97,7 +101,8 @@ window.PdfToolsConfig = {
       description: "Drag, drop, reorder, or delete pages visually using canvas thumbnails.",
       supportedFormats: ".pdf",
       privacy: "Processed entirely inside your browser.",
-      status: "active"
+      status: "active",
+      releaseLabel: "Ready"
     },
     {
       id: "rotate-pdf",
@@ -107,7 +112,8 @@ window.PdfToolsConfig = {
       description: "Rotate single or multiple pages of your PDF in clockwise or counter-clockwise directions.",
       supportedFormats: ".pdf",
       privacy: "Processed entirely inside your browser.",
-      status: "active"
+      status: "active",
+      releaseLabel: "Ready"
     },
 
     // --- Optimize PDF Category ---
@@ -119,7 +125,9 @@ window.PdfToolsConfig = {
       description: "Reduce file size while maximizing document quality and resolution.",
       supportedFormats: ".pdf",
       privacy: "Processed entirely inside your browser.",
-      status: "active"
+      status: "basic",
+      releaseLabel: "Basic",
+      limitations: "Best for simple files. Complex layouts, scanned PDFs, tables, images, and multi-language documents may need manual review. Compression may flatten pages and reduce editability."
     },
     {
       id: "repair-pdf",
@@ -142,7 +150,8 @@ window.PdfToolsConfig = {
       description: "Convert JPEG images to PDF in seconds. Adjust orientation, size, and margin easily.",
       supportedFormats: ".jpg, .jpeg",
       privacy: "Processed entirely inside your browser.",
-      status: "active"
+      status: "active",
+      releaseLabel: "Ready"
     },
     {
       id: "png-to-pdf",
@@ -152,7 +161,8 @@ window.PdfToolsConfig = {
       description: "Convert PNG images to PDF. Fully handles transparent backdrops.",
       supportedFormats: ".png",
       privacy: "Processed entirely inside your browser.",
-      status: "active"
+      status: "active",
+      releaseLabel: "Ready"
     },
     {
       id: "image-to-pdf",
@@ -162,7 +172,8 @@ window.PdfToolsConfig = {
       description: "Convert multiple JPG, PNG, GIF, or WebP images to a beautifully styled PDF.",
       supportedFormats: ".jpg, .jpeg, .png, .gif, .webp",
       privacy: "Processed entirely inside your browser.",
-      status: "active"
+      status: "active",
+      releaseLabel: "Ready"
     },
     {
       id: "word-to-pdf",
@@ -218,7 +229,8 @@ window.PdfToolsConfig = {
       description: "Extract images from a PDF or convert each page to an independent JPEG image.",
       supportedFormats: ".pdf",
       privacy: "Processed entirely inside your browser. No files are uploaded.",
-      status: "active"
+      status: "active",
+      releaseLabel: "Ready"
     },
     {
       id: "pdf-to-word",
@@ -229,18 +241,20 @@ window.PdfToolsConfig = {
       supportedFormats: ".pdf",
       privacy: "Extracted entirely inside your browser.",
       status: "basic",
-      limitations: "Creates a real editable .docx from selectable PDF text. Complex layout, exact spacing, tables, images, and scanned pages may require OCR, Accuracy Mode, or manual review."
+      releaseLabel: "Basic",
+      limitations: "Best for simple files. Creates a real editable .docx from selectable PDF text. Complex layouts, scanned PDFs, tables, images, and multi-language documents may need manual review."
     },
     {
       id: "pdf-to-powerpoint",
       category: "convertFrom",
-      name: "PDF to PowerPoint",
+      name: "PDF to PowerPoint Visual Export",
       icon: "📊",
-      description: "Convert PDF pages into slides to recreate a presentation draft.",
+      description: "Create a real PowerPoint file where each PDF page becomes an image-based slide.",
       supportedFormats: ".pdf",
       privacy: "Processed entirely inside your browser.",
       status: "basic",
-      limitations: "Creates a real .pptx file with one image-based slide per PDF page. Visual layout is preserved, but slide text and objects are not fully editable yet."
+      releaseLabel: "Beta",
+      limitations: "This creates image-based slides to preserve the look of the PDF. Text may not be editable yet. This is a visual export, not an editable PowerPoint rebuild."
     },
     {
       id: "pdf-to-excel",
@@ -251,7 +265,8 @@ window.PdfToolsConfig = {
       supportedFormats: ".pdf",
       privacy: "Processed entirely inside your browser.",
       status: "basic",
-      limitations: "Creates a real .xlsx workbook with editable cells from detected text positions. Borderless tables, merged cells, scanned PDFs, images, formulas, and complex layouts may require Accuracy Mode or OCR."
+      releaseLabel: "Basic",
+      limitations: "Best for simple files. Creates a real .xlsx workbook with editable cells from detected text positions. Complex layouts, scanned PDFs, tables, images, merged cells, formulas, and multi-language documents may need manual review."
     },
     {
       id: "pdf-to-pdfa",
@@ -352,7 +367,8 @@ window.PdfToolsConfig = {
       supportedFormats: ".pdf",
       privacy: "Processed entirely inside your browser using Tesseract.js.",
       status: "basic",
-      limitations: "English OCR runs locally in the browser. Large scans can be slow, and OCR accuracy depends on image clarity, resolution, and page rotation."
+      releaseLabel: "Beta",
+      limitations: "Best for simple files. English OCR runs locally in the browser. Complex layouts, scanned PDFs, tables, images, and multi-language documents may need manual review. OCR accuracy depends on image clarity, resolution, and page rotation."
     },
     {
       id: "pdf-summarizer",

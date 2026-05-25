@@ -239,18 +239,13 @@ document.addEventListener('DOMContentLoaded', () => {
       filtered.forEach(tool => {
         const card = document.createElement('article');
         card.className = 'tool-card card';
-        
-        let statusBadge = '';
-        if (tool.status === 'basic') {
-          statusBadge = `<span class="tool-status-badge status-badge-basic">Basic Version</span>`;
-        } else if (tool.status === 'future') {
-          statusBadge = `<span class="tool-status-badge status-badge-future">Coming Soon</span>`;
-        }
+        const statusBadge = this.renderToolStatusBadge(tool);
 
         card.innerHTML = `
           <span class="tool-card-icon">${tool.icon}</span>
           <h3 class="tool-card-title">${tool.name}</h3>
           <p class="tool-card-desc">${tool.description}</p>
+          <p class="tool-card-meta">Private browser processing. Check the tool note before using complex files.</p>
           ${statusBadge}
         `;
 
@@ -260,6 +255,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         this.dom.toolsGrid.appendChild(card);
       });
+    },
+
+    renderToolStatusBadge: function(tool) {
+      let label = tool.releaseLabel || (tool.status === 'active' ? 'Ready' : 'Basic');
+      if (tool.status === 'future') label = 'Coming Soon';
+      const key = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      const classKey = tool.status === 'future' ? 'future' : key;
+      return `<span class="tool-status-badge status-badge-${classKey}">${label}</span>`;
     },
 
     // --- WORKSPACE NAVIGATION ---
@@ -275,6 +278,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const existingWarningBox = this.dom.optionsSidebar.querySelector('.scanned-warning-box');
       if (existingWarningBox) existingWarningBox.remove();
       
+      const existingOcrViewer = this.dom.successOverlay.querySelector('.ocr-interactive-viewer');
+      if (existingOcrViewer) existingOcrViewer.remove();
+      const successTitle = this.dom.successOverlay.querySelector('.success-title');
+      if (successTitle) successTitle.innerText = "Processing Complete!";
+      
       // Safe event logging
       if (window.PdfAnalytics) {
         window.PdfAnalytics.trackSelect(tool.id, tool.category);
@@ -288,13 +296,21 @@ document.addEventListener('DOMContentLoaded', () => {
       // 2. Configure workspace info header
       this.dom.workspaceIcon.innerText = tool.icon;
       this.dom.workspaceTitle.innerText = tool.name;
-      this.dom.workspacePrivacyBadge.innerHTML = `Privacy: ${tool.privacy || 'Processed 100% inside your browser.'}`;
+      const label = tool.releaseLabel || (tool.status === 'active' ? 'Ready' : 'Basic');
+      this.dom.workspacePrivacyBadge.innerHTML = `Status: ${label} | Privacy: ${tool.privacy || 'Processed 100% inside your browser.'}`;
       
       // Setup file options
       this.dom.fileInput.value = '';
       this.dom.fileInput.multiple = (tool.id === 'merge-pdf' || tool.id === 'image-to-pdf' || tool.id === 'jpg-to-pdf' || tool.id === 'png-to-pdf');
       this.dom.fileInput.accept = tool.supportedFormats;
       this.dom.supportedFormatsLabel.innerText = `Supported files: ${tool.supportedFormats}`;
+      const existingMobileNote = this.dom.uploadZone.querySelector('.mobile-friendly-note');
+      if (existingMobileNote) existingMobileNote.remove();
+      this.dom.supportedFormatsLabel.insertAdjacentHTML('afterend', `
+        <p class="mobile-friendly-note">
+          Mobile note: large files may be slower on phones. Keep this browser tab open while processing.
+        </p>
+      `);
 
       // Reset error panel
       this.hideError();
@@ -382,13 +398,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Formats check
         if (!acceptedExtensions.includes(ext)) {
-          this.showError(`Invalid file format "${file.name}". This tool accepts files of type: ${tool.supportedFormats}`);
+          this.showError(`Unsupported file type: "${file.name}". This tool accepts: ${tool.supportedFormats}. Please choose the correct converter for this file.`);
           return;
         }
 
         // File size warnings (>50MB)
         if (file.size > 50 * 1024 * 1024) {
-          this.showError(`File "${file.name}" is too large (>50MB). Processing large documents client-side may crash the browser tab.`);
+          this.showError(`Large file warning: "${file.name}" is over 50MB. Browser-only conversion may become slow or fail on very large files, especially on mobile.`);
           return;
         }
 
@@ -764,6 +780,86 @@ document.addEventListener('DOMContentLoaded', () => {
       console.debug("[Organizer] Sync'd new page layout ordering: ", newOrdering);
     },
 
+    classifyDocumentAndConfigure: function(analysis) {
+      if (!analysis) return;
+      
+      let docType = 'Standard Document';
+      let recommendedMode = 'Flow Mode';
+      const activeToolId = this.state.activeTool ? this.state.activeTool.id : '';
+      
+      // Auto-classify document type
+      if (analysis.ocrRequired) {
+        docType = 'Scanned / Image PDF';
+        recommendedMode = 'Local OCR Mode';
+      } else if (analysis.hasTables || analysis.columnCount >= 3) {
+        if (analysis.hasInvoiceHeader || analysis.hasTotalsSection) {
+          docType = 'Business Invoice / Billing';
+          recommendedMode = 'Excel Layout Mode';
+        } else {
+          docType = 'Structured Data Report';
+          recommendedMode = 'Excel Data Mode';
+        }
+      } else if (analysis.linesCount > 120 && analysis.textBlocksCount < 100) {
+        docType = 'Business Certificate / Layout';
+        recommendedMode = 'Word Layout Mode';
+      } else if (analysis.composition === 'Mixed Text + Image PDF') {
+        docType = 'Mixed Text & Graphics';
+        recommendedMode = 'Word Flow / PPTX Layout';
+      } else {
+        docType = 'Digital Text Document';
+        recommendedMode = 'Word Flow Mode';
+      }
+      
+      this.state.pdfClassification = { docType, recommendedMode };
+      
+      // Select the best active defaults in dropdown menus
+      setTimeout(() => {
+        if (activeToolId === 'pdf-to-excel') {
+          const excelSelect = document.getElementById('excel-conversion-mode');
+          if (excelSelect) {
+            if (docType.includes('Structured Data')) {
+              excelSelect.value = 'data';
+              this.state.excelMode = 'data';
+            } else {
+              excelSelect.value = 'layout';
+              this.state.excelMode = 'layout';
+            }
+          }
+        } else if (activeToolId === 'pdf-to-word') {
+          const wordSelect = document.getElementById('word-conversion-mode');
+          if (wordSelect) {
+            if (docType.includes('Certificate') || docType.includes('Graphics')) {
+              wordSelect.value = 'layout';
+              this.state.wordMode = 'layout';
+            } else {
+              wordSelect.value = 'flow';
+              this.state.wordMode = 'flow';
+            }
+          }
+        } else if (activeToolId === 'ocr-pdf') {
+          const ocrSelect = document.getElementById('ocr-format-select');
+          if (ocrSelect) {
+            if (docType.includes('Certificate')) {
+              ocrSelect.value = 'docx-layout';
+            } else {
+              ocrSelect.value = 'docx-flow';
+            }
+          }
+        } else if (activeToolId === 'pdf-to-powerpoint') {
+          const pptxSelect = document.getElementById('pptx-conversion-mode');
+          if (pptxSelect) {
+            if (docType.includes('Certificate') || docType.includes('Graphics') || docType.includes('Digital Text')) {
+              pptxSelect.value = 'editable';
+              this.state.pptxMode = 'editable';
+            } else {
+              pptxSelect.value = 'image';
+              this.state.pptxMode = 'image';
+            }
+          }
+        }
+      }, 50);
+    },
+
     // --- Pre-Conversion Intelligence Sidebar Rendering & Safeguards ---
     renderSidebarAnalysis: function(analysis) {
       // 1. Remove existing panel
@@ -771,19 +867,23 @@ document.addEventListener('DOMContentLoaded', () => {
       if (existingPanel) {
         existingPanel.remove();
       }
-
+ 
       // Remove existing scanned warning box
       const existingWarningBox = this.dom.optionsSidebar.querySelector('.scanned-warning-box');
       if (existingWarningBox) {
         existingWarningBox.remove();
       }
-
+ 
       if (!analysis) return;
 
+      // Run document classification and auto selection configurations
+      this.classifyDocumentAndConfigure(analysis);
+      const classification = this.state.pdfClassification || { docType: 'Detecting...', recommendedMode: 'Auto Selection' };
+ 
       // 2. Build the panel container
       const panel = document.createElement('div');
       panel.className = 'pdf-intelligence-panel';
-
+ 
       // Badge formatting
       let compClass = '';
       if (analysis.composition.includes('Scanned')) {
@@ -793,15 +893,19 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         compClass = 'badge-success';
       }
-
+ 
       let sizeMb = (analysis.fileSize / (1024 * 1024)).toFixed(2);
-
+ 
       panel.innerHTML = `
         <h4 class="sidebar-subtitle">PDF Intelligence</h4>
         <div class="metrics-grid">
           <div class="metric-item">
             <span class="metric-label">PDF Type</span>
             <span class="metric-value badge ${compClass}">${analysis.composition}</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-label">Document Class</span>
+            <span class="metric-value badge badge-success">${classification.docType}</span>
           </div>
           <div class="metric-item">
             <span class="metric-label">Pages Count</span>
@@ -825,13 +929,13 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div class="metric-item">
             <span class="metric-label">Table Detected</span>
-            <span class="metric-value badge ${analysis.hasTables ? 'badge-success' : 'badge-info'}">
-              ${analysis.hasTables ? 'Yes (' + analysis.columnCount + 'x' + analysis.rowCount + ')' : 'No'}
+            <span class="metric-value badge ${analysis.hasTables ? 'badge-success' : 'badge-danger'}">
+              ${analysis.hasTables ? 'Yes' : 'No'}
             </span>
           </div>
           <div class="metric-item" style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: flex-start; gap: 4px;">
-            <span class="metric-label">Recommended Mode</span>
-            <span class="metric-value" style="color: var(--brand); font-weight: 600;">${analysis.recommendedMode}</span>
+            <span class="metric-label">Auto-Selected Mode</span>
+            <span class="metric-value" style="color: var(--brand); font-weight: 600;">${classification.recommendedMode}</span>
           </div>
         </div>
       `;
@@ -1014,12 +1118,52 @@ document.addEventListener('DOMContentLoaded', () => {
         this.dom.sidebarContent.innerHTML = `
           <div class="form-group">
             <label>Target Language</label>
-            <select class="custom-select form-select" disabled>
-              <option value="eng">English (Tesseract.js)</option>
+            <select id="ocr-lang-select" class="custom-select form-select">
+              <option value="eng" selected>English (Tesseract.js)</option>
+              <option value="ara">Arabic (العربية)</option>
+              <option value="fra">French (Français)</option>
+              <option value="spa">Spanish (Español)</option>
+              <option value="deu">German (Deutsch)</option>
             </select>
-            <span class="input-hint">Browser OCR processes training nodes locally. Works on standard printed English document scans.</span>
+            <span class="input-hint">Select the primary language of your scanned document. Tesseract will dynamically load model files.</span>
+          </div>
+          <div class="form-group">
+            <label>OCR Accuracy & Speed</label>
+            <select id="ocr-scale-select" class="custom-select form-select">
+              <option value="1.0">Fast Mode (1.0x Scale - Lower Memory)</option>
+              <option value="2.0" selected>Standard (2.0x Scale - Balanced)</option>
+              <option value="3.0">High Precision (3.0x Scale - Fuzzy Scans)</option>
+            </select>
+            <span class="input-hint">Higher scales upscale page images for more precise character recognition but consume more memory.</span>
+          </div>
+          <div class="form-group">
+            <label>Output Format</label>
+            <select id="ocr-format-select" class="custom-select form-select">
+              <option value="txt" selected>Plain Text (.txt)</option>
+              <option value="docx-flow">Editable Word Flow (.docx)</option>
+              <option value="docx-layout">Editable Word Layout (.doc - Visual Preserved)</option>
+            </select>
+            <span class="input-hint">Choose Flow for editable text streams, or Layout to lock original borders, logos, and stamps behind editable text.</span>
           </div>
         `;
+      } else if (tool.id === 'pdf-to-word') {
+        this.dom.sidebarContent.innerHTML = `
+          <div class="form-group">
+            <label>Conversion Mode</label>
+            <select id="word-conversion-mode" class="custom-select form-select">
+              <option value="flow" selected>Flow Mode (Standard Text Stream)</option>
+              <option value="layout">Layout Mode (Visual Precision Grid)</option>
+            </select>
+            <span class="input-hint" style="margin-top: 6px;">
+              <strong>Flow Mode</strong> creates flowing paragraphs, best for simple text-heavy editing. <br>
+              <strong>Layout Mode</strong> renders the PDF page layout, borders, stamps, and logos perfectly behind editable text.
+            </span>
+          </div>
+        `;
+        this.state.wordMode = 'flow';
+        document.getElementById('word-conversion-mode').addEventListener('change', (e) => {
+          this.state.wordMode = e.target.value;
+        });
       } else if (tool.id === 'pdf-to-excel') {
         this.dom.sidebarContent.innerHTML = `
           <div class="form-group">
@@ -1038,6 +1182,24 @@ document.addEventListener('DOMContentLoaded', () => {
         this.state.excelMode = 'layout'; // reset to default
         document.getElementById('excel-conversion-mode').addEventListener('change', (e) => {
           this.state.excelMode = e.target.value;
+        });
+      } else if (tool.id === 'pdf-to-powerpoint') {
+        this.dom.sidebarContent.innerHTML = `
+          <div class="form-group">
+            <label>Conversion Mode</label>
+            <select id="pptx-conversion-mode" class="custom-select form-select">
+              <option value="image" selected>Flat Slide Images (Visual Fidelity)</option>
+              <option value="editable">Editable Text Boxes - Beta (Reconstructed Layout)</option>
+            </select>
+            <span class="input-hint" style="margin-top: 6px;">
+              <strong>Flat Slide Images</strong> converts each PDF page to an un-editable high-resolution image slide.<br>
+              <strong>Editable Text Boxes - Beta</strong> extracts text blocks and places them as native editable PowerPoint elements when the PDF has selectable text.
+            </span>
+          </div>
+        `;
+        this.state.pptxMode = 'image';
+        document.getElementById('pptx-conversion-mode').addEventListener('change', (e) => {
+          this.state.pptxMode = e.target.value;
         });
       } else {
         // Universal side descriptions
@@ -1212,11 +1374,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
           // --- BASIC/LIMITED EXTRACTORS ---
           case 'pdf-to-word':
-            this.showSpinner("Building editable Word document client-side...");
-            await window.PdfEngine.pdfToWordBasicText(files[0]);
-            this.renderSuccessPanel("Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use.", () => {
-              window.PdfEngine.pdfToWordBasicText(files[0]);
-            });
+            const selectedWordMode = this.state.wordMode || 'flow';
+            const wordLabel = selectedWordMode === 'layout' ? 'Visual Layout Preserved DOC' : 'Editable Flowing DOCX';
+            this.showSpinner("Building Word document client-side...");
+            if (selectedWordMode === 'layout') {
+              const res = await window.PdfEngine.pdfToWordLayoutMode(files[0]);
+              this.renderSuccessPanel(`${wordLabel} compilation complete. Background templates, absolute coordinates, and layers loaded entirely client-side. Review spacing, editable text, and fonts.`, () => {
+                const blob = new Blob([res.htmlContent], { type: 'application/msword;charset=utf-8' });
+                const name = `${window.PdfEngine.getSafeOfficeBaseName(files[0])}_layout.doc`;
+                window.PdfEngine.downloadFile(blob, name, 'application/msword;charset=utf-8');
+              });
+            } else {
+              await window.PdfEngine.pdfToWordBasicText(files[0]);
+              this.renderSuccessPanel("Editable Word .docx extraction complete. Review complex layouts, exact spacing, tables, images, and scanned pages before final use.", () => {
+                window.PdfEngine.pdfToWordBasicText(files[0]);
+              });
+            }
             return;
 
           case 'pdf-to-excel':
@@ -1230,24 +1403,38 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
 
           case 'pdf-to-powerpoint':
+            const selectedPptxMode = this.state.pptxMode || 'image';
+            const pptxLabel = selectedPptxMode === 'editable' ? 'Editable Reconstructed PPTX' : 'Flat Slide Images PPTX';
             this.showSpinner("Creating real PowerPoint slides...");
             await window.PdfEngine.pdfToPowerPointBasicImages(files[0], (idx, tot) => {
               this.updateSpinner(`Rendering page ${idx} of ${tot} into a PowerPoint slide...`);
-            });
-            this.renderSuccessPanel("Real .pptx created successfully. Slides are image-based for visual fidelity and are not fully editable yet.", () => {
-              window.PdfEngine.pdfToPowerPointBasicImages(files[0]);
+            }, selectedPptxMode);
+            this.renderSuccessPanel(`${pptxLabel} created successfully entirely client-side. Review slide elements, editable boxes, and graphics before final use.`, () => {
+              window.PdfEngine.pdfToPowerPointBasicImages(files[0], null, selectedPptxMode);
             });
             return;
 
           case 'ocr-pdf':
+            const ocrLang = document.getElementById('ocr-lang-select').value;
+            const ocrScale = parseFloat(document.getElementById('ocr-scale-select').value);
+            const ocrFormat = document.getElementById('ocr-format-select').value;
+            
             this.showSpinner("Running local OCR in your browser...");
-            await window.PdfEngine.ocrPdfToText(files[0], (idx, tot, phase) => {
-              const verb = phase === 'render' ? 'Rendering' : 'Reading text from';
-              this.updateSpinner(`${verb} page ${idx} of ${tot}...`, Math.round((idx / tot) * 80));
-            });
-            this.renderSuccessPanel("OCR text extraction complete. The text file has been generated locally in your browser.", () => {
-              window.PdfEngine.ocrPdfToText(files[0]);
-            });
+            
+            let ocrResult;
+            if (ocrFormat === 'docx-layout') {
+              ocrResult = await window.PdfEngine.ocrToWordLayoutMode(files[0], (idx, tot, phase) => {
+                const verb = phase === 'render' ? 'Rendering' : 'Reading text from';
+                this.updateSpinner(`${verb} page ${idx} of ${tot}...`, Math.round((idx / tot) * 80));
+              }, { lang: ocrLang, scale: ocrScale });
+            } else {
+              ocrResult = await window.PdfEngine.ocrPdfToText(files[0], (idx, tot, phase) => {
+                const verb = phase === 'render' ? 'Rendering' : 'Reading text from';
+                this.updateSpinner(`${verb} page ${idx} of ${tot}...`, Math.round((idx / tot) * 80));
+              }, { lang: ocrLang, scale: ocrScale, format: ocrFormat === 'docx-flow' ? 'docx' : 'txt' });
+            }
+            
+            this.renderOcrSuccessPanel(ocrResult, files[0], { lang: ocrLang, scale: ocrScale, format: ocrFormat });
             return;
 
           default:
@@ -1297,6 +1484,101 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadCallback();
       });
 
+      window.scrollTo({ top: 300, behavior: 'smooth' });
+    },
+
+    renderOcrSuccessPanel: function(result, file, options) {
+      this.dom.processingPanel.classList.add('hidden');
+      this.dom.successOverlay.classList.remove('hidden');
+      
+      const successTitle = this.dom.successOverlay.querySelector('.success-title');
+      if (successTitle) successTitle.innerText = "OCR Processing Complete!";
+      
+      let formatLabel = 'Plain Text (.txt)';
+      if (options.format === 'docx-flow') formatLabel = 'Editable Word Flow (.docx)';
+      else if (options.format === 'docx-layout') formatLabel = 'Visual Layout Preserved Word (.doc)';
+      else if (options.format === 'docx') formatLabel = 'Word Document (.docx)';
+      
+      this.dom.successDesc.innerText = `OCR processed successfully. Export format: ${formatLabel}.`;
+      
+      // 1. Clear existing dynamic OCR view if present
+      const existingOcrViewer = this.dom.successOverlay.querySelector('.ocr-interactive-viewer');
+      if (existingOcrViewer) existingOcrViewer.remove();
+      
+      // 2. Build premium interactive text view
+      const ocrViewer = document.createElement('div');
+      ocrViewer.className = 'ocr-interactive-viewer card';
+      ocrViewer.style.margin = '20px 0';
+      ocrViewer.style.textAlign = 'left';
+      ocrViewer.style.width = '100%';
+      ocrViewer.style.maxWidth = '600px';
+      ocrViewer.style.padding = '20px';
+      ocrViewer.style.background = 'rgba(20, 38, 66, 0.5)';
+      ocrViewer.style.border = '1px solid rgba(255, 255, 255, 0.06)';
+      ocrViewer.style.borderRadius = '8px';
+      
+      ocrViewer.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+          <span class="badge badge-success" style="font-size: 0.85rem; font-weight: 700; color: #10b981; border: 1px solid rgba(16,185,129,0.2); background: rgba(16,185,129,0.1); padding: 4px 10px; border-radius: 4px;">
+            ⚡ ${result.avgConfidence}% Accuracy Score
+          </span>
+          <button id="btn-ocr-copy-text" class="btn btn-secondary" style="font-size: 0.8rem; padding: 6px 12px; border-radius: 4px; display: flex; align-items: center; gap: 6px; cursor: pointer; background: var(--surface); border: 1px solid rgba(255,255,255,0.08); color: var(--text);">
+            <span>📋 Copy Text</span>
+          </button>
+        </div>
+        <textarea id="ocr-text-result-textarea" readonly style="width: 100%; height: 220px; padding: 12px; font-family: 'Courier New', Courier, monospace; font-size: 0.88rem; line-height: 1.5; color: #cbd5e1; background: #070d19; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 6px; resize: vertical; display: block; outline: none; margin-bottom: 8px;"></textarea>
+        <div id="ocr-copy-toast" style="font-size: 0.8rem; color: #10b981; opacity: 0; transition: opacity 0.2s ease; font-weight: 600; text-align: right;">Text copied to clipboard!</div>
+      `;
+      
+      const successActions = this.dom.successOverlay.querySelector('.success-actions');
+      this.dom.successOverlay.insertBefore(ocrViewer, successActions);
+      
+      // Seed textarea contents
+      const textarea = document.getElementById('ocr-text-result-textarea');
+      textarea.value = result.textOutput;
+      
+      // Bind copy button copy logic
+      const copyBtn = document.getElementById('btn-ocr-copy-text');
+      const copyToast = document.getElementById('ocr-copy-toast');
+      
+      copyBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        textarea.select();
+        navigator.clipboard.writeText(textarea.value).then(() => {
+          copyBtn.querySelector('span').innerText = '✅ Copied!';
+          copyToast.style.opacity = '1';
+          setTimeout(() => {
+            copyBtn.querySelector('span').innerText = '📋 Copy Text';
+            copyToast.style.opacity = '0';
+          }, 2000);
+        }).catch(err => {
+          console.error("Copy to clipboard failed", err);
+          // Fallback select
+          alert("Text selected. Please press Ctrl+C to copy.");
+        });
+      });
+ 
+      // Bind download buttons
+      const cleanBtn = this.dom.btnDownloadResult.cloneNode(true);
+      this.dom.btnDownloadResult.parentNode.replaceChild(cleanBtn, this.dom.btnDownloadResult);
+      this.dom.btnDownloadResult = cleanBtn;
+      
+      this.dom.btnDownloadResult.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (options.format === 'docx-flow' || options.format === 'docx') {
+          const docxName = window.PdfEngine.getSafeOfficeBaseName(file) + '_ocr.docx';
+          window.PdfEngine.makeDocxFromPages(result.pages, docxName);
+        } else if (options.format === 'docx-layout') {
+          const blob = new Blob([result.htmlContent], { type: 'application/msword;charset=utf-8' });
+          const name = `${window.PdfEngine.getSafeOfficeBaseName(file)}_ocr_layout.doc`;
+          window.PdfEngine.downloadFile(blob, name, 'application/msword;charset=utf-8');
+        } else {
+          const txtName = file.name.replace(/\.pdf$/i, '') + '_ocr.txt';
+          const blob = new Blob([result.textOutput], { type: 'text/plain;charset=utf-8' });
+          window.PdfEngine.downloadFile(blob, txtName, 'text/plain;charset=utf-8');
+        }
+      });
+ 
       window.scrollTo({ top: 300, behavior: 'smooth' });
     },
 
