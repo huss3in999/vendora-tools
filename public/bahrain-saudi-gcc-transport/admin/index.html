@@ -630,8 +630,32 @@
       return '/api/transport/admin';
     }
 
+    function uniqueApiCandidates(urls) {
+      return urls
+        .filter((url) => typeof url === 'string' && url.trim())
+        .map((url) => url.trim().replace(/\/$/, ''))
+        .filter((url, index, list) => list.indexOf(url) === index);
+    }
+
+    function resolveAdminApiCandidates() {
+      const primary = resolveAdminApiUrl();
+      const isLocalStaticPreview =
+        window.location.protocol === 'file:' ||
+        window.location.hostname === '127.0.0.1' ||
+        window.location.hostname === 'localhost';
+
+      return uniqueApiCandidates([
+        primary,
+        isLocalStaticPreview ? 'https://getvendora.net/api/transport/admin' : '/api/transport/admin',
+        isLocalStaticPreview ? 'https://getvendora.net/bahrain-saudi-gcc-transport/api/transport/admin' : '/bahrain-saudi-gcc-transport/api/transport/admin'
+      ]);
+    }
+
     const API_URL = resolveAdminApiUrl();
+    const API_URLS = resolveAdminApiCandidates();
+    let activeApiUrl = API_URLS[0] || API_URL;
     window.__VENDORA_TRANSPORT_ADMIN_RESOLVED_API__ = API_URL;
+    window.__VENDORA_TRANSPORT_ADMIN_API_CANDIDATES__ = API_URLS;
     const TOKEN_KEY = 'vendora_transport_admin_token';
     
     const COMMON_ROUTES = [
@@ -733,25 +757,45 @@
     }
 
     async function api(path, options = {}) {
-      let response;
-      try {
-        response = await fetch(`${API_URL}${path}`, {
-          ...options,
-          headers: {
-            authorization: `Bearer ${state.token}`,
-            'content-type': 'application/json',
-            ...(options.headers || {})
-          }
-        });
-      } catch (error) {
-        throw new Error(`Unable to reach the transport admin API at ${API_URL}`);
+      const tried = [];
+      let sawRoute404 = false;
+      let networkError = null;
+      const candidates = uniqueApiCandidates([activeApiUrl, ...API_URLS]);
+
+      for (const apiUrl of candidates) {
+        tried.push(apiUrl);
+        let response;
+        try {
+          response = await fetch(`${apiUrl}${path}`, {
+            ...options,
+            headers: {
+              authorization: `Bearer ${state.token}`,
+              'content-type': 'application/json',
+              ...(options.headers || {})
+            }
+          });
+        } catch (error) {
+          networkError = error;
+          continue;
+        }
+
+        const data = await response.json().catch(() => ({}));
+        if (response.status === 404) {
+          sawRoute404 = true;
+          continue;
+        }
+
+        activeApiUrl = apiUrl;
+        window.__VENDORA_TRANSPORT_ADMIN_RESOLVED_API__ = apiUrl;
+        if (!response.ok || data.ok === false) throw new Error(data.error || `Request failed (${response.status})`);
+        return data;
       }
-      const data = await response.json().catch(() => ({}));
-      if (response.status === 404) {
-        throw new Error('Admin API route not found.');
+
+      if (sawRoute404) {
+        throw new Error(`Admin API route not found. Deploy the Cloudflare Worker from the public folder with npx wrangler deploy, then check /api/transport/health. Tried: ${tried.join(', ')}`);
       }
-      if (!response.ok || data.ok === false) throw new Error(data.error || 'Request failed');
-      return data;
+
+      throw new Error(`Unable to reach the transport admin API. Tried: ${tried.join(', ')}${networkError ? ` (${networkError.message})` : ''}`);
     }
 
     function queryFromFilters(extra = {}) {

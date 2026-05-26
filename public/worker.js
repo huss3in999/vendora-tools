@@ -37,10 +37,36 @@ async function dispatchPagesFunction(module, request, env, ctx) {
   return new Response('Method not allowed', { status: 405 });
 }
 
+function transportHealthResponse() {
+  return new Response(JSON.stringify({
+    ok: true,
+    service: 'vendora-transport-api',
+    routes: [
+      '/api/transport/admin',
+      '/api/transport/whatsapp-lead',
+    ],
+  }), {
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store',
+      'access-control-allow-origin': '*',
+      'access-control-allow-methods': 'GET, OPTIONS',
+      'access-control-allow-headers': 'authorization, content-type, x-admin-token',
+    },
+  });
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const path = logicalPathname(url);
+
+    if (path === '/api/transport/health') {
+      if (request.method.toUpperCase() === 'OPTIONS') {
+        return new Response(null, { status: 204, headers: transportHealthResponse().headers });
+      }
+      return transportHealthResponse();
+    }
 
     if (path === '/api/transport/admin') {
       return dispatchPagesFunction(adminApi, request, env, ctx);
