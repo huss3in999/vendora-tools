@@ -163,8 +163,11 @@ async function storeLead(request, env, payload, leadUuid) {
       screen_height,
       timezone_offset_minutes,
       interaction_count,
+      visitor_id,
+      visit_count,
+      session_page_views,
       raw_payload
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   await stmt.bind(
@@ -209,6 +212,9 @@ async function storeLead(request, env, payload, leadUuid) {
     cleanInteger(payload.screenHeight),
     cleanBoundedInteger(payload.timezoneOffsetMinutes, -1440, 1440),
     cleanBoundedInteger(payload.interactionCount, 0, 10000),
+    getPayloadValue(payload, 'visitorId', 120),
+    cleanBoundedInteger(payload.visitCount, 1, 1000000),
+    cleanBoundedInteger(payload.sessionPageViews, 1, 100000),
     JSON.stringify(payload).slice(0, 4000),
   ).run();
 }

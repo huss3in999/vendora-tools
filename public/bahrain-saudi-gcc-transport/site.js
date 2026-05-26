@@ -9,6 +9,8 @@
   const pageStartedAt = Date.now();
   const sessionIdKey = 'vendora_transport_session_id';
   const firstTouchKey = 'vendora_transport_first_touch';
+  const visitorIdKey = 'vendora_transport_visitor_id';
+  const visitCountKey = 'vendora_transport_visit_count';
   const sessionPageViewsKey = 'vendora_transport_session_page_views';
   const previousPathKey = 'vendora_transport_previous_path';
 
@@ -875,12 +877,43 @@
     return 'desktop';
   }
 
+  function getVisitorId() {
+    try {
+      let visitorId = localStorage.getItem(visitorIdKey);
+      if (!visitorId) {
+        visitorId = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        localStorage.setItem(visitorIdKey, visitorId);
+      }
+      return visitorId;
+    } catch {
+      return '';
+    }
+  }
+
+  function getVisitCount() {
+    try {
+      let count = Number(localStorage.getItem(visitCountKey) || 0);
+      if (count === 0) {
+        count = 1;
+        localStorage.setItem(visitCountKey, '1');
+      }
+      return count;
+    } catch {
+      return 1;
+    }
+  }
+
   function getSessionId() {
     try {
       const existing = sessionStorage.getItem(sessionIdKey);
       if (existing) return existing;
       const next = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
       sessionStorage.setItem(sessionIdKey, next);
+      
+      let count = Number(localStorage.getItem(visitCountKey) || 0);
+      count += 1;
+      localStorage.setItem(visitCountKey, String(count));
+      
       return next;
     } catch {
       return '';
@@ -932,9 +965,9 @@
   }
 
   function buildLeadPayload(link, event) {
-    const dataRoute = link.getAttribute('data-route') || '';
+    const dataRoute = link ? (link.getAttribute('data-route') || '') : '';
     const routeSlug = (dataRoute ? dataRoute.replace(/-en$/i, '') : '') || getRouteSlug();
-    const rect = link.getBoundingClientRect ? link.getBoundingClientRect() : null;
+    const rect = (link && link.getBoundingClientRect) ? link.getBoundingClientRect() : null;
     const utm = getUtmParams();
     const firstTouch = getFirstTouch();
     const referrer = document.referrer || '';
@@ -946,14 +979,14 @@
       pagePath: window.location.pathname,
       pageTitle: document.title || '',
       pageQuery: window.location.search || '',
-      targetUrl: link.href || '',
+      targetUrl: link ? (link.href || '') : '',
       sessionId: getSessionId(),
       pageLoadedAt,
       timeOnPageMs: Date.now() - pageStartedAt,
       scrollDepthPercent: Math.max(leadState.maxScrollDepth, getScrollDepthPercent()),
-      clickX: Number.isFinite(event?.clientX) ? Math.round(event.clientX) : Math.round((rect?.left || 0) + (rect?.width || 0) / 2),
-      clickY: Number.isFinite(event?.clientY) ? Math.round(event.clientY) : Math.round((rect?.top || 0) + (rect?.height || 0) / 2),
-      clickText: link.textContent?.replace(/\s+/g, ' ').trim().slice(0, 240) || '',
+      clickX: Number.isFinite(event?.clientX) ? Math.round(event.clientX) : (rect ? Math.round((rect.left || 0) + (rect.width || 0) / 2) : 0),
+      clickY: Number.isFinite(event?.clientY) ? Math.round(event.clientY) : (rect ? Math.round((rect.top || 0) + (rect.height || 0) / 2) : 0),
+      clickText: link ? (link.textContent?.replace(/\s+/g, ' ').trim().slice(0, 240) || '') : 'Page View',
       language: document.documentElement.lang || state.lang || 'ar',
       browserLanguage: navigator.language || '',
       deviceType: getDeviceType(),
@@ -964,6 +997,8 @@
       timezoneOffsetMinutes: new Date().getTimezoneOffset(),
       interactionCount: leadState.interactionCount,
       sessionPageViews: leadState.sessionPageViews,
+      visitorId: getVisitorId(),
+      visitCount: getVisitCount(),
       previousPagePath: leadState.previousPagePath,
       referrer,
       referrerHost: getHostFromUrl(referrer),
@@ -975,7 +1010,7 @@
       firstReferrerHost: firstTouch.referrerHost || '',
       firstTrafficSource: firstTouch.trafficSource || '',
       ...utm,
-      ...getBookingDataFromLink(link),
+      ...(link ? getBookingDataFromLink(link) : { serviceType: 'pageview' }),
     };
   }
 
@@ -1020,6 +1055,17 @@
         });
       }
     }, { capture: true });
+  }
+
+  function trackPageView() {
+    try {
+      if (window.__VENDORA_PAGEVIEW_TRACKED__) return;
+      window.__VENDORA_PAGEVIEW_TRACKED__ = true;
+      const payload = buildLeadPayload(null, null);
+      sendLeadPayload(payload);
+    } catch (e) {
+      console.error('Failed to track pageview:', e);
+    }
   }
 
   function translateString(value) {
@@ -1385,6 +1431,7 @@
     injectFlagImages();
     applyLanguage();
     renderIcons();
+    trackPageView();
   }
 
   function initLeadOnly() {
@@ -1392,6 +1439,7 @@
     setupAttributionTracking();
     setupEngagementTracking();
     setupWhatsAppLeadInterceptor();
+    trackPageView();
   }
 
   if (window.pageConfig && window.pageConfig.leadOnly === true) {

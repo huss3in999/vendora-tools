@@ -95,11 +95,114 @@ function requireDb(env, headers = {}) {
   return null;
 }
 
+function buildLeadFilters(url, resource = 'leads') {
+  const clauses = [];
+  const bindings = [];
+
+  // Filter out pageviews or clicks based on target resource
+  if (resource === 'pageviews') {
+    clauses.push("service_type = 'pageview'");
+  } else {
+    clauses.push("COALESCE(service_type, '') != 'pageview'");
+  }
+
+  const routeParam = cleanText(url.searchParams.get('route'), 160);
+  if (routeParam) {
+    clauses.push("route_slug = ?");
+    bindings.push(routeParam);
+  }
+
+  const sourceParam = cleanText(url.searchParams.get('source'), 120);
+  if (sourceParam) {
+    if (sourceParam === 'direct/unknown') {
+      clauses.push("(utm_source = '' OR utm_source IS NULL)");
+    } else {
+      clauses.push("utm_source = ?");
+      bindings.push(sourceParam);
+    }
+  }
+
+  const campaignParam = cleanText(url.searchParams.get('campaign'), 160);
+  if (campaignParam) {
+    clauses.push("utm_campaign = ?");
+    bindings.push(campaignParam);
+  }
+
+  const deviceParam = cleanText(url.searchParams.get('device'), 40);
+  if (deviceParam) {
+    clauses.push("device_type = ?");
+    bindings.push(deviceParam);
+  }
+
+  const countryParam = cleanText(url.searchParams.get('country'), 8);
+  if (countryParam) {
+    clauses.push("cf_country = ?");
+    bindings.push(countryParam);
+  }
+
+  const statusParam = cleanText(url.searchParams.get('status'), 40);
+  if (statusParam) {
+    if (statusParam === 'new') {
+      clauses.push("(status = 'new' OR status IS NULL)");
+    } else {
+      clauses.push("status = ?");
+      bindings.push(statusParam);
+    }
+  }
+
+  const from = cleanDate(url.searchParams.get('from'));
+  if (from) {
+    clauses.push('clicked_at >= ?');
+    bindings.push(`${from}T00:00:00.000Z`);
+  }
+
+  const to = cleanDate(url.searchParams.get('to'));
+  if (to) {
+    clauses.push('clicked_at <= ?');
+    bindings.push(`${to}T23:59:59.999Z`);
+  }
+
+  const search = cleanText(url.searchParams.get('search'), 120);
+  if (search) {
+    clauses.push(`(
+      route_label LIKE ?
+      OR route_slug LIKE ?
+      OR page_path LIKE ?
+      OR utm_source LIKE ?
+      OR utm_campaign LIKE ?
+      OR cf_city LIKE ?
+      OR cf_country LIKE ?
+      OR admin_notes LIKE ?
+      OR status LIKE ?
+    )`);
+    const like = `%${search}%`;
+    bindings.push(like, like, like, like, like, like, like, like, like);
+  }
+
+  const minSeconds = Number(url.searchParams.get('min_seconds') || 0);
+  if (Number.isFinite(minSeconds) && minSeconds > 0) {
+    clauses.push('time_on_page_ms >= ?');
+    bindings.push(Math.round(minSeconds * 1000));
+  }
+
+  const maxSeconds = Number(url.searchParams.get('max_seconds') || 0);
+  if (Number.isFinite(maxSeconds) && maxSeconds > 0) {
+    clauses.push('time_on_page_ms <= ?');
+    bindings.push(Math.round(maxSeconds * 1000));
+  }
+
+  return {
+    whereSql: clauses.length ? `WHERE ${clauses.join(' AND ')}` : '',
+    bindings,
+  };
+}
+
 async function getLeads(env, request) {
   const url = new URL(request.url);
+  const resource = url.searchParams.get('resource') || 'leads';
   const limitParam = Number(url.searchParams.get('limit') || 100);
   const limit = Math.max(1, Math.min(MAX_LEADS_LIMIT, Number.isFinite(limitParam) ? Math.round(limitParam) : 100));
-  const { whereSql, bindings } = buildLeadFilters(url);
+  const { whereSql, bindings } = buildLeadFilters(url, resource);
 
   const { results } = await env.TRANSPORT_DB.prepare(`
     SELECT
@@ -144,6 +247,12 @@ async function getLeads(env, request) {
       timezone_offset_minutes,
       interaction_count,
       request_ray_id,
+      status,
+      admin_notes,
+      revenue,
+      visitor_id,
+      visit_count,
+      session_page_views,
       raw_payload
     FROM whatsapp_leads
     ${whereSql}
@@ -154,144 +263,133 @@ async function getLeads(env, request) {
   return { leads: results || [] };
 }
 
-function buildLeadFilters(url) {
-  const clauses = [];
-  const bindings = [];
-  const filters = [
-    ['route_slug', cleanText(url.searchParams.get('route'), 160)],
-    ['utm_source', cleanText(url.searchParams.get('source'), 120)],
-    ['utm_campaign', cleanText(url.searchParams.get('campaign'), 160)],
-    ['device_type', cleanText(url.searchParams.get('device'), 40)],
-    ['cf_country', cleanText(url.searchParams.get('country'), 8)],
-  ];
-
-  filters.forEach(([column, value]) => {
-    if (!value) return;
-    clauses.push(`${column} = ?`);
-    bindings.push(value);
-  });
-
-  const from = cleanDate(url.searchParams.get('from'));
-  if (from) {
-    clauses.push('clicked_at >= ?');
-    bindings.push(`${from}T00:00:00.000Z`);
-  }
-
-  const to = cleanDate(url.searchParams.get('to'));
-  if (to) {
-    clauses.push('clicked_at <= ?');
-    bindings.push(`${to}T23:59:59.999Z`);
-  }
-
-  const search = cleanText(url.searchParams.get('search'), 120);
-  if (search) {
-    clauses.push(`(
-      route_label LIKE ?
-      OR route_slug LIKE ?
-      OR page_path LIKE ?
-      OR utm_source LIKE ?
-      OR utm_campaign LIKE ?
-      OR cf_city LIKE ?
-      OR cf_country LIKE ?
-    )`);
-    const like = `%${search}%`;
-    bindings.push(like, like, like, like, like, like, like);
-  }
-
-  const minSeconds = Number(url.searchParams.get('min_seconds') || 0);
-  if (Number.isFinite(minSeconds) && minSeconds > 0) {
-    clauses.push('time_on_page_ms >= ?');
-    bindings.push(Math.round(minSeconds * 1000));
-  }
-
-  const maxSeconds = Number(url.searchParams.get('max_seconds') || 0);
-  if (Number.isFinite(maxSeconds) && maxSeconds > 0) {
-    clauses.push('time_on_page_ms <= ?');
-    bindings.push(Math.round(maxSeconds * 1000));
-  }
-
-  return {
-    whereSql: clauses.length ? `WHERE ${clauses.join(' AND ')}` : '',
-    bindings,
-  };
-}
-
 async function getSummary(env, request) {
   const url = new URL(request.url);
-  const { whereSql, bindings } = buildLeadFilters(url);
-  const bindAll = (sql) => env.TRANSPORT_DB.prepare(sql).bind(...bindings).all();
-  const bindFirst = (sql) => env.TRANSPORT_DB.prepare(sql).bind(...bindings).first();
+  const leadFilters = buildLeadFilters(url, 'leads');
+  const pvFilters = buildLeadFilters(url, 'pageviews');
 
-  const totals = await bindFirst(`
+  const bindLeadFirst = (sql) => env.TRANSPORT_DB.prepare(sql).bind(...leadFilters.bindings).first();
+  const bindLeadAll = (sql) => env.TRANSPORT_DB.prepare(sql).bind(...leadFilters.bindings).all();
+
+  // 1. Core Conversion Leads totals
+  const totals = await bindLeadFirst(`
     SELECT
       COUNT(*) AS total,
       SUM(CASE WHEN clicked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', date('now', '+3 hours') || ' 00:00:00', '-3 hours') THEN 1 ELSE 0 END) AS today,
       SUM(CASE WHEN clicked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-7 days') THEN 1 ELSE 0 END) AS last_7_days,
-      MAX(clicked_at) AS last_click
-      ,COUNT(DISTINCT session_id) AS sessions
-      ,ROUND(AVG(time_on_page_ms)) AS avg_time_on_page_ms
-      ,ROUND(AVG(scroll_depth_percent)) AS avg_scroll_depth_percent
+      MAX(clicked_at) AS last_click,
+      COUNT(DISTINCT session_id) AS sessions,
+      ROUND(AVG(time_on_page_ms)) AS avg_time_on_page_ms,
+      ROUND(AVG(scroll_depth_percent)) AS avg_scroll_depth_percent,
+      
+      -- CRM Metrics
+      SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS completed_count,
+      SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) AS cancelled_count,
+      SUM(CASE WHEN status = 'contacted' THEN 1 ELSE 0 END) AS contacted_count,
+      SUM(CASE WHEN status = 'spam' THEN 1 ELSE 0 END) AS spam_count,
+      SUM(CASE WHEN status = 'new' OR status IS NULL OR status = '' THEN 1 ELSE 0 END) AS new_count,
+      SUM(COALESCE(revenue, 0.0)) AS total_revenue
     FROM whatsapp_leads
-    ${whereSql}
+    ${leadFilters.whereSql}
   `);
 
+  // 2. Parallel Pageviews totals (under the same date/campaign filters)
+  const pvTotals = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      COUNT(*) AS total,
+      SUM(CASE WHEN clicked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', date('now', '+3 hours') || ' 00:00:00', '-3 hours') THEN 1 ELSE 0 END) AS today,
+      COUNT(DISTINCT session_id) AS sessions
+    FROM whatsapp_leads
+    ${pvFilters.whereSql}
+  `).bind(...pvFilters.bindings).first();
+
   const [{ results: byRoute }, { results: bySource }, { results: byCountry }, { results: byDevice }, { results: byDay }, { results: byHour }, { results: byCampaign }] = await Promise.all([
-    bindAll(`
+    bindLeadAll(`
       SELECT COALESCE(route_slug, 'unknown') AS label, COUNT(*) AS count
       FROM whatsapp_leads
-      ${whereSql}
+      ${leadFilters.whereSql}
       GROUP BY COALESCE(route_slug, 'unknown')
       ORDER BY count DESC
       LIMIT 10
     `),
-    bindAll(`
+    bindLeadAll(`
       SELECT COALESCE(NULLIF(utm_source, ''), 'direct/unknown') AS label, COUNT(*) AS count
       FROM whatsapp_leads
-      ${whereSql}
+      ${leadFilters.whereSql}
       GROUP BY COALESCE(NULLIF(utm_source, ''), 'direct/unknown')
       ORDER BY count DESC
       LIMIT 10
     `),
-    bindAll(`
+    bindLeadAll(`
       SELECT COALESCE(NULLIF(cf_country, ''), 'unknown') AS label, COUNT(*) AS count
       FROM whatsapp_leads
-      ${whereSql}
+      ${leadFilters.whereSql}
       GROUP BY COALESCE(NULLIF(cf_country, ''), 'unknown')
       ORDER BY count DESC
       LIMIT 10
     `),
-    bindAll(`
+    bindLeadAll(`
       SELECT COALESCE(NULLIF(device_type, ''), 'unknown') AS label, COUNT(*) AS count
       FROM whatsapp_leads
-      ${whereSql}
+      ${leadFilters.whereSql}
       GROUP BY COALESCE(NULLIF(device_type, ''), 'unknown')
       ORDER BY count DESC
       LIMIT 10
     `),
-    bindAll(`
+    bindLeadAll(`
       SELECT date(clicked_at, '+3 hours') AS label, COUNT(*) AS count
       FROM whatsapp_leads
-      ${whereSql}
+      ${leadFilters.whereSql}
       GROUP BY date(clicked_at, '+3 hours')
       ORDER BY label DESC
       LIMIT 14
     `),
-    bindAll(`
+    bindLeadAll(`
       SELECT strftime('%H', clicked_at, '+3 hours') || ':00' AS label, COUNT(*) AS count
       FROM whatsapp_leads
-      ${whereSql}
+      ${leadFilters.whereSql}
       GROUP BY strftime('%H', clicked_at, '+3 hours')
       ORDER BY label ASC
     `),
-    bindAll(`
+    bindLeadAll(`
       SELECT COALESCE(NULLIF(utm_campaign, ''), 'no campaign') AS label, COUNT(*) AS count
       FROM whatsapp_leads
-      ${whereSql}
+      ${leadFilters.whereSql}
       GROUP BY COALESCE(NULLIF(utm_campaign, ''), 'no campaign')
       ORDER BY count DESC
       LIMIT 10
     `),
   ]);
+
+  // Fetch persistent visitor stats
+  const visitorStats = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      COUNT(DISTINCT visitor_id) AS total_visitors,
+      COUNT(DISTINCT CASE WHEN visit_count > 1 THEN visitor_id ELSE NULL END) AS returning_visitors,
+      SUM(CASE WHEN visit_count > 1 AND COALESCE(service_type, '') != 'pageview' THEN 1 ELSE 0 END) AS returning_clicks
+    FROM whatsapp_leads
+    ${leadFilters.whereSql}
+  `).bind(...leadFilters.bindings).first();
+
+  // Fetch top repeat customers
+  const repeatCustomers = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      visitor_id,
+      MAX(visit_count) AS visits,
+      SUM(CASE WHEN COALESCE(service_type, '') != 'pageview' THEN 1 ELSE 0 END) AS whatsapp_clicks,
+      SUM(CASE WHEN service_type = 'pageview' THEN 1 ELSE 0 END) AS pageviews,
+      MAX(clicked_at) AS last_activity,
+      MAX(cf_city) AS city,
+      MAX(cf_country) AS country,
+      MAX(device_type) AS device,
+      MAX(status) AS status,
+      SUM(COALESCE(revenue, 0.0)) AS revenue
+    FROM whatsapp_leads
+    WHERE visitor_id IS NOT NULL AND visitor_id != ''
+    GROUP BY visitor_id
+    ORDER BY visits DESC, whatsapp_clicks DESC
+    LIMIT 25
+  `).all();
 
   return {
     summary: {
@@ -302,6 +400,25 @@ async function getSummary(env, request) {
       sessions: totals?.sessions || 0,
       avg_time_on_page_ms: totals?.avg_time_on_page_ms || 0,
       avg_scroll_depth_percent: totals?.avg_scroll_depth_percent || 0,
+      
+      // CRM summaries
+      completed_count: totals?.completed_count || 0,
+      cancelled_count: totals?.cancelled_count || 0,
+      contacted_count: totals?.contacted_count || 0,
+      new_count: totals?.new_count || 0,
+      spam_count: totals?.spam_count || 0,
+      total_revenue: totals?.total_revenue || 0,
+      
+      // Pageviews summaries
+      total_pageviews: pvTotals?.total || 0,
+      pageviews_today: pvTotals?.today || 0,
+      pageview_sessions: pvTotals?.sessions || 0,
+
+      // Visitor Cohort summaries
+      total_visitors: visitorStats?.total_visitors || 0,
+      returning_visitors: visitorStats?.returning_visitors || 0,
+      returning_clicks: visitorStats?.returning_clicks || 0,
+
       by_route: byRoute || [],
       by_source: bySource || [],
       by_campaign: byCampaign || [],
@@ -309,6 +426,7 @@ async function getSummary(env, request) {
       by_device: byDevice || [],
       by_day: (byDay || []).reverse(),
       by_hour: byHour || [],
+      repeat_customers: repeatCustomers?.results || [],
     },
   };
 }
@@ -406,6 +524,33 @@ async function upsertRoute(env, payload) {
   return json({ ok: true, route_slug: routeSlug, changes: result.meta?.changes || 0 });
 }
 
+async function updateLead(env, payload) {
+  const leadUuid = cleanText(payload.lead_uuid || payload.leadUuid, 80);
+  if (!leadUuid) {
+    return json({ ok: false, error: 'lead_uuid is required' }, { status: 400 });
+  }
+
+  const status = cleanText(payload.status, 40) || 'new';
+  const adminNotes = cleanText(payload.admin_notes || payload.adminNotes, 2000);
+  const revenue = cleanPrice(payload.revenue);
+
+  const result = await env.TRANSPORT_DB.prepare(`
+    UPDATE whatsapp_leads
+    SET
+      status = ?,
+      admin_notes = ?,
+      revenue = ?
+    WHERE lead_uuid = ?
+  `).bind(
+    status,
+    adminNotes,
+    revenue,
+    leadUuid
+  ).run();
+
+  return json({ ok: true, lead_uuid: leadUuid, changes: result.meta?.changes || 0 });
+}
+
 async function deleteLead(env, request) {
   const url = new URL(request.url);
   const id = Number(url.searchParams.get('id') || 0);
@@ -452,12 +597,46 @@ export async function onRequestGet(context) {
   }
 }
 
+async function handlePutOrPost(context) {
+  const { request, env } = context;
+  const headers = corsHeaders(request);
+  const dbError = requireDb(env, headers);
+  if (dbError) return dbError;
+
+  if (!(await authorize(request, env))) {
+    return json({ ok: false, error: 'Unauthorized' }, { status: 401, headers });
+  }
+
+  let payload;
+  try {
+    payload = await parseJsonBody(request);
+  } catch {
+    return json({ ok: false, error: 'Invalid JSON payload' }, { status: 400, headers });
+  }
+
+  const url = new URL(request.url);
+  const resource = url.searchParams.get('resource') || payload.resource || 'route';
+
+  try {
+    if (resource === 'lead') {
+      const response = await updateLead(env, payload);
+      return json(await response.json(), { status: response.status, headers });
+    } else {
+      const response = await upsertRoute(env, payload);
+      return json(await response.json(), { status: response.status, headers });
+    }
+  } catch (error) {
+    console.error(JSON.stringify({ event: 'transport_admin_write_failed', message: error.message }));
+    return json({ ok: false, error: `Failed to save ${resource}` }, { status: 500, headers });
+  }
+}
+
 export async function onRequestPost(context) {
-  return handleRouteWrite(context);
+  return handlePutOrPost(context);
 }
 
 export async function onRequestPut(context) {
-  return handleRouteWrite(context);
+  return handlePutOrPost(context);
 }
 
 export async function onRequestDelete(context) {
@@ -476,32 +655,6 @@ export async function onRequestDelete(context) {
   } catch (error) {
     console.error(JSON.stringify({ event: 'transport_admin_delete_failed', message: error.message }));
     return json({ ok: false, error: 'Failed to delete lead' }, { status: 500, headers });
-  }
-}
-
-async function handleRouteWrite(context) {
-  const { request, env } = context;
-  const headers = corsHeaders(request);
-  const dbError = requireDb(env, headers);
-  if (dbError) return dbError;
-
-  if (!(await authorize(request, env))) {
-    return json({ ok: false, error: 'Unauthorized' }, { status: 401, headers });
-  }
-
-  let payload;
-  try {
-    payload = await parseJsonBody(request);
-  } catch {
-    return json({ ok: false, error: 'Invalid JSON payload' }, { status: 400, headers });
-  }
-
-  try {
-    const response = await upsertRoute(env, payload);
-    return json(await response.json(), { status: response.status, headers });
-  } catch (error) {
-    console.error(JSON.stringify({ event: 'transport_admin_route_write_failed', message: error.message }));
-    return json({ ok: false, error: 'Failed to save route' }, { status: 500, headers });
   }
 }
 
