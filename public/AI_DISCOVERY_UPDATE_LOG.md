@@ -32,6 +32,30 @@ Notes:
 
 Date: 2026-05-26
 
+Changed page/tool: Iraq transport SEO article guide batch
+
+URL: `/bahrain-saudi-gcc-transport/arbaeen-season-bahrain-to-karbala/`, `/bahrain-saudi-gcc-transport/best-way-bahrain-to-karbala/`, `/bahrain-saudi-gcc-transport/best-time-bahrain-to-iraq/`, `/bahrain-saudi-gcc-transport/bahrain-to-najaf-driving-time/`, `/bahrain-saudi-gcc-transport/private-car-bahrain-to-iraq/`, `/bahrain-saudi-gcc-transport/family-transport-bahrain-najaf-karbala/`, `/bahrain-saudi-gcc-transport/iraq-ziyarat-private-car-bahrain/`, `/bahrain-saudi-gcc-transport/arbaeen-karbala-travel-tips/`, `/bahrain-saudi-gcc-transport/arbaeen-packing-list/`, `/bahrain-saudi-gcc-transport/book-private-car-bahrain-to-karbala/`, `/bahrain-saudi-gcc-transport/book-private-car-bahrain-to-najaf/`, `/bahrain-saudi-gcc-transport/best-car-for-iraq-family-travel/`, `/bahrain-saudi-gcc-transport/private-car-vs-other-iraq-travel/`, `/bahrain-saudi-gcc-transport/family-travel-bahrain-to-iraq/`, `/bahrain-saudi-gcc-transport/bahrain-to-karbala-route-plan/`, `/bahrain-saudi-gcc-transport/overland-travel-bahrain-to-iraq/`, `/bahrain-saudi-gcc-transport/pilgrims-transport-bahrain-to-iraq/`, `/bahrain-saudi-gcc-transport/karbala-trip-from-bahrain/`, `/bahrain-saudi-gcc-transport/najaf-trip-from-bahrain/`, `/bahrain-saudi-gcc-transport/direct-transport-bahrain-to-karbala/`, plus matching `/en/` pages
+
+Section: Vendora Transport
+
+Files updated: 20 Arabic transport article pages, 20 matching English article pages, transport Iraq hub pages, `sitemap.xml`, `bahrain-saudi-gcc-transport/sitemap.xml`, `bahrain-saudi-gcc-transport/sitemap-gcc-transport.xml`, `bahrain-saudi-gcc-transport/sitemap-gcc-transport-en.xml`, `llms.txt`, `.well-known/llms.txt`, `bahrain-saudi-gcc-transport/llms.txt`, `ai-index.json`
+
+Sitemap updated: yes
+
+tools-catalog updated: not needed
+
+llms.txt updated: yes
+
+ai-index.json updated: yes
+
+Tracking checked: yes
+
+Notes: Added human-readable Arabic-first Iraq/Karbala/Najaf/Arbaeen transport article pages with FAQ schema, quick answer blocks, WhatsApp CTAs, internal links to Iraq route pages, and English counterparts for existing language navigation. No prices, reviews, AggregateRating, admin URLs, API URLs, private URLs, or tool behavior changes were added.
+
+---
+
+Date: 2026-05-26
+
 Changed page/tool: Iraq transport SEO and seasonal discovery cluster
 
 URL: `/bahrain-saudi-gcc-transport/bahrain-to-karbala/`, `/bahrain-saudi-gcc-transport/bahrain-to-najaf/`, `/bahrain-saudi-gcc-transport/bahrain-to-baghdad/`, `/bahrain-saudi-gcc-transport/bahrain-to-basra/`, `/bahrain-saudi-gcc-transport/arbaeen-transport/`, `/bahrain-saudi-gcc-transport/ziyarat-iraq-transport/`, plus matching `/en/` pages

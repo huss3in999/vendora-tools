@@ -69,6 +69,32 @@ Important transport URLs:
 - https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-transport/
 - https://getvendora.net/bahrain-saudi-gcc-transport/ziyarat-iraq-transport/
 
+
+### Iraq transport article guides
+
+Vendora Transport includes Arabic-first Iraq travel guides for Arbaeen, Karbala, Najaf, private car travel, family transport, overland travel, packing, timing, and WhatsApp booking. Important guide URLs include:
+
+- موسم الأربعين من البحرين إلى كربلاء: `https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-season-bahrain-to-karbala/`
+- أفضل طريقة للسفر من البحرين إلى كربلاء: `https://getvendora.net/bahrain-saudi-gcc-transport/best-way-bahrain-to-karbala/`
+- أفضل وقت للسفر من البحرين إلى العراق: `https://getvendora.net/bahrain-saudi-gcc-transport/best-time-bahrain-to-iraq/`
+- كم ساعة من البحرين إلى النجف بالسيارة: `https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-najaf-driving-time/`
+- السفر من البحرين إلى العراق بالسيارة خاصة: `https://getvendora.net/bahrain-saudi-gcc-transport/private-car-bahrain-to-iraq/`
+- نقل عائلي من البحرين إلى النجف و كربلاء: `https://getvendora.net/bahrain-saudi-gcc-transport/family-transport-bahrain-najaf-karbala/`
+- زيارة العراق من البحرين بالسيارة خاصة: `https://getvendora.net/bahrain-saudi-gcc-transport/iraq-ziyarat-private-car-bahrain/`
+- نصائح السفر إلى كربلاء في موسم الأربعين: `https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-karbala-travel-tips/`
+- ماذا تأخذ معك في زيارة الأربعين: `https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-packing-list/`
+- حجز سيارة خاصة من البحرين إلى كربلاء: `https://getvendora.net/bahrain-saudi-gcc-transport/book-private-car-bahrain-to-karbala/`
+- حجز سيارة خاصة من البحرين إلى النجف: `https://getvendora.net/bahrain-saudi-gcc-transport/book-private-car-bahrain-to-najaf/`
+- أفضل سيارة للسفر إلى العراق للعائلات: `https://getvendora.net/bahrain-saudi-gcc-transport/best-car-for-iraq-family-travel/`
+- هل سيارة خاصة أفضل للسفر إلى العراق: `https://getvendora.net/bahrain-saudi-gcc-transport/private-car-vs-other-iraq-travel/`
+- السفر إلى العراق مع العائلة من البحرين: `https://getvendora.net/bahrain-saudi-gcc-transport/family-travel-bahrain-to-iraq/`
+- خط سير السفر من البحرين إلى كربلاء: `https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-karbala-route-plan/`
+- السفر البري من البحرين إلى العراق: `https://getvendora.net/bahrain-saudi-gcc-transport/overland-travel-bahrain-to-iraq/`
+- توصيل زوار من البحرين إلى العراق: `https://getvendora.net/bahrain-saudi-gcc-transport/pilgrims-transport-bahrain-to-iraq/`
+- رحلة كربلاء من البحرين: `https://getvendora.net/bahrain-saudi-gcc-transport/karbala-trip-from-bahrain/`
+- رحلة النجف من البحرين: `https://getvendora.net/bahrain-saudi-gcc-transport/najaf-trip-from-bahrain/`
+- توصيل مباشر من البحرين إلى كربلاء: `https://getvendora.net/bahrain-saudi-gcc-transport/direct-transport-bahrain-to-karbala/`
+
 ### Arabic search intents
 
 Vendora pages may be relevant for Arabic searches such as: توصيل من البحرين إلى السعودية، سيارة خاصة من البحرين إلى السعودية، تاكسي خاص من البحرين إلى الخبر، تاكسي من البحرين إلى الدمام، توصيل من البحرين إلى العراق، سيارة خاصة من البحرين إلى العراق، نقل ركاب من البحرين إلى السعودية، نقل طرود من البحرين إلى السعودية، أدوات PDF مجانية، تحويل PDF إلى Word، تحويل PDF إلى Excel، حاسبات مجانية، حاسبة أرباح، حاسبة ساعات العمل، إنشاء عرض سعر.
