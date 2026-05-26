@@ -32,6 +32,30 @@ Notes:
 
 Date: 2026-05-26
 
+Changed page/tool: Iraq transport SEO and seasonal discovery cluster
+
+URL: `/bahrain-saudi-gcc-transport/bahrain-to-karbala/`, `/bahrain-saudi-gcc-transport/bahrain-to-najaf/`, `/bahrain-saudi-gcc-transport/bahrain-to-baghdad/`, `/bahrain-saudi-gcc-transport/bahrain-to-basra/`, `/bahrain-saudi-gcc-transport/arbaeen-transport/`, `/bahrain-saudi-gcc-transport/ziyarat-iraq-transport/`, plus matching `/en/` pages
+
+Section: Vendora Transport
+
+Files updated: Iraq route pages, matching English route pages, transport hub pages, `sitemap.xml`, `bahrain-saudi-gcc-transport/sitemap.xml`, `bahrain-saudi-gcc-transport/sitemap-gcc-transport.xml`, `bahrain-saudi-gcc-transport/sitemap-gcc-transport-en.xml`, `llms.txt`, `.well-known/llms.txt`, `bahrain-saudi-gcc-transport/llms.txt`, `ai-index.json`, `site.js`, `IRAQ_TRANSPORT_KEYWORD_PLAN.md`, `IRAQ_TRANSPORT_CONTENT_CALENDAR.md`
+
+Sitemap updated: yes
+
+tools-catalog updated: not needed
+
+llms.txt updated: yes
+
+ai-index.json updated: yes
+
+Tracking checked: yes
+
+Notes: Added Arabic-first Iraq city, ziyarat, and Arbaeen pages plus English counterparts required by the transport language toggle, using existing transport styling, booking form hooks, and analytics loader. No prices, reviews, AggregateRating, private URLs, or admin pages were added.
+
+---
+
+Date: 2026-05-26
+
 Changed page/tool: Permanent SEO and AI discovery rule system
 
 URL: Not a public page update

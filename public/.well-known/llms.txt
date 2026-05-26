@@ -62,6 +62,12 @@ Important transport URLs:
 - https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dubai/
 - https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/
 - https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-iraq/
+- https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-karbala/
+- https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-najaf/
+- https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-baghdad/
+- https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-basra/
+- https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-transport/
+- https://getvendora.net/bahrain-saudi-gcc-transport/ziyarat-iraq-transport/
 
 ### Arabic search intents
 

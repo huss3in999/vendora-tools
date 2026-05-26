@@ -80,7 +80,13 @@
         "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-uae/",
         "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dubai/",
         "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-iraq/"
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-iraq/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-karbala/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-najaf/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-baghdad/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-basra/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-transport/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/ziyarat-iraq-transport/"
       ]
     }
   ],
@@ -103,7 +109,14 @@
     "Bahrain to Khobar",
     "Bahrain to Dammam",
     "Bahrain to Riyadh",
-    "Bahrain to Dubai"
+    "Bahrain to Dubai",
+    "Bahrain to Iraq",
+    "Bahrain to Karbala",
+    "Bahrain to Najaf",
+    "Bahrain to Baghdad",
+    "Bahrain to Basra",
+    "Arbaeen transport from Bahrain",
+    "Iraq ziyarat transport"
   ],
   "keywordsArabic": [
     "أدوات PDF مجانية",
@@ -119,6 +132,13 @@
     "تاكسي من البحرين إلى الدمام",
     "توصيل من البحرين إلى العراق",
     "سيارة خاصة من البحرين إلى العراق",
+    "توصيل من البحرين إلى كربلاء",
+    "سيارة من البحرين إلى كربلاء",
+    "توصيل من البحرين إلى النجف",
+    "نقل زيارات العراق من البحرين",
+    "نقل الأربعين من البحرين",
+    "توصيل من البحرين إلى بغداد",
+    "توصيل من البحرين إلى البصرة",
     "نقل ركاب من البحرين إلى السعودية",
     "نقل طرود من البحرين إلى السعودية"
   ]
