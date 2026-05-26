@@ -34,7 +34,17 @@ The machine-readable map is stored in `analytics-category-map.json`.
 
 ## Recommended GA4 Custom Dimensions
 
-Create these event-scoped custom dimensions in GA4 Admin:
+Create these exact event-scoped custom dimensions in GA4 Admin.
+
+Path in GA4:
+
+`Admin > Data display > Custom definitions > Create custom dimension`
+
+For each one:
+
+- Scope: `Event`
+- Event parameter: use the exact parameter name below
+- Dimension name: use the same name or a readable label
 
 - `content_group`
 - `page_category`
@@ -42,9 +52,37 @@ Create these event-scoped custom dimensions in GA4 Admin:
 - `transport_cluster`
 - `language`
 - `button_location`
+- `article_slug`
+- `link_url`
+
+Optional extra custom dimensions for deeper tool reports:
+
 - `tool_id`
 - `tool_category`
-- `article_slug`
+- `pdf_action`
+- `calculator_event`
+- `calculator_slug`
+
+## Event Parameters Documented
+
+These parameters are currently used by `js/analytics-router.js` and `assets/analytics-loader.js`:
+
+- `page_category`: automatic section category such as `transport`, `pdf_tools`, `calculators`, `restaurant_tools`, `business_tools`, `articles`, or `other`.
+- `content_group`: same category value, sent for GA4 content grouping.
+- `route_name`: transport route or page slug, for example `bahrain-to-karbala`.
+- `transport_cluster`: transport intent cluster, such as `karbala`, `najaf`, `iraq`, `arbaeen`, or `ziyarat`.
+- `language`: page language from the `<html lang>` value.
+- `button_location`: where a clicked CTA appears, such as `header`, `hero`, `booking`, `floating`, `footer`, or `body`.
+- `article_slug`: article or guide slug used by `article_read`.
+- `link_url`: clicked WhatsApp/contact/mail/phone URL.
+
+Additional parameters sent but not required as custom dimensions:
+
+- `page_path`
+- `page_url`
+- `page_title`
+- `button_text`
+- `scroll_depth`
 
 ## Recommended Events
 
@@ -113,6 +151,37 @@ Transport SEO articles also keep `transport_page_view` and `route_interest` beca
 6. For PDF tools, compare `pdf_tool_use` by `tool_id` and `pdf_action`.
 7. For calculators, compare `calculator_use` by `calculator_slug`.
 8. For guides, compare `article_read` by `article_slug`.
+
+## Simple Owner Setup Guide
+
+1. Open GA4.
+2. Go to `Admin`.
+3. Under `Data display`, open `Custom definitions`.
+4. Click `Create custom dimension`.
+5. Choose scope `Event`.
+6. Add each required event parameter:
+   - `page_category`
+   - `content_group`
+   - `route_name`
+   - `transport_cluster`
+   - `language`
+   - `button_location`
+   - `article_slug`
+   - `link_url`
+7. Save each custom dimension.
+8. Wait for GA4 processing. New custom dimensions may take time before they appear in reports.
+
+## Simple Testing Guide
+
+1. Open the Karbala page: `https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-karbala/`.
+2. Open GA4 Realtime.
+3. Look for the `transport_page_view` event.
+4. Confirm `route_name = bahrain-to-karbala`.
+5. Click a WhatsApp button on the Karbala page.
+6. Confirm the `whatsapp_click` event appears.
+7. Confirm `route_name = bahrain-to-karbala`.
+8. Confirm `page_category = transport`.
+9. Confirm `button_location` shows where the click happened, such as `hero`, `booking`, or `floating`.
 
 ## Safety Rules
 

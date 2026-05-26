@@ -32,6 +32,7 @@
         <h1 class="mt-2 text-2xl font-semibold tracking-tight">Control Room</h1>
         <p class="mt-2 text-sm text-muted">Enter your admin password to view WhatsApp leads, campaign performance, and route pricing.</p>
         <p class="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-950 border border-amber-100">The password must match the secret configured on your API (for example Cloudflare Worker env <code class="rounded bg-white px-1">TRANSPORT_ADMIN_TOKEN</code>). Do not commit passwords into this repository.</p>
+        <p id="localPreviewNotice" class="mt-3 hidden rounded-lg border border-sky-100 bg-sky-50 px-3 py-2 text-xs text-sky-900">Local file preview detected. This dashboard will connect to the live Vendora Transport API. For local API testing, run the site on a local server or set <code class="rounded bg-white px-1">window.__VENDORA_TRANSPORT_ADMIN_API__</code>.</p>
         <form id="loginForm" class="mt-6 space-y-4">
           <label class="block">
             <span class="text-sm font-medium">Admin password</span>
@@ -256,6 +257,10 @@
       }
 
       const siteSegment = '/bahrain-saudi-gcc-transport/';
+      if (window.location.protocol === 'file:') {
+        return 'https://getvendora.net/bahrain-saudi-gcc-transport/api/transport/admin';
+      }
+
       if (window.location.pathname.startsWith(siteSegment)) {
         return `${siteSegment.replace(/\/$/, '')}/api/transport/admin`;
       }
@@ -264,6 +269,7 @@
     }
 
     const API_URL = resolveAdminApiUrl();
+    window.__VENDORA_TRANSPORT_ADMIN_RESOLVED_API__ = API_URL;
     const TOKEN_KEY = 'vendora_transport_admin_token';
     const COMMON_ROUTES = [
       ['home', 'Main transport page', 'صفحة النقل الرئيسية', 0],
@@ -300,6 +306,10 @@
     const loginView = document.getElementById('loginView');
     const dashboardView = document.getElementById('dashboardView');
     const statusLine = document.getElementById('statusLine');
+    const localPreviewNotice = document.getElementById('localPreviewNotice');
+    if (localPreviewNotice && window.location.protocol === 'file:') {
+      localPreviewNotice.classList.remove('hidden');
+    }
 
     function escapeHtml(value) {
       return String(value ?? '').replace(/[&<>"']/g, (char) => ({
@@ -354,14 +364,22 @@
     }
 
     async function api(path, options = {}) {
-      const response = await fetch(`${API_URL}${path}`, {
-        ...options,
-        headers: {
-          authorization: `Bearer ${state.token}`,
-          'content-type': 'application/json',
-          ...(options.headers || {})
-        }
-      });
+      let response;
+      try {
+        response = await fetch(`${API_URL}${path}`, {
+          ...options,
+          headers: {
+            authorization: `Bearer ${state.token}`,
+            'content-type': 'application/json',
+            ...(options.headers || {})
+          }
+        });
+      } catch (error) {
+        const localHelp = window.location.protocol === 'file:'
+          ? ' Local file previews require the live API to allow local file origins. If this still fails, open the deployed admin URL or run a local server.'
+          : '';
+        throw new Error(`Unable to reach the transport admin API at ${API_URL}.${localHelp}`);
+      }
       const data = await response.json().catch(() => ({}));
       if (!response.ok || data.ok === false) throw new Error(data.error || `Request failed (${response.status})`);
       return data;

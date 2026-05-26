@@ -44,4 +44,14 @@ test.describe('Admin dashboard', () => {
       '/bahrain-saudi-gcc-transport/api/transport/admin?resource=summary',
     ]));
   });
+
+  test('local file preview points at the live transport admin API', async ({ page }) => {
+    const fileUrl = new URL('../admin/index.html', import.meta.url).href;
+    await page.goto(fileUrl);
+
+    const apiUrl = await page.evaluate(() => window.__VENDORA_TRANSPORT_ADMIN_RESOLVED_API__);
+
+    expect(apiUrl).toBe('https://getvendora.net/bahrain-saudi-gcc-transport/api/transport/admin');
+    await expect(page.locator('#localPreviewNotice')).toBeVisible();
+  });
 });
