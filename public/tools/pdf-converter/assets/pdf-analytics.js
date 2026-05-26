@@ -37,10 +37,19 @@ window.PdfAnalytics = {
     // Console debugging in dev environment
     console.debug(`[PdfAnalytics] Event: ${eventName}`, safeParams);
 
+    if (typeof window.vendoraAnalyticsContext === 'function') {
+      Object.assign(safeParams, window.vendoraAnalyticsContext({}));
+    }
+
     // Call GA tracker
     if (typeof window.gtag === 'function') {
       try {
         window.gtag('event', eventName, safeParams);
+        if (eventName !== 'pdf_tool_use') {
+          window.gtag('event', 'pdf_tool_use', Object.assign({}, safeParams, {
+            pdf_action: eventName
+          }));
+        }
       } catch (err) {
         console.error('[PdfAnalytics] Failed to send to gtag:', err);
       }

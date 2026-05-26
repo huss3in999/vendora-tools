@@ -46,6 +46,88 @@
     head.appendChild(script);
   }
 
+  function normalizePath(value) {
+    var next = String(value || '/').replace(/\\/g, '/').toLowerCase();
+    return next.charAt(0) === '/' ? next : '/' + next;
+  }
+
+  function isPrivatePath(path) {
+    return /(^|\/)(admin|api|private|test|tests|test-results)(\/|$)/.test(path);
+  }
+
+  function getPageCategory() {
+    var path = normalizePath(window.location.pathname || '/');
+    if (isPrivatePath(path)) return 'private';
+    if (path.indexOf('/bahrain-saudi-gcc-transport/') !== -1) return 'transport';
+    if (path.indexOf('/tools/pdf-converter/') !== -1 || path.indexOf('/pdf/') !== -1 || path.indexOf('/pdf-tools/') !== -1) return 'pdf_tools';
+    if (path.indexOf('/tools/small-business/') !== -1) return 'business_tools';
+    if (
+      path.indexOf('/tools/food-cost-calculator/') !== -1 ||
+      path.indexOf('/tools/menu-price-calculator/') !== -1 ||
+      path.indexOf('/tools/daily-sales-summary/') !== -1 ||
+      path.indexOf('/tools/restaurant-profit-dashboard/') !== -1 ||
+      path.indexOf('/tools/qr-menu-generator/') !== -1 ||
+      path.indexOf('/restaurant-calculators/') !== -1 ||
+      path.indexOf('/calculator/restaurant/') !== -1
+    ) {
+      return 'restaurant_tools';
+    }
+    if (path.indexOf('/calculator/') !== -1 || path.indexOf('/calculators/') !== -1) return 'calculators';
+    if (
+      path.indexOf('/article/') !== -1 ||
+      path.indexOf('/articles/') !== -1 ||
+      path.indexOf('/guide/') !== -1 ||
+      path.indexOf('/guides/') !== -1 ||
+      path.indexOf('/blog/') !== -1
+    ) {
+      return 'articles';
+    }
+    return 'other';
+  }
+
+  function getTransportRoute() {
+    var path = normalizePath(window.location.pathname || '/');
+    if (path.indexOf('/bahrain-saudi-gcc-transport/') === -1) return '';
+    var parts = path.split('/').filter(Boolean);
+    var last = parts[parts.length - 1] || '';
+    if (last === 'index.html') last = parts[parts.length - 2] || '';
+    if (!last || last === 'bahrain-saudi-gcc-transport' || last === 'en') return 'transport_hub';
+    return last;
+  }
+
+  function getTransportCluster() {
+    var path = normalizePath(window.location.pathname || '/');
+    if (path.indexOf('arbaeen') !== -1) return 'arbaeen';
+    if (path.indexOf('ziyarat') !== -1) return 'ziyarat';
+    if (path.indexOf('karbala') !== -1) return 'karbala';
+    if (path.indexOf('najaf') !== -1) return 'najaf';
+    if (path.indexOf('iraq') !== -1 || path.indexOf('baghdad') !== -1 || path.indexOf('basra') !== -1) return 'iraq';
+    return '';
+  }
+
+  function analyticsContext(extra) {
+    var category = getPageCategory();
+    var params = {
+      content_group: category,
+      page_category: category,
+      page_path: window.location.pathname || '/',
+      page_url: window.location.href.split('#')[0],
+      language: (document.documentElement.getAttribute('lang') || 'en').toLowerCase(),
+    };
+    if (category === 'transport') {
+      params.route_name = getTransportRoute();
+      params.transport_cluster = getTransportCluster();
+    }
+    if (extra) {
+      Object.keys(extra).forEach(function (key) {
+        if (extra[key] !== undefined && extra[key] !== null && extra[key] !== '') {
+          params[key] = extra[key];
+        }
+      });
+    }
+    return params;
+  }
+
   var isLocalPreview =
     window.location.protocol === 'file:' ||
     window.location.hostname === '127.0.0.1' ||
@@ -56,7 +138,12 @@
     if (!gaId || gaId.indexOf('G-') !== 0) return;
     appendScript('https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(gaId));
     window.gtag('js', new Date());
-    window.gtag('config', gaId, { send_page_view: true });
+    window.gtag('config', gaId, analyticsContext({ send_page_view: true }));
+  }
+
+  function loadAnalyticsRouter() {
+    if (getPageCategory() === 'private') return;
+    appendScript('/js/analytics-router.js', { defer: 'defer' });
   }
 
   /** Clarity + CF Web Analytics: non-blocking, after GA. */
@@ -78,6 +165,7 @@
   }
 
   loadGa4();
+  loadAnalyticsRouter();
 
   if ('requestIdleCallback' in window) {
     window.requestIdleCallback(loadSecondaryTools, { timeout: 2500 });
@@ -87,9 +175,11 @@
 
   window.vendoraToolEvent = function (name, params) {
     try {
-      window.gtag('event', name, params || {});
+      window.gtag('event', name, analyticsContext(params || {}));
     } catch (e) {
       /* ignore */
     }
   };
+
+  window.vendoraAnalyticsContext = analyticsContext;
 })();

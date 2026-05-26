@@ -1,0 +1,51 @@
+{
+  "version": "2026-05-27",
+  "defaultCategory": "other",
+  "rules": [
+    {
+      "category": "transport",
+      "patterns": ["/bahrain-saudi-gcc-transport/"],
+      "description": "Vendora Transport route, booking, airport, parcel, passenger, Iraq, Arbaeen and GCC transport pages."
+    },
+    {
+      "category": "pdf_tools",
+      "patterns": ["/tools/pdf-converter/", "/pdf/", "/pdf-tools/"],
+      "description": "PDF conversion, merge, split, compress, rotate, watermark and page-number tools."
+    },
+    {
+      "category": "calculators",
+      "patterns": ["/calculator/", "/calculators/"],
+      "description": "General, finance, food, operations, profit, inventory and restaurant calculator pages."
+    },
+    {
+      "category": "business_tools",
+      "patterns": ["/tools/small-business/"],
+      "description": "Small business calculators and operational business tools."
+    },
+    {
+      "category": "restaurant_tools",
+      "patterns": [
+        "/tools/food-cost-calculator/",
+        "/tools/menu-price-calculator/",
+        "/tools/daily-sales-summary/",
+        "/tools/restaurant-profit-dashboard/",
+        "/tools/qr-menu-generator/",
+        "/restaurant-calculators/",
+        "/calculator/restaurant/"
+      ],
+      "description": "Restaurant calculators and restaurant operations tools."
+    },
+    {
+      "category": "articles",
+      "patterns": ["/article/", "/articles/", "/guide/", "/guides/", "/blog/"],
+      "description": "Articles, guides, explainers and SEO content pages."
+    }
+  ],
+  "transportRouteSignals": {
+    "karbala": ["karbala"],
+    "najaf": ["najaf"],
+    "iraq": ["iraq", "baghdad", "basra"],
+    "arbaeen": ["arbaeen"],
+    "ziyarat": ["ziyarat"]
+  }
+}

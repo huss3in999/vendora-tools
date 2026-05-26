@@ -30,6 +30,30 @@ Notes:
 
 ## Log
 
+Date: 2026-05-27
+
+Changed page/tool: Structured GA4 category and transport conversion tracking system
+
+URL: Site-wide analytics layer, with primary coverage for `/bahrain-saudi-gcc-transport/`, `/tools/pdf-converter/`, `/calculator/`, `/calculators/`, `/tools/small-business/`, `/guides/`, and related public sections
+
+Section: Analytics and reporting
+
+Files updated: `GA4_TRACKING_PLAN.md`, `analytics-category-map.json`, `js/analytics-router.js`, `assets/analytics-loader.js`, `bahrain-saudi-gcc-transport/assets/analytics-loader.js`, `calculator/_shared/analytics-events.js`, `tools/pdf-converter/assets/pdf-analytics.js`
+
+Sitemap updated: no
+
+tools-catalog updated: not needed
+
+llms.txt updated: not needed
+
+ai-index.json updated: not needed
+
+Tracking checked: yes
+
+Notes: Added lightweight GA4 content grouping, route metadata, WhatsApp/contact conversion events, PDF tool usage normalization, and calculator usage normalization without adding another GA script or changing SEO/page structure. Existing transport lead tracking and legacy events remain intact.
+
+---
+
 Date: 2026-05-26
 
 Changed page/tool: Iraq transport SEO article guide batch
