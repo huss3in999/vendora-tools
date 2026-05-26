@@ -95,3 +95,9 @@ Date: 2026-05-26
 - Review existing homepage testimonials for source accuracy before any future schema work.
 - Regenerate `sitemap.xml` and `sitemap-tools.xml` from a single script if the project has a canonical generator.
 - Consider adding `ai-index.json` to any deployment/cache checklist so it stays current with new public sections.
+
+## Permanent Future Rules Added
+
+- Added `AI_BUILD_RULES.md` with permanent SEO, AI discovery, sitemap, internal linking, schema, and tracking rules for future public pages and tools.
+- Added `NEW_PAGE_CHECKLIST.md` so Codex/Cursor can verify required metadata, discovery updates, analytics, and safety checks before saving new pages.
+- Added `AI_DISCOVERY_UPDATE_LOG.md` as a required tracker for future AI/Codex/Cursor updates that affect public pages, tools, sitemaps, catalogs, or AI discovery files.
