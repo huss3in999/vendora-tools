@@ -389,6 +389,9 @@
         throw new Error(`Unable to reach the transport admin API at ${API_URL}.${localHelp}`);
       }
       const data = await response.json().catch(() => ({}));
+      if (response.status === 404) {
+        throw new Error(`Admin API route not found at ${API_URL}. Deploy the Cloudflare Worker/Pages Functions so /api/transport/admin is active.`);
+      }
       if (!response.ok || data.ok === false) throw new Error(data.error || `Request failed (${response.status})`);
       return data;
     }

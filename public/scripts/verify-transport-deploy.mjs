@@ -14,6 +14,11 @@ const required = [
   'bahrain-saudi-gcc-transport/en/bahrain-to-qatar/index.html',
   'bahrain-saudi-gcc-transport/index.html',
   'bahrain-saudi-gcc-transport/bahrain-to-qatar/index.html',
+  'worker.js',
+  'functions/api/transport/admin.js',
+  'functions/api/transport/whatsapp-lead.js',
+  'functions/bahrain-saudi-gcc-transport/api/transport/admin.js',
+  'functions/bahrain-saudi-gcc-transport/api/transport/whatsapp-lead.js',
 ];
 
 let missing = 0;
