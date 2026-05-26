@@ -32,7 +32,7 @@
         <h1 class="mt-2 text-2xl font-semibold tracking-tight">Control Room</h1>
         <p class="mt-2 text-sm text-muted">Enter your admin password to view WhatsApp leads, campaign performance, and route pricing.</p>
         <p class="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-950 border border-amber-100">The password must match the secret configured on your API (for example Cloudflare Worker env <code class="rounded bg-white px-1">TRANSPORT_ADMIN_TOKEN</code>). Do not commit passwords into this repository.</p>
-        <p id="localPreviewNotice" class="mt-3 hidden rounded-lg border border-sky-100 bg-sky-50 px-3 py-2 text-xs text-sky-900">Local file preview detected. This dashboard will connect to the live Vendora Transport API. For local API testing, run the site on a local server or set <code class="rounded bg-white px-1">window.__VENDORA_TRANSPORT_ADMIN_API__</code>.</p>
+        <p id="localPreviewNotice" class="mt-3 hidden rounded-lg border border-sky-100 bg-sky-50 px-3 py-2 text-xs text-sky-900">Local preview detected. This dashboard will connect to the live Vendora Transport API because a static local server does not run the Cloudflare Worker. For local Worker testing, set <code class="rounded bg-white px-1">window.__VENDORA_TRANSPORT_ADMIN_API__</code>.</p>
         <form id="loginForm" class="mt-6 space-y-4">
           <label class="block">
             <span class="text-sm font-medium">Admin password</span>
@@ -257,7 +257,12 @@
       }
 
       const siteSegment = '/bahrain-saudi-gcc-transport/';
-      if (window.location.protocol === 'file:') {
+      const isLocalStaticPreview =
+        window.location.protocol === 'file:' ||
+        window.location.hostname === '127.0.0.1' ||
+        window.location.hostname === 'localhost';
+
+      if (isLocalStaticPreview) {
         return 'https://getvendora.net/bahrain-saudi-gcc-transport/api/transport/admin';
       }
 
@@ -307,7 +312,10 @@
     const dashboardView = document.getElementById('dashboardView');
     const statusLine = document.getElementById('statusLine');
     const localPreviewNotice = document.getElementById('localPreviewNotice');
-    if (localPreviewNotice && window.location.protocol === 'file:') {
+    if (
+      localPreviewNotice &&
+      (window.location.protocol === 'file:' || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost')
+    ) {
       localPreviewNotice.classList.remove('hidden');
     }
 
@@ -375,8 +383,8 @@
           }
         });
       } catch (error) {
-        const localHelp = window.location.protocol === 'file:'
-          ? ' Local file previews require the live API to allow local file origins. If this still fails, open the deployed admin URL or run a local server.'
+        const localHelp = window.location.protocol === 'file:' || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
+          ? ' Local previews use the live API. If this still fails, check that the deployed Worker is live and that the admin secret is configured.'
           : '';
         throw new Error(`Unable to reach the transport admin API at ${API_URL}.${localHelp}`);
       }
