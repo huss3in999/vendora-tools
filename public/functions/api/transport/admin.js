@@ -260,7 +260,46 @@ async function getLeads(env, request) {
     LIMIT ?
   `).bind(...bindings, limit).all();
 
-  return { leads: results || [] };
+  const leads = (results || []).map((lead) => {
+    let score = 0;
+    const status = String(lead.status || 'new').toLowerCase().trim();
+    const isSpamOrCancelled = status === 'spam' || status === 'cancelled';
+    const isUnreported = status === 'new' || !lead.status;
+    
+    if (isSpamOrCancelled || isUnreported) {
+      const seconds = (lead.time_on_page_ms || 0) / 1000;
+      if (seconds > 120) score += 30;
+      else if (seconds > 60) score += 20;
+      else if (seconds > 30) score += 10;
+      
+      const scroll = lead.scroll_depth_percent || 0;
+      if (scroll > 85) score += 25;
+      else if (scroll > 50) score += 15;
+      
+      const pageViews = lead.session_page_views || 1;
+      if (pageViews >= 3) score += 20;
+      else if (pageViews === 2) score += 10;
+      
+      const visits = lead.visit_count || 1;
+      if (visits >= 3) score += 20;
+      else if (visits === 2) score += 10;
+      
+      if (lead.utm_source && !['direct', 'unknown'].includes(lead.utm_source.toLowerCase())) {
+        score += 10;
+      }
+      score = Math.min(100, score);
+      if (isSpamOrCancelled && score > 40) {
+        score = Math.min(100, Math.round(score * 1.2));
+      }
+    }
+    
+    return {
+      ...lead,
+      suspicion_score: score
+    };
+  });
+
+  return { leads };
 }
 
 async function getSummary(env, request) {

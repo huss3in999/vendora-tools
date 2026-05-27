@@ -562,6 +562,9 @@
     
     <div class="max-h-[75vh] overflow-y-auto p-6 space-y-6">
       
+      <!-- Suspicion warning alert placeholder -->
+      <div id="leadSuspicionAlert"></div>
+
       <!-- Auditing Console Form -->
       <form id="auditForm" class="rounded-2xl bg-brand-soft/20 border border-brand/20 p-5 space-y-4">
         <h3 class="text-sm font-bold text-brand-light flex items-center gap-2">
@@ -599,6 +602,30 @@
           </button>
         </div>
       </form>
+
+      <!-- Share details with Driver via WhatsApp & Copy -->
+      <div class="rounded-2xl bg-slate-950/40 border border-slate-800 p-5 space-y-3">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <i data-lucide="share-2" class="h-4 w-4 text-emerald-400"></i> Share Details with Driver
+        </h3>
+        <p class="text-xs text-slate-400">
+          Send a structured customer report directly to a driver via WhatsApp or copy it to your clipboard for forwarding.
+        </p>
+        <div class="grid gap-3 sm:grid-cols-2">
+          <button id="shareDriverArBtn" class="flex items-center justify-center gap-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 text-xs transition duration-200 shadow-md active:scale-95" type="button">
+            <i data-lucide="message-square" class="h-4 w-4 text-emerald-400"></i> WhatsApp (AR) 🇸🇦
+          </button>
+          <button id="shareDriverEnBtn" class="flex items-center justify-center gap-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 text-xs transition duration-200 shadow-md active:scale-95" type="button">
+            <i data-lucide="message-square" class="h-4 w-4 text-emerald-400"></i> WhatsApp (EN) 🇬🇧
+          </button>
+          <button id="copyDriverArBtn" class="flex items-center justify-center gap-2 rounded-xl bg-slate-800/50 hover:bg-slate-700 border border-slate-750 text-slate-300 font-semibold py-2.5 text-xs transition duration-200 shadow-md active:scale-95" type="button">
+            <i data-lucide="copy" class="h-3.5 w-3.5 text-slate-400"></i> Copy Report (AR)
+          </button>
+          <button id="copyDriverEnBtn" class="flex items-center justify-center gap-2 rounded-xl bg-slate-800/50 hover:bg-slate-700 border border-slate-750 text-slate-300 font-semibold py-2.5 text-xs transition duration-200 shadow-md active:scale-95" type="button">
+            <i data-lucide="copy" class="h-3.5 w-3.5 text-slate-400"></i> Copy Report (EN)
+          </button>
+        </div>
+      </div>
 
       <!-- Customer Details Section -->
       <div id="leadDetails" class="grid gap-4 sm:grid-cols-2"></div>
@@ -945,7 +972,12 @@
             <div class="text-[10px] text-slate-400 mt-0.5">${escapeHtml(pageJourneyText(lead))}</div>
           </td>
           <td class="px-5 py-4 text-slate-300 font-medium">${escapeHtml(locationText(lead))}</td>
-          <td class="px-5 py-4">${getStatusBadge(lead.status)}</td>
+          <td class="px-5 py-4">
+            <div class="flex flex-col gap-1 items-start">
+              ${getStatusBadge(lead.status)}
+              ${lead.suspicion_score > 60 ? `<span class="px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 text-[9px] font-bold animate-pulse flex items-center gap-1 mt-0.5"><i data-lucide="alert-triangle" class="h-3 w-3"></i> Suspicious (${lead.suspicion_score}%)</span>` : ''}
+            </div>
+          </td>
           <td class="px-5 py-4 text-center">
             <div class="flex items-center justify-center gap-2" onclick="event.stopPropagation();">
               <button class="rounded-xl bg-slate-800 border border-slate-700 px-3 py-1.5 text-[10px] font-bold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-view-lead="${lead.id}" type="button">Audit Outcome</button>
@@ -962,7 +994,10 @@
               <h3 class="font-bold text-white text-sm">${escapeHtml(lead.route_label || lead.route_slug || '-')}</h3>
               <p class="mt-0.5 text-[10px] text-slate-400">${escapeHtml(formatDate(lead.clicked_at))}</p>
             </div>
-            ${getStatusBadge(lead.status)}
+            <div class="flex flex-col gap-1 items-end">
+              ${getStatusBadge(lead.status)}
+              ${lead.suspicion_score > 60 ? `<span class="px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 text-[9px] font-bold animate-pulse flex items-center gap-1 mt-0.5"><i data-lucide="alert-triangle" class="h-3 w-3"></i> Suspicious (${lead.suspicion_score}%)</span>` : ''}
+            </div>
           </div>
           <dl class="grid gap-2 text-xs">
             <div class="flex justify-between"><dt class="text-slate-400">Referrer</dt><dd class="font-semibold text-slate-200 truncate max-w-[200px]">${escapeHtml(discoveryText(lead))}</dd></div>
@@ -1329,6 +1364,7 @@
       const lead = state.leads.find((item) => String(item.id) === String(id));
       if (!lead) return;
       
+      state.activeLeadId = id;
       const payload = leadPayload(lead);
       
       // Load into Auditing Form
@@ -1337,8 +1373,27 @@
       document.getElementById('auditRevenue').value = lead.revenue || '';
       document.getElementById('auditNotes').value = lead.admin_notes || '';
       
+      // Render dynamic suspicion warning card
+      const alertEl = document.getElementById('leadSuspicionAlert');
+      if (lead.suspicion_score > 60) {
+        alertEl.innerHTML = `
+          <div class="rounded-2xl bg-yellow-500/10 border border-yellow-500/20 p-4 text-xs text-yellow-400 leading-relaxed flex items-start gap-3">
+            <i data-lucide="alert-triangle" class="h-5 w-5 flex-shrink-0 animate-pulse text-yellow-500"></i>
+            <div>
+              <strong class="font-bold">High Suspicion Click Detected (${lead.suspicion_score}%)</strong>
+              <p class="mt-1 text-slate-350">This visitor had high engagement (visited multiple pages, scrolled deeply, or had repeated sessions) but has $0 revenue. Monitor if the driver is attempting to bypass lead reports.</p>
+            </div>
+          </div>
+        `;
+        alertEl.classList.remove('hidden');
+      } else {
+        alertEl.innerHTML = '';
+        alertEl.classList.add('hidden');
+      }
+      
       const rows = [
         ['Timestamp', formatDate(lead.clicked_at)],
+        ['Suspicion Score', `${lead.suspicion_score}% (${lead.suspicion_score > 60 ? 'HIGH RISK' : lead.suspicion_score > 30 ? 'MEDIUM' : 'LOW'})`],
         ['Customer Loyalty Profile', lead.visitor_id ? `Returning Customer (Visit #${lead.visit_count || 1} | viewed ${lead.session_page_views || 1} pages this session | Visitor ID: ${lead.visitor_id.slice(0, 8)})` : 'New / Session-only Visitor'],
         ['Route slug', lead.route_slug],
         ['Destination page', lead.page_url || lead.page_path],
@@ -1371,10 +1426,103 @@
       `).join('');
       
       document.getElementById('leadDialog').showModal();
+      renderIcons();
     }
 
     function campaignText(lead) {
       return [lead.utm_source, lead.utm_medium, lead.utm_campaign].filter(Boolean).join(' / ') || 'No campaign data';
+    }
+
+    function buildWhatsappMessageAr(lead) {
+      const payload = leadPayload(lead);
+      const location = [lead.cf_city, lead.cf_region, lead.cf_country ? countryLabel(lead.cf_country) : ''].filter(Boolean).join(', ') || 'غير معروف';
+      const timeOnPage = formatDuration(lead.time_on_page_ms);
+      const discovery = discoveryText(lead);
+      const campaign = lead.utm_campaign || payload.utmCampaign || 'لا توجد';
+      const statusText = {
+        'new': 'نقرة جديدة / لم يتم التواصل',
+        'contacted': 'تم التواصل / قيد التفاوض',
+        'completed': 'مكتمل (تمت الرحلة بنجاح)',
+        'cancelled': 'ملغي / لم يتم الاتفاق',
+        'spam': 'نقرة وهمية / سبام'
+      }[lead.status] || 'جديد';
+      
+      const adminNotes = lead.admin_notes || 'لا توجد ملاحظات';
+      
+      return `تقرير تتبع حركة العميل - فيندورا للنقل 🚗📊
+------------------------------------------
+مسار الطلب: ${lead.route_label || lead.route_slug || '-'}
+التاريخ والوقت: ${formatDate(lead.clicked_at)}
+
+بيانات العميل الجغرافية:
+📍 الموقع: ${location}
+💻 نوع الجهاز: ${lead.device_type || 'غير معروف'}
+📱 لغة المتصفح: ${lead.browser_language || 'غير معروف'}
+
+تحليل سلوك العميل وتفاعله:
+⏱️ مدة قراءة الموقع: ${timeOnPage}
+📜 عمق القراءة والتصفح: ${lead.scroll_depth_percent ?? 0}%
+📄 عدد الصفحات المفتوحة: ${lead.session_page_views || 1} صفحة
+📢 وسيلة الوصول: ${discovery}
+🎯 حملة التسويق: ${campaign}
+
+مؤشر التحقق والأمان:
+⚠️ درجة الاشتباه: ${lead.suspicion_score}%
+
+حالة المعاملة في النظام:
+⚙️ الحالة: ${statusText}
+📝 ملاحظات المدقق: ${adminNotes}
+
+🔑 معرف التتبع المرجعي (UUID):
+${lead.lead_uuid}
+------------------------------------------
+ملاحظة: هذا التقرير تم توليده تلقائياً من نظام المراقبة في Control Room للتحقق من جودة وموثوقية الطلبات الواردة.`;
+    }
+
+    function buildWhatsappMessageEn(lead) {
+      const payload = leadPayload(lead);
+      const location = [lead.cf_city, lead.cf_region, lead.cf_country ? countryLabel(lead.cf_country) : ''].filter(Boolean).join(', ') || 'Unknown';
+      const timeOnPage = formatDuration(lead.time_on_page_ms);
+      const discovery = discoveryText(lead);
+      const campaign = lead.utm_campaign || payload.utmCampaign || 'None';
+      const statusText = {
+        'new': 'New Click / Uncontacted',
+        'contacted': 'Contacted / Negotiating',
+        'completed': 'Completed (Job Done Successfully)',
+        'cancelled': 'Cancelled / Lost Booking',
+        'spam': 'Spam / Test Click'
+      }[lead.status] || 'New';
+      
+      const adminNotes = lead.admin_notes || 'No notes';
+      
+      return `Customer Journey Tracking Report - Vendora Transport 🚗📊
+------------------------------------------
+Requested Route: ${lead.route_label || lead.route_slug || '-'}
+Date & Time: ${formatDate(lead.clicked_at)}
+
+Geographic Metadata:
+📍 Location: ${location}
+💻 Device Type: ${lead.device_type || 'Unknown'}
+📱 Browser Language: ${lead.browser_language || 'Unknown'}
+
+Engagement Analytics:
+⏱️ Time Spent on Page: ${timeOnPage}
+📜 Scroll Depth: ${lead.scroll_depth_percent ?? 0}%
+📄 Pages Viewed in Session: ${lead.session_page_views || 1} pages
+📢 Discovery Channel (Source): ${discovery}
+🎯 Marketing Campaign: ${campaign}
+
+Verification & Security:
+⚠️ Suspicion Score: ${lead.suspicion_score}%
+
+System Audit Status:
+⚙️ Status: ${statusText}
+📝 Auditor Notes: ${adminNotes}
+
+🔑 Tracking ID / UUID:
+${lead.lead_uuid}
+------------------------------------------
+Note: This report is automatically compiled by the Control Room operations tracking system to verify the authenticity and conversion funnel of web clicks.`;
     }
 
     function exportCsv() {
@@ -1448,6 +1596,78 @@
     document.getElementById('exportBtn').addEventListener('click', exportCsv);
     document.getElementById('closeDialogBtn').addEventListener('click', () => document.getElementById('leadDialog').close());
     document.querySelectorAll('.tab-btn').forEach((button) => button.addEventListener('click', () => setTab(button.dataset.tab)));
+
+    // SHARE DETAILS TO DRIVER VIA WHATSAPP (ARABIC)
+    document.getElementById('shareDriverArBtn').addEventListener('click', () => {
+      const lead = state.leads.find((item) => String(item.id) === String(state.activeLeadId));
+      if (!lead) {
+        showStatus('No active lead selected for sharing.', 'error');
+        return;
+      }
+      const message = buildWhatsappMessageAr(lead);
+      const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+    });
+
+    // SHARE DETAILS TO DRIVER VIA WHATSAPP (ENGLISH)
+    document.getElementById('shareDriverEnBtn').addEventListener('click', () => {
+      const lead = state.leads.find((item) => String(item.id) === String(state.activeLeadId));
+      if (!lead) {
+        showStatus('No active lead selected for sharing.', 'error');
+        return;
+      }
+      const message = buildWhatsappMessageEn(lead);
+      const url = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      window.open(url, '_blank');
+    });
+
+    // COPY DETAILS (ARABIC)
+    document.getElementById('copyDriverArBtn').addEventListener('click', async (event) => {
+      const lead = state.leads.find((item) => String(item.id) === String(state.activeLeadId));
+      if (!lead) {
+        showStatus('No active lead selected for copying.', 'error');
+        return;
+      }
+      const message = buildWhatsappMessageAr(lead);
+      const button = event.currentTarget;
+      try {
+        await navigator.clipboard.writeText(message);
+        const originalText = button.innerHTML;
+        button.innerHTML = `<i data-lucide="check" class="h-3.5 w-3.5 text-emerald-400"></i> Copied!`;
+        renderIcons();
+        setTimeout(() => {
+          button.innerHTML = originalText;
+          renderIcons();
+        }, 2000);
+        showStatus('Arabic tracking report copied to clipboard.', 'success');
+      } catch (err) {
+        showStatus('Failed to copy report to clipboard.', 'error');
+      }
+    });
+
+    // COPY DETAILS (ENGLISH)
+    document.getElementById('copyDriverEnBtn').addEventListener('click', async (event) => {
+      const lead = state.leads.find((item) => String(item.id) === String(state.activeLeadId));
+      if (!lead) {
+        showStatus('No active lead selected for copying.', 'error');
+        return;
+      }
+      const message = buildWhatsappMessageEn(lead);
+      const button = event.currentTarget;
+      try {
+        await navigator.clipboard.writeText(message);
+        const originalText = button.innerHTML;
+        button.innerHTML = `<i data-lucide="check" class="h-3.5 w-3.5 text-emerald-400"></i> Copied!`;
+        renderIcons();
+        setTimeout(() => {
+          button.innerHTML = originalText;
+          renderIcons();
+        }, 2000);
+        showStatus('English tracking report copied to clipboard.', 'success');
+      } catch (err) {
+        showStatus('Failed to copy report to clipboard.', 'error');
+      }
+    });
 
     // SEARCH FILTERS EVENTS
     document.getElementById('filtersForm').addEventListener('submit', async (event) => {
