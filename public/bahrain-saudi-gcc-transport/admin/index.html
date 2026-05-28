@@ -960,6 +960,9 @@
 
         activeApiUrl = apiUrl;
         window.__VENDORA_TRANSPORT_ADMIN_RESOLVED_API__ = apiUrl;
+        if (response.status === 401) {
+          throw new Error('Wrong admin password. Reset TRANSPORT_ADMIN_TOKEN from Cloudflare, then use the same new password here.');
+        }
         if (!response.ok || data.ok === false) throw new Error(data.error || `Request failed (${response.status})`);
         return data;
       }
