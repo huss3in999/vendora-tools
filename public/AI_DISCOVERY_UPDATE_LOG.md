@@ -30,6 +30,30 @@ Notes:
 
 ## Log
 
+Date: 2026-05-28
+
+Changed page/tool: Education and Math calculator batch
+
+URL: `/calculators/percentage-calculator/`, `/calculators/grade-calculator/`, `/calculators/gpa-calculator/`, `/calculators/fraction-calculator/`
+
+Section: Calculators - Math and Education
+
+Files updated: `calculators/percentage-calculator/index.html`, `calculators/grade-calculator/index.html`, `calculators/gpa-calculator/index.html`, `calculators/fraction-calculator/index.html`, `calculators/index.html`, `data/tools-catalog.json`, `sitemap.xml`, `sitemap-tools.xml`, `llms.txt`, `.well-known/llms.txt`, `e2e/tests/education-math-calculators.spec.js`
+
+Sitemap updated: yes
+
+tools-catalog updated: yes
+
+llms.txt updated: yes
+
+ai-index.json updated: not needed
+
+Tracking checked: yes
+
+Notes: Added Grade and GPA calculators, upgraded Percentage and Fraction calculators to current SEO/schema/functionality standards, and connected the batch through the calculator hub, catalog, sitemaps, llms files, and Playwright coverage. No fake reviews, AggregateRating, admin URLs, API URLs, or unrelated tool behavior changes were added.
+
+---
+
 Date: 2026-05-27
 
 Changed page/tool: Structured GA4 category and transport conversion tracking system

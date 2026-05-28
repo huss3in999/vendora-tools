@@ -3,8 +3,8 @@
 <head>
   <link rel="icon" type="image/png" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
   <link rel="apple-touch-icon" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -12,80 +12,277 @@
     gtag('js', new Date());
     gtag('config', 'G-DFY197R2MS');
   </script>
-<title>Fraction Calculator — Add &amp; Simplify Fractions | Vendora</title>
-<meta name="description" content="Add two fractions, simplify results, and see improper or mixed forms. Quick check for students and recipes.">
-<link rel="canonical" href="https://getvendora.net/calculators/fraction-calculator/">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Fraction Calculator — Add &amp; Simplify Fractions">
-<meta property="og:description" content="Add two fractions, simplify results, and see improper or mixed forms. Quick check for students and recipes.">
-<meta property="og:url" content="https://getvendora.net/calculators/fraction-calculator/">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Fraction Calculator — Add &amp; Simplify Fractions | Vendora">
-<meta name="twitter:description" content="Add two fractions, simplify results, and see improper or mixed forms. Quick check for students and recipes.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/calculators.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What if denominator is zero?","acceptedAnswer":{"@type":"Answer","text":"Division by zero is undefined; the tool should reject invalid input."}},{"@type":"Question","name":"Mixed numbers?","acceptedAnswer":{"@type":"Answer","text":"Convert to improper fractions first if the tool expects improper form."}},{"@type":"Question","name":"Subtraction instead?","acceptedAnswer":{"@type":"Answer","text":"Add the negative second fraction or use a subtraction mode if provided."}}]}</script>
+  <title>Fraction Calculator - Add, Subtract, Multiply &amp; Divide | Vendora</title>
+  <meta name="description" content="Add, subtract, multiply, and divide fractions with simplified results, decimal conversion, and a short step-by-step explanation.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculators/fraction-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Fraction Calculator - Add, Subtract, Multiply &amp; Divide">
+  <meta property="og:description" content="Solve fraction operations with simplified results, decimal values, and clear steps.">
+  <meta property="og:url" content="https://getvendora.net/calculators/fraction-calculator/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Fraction Calculator - Add, Subtract, Multiply &amp; Divide | Vendora">
+  <meta name="twitter:description" content="Solve fraction operations with simplified results, decimal values, and clear steps.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/calculators.css">
+  <link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://getvendora.net/calculators/fraction-calculator/#webpage",
+        "url": "https://getvendora.net/calculators/fraction-calculator/",
+        "name": "Fraction Calculator - Add, Subtract, Multiply and Divide | Vendora",
+        "description": "Add, subtract, multiply, and divide fractions with simplified results, decimal conversion, and a short step-by-step explanation.",
+        "isPartOf": {"@type": "WebSite", "name": "Vendora", "url": "https://getvendora.net/"},
+        "breadcrumb": {"@id": "https://getvendora.net/calculators/fraction-calculator/#breadcrumb"},
+        "mainEntity": {"@id": "https://getvendora.net/calculators/fraction-calculator/#software"}
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://getvendora.net/calculators/fraction-calculator/#software",
+        "name": "Fraction Calculator",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any",
+        "url": "https://getvendora.net/calculators/fraction-calculator/",
+        "description": "Browser fraction calculator for addition, subtraction, multiplication, division, simplification, and decimal conversion.",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://getvendora.net/calculators/fraction-calculator/#breadcrumb",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Vendora", "item": "https://getvendora.net/"},
+          {"@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://getvendora.net/calculators/"},
+          {"@type": "ListItem", "position": 3, "name": "Fraction Calculator", "item": "https://getvendora.net/calculators/fraction-calculator/"}
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://getvendora.net/calculators/fraction-calculator/#faq",
+        "mainEntity": [
+          {"@type": "Question", "name": "Can this calculator subtract, multiply, and divide fractions?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Choose the operation, enter both fractions, and the calculator simplifies the result where possible."}},
+          {"@type": "Question", "name": "What happens if a denominator is zero?", "acceptedAnswer": {"@type": "Answer", "text": "A denominator of zero is invalid because division by zero is undefined. The calculator will ask for a non-zero denominator."}},
+          {"@type": "Question", "name": "How is a fraction simplified?", "acceptedAnswer": {"@type": "Answer", "text": "The numerator and denominator are divided by their greatest common divisor, then the sign is normalized."}}
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body class="vendora-calc-shell min-h-screen p-4 md:p-8">
   <div class="max-w-2xl mx-auto">
-    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">&larr; All calculators</a></nav>
     <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
       <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Math &amp; Algebra</p>
       <h1 class="text-2xl font-bold text-vendora-text mb-2">Fraction Calculator</h1>
-      <p class="text-sm text-vendora-muted mb-6">Add two fractions (+ only).</p>
-      <div class="flex gap-2 items-end flex-wrap">
-<span><input type="number" id="n1" class="w-16 border rounded px-1" value="1"></span>/<span><input type="number" id="d1" class="w-16 border rounded px-1" value="2"></span>
-<span class="mx-2">+</span>
-<span><input type="number" id="n2" class="w-16 border rounded px-1" value="1"></span>/<span><input type="number" id="d2" class="w-16 border rounded px-1" value="4"></span></div>
-<button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Add</button>
-      <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-sm text-vendora-muted mb-6">Add, subtract, multiply, or divide two fractions and see the simplified answer, decimal value, and basic working.</p>
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="rounded-lg border border-white/10 bg-vendora-bg/45 p-4">
+          <p class="text-sm font-semibold text-vendora-text mb-3">First fraction</p>
+          <div class="grid grid-cols-[1fr_auto_1fr] gap-2 items-center">
+            <div>
+              <label for="n1" class="text-xs text-vendora-muted">Numerator</label>
+              <input type="number" id="n1" class="w-full border rounded px-2 py-1 mt-1" value="1" step="1">
+            </div>
+            <span class="text-vendora-muted pt-6">/</span>
+            <div>
+              <label for="d1" class="text-xs text-vendora-muted">Denominator</label>
+              <input type="number" id="d1" class="w-full border rounded px-2 py-1 mt-1" value="2" step="1">
+            </div>
+          </div>
+        </div>
+        <div class="rounded-lg border border-white/10 bg-vendora-bg/45 p-4">
+          <p class="text-sm font-semibold text-vendora-text mb-3">Second fraction</p>
+          <div class="grid grid-cols-[1fr_auto_1fr] gap-2 items-center">
+            <div>
+              <label for="n2" class="text-xs text-vendora-muted">Numerator</label>
+              <input type="number" id="n2" class="w-full border rounded px-2 py-1 mt-1" value="1" step="1">
+            </div>
+            <span class="text-vendora-muted pt-6">/</span>
+            <div>
+              <label for="d2" class="text-xs text-vendora-muted">Denominator</label>
+              <input type="number" id="d2" class="w-full border rounded px-2 py-1 mt-1" value="3" step="1">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <label for="fractionOperation" class="block mt-4">Operation</label>
+      <select id="fractionOperation" class="nut-select border rounded px-2 py-1 mt-1">
+        <option value="add">Add</option>
+        <option value="subtract">Subtract</option>
+        <option value="multiply">Multiply</option>
+        <option value="divide">Divide</option>
+      </select>
+
+      <div class="mt-5 flex flex-wrap gap-3">
+        <button type="button" id="calculateFraction" class="bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+        <button type="button" id="resetFraction" class="border border-white/10 px-4 py-2 rounded font-semibold text-vendora-text hover:bg-vendora-bg/60">Reset</button>
+      </div>
+
+      <div id="fractionResult" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
       <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
-      
-    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
-      <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Fraction Calculator</h2>
-      <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
-        <div>
-          <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
-          <p>Performs fraction addition with simplification via GCD.</p>
+
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+        <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Fraction Calculator</h2>
+        <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+            <p>This tool performs the four basic fraction operations, reduces the answer, and shows a decimal value for checking.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+            <p>Enter each numerator and denominator, choose the operation, and calculate. Denominators must be non-zero.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+            <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">a/b + c/d = (ad + bc) / bd. Multiplication uses ac / bd. Division uses ad / bc.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+            <p>1/2 + 1/3 becomes 3/6 + 2/6 = 5/6, which is about 0.833333.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+            <div class="space-y-3">
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">Can this calculator subtract, multiply, and divide fractions?</p>
+                <p class="text-sm text-vendora-muted mt-1">Yes. Choose the operation, enter both fractions, and the calculator simplifies the result where possible.</p>
+              </div>
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">What happens if a denominator is zero?</p>
+                <p class="text-sm text-vendora-muted mt-1">A denominator of zero is invalid because division by zero is undefined. The calculator will ask for a non-zero denominator.</p>
+              </div>
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">How is a fraction simplified?</p>
+                <p class="text-sm text-vendora-muted mt-1">The numerator and denominator are divided by their greatest common divisor, then the sign is normalized.</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-          <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
-          <p>Enter numerators and denominators, then calculate.</p>
-        </div>
-        <div>
-          <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
-          <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">a/b + c/d = (ad + bc)/(bd), then reduce by gcd.</p>
-        </div>
-        <div>
-          <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
-          <p>1/3 + 1/6 = 1/2 after simplification.</p>
-        </div>
-        <div>
-          <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
-          <div class="space-y-3">
-      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
-        <p class="text-sm font-medium text-vendora-text">What if denominator is zero?</p>
-        <p class="text-sm text-vendora-muted mt-1">Division by zero is undefined; the tool should reject invalid input.</p>
-      </div>
-      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
-        <p class="text-sm font-medium text-vendora-text">Mixed numbers?</p>
-        <p class="text-sm text-vendora-muted mt-1">Convert to improper fractions first if the tool expects improper form.</p>
-      </div>
-      <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
-        <p class="text-sm font-medium text-vendora-text">Subtraction instead?</p>
-        <p class="text-sm text-vendora-muted mt-1">Add the negative second fraction or use a subtraction mode if provided.</p>
-      </div></div>
-        </div>
-      </div>
-    </section>
+      </section>
+
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="related-calculators-title">
+        <h2 id="related-calculators-title" class="text-lg font-semibold text-vendora-text mb-4">Related calculators</h2>
+        <ul class="grid gap-3 text-sm text-vendora-muted sm:grid-cols-2">
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../percentage-calculator/">Percentage calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../grade-calculator/">Grade calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../gpa-calculator/">GPA calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../gcd-lcm-calculator/">GCD and LCM calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../quadratic-equation/">Quadratic equation solver</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../standard-deviation/">Standard deviation calculator</a></li>
+        </ul>
+      </section>
     </main>
   </div>
 <script>
-function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){const t=b;b=a%b;a=t;}return a;}
-function run(){const n1=+document.getElementById('n1').value,d1=+document.getElementById('d1').value,n2=+document.getElementById('n2').value,d2=+document.getElementById('d2').value;if(!d1||!d2){document.getElementById('out').textContent='Denominators non-zero';return;}const n=n1*d2+n2*d1,d=d1*d2,g=gcd(n,d);document.getElementById('out').textContent='Sum: '+(n/g)+' / '+(d/g)+' = '+(n/d).toFixed(6);}
-document.getElementById('go').addEventListener('click',run);run();
+(function () {
+  const n1 = document.getElementById('n1');
+  const d1 = document.getElementById('d1');
+  const n2 = document.getElementById('n2');
+  const d2 = document.getElementById('d2');
+  const operation = document.getElementById('fractionOperation');
+  const result = document.getElementById('fractionResult');
+  const reset = document.getElementById('resetFraction');
+
+  function gcd(a, b) {
+    a = Math.abs(a);
+    b = Math.abs(b);
+    while (b) {
+      const temp = b;
+      b = a % b;
+      a = temp;
+    }
+    return a || 1;
+  }
+  function reduce(num, den) {
+    if (den < 0) {
+      num *= -1;
+      den *= -1;
+    }
+    const divisor = gcd(num, den);
+    return { num: num / divisor, den: den / divisor };
+  }
+  function formatFraction(frac) {
+    if (frac.den === 1) return String(frac.num);
+    return `${frac.num}/${frac.den}`;
+  }
+  function decimal(frac) {
+    return Number((frac.num / frac.den).toFixed(6)).toString();
+  }
+  function readValues() {
+    return {
+      a: Number(n1.value),
+      b: Number(d1.value),
+      c: Number(n2.value),
+      d: Number(d2.value)
+    };
+  }
+  function calculate() {
+    const { a, b, c, d } = readValues();
+    if (![a, b, c, d].every(Number.isFinite)) {
+      result.textContent = 'Enter valid integer values.';
+      return;
+    }
+    if (b === 0 || d === 0) {
+      result.textContent = 'Denominators must be non-zero.';
+      return;
+    }
+
+    let numerator;
+    let denominator;
+    let step;
+    if (operation.value === 'add') {
+      numerator = a * d + c * b;
+      denominator = b * d;
+      step = `${a}/${b} + ${c}/${d} = (${a} x ${d} + ${c} x ${b}) / (${b} x ${d})`;
+    } else if (operation.value === 'subtract') {
+      numerator = a * d - c * b;
+      denominator = b * d;
+      step = `${a}/${b} - ${c}/${d} = (${a} x ${d} - ${c} x ${b}) / (${b} x ${d})`;
+    } else if (operation.value === 'multiply') {
+      numerator = a * c;
+      denominator = b * d;
+      step = `${a}/${b} x ${c}/${d} = (${a} x ${c}) / (${b} x ${d})`;
+    } else {
+      if (c === 0) {
+        result.textContent = 'Cannot divide by a zero fraction.';
+        return;
+      }
+      numerator = a * d;
+      denominator = b * c;
+      step = `${a}/${b} / ${c}/${d} = (${a} x ${d}) / (${b} x ${c})`;
+    }
+
+    const simplified = reduce(numerator, denominator);
+    result.textContent = [
+      `Simplified result: ${formatFraction(simplified)}`,
+      `Decimal: ${decimal(simplified)}`,
+      `Steps: ${step} = ${numerator}/${denominator}, then reduce to ${formatFraction(simplified)}.`
+    ].join('\n');
+  }
+  function resetForm() {
+    n1.value = '1';
+    d1.value = '2';
+    n2.value = '1';
+    d2.value = '3';
+    operation.value = 'add';
+    calculate();
+  }
+  [n1, d1, n2, d2, operation].forEach((el) => {
+    el.addEventListener('input', calculate);
+    el.addEventListener('change', calculate);
+  });
+  document.getElementById('calculateFraction').addEventListener('click', calculate);
+  reset.addEventListener('click', resetForm);
+  calculate();
+})();
 </script>
 </body>
 </html>

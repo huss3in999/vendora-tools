@@ -446,11 +446,15 @@
   </url>
   <url>
     <loc>https://getvendora.net/calculators/</loc>
-    <lastmod>2026-05-22</lastmod>
+    <lastmod>2026-05-28</lastmod>
   </url>
   <url>
     <loc>https://getvendora.net/calculators/age-calculator/</loc>
     <lastmod>2026-05-22</lastmod>
+  </url>
+  <url>
+    <loc>https://getvendora.net/calculators/birthday-calculator/</loc>
+    <lastmod>2026-05-27</lastmod>
   </url>
   <url>
     <loc>https://getvendora.net/calculators/area-calculator/</loc>
@@ -513,6 +517,10 @@
     <lastmod>2026-05-22</lastmod>
   </url>
   <url>
+    <loc>https://getvendora.net/calculators/days-from-today-calculator/</loc>
+    <lastmod>2026-05-27</lastmod>
+  </url>
+  <url>
     <loc>https://getvendora.net/calculators/days-until-event/</loc>
     <lastmod>2026-05-22</lastmod>
   </url>
@@ -534,7 +542,7 @@
   </url>
   <url>
     <loc>https://getvendora.net/calculators/fraction-calculator/</loc>
-    <lastmod>2026-05-22</lastmod>
+    <lastmod>2026-05-28</lastmod>
   </url>
   <url>
     <loc>https://getvendora.net/calculators/fuel-economy-mpg-l-100km/</loc>
@@ -547,6 +555,14 @@
   <url>
     <loc>https://getvendora.net/calculators/golden-ratio/</loc>
     <lastmod>2026-05-22</lastmod>
+  </url>
+  <url>
+    <loc>https://getvendora.net/calculators/grade-calculator/</loc>
+    <lastmod>2026-05-28</lastmod>
+  </url>
+  <url>
+    <loc>https://getvendora.net/calculators/gpa-calculator/</loc>
+    <lastmod>2026-05-28</lastmod>
   </url>
   <url>
     <loc>https://getvendora.net/calculators/hours-worked-timesheet/</loc>
@@ -594,7 +610,7 @@
   </url>
   <url>
     <loc>https://getvendora.net/calculators/percentage-calculator/</loc>
-    <lastmod>2026-05-22</lastmod>
+    <lastmod>2026-05-28</lastmod>
   </url>
   <url>
     <loc>https://getvendora.net/calculators/pomodoro-sprint-calculator/</loc>
@@ -669,12 +685,20 @@
     <lastmod>2026-05-22</lastmod>
   </url>
   <url>
+    <loc>https://getvendora.net/calculators/stopwatch/</loc>
+    <lastmod>2026-05-27</lastmod>
+  </url>
+  <url>
     <loc>https://getvendora.net/calculators/tdee-calculator/</loc>
     <lastmod>2026-05-22</lastmod>
   </url>
   <url>
     <loc>https://getvendora.net/calculators/temperature-converter/</loc>
     <lastmod>2026-05-22</lastmod>
+  </url>
+  <url>
+    <loc>https://getvendora.net/calculators/time-calculator/</loc>
+    <lastmod>2026-05-27</lastmod>
   </url>
   <url>
     <loc>https://getvendora.net/calculators/time-duration/</loc>

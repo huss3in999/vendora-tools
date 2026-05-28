@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <link rel="apple-touch-icon" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <title>Grade Calculator - Weighted Grades &amp; Final Exam Score | Vendora</title>
+  <meta name="description" content="Calculate current class grades with weighted or points-based rows and estimate the final exam score needed to reach your target grade.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculators/grade-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Grade Calculator - Weighted Grades &amp; Final Exam Score">
+  <meta property="og:description" content="Calculate weighted grades, points-based grades, and the final exam score needed for a target class grade.">
+  <meta property="og:url" content="https://getvendora.net/calculators/grade-calculator/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Grade Calculator - Weighted Grades &amp; Final Exam Score | Vendora">
+  <meta name="twitter:description" content="Calculate weighted grades, points-based grades, and the final exam score needed for a target class grade.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/calculators.css">
+  <link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://getvendora.net/calculators/grade-calculator/#webpage",
+        "url": "https://getvendora.net/calculators/grade-calculator/",
+        "name": "Grade Calculator - Weighted Grades and Final Exam Score | Vendora",
+        "description": "Calculate current class grades with weighted or points-based rows and estimate the final exam score needed to reach your target grade.",
+        "isPartOf": {"@type": "WebSite", "name": "Vendora", "url": "https://getvendora.net/"},
+        "breadcrumb": {"@id": "https://getvendora.net/calculators/grade-calculator/#breadcrumb"},
+        "mainEntity": {"@id": "https://getvendora.net/calculators/grade-calculator/#software"}
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://getvendora.net/calculators/grade-calculator/#software",
+        "name": "Grade Calculator",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any",
+        "url": "https://getvendora.net/calculators/grade-calculator/",
+        "description": "Browser grade calculator for weighted categories, points-based grades, and required final exam score estimates.",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://getvendora.net/calculators/grade-calculator/#breadcrumb",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Vendora", "item": "https://getvendora.net/"},
+          {"@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://getvendora.net/calculators/"},
+          {"@type": "ListItem", "position": 3, "name": "Grade Calculator", "item": "https://getvendora.net/calculators/grade-calculator/"}
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://getvendora.net/calculators/grade-calculator/#faq",
+        "mainEntity": [
+          {"@type": "Question", "name": "What is a weighted grade?", "acceptedAnswer": {"@type": "Answer", "text": "A weighted grade gives different assignments or categories different importance, such as homework at 40% and exams at 60%."}},
+          {"@type": "Question", "name": "How is the required final exam score calculated?", "acceptedAnswer": {"@type": "Answer", "text": "The calculator compares your current grade, target grade, and final exam weight to estimate the exam score needed to reach the target."}},
+          {"@type": "Question", "name": "Can I use points instead of weights?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Choose points mode to calculate the grade from total earned points divided by total possible points."}}
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">&larr; All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Math &amp; Algebra</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Grade Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Calculate your current grade from weighted categories or points, then estimate what final exam score you need for a target grade.</p>
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for="gradeMode" class="block">Grade mode</label>
+          <select id="gradeMode" class="nut-select border rounded px-2 py-1 mt-1">
+            <option value="weighted">Weighted categories</option>
+            <option value="points">Points only</option>
+          </select>
+        </div>
+        <div>
+          <label for="targetGrade" class="block">Target class grade (%)</label>
+          <input type="number" id="targetGrade" class="w-full border rounded px-2 py-1 mt-1" value="90" min="0" step="any">
+        </div>
+      </div>
+
+      <div class="mt-5 flex items-end justify-between gap-3">
+        <h2 class="text-base font-semibold text-vendora-text">Assignments and categories</h2>
+        <button type="button" id="addGradeRow" class="text-sm text-vendora-brand font-semibold underline-offset-2 hover:underline">Add row</button>
+      </div>
+      <div id="gradeRows" class="mt-3 space-y-3"></div>
+
+      <div class="grid gap-4 sm:grid-cols-2 mt-5">
+        <div>
+          <label for="finalWeight" class="block">Final exam weight (%)</label>
+          <input type="number" id="finalWeight" class="w-full border rounded px-2 py-1 mt-1" value="20" min="0" step="any">
+        </div>
+        <div class="flex items-end gap-3">
+          <button type="button" id="calculateGrade" class="bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+          <button type="button" id="resetGrade" class="border border-white/10 px-4 py-2 rounded font-semibold text-vendora-text hover:bg-vendora-bg/60">Reset</button>
+        </div>
+      </div>
+
+      <div id="gradeResult" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Confirm grading rules with your school or instructor.</p>
+
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+        <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Grade Calculator</h2>
+        <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+            <p>The calculator estimates your current class grade and the score needed on a final exam to reach your target.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+            <p>Choose weighted or points mode, enter each score, and adjust the final exam weight and target grade.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+            <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Required final = (target - current x (1 - final weight)) / final weight.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+            <p>If your current grade is 88% and the final is worth 20%, you need about 98% on the final to finish with 90%.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+            <div class="space-y-3">
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">What is a weighted grade?</p>
+                <p class="text-sm text-vendora-muted mt-1">A weighted grade gives different assignments or categories different importance, such as homework at 40% and exams at 60%.</p>
+              </div>
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">How is the required final exam score calculated?</p>
+                <p class="text-sm text-vendora-muted mt-1">The calculator compares your current grade, target grade, and final exam weight to estimate the exam score needed to reach the target.</p>
+              </div>
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">Can I use points instead of weights?</p>
+                <p class="text-sm text-vendora-muted mt-1">Yes. Choose points mode to calculate the grade from total earned points divided by total possible points.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="related-calculators-title">
+        <h2 id="related-calculators-title" class="text-lg font-semibold text-vendora-text mb-4">Related calculators</h2>
+        <ul class="grid gap-3 text-sm text-vendora-muted sm:grid-cols-2">
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../gpa-calculator/">GPA calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../percentage-calculator/">Percentage calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../fraction-calculator/">Fraction calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../standard-deviation/">Standard deviation calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../gcd-lcm-calculator/">GCD and LCM calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../quadratic-equation/">Quadratic equation solver</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+<script>
+(function () {
+  const rowsEl = document.getElementById('gradeRows');
+  const modeEl = document.getElementById('gradeMode');
+  const targetEl = document.getElementById('targetGrade');
+  const finalWeightEl = document.getElementById('finalWeight');
+  const resultEl = document.getElementById('gradeResult');
+  let rows = [];
+  let nextId = 1;
+
+  function defaultRows() {
+    return [
+      { id: nextId++, name: 'Homework', score: 92, max: 100, weight: 40 },
+      { id: nextId++, name: 'Quizzes', score: 84, max: 100, weight: 40 }
+    ];
+  }
+  function pct(value) {
+    return `${Number(value.toFixed(2)).toString()}%`;
+  }
+  function renderRows() {
+    rowsEl.innerHTML = '';
+    const weighted = modeEl.value === 'weighted';
+    rows.forEach((row, index) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'rounded-lg border border-white/10 bg-vendora-bg/45 p-4';
+      wrap.innerHTML = `
+        <div class="grid gap-3 sm:grid-cols-5">
+          <div class="sm:col-span-2">
+            <label for="gradeName${row.id}" class="text-xs text-vendora-muted">Name</label>
+            <input type="text" id="gradeName${row.id}" class="w-full border rounded px-2 py-1 mt-1" value="${row.name}">
+          </div>
+          <div>
+            <label for="gradeScore${row.id}" class="text-xs text-vendora-muted">Score</label>
+            <input type="number" id="gradeScore${row.id}" class="w-full border rounded px-2 py-1 mt-1" value="${row.score}" min="0" step="any">
+          </div>
+          <div>
+            <label for="gradeMax${row.id}" class="text-xs text-vendora-muted">Max</label>
+            <input type="number" id="gradeMax${row.id}" class="w-full border rounded px-2 py-1 mt-1" value="${row.max}" min="0" step="any">
+          </div>
+          <div>
+            <label for="gradeWeight${row.id}" class="text-xs text-vendora-muted">${weighted ? 'Weight %' : 'Weight'}</label>
+            <input type="number" id="gradeWeight${row.id}" class="w-full border rounded px-2 py-1 mt-1" value="${row.weight}" min="0" step="any" ${weighted ? '' : 'disabled'}>
+          </div>
+        </div>
+        <div class="mt-3 flex justify-between items-center">
+          <p class="text-xs text-vendora-muted">Row ${index + 1}</p>
+          <button type="button" class="remove-grade-row text-xs text-red-300 underline-offset-2 hover:underline" data-id="${row.id}">Remove</button>
+        </div>
+      `;
+      rowsEl.appendChild(wrap);
+    });
+    bindRowInputs();
+  }
+  function bindRowInputs() {
+    rows.forEach((row) => {
+      const name = document.getElementById(`gradeName${row.id}`);
+      const score = document.getElementById(`gradeScore${row.id}`);
+      const max = document.getElementById(`gradeMax${row.id}`);
+      const weight = document.getElementById(`gradeWeight${row.id}`);
+      name.addEventListener('input', () => { row.name = name.value; });
+      score.addEventListener('input', () => { row.score = Number(score.value); calculate(); });
+      max.addEventListener('input', () => { row.max = Number(max.value); calculate(); });
+      weight.addEventListener('input', () => { row.weight = Number(weight.value); calculate(); });
+    });
+    document.querySelectorAll('.remove-grade-row').forEach((button) => {
+      button.addEventListener('click', () => {
+        rows = rows.filter((row) => row.id !== Number(button.dataset.id));
+        if (!rows.length) rows.push({ id: nextId++, name: 'Assignment', score: 0, max: 100, weight: 100 });
+        renderRows();
+        calculate();
+      });
+    });
+  }
+  function calculateCurrent() {
+    if (modeEl.value === 'points') {
+      let earned = 0;
+      let possible = 0;
+      for (const row of rows) {
+        if (!Number.isFinite(row.score) || !Number.isFinite(row.max) || row.max <= 0) return null;
+        earned += row.score;
+        possible += row.max;
+      }
+      return possible > 0 ? (earned / possible) * 100 : null;
+    }
+
+    let weightedTotal = 0;
+    let totalWeight = 0;
+    for (const row of rows) {
+      if (!Number.isFinite(row.score) || !Number.isFinite(row.max) || !Number.isFinite(row.weight) || row.max <= 0 || row.weight < 0) return null;
+      weightedTotal += (row.score / row.max) * 100 * row.weight;
+      totalWeight += row.weight;
+    }
+    return totalWeight > 0 ? weightedTotal / totalWeight : null;
+  }
+  function calculate() {
+    const current = calculateCurrent();
+    const target = Number(targetEl.value);
+    const finalWeight = Number(finalWeightEl.value);
+    if (!Number.isFinite(current) || !Number.isFinite(target) || !Number.isFinite(finalWeight) || finalWeight < 0 || finalWeight > 100) {
+      resultEl.textContent = 'Enter valid scores, weights, and target values.';
+      return;
+    }
+    const finalFraction = finalWeight / 100;
+    let requiredText = 'Required final exam score: not calculated because final exam weight is 0%.';
+    if (finalFraction > 0) {
+      const required = (target - current * (1 - finalFraction)) / finalFraction;
+      requiredText = `Required final exam score: ${pct(required)}`;
+      if (required > 100) requiredText += '\nThis target may require extra credit or a higher current grade.';
+      if (required < 0) requiredText += '\nYou have already passed the target even with a very low final score.';
+    }
+    resultEl.textContent = [
+      `Current grade: ${pct(current)}`,
+      requiredText,
+      `Mode: ${modeEl.value === 'weighted' ? 'weighted categories' : 'points only'}`
+    ].join('\n');
+  }
+  function resetForm() {
+    nextId = 1;
+    rows = defaultRows();
+    modeEl.value = 'weighted';
+    targetEl.value = '90';
+    finalWeightEl.value = '20';
+    renderRows();
+    calculate();
+  }
+  document.getElementById('addGradeRow').addEventListener('click', () => {
+    rows.push({ id: nextId++, name: 'New row', score: 0, max: 100, weight: 10 });
+    renderRows();
+    calculate();
+  });
+  document.getElementById('calculateGrade').addEventListener('click', calculate);
+  document.getElementById('resetGrade').addEventListener('click', resetForm);
+  [modeEl, targetEl, finalWeightEl].forEach((el) => {
+    el.addEventListener('input', () => {
+      if (el === modeEl) renderRows();
+      calculate();
+    });
+    el.addEventListener('change', () => {
+      if (el === modeEl) renderRows();
+      calculate();
+    });
+  });
+  resetForm();
+})();
+</script>
+</body>
+</html>

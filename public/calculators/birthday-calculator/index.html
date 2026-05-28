@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <link rel="apple-touch-icon" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <title>Birthday Calculator - Age, Next Birthday & Countdown | Vendora</title>
+  <meta name="description" content="Calculate your current age, next birthday date, days until birthday, day of week born, and a simple birthday countdown message.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculators/birthday-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Birthday Calculator - Age, Next Birthday & Countdown">
+  <meta property="og:description" content="Find your current age, next birthday date, days until birthday, and day of week born.">
+  <meta property="og:url" content="https://getvendora.net/calculators/birthday-calculator/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Birthday Calculator - Age, Next Birthday & Countdown | Vendora">
+  <meta name="twitter:description" content="Find your current age, next birthday date, days until birthday, and day of week born.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/calculators.css">
+  <link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://getvendora.net/calculators/birthday-calculator/#webpage",
+        "url": "https://getvendora.net/calculators/birthday-calculator/",
+        "name": "Birthday Calculator - Age, Next Birthday and Countdown | Vendora",
+        "description": "Calculate your current age, next birthday date, days until birthday, day of week born, and a simple birthday countdown message.",
+        "isPartOf": {"@type": "WebSite", "name": "Vendora", "url": "https://getvendora.net/"},
+        "breadcrumb": {"@id": "https://getvendora.net/calculators/birthday-calculator/#breadcrumb"},
+        "mainEntity": {"@id": "https://getvendora.net/calculators/birthday-calculator/#software"}
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://getvendora.net/calculators/birthday-calculator/#software",
+        "name": "Birthday Calculator",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "url": "https://getvendora.net/calculators/birthday-calculator/",
+        "description": "Browser-based birthday calculator for age, next birthday, countdown days, and birth weekday.",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://getvendora.net/calculators/birthday-calculator/#breadcrumb",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Vendora", "item": "https://getvendora.net/"},
+          {"@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://getvendora.net/calculators/"},
+          {"@type": "ListItem", "position": 3, "name": "Birthday Calculator", "item": "https://getvendora.net/calculators/birthday-calculator/"}
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://getvendora.net/calculators/birthday-calculator/#faq",
+        "mainEntity": [
+          {"@type": "Question", "name": "How does the birthday calculator find my next birthday?", "acceptedAnswer": {"@type": "Answer", "text": "It compares your birth month and day with the reference date, then uses this year or next year for the next upcoming birthday."}},
+          {"@type": "Question", "name": "Does it handle leap day birthdays?", "acceptedAnswer": {"@type": "Answer", "text": "For February 29 birthdays in non-leap years, this calculator uses February 28 as a practical observed birthday date."}},
+          {"@type": "Question", "name": "Is the calculated age legal advice?", "acceptedAnswer": {"@type": "Answer", "text": "No. The result is a general calendar calculation. Legal age rules can vary by country, time, and local policy."}}
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Time &amp; Date</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Birthday Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Find your current age, next birthday date, countdown days, and the weekday you were born.</p>
+
+      <label for="birthDate" class="block">Birth date</label>
+      <input type="date" id="birthDate" class="w-full border rounded px-2 py-1 mt-1">
+      <label for="referenceDate" class="block mt-3">Reference date</label>
+      <input type="date" id="referenceDate" class="w-full border rounded px-2 py-1 mt-1">
+      <button type="button" id="calculateBirthday" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+
+      <div id="birthdayResult" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+        <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Birthday Calculator</h2>
+        <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+            <p>Calculates age, next birthday, days remaining, and the weekday of a birth date.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+            <p>Enter a birth date. The reference date defaults to today, but you can change it for planning or testing.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+            <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Next birthday = next occurrence of birth month/day on or after the reference date.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+            <p>Birth date 2000-06-10 and reference date 2026-05-27 gives age 25 and 14 days until the next birthday.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+            <div class="space-y-3">
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">How does the birthday calculator find my next birthday?</p>
+                <p class="text-sm text-vendora-muted mt-1">It compares your birth month and day with the reference date, then uses this year or next year for the next upcoming birthday.</p>
+              </div>
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">Does it handle leap day birthdays?</p>
+                <p class="text-sm text-vendora-muted mt-1">For February 29 birthdays in non-leap years, this calculator uses February 28 as a practical observed birthday date.</p>
+              </div>
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">Is the calculated age legal advice?</p>
+                <p class="text-sm text-vendora-muted mt-1">No. The result is a general calendar calculation. Legal age rules can vary by country, time, and local policy.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="related-calculators-title">
+        <h2 id="related-calculators-title" class="text-lg font-semibold text-vendora-text mb-4">Related calculators</h2>
+        <ul class="grid gap-3 text-sm text-vendora-muted sm:grid-cols-2">
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../age-calculator/">Age calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../days-from-today-calculator/">Days from today calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../date-difference/">Date difference calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../days-until-event/">Days until event calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../time-calculator/">Time calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../stopwatch/">Stopwatch</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../time-duration/">Time duration calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../time-zone-converter/">Time zone converter</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+<script>
+(function () {
+  const birthDate = document.getElementById('birthDate');
+  const referenceDate = document.getElementById('referenceDate');
+  const result = document.getElementById('birthdayResult');
+  const button = document.getElementById('calculateBirthday');
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  function pad(value) {
+    return String(value).padStart(2, '0');
+  }
+  function iso(date) {
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  }
+  function localDate(value) {
+    if (!value) return null;
+    const parts = value.split('-').map(Number);
+    return new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0, 0);
+  }
+  function isLeapYear(year) {
+    return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  }
+  function observedBirthday(year, month, day) {
+    if (month === 1 && day === 29 && !isLeapYear(year)) return new Date(year, 1, 28, 12, 0, 0, 0);
+    return new Date(year, month, day, 12, 0, 0, 0);
+  }
+  function ageOn(birth, ref) {
+    let age = ref.getFullYear() - birth.getFullYear();
+    const birthdayThisYear = observedBirthday(ref.getFullYear(), birth.getMonth(), birth.getDate());
+    if (ref < birthdayThisYear) age -= 1;
+    return Math.max(0, age);
+  }
+  function formatLong(date) {
+    return date.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  }
+  function run() {
+    const birth = localDate(birthDate.value);
+    const ref = localDate(referenceDate.value);
+    if (!birth || !ref) {
+      result.textContent = 'Enter a birth date to calculate your birthday countdown.';
+      return;
+    }
+    if (birth > ref) {
+      result.textContent = 'Birth date must be on or before the reference date.';
+      return;
+    }
+    let next = observedBirthday(ref.getFullYear(), birth.getMonth(), birth.getDate());
+    if (next < ref) next = observedBirthday(ref.getFullYear() + 1, birth.getMonth(), birth.getDate());
+    const daysUntil = Math.round((next - ref) / 86400000);
+    const age = ageOn(birth, ref);
+    const nextAge = age + (daysUntil === 0 ? 0 : 1);
+    const message = daysUntil === 0
+      ? 'Happy birthday. Today is the day.'
+      : `${daysUntil} day${daysUntil === 1 ? '' : 's'} until birthday number ${nextAge}.`;
+    result.textContent = [
+      `Current age: ${age}`,
+      `Next birthday: ${formatLong(next)} (${iso(next)})`,
+      `Days until next birthday: ${daysUntil}`,
+      `Born on: ${days[birth.getDay()]}`,
+      `Countdown: ${message}`
+    ].join('\n');
+  }
+
+  const today = new Date();
+  today.setHours(12, 0, 0, 0);
+  referenceDate.value = iso(today);
+  const sampleBirth = new Date(today);
+  sampleBirth.setFullYear(today.getFullYear() - 30);
+  birthDate.value = iso(sampleBirth);
+  [birthDate, referenceDate].forEach((field) => field.addEventListener('input', run));
+  button.addEventListener('click', run);
+  run();
+})();
+</script>
+</body>
+</html>

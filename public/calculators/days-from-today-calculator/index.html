@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <link rel="apple-touch-icon" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <title>Days From Today Calculator - Future or Past Date | Vendora</title>
+  <meta name="description" content="Add or subtract days from today to find a future or past date, including the day of week and quick date offsets.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculators/days-from-today-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Days From Today Calculator - Future or Past Date">
+  <meta property="og:description" content="Add or subtract days from today and see the result date with weekday.">
+  <meta property="og:url" content="https://getvendora.net/calculators/days-from-today-calculator/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Days From Today Calculator - Future or Past Date | Vendora">
+  <meta name="twitter:description" content="Add or subtract days from today and see the result date with weekday.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/calculators.css">
+  <link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://getvendora.net/calculators/days-from-today-calculator/#webpage",
+        "url": "https://getvendora.net/calculators/days-from-today-calculator/",
+        "name": "Days From Today Calculator - Future or Past Date | Vendora",
+        "description": "Add or subtract days from today to find a future or past date, including the day of week and quick date offsets.",
+        "isPartOf": {"@type": "WebSite", "name": "Vendora", "url": "https://getvendora.net/"},
+        "breadcrumb": {"@id": "https://getvendora.net/calculators/days-from-today-calculator/#breadcrumb"},
+        "mainEntity": {"@id": "https://getvendora.net/calculators/days-from-today-calculator/#software"}
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://getvendora.net/calculators/days-from-today-calculator/#software",
+        "name": "Days From Today Calculator",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "url": "https://getvendora.net/calculators/days-from-today-calculator/",
+        "description": "Browser-based date calculator for adding positive or negative day counts to today.",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://getvendora.net/calculators/days-from-today-calculator/#breadcrumb",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Vendora", "item": "https://getvendora.net/"},
+          {"@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://getvendora.net/calculators/"},
+          {"@type": "ListItem", "position": 3, "name": "Days From Today Calculator", "item": "https://getvendora.net/calculators/days-from-today-calculator/"}
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://getvendora.net/calculators/days-from-today-calculator/#faq",
+        "mainEntity": [
+          {"@type": "Question", "name": "Can I use negative days?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Negative values subtract days from today and return a past date."}},
+          {"@type": "Question", "name": "Does this count calendar days or business days?", "acceptedAnswer": {"@type": "Answer", "text": "This calculator uses calendar days. It does not skip weekends or holidays."}},
+          {"@type": "Question", "name": "Does the result depend on time zone?", "acceptedAnswer": {"@type": "Answer", "text": "The calculator uses the calendar date in your browser's local time zone."}}
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Time &amp; Date</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Days From Today Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Add or subtract calendar days from today and see the resulting date and weekday.</p>
+
+      <label for="daysOffset" class="block">Days from today</label>
+      <input type="number" id="daysOffset" class="w-full border rounded px-2 py-1 mt-1" value="30" step="1">
+      <div class="mt-3 flex flex-wrap gap-2" aria-label="Quick day offsets">
+        <button type="button" data-days="7" class="bg-vendora-brand text-vendora-ink px-3 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">7</button>
+        <button type="button" data-days="14" class="bg-vendora-brand text-vendora-ink px-3 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">14</button>
+        <button type="button" data-days="30" class="bg-vendora-brand text-vendora-ink px-3 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">30</button>
+        <button type="button" data-days="60" class="bg-vendora-brand text-vendora-ink px-3 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">60</button>
+        <button type="button" data-days="90" class="bg-vendora-brand text-vendora-ink px-3 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">90</button>
+        <button type="button" data-days="180" class="bg-vendora-brand text-vendora-ink px-3 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">180</button>
+        <button type="button" data-days="365" class="bg-vendora-brand text-vendora-ink px-3 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">365</button>
+      </div>
+
+      <div id="daysResult" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+        <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Days From Today Calculator</h2>
+        <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+            <p>Adds or subtracts a whole number of calendar days from today's date.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+            <p>Enter a positive number for a future date or a negative number for a past date. Quick buttons fill common offsets.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+            <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Result date = today's local date + entered calendar days.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+            <p>Entering 30 shows the calendar date 30 days from today. Entering -7 shows the date one week ago.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+            <div class="space-y-3">
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">Can I use negative days?</p>
+                <p class="text-sm text-vendora-muted mt-1">Yes. Negative values subtract days from today and return a past date.</p>
+              </div>
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">Does this count calendar days or business days?</p>
+                <p class="text-sm text-vendora-muted mt-1">This calculator uses calendar days. It does not skip weekends or holidays.</p>
+              </div>
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">Does the result depend on time zone?</p>
+                <p class="text-sm text-vendora-muted mt-1">The calculator uses the calendar date in your browser's local time zone.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="related-calculators-title">
+        <h2 id="related-calculators-title" class="text-lg font-semibold text-vendora-text mb-4">Related calculators</h2>
+        <ul class="grid gap-3 text-sm text-vendora-muted sm:grid-cols-2">
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../birthday-calculator/">Birthday calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../date-difference/">Date difference calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../days-until-event/">Days until event calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../age-calculator/">Age calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../time-calculator/">Time calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../stopwatch/">Stopwatch</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../time-duration/">Time duration calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../time-zone-converter/">Time zone converter</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+<script>
+(function () {
+  const input = document.getElementById('daysOffset');
+  const result = document.getElementById('daysResult');
+  function pad(value) {
+    return String(value).padStart(2, '0');
+  }
+  function iso(date) {
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+  }
+  function todayNoon() {
+    const today = new Date();
+    return new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12, 0, 0, 0);
+  }
+  function formatLong(date) {
+    return date.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  }
+  function run() {
+    const offset = Number(input.value);
+    if (!Number.isFinite(offset) || !Number.isInteger(offset)) {
+      result.textContent = 'Enter a whole number of days.';
+      return;
+    }
+    const start = todayNoon();
+    const target = new Date(start);
+    target.setDate(start.getDate() + offset);
+    const direction = offset === 0 ? 'today' : offset > 0 ? `${offset} day${offset === 1 ? '' : 's'} from today` : `${Math.abs(offset)} day${offset === -1 ? '' : 's'} ago`;
+    result.textContent = [
+      `Today: ${iso(start)}`,
+      `Result date: ${iso(target)}`,
+      `Day of week: ${formatLong(target).split(',')[0]}`,
+      `Meaning: ${direction}`
+    ].join('\n');
+  }
+  input.addEventListener('input', run);
+  document.querySelectorAll('[data-days]').forEach((button) => {
+    button.addEventListener('click', () => {
+      input.value = button.dataset.days;
+      run();
+    });
+  });
+  run();
+})();
+</script>
+</body>
+</html>

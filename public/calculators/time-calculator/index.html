@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <link rel="apple-touch-icon" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <title>Time Calculator - Add or Subtract Hours & Minutes | Vendora</title>
+  <meta name="description" content="Add or subtract hours and minutes from a start time, then see the final time and whether it lands on the next or previous day.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculators/time-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Time Calculator - Add or Subtract Hours & Minutes">
+  <meta property="og:description" content="Add or subtract hours and minutes from a start time and see next-day or previous-day results.">
+  <meta property="og:url" content="https://getvendora.net/calculators/time-calculator/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Time Calculator - Add or Subtract Hours & Minutes | Vendora">
+  <meta name="twitter:description" content="Add or subtract hours and minutes from a start time and see next-day or previous-day results.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/calculators.css">
+  <link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://getvendora.net/calculators/time-calculator/#webpage",
+        "url": "https://getvendora.net/calculators/time-calculator/",
+        "name": "Time Calculator - Add or Subtract Hours and Minutes | Vendora",
+        "description": "Add or subtract hours and minutes from a start time, then see the final time and whether it lands on the next or previous day.",
+        "isPartOf": {"@type": "WebSite", "name": "Vendora", "url": "https://getvendora.net/"},
+        "breadcrumb": {"@id": "https://getvendora.net/calculators/time-calculator/#breadcrumb"},
+        "mainEntity": {"@id": "https://getvendora.net/calculators/time-calculator/#software"}
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://getvendora.net/calculators/time-calculator/#software",
+        "name": "Time Calculator",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "url": "https://getvendora.net/calculators/time-calculator/",
+        "description": "Browser-based time calculator for adding or subtracting hours and minutes from a clock time.",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://getvendora.net/calculators/time-calculator/#breadcrumb",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Vendora", "item": "https://getvendora.net/"},
+          {"@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://getvendora.net/calculators/"},
+          {"@type": "ListItem", "position": 3, "name": "Time Calculator", "item": "https://getvendora.net/calculators/time-calculator/"}
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://getvendora.net/calculators/time-calculator/#faq",
+        "mainEntity": [
+          {"@type": "Question", "name": "Can the result cross midnight?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The calculator shows whether the final time is on the same day, next day, or previous day."}},
+          {"@type": "Question", "name": "Does this include dates?", "acceptedAnswer": {"@type": "Answer", "text": "No. This is a clock-time calculator. Use a date calculator if you need full calendar dates."}},
+          {"@type": "Question", "name": "Can I subtract time?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Choose subtract, then enter the hours and minutes to move backward from the start time."}}
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Time &amp; Date</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Time Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Add or subtract hours and minutes from a start time and see if the result crosses midnight.</p>
+
+      <label for="startTime" class="block">Start time</label>
+      <input type="time" id="startTime" class="w-full border rounded px-2 py-1 mt-1" value="09:00">
+      <label for="operation" class="block mt-3">Operation</label>
+      <select id="operation" class="w-full border rounded px-2 py-1 mt-1">
+        <option value="add">Add time</option>
+        <option value="subtract">Subtract time</option>
+      </select>
+      <div class="grid gap-3 sm:grid-cols-2 mt-3">
+        <div>
+          <label for="hoursAmount" class="block">Hours</label>
+          <input type="number" id="hoursAmount" class="w-full border rounded px-2 py-1 mt-1" min="0" step="1" value="2">
+        </div>
+        <div>
+          <label for="minutesAmount" class="block">Minutes</label>
+          <input type="number" id="minutesAmount" class="w-full border rounded px-2 py-1 mt-1" min="0" step="1" value="30">
+        </div>
+      </div>
+      <button type="button" id="calculateTime" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+
+      <div id="timeResult" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+        <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Time Calculator</h2>
+        <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+            <p>Adds or subtracts a duration from a clock time, with midnight rollover shown clearly.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+            <p>Choose a start time, select add or subtract, enter hours and minutes, then read the final clock time.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+            <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Final minutes = start minutes +/- duration minutes, wrapped across 24-hour days.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">Examples</h3>
+            <p>23:30 + 2 hours = 01:30 next day. 00:15 - 30 minutes = 23:45 previous day.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+            <div class="space-y-3">
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">Can the result cross midnight?</p>
+                <p class="text-sm text-vendora-muted mt-1">Yes. The calculator shows whether the final time is on the same day, next day, or previous day.</p>
+              </div>
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">Does this include dates?</p>
+                <p class="text-sm text-vendora-muted mt-1">No. This is a clock-time calculator. Use a date calculator if you need full calendar dates.</p>
+              </div>
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">Can I subtract time?</p>
+                <p class="text-sm text-vendora-muted mt-1">Yes. Choose subtract, then enter the hours and minutes to move backward from the start time.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="related-calculators-title">
+        <h2 id="related-calculators-title" class="text-lg font-semibold text-vendora-text mb-4">Related calculators</h2>
+        <ul class="grid gap-3 text-sm text-vendora-muted sm:grid-cols-2">
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../time-duration/">Time duration calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../stopwatch/">Stopwatch</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../time-zone-converter/">Time zone converter</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../days-from-today-calculator/">Days from today calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../birthday-calculator/">Birthday calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../date-difference/">Date difference calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../days-until-event/">Days until event calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../age-calculator/">Age calculator</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+<script>
+(function () {
+  const startTime = document.getElementById('startTime');
+  const operation = document.getElementById('operation');
+  const hoursAmount = document.getElementById('hoursAmount');
+  const minutesAmount = document.getElementById('minutesAmount');
+  const result = document.getElementById('timeResult');
+  const button = document.getElementById('calculateTime');
+
+  function parseTime(value) {
+    if (!value || !value.includes(':')) return null;
+    const parts = value.split(':').map(Number);
+    if (!Number.isFinite(parts[0]) || !Number.isFinite(parts[1])) return null;
+    return parts[0] * 60 + parts[1];
+  }
+  function pad(value) {
+    return String(value).padStart(2, '0');
+  }
+  function formatTime(totalMinutes) {
+    const wrapped = ((totalMinutes % 1440) + 1440) % 1440;
+    return `${pad(Math.floor(wrapped / 60))}:${pad(wrapped % 60)}`;
+  }
+  function dayText(dayShift) {
+    if (dayShift > 0) return dayShift === 1 ? 'next day' : `${dayShift} days later`;
+    if (dayShift < 0) return dayShift === -1 ? 'previous day' : `${Math.abs(dayShift)} days earlier`;
+    return 'same day';
+  }
+  function run() {
+    const start = parseTime(startTime.value);
+    const hours = Number(hoursAmount.value || 0);
+    const minutes = Number(minutesAmount.value || 0);
+    if (start == null || !Number.isFinite(hours) || !Number.isFinite(minutes) || hours < 0 || minutes < 0) {
+      result.textContent = 'Enter a valid start time and non-negative hours/minutes.';
+      return;
+    }
+    const duration = Math.round(hours) * 60 + Math.round(minutes);
+    const signed = operation.value === 'subtract' ? -duration : duration;
+    const finalTotal = start + signed;
+    const dayShift = Math.floor(finalTotal / 1440);
+    const normalizedDayShift = finalTotal < 0 && finalTotal % 1440 !== 0 ? dayShift : dayShift;
+    result.textContent = [
+      `Start time: ${startTime.value}`,
+      `Change: ${operation.value === 'subtract' ? '-' : '+'}${Math.round(hours)}h ${Math.round(minutes)}m`,
+      `Final time: ${formatTime(finalTotal)}`,
+      `Day: ${dayText(normalizedDayShift)}`
+    ].join('\n');
+  }
+  [startTime, operation, hoursAmount, minutesAmount].forEach((field) => field.addEventListener('input', run));
+  operation.addEventListener('change', run);
+  button.addEventListener('click', run);
+  run();
+})();
+</script>
+</body>
+</html>

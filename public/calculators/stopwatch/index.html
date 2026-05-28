@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <link rel="apple-touch-icon" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <title>Online Stopwatch - Start, Pause, Reset & Laps | Vendora</title>
+  <meta name="description" content="Use a free browser stopwatch with start, pause, reset, lap times, and simple lap copy or export. No backend required.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculators/stopwatch/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Online Stopwatch - Start, Pause, Reset & Laps">
+  <meta property="og:description" content="Start, pause, reset, and record lap times in a private browser stopwatch.">
+  <meta property="og:url" content="https://getvendora.net/calculators/stopwatch/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Online Stopwatch - Start, Pause, Reset & Laps | Vendora">
+  <meta name="twitter:description" content="Start, pause, reset, and record lap times in a private browser stopwatch.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/calculators.css">
+  <link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://getvendora.net/calculators/stopwatch/#webpage",
+        "url": "https://getvendora.net/calculators/stopwatch/",
+        "name": "Online Stopwatch - Start, Pause, Reset and Laps | Vendora",
+        "description": "Use a free browser stopwatch with start, pause, reset, lap times, and simple lap copy or export.",
+        "isPartOf": {"@type": "WebSite", "name": "Vendora", "url": "https://getvendora.net/"},
+        "breadcrumb": {"@id": "https://getvendora.net/calculators/stopwatch/#breadcrumb"},
+        "mainEntity": {"@id": "https://getvendora.net/calculators/stopwatch/#software"}
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://getvendora.net/calculators/stopwatch/#software",
+        "name": "Online Stopwatch",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "url": "https://getvendora.net/calculators/stopwatch/",
+        "description": "Browser stopwatch with start, pause, reset, lap recording, and lap copy/export.",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://getvendora.net/calculators/stopwatch/#breadcrumb",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Vendora", "item": "https://getvendora.net/"},
+          {"@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://getvendora.net/calculators/"},
+          {"@type": "ListItem", "position": 3, "name": "Stopwatch", "item": "https://getvendora.net/calculators/stopwatch/"}
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://getvendora.net/calculators/stopwatch/#faq",
+        "mainEntity": [
+          {"@type": "Question", "name": "Does the stopwatch keep running if I close the page?", "acceptedAnswer": {"@type": "Answer", "text": "No. The stopwatch runs in your current browser tab and resets if the page is closed or reloaded."}},
+          {"@type": "Question", "name": "Are lap times sent to a server?", "acceptedAnswer": {"@type": "Answer", "text": "No. Lap times are kept in the browser page only unless you copy them yourself."}},
+          {"@type": "Question", "name": "How precise is the stopwatch?", "acceptedAnswer": {"@type": "Answer", "text": "It is suitable for everyday timing. Browser scheduling, device sleep, and heavy tabs can affect precision."}}
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">← All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Time &amp; Date</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">Stopwatch</h1>
+      <p class="text-sm text-vendora-muted mb-6">Start, pause, reset, and record lap times directly in your browser.</p>
+
+      <div id="elapsed" class="p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text text-2xl font-mono" role="timer" aria-live="polite">00:00.00</div>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <button type="button" id="startPauseBtn" class="bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Start</button>
+        <button type="button" id="lapBtn" class="bg-vendora-brand/10 text-vendora-brand px-4 py-2 rounded font-semibold border border-white/10 hover:bg-vendora-brand/15">Lap</button>
+        <button type="button" id="resetBtn" class="bg-vendora-bg/50 text-vendora-text px-4 py-2 rounded font-semibold border border-white/10">Reset</button>
+        <button type="button" id="copyLapsBtn" class="bg-vendora-bg/50 text-vendora-text px-4 py-2 rounded font-semibold border border-white/10">Copy laps</button>
+      </div>
+      <p id="stopwatchStatus" class="text-xs text-vendora-muted mt-3" role="status" aria-live="polite">Ready.</p>
+      <ol id="laps" class="mt-6 space-y-2 text-sm text-vendora-muted"></ol>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
+
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+        <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: Stopwatch</h2>
+        <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+            <p>Measures elapsed time in the browser and stores lap rows while the page stays open.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+            <p>Press Start, use Lap to save a split time, Pause when needed, and Reset to clear the timer.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+            <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">Elapsed time = current browser timestamp - start timestamp + saved elapsed time.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+            <p>Use laps to time exercise sets, cooking stages, study sprints, or simple work intervals.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+            <div class="space-y-3">
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">Does the stopwatch keep running if I close the page?</p>
+                <p class="text-sm text-vendora-muted mt-1">No. The stopwatch runs in your current browser tab and resets if the page is closed or reloaded.</p>
+              </div>
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">Are lap times sent to a server?</p>
+                <p class="text-sm text-vendora-muted mt-1">No. Lap times are kept in the browser page only unless you copy them yourself.</p>
+              </div>
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">How precise is the stopwatch?</p>
+                <p class="text-sm text-vendora-muted mt-1">It is suitable for everyday timing. Browser scheduling, device sleep, and heavy tabs can affect precision.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="related-calculators-title">
+        <h2 id="related-calculators-title" class="text-lg font-semibold text-vendora-text mb-4">Related calculators</h2>
+        <ul class="grid gap-3 text-sm text-vendora-muted sm:grid-cols-2">
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../time-calculator/">Time calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../time-duration/">Time duration calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../days-from-today-calculator/">Days from today calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../birthday-calculator/">Birthday calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../date-difference/">Date difference calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../days-until-event/">Days until event calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../time-zone-converter/">Time zone converter</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../age-calculator/">Age calculator</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+<script>
+(function () {
+  const elapsedEl = document.getElementById('elapsed');
+  const startPauseBtn = document.getElementById('startPauseBtn');
+  const lapBtn = document.getElementById('lapBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const copyLapsBtn = document.getElementById('copyLapsBtn');
+  const lapsEl = document.getElementById('laps');
+  const statusEl = document.getElementById('stopwatchStatus');
+  let running = false;
+  let startedAt = 0;
+  let savedMs = 0;
+  let rafId = null;
+  let laps = [];
+
+  function format(ms) {
+    const totalCentiseconds = Math.floor(ms / 10);
+    const centiseconds = totalCentiseconds % 100;
+    const totalSeconds = Math.floor(totalCentiseconds / 100);
+    const seconds = totalSeconds % 60;
+    const minutes = Math.floor(totalSeconds / 60);
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(centiseconds).padStart(2, '0')}`;
+  }
+  function currentMs() {
+    return running ? savedMs + (performance.now() - startedAt) : savedMs;
+  }
+  function paint() {
+    elapsedEl.textContent = format(currentMs());
+    if (running) rafId = requestAnimationFrame(paint);
+  }
+  function renderLaps() {
+    lapsEl.innerHTML = laps.map((lap, index) => `<li class="rounded-lg border border-white/10 bg-vendora-bg/50 px-3 py-2">Lap ${index + 1}: <span class="font-mono text-vendora-text">${lap}</span></li>`).join('');
+  }
+  function start() {
+    if (running) return;
+    running = true;
+    startedAt = performance.now();
+    startPauseBtn.textContent = 'Pause';
+    statusEl.textContent = 'Running.';
+    paint();
+  }
+  function pause() {
+    if (!running) return;
+    savedMs = currentMs();
+    running = false;
+    startPauseBtn.textContent = 'Start';
+    statusEl.textContent = 'Paused.';
+    if (rafId) cancelAnimationFrame(rafId);
+    paint();
+  }
+  function reset() {
+    running = false;
+    savedMs = 0;
+    laps = [];
+    if (rafId) cancelAnimationFrame(rafId);
+    startPauseBtn.textContent = 'Start';
+    statusEl.textContent = 'Ready.';
+    elapsedEl.textContent = '00:00.00';
+    renderLaps();
+  }
+  function addLap() {
+    const value = format(currentMs());
+    laps.push(value);
+    statusEl.textContent = `Lap ${laps.length} saved.`;
+    renderLaps();
+  }
+  async function copyLaps() {
+    if (!laps.length) {
+      statusEl.textContent = 'No laps to copy yet.';
+      return;
+    }
+    const text = laps.map((lap, index) => `Lap ${index + 1}: ${lap}`).join('\n');
+    try {
+      await navigator.clipboard.writeText(text);
+      statusEl.textContent = 'Lap times copied.';
+    } catch (error) {
+      statusEl.textContent = text;
+    }
+  }
+
+  startPauseBtn.addEventListener('click', () => running ? pause() : start());
+  lapBtn.addEventListener('click', addLap);
+  resetBtn.addEventListener('click', reset);
+  copyLapsBtn.addEventListener('click', copyLaps);
+  paint();
+})();
+</script>
+</body>
+</html>

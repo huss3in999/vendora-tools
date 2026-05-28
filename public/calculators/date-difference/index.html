@@ -14,6 +14,7 @@
   </script>
 <title>Date Difference Calculator — Days Between Two Dates | Vendora</title>
 <meta name="description" content="Find the number of days (and optionally weeks) between two calendar dates.">
+<meta name="robots" content="index, follow">
 <link rel="canonical" href="https://getvendora.net/calculators/date-difference/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Date Difference Calculator — Days Between Two Dates">
@@ -26,6 +27,70 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/calculators.css">
+<link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://getvendora.net/calculators/date-difference/#webpage",
+      "url": "https://getvendora.net/calculators/date-difference/",
+      "name": "Date Difference Calculator - Days Between Two Dates | Vendora",
+      "description": "Find the number of days and weeks between two calendar dates.",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Vendora",
+        "url": "https://getvendora.net/"
+      },
+      "breadcrumb": {
+        "@id": "https://getvendora.net/calculators/date-difference/#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://getvendora.net/calculators/date-difference/#software"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://getvendora.net/calculators/date-difference/#software",
+      "name": "Date Difference Calculator",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "url": "https://getvendora.net/calculators/date-difference/",
+      "description": "Calculate calendar days and weeks between a start date and an end date.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://getvendora.net/calculators/date-difference/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Vendora",
+          "item": "https://getvendora.net/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Calculators",
+          "item": "https://getvendora.net/calculators/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Date Difference Calculator",
+          "item": "https://getvendora.net/calculators/date-difference/"
+        }
+      ]
+    }
+  ]
+}
+</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Inclusive vs exclusive?","acceptedAnswer":{"@type":"Answer","text":"Check whether the tool counts both endpoints; definitions vary."}},{"@type":"Question","name":"Order of dates?","acceptedAnswer":{"@type":"Answer","text":"Swap if you get negative duration; some tools use absolute difference."}},{"@type":"Question","name":"Business days?","acceptedAnswer":{"@type":"Answer","text":"This counts calendar days; business-day math excludes weekends/holidays separately."}}]}</script>
 </head>
 <body class="vendora-calc-shell min-h-screen p-4 md:p-8">
@@ -35,8 +100,10 @@
       <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Time &amp; Date</p>
       <h1 class="text-2xl font-bold text-vendora-text mb-2">Date Difference</h1>
       <p class="text-sm text-vendora-muted mb-6">Calendar days between dates.</p>
-      <label>Start <input type="date" id="a" class="w-full border rounded px-2 py-1 mt-1"></label>
-<label class="block mt-3">End <input type="date" id="b" class="w-full border rounded px-2 py-1 mt-1"></label>
+      <label for="a" class="block">Start date</label>
+<input type="date" id="a" class="w-full border rounded px-2 py-1 mt-1">
+<label for="b" class="block mt-3">End date</label>
+<input type="date" id="b" class="w-full border rounded px-2 py-1 mt-1">
 <button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
       <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
       <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
@@ -77,6 +144,15 @@
       </div></div>
         </div>
       </div>
+    </section>
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="related-calculators-title">
+      <h2 id="related-calculators-title" class="text-lg font-semibold text-vendora-text mb-4">Related calculators</h2>
+      <ul class="grid gap-3 text-sm text-vendora-muted sm:grid-cols-2">
+        <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../age-calculator/">Age calculator</a></li>
+        <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../days-until-event/">Days until event calculator</a></li>
+        <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../time-duration/">Time duration calculator</a></li>
+        <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../">All calculators</a></li>
+      </ul>
     </section>
     </main>
   </div>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <link rel="apple-touch-icon" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DFY197R2MS');
+  </script>
+  <title>GPA Calculator - Weighted &amp; Unweighted Semester GPA | Vendora</title>
+  <meta name="description" content="Calculate semester GPA from course grades and credits with weighted or unweighted options and a simple 4.0 or 5.0 scale selector.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://getvendora.net/calculators/gpa-calculator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="GPA Calculator - Weighted &amp; Unweighted Semester GPA">
+  <meta property="og:description" content="Calculate semester GPA from courses, credits, letter grades, and weighted class types.">
+  <meta property="og:url" content="https://getvendora.net/calculators/gpa-calculator/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="GPA Calculator - Weighted &amp; Unweighted Semester GPA | Vendora">
+  <meta name="twitter:description" content="Calculate semester GPA from courses, credits, letter grades, and weighted class types.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/calculators.css">
+  <link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://getvendora.net/calculators/gpa-calculator/#webpage",
+        "url": "https://getvendora.net/calculators/gpa-calculator/",
+        "name": "GPA Calculator - Weighted and Unweighted Semester GPA | Vendora",
+        "description": "Calculate semester GPA from course grades and credits with weighted or unweighted options and a simple 4.0 or 5.0 scale selector.",
+        "isPartOf": {"@type": "WebSite", "name": "Vendora", "url": "https://getvendora.net/"},
+        "breadcrumb": {"@id": "https://getvendora.net/calculators/gpa-calculator/#breadcrumb"},
+        "mainEntity": {"@id": "https://getvendora.net/calculators/gpa-calculator/#software"}
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://getvendora.net/calculators/gpa-calculator/#software",
+        "name": "GPA Calculator",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any",
+        "url": "https://getvendora.net/calculators/gpa-calculator/",
+        "description": "Browser GPA calculator for semester GPA, credits, letter grades, weighted class types, and GPA scale selection.",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://getvendora.net/calculators/gpa-calculator/#breadcrumb",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Vendora", "item": "https://getvendora.net/"},
+          {"@type": "ListItem", "position": 2, "name": "Calculators", "item": "https://getvendora.net/calculators/"},
+          {"@type": "ListItem", "position": 3, "name": "GPA Calculator", "item": "https://getvendora.net/calculators/gpa-calculator/"}
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://getvendora.net/calculators/gpa-calculator/#faq",
+        "mainEntity": [
+          {"@type": "Question", "name": "What is the difference between weighted and unweighted GPA?", "acceptedAnswer": {"@type": "Answer", "text": "Unweighted GPA uses the base grade points only. Weighted GPA can add a bump for honors, AP, IB, or advanced classes."}},
+          {"@type": "Question", "name": "Does this replace my school's official GPA?", "acceptedAnswer": {"@type": "Answer", "text": "No. Schools can use different grading scales and rules, so this calculator is only a practical estimate."}},
+          {"@type": "Question", "name": "How are credits used in the GPA calculation?", "acceptedAnswer": {"@type": "Answer", "text": "Each course grade point is multiplied by its credits, then divided by total credits to produce a weighted average."}}
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="vendora-calc-shell min-h-screen p-4 md:p-8">
+  <div class="max-w-2xl mx-auto">
+    <nav class="mb-4" aria-label="Breadcrumb"><a href="../" class="text-vendora-brand hover:text-vendora-brand-dark hover:underline text-sm font-medium">&larr; All calculators</a></nav>
+    <main class="rounded-xl border border-white/10 bg-vendora-panel/95 backdrop-blur-sm shadow-vendora p-6 md:p-8">
+      <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Math &amp; Algebra</p>
+      <h1 class="text-2xl font-bold text-vendora-text mb-2">GPA Calculator</h1>
+      <p class="text-sm text-vendora-muted mb-6">Estimate semester GPA from letter grades and credits, with optional weighted bumps for honors, AP, IB, or advanced courses.</p>
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for="gpaType" class="block">GPA type</label>
+          <select id="gpaType" class="nut-select border rounded px-2 py-1 mt-1">
+            <option value="unweighted">Unweighted</option>
+            <option value="weighted">Weighted</option>
+          </select>
+        </div>
+        <div>
+          <label for="gpaScale" class="block">GPA scale</label>
+          <select id="gpaScale" class="nut-select border rounded px-2 py-1 mt-1">
+            <option value="4">4.0 scale</option>
+            <option value="5">5.0 scale</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-5 flex items-end justify-between gap-3">
+        <h2 class="text-base font-semibold text-vendora-text">Courses</h2>
+        <button type="button" id="addCourseRow" class="text-sm text-vendora-brand font-semibold underline-offset-2 hover:underline">Add course</button>
+      </div>
+      <div id="courseRows" class="mt-3 space-y-3"></div>
+
+      <div class="mt-5 flex flex-wrap gap-3">
+        <button type="button" id="calculateGpa" class="bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
+        <button type="button" id="resetGpa" class="border border-white/10 px-4 py-2 rounded font-semibold text-vendora-text hover:bg-vendora-bg/60">Reset</button>
+      </div>
+
+      <div id="gpaResult" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
+      <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Confirm your school's official grading policy before using results for decisions.</p>
+
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="calc-guide-title">
+        <h2 id="calc-guide-title" class="text-lg font-semibold text-vendora-text mb-4">Guide: GPA Calculator</h2>
+        <div class="space-y-5 text-sm text-vendora-muted leading-relaxed">
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">What it does</h3>
+            <p>This tool converts course letter grades into grade points, applies credits, and estimates a semester GPA.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">How to use it</h3>
+            <p>Add each course, choose its letter grade and credits, then select weighted mode if your school gives extra points for advanced courses.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">Formula</h3>
+            <p class="font-mono text-vendora-text/90 bg-vendora-bg/60 border border-white/10 rounded px-3 py-2">GPA = sum(grade points x credits) / sum(credits).</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-1">Example</h3>
+            <p>An A in a 3-credit class and a B in a 3-credit class gives (4 x 3 + 3 x 3) / 6 = 3.50 on a 4.0 scale.</p>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-vendora-text mb-2">FAQs</h3>
+            <div class="space-y-3">
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">What is the difference between weighted and unweighted GPA?</p>
+                <p class="text-sm text-vendora-muted mt-1">Unweighted GPA uses the base grade points only. Weighted GPA can add a bump for honors, AP, IB, or advanced classes.</p>
+              </div>
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">Does this replace my school's official GPA?</p>
+                <p class="text-sm text-vendora-muted mt-1">No. Schools can use different grading scales and rules, so this calculator is only a practical estimate.</p>
+              </div>
+              <div class="border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                <p class="text-sm font-medium text-vendora-text">How are credits used in the GPA calculation?</p>
+                <p class="text-sm text-vendora-muted mt-1">Each course grade point is multiplied by its credits, then divided by total credits to produce a weighted average.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="related-calculators-title">
+        <h2 id="related-calculators-title" class="text-lg font-semibold text-vendora-text mb-4">Related calculators</h2>
+        <ul class="grid gap-3 text-sm text-vendora-muted sm:grid-cols-2">
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../grade-calculator/">Grade calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../percentage-calculator/">Percentage calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../fraction-calculator/">Fraction calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../standard-deviation/">Standard deviation calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../gcd-lcm-calculator/">GCD and LCM calculator</a></li>
+          <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../quadratic-equation/">Quadratic equation solver</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+<script>
+(function () {
+  const rowsEl = document.getElementById('courseRows');
+  const typeEl = document.getElementById('gpaType');
+  const scaleEl = document.getElementById('gpaScale');
+  const resultEl = document.getElementById('gpaResult');
+  const gradePoints = {
+    'A': 4,
+    'A-': 3.7,
+    'B+': 3.3,
+    'B': 3,
+    'B-': 2.7,
+    'C+': 2.3,
+    'C': 2,
+    'C-': 1.7,
+    'D': 1,
+    'F': 0
+  };
+  let courses = [];
+  let nextId = 1;
+
+  function defaultCourses() {
+    return [
+      { id: nextId++, name: 'English', credits: 3, grade: 'A', type: 'regular' },
+      { id: nextId++, name: 'Biology', credits: 3, grade: 'B', type: 'honors' }
+    ];
+  }
+  function typeLabel(value) {
+    if (value === 'honors') return 'Honors (+0.5)';
+    if (value === 'advanced') return 'AP/IB/Advanced (+1.0)';
+    return 'Regular';
+  }
+  function typeBump(value) {
+    if (value === 'honors') return 0.5;
+    if (value === 'advanced') return 1;
+    return 0;
+  }
+  function renderCourses() {
+    rowsEl.innerHTML = '';
+    courses.forEach((course, index) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'rounded-lg border border-white/10 bg-vendora-bg/45 p-4';
+      wrap.innerHTML = `
+        <div class="grid gap-3 sm:grid-cols-5">
+          <div class="sm:col-span-2">
+            <label for="courseName${course.id}" class="text-xs text-vendora-muted">Course</label>
+            <input type="text" id="courseName${course.id}" class="w-full border rounded px-2 py-1 mt-1" value="${course.name}">
+          </div>
+          <div>
+            <label for="courseCredits${course.id}" class="text-xs text-vendora-muted">Credits</label>
+            <input type="number" id="courseCredits${course.id}" class="w-full border rounded px-2 py-1 mt-1" value="${course.credits}" min="0" step="any">
+          </div>
+          <div>
+            <label for="courseGrade${course.id}" class="text-xs text-vendora-muted">Grade</label>
+            <select id="courseGrade${course.id}" class="w-full border rounded px-2 py-1 mt-1">
+              ${Object.keys(gradePoints).map((grade) => `<option value="${grade}" ${course.grade === grade ? 'selected' : ''}>${grade}</option>`).join('')}
+            </select>
+          </div>
+          <div>
+            <label for="courseType${course.id}" class="text-xs text-vendora-muted">Type</label>
+            <select id="courseType${course.id}" class="w-full border rounded px-2 py-1 mt-1">
+              ${['regular', 'honors', 'advanced'].map((value) => `<option value="${value}" ${course.type === value ? 'selected' : ''}>${typeLabel(value)}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        <div class="mt-3 flex justify-between items-center">
+          <p class="text-xs text-vendora-muted">Course ${index + 1}</p>
+          <button type="button" class="remove-course-row text-xs text-red-300 underline-offset-2 hover:underline" data-id="${course.id}">Remove</button>
+        </div>
+      `;
+      rowsEl.appendChild(wrap);
+    });
+    bindCourseInputs();
+  }
+  function bindCourseInputs() {
+    courses.forEach((course) => {
+      const name = document.getElementById(`courseName${course.id}`);
+      const credits = document.getElementById(`courseCredits${course.id}`);
+      const grade = document.getElementById(`courseGrade${course.id}`);
+      const type = document.getElementById(`courseType${course.id}`);
+      name.addEventListener('input', () => { course.name = name.value; });
+      credits.addEventListener('input', () => { course.credits = Number(credits.value); calculate(); });
+      grade.addEventListener('change', () => { course.grade = grade.value; calculate(); });
+      type.addEventListener('change', () => { course.type = type.value; calculate(); });
+    });
+    document.querySelectorAll('.remove-course-row').forEach((button) => {
+      button.addEventListener('click', () => {
+        courses = courses.filter((course) => course.id !== Number(button.dataset.id));
+        if (!courses.length) courses.push({ id: nextId++, name: 'Course', credits: 3, grade: 'A', type: 'regular' });
+        renderCourses();
+        calculate();
+      });
+    });
+  }
+  function calculate() {
+    const scale = Number(scaleEl.value);
+    let weightedPoints = 0;
+    let totalCredits = 0;
+    for (const course of courses) {
+      if (!Number.isFinite(course.credits) || course.credits <= 0) continue;
+      let points = gradePoints[course.grade];
+      if (typeEl.value === 'weighted') points = Math.min(scale, points + typeBump(course.type));
+      weightedPoints += points * course.credits;
+      totalCredits += course.credits;
+    }
+    if (totalCredits <= 0) {
+      resultEl.textContent = 'Enter at least one course with credits greater than zero.';
+      return;
+    }
+    const gpa = weightedPoints / totalCredits;
+    resultEl.textContent = [
+      `Semester GPA: ${gpa.toFixed(2)}`,
+      `Total credits: ${Number(totalCredits.toFixed(2)).toString()}`,
+      `Mode: ${typeEl.value === 'weighted' ? 'weighted' : 'unweighted'} on a ${scale.toFixed(1)} scale`
+    ].join('\n');
+  }
+  function resetForm() {
+    nextId = 1;
+    courses = defaultCourses();
+    typeEl.value = 'unweighted';
+    scaleEl.value = '4';
+    renderCourses();
+    calculate();
+  }
+  document.getElementById('addCourseRow').addEventListener('click', () => {
+    courses.push({ id: nextId++, name: 'New course', credits: 3, grade: 'A', type: 'regular' });
+    renderCourses();
+    calculate();
+  });
+  document.getElementById('calculateGpa').addEventListener('click', calculate);
+  document.getElementById('resetGpa').addEventListener('click', resetForm);
+  [typeEl, scaleEl].forEach((el) => {
+    el.addEventListener('change', calculate);
+    el.addEventListener('input', calculate);
+  });
+  resetForm();
+})();
+</script>
+</body>
+</html>

@@ -14,6 +14,7 @@
   </script>
 <title>Days Until Event — Countdown to a Future Date | Vendora</title>
 <meta name="description" content="Count whole days remaining until a target date from today (or a chosen reference date).">
+<meta name="robots" content="index, follow">
 <link rel="canonical" href="https://getvendora.net/calculators/days-until-event/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Days Until Event — Countdown to a Future Date">
@@ -26,6 +27,70 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/calculators.css">
+<link rel="stylesheet" href="../assets/calculator-dark-forms.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://getvendora.net/calculators/days-until-event/#webpage",
+      "url": "https://getvendora.net/calculators/days-until-event/",
+      "name": "Days Until Event Calculator - Countdown to a Future Date | Vendora",
+      "description": "Count whole days remaining until a target date from today or a chosen reference date.",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Vendora",
+        "url": "https://getvendora.net/"
+      },
+      "breadcrumb": {
+        "@id": "https://getvendora.net/calculators/days-until-event/#breadcrumb"
+      },
+      "mainEntity": {
+        "@id": "https://getvendora.net/calculators/days-until-event/#software"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://getvendora.net/calculators/days-until-event/#software",
+      "name": "Days Until Event Calculator",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "url": "https://getvendora.net/calculators/days-until-event/",
+      "description": "Calculate how many whole days remain until a future event date, or how many days have passed since it.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://getvendora.net/calculators/days-until-event/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Vendora",
+          "item": "https://getvendora.net/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Calculators",
+          "item": "https://getvendora.net/calculators/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Days Until Event Calculator",
+          "item": "https://getvendora.net/calculators/days-until-event/"
+        }
+      ]
+    }
+  ]
+}
+</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does it include today?","acceptedAnswer":{"@type":"Answer","text":"Tools differ; read the label on the output."}},{"@type":"Question","name":"Events in the past?","acceptedAnswer":{"@type":"Answer","text":"You may see zero or negative countdown—interpret per tool behavior."}},{"@type":"Question","name":"Time of day?","acceptedAnswer":{"@type":"Answer","text":"Date-only countdown ignores clock time unless the tool supports datetime."}}]}</script>
 </head>
 <body class="vendora-calc-shell min-h-screen p-4 md:p-8">
@@ -35,7 +100,8 @@
       <p class="text-xs uppercase tracking-wide text-vendora-muted mb-1">Time &amp; Date</p>
       <h1 class="text-2xl font-bold text-vendora-text mb-2">Days Until Event</h1>
       <p class="text-sm text-vendora-muted mb-6">Days from today to event.</p>
-      <label>Event date <input type="date" id="e" class="w-full border rounded px-2 py-1 mt-1"></label>
+      <label for="e" class="block">Event date</label>
+<input type="date" id="e" class="w-full border rounded px-2 py-1 mt-1">
 <button type="button" id="go" class="mt-4 bg-vendora-brand text-vendora-ink px-4 py-2 rounded font-semibold shadow-sm hover:bg-vendora-brand-dark">Calculate</button>
       <div id="out" class="mt-6 p-4 rounded-lg border border-white/10 bg-vendora-bg/50 text-vendora-text min-h-[3rem] whitespace-pre-wrap text-sm font-mono" role="status" aria-live="polite"></div>
       <p class="text-xs text-vendora-muted/80 mt-6">Educational estimates only. Not medical, legal, tax, or financial advice.</p>
@@ -76,6 +142,15 @@
       </div></div>
         </div>
       </div>
+    </section>
+    <section class="mt-10 pt-8 border-t border-white/10" aria-labelledby="related-calculators-title">
+      <h2 id="related-calculators-title" class="text-lg font-semibold text-vendora-text mb-4">Related calculators</h2>
+      <ul class="grid gap-3 text-sm text-vendora-muted sm:grid-cols-2">
+        <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../date-difference/">Date difference calculator</a></li>
+        <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../age-calculator/">Age calculator</a></li>
+        <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../time-zone-converter/">Time zone converter</a></li>
+        <li><a class="text-vendora-brand font-semibold underline-offset-2 hover:underline" href="../">All calculators</a></li>
+      </ul>
     </section>
     </main>
   </div>

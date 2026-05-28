@@ -1,7 +1,7 @@
 {
-  "generated": "2026-05-22",
+  "generated": "2026-05-28",
   "baseUrl": "https://getvendora.net",
-  "totalTools": 376,
+  "totalTools": 382,
   "categories": [
     {
       "id": "hubs",
@@ -1061,7 +1061,7 @@
       "id": "general-calculators",
       "label": "General calculators",
       "description": "Standalone calculators under /calculators/ (math, health, finance basics, utilities).",
-      "count": 53,
+      "count": 59,
       "items": [
         {
           "title": "2D Distance Calculator — Euclidean Distance Between Points",
@@ -1092,6 +1092,11 @@
           "title": "BAC Estimator (Widmark) — Educational Alcohol Metabolism Model",
           "url": "/calculators/blood-alcohol-content-bac/",
           "path": "calculators/blood-alcohol-content-bac/index.html"
+        },
+        {
+          "title": "Birthday Calculator - Age, Next Birthday & Countdown",
+          "url": "/calculators/birthday-calculator/",
+          "path": "calculators/birthday-calculator/index.html"
         },
         {
           "title": "BMI Calculator — Body Mass Index (kg/m²) for Adults",
@@ -1134,6 +1139,11 @@
           "path": "calculators/date-difference/index.html"
         },
         {
+          "title": "Days From Today Calculator - Future or Past Date",
+          "url": "/calculators/days-from-today-calculator/",
+          "path": "calculators/days-from-today-calculator/index.html"
+        },
+        {
           "title": "Days Until Event — Countdown to a Future Date",
           "url": "/calculators/days-until-event/",
           "path": "calculators/days-until-event/index.html"
@@ -1159,9 +1169,19 @@
           "path": "calculators/force-calculator/index.html"
         },
         {
-          "title": "Fraction Calculator — Add & Simplify Fractions",
+          "title": "Fraction Calculator - Add, Subtract, Multiply & Divide",
           "url": "/calculators/fraction-calculator/",
           "path": "calculators/fraction-calculator/index.html"
+        },
+        {
+          "title": "Grade Calculator - Weighted Grades & Final Exam Score",
+          "url": "/calculators/grade-calculator/",
+          "path": "calculators/grade-calculator/index.html"
+        },
+        {
+          "title": "GPA Calculator - Weighted & Unweighted Semester GPA",
+          "url": "/calculators/gpa-calculator/",
+          "path": "calculators/gpa-calculator/index.html"
         },
         {
           "title": "Fuel Economy Converter — MPG and Liters per 100 km",
@@ -1214,7 +1234,7 @@
           "path": "calculators/ovulation-calculator/index.html"
         },
         {
-          "title": "Percentage Calculator — Of, Change, Ratio & Backwards",
+          "title": "Percentage Calculator - Percent Of, Increase & Change",
           "url": "/calculators/percentage-calculator/",
           "path": "calculators/percentage-calculator/index.html"
         },
@@ -1299,9 +1319,19 @@
           "path": "calculators/standard-deviation/index.html"
         },
         {
+          "title": "Stopwatch - Start, Pause, Reset & Laps",
+          "url": "/calculators/stopwatch/",
+          "path": "calculators/stopwatch/index.html"
+        },
+        {
           "title": "Temperature Converter — °C, °F, and Kelvin",
           "url": "/calculators/temperature-converter/",
           "path": "calculators/temperature-converter/index.html"
+        },
+        {
+          "title": "Time Calculator - Add or Subtract Hours & Minutes",
+          "url": "/calculators/time-calculator/",
+          "path": "calculators/time-calculator/index.html"
         },
         {
           "title": "Time Duration Calculator — Span Across Midnight",
