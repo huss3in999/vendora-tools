@@ -3,9 +3,17 @@ const ALLOWED_ORIGINS = new Set([
   'https://www.getvendora.net',
   'http://127.0.0.1:4173',
   'http://localhost:4173',
+  'null',
 ]);
 
 const MAX_BODY_BYTES = 8192;
+let settingsSchemaReady = false;
+
+const DEFAULT_NOTIFICATION_SETTINGS = {
+  notifications_enabled: true,
+  notify_whatsapp_clicks: true,
+  notify_pageviews: false,
+};
 
 function json(data, init = {}) {
   return new Response(JSON.stringify(data), {
@@ -28,6 +36,125 @@ function corsHeaders(request) {
     'access-control-max-age': '86400',
     vary: 'Origin',
   };
+}
+
+function isPageview(payload) {
+  return cleanText(payload && payload.serviceType, 160) === 'pageview';
+}
+
+function getPayloadTrafficSource(payload) {
+  return cleanText(payload && (payload.firstTrafficSource || payload.trafficSource || payload.utmSource), 160) || 'direct/unknown';
+}
+
+async function ensureSettingsSchema(env) {
+  if (settingsSchemaReady || !env.TRANSPORT_DB) return;
+  await env.TRANSPORT_DB.prepare(`
+    CREATE TABLE IF NOT EXISTS transport_admin_settings (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL,
+      updated_at TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+    )
+  `).run();
+  settingsSchemaReady = true;
+}
+
+function boolSetting(value, fallback = false) {
+  if (value === true || value === 1 || value === '1') return true;
+  if (value === false || value === 0 || value === '0') return false;
+  const text = String(value ?? '').trim().toLowerCase();
+  if (['true', 'yes', 'on', 'enabled'].includes(text)) return true;
+  if (['false', 'no', 'off', 'disabled'].includes(text)) return false;
+  return fallback;
+}
+
+async function getNotificationSettings(env) {
+  const envPageviewFallback = String(env.TRANSPORT_NOTIFY_PAGEVIEWS || '').toLowerCase() === 'true';
+  const defaults = {
+    ...DEFAULT_NOTIFICATION_SETTINGS,
+    notify_pageviews: envPageviewFallback,
+  };
+
+  if (!env.TRANSPORT_DB) return defaults;
+
+  try {
+    await ensureSettingsSchema(env);
+    const { results } = await env.TRANSPORT_DB.prepare(`
+      SELECT key, value
+      FROM transport_admin_settings
+      WHERE key IN ('notifications_enabled', 'notify_whatsapp_clicks', 'notify_pageviews')
+    `).all();
+    const saved = Object.fromEntries((results || []).map((row) => [row.key, row.value]));
+    return Object.fromEntries(Object.entries(defaults).map(([key, fallback]) => [
+      key,
+      boolSetting(saved[key], fallback),
+    ]));
+  } catch (error) {
+    console.error(JSON.stringify({
+      event: 'transport_notify_settings_failed',
+      message: error && error.message ? error.message : String(error),
+    }));
+    return defaults;
+  }
+}
+
+function buildNotificationText(payload, geo) {
+  const pageview = isPageview(payload);
+  const eventName = pageview ? 'New page visit' : 'New WhatsApp click';
+  const route = cleanText(payload.routeLabel || payload.routeSlug, 240) || 'Unknown route';
+  const pagePath = cleanText(payload.pagePath, 300) || '-';
+  const source = getPayloadTrafficSource(payload);
+  const campaign = cleanText(payload.utmCampaign, 160) || 'none';
+  const device = cleanText(payload.deviceType, 40) || 'unknown device';
+  const location = [geo.city, geo.country].filter(Boolean).join(', ') || 'unknown location';
+  const timeOnPage = Math.round(Number(payload.timeOnPageMs || 0) / 1000);
+  const scroll = cleanBoundedInteger(payload.scrollDepthPercent, 0, 100) ?? 0;
+  const visitor = cleanText(payload.visitorId, 80);
+
+  return [
+    `Vendora Transport: ${eventName}`,
+    `Route: ${route}`,
+    `Page: ${pagePath}`,
+    `Source: ${source}`,
+    `Campaign: ${campaign}`,
+    `Device/location: ${device} / ${location}`,
+    `Engagement: ${timeOnPage}s, ${scroll}% scroll`,
+    visitor ? `Visitor: ${visitor.slice(0, 8)}...` : '',
+  ].filter(Boolean).join('\n');
+}
+
+async function sendPhoneNotification(request, env, payload) {
+  const webhookUrl = cleanText(env.TRANSPORT_NOTIFY_WEBHOOK_URL, 1200);
+  if (!webhookUrl) return;
+
+  const pageview = isPageview(payload);
+  const settings = await getNotificationSettings(env);
+  if (!settings.notifications_enabled) return;
+  if (pageview && !settings.notify_pageviews) return;
+  if (!pageview && !settings.notify_whatsapp_clicks) return;
+
+  let url;
+  try {
+    url = new URL(webhookUrl);
+    if (!['https:', 'http:'].includes(url.protocol)) return;
+  } catch {
+    return;
+  }
+
+  const geo = getRequestGeo(request);
+  const text = buildNotificationText(payload, geo);
+  const title = pageview ? 'Vendora page visit' : 'Vendora WhatsApp click';
+  const priority = pageview ? 'default' : 'high';
+
+  await fetch(url.toString(), {
+    method: 'POST',
+    headers: {
+      'content-type': 'text/plain; charset=utf-8',
+      title,
+      priority,
+      tags: pageview ? 'eyes' : 'telephone',
+    },
+    body: text,
+  });
 }
 
 function cleanText(value, maxLength = 500) {
@@ -104,6 +231,55 @@ function getPayloadValue(payload, key, maxLength) {
   return cleanText(payload && payload[key], maxLength);
 }
 
+function safePayloadJson(payload) {
+  const maxLength = 7000;
+  const text = JSON.stringify(payload);
+  if (text.length <= maxLength) return text;
+
+  const compact = { ...payload };
+  [
+    'referrer',
+    'firstReferrer',
+    'targetUrl',
+    'pageUrl',
+    'pageTitle',
+    'clickText',
+    'userAgent',
+  ].forEach((key) => {
+    if (typeof compact[key] === 'string') {
+      compact[key] = compact[key].slice(0, 240);
+    }
+  });
+
+  const compactText = JSON.stringify(compact);
+  if (compactText.length <= maxLength) return compactText;
+
+  return JSON.stringify({
+    timestamp: payload.timestamp,
+    routeSlug: payload.routeSlug,
+    routeLabel: payload.routeLabel,
+    pagePath: payload.pagePath,
+    targetUrl: payload.targetUrl,
+    sessionId: payload.sessionId,
+    visitorId: payload.visitorId,
+    visitCount: payload.visitCount,
+    sessionPageViews: payload.sessionPageViews,
+    previousPagePath: payload.previousPagePath,
+    trafficSource: payload.trafficSource,
+    firstTrafficSource: payload.firstTrafficSource,
+    utmSource: payload.utmSource,
+    utmMedium: payload.utmMedium,
+    utmCampaign: payload.utmCampaign,
+    deviceType: payload.deviceType,
+    browserLanguage: payload.browserLanguage,
+    platform: payload.platform,
+    connectionType: payload.connectionType,
+    timeOnPageMs: payload.timeOnPageMs,
+    scrollDepthPercent: payload.scrollDepthPercent,
+    serviceType: payload.serviceType,
+  });
+}
+
 async function parseJsonBody(request) {
   const contentLength = Number(request.headers.get('content-length') || 0);
   if (contentLength > MAX_BODY_BYTES) {
@@ -163,11 +339,8 @@ async function storeLead(request, env, payload, leadUuid) {
       screen_height,
       timezone_offset_minutes,
       interaction_count,
-      visitor_id,
-      visit_count,
-      session_page_views,
       raw_payload
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   await stmt.bind(
@@ -212,10 +385,7 @@ async function storeLead(request, env, payload, leadUuid) {
     cleanInteger(payload.screenHeight),
     cleanBoundedInteger(payload.timezoneOffsetMinutes, -1440, 1440),
     cleanBoundedInteger(payload.interactionCount, 0, 10000),
-    getPayloadValue(payload, 'visitorId', 120),
-    cleanBoundedInteger(payload.visitCount, 1, 1000000),
-    cleanBoundedInteger(payload.sessionPageViews, 1, 100000),
-    JSON.stringify(payload).slice(0, 4000),
+    safePayloadJson(payload),
   ).run();
 }
 
@@ -247,8 +417,16 @@ export async function onRequestPost(context) {
       message: error && error.message ? error.message : String(error),
     }));
   });
+  const notify = sendPhoneNotification(request, env, payload).catch((error) => {
+    console.error(JSON.stringify({
+      event: 'transport_notify_failed',
+      leadUuid,
+      message: error && error.message ? error.message : String(error),
+    }));
+  });
 
   context.waitUntil(write);
+  context.waitUntil(notify);
 
   return json({ ok: true, leadId: leadUuid }, { status: 202, headers });
 }
