@@ -43,6 +43,7 @@ function transportHealthResponse() {
     service: 'vendora-transport-api',
     routes: [
       '/api/transport/admin',
+      '/api/transport/event',
       '/api/transport/whatsapp-lead',
     ],
   }), {
@@ -72,7 +73,7 @@ export default {
       return dispatchPagesFunction(adminApi, request, env, ctx);
     }
 
-    if (path === '/api/transport/whatsapp-lead') {
+    if (path === '/api/transport/event' || path === '/api/transport/whatsapp-lead') {
       return dispatchPagesFunction(leadApi, request, env, ctx);
     }
 

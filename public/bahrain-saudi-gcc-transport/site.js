@@ -3,7 +3,7 @@
   const phoneNumber = config.phoneNumber || '97333225954';
   const siteSegment = '/bahrain-saudi-gcc-transport/';
   const defaultArabicMessage = config.defaultWhatsAppMessage || 'مرحباً، أود معرفة تفاصيل الحجز والخدمة.';
-  const leadEndpoint = config.leadEndpoint || (`${siteSegment.replace(/\/$/, '')}/api/transport/whatsapp-lead`);
+  const leadEndpoint = config.leadEndpoint || (`${siteSegment.replace(/\/$/, '')}/api/transport/event`);
   const pageUrl = window.location.href;
   const pageLoadedAt = new Date().toISOString();
   const pageStartedAt = Date.now();
@@ -1056,13 +1056,17 @@
     };
   }
 
-  function sendLeadPayload(payload) {
+  function sendLeadPayload(payload, options = {}) {
     const body = JSON.stringify(payload);
-    const beaconFallback = () => {
-      if (!navigator.sendBeacon) return;
+    const sendBeaconPayload = () => {
+      if (!navigator.sendBeacon) return false;
       const blob = new Blob([body], { type: 'application/json' });
-      navigator.sendBeacon(leadEndpoint, blob);
+      return navigator.sendBeacon(leadEndpoint, blob);
     };
+
+    if (options.preferBeacon && sendBeaconPayload()) {
+      return;
+    }
 
     fetch(leadEndpoint, {
       method: 'POST',
@@ -1070,7 +1074,9 @@
       body,
       keepalive: true,
       credentials: 'omit',
-    }).catch(beaconFallback);
+    }).catch(() => {
+      sendBeaconPayload();
+    });
   }
 
   function setupWhatsAppLeadInterceptor() {
@@ -1086,7 +1092,7 @@
       }
 
       const payload = buildLeadPayload(link, event);
-      sendLeadPayload(payload);
+      sendLeadPayload(payload, { preferBeacon: true });
       if (typeof window.gtag === 'function') {
         window.gtag('event', 'transport_whatsapp_click', {
           route_name: payload.routeSlug,

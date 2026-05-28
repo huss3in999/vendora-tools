@@ -99,9 +99,11 @@ async function getNotificationSettings(env) {
 
 function buildNotificationText(payload, geo) {
   const pageview = isPageview(payload);
-  const eventName = pageview ? 'New page visit' : 'New WhatsApp click';
+  const eventName = pageview ? 'PAGE VISIT' : 'WHATSAPP BOOKING CLICK';
   const route = cleanText(payload.routeLabel || payload.routeSlug, 240) || 'Unknown route';
   const pagePath = cleanText(payload.pagePath, 300) || '-';
+  const pageTitle = cleanText(payload.pageTitle, 240) || '';
+  const pageUrl = cleanText(payload.pageUrl, 500) || '';
   const source = getPayloadTrafficSource(payload);
   const campaign = cleanText(payload.utmCampaign, 160) || 'none';
   const device = cleanText(payload.deviceType, 40) || 'unknown device';
@@ -112,12 +114,16 @@ function buildNotificationText(payload, geo) {
 
   return [
     `Vendora Transport: ${eventName}`,
-    `Route: ${route}`,
+    `Website: getvendora.net / GCC Transport`,
+    pageTitle ? `Page name: ${pageTitle}` : '',
+    `Route/page: ${route}`,
     `Page: ${pagePath}`,
+    pageUrl ? `URL: ${pageUrl}` : '',
     `Source: ${source}`,
     `Campaign: ${campaign}`,
     `Device/location: ${device} / ${location}`,
     `Engagement: ${timeOnPage}s, ${scroll}% scroll`,
+    pageview ? 'Meaning: visitor opened this page.' : 'Meaning: customer opened WhatsApp booking chat.',
     visitor ? `Visitor: ${visitor.slice(0, 8)}...` : '',
   ].filter(Boolean).join('\n');
 }
@@ -142,7 +148,7 @@ async function sendPhoneNotification(request, env, payload) {
 
   const geo = getRequestGeo(request);
   const text = buildNotificationText(payload, geo);
-  const title = pageview ? 'Vendora page visit' : 'Vendora WhatsApp click';
+  const title = pageview ? 'Vendora GCC page visit' : 'Vendora GCC WhatsApp booking';
   const priority = pageview ? 'default' : 'high';
 
   await fetch(url.toString(), {
