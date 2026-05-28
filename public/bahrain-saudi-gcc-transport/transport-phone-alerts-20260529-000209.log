@@ -1,0 +1,70 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260529000209
+Username: DESKTOP-UK5BRGP\Hussain Alyaqoob
+RunAs User: DESKTOP-UK5BRGP\Hussain Alyaqoob
+Configuration Name: 
+Machine: DESKTOP-UK5BRGP (Microsoft Windows NT 10.0.19045.0)
+Host Application: powershell -NoProfile -ExecutionPolicy Bypass -File E:\Users\Hussain Alyaqoob\Documents\GitHub\public\bahrain-saudi-gcc-transport\PHONE-ALERTS-STAYS-OPEN.ps1
+Process ID: 16240
+PSVersion: 5.1.19041.6456
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.6456
+BuildVersion: 10.0.19041.6456
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Vendora Transport Phone Alerts Setup
+This window will stay open and send a real test notification.
+
+On your phone:
+1. Install the app named ntfy.
+2. Open ntfy and subscribe to one private topic name, for example vendora-hussain-2026.
+3. Use the same topic name here. Do not use your phone number.
+
+
+ ⛅️ wrangler 4.79.0 (update available 4.95.0)
+─────────────────────────────────────────────
+Getting User settings...
+�� You are logged in with an OAuth Token, associated with the email huss3in999@gmail.com.
+┌────────────────────────────────┬──────────────────────────────────┐
+│ Account Name                   │ Account ID                       │
+├────────────────────────────────┼──────────────────────────────────┤
+│ Huss3in999@gmail.com's Account │ 3f5dcaaeaf14a8a1c4bbda38d93ceda0 │
+└────────────────────────────────┴──────────────────────────────────┘
+�� Token Permissions:
+Scope (Access)
+- account (read)
+- user (read)
+- workers (write)
+- workers_kv (write)
+- workers_routes (write)
+- workers_scripts (write)
+- workers_tail (read)
+- d1 (write)
+- pages (write)
+- zone (read)
+- ssl_certs (write)
+- ai (write)
+- ai-search (write)
+- ai-search (run)
+- queues (write)
+- pipelines (write)
+- secrets_store (write)
+- containers (write)
+- cloudchamber (write)
+- connectivity (admin)
+- offline_access
+
+Sending a test notification to: https://ntfy.sh/vendora-hussain-2026-9831
+Test notification sent. Check your phone now before continuing.
+PS>TerminatingError(): "The pipeline has been stopped."
+>> TerminatingError(): "The pipeline has been stopped."
+>> $global:?
+True
+**********************
+Windows PowerShell transcript end
+End time: 20260529000329
+**********************
