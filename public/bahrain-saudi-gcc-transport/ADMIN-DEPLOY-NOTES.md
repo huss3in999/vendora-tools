@@ -15,10 +15,10 @@ TRANSPORT_ADMIN_TOKEN
 If everything is broken or you are not sure whether Cloudflare is logged in, run:
 
 ```text
-repair-transport-admin-everything.bat
+START-HERE-REPAIR-ADMIN.cmd
 ```
 
-That helper logs into Cloudflare if needed, deploys the Worker, resets the admin password, optionally sets phone alerts, and checks the live API health route.
+That helper stays open, writes a log file, logs into Cloudflare if needed, deploys the Worker, resets the admin password, optionally sets phone alerts, and checks the live API health route.
 
 ## What The Errors Mean
 
@@ -69,4 +69,3 @@ Then open Admin > Alerts to choose:
 - WhatsApp click alerts
 - Page visit alerts
 - Pause all alerts
-
