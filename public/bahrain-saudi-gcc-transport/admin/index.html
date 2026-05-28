@@ -158,7 +158,7 @@
       <p id="statusLine" class="hidden rounded-2xl border px-5 py-4 text-sm"></p>
 
       <!-- NAVIGATION TABS -->
-      <nav class="grid grid-cols-5 rounded-2xl glass-panel p-1.5 shadow-md">
+      <nav class="grid grid-cols-2 gap-1 rounded-2xl glass-panel p-1.5 shadow-md sm:grid-cols-3 xl:grid-cols-6">
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="leads" type="button">
           <i data-lucide="message-circle" class="h-4 w-4"></i> Clicks
         </button>
@@ -173,6 +173,9 @@
         </button>
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="pricing" type="button">
           <i data-lucide="coins" class="h-4 w-4"></i> Prices
+        </button>
+        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="alerts" type="button">
+          <i data-lucide="bell-ring" class="h-4 w-4"></i> Alerts
         </button>
       </nav>
 
@@ -436,6 +439,37 @@
 
       <!-- TAB 3: ANALYTICS & CHARTS -->
       <section id="reportsPanel" class="tab-panel hidden space-y-6">
+        <div class="rounded-3xl glass-panel p-6 shadow-lg">
+          <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="clipboard-list" class="text-brand"></i> Business Report Snapshot
+              </h2>
+              <p class="mt-1 text-xs text-slate-400">A clean operating report for traffic, leads, revenue, routes, campaigns, follow-ups, and lost bookings.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button id="copyBusinessReportBtn" class="flex items-center gap-2 rounded-2xl bg-slate-800/80 border border-slate-700/50 px-4 py-2 text-xs font-bold text-slate-200 transition hover:bg-slate-700 hover:text-white" type="button">
+                <i data-lucide="copy" class="h-3.5 w-3.5"></i> Copy Report
+              </button>
+              <button id="downloadBusinessReportBtn" class="flex items-center gap-2 rounded-2xl bg-brand px-4 py-2 text-xs font-bold text-slate-950 transition hover:bg-brand-light" type="button">
+                <i data-lucide="download" class="h-3.5 w-3.5"></i> Download TXT
+              </button>
+            </div>
+          </div>
+          <div id="reportCards" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"></div>
+          <pre id="businessReportText" class="mt-5 max-h-72 overflow-auto whitespace-pre-wrap rounded-2xl border border-slate-800 bg-slate-950/50 p-4 text-xs leading-relaxed text-slate-300"></pre>
+          <div class="mt-5 grid gap-4 lg:grid-cols-2">
+            <div class="rounded-2xl border border-slate-800 bg-slate-950/30 p-4">
+              <h3 class="mb-3 text-xs font-bold uppercase tracking-wider text-slate-400">Lead Pipeline</h3>
+              <div id="pipelineSummary" class="space-y-3"></div>
+            </div>
+            <div class="rounded-2xl border border-slate-800 bg-slate-950/30 p-4">
+              <h3 class="mb-3 text-xs font-bold uppercase tracking-wider text-slate-400">Recent Activity</h3>
+              <div id="activityFeed" class="space-y-3"></div>
+            </div>
+          </div>
+        </div>
+
         <div class="grid gap-6 lg:grid-cols-2">
           
           <!-- Funnel Area Chart -->
@@ -540,11 +574,80 @@
         </div>
       </section>
 
+      <!-- TAB 6: PHONE ALERTS -->
+      <section id="alertsPanel" class="tab-panel hidden space-y-6">
+        <div class="rounded-3xl glass-panel p-6 shadow-xl">
+          <div class="mb-5 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="bell-ring" class="text-brand"></i> Phone Alert Controls
+              </h2>
+              <p class="mt-1 text-xs text-slate-400">Server-side notifications keep working after this browser is closed. The phone webhook URL stays private in Cloudflare secrets.</p>
+            </div>
+            <span id="alertStatusBadge" class="self-start rounded-full border border-slate-700 bg-slate-950/50 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">Loading</span>
+          </div>
+
+          <form id="notificationSettingsForm" class="space-y-4">
+            <label class="flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
+              <span>
+                <span class="block text-sm font-bold text-white">Master phone notifications</span>
+                <span class="mt-1 block text-xs text-slate-400">Turn this off to stop every phone alert without removing the webhook secret.</span>
+              </span>
+              <input name="notifications_enabled" type="checkbox" class="h-5 w-5 accent-brand" />
+            </label>
+
+            <div class="grid gap-4 lg:grid-cols-2">
+              <label class="flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/30 p-4">
+                <span>
+                  <span class="block text-sm font-bold text-white">WhatsApp click alerts</span>
+                  <span class="mt-1 block text-xs text-slate-400">Recommended. Sends an alert when someone clicks a booking or WhatsApp button.</span>
+                </span>
+                <input name="notify_whatsapp_clicks" type="checkbox" class="h-5 w-5 accent-brand" />
+              </label>
+
+              <label class="flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/30 p-4">
+                <span>
+                  <span class="block text-sm font-bold text-white">Page visit alerts</span>
+                  <span class="mt-1 block text-xs text-slate-400">Optional. Can be noisy because it sends an alert when someone opens a GCC transport page.</span>
+                </span>
+                <input name="notify_pageviews" type="checkbox" class="h-5 w-5 accent-brand" />
+              </label>
+
+              <label class="flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/30 p-4">
+                <span>
+                  <span class="block text-sm font-bold text-white">Contacted status alerts</span>
+                  <span class="mt-1 block text-xs text-slate-400">Reserved for future driver/team updates. It is saved here so the control is ready.</span>
+                </span>
+                <input name="notify_contacted_updates" type="checkbox" class="h-5 w-5 accent-brand" />
+              </label>
+
+              <label class="flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/30 p-4">
+                <span>
+                  <span class="block text-sm font-bold text-white">Completed job alerts</span>
+                  <span class="mt-1 block text-xs text-slate-400">Reserved for future driver/team updates when a job is marked completed.</span>
+                </span>
+                <input name="notify_completed_updates" type="checkbox" class="h-5 w-5 accent-brand" />
+              </label>
+            </div>
+
+            <div class="rounded-2xl border border-blue-500/20 bg-blue-950/20 p-4 text-xs leading-relaxed text-blue-200">
+              Set Cloudflare secret <code class="rounded bg-black/40 px-1 py-0.5 text-slate-100">TRANSPORT_NOTIFY_WEBHOOK_URL</code> to your private ntfy topic URL. The admin only controls what is active; it never exposes the phone webhook URL.
+            </div>
+
+            <div class="flex justify-end">
+              <button class="rounded-xl bg-brand px-5 py-2.5 text-xs font-bold text-slate-950 transition hover:bg-brand-light" type="submit">
+                Save Alert Settings
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
     </section>
   </main>
 
   <!-- GORGEOUS CUSTOMER DOSSIER & CRM AUDITING MODAL -->
-  <dialog id="leadDialog" class="w-[min(720px,calc(100vw-32px))] rounded-3xl border border-slate-800/80 bg-slate-900/95 text-slate-100 p-0 shadow-2xl backdrop:bg-slate-950/80 backdrop:backdrop-blur-sm">
+  <dialog id="leadDialog" class="w-[min(920px,calc(100vw-32px))] rounded-3xl border border-slate-800/80 bg-slate-900/95 text-slate-100 p-0 shadow-2xl backdrop:bg-slate-950/80 backdrop:backdrop-blur-sm">
     <div class="border-b border-slate-800/80 p-5 flex items-center justify-between bg-slate-950/40">
       <div class="flex items-center gap-3">
         <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/10 text-brand">
@@ -576,7 +679,7 @@
         
         <input type="hidden" id="auditLeadUuid" name="lead_uuid" />
         
-        <div class="grid gap-4 sm:grid-cols-2">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <label class="block">
             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Job outcome status</span>
             <select id="auditStatus" name="status" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2.5 text-xs outline-none focus:border-brand">
@@ -590,6 +693,35 @@
           <label class="block">
             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Revenue earned (BHD)</span>
             <input type="number" id="auditRevenue" name="revenue" min="0" step="0.001" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs outline-none focus:border-brand" placeholder="0.00 BHD" />
+          </label>
+          <label class="block">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Quoted price (BHD)</span>
+            <input type="number" id="auditQuotedPrice" name="quoted_price" min="0" step="0.001" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs outline-none focus:border-brand" placeholder="0.00 BHD" />
+          </label>
+          <label class="block">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Driver name</span>
+            <input id="auditDriverName" name="driver_name" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs outline-none focus:border-brand" placeholder="Driver assigned" />
+          </label>
+          <label class="block">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Driver phone</span>
+            <input id="auditDriverPhone" name="driver_phone" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs outline-none focus:border-brand" placeholder="+973..." />
+          </label>
+          <label class="block">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Follow up time</span>
+            <input type="datetime-local" id="auditFollowUpAt" name="follow_up_at" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs outline-none focus:border-brand" />
+          </label>
+          <label class="block sm:col-span-2 lg:col-span-3">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Lost booking reason</span>
+            <select id="auditLostReason" name="lost_reason" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2.5 text-xs outline-none focus:border-brand">
+              <option value="">Not applicable / not recorded</option>
+              <option value="no_reply">Customer did not reply</option>
+              <option value="price_too_high">Price too high</option>
+              <option value="no_driver_available">No driver available</option>
+              <option value="wrong_route">Wrong route or service</option>
+              <option value="duplicate">Duplicate request</option>
+              <option value="test_or_spam">Test or spam</option>
+              <option value="other">Other</option>
+            </select>
           </label>
         </div>
         <label class="block">
@@ -629,6 +761,13 @@
 
       <!-- Customer Details Section -->
       <div id="leadDetails" class="grid gap-4 sm:grid-cols-2"></div>
+
+      <div class="rounded-2xl bg-slate-950/40 border border-slate-800 p-5">
+        <h3 class="text-sm font-bold text-white flex items-center gap-2">
+          <i data-lucide="route" class="h-4 w-4 text-blue-400"></i> Visitor Journey Timeline
+        </h3>
+        <div id="visitorJourney" class="mt-4 space-y-3"></div>
+      </div>
     </div>
   </dialog>
 
@@ -715,6 +854,13 @@
       pageviews: [],
       routes: [],
       summary: {},
+      notificationSettings: {
+        notifications_enabled: true,
+        notify_whatsapp_clicks: true,
+        notify_pageviews: false,
+        notify_contacted_updates: false,
+        notify_completed_updates: true,
+      },
       filters: {},
       charts: {}
     };
@@ -822,7 +968,10 @@
         throw new Error(`Admin API route not found. Deploy the Cloudflare Worker from the public folder with npx wrangler deploy, then check /api/transport/health. Tried: ${tried.join(', ')}`);
       }
 
-      throw new Error(`Unable to reach the transport admin API. Tried: ${tried.join(', ')}${networkError ? ` (${networkError.message})` : ''}`);
+      const localFileHint = window.location.protocol === 'file:'
+        ? ' Local file previews can be blocked by browser CORS. Use admin/open-admin-local.bat or open the live admin URL instead of opening index.html directly.'
+        : '';
+      throw new Error(`Unable to reach the transport admin API. Tried: ${tried.join(', ')}${networkError ? ` (${networkError.message})` : ''}.${localFileHint}`);
     }
 
     function queryFromFilters(extra = {}) {
@@ -859,12 +1008,12 @@
     }
 
     function renderFilterOptions() {
-      // Standard filters populated from Leads
-      fillSelect('route', [...new Set(state.leads.map((l) => l.route_slug))], 'All routes');
-      fillSelect('source', [...new Set(state.leads.map((l) => l.utm_source || 'direct/unknown'))], 'All sources');
-      fillSelect('campaign', [...new Set(state.leads.map((l) => l.utm_campaign))], 'All campaigns');
-      fillSelect('country', [...new Set(state.leads.map((l) => normalizeCountryCode(l.cf_country)))], 'All countries', countryLabel);
-      fillSelect('device', [...new Set(state.leads.map((l) => l.device_type))], 'All devices');
+      const events = [...state.leads, ...state.pageviews];
+      fillSelect('route', [...new Set(events.map((l) => l.route_slug))], 'All routes');
+      fillSelect('source', [...new Set(events.map((l) => leadPayload(l).trafficSource || l.utm_source || 'direct/unknown'))], 'All sources');
+      fillSelect('campaign', [...new Set(events.map((l) => l.utm_campaign || leadPayload(l).utmCampaign))], 'All campaigns');
+      fillSelect('country', [...new Set(events.map((l) => normalizeCountryCode(l.cf_country)))], 'All countries', countryLabel);
+      fillSelect('device', [...new Set(events.map((l) => l.device_type))], 'All devices');
     }
 
     function renderStats() {
@@ -896,7 +1045,7 @@
       // Engagement
       document.getElementById('statAvgTime').textContent = formatDuration(summary.avg_time_on_page_ms || 0);
       document.getElementById('statAvgScroll').textContent = `${Math.round(summary.avg_scroll_depth_percent || 0)}%`;
-      document.getElementById('statPageviewsSession').textContent = summary.sessions > 0 ? Math.round(Number(views || 0) / Number(summary.sessions)) : 1;
+      document.getElementById('statPageviewsSession').textContent = summary.pageview_sessions > 0 ? Math.round(Number(views || 0) / Number(summary.pageview_sessions)) : 1;
     }
 
     function leadPayload(lead) {
@@ -935,6 +1084,52 @@
       return `${formatDuration(lead.time_on_page_ms)} | ${lead.scroll_depth_percent ?? 0}% scroll`;
     }
 
+    function visitorIdFor(item) {
+      return item.visitor_id || leadPayload(item).visitorId || '';
+    }
+
+    function sessionViewsFor(item) {
+      return Number(item.session_page_views || leadPayload(item).sessionPageViews || 1);
+    }
+
+    function formatMoney(value) {
+      return `${Number(value || 0).toFixed(2)} BHD`;
+    }
+
+    function percent(part, total) {
+      const denominator = Number(total || 0);
+      return denominator > 0 ? `${((Number(part || 0) / denominator) * 100).toFixed(1)}%` : '0.0%';
+    }
+
+    function compactId(value) {
+      const text = String(value || '');
+      return text ? `${text.slice(0, 8)}...` : '-';
+    }
+
+    function statusText(status) {
+      const current = String(status || 'new').toLowerCase();
+      return {
+        new: 'New Click',
+        contacted: 'Contacted',
+        completed: 'Completed',
+        cancelled: 'Cancelled',
+        spam: 'Spam / Test'
+      }[current] || 'New Click';
+    }
+
+    function visitorEnvironmentRows(payload) {
+      return [
+        ['Browser platform', payload.platform || '-'],
+        ['Browser vendor / brands', [payload.browserVendor, payload.browserBrands].filter(Boolean).join(' / ') || '-'],
+        ['Browser timezone', payload.browserTimeZone || '-'],
+        ['Visitor local time', payload.browserLocalTime || '-'],
+        ['Connection', [payload.effectiveConnectionType, payload.connectionType, payload.downlinkMbps ? `${payload.downlinkMbps} Mbps` : ''].filter(Boolean).join(' / ') || '-'],
+        ['Hardware hints', [`CPU: ${payload.hardwareConcurrency || '-'}`, `Memory: ${payload.deviceMemoryGb || '-'} GB`, `Touch: ${payload.maxTouchPoints || 0}`].join(' | ')],
+        ['Screen quality', [`DPR ${payload.devicePixelRatio || 1}`, `${payload.screenColorDepth || '-'} bit`, payload.viewportOrientation || '-'].join(' | ')],
+        ['Browser privacy hints', [`Cookies: ${payload.cookieEnabled === false ? 'off' : 'on'}`, `Do Not Track: ${payload.doNotTrack || 'unset'}`, `Save data: ${payload.saveDataEnabled ? 'on' : 'off'}`].join(' | ')],
+      ];
+    }
+
     function getStatusBadge(status) {
       const current = String(status || 'new').toLowerCase().trim();
       const base = "px-2.5 py-1 rounded-full text-[10px] font-bold uppercase border ";
@@ -970,6 +1165,7 @@
           <td class="px-5 py-4">
             <div class="text-slate-300 font-medium">${escapeHtml(engagementText(lead))}</div>
             <div class="text-[10px] text-slate-400 mt-0.5">${escapeHtml(pageJourneyText(lead))}</div>
+            <div class="text-[10px] text-slate-500 mt-0.5">Visitor ${escapeHtml(compactId(visitorIdFor(lead)))}</div>
           </td>
           <td class="px-5 py-4 text-slate-300 font-medium">${escapeHtml(locationText(lead))}</td>
           <td class="px-5 py-4">
@@ -979,7 +1175,7 @@
             </div>
           </td>
           <td class="px-5 py-4 text-center">
-            <div class="flex items-center justify-center gap-2" onclick="event.stopPropagation();">
+            <div class="flex items-center justify-center gap-2">
               <button class="rounded-xl bg-slate-800 border border-slate-700 px-3 py-1.5 text-[10px] font-bold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-view-lead="${lead.id}" type="button">Audit Outcome</button>
               <button class="rounded-xl border border-red-500/20 bg-red-950/10 px-3 py-1.5 text-[10px] font-bold text-red-400 transition hover:bg-red-900/30" data-delete-lead="${lead.id}" type="button">Delete</button>
             </div>
@@ -1003,8 +1199,9 @@
             <div class="flex justify-between"><dt class="text-slate-400">Referrer</dt><dd class="font-semibold text-slate-200 truncate max-w-[200px]">${escapeHtml(discoveryText(lead))}</dd></div>
             <div class="flex justify-between"><dt class="text-slate-400">Location</dt><dd class="font-medium text-slate-300">${escapeHtml(locationText(lead))}</dd></div>
             <div class="flex justify-between"><dt class="text-slate-400">Duration</dt><dd class="font-medium text-slate-300">${escapeHtml(engagementText(lead))}</dd></div>
+            <div class="flex justify-between"><dt class="text-slate-400">Visitor</dt><dd class="font-mono text-slate-300">${escapeHtml(compactId(visitorIdFor(lead)))}</dd></div>
           </dl>
-          <div class="flex gap-2 border-t border-slate-850 pt-3" onclick="event.stopPropagation();">
+          <div class="flex gap-2 border-t border-slate-850 pt-3">
             <button class="w-full rounded-xl bg-slate-800 border border-slate-700 py-2 text-[10px] font-bold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-view-lead="${lead.id}" type="button">Audit Outcome</button>
             <button class="w-full rounded-xl border border-red-500/20 bg-red-950/10 py-2 text-[10px] font-bold text-red-400 transition hover:bg-red-900/30" data-delete-lead="${lead.id}" type="button">Delete</button>
           </div>
@@ -1020,7 +1217,7 @@
             <div class="flex items-center gap-1.5"><i data-lucide="file-text" class="h-3.5 w-3.5 text-blue-400"></i> ${escapeHtml(pv.page_path || '')}</div>
           </td>
           <td class="px-5 py-4 text-slate-300">${escapeHtml(leadPayload(pv).referrerHost || 'direct/bookmark')}</td>
-          <td class="px-5 py-4 text-slate-300 font-medium">${pv.session_page_views || 1} views</td>
+          <td class="px-5 py-4 text-slate-300 font-medium">${sessionViewsFor(pv)} views</td>
           <td class="px-5 py-4 text-slate-300 font-medium">${formatDuration(pv.time_on_page_ms)}</td>
           <td class="px-5 py-4 text-slate-300">${escapeHtml(locationText(pv))}</td>
           <td class="px-5 py-4 text-slate-400 font-medium uppercase text-[10px]">${escapeHtml(pv.device_type || 'desktop')}</td>
@@ -1036,6 +1233,7 @@
           <p class="text-[10px] text-slate-400">${escapeHtml(formatDate(pv.clicked_at))}</p>
           <dl class="grid gap-1 text-[11px] pt-1 border-t border-slate-850">
             <div class="flex justify-between"><dt class="text-slate-500">Duration</dt><dd class="text-slate-300">${formatDuration(pv.time_on_page_ms)}</dd></div>
+            <div class="flex justify-between"><dt class="text-slate-500">Session views</dt><dd class="text-slate-300">${sessionViewsFor(pv)}</dd></div>
             <div class="flex justify-between"><dt class="text-slate-500">Referrer</dt><dd class="text-slate-300 truncate max-w-[150px]">${escapeHtml(leadPayload(pv).referrerHost || 'direct')}</dd></div>
             <div class="flex justify-between"><dt class="text-slate-500">Location</dt><dd class="text-slate-300">${escapeHtml(locationText(pv))}</dd></div>
           </dl>
@@ -1062,8 +1260,182 @@
       `).join('') || '<p class="text-xs text-slate-500">No conversion metrics logged yet.</p>';
     }
 
+    function performanceLine(row) {
+      if (!row) return 'No data yet';
+      const clicks = Number(row.clicks || row.count || 0);
+      const pageviews = Number(row.pageviews || 0);
+      const completed = Number(row.completed || 0);
+      const revenue = Number(row.revenue || 0);
+      return `${row.label}: ${pageviews} visits, ${clicks} clicks, ${completed} completed, ${formatMoney(revenue)}, ${percent(clicks, pageviews)} visit-to-click`;
+    }
+
+    function buildBusinessReportText() {
+      const summary = state.summary || {};
+      const report = summary.business_report || {};
+      const routes = report.route_performance || [];
+      const campaigns = report.campaign_performance || [];
+      const sources = report.source_performance || [];
+      const topPages = report.top_pages || [];
+      const lostReasons = report.lost_reasons || [];
+      const clicks = Number(summary.total || 0);
+      const visits = Number(summary.total_pageviews || 0);
+      const completed = Number(summary.completed_count || 0);
+      const revenue = Number(summary.total_revenue || 0);
+
+      const lines = [
+        'Vendora Transport Business Report',
+        `Generated: ${formatDate(new Date().toISOString())}`,
+        '',
+        'Overall funnel',
+        `Visits: ${visits}`,
+        `WhatsApp clicks: ${clicks}`,
+        `Visit-to-click conversion: ${percent(clicks, visits)}`,
+        `Completed jobs: ${completed}`,
+        `Click-to-completed conversion: ${percent(completed, clicks)}`,
+        `Tracked revenue: ${formatMoney(revenue)}`,
+        `Average completed value: ${formatMoney(summary.avg_completed_revenue || 0)}`,
+        `Follow-ups due: ${summary.followups_due || 0}`,
+        '',
+        'Pipeline',
+        `New: ${summary.new_count || 0}`,
+        `Contacted: ${summary.contacted_count || 0}`,
+        `Completed: ${summary.completed_count || 0}`,
+        `Cancelled: ${summary.cancelled_count || 0}`,
+        `Spam/test: ${summary.spam_count || 0}`,
+        '',
+        'Best routes',
+        ...(routes.length ? routes.slice(0, 5).map(performanceLine) : ['No route activity yet']),
+        '',
+        'Best campaigns',
+        ...(campaigns.length ? campaigns.slice(0, 5).map(performanceLine) : ['No campaign data yet']),
+        '',
+        'Best traffic sources',
+        ...(sources.length ? sources.slice(0, 5).map(performanceLine) : ['No traffic source data yet']),
+        '',
+        'Top visited pages',
+        ...(topPages.length ? topPages.slice(0, 5).map((row) => `${row.label}: ${row.count} visits, ${row.sessions || 0} sessions, avg ${formatDuration(row.avg_time_on_page_ms || 0)}`) : ['No page visits yet']),
+        '',
+        'Lost booking reasons',
+        ...(lostReasons.length ? lostReasons.map((row) => `${row.label}: ${row.count}`) : ['No cancelled reason data yet']),
+      ];
+
+      return lines.join('\n');
+    }
+
+    function renderPipelineSummary() {
+      const summary = state.summary || {};
+      const rows = [
+        ['new', summary.new_count || 0],
+        ['contacted', summary.contacted_count || 0],
+        ['completed', summary.completed_count || 0],
+        ['cancelled', summary.cancelled_count || 0],
+        ['spam', summary.spam_count || 0],
+      ];
+      const total = Math.max(Number(summary.total || 0), 1);
+      document.getElementById('pipelineSummary').innerHTML = rows.map(([status, count]) => `
+        <div>
+          <div class="mb-1 flex items-center justify-between text-xs">
+            <span>${getStatusBadge(status)}</span>
+            <span class="font-bold text-slate-300">${count}</span>
+          </div>
+          <div class="h-2 rounded-full bg-slate-950/70"><div class="h-2 rounded-full bg-brand" style="width:${Math.max(3, (Number(count) / total) * 100)}%"></div></div>
+        </div>
+      `).join('');
+    }
+
+    function recentActivity() {
+      return [
+        ...state.leads.map((lead) => ({ ...lead, activity_type: 'WhatsApp click' })),
+        ...state.pageviews.map((visit) => ({ ...visit, activity_type: 'Page visit' })),
+      ]
+        .sort((a, b) => new Date(b.clicked_at || 0) - new Date(a.clicked_at || 0))
+        .slice(0, 8);
+    }
+
+    function renderActivityFeed() {
+      const items = recentActivity();
+      document.getElementById('activityFeed').innerHTML = items.map((item) => `
+        <div class="rounded-xl border border-slate-800 bg-slate-900/30 p-3">
+          <div class="flex items-center justify-between gap-3">
+            <span class="text-xs font-bold ${item.activity_type === 'WhatsApp click' ? 'text-brand-light' : 'text-blue-300'}">${escapeHtml(item.activity_type)}</span>
+            <span class="text-[10px] text-slate-500">${escapeHtml(formatDate(item.clicked_at))}</span>
+          </div>
+          <p class="mt-1 truncate text-xs font-semibold text-slate-200">${escapeHtml(item.route_label || item.page_path || item.route_slug || '-')}</p>
+          <p class="mt-1 text-[10px] text-slate-500">${escapeHtml(discoveryText(item))} | ${escapeHtml(locationText(item))}</p>
+        </div>
+      `).join('') || '<p class="text-xs text-slate-500">No activity yet.</p>';
+    }
+
+    function renderReportCards() {
+      const summary = state.summary || {};
+      const cards = [
+        ['Revenue', formatMoney(summary.total_revenue || 0), `${summary.completed_count || 0} completed jobs`, 'banknote', 'text-emerald-400'],
+        ['Visit -> Click', percent(summary.total || 0, summary.total_pageviews || 0), `${summary.total || 0} clicks from ${summary.total_pageviews || 0} visits`, 'mouse-pointer-click', 'text-yellow-400'],
+        ['Click -> Job', percent(summary.completed_count || 0, summary.total || 0), `${summary.contacted_count || 0} contacted leads`, 'check-circle-2', 'text-brand-light'],
+        ['Follow-ups', summary.followups_due || 0, `${summary.cancelled_count || 0} cancelled, ${summary.spam_count || 0} spam/test`, 'bell-ring', 'text-purple-400'],
+      ];
+
+      document.getElementById('reportCards').innerHTML = cards.map(([label, value, detail, icon, color]) => `
+        <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
+          <div class="flex items-center justify-between text-slate-400">
+            <span class="text-xs font-bold">${escapeHtml(label)}</span>
+            <i data-lucide="${icon}" class="h-4 w-4 ${color}"></i>
+          </div>
+          <p class="mt-2 text-xl font-extrabold text-white">${escapeHtml(value)}</p>
+          <p class="mt-1 text-[10px] text-slate-500">${escapeHtml(detail)}</p>
+        </div>
+      `).join('');
+    }
+
+    function renderBusinessReport() {
+      renderReportCards();
+      renderPipelineSummary();
+      renderActivityFeed();
+      document.getElementById('businessReportText').textContent = buildBusinessReportText();
+    }
+
+    function normalizeNotificationSettings(settings = {}) {
+      return {
+        notifications_enabled: settings.notifications_enabled !== false,
+        notify_whatsapp_clicks: settings.notify_whatsapp_clicks !== false,
+        notify_pageviews: settings.notify_pageviews === true,
+        notify_contacted_updates: settings.notify_contacted_updates === true,
+        notify_completed_updates: settings.notify_completed_updates !== false,
+      };
+    }
+
+    function renderNotificationSettings() {
+      const form = document.getElementById('notificationSettingsForm');
+      if (!form) return;
+      const settings = normalizeNotificationSettings(state.notificationSettings);
+      Object.entries(settings).forEach(([name, value]) => {
+        const input = form.elements[name];
+        if (input) input.checked = Boolean(value);
+      });
+
+      const badge = document.getElementById('alertStatusBadge');
+      if (badge) {
+        const activeCount = Number(settings.notify_whatsapp_clicks) + Number(settings.notify_pageviews);
+        badge.textContent = settings.notifications_enabled ? `${activeCount} alert type${activeCount === 1 ? '' : 's'} active` : 'All alerts paused';
+        badge.className = settings.notifications_enabled
+          ? 'self-start rounded-full border border-brand/20 bg-brand-soft/30 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-brand-light'
+          : 'self-start rounded-full border border-red-500/20 bg-red-950/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-red-300';
+      }
+    }
+
+    function downloadTextFile(filename, content) {
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
     function renderReports() {
       const summary = state.summary || {};
+      renderBusinessReport();
       
       // Horizontal Bars
       barList(summary.by_route || [], 'chartRoutes');
@@ -1079,10 +1451,7 @@
       const days = summary.by_day || [];
       const labels = days.map((d) => d.label.slice(5)); // Show MM-DD format
       const leadClicksData = days.map((d) => d.count);
-      
-      // Mock pageviews trend matching the daily click ratio to show a realistic area trend
-      const visitsMultiplier = summary.total > 0 ? (summary.total_pageviews / summary.total) : 5.8;
-      const visitsData = leadClicksData.map((clicks) => Math.round(clicks * visitsMultiplier + (Math.random() * 4)));
+      const visitsData = days.map((d) => d.pageviews || 0);
 
       const funnelCtx = document.getElementById('chartFunnel').getContext('2d');
       state.charts.funnel = new Chart(funnelCtx, {
@@ -1201,7 +1570,7 @@
       });
 
       // Device text list
-      barList(devices, 'chartDevices', summary.total);
+      barList(devices, 'chartDevices', Number(summary.total || 0) + Number(summary.total_pageviews || 0));
     }
 
     function routeCard(route) {
@@ -1332,16 +1701,18 @@
     }
 
     async function loadDashboard() {
-      const [leadsData, pvsData, routesData, summaryData] = await Promise.all([
+      const [leadsData, pvsData, routesData, summaryData, notificationData] = await Promise.all([
         api(queryFromFilters({ resource: 'leads', limit: 800 })),
         api(queryFromFilters({ resource: 'pageviews', limit: 800 })),
         api('?resource=routes'),
-        api(queryFromFilters({ resource: 'summary' }))
+        api(queryFromFilters({ resource: 'summary' })),
+        api('?resource=notification-settings')
       ]);
       state.leads = leadsData.leads || [];
       state.pageviews = pvsData.leads || [];
       state.routes = routesData.routes || [];
       state.summary = summaryData.summary || {};
+      state.notificationSettings = normalizeNotificationSettings(notificationData.notification_settings || state.notificationSettings);
       
       renderFilterOptions();
       renderStats();
@@ -1349,6 +1720,7 @@
       renderReports();
       renderRoutes();
       renderCohorts();
+      renderNotificationSettings();
     }
 
     async function unlock(token) {
@@ -1358,6 +1730,62 @@
       loginView.classList.add('hidden');
       dashboardView.classList.remove('hidden');
       setTab(state.tab);
+    }
+
+    function visitorEventsForLead(lead) {
+      const visitorId = visitorIdFor(lead);
+      const sessionId = lead.session_id || '';
+      const matchesLead = (item) => {
+        const itemVisitor = visitorIdFor(item);
+        return (visitorId && itemVisitor && itemVisitor === visitorId) || (sessionId && item.session_id === sessionId);
+      };
+
+      const events = [
+        ...state.pageviews.filter(matchesLead).map((item) => ({ ...item, activity_type: 'Page visit' })),
+        ...state.leads.filter(matchesLead).map((item) => ({ ...item, activity_type: 'WhatsApp click' })),
+      ];
+
+      const seen = new Set();
+      return events
+        .filter((item) => {
+          const key = `${item.activity_type}-${item.id}`;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        })
+        .sort((a, b) => new Date(a.clicked_at || 0) - new Date(b.clicked_at || 0));
+    }
+
+    function renderVisitorJourney(lead) {
+      const container = document.getElementById('visitorJourney');
+      const events = visitorEventsForLead(lead);
+      container.innerHTML = events.map((item, index) => {
+        const payload = leadPayload(item);
+        const isClick = item.activity_type === 'WhatsApp click';
+        return `
+          <div class="relative rounded-2xl border ${isClick ? 'border-brand/30 bg-brand-soft/20' : 'border-slate-800 bg-slate-950/30'} p-4">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="flex h-6 w-6 items-center justify-center rounded-full ${isClick ? 'bg-brand text-slate-950' : 'bg-blue-500/15 text-blue-300'} text-[10px] font-extrabold">${index + 1}</span>
+                  <span class="text-xs font-bold ${isClick ? 'text-brand-light' : 'text-blue-300'}">${escapeHtml(item.activity_type)}</span>
+                </div>
+                <p class="mt-2 text-xs font-semibold text-slate-200">${escapeHtml(item.route_label || item.page_path || item.route_slug || '-')}</p>
+                <p class="mt-1 text-[10px] text-slate-500">${escapeHtml(item.page_path || payload.pagePath || '-')}</p>
+              </div>
+              <div class="text-left sm:text-right">
+                <p class="text-[10px] font-bold text-slate-400">${escapeHtml(formatDate(item.clicked_at))}</p>
+                <p class="mt-1 text-[10px] text-slate-500">${escapeHtml(engagementText(item))}</p>
+              </div>
+            </div>
+            <div class="mt-3 grid gap-2 text-[10px] text-slate-400 sm:grid-cols-3">
+              <div><span class="text-slate-500">Source:</span> ${escapeHtml(discoveryText(item))}</div>
+              <div><span class="text-slate-500">Session views:</span> ${sessionViewsFor(item)}</div>
+              <div><span class="text-slate-500">Device:</span> ${escapeHtml(item.device_type || payload.deviceType || '-')}</div>
+            </div>
+          </div>
+        `;
+      }).join('') || '<p class="text-xs text-slate-500">No matching journey events are loaded for this visitor yet.</p>';
     }
 
     function showLeadDetails(id) {
@@ -1372,6 +1800,11 @@
       document.getElementById('auditStatus').value = lead.status || 'new';
       document.getElementById('auditRevenue').value = lead.revenue || '';
       document.getElementById('auditNotes').value = lead.admin_notes || '';
+      document.getElementById('auditQuotedPrice').value = lead.quoted_price || '';
+      document.getElementById('auditDriverName').value = lead.driver_name || '';
+      document.getElementById('auditDriverPhone').value = lead.driver_phone || '';
+      document.getElementById('auditLostReason').value = lead.lost_reason || '';
+      document.getElementById('auditFollowUpAt').value = lead.follow_up_at ? String(lead.follow_up_at).slice(0, 16) : '';
       
       // Render dynamic suspicion warning card
       const alertEl = document.getElementById('leadSuspicionAlert');
@@ -1393,11 +1826,17 @@
       
       const rows = [
         ['Timestamp', formatDate(lead.clicked_at)],
-        ['Suspicion Score', `${lead.suspicion_score}% (${lead.suspicion_score > 60 ? 'HIGH RISK' : lead.suspicion_score > 30 ? 'MEDIUM' : 'LOW'})`],
-        ['Customer Loyalty Profile', lead.visitor_id ? `Returning Customer (Visit #${lead.visit_count || 1} | viewed ${lead.session_page_views || 1} pages this session | Visitor ID: ${lead.visitor_id.slice(0, 8)})` : 'New / Session-only Visitor'],
+        ['Suspicion Score', `${lead.suspicion_score || 0}% (${lead.suspicion_score > 60 ? 'HIGH RISK' : lead.suspicion_score > 30 ? 'MEDIUM' : 'LOW'})`],
+        ['Customer Loyalty Profile', visitorIdFor(lead) ? `Returning Customer (Visit #${lead.visit_count || payload.visitCount || 1} | viewed ${sessionViewsFor(lead)} pages this session | Visitor ID: ${compactId(visitorIdFor(lead))})` : 'New / Session-only Visitor'],
         ['Route slug', lead.route_slug],
         ['Destination page', lead.page_url || lead.page_path],
         ['WhatsApp Target Link', lead.target_url],
+        ['Lead status', statusText(lead.status)],
+        ['Quoted price', lead.quoted_price ? formatMoney(lead.quoted_price) : '-'],
+        ['Revenue logged', formatMoney(lead.revenue || 0)],
+        ['Assigned driver', [lead.driver_name, lead.driver_phone].filter(Boolean).join(' / ') || '-'],
+        ['Follow-up time', lead.follow_up_at ? formatDate(lead.follow_up_at) : '-'],
+        ['Lost reason', lead.lost_reason || '-'],
         ['Customer Discovery Channel', discoveryText(lead)],
         ['Campaign parameters (UTM)', campaignText(lead)],
         ['Search terms / Content', [lead.utm_term, lead.utm_content].filter(Boolean).join(' / ') || 'None'],
@@ -1415,7 +1854,8 @@
         ['Origin Country', lead.cf_country ? countryLabel(lead.cf_country) : '-'],
         ['IP Address', lead.ip_address || '-'],
         ['Network User Agent', lead.user_agent || '-'],
-        ['Cloudflare Edge Ray ID', lead.request_ray_id || '-']
+        ['Cloudflare Edge Ray ID', lead.request_ray_id || '-'],
+        ...visitorEnvironmentRows(payload)
       ];
       
       document.getElementById('leadDetails').innerHTML = rows.map(([label, value]) => `
@@ -1424,6 +1864,8 @@
           <dd class="mt-1 break-words text-xs font-semibold text-slate-200">${escapeHtml(value || '-')}</dd>
         </div>
       `).join('');
+
+      renderVisitorJourney(lead);
       
       document.getElementById('leadDialog').showModal();
       renderIcons();
@@ -1536,14 +1978,24 @@ Note: This report is automatically compiled by the Control Room operations track
         ['utm_medium', (lead) => lead.utm_medium],
         ['utm_campaign', (lead) => lead.utm_campaign],
         ['status', (lead) => lead.status || 'new'],
+        ['quoted_price_bhd', (lead) => lead.quoted_price || ''],
         ['revenue_bhd', (lead) => lead.revenue || 0.0],
+        ['driver_name', (lead) => lead.driver_name || ''],
+        ['driver_phone', (lead) => lead.driver_phone || ''],
+        ['follow_up_at', (lead) => lead.follow_up_at || ''],
+        ['lost_reason', (lead) => lead.lost_reason || ''],
         ['admin_notes', (lead) => lead.admin_notes || ''],
+        ['visitor_id', (lead) => visitorIdFor(lead)],
+        ['visit_count', (lead) => lead.visit_count || leadPayload(lead).visitCount || 1],
         ['first_landing_page', (lead) => leadPayload(lead).firstLandingPage],
         ['first_referrer', (lead) => leadPayload(lead).firstReferrer],
-        ['session_page_views', (lead) => leadPayload(lead).sessionPageViews],
+        ['session_page_views', (lead) => sessionViewsFor(lead)],
         ['time_on_page_ms', (lead) => lead.time_on_page_ms],
         ['scroll_depth_percent', (lead) => lead.scroll_depth_percent],
         ['device_type', (lead) => lead.device_type],
+        ['platform', (lead) => leadPayload(lead).platform],
+        ['browser_timezone', (lead) => leadPayload(lead).browserTimeZone],
+        ['connection', (lead) => leadPayload(lead).effectiveConnectionType || leadPayload(lead).connectionType],
         ['cf_city', (lead) => lead.cf_city],
         ['cf_country', (lead) => lead.cf_country],
         ['ip_address', (lead) => lead.ip_address]
@@ -1594,6 +2046,41 @@ Note: This report is automatically compiled by the Control Room operations track
     });
 
     document.getElementById('exportBtn').addEventListener('click', exportCsv);
+    document.getElementById('copyBusinessReportBtn').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(buildBusinessReportText());
+        showStatus('Business report copied to clipboard.', 'success');
+      } catch (err) {
+        showStatus('Failed to copy business report.', 'error');
+      }
+    });
+    document.getElementById('downloadBusinessReportBtn').addEventListener('click', () => {
+      downloadTextFile(`transport-business-report-${new Date().toISOString().slice(0, 10)}.txt`, buildBusinessReportText());
+      showStatus('Business report downloaded.', 'success');
+    });
+    document.getElementById('notificationSettingsForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const payload = {
+        notifications_enabled: form.elements.notifications_enabled.checked,
+        notify_whatsapp_clicks: form.elements.notify_whatsapp_clicks.checked,
+        notify_pageviews: form.elements.notify_pageviews.checked,
+        notify_contacted_updates: form.elements.notify_contacted_updates.checked,
+        notify_completed_updates: form.elements.notify_completed_updates.checked,
+      };
+
+      try {
+        const data = await api('?resource=notification-settings', {
+          method: 'PUT',
+          body: JSON.stringify(payload)
+        });
+        state.notificationSettings = normalizeNotificationSettings(data.notification_settings || payload);
+        renderNotificationSettings();
+        showStatus('Phone alert settings saved.', 'success');
+      } catch (err) {
+        showStatus(err.message, 'error');
+      }
+    });
     document.getElementById('closeDialogBtn').addEventListener('click', () => document.getElementById('leadDialog').close());
     document.querySelectorAll('.tab-btn').forEach((button) => button.addEventListener('click', () => setTab(button.dataset.tab)));
 
@@ -1728,7 +2215,12 @@ Note: This report is automatically compiled by the Control Room operations track
             lead_uuid: payload.lead_uuid,
             status: payload.status,
             admin_notes: payload.admin_notes,
-            revenue: payload.revenue
+            revenue: payload.revenue,
+            quoted_price: payload.quoted_price,
+            driver_name: payload.driver_name,
+            driver_phone: payload.driver_phone,
+            lost_reason: payload.lost_reason,
+            follow_up_at: payload.follow_up_at
           })
         });
         

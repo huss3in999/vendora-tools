@@ -877,6 +877,47 @@
     return 'desktop';
   }
 
+  function getConnectionInfo() {
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection || {};
+    return {
+      connectionType: connection.type || '',
+      effectiveConnectionType: connection.effectiveType || '',
+      downlinkMbps: Number.isFinite(connection.downlink) ? connection.downlink : '',
+      roundTripMs: Number.isFinite(connection.rtt) ? connection.rtt : '',
+      saveDataEnabled: Boolean(connection.saveData),
+    };
+  }
+
+  function getVisitorEnvironment() {
+    const screen = window.screen || {};
+    const orientation = screen.orientation?.type || (window.innerWidth >= window.innerHeight ? 'landscape' : 'portrait');
+    const resolvedTimeZone = Intl?.DateTimeFormat ? Intl.DateTimeFormat().resolvedOptions().timeZone : '';
+    const brands = navigator.userAgentData?.brands
+      ? navigator.userAgentData.brands.map((brand) => `${brand.brand} ${brand.version}`).join(', ')
+      : '';
+
+    return {
+      platform: navigator.userAgentData?.platform || navigator.platform || '',
+      browserVendor: navigator.vendor || '',
+      browserBrands: brands,
+      cookieEnabled: Boolean(navigator.cookieEnabled),
+      doNotTrack: navigator.doNotTrack || window.doNotTrack || '',
+      hardwareConcurrency: navigator.hardwareConcurrency || '',
+      deviceMemoryGb: navigator.deviceMemory || '',
+      maxTouchPoints: navigator.maxTouchPoints || 0,
+      colorScheme: window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
+      viewportOrientation: orientation,
+      screenColorDepth: screen.colorDepth || '',
+      screenPixelDepth: screen.pixelDepth || '',
+      devicePixelRatio: window.devicePixelRatio || 1,
+      browserTimeZone: resolvedTimeZone || '',
+      browserLocalTime: new Date().toString(),
+      historyLength: window.history?.length || 0,
+      isStandaloneDisplay: Boolean(window.matchMedia?.('(display-mode: standalone)').matches || navigator.standalone),
+      ...getConnectionInfo(),
+    };
+  }
+
   function getVisitorId() {
     try {
       let visitorId = localStorage.getItem(visitorIdKey);
@@ -1009,6 +1050,7 @@
       firstReferrer: firstTouch.referrer || '',
       firstReferrerHost: firstTouch.referrerHost || '',
       firstTrafficSource: firstTouch.trafficSource || '',
+      ...getVisitorEnvironment(),
       ...utm,
       ...(link ? getBookingDataFromLink(link) : { serviceType: 'pageview' }),
     };
