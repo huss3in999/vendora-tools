@@ -1,3 +1,5 @@
+import { recordError } from './error-log.js';
+
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
   'https://www.getvendora.net',
@@ -12,6 +14,8 @@ let settingsSchemaReady = false;
 const DEFAULT_NOTIFICATION_SETTINGS = {
   notifications_enabled: true,
   notify_whatsapp_clicks: true,
+  // Mode C default: do not ping the phone on browsing. Real-time alerts fire
+  // only on WhatsApp clicks; overall traffic arrives in the daily summary.
   notify_pageviews: false,
 };
 
@@ -41,6 +45,40 @@ function corsHeaders(request) {
 function isPageview(payload) {
   return cleanText(payload && payload.serviceType, 160) === 'pageview';
 }
+
+/**
+ * Build ntfy publish headers. If TRANSPORT_NOTIFY_WEBHOOK_TOKEN is set, we
+ * authenticate so messages count against the owner's own ntfy account quota
+ * instead of the shared (rate-limited) anonymous quota for Cloudflare IPs.
+ */
+function getNtfyToken(env) {
+  const raw = env && env.TRANSPORT_NOTIFY_WEBHOOK_TOKEN;
+  if (typeof raw !== 'string') return null;
+  const token = raw.replace(/[\r\n]/g, '').trim();
+  return token || null;
+}
+
+function buildNtfyHeaders(env, extra) {
+  const headers = { 'content-type': 'text/plain; charset=utf-8', ...extra };
+  const token = getNtfyToken(env);
+  if (token) headers.authorization = `Bearer ${token}`;
+  return headers;
+}
+
+/** Attach token to the publish URL (?auth=tk_…) — reliable from Cloudflare Workers. */
+function resolveNtfyPublishUrl(webhookUrl, env) {
+  const token = getNtfyToken(env);
+  if (!token) return webhookUrl;
+  try {
+    const url = new URL(webhookUrl);
+    url.searchParams.set('auth', token);
+    return url.toString();
+  } catch {
+    return webhookUrl;
+  }
+}
+
+export { getNtfyToken, buildNtfyHeaders, resolveNtfyPublishUrl };
 
 function getPayloadTrafficSource(payload) {
   return cleanText(payload && (payload.firstTrafficSource || payload.trafficSource || payload.utmSource), 160) || 'direct/unknown';
@@ -97,33 +135,137 @@ async function getNotificationSettings(env) {
   }
 }
 
+function prettyRoute(row) {
+  const label = cleanText(row && row.route_label, 240);
+  if (label && !/^https?:/i.test(label)) return label;
+  const slug = cleanText(row && row.route_slug, 160);
+  if (slug) {
+    return slug.replace(/-en$/i, '').replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+  return cleanText(row && row.page_path, 200) || 'page';
+}
+
+/**
+ * Pull the pages this visitor already viewed in the last few hours so a single
+ * WhatsApp-click alert can show their full journey leading up to the click.
+ */
+async function fetchVisitorJourney(env, payload) {
+  if (!env.TRANSPORT_DB) return [];
+  const visitorId = cleanText(payload && payload.visitorId, 80) || '';
+  const sessionId = cleanText(payload && payload.sessionId, 120) || '';
+  if (!visitorId && !sessionId) return [];
+  try {
+    const { results } = await env.TRANSPORT_DB.prepare(`
+      SELECT route_label, route_slug, page_path, service_type, clicked_at, time_on_page_ms
+      FROM whatsapp_leads
+      WHERE (json_extract(raw_payload, '$.visitorId') = ?1 OR session_id = ?2)
+        AND clicked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-6 hours')
+      ORDER BY clicked_at ASC
+      LIMIT 30
+    `).bind(visitorId, sessionId).all();
+    return results || [];
+  } catch {
+    return [];
+  }
+}
+
+function buildClickNotificationText(payload, geo, journey) {
+  const visitCount = cleanInteger(payload.visitCount);
+  const isReturning = typeof visitCount === 'number' && visitCount > 1;
+  const customerKind = typeof visitCount === 'number'
+    ? (isReturning ? 'RETURNING customer' : 'NEW customer')
+    : 'Customer';
+  const route = cleanText(payload.routeLabel || payload.routeSlug, 240) || 'Unknown page';
+  const pagePath = cleanText(payload.pagePath, 300) || '-';
+  const pageUrl = cleanText(payload.pageUrl, 500) || '';
+  const language = cleanText(payload.language, 20);
+  const buttonText = cleanText(payload.clickText, 160) || 'WhatsApp button';
+  const source = getPayloadTrafficSource(payload);
+  const campaign = cleanText(payload.utmCampaign, 160) || 'none';
+  const device = cleanText(payload.deviceType, 40) || 'unknown device';
+  const location = [geo.city, geo.region, geo.country].filter(Boolean).join(', ') || 'unknown location';
+  const timeOnPage = Math.round(Number(payload.timeOnPageMs || 0) / 1000);
+  const scroll = cleanBoundedInteger(payload.scrollDepthPercent, 0, 100) ?? 0;
+  const visitor = cleanText(payload.visitorId, 80);
+  const referrer = cleanText(payload.referrerHost, 200) || cleanText(payload.referrer, 200) || 'direct/bookmark';
+  const tripFrom = [cleanText(payload.fromCity, 120), cleanText(payload.fromCountry, 120)].filter(Boolean).join(', ');
+  const tripTo = [cleanText(payload.toCity, 120), cleanText(payload.toCountry, 120)].filter(Boolean).join(', ');
+  const serviceType = cleanText(payload.serviceType, 120);
+
+  const pages = (journey || []).filter((e) => cleanText(e.service_type, 40) !== 'pageview' ? false : true);
+  const totalSeconds = pages.reduce((sum, e) => sum + Math.round(Number(e.time_on_page_ms || 0) / 1000), 0);
+  const journeyLines = pages.map((e, i) => `  ${i + 1}. ${prettyRoute(e)}`);
+
+  return [
+    'Vendora: WHATSAPP BOOKING CLICK 🔥',
+    `${customerKind}${typeof visitCount === 'number' ? ` (visit #${visitCount})` : ''} · ${device} · ${location}`,
+    `Came from: ${source}${campaign && campaign !== 'none' ? ` (campaign: ${campaign})` : ''}`,
+    `Clicked: "${buttonText}" on ${route}${language ? ` (${language})` : ''}`,
+    (tripFrom || tripTo) ? `Trip: ${tripFrom || '?'} -> ${tripTo || '?'}` : '',
+    serviceType && serviceType !== 'pageview' ? `Service: ${serviceType}` : '',
+    pages.length
+      ? `Before clicking they viewed (${pages.length} page${pages.length === 1 ? '' : 's'}, ${totalSeconds}s):`
+      : 'This was their entry page (no earlier pages tracked).',
+    ...journeyLines,
+    `Engagement on this page: ${timeOnPage}s, ${scroll}% scrolled`,
+    pageUrl ? `Page URL: ${pageUrl}` : '',
+    `Where: ${pagePath}`,
+    `Referrer: ${referrer}`,
+    visitor ? `Visitor ID: ${visitor}` : '',
+    'Meaning: this customer opened WhatsApp to talk to the driver — a real lead you can act on.',
+  ].filter(Boolean).join('\n');
+}
+
 function buildNotificationText(payload, geo) {
   const pageview = isPageview(payload);
-  const eventName = pageview ? 'PAGE VISIT' : 'WHATSAPP BOOKING CLICK';
+  const visitCount = cleanInteger(payload.visitCount);
+  const isReturning = typeof visitCount === 'number' && visitCount > 1;
+  const customerKind = typeof visitCount === 'number'
+    ? (isReturning ? 'RETURNING customer' : 'NEW customer')
+    : 'Customer';
+  const eventName = pageview
+    ? (typeof visitCount === 'number'
+        ? (isReturning ? 'RETURNING CUSTOMER VISIT' : 'NEW CUSTOMER VISIT')
+        : 'CUSTOMER VISIT')
+    : 'WHATSAPP BOOKING CLICK';
   const route = cleanText(payload.routeLabel || payload.routeSlug, 240) || 'Unknown route';
   const pagePath = cleanText(payload.pagePath, 300) || '-';
   const pageTitle = cleanText(payload.pageTitle, 240) || '';
   const pageUrl = cleanText(payload.pageUrl, 500) || '';
+  const language = cleanText(payload.language, 20);
+  const buttonText = cleanText(payload.clickText, 160);
   const source = getPayloadTrafficSource(payload);
   const campaign = cleanText(payload.utmCampaign, 160) || 'none';
   const device = cleanText(payload.deviceType, 40) || 'unknown device';
-  const location = [geo.city, geo.country].filter(Boolean).join(', ') || 'unknown location';
+  const location = [geo.city, geo.region, geo.country].filter(Boolean).join(', ') || 'unknown location';
   const timeOnPage = Math.round(Number(payload.timeOnPageMs || 0) / 1000);
   const scroll = cleanBoundedInteger(payload.scrollDepthPercent, 0, 100) ?? 0;
   const visitor = cleanText(payload.visitorId, 80);
 
+  // Booking selections (only present on WhatsApp booking-form clicks).
+  const tripFrom = [cleanText(payload.fromCity, 120), cleanText(payload.fromCountry, 120)].filter(Boolean).join(', ');
+  const tripTo = [cleanText(payload.toCity, 120), cleanText(payload.toCountry, 120)].filter(Boolean).join(', ');
+  const serviceType = cleanText(payload.serviceType, 120);
+
   return [
     `Vendora Transport: ${eventName}`,
     `Website: getvendora.net / GCC Transport`,
+    pageview ? `Customer type: ${customerKind}${typeof visitCount === 'number' ? ` (visit #${visitCount})` : ''}` : '',
     pageTitle ? `Page name: ${pageTitle}` : '',
-    `Route/page: ${route}`,
-    `Page: ${pagePath}`,
-    pageUrl ? `URL: ${pageUrl}` : '',
+    `Route/page: ${route}${language ? ` (${language})` : ''}`,
+    `Where: ${pagePath}`,
+    pageUrl ? `Full URL: ${pageUrl}` : '',
+    !pageview && buttonText ? `Clicked button: "${buttonText}"` : '',
+    !pageview && serviceType && serviceType !== 'pageview' ? `Service: ${serviceType}` : '',
+    !pageview && tripFrom ? `From: ${tripFrom}` : '',
+    !pageview && tripTo ? `To: ${tripTo}` : '',
     `Source: ${source}`,
     `Campaign: ${campaign}`,
     `Device/location: ${device} / ${location}`,
-    `Engagement: ${timeOnPage}s, ${scroll}% scroll`,
-    pageview ? 'Meaning: visitor opened this page.' : 'Meaning: customer opened WhatsApp booking chat.',
+    `Engagement: ${timeOnPage}s on page, ${scroll}% scrolled`,
+    pageview
+      ? `Meaning: a ${isReturning ? 'returning' : 'new'} customer just arrived on the site (we will not alert again as they browse other pages).`
+      : 'Meaning: a customer just opened the WhatsApp booking chat from this page.',
     visitor ? `Visitor: ${visitor.slice(0, 8)}...` : '',
   ].filter(Boolean).join('\n');
 }
@@ -147,18 +289,130 @@ async function sendPhoneNotification(request, env, payload) {
   }
 
   const geo = getRequestGeo(request);
-  const text = buildNotificationText(payload, geo);
-  const title = pageview ? 'Vendora GCC page visit' : 'Vendora GCC WhatsApp booking';
-  const priority = pageview ? 'default' : 'high';
+  let text;
+  let title;
+  let priority;
+  let tags;
 
-  await fetch(url.toString(), {
+  if (pageview) {
+    // Optional arrival ping (OFF by default in Mode C). Only the first page of
+    // a visit, never the extra pages they browse afterwards.
+    const sessionPageViews = cleanInteger(payload.sessionPageViews);
+    const isFirstPage = sessionPageViews === null || sessionPageViews <= 1;
+    if (!isFirstPage) return;
+    const visitCount = cleanInteger(payload.visitCount);
+    const isReturning = typeof visitCount === 'number' && visitCount > 1;
+    text = buildNotificationText(payload, geo);
+    title = isReturning ? 'Vendora: returning customer' : 'Vendora: NEW customer';
+    priority = 'default';
+    tags = isReturning ? 'repeat' : 'wave';
+  } else {
+    // The money moment: a customer clicked to talk to the driver. Send ONE rich
+    // message showing everything they did leading up to the click.
+    const journey = await fetchVisitorJourney(env, payload);
+    text = buildClickNotificationText(payload, geo, journey);
+    title = 'Vendora: WhatsApp booking click';
+    priority = 'high';
+    tags = 'telephone';
+  }
+
+  await fetch(resolveNtfyPublishUrl(url.toString(), env), {
     method: 'POST',
-    headers: {
-      'content-type': 'text/plain; charset=utf-8',
-      title,
-      priority,
-      tags: pageview ? 'eyes' : 'telephone',
-    },
+    headers: buildNtfyHeaders(env, { title, priority, tags }),
+    body: text,
+  });
+}
+
+/**
+ * Once-a-day digest (sent by the Worker cron trigger): how many real customers
+ * came, new vs returning, page views, WhatsApp clicks/conversion, and the top
+ * page/country over the last 24 hours. Stays quiet on days with no activity.
+ */
+export async function sendDailySummary(env) {
+  const webhookUrl = cleanText(env.TRANSPORT_NOTIFY_WEBHOOK_URL, 1200);
+  if (!webhookUrl || !env.TRANSPORT_DB) return;
+
+  const settings = await getNotificationSettings(env);
+  if (!settings.notifications_enabled) return;
+
+  let url;
+  try {
+    url = new URL(webhookUrl);
+    if (!['https:', 'http:'].includes(url.protocol)) return;
+  } catch {
+    return;
+  }
+
+  const since = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-24 hours')";
+
+  const totals = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      COUNT(DISTINCT COALESCE(json_extract(raw_payload, '$.visitorId'), session_id)) AS visitors,
+      SUM(CASE WHEN COALESCE(service_type, '') = 'pageview' THEN 1 ELSE 0 END) AS pageviews,
+      SUM(CASE WHEN COALESCE(service_type, '') <> 'pageview' THEN 1 ELSE 0 END) AS clicks
+    FROM whatsapp_leads
+    WHERE clicked_at >= ${since}
+  `).first();
+
+  const split = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      SUM(CASE WHEN mx > 1 THEN 1 ELSE 0 END) AS returning_visitors,
+      SUM(CASE WHEN mx <= 1 THEN 1 ELSE 0 END) AS new_visitors
+    FROM (
+      SELECT
+        COALESCE(json_extract(raw_payload, '$.visitorId'), session_id) AS vk,
+        MAX(COALESCE(json_extract(raw_payload, '$.visitCount'), 1)) AS mx
+      FROM whatsapp_leads
+      WHERE clicked_at >= ${since}
+      GROUP BY vk
+    )
+  `).first();
+
+  const topPage = await env.TRANSPORT_DB.prepare(`
+    SELECT COALESCE(NULLIF(route_label, ''), NULLIF(route_slug, ''), page_path) AS label, COUNT(*) AS c
+    FROM whatsapp_leads
+    WHERE clicked_at >= ${since} AND COALESCE(service_type, '') = 'pageview'
+    GROUP BY label
+    ORDER BY c DESC
+    LIMIT 1
+  `).first();
+
+  const topCountry = await env.TRANSPORT_DB.prepare(`
+    SELECT cf_country AS label, COUNT(*) AS c
+    FROM whatsapp_leads
+    WHERE clicked_at >= ${since} AND cf_country IS NOT NULL AND cf_country <> ''
+    GROUP BY cf_country
+    ORDER BY c DESC
+    LIMIT 1
+  `).first();
+
+  const visitors = Number(totals?.visitors || 0);
+  const pageviews = Number(totals?.pageviews || 0);
+  const clicks = Number(totals?.clicks || 0);
+  const newVisitors = Number(split?.new_visitors || 0);
+  const returningVisitors = Number(split?.returning_visitors || 0);
+  const conversion = pageviews > 0 ? Math.round((clicks / pageviews) * 100) : 0;
+
+  // Don't send an empty "0 everything" message on quiet days.
+  if (visitors === 0 && pageviews === 0 && clicks === 0) return;
+
+  const date = new Date().toLocaleDateString('en-GB', {
+    weekday: 'short', day: '2-digit', month: 'short', timeZone: 'Asia/Bahrain',
+  });
+
+  const text = [
+    `Vendora: Daily summary (${date})`,
+    `Visitors: ${visitors} total — ${newVisitors} new, ${returningVisitors} returning`,
+    `Page views: ${pageviews}`,
+    `WhatsApp clicks: ${clicks}${pageviews > 0 ? ` (conversion ${conversion}%)` : ''}`,
+    topPage && topPage.label ? `Top page: ${prettyRoute({ route_label: topPage.label })} (${Number(topPage.c || 0)} views)` : '',
+    topCountry && topCountry.label ? `Top country: ${topCountry.label}` : '',
+    'Open the admin dashboard for full details and evidence.',
+  ].filter(Boolean).join('\n');
+
+  await fetch(resolveNtfyPublishUrl(url.toString(), env), {
+    method: 'POST',
+    headers: buildNtfyHeaders(env, { title: 'Vendora daily summary', priority: 'low', tags: 'bar_chart' }),
     body: text,
   });
 }
@@ -422,6 +676,15 @@ export async function onRequestPost(context) {
       leadUuid,
       message: error && error.message ? error.message : String(error),
     }));
+    return recordError(env, {
+      source: 'lead-api',
+      severity: 'error',
+      message: `Lead insert failed: ${error && error.message ? error.message : String(error)}`,
+      stack: error && error.stack ? error.stack : null,
+      pageUrl: cleanText(payload && payload.pageUrl, 1000),
+      pagePath: cleanText(payload && payload.pagePath, 400),
+      context: `leadUuid=${leadUuid}`,
+    });
   });
   const notify = sendPhoneNotification(request, env, payload).catch((error) => {
     console.error(JSON.stringify({

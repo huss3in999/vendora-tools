@@ -1,3 +1,6 @@
+import { ensureErrorSchema, recordError } from './error-log.js';
+import { buildNtfyHeaders, getNtfyToken, resolveNtfyPublishUrl } from './whatsapp-lead.js';
+
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
   'https://www.getvendora.net',
@@ -32,6 +35,8 @@ let settingsSchemaReady = false;
 const DEFAULT_NOTIFICATION_SETTINGS = {
   notifications_enabled: true,
   notify_whatsapp_clicks: true,
+  // Off by default (Mode C): browsing does not ping the phone; only WhatsApp
+  // clicks alert in real time, with the daily summary covering overall traffic.
   notify_pageviews: false,
   notify_contacted_updates: false,
   notify_completed_updates: true,
@@ -228,6 +233,69 @@ async function updateNotificationSettings(env, payload) {
   }
 
   return json({ ok: true, notification_settings: settings });
+}
+
+/**
+ * Send a one-off test alert to the configured ntfy webhook so the owner can
+ * confirm phone notifications actually work, independent of real visits.
+ */
+async function sendTestNotification(env) {
+  const webhookUrl = cleanText(env.TRANSPORT_NOTIFY_WEBHOOK_URL, 1200);
+  if (!webhookUrl) {
+    return json({
+      ok: false,
+      configured: false,
+      error: 'No phone webhook is set. In Cloudflare, set the secret TRANSPORT_NOTIFY_WEBHOOK_URL to your private ntfy topic URL (e.g. https://ntfy.sh/your-secret-topic), then redeploy.',
+    });
+  }
+
+  let url;
+  try {
+    url = new URL(webhookUrl);
+    if (!['https:', 'http:'].includes(url.protocol)) throw new Error('bad protocol');
+  } catch {
+    return json({ ok: false, configured: true, error: 'The webhook secret is set but it is not a valid http(s) URL.' });
+  }
+
+  const notifyToken = getNtfyToken(env);
+  const ntfyHeaders = buildNtfyHeaders(env, {
+    title: 'Vendora GCC test alert',
+    priority: 'high',
+    tags: 'white_check_mark',
+  });
+
+  try {
+    const publishUrl = resolveNtfyPublishUrl(url.toString(), env);
+    const response = await fetch(publishUrl, {
+      method: 'POST',
+      headers: ntfyHeaders,
+      body: [
+        'Vendora Transport: TEST ALERT',
+        'Website: getvendora.net / GCC Transport',
+        'If you can read this on your phone, alerts are working.',
+        'Real page visits and WhatsApp booking clicks will arrive here the same way.',
+      ].join('\n'),
+    });
+    const bodyText = response.ok ? '' : await response.text().catch(() => '');
+    return json({
+      ok: response.ok,
+      configured: true,
+      auth_mode: notifyToken ? 'bearer_token' : 'anonymous',
+      status: response.status,
+      message: response.ok
+        ? 'Test alert sent. Check your phone / ntfy app now.'
+        : `The webhook responded with status ${response.status}. Check that the ntfy topic URL is correct.`,
+      error: response.ok
+        ? undefined
+        : `ntfy/webhook returned status ${response.status}. ${String(bodyText).slice(0, 300)}`.trim(),
+    });
+  } catch (error) {
+    return json({
+      ok: false,
+      configured: true,
+      error: `Webhook is set but the test send failed: ${error && error.message ? error.message : String(error)}`,
+    });
+  }
 }
 
 function eventClause(eventType) {
@@ -516,6 +584,67 @@ async function getSummary(env, request) {
     WHERE visitor_id IS NOT NULL
   `);
 
+  // "Online now" = activity in the last 5 minutes. Intentionally ignores the
+  // period filter because it always reflects the present moment.
+  // Counted by PERSON (visitor id, falling back to session), so one visitor
+  // browsing many pages or tabs only ever counts as one.
+  const PERSON_KEY_EXPR = `COALESCE(${VISITOR_ID_EXPR}, session_id)`;
+
+  const onlineTotals = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      COUNT(DISTINCT ${PERSON_KEY_EXPR}) AS online_visitors,
+      COUNT(DISTINCT session_id) AS online_sessions,
+      COUNT(*) AS online_events
+    FROM whatsapp_leads
+    WHERE clicked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-5 minutes')
+  `).first();
+
+  // One row per person: their most recent page, plus how many pages they viewed
+  // and whether they clicked WhatsApp during this online window.
+  const { results: onlineRecent } = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      person_key,
+      visitor_id,
+      session_id,
+      last_seen,
+      page_path,
+      route_label,
+      route_slug,
+      language,
+      city,
+      region,
+      country,
+      device_type,
+      seconds_on_page,
+      pages_viewed,
+      whatsapp_clicks,
+      CASE WHEN whatsapp_clicks > 0 THEN 1 ELSE 0 END AS clicked_whatsapp
+    FROM (
+      SELECT
+        ${PERSON_KEY_EXPR} AS person_key,
+        ${VISITOR_ID_EXPR} AS visitor_id,
+        session_id,
+        clicked_at AS last_seen,
+        page_path,
+        route_label,
+        route_slug,
+        language,
+        cf_city AS city,
+        cf_region AS region,
+        cf_country AS country,
+        device_type,
+        ROUND(time_on_page_ms / 1000) AS seconds_on_page,
+        SUM(CASE WHEN COALESCE(service_type, '') = 'pageview' THEN 1 ELSE 0 END) OVER (PARTITION BY ${PERSON_KEY_EXPR}) AS pages_viewed,
+        SUM(CASE WHEN COALESCE(service_type, '') <> 'pageview' THEN 1 ELSE 0 END) OVER (PARTITION BY ${PERSON_KEY_EXPR}) AS whatsapp_clicks,
+        ROW_NUMBER() OVER (PARTITION BY ${PERSON_KEY_EXPR} ORDER BY clicked_at DESC) AS rn
+      FROM whatsapp_leads
+      WHERE clicked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-5 minutes')
+    )
+    WHERE rn = 1
+    ORDER BY last_seen DESC
+    LIMIT 30
+  `).all();
+
   const [
     { results: byRouteClicks },
     { results: byRoutePageviews },
@@ -712,6 +841,9 @@ async function getSummary(env, request) {
       today: leadTotals?.today || 0,
       total_pageviews: pageviewTotals?.total_pageviews || 0,
       pageviews_today: pageviewTotals?.pageviews_today || 0,
+      online_now: onlineTotals?.online_visitors || 0,
+      online_sessions: onlineTotals?.online_sessions || 0,
+      online_recent: onlineRecent || [],
       by_route: byRoute,
       by_source: bySourceMerged,
       by_campaign: byCampaignMerged,
@@ -887,6 +1019,65 @@ async function deleteLead(env, request) {
   return json({ ok: true, deleted: result.meta?.changes || 0 });
 }
 
+const BULK_FILTER_KEYS = ['route', 'device', 'country', 'source', 'campaign', 'status', 'from', 'to', 'search', 'min_seconds', 'max_seconds'];
+
+function hasMeaningfulFilter(url) {
+  return BULK_FILTER_KEYS.some((key) => cleanText(url.searchParams.get(key), 200));
+}
+
+function resolveEventType(value) {
+  const event = String(value || 'all').toLowerCase();
+  if (['visits', 'visit', 'pageview', 'pageviews'].includes(event)) return 'pageview';
+  if (['clicks', 'click', 'lead', 'leads'].includes(event)) return 'lead';
+  return 'all';
+}
+
+/**
+ * Delete many events at once (e.g. to clear your own test visits).
+ * Guard rail: refuses to wipe the whole table unless an explicit
+ * confirm=all is passed, so a misclick cannot erase real history.
+ */
+async function deleteBulkEvents(env, request) {
+  const url = new URL(request.url);
+  const eventType = resolveEventType(url.searchParams.get('event'));
+  const confirmAll = ['1', 'true', 'yes', 'all'].includes(String(url.searchParams.get('confirm') || '').toLowerCase());
+
+  if (!hasMeaningfulFilter(url) && !confirmAll) {
+    return json({
+      ok: false,
+      error: 'Add at least one filter (date range, route, search, etc.) before bulk deleting, or pass confirm=all to clear everything.',
+    }, { status: 400 });
+  }
+
+  const { whereSql, bindings } = buildLeadFilters(url, { eventType });
+  const result = await env.TRANSPORT_DB.prepare(`DELETE FROM whatsapp_leads ${whereSql}`).bind(...bindings).run();
+  return json({ ok: true, deleted: result.meta?.changes || 0, event_type: eventType });
+}
+
+async function getErrors(env, request) {
+  await ensureErrorSchema(env);
+  const url = new URL(request.url);
+  const limitParam = Number(url.searchParams.get('limit') || 200);
+  const limit = Math.max(1, Math.min(1000, Number.isFinite(limitParam) ? Math.round(limitParam) : 200));
+  const { results } = await env.TRANSPORT_DB.prepare(`
+    SELECT id, created_at, source, severity, message, stack, page_url, page_path, user_agent, ip_address, cf_country, context
+    FROM transport_error_log
+    ORDER BY id DESC
+    LIMIT ?
+  `).bind(limit).all();
+  return { errors: results || [] };
+}
+
+async function deleteErrors(env, request) {
+  await ensureErrorSchema(env);
+  const url = new URL(request.url);
+  const id = Number(url.searchParams.get('id') || 0);
+  const result = id
+    ? await env.TRANSPORT_DB.prepare('DELETE FROM transport_error_log WHERE id = ?').bind(id).run()
+    : await env.TRANSPORT_DB.prepare('DELETE FROM transport_error_log').run();
+  return json({ ok: true, deleted: result.meta?.changes || 0 });
+}
+
 export async function onRequestOptions(context) {
   return new Response(null, { status: 204, headers: corsHeaders(context.request) });
 }
@@ -912,12 +1103,21 @@ export async function onRequestGet(context) {
         ? await getSummary(env, request)
         : resource === 'notification-settings'
           ? { notification_settings: await getNotificationSettings(env) }
+        : resource === 'errors'
+          ? await getErrors(env, request)
         : resource === 'pageviews'
           ? await getEventRows(env, request, 'pageview')
           : await getEventRows(env, request, 'lead');
     return json({ ok: true, ...data }, { headers });
   } catch (error) {
     console.error(JSON.stringify({ event: 'transport_admin_get_failed', message: error.message }));
+    context.waitUntil(recordError(env, {
+      source: 'admin-api',
+      severity: 'error',
+      message: `Admin GET failed (resource=${resource}): ${error && error.message ? error.message : String(error)}`,
+      stack: error && error.stack ? error.stack : null,
+      context: request.url,
+    }));
     return json({ ok: false, error: 'Failed to load admin data' }, { status: 500, headers });
   }
 }
@@ -940,13 +1140,31 @@ export async function onRequestDelete(context) {
     return json({ ok: false, error: 'Unauthorized' }, { status: 401, headers });
   }
 
+  const url = new URL(request.url);
+  const resource = url.searchParams.get('resource') || '';
+  const mode = url.searchParams.get('mode') || '';
+
   try {
     await ensureAdminSchema(env);
-    const response = await deleteLead(env, request);
+    let response;
+    if (resource === 'errors') {
+      response = await deleteErrors(env, request);
+    } else if (resource === 'bulk' || mode === 'bulk') {
+      response = await deleteBulkEvents(env, request);
+    } else {
+      response = await deleteLead(env, request);
+    }
     return json(await response.json(), { status: response.status, headers });
   } catch (error) {
     console.error(JSON.stringify({ event: 'transport_admin_delete_failed', message: error.message }));
-    return json({ ok: false, error: 'Failed to delete lead' }, { status: 500, headers });
+    context.waitUntil(recordError(env, {
+      source: 'admin-api',
+      severity: 'error',
+      message: `Admin DELETE failed: ${error && error.message ? error.message : String(error)}`,
+      stack: error && error.stack ? error.stack : null,
+      context: request.url,
+    }));
+    return json({ ok: false, error: 'Failed to delete record' }, { status: 500, headers });
   }
 }
 
@@ -976,10 +1194,19 @@ async function handleAdminWrite(context) {
       ? await updateLeadOutcome(env, payload)
       : resource === 'notification-settings'
         ? await updateNotificationSettings(env, payload)
-        : await upsertRoute(env, payload);
+        : resource === 'test-notification'
+          ? await sendTestNotification(env)
+          : await upsertRoute(env, payload);
     return json(await response.json(), { status: response.status, headers });
   } catch (error) {
     console.error(JSON.stringify({ event: 'transport_admin_write_failed', message: error.message }));
+    context.waitUntil(recordError(env, {
+      source: 'admin-api',
+      severity: 'error',
+      message: `Admin WRITE failed (resource=${resource}): ${error && error.message ? error.message : String(error)}`,
+      stack: error && error.stack ? error.stack : null,
+      context: request.url,
+    }));
     return json({ ok: false, error: 'Failed to save admin data' }, { status: 500, headers });
   }
 }

@@ -1,0 +1,70 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260529010851
+Username: DESKTOP-UK5BRGP\Hussain Alyaqoob
+RunAs User: DESKTOP-UK5BRGP\Hussain Alyaqoob
+Configuration Name: 
+Machine: DESKTOP-UK5BRGP (Microsoft Windows NT 10.0.19045.0)
+Host Application: powershell -NoProfile -ExecutionPolicy Bypass -File E:\Users\Hussain Alyaqoob\Documents\GitHub\public\bahrain-saudi-gcc-transport\REPAIR-ADMIN-STAYS-OPEN.ps1
+Process ID: 10824
+PSVersion: 5.1.19041.6456
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.6456
+BuildVersion: 10.0.19041.6456
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Vendora Transport Admin Full Repair
+
+This window will stay open. If anything fails, copy the red error or open the log file.
+Working folder: E:\Users\Hussain Alyaqoob\Documents\GitHub\public
+Log file: E:\Users\Hussain Alyaqoob\Documents\GitHub\public\bahrain-saudi-gcc-transport\transport-admin-repair-20260529-010850.log
+
+============================================================
+1. Checking Cloudflare login
+============================================================
+
+ ⛅️ wrangler 4.79.0
+───────────────────
+Getting User settings...
+
+X [ERROR] Unable to resolve Cloudflare's API hostname (api.cloudflare.com or dash.cloudflare.com).
+
+
+  This is typically caused by:
+    - No internet connection or network connectivity issues
+    - DNS resolver not configured or not responding
+    - Firewall or VPN blocking DNS requests
+    - Corporate network with restricted DNS
+
+  Please check your network connection and DNS settings.
+
+
+�  Logs were written to "C:\Users\Hussain Alyaqoob\AppData\Roaming\xdg.config\.wrangler\logs\wrangl er-2026-05-28_22-08-
+56_186.log"
+
+Wrangler is not logged in. Cloudflare login will open in your browser.
+Finish the browser login, then come back to this CMD window.
+
+ ⛅️ wrangler 4.79.0
+───────────────────
+Attempting to login via OAuth...
+Opening a link in your default browser: https://dash.cloudflare.com/oauth2/auth?response_type=code&client_id=54d11594-84
+e4-41aa-b438-e81b8fa78ee7&redirect_uri=http%3A%2F%2Flocalhost%3A8976%2Foauth%2Fcallback&scope=account%3Aread%20user%3Are
+ad%20workers%3Awrite%20workers_kv%3Awrite%20workers_routes%3Awrite%20workers_scripts%3Awrite%20workers_tail%3Aread%20d1%
+3Awrite%20pages%3Awrite%20zone%3Aread%20ssl_certs%3Awrite%20ai%3Awrite%20ai-search%3Awrite%20ai-search%3Arun%20queues%3A
+write%20pipelines%3Awrite%20secrets_store%3Awrite%20containers%3Awrite%20cloudchamber%3Awrite%20connectivity%3Aadmin%20o
+ffline_access&state=ZEa8UondzfTH4XkHCpaP_JyL1f2IBLZf&code_challenge=zli_Xl3cU7VQtZHXGtGOD39SjccdIUq_GqPlGdxdPlw&code_cha
+llenge_method=S256
+
+X [ERROR] Timed out waiting for authorization code, please try again.
+
+
+�  Logs were written to "C:\Users\Hussain Alyaqoob\AppData\Roaming\xdg.config\.wrangler\logs\wrangl er-2026-05-28_22-08-
+59_513.log"
+
+Cloudflare login failed. Please run this file again and complete the browser login.
+
+Log saved at: E:\Users\Hussain Alyaqoob\Documents\GitHub\public\bahrain-saudi-gcc-transport\transport-admin-repair-20260529-010850.log

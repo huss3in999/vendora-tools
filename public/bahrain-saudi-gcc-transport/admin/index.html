@@ -143,6 +143,13 @@
           </div>
         </div>
         <div class="flex flex-wrap items-center gap-2">
+          <span id="onlineNowPill" class="flex items-center gap-2 rounded-2xl border border-emerald-500/30 bg-emerald-950/20 px-4 py-2.5 text-xs font-bold text-emerald-300" title="Visitors active on GCC pages in the last 5 minutes">
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+            </span>
+            <span id="onlineNowText">0 online now</span>
+          </span>
           <button id="exportBtn" class="flex items-center gap-2 rounded-2xl bg-slate-800/80 border border-slate-700/50 px-4 py-2.5 text-xs font-bold text-slate-200 transition duration-200 hover:bg-slate-700 hover:text-white" type="button">
             <i data-lucide="download" class="h-3.5 w-3.5"></i> Export CSV
           </button>
@@ -158,7 +165,7 @@
       <p id="statusLine" class="hidden rounded-2xl border px-5 py-4 text-sm"></p>
 
       <!-- NAVIGATION TABS -->
-      <nav class="grid grid-cols-2 gap-1 rounded-2xl glass-panel p-1.5 shadow-md sm:grid-cols-3 xl:grid-cols-6">
+      <nav class="grid grid-cols-2 gap-1 rounded-2xl glass-panel p-1.5 shadow-md sm:grid-cols-3 xl:grid-cols-7">
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="leads" type="button">
           <i data-lucide="message-circle" class="h-4 w-4"></i> Clicks
         </button>
@@ -177,10 +184,37 @@
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="alerts" type="button">
           <i data-lucide="bell-ring" class="h-4 w-4"></i> Alerts
         </button>
+        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="errors" type="button">
+          <i data-lucide="alert-triangle" class="h-4 w-4 text-red-400"></i> Errors
+        </button>
       </nav>
 
-      <!-- ADVANCED FILTERING CONSOLE -->
-      <section class="rounded-3xl glass-panel p-6 shadow-lg">
+      <!-- TOP CONTROL BAR: quick period (always visible) + collapsible filters -->
+      <section class="rounded-3xl glass-panel p-4 shadow-lg">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mr-1">Period</span>
+          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="today">Today</button>
+          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="yesterday">Yesterday</button>
+          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="7">7 days</button>
+          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="14">2 weeks</button>
+          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="21">3 weeks</button>
+          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="30">1 month</button>
+          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="90">3 months</button>
+          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="180">6 months</button>
+          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="all">All time</button>
+          <span id="periodLabel" class="text-[11px] font-semibold text-brand-light"></span>
+          <label class="ml-2 flex cursor-pointer items-center gap-2 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300">
+            <input id="hideBotsToggle" type="checkbox" class="h-3.5 w-3.5 accent-brand" checked />
+            Hide likely bots
+          </label>
+          <span id="botsFilterNote" class="text-[10px] text-orange-300/90"></span>
+          <button id="toggleFiltersBtn" type="button" class="ml-auto flex items-center gap-1 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white">
+            <i data-lucide="sliders" class="h-3.5 w-3.5"></i> <span id="toggleFiltersLabel">Filters</span>
+          </button>
+        </div>
+
+        <!-- ADVANCED FILTERS (hidden by default; click "Filters" to open) -->
+        <div id="advancedFilters" class="hidden mt-4 border-t border-slate-800 pt-4">
         <div class="mb-4 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 class="text-sm font-bold text-white flex items-center gap-2">
@@ -242,13 +276,58 @@
             </button>
           </div>
         </form>
+
+        <!-- CLEANUP / BULK DELETE (e.g. remove your own test visits) -->
+        <div class="mt-5 flex flex-wrap items-center gap-2 border-t border-slate-800 pt-4">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-red-300/80 mr-1 flex items-center gap-1">
+            <i data-lucide="trash-2" class="h-3.5 w-3.5"></i> Cleanup
+          </span>
+          <button type="button" data-bulk-delete="all" class="rounded-lg border border-red-500/30 bg-red-950/20 px-3 py-1.5 text-[11px] font-semibold text-red-300 transition hover:bg-red-900/40">Delete shown records</button>
+          <button type="button" data-bulk-delete="visits" class="rounded-lg border border-red-500/30 bg-red-950/20 px-3 py-1.5 text-[11px] font-semibold text-red-300 transition hover:bg-red-900/40">Delete shown visits only</button>
+          <button type="button" data-bulk-delete="clicks" class="rounded-lg border border-red-500/30 bg-red-950/20 px-3 py-1.5 text-[11px] font-semibold text-red-300 transition hover:bg-red-900/40">Delete shown clicks only</button>
+          <span class="text-[10px] text-slate-500">Deletes records that match the current period/filters. Tip: pick a period or date range first to clear only your test visits.</span>
+        </div>
+        </div>
+      </section>
+
+      <!-- WHO IS ONLINE RIGHT NOW (always visible at top, on every tab) -->
+      <section class="glass-panel rounded-3xl overflow-hidden shadow-xl">
+        <button id="toggleOnlineBtn" type="button" class="flex w-full items-center justify-between gap-2 border-b border-slate-800/80 p-4 text-left bg-slate-900/30">
+          <span class="flex items-center gap-2 text-base font-bold text-white">
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+            </span>
+            Online Now
+            <span id="onlineNowCount" class="rounded-full border border-emerald-500/20 bg-emerald-950/20 px-2 py-0.5 text-[11px] font-bold text-emerald-300">0</span>
+          </span>
+          <span class="flex items-center gap-2 text-[10px] text-slate-500">
+            Active in the last 5 minutes
+            <i id="toggleOnlineIcon" data-lucide="chevron-up" class="h-4 w-4 text-slate-400"></i>
+          </span>
+        </button>
+        <div id="onlineNowList" class="grid gap-3 p-4 sm:grid-cols-2 xl:grid-cols-3"></div>
       </section>
 
       <!-- KPI METRIC CARDS GRID -->
-      <section class="grid gap-4 grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
-        
+      <p class="text-[10px] text-slate-500 -mb-1">Tip: tap any card below to jump straight to its full report.</p>
+      <section class="grid gap-4 grid-cols-2 md:grid-cols-3 xl:grid-cols-7">
+
+        <!-- UNIQUE VISITORS (real people, not page hits) -->
+        <div data-jump="cohorts" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-cyan-500 transition hover:border-cyan-300 hover:bg-cyan-950/10">
+          <div class="flex justify-between items-start text-slate-400">
+            <span class="text-xs font-medium">Unique Visitors</span>
+            <i data-lucide="users" class="h-4 w-4 text-cyan-400"></i>
+          </div>
+          <p id="statVisitors" class="mt-2 text-2xl font-extrabold text-white">0</p>
+          <div class="mt-1 text-[10px] text-slate-400 flex flex-wrap items-center gap-x-2">
+            <span><strong id="statNewVisitors" class="text-cyan-300">0</strong> new</span>
+            <span><strong id="statReturningVisitors" class="text-amber-300">0</strong> returning</span>
+          </div>
+        </div>
+
         <!-- FUNNEL TOP: PAGEVIEWS -->
-        <div class="rounded-2xl glass-panel p-4 shadow-md border-l-4 border-blue-500">
+        <div data-jump="pageviews" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-blue-500 transition hover:border-blue-300 hover:bg-blue-950/10">
           <div class="flex justify-between items-start text-slate-400">
             <span class="text-xs font-medium">Page Views</span>
             <i data-lucide="eye" class="h-4 w-4 text-blue-400"></i>
@@ -260,7 +339,7 @@
         </div>
 
         <!-- FUNNEL CONVERSION: WHATSAPP CLICKS -->
-        <div class="rounded-2xl glass-panel p-4 shadow-md border-l-4 border-brand">
+        <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-brand transition hover:border-emerald-300 hover:bg-emerald-950/10">
           <div class="flex justify-between items-start text-slate-400">
             <span class="text-xs font-medium">WhatsApp Clicks</span>
             <i data-lucide="message-circle" class="h-4 w-4 text-brand"></i>
@@ -272,7 +351,7 @@
         </div>
 
         <!-- CONVERSION RATE -->
-        <div class="rounded-2xl glass-panel p-4 shadow-md border-l-4 border-yellow-500">
+        <div data-jump="reports" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-yellow-500 transition hover:border-yellow-300 hover:bg-yellow-950/10">
           <div class="flex justify-between items-start text-slate-400">
             <span class="text-xs font-medium">Visits → Clicks</span>
             <i data-lucide="percent" class="h-4 w-4 text-yellow-400"></i>
@@ -284,7 +363,7 @@
         </div>
 
         <!-- CRM CONVERTED JOBS -->
-        <div class="rounded-2xl glass-panel p-4 shadow-md border-l-4 border-indigo-500">
+        <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-indigo-500 transition hover:border-indigo-300 hover:bg-indigo-950/10">
           <div class="flex justify-between items-start text-slate-400">
             <span class="text-xs font-medium">Jobs Completed</span>
             <i data-lucide="check-square" class="h-4 w-4 text-indigo-400"></i>
@@ -296,7 +375,7 @@
         </div>
 
         <!-- REVENUE LOGGED -->
-        <div class="rounded-2xl glass-panel p-4 shadow-md border-l-4 border-emerald-500">
+        <div data-jump="reports" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-emerald-500 transition hover:border-emerald-300 hover:bg-emerald-950/10">
           <div class="flex justify-between items-start text-slate-400">
             <span class="text-xs font-medium">Total Revenue</span>
             <i data-lucide="banknote" class="h-4 w-4 text-emerald-400"></i>
@@ -308,7 +387,7 @@
         </div>
 
         <!-- USER ENGAGEMENT -->
-        <div class="rounded-2xl glass-panel p-4 shadow-md border-l-4 border-purple-500">
+        <div data-jump="reports" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-purple-500 transition hover:border-purple-300 hover:bg-purple-950/10">
           <div class="flex justify-between items-start text-slate-400">
             <span class="text-xs font-medium">Avg Active Time</span>
             <i data-lucide="clock" class="h-4 w-4 text-purple-400"></i>
@@ -320,6 +399,16 @@
           </div>
         </div>
 
+      </section>
+
+      <!-- SMART INSIGHTS: auto-generated plain-language takeaways -->
+      <section id="insightsPanel" class="rounded-2xl glass-panel p-4 shadow-md border-l-4 border-fuchsia-500">
+        <div class="flex items-center gap-2 text-slate-300">
+          <i data-lucide="lightbulb" class="h-4 w-4 text-fuchsia-400"></i>
+          <h3 class="text-sm font-bold">Smart Insights</h3>
+          <span class="text-[10px] text-slate-500">auto-generated for the selected period</span>
+        </div>
+        <ul id="insightsList" class="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-3 text-xs text-slate-300"></ul>
       </section>
 
       <!-- TAB 1: WHATSAPP CLICKS (CRM LOG) -->
@@ -349,7 +438,7 @@
                   <th class="px-5 py-4">Customer Destination</th>
                   <th class="px-5 py-4">Traffic Channel / Referral</th>
                   <th class="px-5 py-4">Engagement stats</th>
-                  <th class="px-5 py-4">Location</th>
+                  <th class="px-5 py-4">City / Country</th>
                   <th class="px-5 py-4">Audit Status</th>
                   <th class="px-5 py-4 text-center">Actions</th>
                 </tr>
@@ -366,13 +455,16 @@
           <div class="flex flex-col gap-2 border-b border-slate-800/80 p-5 sm:flex-row sm:items-center sm:justify-between bg-slate-900/30">
             <div>
               <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                <i data-lucide="navigation" class="text-blue-500"></i> Real-time Web Traffic Log
+                <i data-lucide="navigation" class="text-blue-500"></i> Visitors Log
+                <span id="pvCount" class="rounded-full border border-blue-500/20 bg-blue-950/20 px-2 py-0.5 text-[11px] font-bold text-blue-300">0 customers</span>
               </h2>
-              <p class="text-xs text-slate-400 mt-0.5">Logs of every visitor reading the transport pages, showing who visited, which page, and active durations.</p>
+              <p class="text-xs text-slate-400 mt-0.5">One row per customer (not per page). Each person is counted once no matter how many pages they open. Tap a row to see their full journey.</p>
             </div>
-            <p class="text-[10px] text-slate-500 border border-slate-800/80 rounded-xl px-3 py-1 bg-slate-950/20">
-              Helps double check if newly added pages are correctly generating visits.
-            </p>
+            <div class="flex items-center gap-2">
+              <button id="deleteVisitsBtn" type="button" class="rounded-xl border border-red-500/30 bg-red-950/20 px-3 py-1.5 text-[11px] font-semibold text-red-300 transition hover:bg-red-900/40 flex items-center gap-1">
+                <i data-lucide="trash-2" class="h-3.5 w-3.5"></i> Delete shown visits
+              </button>
+            </div>
           </div>
 
           <div id="pvMobile" class="grid gap-4 p-4 md:hidden"></div>
@@ -381,13 +473,14 @@
             <table class="min-w-full divide-y divide-slate-800/80 text-left text-xs">
               <thead class="bg-slate-900/50 text-slate-400 uppercase font-bold tracking-wider">
                 <tr>
-                  <th class="px-5 py-4">Time</th>
-                  <th class="px-5 py-4">Visited Page</th>
-                  <th class="px-5 py-4">Referrer Host</th>
-                  <th class="px-5 py-4">Session view count</th>
-                  <th class="px-5 py-4">Active Time</th>
-                  <th class="px-5 py-4">Location</th>
+                  <th class="px-5 py-4">Customer</th>
+                  <th class="px-5 py-4">First visit (landing page)</th>
+                  <th class="px-5 py-4">Last seen</th>
+                  <th class="px-5 py-4 text-center">Pages</th>
+                  <th class="px-5 py-4 text-center">WhatsApp</th>
+                  <th class="px-5 py-4">City / Country</th>
                   <th class="px-5 py-4">Device</th>
+                  <th class="px-5 py-4 text-right">Details</th>
                 </tr>
               </thead>
               <tbody id="pvTable" class="divide-y divide-slate-800/60 bg-slate-950/20"></tbody>
@@ -600,7 +693,7 @@
               <label class="flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/30 p-4">
                 <span>
                   <span class="block text-sm font-bold text-white">WhatsApp click alerts</span>
-                  <span class="mt-1 block text-xs text-slate-400">Recommended. Sends an alert when someone clicks a booking or WhatsApp button.</span>
+                  <span class="mt-1 block text-xs text-slate-400">Recommended. One rich alert each time a customer clicks WhatsApp, showing their full journey, source, device and location — your real-time lead signal.</span>
                 </span>
                 <input name="notify_whatsapp_clicks" type="checkbox" class="h-5 w-5 accent-brand" />
               </label>
@@ -608,7 +701,7 @@
               <label class="flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/30 p-4">
                 <span>
                   <span class="block text-sm font-bold text-white">Page visit alerts</span>
-                  <span class="mt-1 block text-xs text-slate-400">Optional. Can be noisy because it sends an alert when someone opens a GCC transport page.</span>
+                  <span class="mt-1 block text-xs text-slate-400">Off by default. Browsing does not ping your phone — the once-a-day summary covers overall traffic. Turn on only if you also want a ping when each new customer first arrives.</span>
                 </span>
                 <input name="notify_pageviews" type="checkbox" class="h-5 w-5 accent-brand" />
               </label>
@@ -634,12 +727,44 @@
               Set Cloudflare secret <code class="rounded bg-black/40 px-1 py-0.5 text-slate-100">TRANSPORT_NOTIFY_WEBHOOK_URL</code> to your private ntfy topic URL. The admin only controls what is active; it never exposes the phone webhook URL.
             </div>
 
+            <div class="flex flex-col gap-2 rounded-2xl border border-slate-800 bg-slate-950/30 p-4 sm:flex-row sm:items-center sm:justify-between">
+              <span>
+                <span class="block text-sm font-bold text-white">Test phone alert</span>
+                <span class="mt-1 block text-xs text-slate-400">Send a test notification right now to confirm your phone actually receives alerts.</span>
+              </span>
+              <button id="sendTestAlertBtn" type="button" class="shrink-0 rounded-xl border border-brand/40 bg-brand-soft/20 px-4 py-2 text-xs font-bold text-brand-light transition hover:bg-brand-soft/40">
+                Send test alert
+              </button>
+            </div>
+
+            <div id="testAlertResult" class="hidden rounded-2xl border p-4 text-xs leading-relaxed"></div>
+
             <div class="flex justify-end">
               <button class="rounded-xl bg-brand px-5 py-2.5 text-xs font-bold text-slate-950 transition hover:bg-brand-light" type="submit">
                 Save Alert Settings
               </button>
             </div>
           </form>
+        </div>
+      </section>
+
+      <!-- TAB 7: ERROR LOG -->
+      <section id="errorsPanel" class="tab-panel hidden space-y-6">
+        <div class="rounded-3xl glass-panel p-6 shadow-xl">
+          <div class="mb-5 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="alert-triangle" class="text-red-400"></i> Error Log
+                <span id="errorsCount" class="rounded-full border border-red-500/20 bg-red-950/20 px-2 py-0.5 text-[11px] font-bold text-red-300">0</span>
+              </h2>
+              <p class="mt-1 text-xs text-slate-400">Records problems from the website API, the Worker, and this admin page so nothing fails silently.</p>
+            </div>
+            <div class="flex gap-2">
+              <button id="refreshErrorsBtn" type="button" class="rounded-xl bg-slate-800/80 border border-slate-700/50 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white">Refresh</button>
+              <button id="clearErrorsBtn" type="button" class="rounded-xl border border-red-500/30 bg-red-950/20 px-3 py-1.5 text-xs font-semibold text-red-300 transition hover:bg-red-900/40">Clear all</button>
+            </div>
+          </div>
+          <div id="errorsList" class="space-y-3"></div>
         </div>
       </section>
 
@@ -771,6 +896,21 @@
     </div>
   </dialog>
 
+  <!-- ONLINE VISITOR DETAILS MODAL -->
+  <dialog id="visitorDialog" class="w-[min(720px,calc(100vw-32px))] rounded-3xl border border-slate-800/80 bg-slate-900/95 text-slate-100 p-0 shadow-2xl backdrop:bg-slate-950/80 backdrop:backdrop-blur-sm">
+    <div class="flex items-center justify-between border-b border-slate-800 p-5">
+      <h3 class="flex items-center gap-2 text-lg font-bold text-white">
+        <span class="relative flex h-2.5 w-2.5">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+        </span>
+        Visitor details
+      </h3>
+      <button id="closeVisitorDialogBtn" type="button" class="rounded-xl bg-slate-800/80 border border-slate-700/50 px-3 py-1.5 text-xs font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white">Close</button>
+    </div>
+    <div id="visitorDialogBody" class="max-h-[70vh] overflow-y-auto p-5"></div>
+  </dialog>
+
   <!-- DASHBOARD CONTROLLER SCRIPT -->
   <script>
     function resolveAdminApiUrl() {
@@ -823,7 +963,46 @@
     window.__VENDORA_TRANSPORT_ADMIN_RESOLVED_API__ = API_URL;
     window.__VENDORA_TRANSPORT_ADMIN_API_CANDIDATES__ = API_URLS;
     const TOKEN_KEY = 'vendora_transport_admin_token';
-    
+
+    // Report admin-page crashes to the transport error log so nothing fails silently.
+    (function setupAdminErrorReporter() {
+      let sent = 0;
+      const MAX_PER_SESSION = 12;
+      function logEndpoints() {
+        return uniqueApiCandidates(API_URLS.map((url) => url.replace(/\/admin$/, '/log')));
+      }
+      function report(message, stack, context) {
+        if (sent >= MAX_PER_SESSION || !message) return;
+        sent += 1;
+        const body = JSON.stringify({
+          source: 'admin-page',
+          severity: 'error',
+          message: String(message).slice(0, 1000),
+          stack: stack ? String(stack).slice(0, 4000) : null,
+          pageUrl: window.location.href,
+          pagePath: window.location.pathname,
+          context: context || ''
+        });
+        const targets = logEndpoints();
+        if (navigator.sendBeacon) {
+          try {
+            if (navigator.sendBeacon(targets[0], new Blob([body], { type: 'application/json' }))) return;
+          } catch (e) { /* fall through to fetch */ }
+        }
+        targets.forEach((url) => {
+          fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body, keepalive: true }).catch(() => {});
+        });
+      }
+      window.addEventListener('error', (event) => {
+        report(event.message || 'Script error', event.error && event.error.stack, `at ${event.filename || '?'}:${event.lineno || 0}`);
+      });
+      window.addEventListener('unhandledrejection', (event) => {
+        const reason = event.reason;
+        report(reason && reason.message ? reason.message : String(reason), reason && reason.stack, 'unhandledrejection');
+      });
+      window.__vendoraReportAdminError = report;
+    })();
+
     const COMMON_ROUTES = [
       ['home', 'Main transport page', 'صفحة النقل الرئيسية', 0],
       ['english-home', 'English transport hub', 'المركز الإنجليزي للنقل', 5],
@@ -843,6 +1022,32 @@
       ['bahrain-to-iraq', 'Bahrain to Iraq', 'من البحرين إلى العراق', 118]
     ];
 
+    const ROUTE_NAME_MAP = COMMON_ROUTES.reduce((map, [slug, en, ar]) => {
+      map[slug] = { en, ar };
+      return map;
+    }, {});
+
+    function prettifySlug(slug) {
+      if (!slug) return '';
+      return String(slug)
+        .replace(/-en$/i, '')
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, (char) => char.toUpperCase())
+        .replace(/\bTo\b/g, 'to')
+        .trim();
+    }
+
+    // Human-readable page name (the page heading), never the raw URL slug.
+    function prettyRouteName(item) {
+      if (!item) return '-';
+      const label = String(item.route_label || '').trim();
+      const slug = String(item.route_slug || '').replace(/-en$/i, '');
+      if (label && label !== item.route_slug && !/^https?:/i.test(label)) return label;
+      const mapped = ROUTE_NAME_MAP[slug];
+      if (mapped) return String(item.language || '').toLowerCase().startsWith('ar') && mapped.ar ? mapped.ar : mapped.en;
+      return prettifySlug(slug) || (item.page_path || '/');
+    }
+
     const countryNameFormatter = typeof Intl !== 'undefined' && Intl.DisplayNames
       ? new Intl.DisplayNames(['en'], { type: 'region' })
       : null;
@@ -854,6 +1059,7 @@
       pageviews: [],
       routes: [],
       summary: {},
+      errors: [],
       notificationSettings: {
         notifications_enabled: true,
         notify_whatsapp_clicks: true,
@@ -862,6 +1068,8 @@
         notify_completed_updates: true,
       },
       filters: {},
+      activePeriod: '',
+      hideLikelyBots: sessionStorage.getItem('vendora_hide_bots') !== '0',
       charts: {}
     };
 
@@ -906,6 +1114,135 @@
       const date = new Date(value);
       if (Number.isNaN(date.getTime())) return value;
       return date.toLocaleString('en-BH', { dateStyle: 'medium', timeStyle: 'short' });
+    }
+
+    function relTime(iso) {
+      if (!iso) return '-';
+      const t = new Date(iso).getTime();
+      if (Number.isNaN(t)) return '-';
+      const secs = Math.max(0, Math.round((Date.now() - t) / 1000));
+      if (secs < 60) return `${secs}s ago`;
+      const mins = Math.round(secs / 60);
+      if (mins < 60) return `${mins}m ago`;
+      const hrs = Math.round(mins / 60);
+      if (hrs < 24) return `${hrs}h ago`;
+      return `${Math.round(hrs / 24)}d ago`;
+    }
+
+    const GCC_COUNTRY_CODES = new Set(['BH', 'SA', 'AE', 'KW', 'QA', 'OM', 'IQ']);
+    const LIKELY_BOT_CITIES = ['the dalles', 'altoona', 'ashburn', 'boardman', 'council bluffs', 'clifton', 'dublin', 'mesquite', 'san jose'];
+
+    function isLikelyBot(item) {
+      if (!item) return false;
+      const country = normalizeCountryCode(item.cf_country);
+      const city = String(item.cf_city || '').toLowerCase().trim();
+      const device = String(item.device_type || 'desktop').toLowerCase();
+      const isClick = String(item.service_type || '') !== 'pageview';
+      const suspicion = Number(item.suspicion_score || 0);
+      const scroll = Number(item.scroll_depth_percent || 0);
+      const timeMs = Number(item.time_on_page_ms || 0);
+
+      // GCC mobile traffic and WhatsApp clicks in GCC — treat as real customers
+      if (GCC_COUNTRY_CODES.has(country) && (isClick || device === 'mobile')) return false;
+
+      if (suspicion >= 60) return true;
+      if (LIKELY_BOT_CITIES.some((needle) => city.includes(needle))) return true;
+      if (['CN', 'RU', 'KP'].includes(country)) return true;
+      if (country === 'IN' && device === 'desktop' && !isClick && scroll < 10 && timeMs < 12000) return true;
+      if (country === 'US' && device === 'desktop' && !isClick && timeMs < 8000 && scroll < 15) return true;
+      if (!GCC_COUNTRY_CODES.has(country) && device === 'desktop' && !isClick && timeMs < 5000 && scroll < 5) return true;
+      return false;
+    }
+
+    function filteredLeads() {
+      return state.hideLikelyBots ? state.leads.filter((item) => !isLikelyBot(item)) : state.leads;
+    }
+
+    function filteredPageviews() {
+      return state.hideLikelyBots ? state.pageviews.filter((item) => !isLikelyBot(item)) : state.pageviews;
+    }
+
+    function hiddenBotCount() {
+      if (!state.hideLikelyBots) return 0;
+      return state.leads.filter(isLikelyBot).length + state.pageviews.filter(isLikelyBot).length;
+    }
+
+    function computeClientStats() {
+      const leads = filteredLeads();
+      const pvs = filteredPageviews();
+      const groups = groupVisitors([...pvs, ...leads]);
+      const all = [...pvs, ...leads];
+      return {
+        total: leads.length,
+        total_pageviews: pvs.length,
+        total_visitors: groups.length,
+        returning_visitors: groups.filter((g) => g.returning).length,
+        avg_time_on_page_ms: all.length ? all.reduce((sum, e) => sum + Number(e.time_on_page_ms || 0), 0) / all.length : 0,
+        avg_scroll_depth_percent: all.length ? all.reduce((sum, e) => sum + Number(e.scroll_depth_percent || 0), 0) / all.length : 0,
+        pageview_sessions: new Set(pvs.map((e) => e.session_id).filter(Boolean)).size || 1,
+      };
+    }
+
+    function updateBotsFilterNote() {
+      const note = document.getElementById('botsFilterNote');
+      if (!note) return;
+      const hidden = hiddenBotCount();
+      note.textContent = state.hideLikelyBots && hidden > 0
+        ? `${hidden} likely bot${hidden === 1 ? '' : 's'} hidden`
+        : '';
+    }
+
+    function locationHtml(item) {
+      const city = String(item.cf_city || '').trim();
+      const region = String(item.cf_region || '').trim();
+      const code = normalizeCountryCode(item.cf_country);
+      const flag = code ? countryFlag(code) : '';
+      const name = code && countryNameFormatter ? countryNameFormatter.of(code) : (code || '');
+      const parts = [];
+      if (city) parts.push(`<span class="font-semibold text-slate-100">${escapeHtml(city)}</span>`);
+      if (region && region.toLowerCase() !== city.toLowerCase()) parts.push(`<span class="text-slate-400">${escapeHtml(region)}</span>`);
+      if (code) parts.push(`<span class="text-slate-300">${flag ? flag + ' ' : ''}${escapeHtml(name || code)}</span>`);
+      return parts.length ? parts.join('<br>') : '<span class="text-slate-500">Unknown</span>';
+    }
+
+    function botBadge(item) {
+      if (state.hideLikelyBots || !isLikelyBot(item)) return '';
+      return '<span class="mt-1 inline-flex rounded-full bg-orange-500/15 px-2 py-0.5 text-[10px] font-bold text-orange-300">Likely bot</span>';
+    }
+
+    // Group raw page-view + click events into ONE entry per real customer
+    // (keyed by visitor id, falling back to session). This is what makes the
+    // Visits report read as "how many customers" instead of "how many pages".
+    function groupVisitors(events) {
+      const map = new Map();
+      for (const e of events) {
+        const key = String(e.visitor_id || e.session_id || '');
+        if (!key) continue;
+        let g = map.get(key);
+        if (!g) {
+          g = { key, events: [], sessions: new Set(), pages: 0, clicks: 0, maxVisitCount: 1 };
+          map.set(key, g);
+        }
+        g.events.push(e);
+        if (e.session_id) g.sessions.add(String(e.session_id));
+        if ((e.service_type || '') !== 'pageview') g.clicks += 1; else g.pages += 1;
+        g.maxVisitCount = Math.max(g.maxVisitCount, Number(e.visit_count || 1));
+      }
+      const groups = [...map.values()].map((g) => {
+        const sorted = g.events.slice().sort((a, b) => String(a.clicked_at).localeCompare(String(b.clicked_at)));
+        const firstEvent = sorted[0];
+        const lastEvent = sorted[sorted.length - 1];
+        return {
+          ...g,
+          firstEvent,
+          lastEvent,
+          firstSeen: firstEvent.clicked_at,
+          lastSeen: lastEvent.clicked_at,
+          returning: g.sessions.size > 1 || g.maxVisitCount > 1,
+        };
+      });
+      groups.sort((a, b) => String(b.lastSeen).localeCompare(String(a.lastSeen)));
+      return groups;
     }
 
     function formatDuration(ms) {
@@ -963,7 +1300,10 @@
         if (response.status === 401) {
           throw new Error('Wrong admin password. Reset TRANSPORT_ADMIN_TOKEN from Cloudflare, then use the same new password here.');
         }
-        if (!response.ok || data.ok === false) throw new Error(data.error || `Request failed (${response.status})`);
+        if (!response.ok || data.ok === false) {
+          const authHint = data.auth_mode ? ` Auth mode: ${data.auth_mode}.` : '';
+          throw new Error((data.error || data.message || `Request failed (${response.status})`) + authHint);
+        }
         return data;
       }
 
@@ -983,6 +1323,265 @@
         if (!value) params.delete(key);
       });
       return `?${params.toString()}`;
+    }
+
+    const BULK_FILTER_KEYS = ['route', 'device', 'country', 'source', 'campaign', 'status', 'from', 'to', 'search', 'min_seconds', 'max_seconds'];
+
+    const PERIOD_LABELS = {
+      today: 'Today',
+      yesterday: 'Yesterday',
+      '7': 'Last 7 days',
+      '14': 'Last 2 weeks',
+      '21': 'Last 3 weeks',
+      '30': 'Last month',
+      '90': 'Last 3 months',
+      '180': 'Last 6 months',
+      all: 'All time'
+    };
+
+    function ymdLocal(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function periodToDates(period) {
+      if (period === 'all') return { from: '', to: '' };
+      const today = new Date();
+      if (period === 'today') return { from: ymdLocal(today), to: ymdLocal(today) };
+      if (period === 'yesterday') {
+        const y = new Date();
+        y.setDate(y.getDate() - 1);
+        return { from: ymdLocal(y), to: ymdLocal(y) };
+      }
+      const days = Number(period);
+      if (Number.isFinite(days) && days > 0) {
+        const from = new Date();
+        from.setDate(from.getDate() - (days - 1));
+        return { from: ymdLocal(from), to: ymdLocal(today) };
+      }
+      return { from: '', to: '' };
+    }
+
+    function highlightActivePeriod(period) {
+      state.activePeriod = period || '';
+      document.querySelectorAll('.period-btn').forEach((button) => {
+        const active = button.dataset.period === period;
+        button.classList.toggle('bg-brand', active);
+        button.classList.toggle('text-slate-950', active);
+        button.classList.toggle('border-brand', active);
+        button.classList.toggle('text-slate-300', !active);
+      });
+      const label = document.getElementById('periodLabel');
+      if (label) label.textContent = period && PERIOD_LABELS[period] ? `Showing: ${PERIOD_LABELS[period]}` : '';
+    }
+
+    async function applyPeriod(period) {
+      const form = document.getElementById('filtersForm');
+      const { from, to } = periodToDates(period);
+      if (form.elements.from) form.elements.from.value = from;
+      if (form.elements.to) form.elements.to.value = to;
+      state.filters = Object.fromEntries(new FormData(form).entries());
+      highlightActivePeriod(period);
+      try {
+        await loadDashboard();
+        showStatus(`Showing ${PERIOD_LABELS[period] || 'results'}.`, 'success');
+      } catch (err) {
+        showStatus(err.message, 'error');
+      }
+    }
+
+    function filtersAreActive() {
+      return BULK_FILTER_KEYS.some((key) => state.filters[key]);
+    }
+
+    async function loadErrors() {
+      const data = await api('?resource=errors&limit=200');
+      state.errors = data.errors || [];
+      renderErrors();
+    }
+
+    function onlineVisitorAsEvent(v) {
+      return {
+        cf_city: v.city,
+        cf_region: v.region,
+        cf_country: v.country,
+        device_type: v.device_type,
+        service_type: Number(v.clicked_whatsapp) === 1 ? 'whatsapp' : 'pageview',
+        scroll_depth_percent: 100,
+        time_on_page_ms: Number(v.seconds_on_page || 0) * 1000,
+        suspicion_score: 0,
+      };
+    }
+
+    function renderOnlineNow() {
+      const summary = state.summary || {};
+      let recent = summary.online_recent || [];
+      if (state.hideLikelyBots) {
+        recent = recent.filter((v) => !isLikelyBot(onlineVisitorAsEvent(v)));
+      }
+      const count = recent.length;
+
+      const pill = document.getElementById('onlineNowText');
+      if (pill) pill.textContent = `${count} online now`;
+      const countBadge = document.getElementById('onlineNowCount');
+      if (countBadge) countBadge.textContent = count;
+
+      const list = document.getElementById('onlineNowList');
+      if (!list) return;
+      if (!recent.length) {
+        list.innerHTML = '<p class="col-span-full py-6 text-center text-xs text-slate-500">No visitors active in the last 5 minutes.</p>';
+        return;
+      }
+
+      const agoText = (iso) => {
+        if (!iso) return 'just now';
+        const secs = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 1000));
+        if (secs < 60) return `${secs}s ago`;
+        return `${Math.round(secs / 60)}m ago`;
+      };
+
+      list.innerHTML = recent.map((v) => {
+        const loc = [v.city, v.region, v.country ? countryLabel(v.country) : ''].filter(Boolean).join(', ') || 'Unknown location';
+        const dur = Number(v.seconds_on_page || 0);
+        const durText = dur >= 60 ? `${Math.floor(dur / 60)}m ${dur % 60}s` : `${dur}s`;
+        const clicked = Number(v.clicked_whatsapp) === 1;
+        const flag = v.country ? countryFlag(v.country) : '';
+        const pagesViewed = Number(v.pages_viewed || 0);
+        const personKey = v.person_key || v.visitor_id || v.session_id || '';
+        return `
+          <article role="button" tabindex="0" data-online-visitor="${escapeHtml(String(personKey))}" class="cursor-pointer rounded-2xl border ${clicked ? 'border-brand/40 bg-brand-soft/10' : 'border-slate-800 bg-slate-950/40'} p-3 transition hover:border-emerald-500/40 hover:bg-emerald-950/10">
+            <div class="flex items-center justify-between gap-2">
+              <span class="truncate text-xs font-bold text-white">${escapeHtml(prettyRouteName(v))}</span>
+              <span class="shrink-0 text-[10px] text-emerald-300 font-semibold">${escapeHtml(agoText(v.last_seen))}</span>
+            </div>
+            <p class="mt-0.5 truncate text-[10px] text-slate-500">${escapeHtml(v.page_path || '')}</p>
+            <p class="mt-1 text-[11px] text-slate-400">${flag ? flag + ' ' : ''}${escapeHtml(loc)}</p>
+            <div class="mt-2 flex flex-wrap items-center gap-2 text-[10px] text-slate-400">
+              <span class="rounded border border-slate-700 px-1.5 py-0.5 uppercase">${escapeHtml(v.device_type || 'desktop')}</span>
+              <span class="rounded border border-slate-700 px-1.5 py-0.5 uppercase">${escapeHtml(String(v.language || 'ar'))}</span>
+              <span>${pagesViewed} page${pagesViewed === 1 ? '' : 's'} viewed</span>
+              <span>${durText} on page</span>
+              ${clicked ? '<span class="ml-auto rounded-full bg-brand/20 px-2 py-0.5 font-bold text-brand-light">WhatsApp ✓</span>' : ''}
+            </div>
+            <p class="mt-2 text-[10px] font-semibold text-emerald-400/80">Tap to see every page they visited →</p>
+          </article>`;
+      }).join('');
+    }
+
+    function showOnlineVisitor(personKey) {
+      if (!personKey) return;
+      const key = String(personKey);
+      const events = [...state.pageviews, ...state.leads]
+        .filter((e) => (e.visitor_id && String(e.visitor_id) === key) || String(e.session_id) === key)
+        .sort((a, b) => String(a.clicked_at).localeCompare(String(b.clicked_at)));
+
+      const dialog = document.getElementById('visitorDialog');
+      const body = document.getElementById('visitorDialogBody');
+      if (!dialog || !body) return;
+
+      if (!events.length) {
+        body.innerHTML = '<p class="p-6 text-center text-sm text-slate-400">No detailed events found for this visitor.</p>';
+        dialog.showModal();
+        return;
+      }
+
+      const last = events[events.length - 1];
+      const first = events[0];
+      const pv = leadPayload(last);
+      const clicks = events.filter((e) => (e.service_type || '') !== 'pageview');
+      const pages = events.filter((e) => (e.service_type || '') === 'pageview');
+      const loc = [last.cf_city, last.cf_region, last.cf_country ? countryLabel(last.cf_country) : ''].filter(Boolean).join(', ') || 'Unknown location';
+      const flag = last.cf_country ? countryFlag(last.cf_country) : '';
+      const totalSeconds = Math.round(events.reduce((sum, e) => Math.max(sum, Number(e.time_on_page_ms || 0)), 0) / 1000);
+
+      const infoRow = (label, value) => `
+        <div class="flex justify-between gap-3 border-b border-slate-800/60 py-2 text-xs">
+          <dt class="text-slate-400">${escapeHtml(label)}</dt>
+          <dd class="text-right font-semibold text-slate-200 max-w-[60%] break-words">${value}</dd>
+        </div>`;
+
+      const timeline = events.map((e) => {
+        const isClick = (e.service_type || '') !== 'pageview';
+        const dur = Math.round(Number(e.time_on_page_ms || 0) / 1000);
+        return `
+          <li class="relative pl-5">
+            <span class="absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full ${isClick ? 'bg-brand' : 'bg-emerald-500'}"></span>
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-bold ${isClick ? 'text-brand-light' : 'text-white'}">${isClick ? 'WhatsApp click' : 'Viewed'}: ${escapeHtml(prettyRouteName(e))}</span>
+              <span class="shrink-0 text-[10px] text-slate-500">${escapeHtml(formatDate(e.clicked_at))}</span>
+            </div>
+            <p class="text-[10px] text-slate-500">${escapeHtml(e.page_path || '')}${dur ? ` &middot; ${dur}s on page` : ''}</p>
+          </li>`;
+      }).join('');
+
+      body.innerHTML = `
+        <div class="grid gap-4 md:grid-cols-2">
+          <div>
+            <h4 class="mb-2 text-xs font-bold uppercase tracking-wider text-emerald-400">Visitor</h4>
+            <dl>
+              ${infoRow('Location', `${flag ? flag + ' ' : ''}${escapeHtml(loc)}`)}
+              ${infoRow('Device', escapeHtml(last.device_type || 'desktop'))}
+              ${infoRow('Language', escapeHtml(String(last.language || 'ar')))}
+              ${infoRow('Currently on', escapeHtml(prettyRouteName(last)))}
+              ${infoRow('Pages viewed', String(pages.length))}
+              ${infoRow('WhatsApp clicks', String(clicks.length))}
+              ${infoRow('Time on site', `${totalSeconds}s`)}
+              ${infoRow('First seen', escapeHtml(formatDate(first.clicked_at)))}
+              ${infoRow('Last seen', escapeHtml(formatDate(last.clicked_at)))}
+              ${infoRow('Traffic source', escapeHtml(pv.trafficSource || last.utm_source || 'direct/unknown'))}
+              ${infoRow('Referrer', escapeHtml(pv.referrerHost || 'direct/bookmark'))}
+            </dl>
+          </div>
+          <div>
+            <h4 class="mb-2 text-xs font-bold uppercase tracking-wider text-emerald-400">Journey (what they are doing)</h4>
+            <ul class="space-y-3 border-l border-slate-800 pl-2">${timeline}</ul>
+          </div>
+        </div>`;
+      dialog.showModal();
+      renderIcons();
+    }
+
+    function renderErrors() {
+      const list = document.getElementById('errorsList');
+      const countBadge = document.getElementById('errorsCount');
+      const errors = state.errors || [];
+      if (countBadge) countBadge.textContent = errors.length;
+      if (!list) return;
+
+      if (!errors.length) {
+        list.innerHTML = '<p class="rounded-2xl border border-slate-800 bg-slate-950/40 p-6 text-center text-sm text-slate-400">No errors recorded. Everything is running cleanly.</p>';
+        return;
+      }
+
+      const severityColor = (sev) => {
+        const s = String(sev || '').toLowerCase();
+        if (s === 'fatal') return 'border-red-500/40 text-red-300';
+        if (s === 'warning') return 'border-yellow-500/30 text-yellow-300';
+        return 'border-orange-500/30 text-orange-300';
+      };
+
+      list.innerHTML = errors.map((err) => {
+        const when = err.created_at ? new Date(err.created_at).toLocaleString() : '-';
+        const where = escapeHtml(err.page_path || err.page_url || '-');
+        const stack = err.stack ? `<pre class="mt-2 max-h-40 overflow-auto rounded-lg bg-black/40 p-2 text-[10px] leading-relaxed text-slate-400 whitespace-pre-wrap">${escapeHtml(err.stack)}</pre>` : '';
+        return `
+          <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="rounded-full border ${severityColor(err.severity)} px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">${escapeHtml(err.severity || 'error')}</span>
+                <span class="rounded-full border border-slate-700 px-2 py-0.5 text-[10px] font-semibold text-slate-300">${escapeHtml(err.source || 'unknown')}</span>
+                <span class="text-[11px] text-slate-500">${escapeHtml(when)}</span>
+              </div>
+              <button type="button" data-delete-error="${escapeHtml(String(err.id))}" class="rounded-lg border border-red-500/20 bg-red-950/10 px-2.5 py-1 text-[10px] font-bold text-red-400 transition hover:bg-red-900/30">Delete</button>
+            </div>
+            <p class="mt-2 text-sm font-semibold text-white break-words">${escapeHtml(err.message || 'Unknown error')}</p>
+            <p class="mt-1 text-[11px] text-slate-400">Where: ${where}${err.cf_country ? ` &middot; ${escapeHtml(countryLabel(err.cf_country))}` : ''}</p>
+            ${stack}
+          </div>`;
+      }).join('');
+      renderIcons();
     }
 
     function setTab(tab) {
@@ -1021,18 +1620,19 @@
 
     function renderStats() {
       const summary = state.summary || {};
+      const client = state.hideLikelyBots ? computeClientStats() : null;
+      const views = client ? client.total_pageviews : Number(summary.total_pageviews || 0);
+      const clicks = client ? client.total : Number(summary.total || 0);
       
       // Pageviews (funnel top)
-      document.getElementById('statPageviews').textContent = summary.total_pageviews || 0;
+      document.getElementById('statPageviews').textContent = views;
       document.getElementById('statPvToday').textContent = summary.pageviews_today || 0;
 
       // WhatsApp clicks (leads conversion)
-      document.getElementById('statClicks').textContent = summary.total || 0;
+      document.getElementById('statClicks').textContent = clicks;
       document.getElementById('statClicksToday').textContent = summary.today || 0;
 
       // Funnel Conversion rate (Clicks / Visits)
-      const clicks = Number(summary.total || 0);
-      const views = Number(summary.total_pageviews || 0);
       const convRate = views > 0 ? (clicks / views) * 100 : 0.0;
       document.getElementById('statConvRate').textContent = `${convRate.toFixed(1)}%`;
 
@@ -1045,10 +1645,79 @@
       const jobConvRate = clicks > 0 ? (jobsCompleted / clicks) * 100 : 0.0;
       document.getElementById('statJobConvRate').textContent = `${jobConvRate.toFixed(1)}%`;
 
+      // Unique visitors (real people, not page hits)
+      const totalVisitors = client ? client.total_visitors : Number(summary.total_visitors || 0);
+      const returningVisitors = client ? client.returning_visitors : Number(summary.returning_visitors || 0);
+      const newVisitors = Math.max(0, totalVisitors - returningVisitors);
+      document.getElementById('statVisitors').textContent = totalVisitors;
+      document.getElementById('statNewVisitors').textContent = newVisitors;
+      document.getElementById('statReturningVisitors').textContent = returningVisitors;
+
       // Engagement
-      document.getElementById('statAvgTime').textContent = formatDuration(summary.avg_time_on_page_ms || 0);
-      document.getElementById('statAvgScroll').textContent = `${Math.round(summary.avg_scroll_depth_percent || 0)}%`;
-      document.getElementById('statPageviewsSession').textContent = summary.pageview_sessions > 0 ? Math.round(Number(views || 0) / Number(summary.pageview_sessions)) : 1;
+      const avgTime = client ? client.avg_time_on_page_ms : summary.avg_time_on_page_ms || 0;
+      const avgScroll = client ? client.avg_scroll_depth_percent : summary.avg_scroll_depth_percent || 0;
+      const pvSessions = client ? client.pageview_sessions : summary.pageview_sessions;
+      document.getElementById('statAvgTime').textContent = formatDuration(avgTime);
+      document.getElementById('statAvgScroll').textContent = `${Math.round(avgScroll)}%`;
+      document.getElementById('statPageviewsSession').textContent = pvSessions > 0 ? Math.round(Number(views || 0) / Number(pvSessions)) : 1;
+
+      const effectiveSummary = client
+        ? { ...summary, total: clicks, total_pageviews: views, total_visitors: totalVisitors, returning_visitors: returningVisitors }
+        : summary;
+      renderInsights(effectiveSummary);
+      updateBotsFilterNote();
+    }
+
+    function renderInsights(summary) {
+      const list = document.getElementById('insightsList');
+      if (!list) return;
+      const items = [];
+      const totalVisitors = Number(summary.total_visitors || 0);
+      const returningVisitors = Number(summary.returning_visitors || 0);
+      const newVisitors = Math.max(0, totalVisitors - returningVisitors);
+      const views = Number(summary.total_pageviews || 0);
+      const clicks = Number(summary.total || 0);
+
+      if (totalVisitors > 0) {
+        const pct = Math.round((returningVisitors / totalVisitors) * 100);
+        items.push(['users', 'text-cyan-400', `<strong>${totalVisitors}</strong> unique visitors — ${newVisitors} new, ${returningVisitors} returning (${pct}% come back).`]);
+      }
+      if (views > 0 && totalVisitors > 0) {
+        items.push(['eye', 'text-blue-400', `Each visitor views about <strong>${(views / totalVisitors).toFixed(1)}</strong> pages on average.`]);
+      }
+      if (views > 0) {
+        const cr = ((clicks / views) * 100).toFixed(1);
+        items.push(['percent', 'text-yellow-400', `<strong>${cr}%</strong> of page views turn into a WhatsApp click.`]);
+      }
+      const topRoute = (summary.by_route || [])[0];
+      if (topRoute) {
+        items.push(['route', 'text-emerald-400', `Most popular route: <strong>${escapeHtml(prettyRouteName({ route_slug: topRoute.label }))}</strong> (${Number(topRoute.pageviews || topRoute.count || 0)} views).`]);
+      }
+      const topCountry = (summary.by_country || [])[0];
+      if (topCountry && topCountry.label && topCountry.label !== 'unknown') {
+        items.push(['map-pin', 'text-rose-400', `Top country: <strong>${escapeHtml(countryLabel(topCountry.label))}</strong> with ${Number(topCountry.count || 0)} events.`]);
+      }
+      const busiestHour = [...(summary.by_hour || [])].sort((a, b) => Number(b.count || 0) - Number(a.count || 0))[0];
+      if (busiestHour) {
+        items.push(['clock', 'text-purple-400', `Busiest time of day: <strong>${escapeHtml(String(busiestHour.label))}</strong> (Bahrain time).`]);
+      }
+      const topDevice = (summary.by_device || [])[0];
+      if (topDevice && topDevice.label && topDevice.label !== 'unknown') {
+        items.push(['smartphone', 'text-indigo-400', `Most visitors are on <strong>${escapeHtml(topDevice.label)}</strong>.`]);
+      }
+      const hiddenBots = hiddenBotCount();
+      if (state.hideLikelyBots && hiddenBots > 0) {
+        items.push(['shield-alert', 'text-orange-400', `<strong>${hiddenBots}</strong> likely bot event${hiddenBots === 1 ? '' : 's'} hidden (US datacenters, CN/RU scrapers, zero-engagement desktop). Uncheck the filter to review.`]);
+      }
+
+      list.innerHTML = items.length
+        ? items.map(([icon, color, text]) => `
+            <li class="flex items-start gap-2 rounded-xl bg-slate-950/30 border border-slate-800/70 p-2.5">
+              <i data-lucide="${icon}" class="h-4 w-4 mt-0.5 shrink-0 ${color}"></i>
+              <span>${text}</span>
+            </li>`).join('')
+        : '<li class="text-slate-500">No data for this period yet.</li>';
+      if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
     }
 
     function leadPayload(lead) {
@@ -1152,9 +1821,11 @@
     }
 
     function renderLeads() {
+      const leads = filteredLeads();
+      const pageviews = filteredPageviews();
       // 1. Leads Table (WhatsApp Clicks)
       const empty = '<tr><td class="px-5 py-8 text-center text-slate-500 font-medium" colspan="7">No WhatsApp leads found.</td></tr>';
-      document.getElementById('leadsTable').innerHTML = state.leads.map((lead) => `
+      document.getElementById('leadsTable').innerHTML = leads.map((lead) => `
         <tr class="transition duration-150 hover:bg-slate-900/40 cursor-pointer" data-row-lead-id="${lead.id}">
           <td class="px-5 py-4 text-slate-400">${escapeHtml(formatDate(lead.clicked_at))}</td>
           <td class="px-5 py-4">
@@ -1170,7 +1841,7 @@
             <div class="text-[10px] text-slate-400 mt-0.5">${escapeHtml(pageJourneyText(lead))}</div>
             <div class="text-[10px] text-slate-500 mt-0.5">Visitor ${escapeHtml(compactId(visitorIdFor(lead)))}</div>
           </td>
-          <td class="px-5 py-4 text-slate-300 font-medium">${escapeHtml(locationText(lead))}</td>
+          <td class="px-5 py-4 text-xs leading-relaxed">${locationHtml(lead)}${botBadge(lead)}</td>
           <td class="px-5 py-4">
             <div class="flex flex-col gap-1 items-start">
               ${getStatusBadge(lead.status)}
@@ -1179,6 +1850,7 @@
           </td>
           <td class="px-5 py-4 text-center">
             <div class="flex items-center justify-center gap-2">
+              <button class="rounded-xl border border-blue-500/30 bg-blue-950/20 px-3 py-1.5 text-[10px] font-bold text-blue-300 transition hover:bg-blue-900/30" data-journey-key="${escapeHtml(visitorIdFor(lead) || lead.session_id || '')}" type="button">Journey</button>
               <button class="rounded-xl bg-slate-800 border border-slate-700 px-3 py-1.5 text-[10px] font-bold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-view-lead="${lead.id}" type="button">Audit Outcome</button>
               <button class="rounded-xl border border-red-500/20 bg-red-950/10 px-3 py-1.5 text-[10px] font-bold text-red-400 transition hover:bg-red-900/30" data-delete-lead="${lead.id}" type="button">Delete</button>
             </div>
@@ -1186,7 +1858,7 @@
         </tr>
       `).join('') || empty;
 
-      document.getElementById('leadsMobile').innerHTML = state.leads.map((lead) => `
+      document.getElementById('leadsMobile').innerHTML = leads.map((lead) => `
         <article class="rounded-2xl border border-slate-850 bg-slate-900/25 p-4 space-y-3 relative hover:border-brand/20 transition cursor-pointer" data-row-lead-id="${lead.id}">
           <div class="flex items-start justify-between gap-3 border-b border-slate-850 pb-2">
             <div>
@@ -1200,49 +1872,74 @@
           </div>
           <dl class="grid gap-2 text-xs">
             <div class="flex justify-between"><dt class="text-slate-400">Referrer</dt><dd class="font-semibold text-slate-200 truncate max-w-[200px]">${escapeHtml(discoveryText(lead))}</dd></div>
-            <div class="flex justify-between"><dt class="text-slate-400">Location</dt><dd class="font-medium text-slate-300">${escapeHtml(locationText(lead))}</dd></div>
+            <div class="flex justify-between gap-3"><dt class="text-slate-400 shrink-0">City / Country</dt><dd class="font-medium text-slate-300 text-right">${locationHtml(lead)}${botBadge(lead)}</dd></div>
             <div class="flex justify-between"><dt class="text-slate-400">Duration</dt><dd class="font-medium text-slate-300">${escapeHtml(engagementText(lead))}</dd></div>
             <div class="flex justify-between"><dt class="text-slate-400">Visitor</dt><dd class="font-mono text-slate-300">${escapeHtml(compactId(visitorIdFor(lead)))}</dd></div>
           </dl>
           <div class="flex gap-2 border-t border-slate-850 pt-3">
+            <button class="w-full rounded-xl border border-blue-500/30 bg-blue-950/20 py-2 text-[10px] font-bold text-blue-300 transition hover:bg-blue-900/30" data-journey-key="${escapeHtml(visitorIdFor(lead) || lead.session_id || '')}" type="button">Journey</button>
             <button class="w-full rounded-xl bg-slate-800 border border-slate-700 py-2 text-[10px] font-bold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-view-lead="${lead.id}" type="button">Audit Outcome</button>
             <button class="w-full rounded-xl border border-red-500/20 bg-red-950/10 py-2 text-[10px] font-bold text-red-400 transition hover:bg-red-900/30" data-delete-lead="${lead.id}" type="button">Delete</button>
           </div>
         </article>
       `).join('') || '<p class="py-8 text-center text-xs text-slate-500">No WhatsApp leads found.</p>';
 
-      // 2. Traffic Log Table (Pageviews)
-      const pvEmpty = '<tr><td class="px-5 py-8 text-center text-slate-500 font-medium" colspan="7">No page visits tracked yet.</td></tr>';
-      document.getElementById('pvTable').innerHTML = state.pageviews.map((pv) => `
-        <tr class="transition duration-150 hover:bg-slate-900/40">
-          <td class="px-5 py-4 text-slate-400">${escapeHtml(formatDate(pv.clicked_at))}</td>
-          <td class="px-5 py-4 font-semibold text-slate-200">
-            <div class="flex items-center gap-1.5"><i data-lucide="file-text" class="h-3.5 w-3.5 text-blue-400"></i> ${escapeHtml(pv.page_path || '')}</div>
+      // 2. Visitors Log — grouped by customer (one row per person)
+      const visitorGroups = groupVisitors([...pageviews, ...leads]);
+      const pvCountBadge = document.getElementById('pvCount');
+      if (pvCountBadge) {
+        const customers = visitorGroups.length;
+        const views = pageviews.length;
+        pvCountBadge.textContent = `${customers} customer${customers === 1 ? '' : 's'} · ${views} page view${views === 1 ? '' : 's'}`;
+      }
+
+      const kindBadge = (g) => g.returning
+        ? '<span class="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-bold text-amber-300">Returning</span>'
+        : '<span class="rounded-full bg-cyan-500/15 px-2 py-0.5 text-[10px] font-bold text-cyan-300">New</span>';
+
+      const pvEmpty = '<tr><td class="px-5 py-8 text-center text-slate-500 font-medium" colspan="8">No visitors tracked yet.</td></tr>';
+      document.getElementById('pvTable').innerHTML = visitorGroups.map((g) => `
+        <tr class="cursor-pointer transition duration-150 hover:bg-slate-900/40" data-visitor-key="${escapeHtml(g.key)}">
+          <td class="px-5 py-4">
+            <div class="flex items-center gap-2">${kindBadge(g)}<span class="font-mono text-[10px] text-slate-400">${escapeHtml(compactId(g.key))}</span></div>
+            ${g.clicks > 0 ? '<div class="mt-1 text-[10px] font-bold text-brand-light">Clicked WhatsApp</div>' : ''}
           </td>
-          <td class="px-5 py-4 text-slate-300">${escapeHtml(leadPayload(pv).referrerHost || 'direct/bookmark')}</td>
-          <td class="px-5 py-4 text-slate-300 font-medium">${sessionViewsFor(pv)} views</td>
-          <td class="px-5 py-4 text-slate-300 font-medium">${formatDuration(pv.time_on_page_ms)}</td>
-          <td class="px-5 py-4 text-slate-300">${escapeHtml(locationText(pv))}</td>
-          <td class="px-5 py-4 text-slate-400 font-medium uppercase text-[10px]">${escapeHtml(pv.device_type || 'desktop')}</td>
+          <td class="px-5 py-4 font-semibold text-slate-200">
+            <div class="flex items-center gap-1.5"><i data-lucide="log-in" class="h-3.5 w-3.5 text-blue-400"></i> ${escapeHtml(prettyRouteName(g.firstEvent))}</div>
+            <div class="mt-0.5 text-[10px] text-slate-500">${escapeHtml(g.firstEvent.page_path || '')} &middot; ${escapeHtml(formatDate(g.firstSeen))}</div>
+          </td>
+          <td class="px-5 py-4 text-slate-300">${escapeHtml(relTime(g.lastSeen))}<div class="mt-0.5 text-[10px] text-slate-500">on ${escapeHtml(prettyRouteName(g.lastEvent))}</div></td>
+          <td class="px-5 py-4 text-center text-slate-200 font-bold">${g.pages}</td>
+          <td class="px-5 py-4 text-center">${g.clicks > 0 ? `<span class="font-bold text-brand-light">${g.clicks}</span>` : '<span class="text-slate-600">-</span>'}</td>
+          <td class="px-5 py-4 text-xs leading-relaxed">${locationHtml(g.lastEvent)}${botBadge(g.lastEvent)}</td>
+          <td class="px-5 py-4 text-slate-400 font-medium uppercase text-[10px]">${escapeHtml(g.lastEvent.device_type || 'desktop')}</td>
+          <td class="px-5 py-4 text-right">
+            <button class="rounded-xl border border-blue-500/30 bg-blue-950/20 px-3 py-1.5 text-[10px] font-bold text-blue-300 transition hover:bg-blue-900/30" data-visitor-key="${escapeHtml(g.key)}" type="button">View journey</button>
+          </td>
         </tr>
       `).join('') || pvEmpty;
 
-      document.getElementById('pvMobile').innerHTML = state.pageviews.map((pv) => `
-        <article class="rounded-2xl border border-slate-850 bg-slate-900/10 p-4 space-y-2">
-          <div class="flex justify-between items-start">
-            <span class="font-bold text-slate-200 text-xs">${escapeHtml(pv.page_path || '')}</span>
-            <span class="text-[9px] uppercase font-semibold text-slate-400 bg-slate-800 px-2 py-0.5 rounded">${escapeHtml(pv.device_type || 'desktop')}</span>
+      document.getElementById('pvMobile').innerHTML = visitorGroups.map((g) => `
+        <article role="button" tabindex="0" data-visitor-key="${escapeHtml(g.key)}" class="cursor-pointer rounded-2xl border border-slate-850 bg-slate-900/10 p-4 space-y-2 transition hover:border-blue-500/40 hover:bg-blue-950/10">
+          <div class="flex justify-between items-start gap-2">
+            <div class="flex items-center gap-2">${kindBadge(g)}<span class="font-mono text-[10px] text-slate-400">${escapeHtml(compactId(g.key))}</span></div>
+            <span class="text-[9px] uppercase font-semibold text-slate-400 bg-slate-800 px-2 py-0.5 rounded">${escapeHtml(g.lastEvent.device_type || 'desktop')}</span>
           </div>
-          <p class="text-[10px] text-slate-400">${escapeHtml(formatDate(pv.clicked_at))}</p>
+          <div>
+            <p class="text-[11px] text-slate-300"><span class="text-slate-500">First visit:</span> <span class="font-semibold text-slate-200">${escapeHtml(prettyRouteName(g.firstEvent))}</span></p>
+            <p class="text-[10px] text-slate-500">${escapeHtml(formatDate(g.firstSeen))}</p>
+          </div>
           <dl class="grid gap-1 text-[11px] pt-1 border-t border-slate-850">
-            <div class="flex justify-between"><dt class="text-slate-500">Duration</dt><dd class="text-slate-300">${formatDuration(pv.time_on_page_ms)}</dd></div>
-            <div class="flex justify-between"><dt class="text-slate-500">Session views</dt><dd class="text-slate-300">${sessionViewsFor(pv)}</dd></div>
-            <div class="flex justify-between"><dt class="text-slate-500">Referrer</dt><dd class="text-slate-300 truncate max-w-[150px]">${escapeHtml(leadPayload(pv).referrerHost || 'direct')}</dd></div>
-            <div class="flex justify-between"><dt class="text-slate-500">Location</dt><dd class="text-slate-300">${escapeHtml(locationText(pv))}</dd></div>
+            <div class="flex justify-between"><dt class="text-slate-500">Pages viewed</dt><dd class="text-slate-200 font-bold">${g.pages}</dd></div>
+            <div class="flex justify-between"><dt class="text-slate-500">WhatsApp clicks</dt><dd class="${g.clicks > 0 ? 'text-brand-light font-bold' : 'text-slate-300'}">${g.clicks}</dd></div>
+            <div class="flex justify-between"><dt class="text-slate-500">Last seen</dt><dd class="text-slate-300">${escapeHtml(relTime(g.lastSeen))}</dd></div>
+            <div class="flex justify-between gap-3"><dt class="text-slate-500 shrink-0">City / Country</dt><dd class="text-slate-300 text-right">${locationHtml(g.lastEvent)}${botBadge(g.lastEvent)}</dd></div>
           </dl>
+          <p class="text-[10px] font-semibold text-blue-400/80">Tap to see every page they visited →</p>
         </article>
-      `).join('') || '<p class="py-8 text-center text-xs text-slate-500">No page traffic recorded.</p>';
+      `).join('') || '<p class="py-8 text-center text-xs text-slate-500">No visitors recorded.</p>';
 
+      updateBotsFilterNote();
       renderIcons();
     }
 
@@ -1704,26 +2401,30 @@
     }
 
     async function loadDashboard() {
-      const [leadsData, pvsData, routesData, summaryData, notificationData] = await Promise.all([
+      const [leadsData, pvsData, routesData, summaryData, notificationData, errorsData] = await Promise.all([
         api(queryFromFilters({ resource: 'leads', limit: 800 })),
         api(queryFromFilters({ resource: 'pageviews', limit: 800 })),
         api('?resource=routes'),
         api(queryFromFilters({ resource: 'summary' })),
-        api('?resource=notification-settings')
+        api('?resource=notification-settings'),
+        api('?resource=errors&limit=200').catch(() => ({ errors: state.errors }))
       ]);
       state.leads = leadsData.leads || [];
       state.pageviews = pvsData.leads || [];
       state.routes = routesData.routes || [];
       state.summary = summaryData.summary || {};
       state.notificationSettings = normalizeNotificationSettings(notificationData.notification_settings || state.notificationSettings);
+      state.errors = errorsData.errors || [];
       
       renderFilterOptions();
       renderStats();
+      renderOnlineNow();
       renderLeads();
       renderReports();
       renderRoutes();
       renderCohorts();
       renderNotificationSettings();
+      renderErrors();
     }
 
     async function unlock(token) {
@@ -2084,8 +2785,72 @@ Note: This report is automatically compiled by the Control Room operations track
         showStatus(err.message, 'error');
       }
     });
+
+    // SEND TEST ALERT — verifies the phone webhook works, independent of real visits
+    document.getElementById('sendTestAlertBtn').addEventListener('click', async (event) => {
+      const button = event.currentTarget;
+      const original = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Sending…';
+      const resultBox = document.getElementById('testAlertResult');
+      const showResult = (ok, lines) => {
+        if (!resultBox) return;
+        resultBox.className = `rounded-2xl border p-4 text-xs leading-relaxed ${ok ? 'border-emerald-500/30 bg-emerald-950/20 text-emerald-200' : 'border-red-500/30 bg-red-950/20 text-red-200'}`;
+        resultBox.innerHTML = lines.map((l) => `<p>${l}</p>`).join('');
+      };
+      try {
+        const data = await api('?resource=test-notification', { method: 'POST', body: '{}' });
+        if (data && data.ok) {
+          showStatus('Test alert sent.', 'success');
+          showResult(true, [
+            '<strong>✓ Test alert sent successfully.</strong>',
+            `Auth mode: <strong>${escapeHtml(data.auth_mode || 'unknown')}</strong> (should be bearer_token).`,
+            'Your phone webhook is configured and Cloudflare accepted the message.',
+            'If it did NOT arrive on your phone: open your ntfy app and confirm you are subscribed to the exact same topic as the TRANSPORT_NOTIFY_WEBHOOK_URL secret.',
+          ]);
+        } else if (data && data.configured === false) {
+          showStatus('Phone webhook is not set.', 'error');
+          showResult(false, [
+            '<strong>✗ No phone webhook is set.</strong>',
+            'This is why you receive nothing. In Cloudflare set the secret <code>TRANSPORT_NOTIFY_WEBHOOK_URL</code> to your private ntfy topic URL (e.g. https://ntfy.sh/your-secret-topic), then deploy again.',
+            (data && data.error) ? `Details: ${data.error}` : '',
+          ].filter(Boolean));
+        } else {
+          showStatus('Test alert could not be sent.', 'error');
+          showResult(false, [
+            '<strong>✗ The webhook is set but the send failed.</strong>',
+            `Auth mode: <strong>${escapeHtml((data && data.auth_mode) || 'unknown')}</strong> — if this says anonymous, the ntfy token secret is missing on the server.`,
+            (data && (data.error || data.message)) ? `Details: ${data.error || data.message}` : 'Check that the ntfy topic URL is correct.',
+            (data && String(data.error || '').includes('429'))
+              ? 'Fix: ensure TRANSPORT_NOTIFY_WEBHOOK_TOKEN is set in Cloudflare (your tk_… token), then redeploy. Without it, Cloudflare IPs hit ntfy’s free limit.'
+              : '',
+          ].filter(Boolean));
+        }
+      } catch (err) {
+        showStatus(err.message, 'error');
+        showResult(false, ['<strong>✗ Could not reach the alert endpoint.</strong>', `Details: ${err.message}`]);
+      } finally {
+        button.disabled = false;
+        button.textContent = original;
+      }
+    });
     document.getElementById('closeDialogBtn').addEventListener('click', () => document.getElementById('leadDialog').close());
     document.querySelectorAll('.tab-btn').forEach((button) => button.addEventListener('click', () => setTab(button.dataset.tab)));
+
+    // KPI cards jump straight to their detailed report (tap or Enter/Space)
+    document.querySelectorAll('[data-jump]').forEach((card) => {
+      const go = () => {
+        setTab(card.dataset.jump);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+      card.addEventListener('click', go);
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          go();
+        }
+      });
+    });
 
     // SHARE DETAILS TO DRIVER VIA WHATSAPP (ARABIC)
     document.getElementById('shareDriverArBtn').addEventListener('click', () => {
@@ -2174,16 +2939,117 @@ Note: This report is automatically compiled by the Control Room operations track
     document.getElementById('clearFiltersBtn').addEventListener('click', async () => {
       document.getElementById('filtersForm').reset();
       state.filters = {};
+      highlightActivePeriod('');
       await loadDashboard();
       showStatus('All filters reset.', 'success');
     });
 
+    // PERIOD QUICK-SELECT EVENTS (today / yesterday / 7d / 2w / 3w / 1m / 3m / 6m / all)
+    document.querySelectorAll('.period-btn').forEach((button) => {
+      button.addEventListener('click', () => applyPeriod(button.dataset.period));
+    });
+
+    const hideBotsToggle = document.getElementById('hideBotsToggle');
+    if (hideBotsToggle) {
+      hideBotsToggle.checked = state.hideLikelyBots;
+      hideBotsToggle.addEventListener('change', (event) => {
+        state.hideLikelyBots = event.target.checked;
+        sessionStorage.setItem('vendora_hide_bots', state.hideLikelyBots ? '1' : '0');
+        renderStats();
+        renderOnlineNow();
+        renderLeads();
+      });
+    }
+
+    // COLLAPSIBLE ADVANCED FILTERS (hidden by default)
+    document.getElementById('toggleFiltersBtn').addEventListener('click', () => {
+      const panel = document.getElementById('advancedFilters');
+      const label = document.getElementById('toggleFiltersLabel');
+      const hidden = panel.classList.toggle('hidden');
+      if (label) label.textContent = hidden ? 'Filters' : 'Hide filters';
+    });
+
+    // COLLAPSIBLE ONLINE-NOW PANEL
+    document.getElementById('toggleOnlineBtn').addEventListener('click', () => {
+      const panel = document.getElementById('onlineNowList');
+      const icon = document.getElementById('toggleOnlineIcon');
+      const hidden = panel.classList.toggle('hidden');
+      if (icon) {
+        icon.setAttribute('data-lucide', hidden ? 'chevron-down' : 'chevron-up');
+        renderIcons();
+      }
+    });
+
+    // BULK DELETE EVENTS (clear test visits / clicks matching the current view)
+    document.querySelectorAll('[data-bulk-delete]').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const eventKind = button.dataset.bulkDelete; // all | visits | clicks
+        const kindLabel = eventKind === 'visits' ? 'page visits' : eventKind === 'clicks' ? 'WhatsApp clicks' : 'records';
+        const active = filtersAreActive();
+
+        const message = active
+          ? `Delete all ${kindLabel} that match the current period/filters? This cannot be undone.`
+          : `No filter is set. This will delete ALL ${kindLabel} in the database. This cannot be undone. Continue?`;
+        if (!confirm(message)) return;
+        if (!active && !confirm(`Are you absolutely sure? Every ${kindLabel === 'records' ? 'record' : kindLabel.replace(/s$/, '')} will be permanently removed.`)) return;
+
+        try {
+          const extra = { resource: 'bulk', event: eventKind };
+          if (!active) extra.confirm = 'all';
+          const result = await api(queryFromFilters(extra), { method: 'DELETE' });
+          await loadDashboard();
+          showStatus(`Deleted ${result.deleted || 0} ${kindLabel}.`, 'success');
+        } catch (err) {
+          showStatus(err.message, 'error');
+        }
+      });
+    });
+
+    // ERROR LOG EVENTS
+    document.getElementById('refreshErrorsBtn').addEventListener('click', async () => {
+      try {
+        await loadErrors();
+        showStatus('Error log refreshed.', 'success');
+      } catch (err) {
+        showStatus(err.message, 'error');
+      }
+    });
+
+    document.getElementById('clearErrorsBtn').addEventListener('click', async () => {
+      if (!state.errors.length) return;
+      if (!confirm('Clear the entire error log?')) return;
+      try {
+        await api('?resource=errors', { method: 'DELETE' });
+        await loadErrors();
+        showStatus('Error log cleared.', 'success');
+      } catch (err) {
+        showStatus(err.message, 'error');
+      }
+    });
+
+    document.getElementById('errorsList').addEventListener('click', async (event) => {
+      const del = event.target.closest('[data-delete-error]');
+      if (!del) return;
+      try {
+        await api(`?resource=errors&id=${encodeURIComponent(del.dataset.deleteError)}`, { method: 'DELETE' });
+        await loadErrors();
+        showStatus('Error entry deleted.', 'success');
+      } catch (err) {
+        showStatus(err.message, 'error');
+      }
+    });
+
     // LEADS ACTIONS EVENTS
     const leadsHandler = async (event) => {
+      const journey = event.target.closest('[data-journey-key]');
       const view = event.target.closest('[data-view-lead]');
       const del = event.target.closest('[data-delete-lead]');
       const row = event.target.closest('[data-row-lead-id]');
-      
+
+      if (journey) {
+        showOnlineVisitor(journey.dataset.journeyKey);
+        return;
+      }
       if (view) {
         showLeadDetails(view.dataset.viewLead);
         return;
@@ -2205,6 +3071,59 @@ Note: This report is automatically compiled by the Control Room operations track
     };
 
     document.getElementById('leadsPanel').addEventListener('click', leadsHandler);
+
+    // VISITS (PAGEVIEWS) DELETE EVENTS — individual delete of a single visit
+    const pageviewsPanel = document.getElementById('pageviewsPanel');
+    const openVisitorJourney = (event) => {
+      const row = event.target.closest('[data-visitor-key]');
+      if (!row) return;
+      showOnlineVisitor(row.dataset.visitorKey);
+    };
+    pageviewsPanel.addEventListener('click', openVisitorJourney);
+    pageviewsPanel.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        if (!event.target.closest('[data-visitor-key]')) return;
+        event.preventDefault();
+        openVisitorJourney(event);
+      }
+    });
+
+    // ONLINE NOW — open rich visitor details when a card is clicked
+    const onlineNowList = document.getElementById('onlineNowList');
+    if (onlineNowList) {
+      const openOnline = (event) => {
+        const card = event.target.closest('[data-online-visitor]');
+        if (!card) return;
+        showOnlineVisitor(card.dataset.onlineVisitor);
+      };
+      onlineNowList.addEventListener('click', openOnline);
+      onlineNowList.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openOnline(event);
+        }
+      });
+    }
+    document.getElementById('closeVisitorDialogBtn').addEventListener('click', () => document.getElementById('visitorDialog').close());
+
+    // VISITS bulk delete button (clears the visits matching the current period/filters)
+    document.getElementById('deleteVisitsBtn').addEventListener('click', async () => {
+      const active = filtersAreActive();
+      const message = active
+        ? 'Delete all page visits that match the current period/filters? This cannot be undone.'
+        : 'No filter is set. This will delete ALL page visits in the database. This cannot be undone. Continue?';
+      if (!confirm(message)) return;
+      if (!active && !confirm('Are you absolutely sure? Every page-visit record will be permanently removed.')) return;
+      try {
+        const extra = { resource: 'bulk', event: 'visits' };
+        if (!active) extra.confirm = 'all';
+        const result = await api(queryFromFilters(extra), { method: 'DELETE' });
+        await loadDashboard();
+        showStatus(`Deleted ${result.deleted || 0} page visits.`, 'success');
+      } catch (err) {
+        showStatus(err.message, 'error');
+      }
+    });
 
     // AUDITING FORM EVENTS
     document.getElementById('auditForm').addEventListener('submit', async (event) => {

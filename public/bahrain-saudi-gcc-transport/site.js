@@ -1116,6 +1116,50 @@
     }
   }
 
+  function setupErrorReporter() {
+    if (window.__VENDORA_ERROR_REPORTER_READY__) return;
+    window.__VENDORA_ERROR_REPORTER_READY__ = true;
+
+    const logEndpoint = leadEndpoint.replace(/\/event$/, '/log');
+    let sent = 0;
+    const MAX_PER_SESSION = 8;
+
+    const report = (message, stack, context) => {
+      if (sent >= MAX_PER_SESSION || !message) return;
+      sent += 1;
+      const body = JSON.stringify({
+        source: 'site',
+        severity: 'error',
+        message: String(message).slice(0, 1000),
+        stack: stack ? String(stack).slice(0, 4000) : null,
+        pageUrl: window.location.href,
+        pagePath: window.location.pathname,
+        context: context || '',
+      });
+      try {
+        if (navigator.sendBeacon) {
+          const blob = new Blob([body], { type: 'application/json' });
+          if (navigator.sendBeacon(logEndpoint, blob)) return;
+        }
+      } catch (e) { /* fall through */ }
+      fetch(logEndpoint, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body,
+        keepalive: true,
+        credentials: 'omit',
+      }).catch(() => {});
+    };
+
+    window.addEventListener('error', (event) => {
+      report(event.message || 'Script error', event.error && event.error.stack, `at ${event.filename || '?'}:${event.lineno || 0}`);
+    });
+    window.addEventListener('unhandledrejection', (event) => {
+      const reason = event.reason;
+      report(reason && reason.message ? reason.message : String(reason), reason && reason.stack, 'unhandledrejection');
+    });
+  }
+
   function translateString(value) {
     const source = `${value || ''}`;
     const normalized = source.replace(/\s+/g, ' ').trim();
@@ -1468,6 +1512,7 @@
   }
 
   function init() {
+    setupErrorReporter();
     normalizeInternalLinks();
     injectStructuredData();
     setupAttributionTracking();
@@ -1483,6 +1528,7 @@
   }
 
   function initLeadOnly() {
+    setupErrorReporter();
     normalizeInternalLinks();
     setupAttributionTracking();
     setupEngagementTracking();

@@ -1,5 +1,7 @@
 import * as adminApi from './functions/api/transport/admin.js';
 import * as leadApi from './functions/api/transport/whatsapp-lead.js';
+import * as errorApi from './functions/api/transport/error-log.js';
+import { recordError } from './functions/api/transport/error-log.js';
 
 const SITE_PATH_PREFIX = '/bahrain-saudi-gcc-transport';
 
@@ -45,6 +47,7 @@ function transportHealthResponse() {
       '/api/transport/admin',
       '/api/transport/event',
       '/api/transport/whatsapp-lead',
+      '/api/transport/log',
     ],
   }), {
     headers: {
@@ -62,21 +65,60 @@ export default {
     const url = new URL(request.url);
     const path = logicalPathname(url);
 
-    if (path === '/api/transport/health') {
-      if (request.method.toUpperCase() === 'OPTIONS') {
-        return new Response(null, { status: 204, headers: transportHealthResponse().headers });
+    try {
+      if (path === '/api/transport/health') {
+        if (request.method.toUpperCase() === 'OPTIONS') {
+          return new Response(null, { status: 204, headers: transportHealthResponse().headers });
+        }
+        return transportHealthResponse();
       }
-      return transportHealthResponse();
-    }
 
-    if (path === '/api/transport/admin') {
-      return dispatchPagesFunction(adminApi, request, env, ctx);
-    }
+      if (path === '/api/transport/admin') {
+        return await dispatchPagesFunction(adminApi, request, env, ctx);
+      }
 
-    if (path === '/api/transport/event' || path === '/api/transport/whatsapp-lead') {
-      return dispatchPagesFunction(leadApi, request, env, ctx);
-    }
+      if (path === '/api/transport/event' || path === '/api/transport/whatsapp-lead') {
+        return await dispatchPagesFunction(leadApi, request, env, ctx);
+      }
 
-    return env.ASSETS.fetch(request);
+      if (path === '/api/transport/log') {
+        return await dispatchPagesFunction(errorApi, request, env, ctx);
+      }
+
+      return await env.ASSETS.fetch(request);
+    } catch (error) {
+      // Capture any unhandled Worker-level failure so it shows up in the admin error log.
+      ctx.waitUntil(recordError(env, {
+        source: 'worker',
+        severity: 'fatal',
+        message: error && error.message ? error.message : String(error),
+        stack: error && error.stack ? error.stack : null,
+        pageUrl: request.url,
+        pagePath: path,
+        userAgent: request.headers.get('user-agent'),
+        context: `method=${request.method}`,
+      }));
+
+      if (path.startsWith('/api/transport/')) {
+        return new Response(JSON.stringify({ ok: false, error: 'Internal error' }), {
+          status: 500,
+          headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
+        });
+      }
+      throw error;
+    }
+  },
+
+  // Cron trigger: send the once-a-day visitor/lead summary to the phone.
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(
+      leadApi.sendDailySummary(env).catch((error) => recordError(env, {
+        source: 'cron',
+        severity: 'error',
+        message: `Daily summary failed: ${error && error.message ? error.message : String(error)}`,
+        stack: error && error.stack ? error.stack : null,
+        context: `cron=${event && event.cron ? event.cron : 'unknown'}`,
+      })),
+    );
   },
 };

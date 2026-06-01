@@ -1,0 +1,135 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260529011933
+Username: DESKTOP-UK5BRGP\Hussain Alyaqoob
+RunAs User: DESKTOP-UK5BRGP\Hussain Alyaqoob
+Configuration Name: 
+Machine: DESKTOP-UK5BRGP (Microsoft Windows NT 10.0.19045.0)
+Host Application: powershell -NoProfile -ExecutionPolicy Bypass -File E:\Users\Hussain Alyaqoob\Documents\GitHub\public\bahrain-saudi-gcc-transport\REPAIR-ADMIN-STAYS-OPEN.ps1
+Process ID: 10444
+PSVersion: 5.1.19041.6456
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.6456
+BuildVersion: 10.0.19041.6456
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Vendora Transport Admin Full Repair
+
+This window will stay open. If anything fails, copy the red error or open the log file.
+Working folder: E:\Users\Hussain Alyaqoob\Documents\GitHub\public
+Log file: E:\Users\Hussain Alyaqoob\Documents\GitHub\public\bahrain-saudi-gcc-transport\transport-admin-repair-20260529-011933.log
+
+============================================================
+1. Checking Cloudflare login
+============================================================
+
+ ⛅️ wrangler 4.79.0 (update available 4.95.0)
+─────────────────────────────────────────────
+Getting User settings...
+�� You are logged in with an OAuth Token, associated with the email huss3in999@gmail.com.
+┌────────────────────────────────┬──────────────────────────────────┐
+│ Account Name                   │ Account ID                       │
+├────────────────────────────────┼──────────────────────────────────┤
+│ Huss3in999@gmail.com's Account │ 3f5dcaaeaf14a8a1c4bbda38d93ceda0 │
+└────────────────────────────────┴──────────────────────────────────┘
+�� Token Permissions:
+Scope (Access)
+- account (read)
+- user (read)
+- workers (write)
+- workers_kv (write)
+- workers_routes (write)
+- workers_scripts (write)
+- workers_tail (read)
+- d1 (write)
+- pages (write)
+- zone (read)
+- ssl_certs (write)
+- ai (write)
+- ai-search (write)
+- ai-search (run)
+- queues (write)
+- pipelines (write)
+- secrets_store (write)
+- containers (write)
+- cloudchamber (write)
+- connectivity (admin)
+- offline_access
+
+============================================================
+2. Deploying the live Worker/API
+============================================================
+ ⛅️ wrangler 4.79.0 (update available 4.95.0)
+─────────────────────────────────────────────
+�� Building list of assets...
+✨ Read 3603 files from the assets directory E:\Users\Hussain Alyaqoob\Documents\GitHub\public
+�� Starting asset upload...
+�� Found 2 new or modified static assets to upload. Proceeding with upload...
++ /bahrain-saudi-gcc-transport/transport-admin-repair-20260529-011933.log
++ /bahrain-saudi-gcc-transport/transport-admin-repair-20260529-010850.log
+Uploaded 1 of 2 assets
+Uploaded 2 of 2 assets
+✨ Success! Uploaded 2 files (1757 already uploaded) (1.63 sec)
+
+Total Upload: 54.26 KiB / gzip: 12.00 KiB
+Worker Startup Time: 7 ms
+Your Worker has access to the following bindings:
+Binding                            Resource
+env.TRANSPORT_DB (vendora-db)      D1 Database
+env.ASSETS                         Assets
+
+Uploaded vendora-tools (22.09 sec)
+▲ [WARNING] Because 'workers_dev' is not in your Wrangler file, it will be disabled for this deployment by default.
+
+  To override this setting, you can enable workers.dev by explicitly setting 'workers_dev = true' in
+  your Wrangler file.
+
+
+▲ [WARNING] Because your 'workers.dev' route is disabled and your 'preview_urls' setting is not in your Wrangler file, Preview URLs will be disabled for this deployment
+ by default.
+
+  To override this setting, you can enable Preview URLs by explicitly setting 'preview_urls = true'
+  in your Wrangler file.
+
+
+Deployed vendora-tools triggers (6.01 sec)
+  getvendora.net/* (zone name: getvendora.net)
+  www.getvendora.net/* (zone name: getvendora.net)
+Current Version ID: c714750d-42fb-40ab-a0c4-435c7a33c5db
+
+============================================================
+3. Resetting the admin password secret
+============================================================
+Choose a NEW admin password now. You will type it twice. Use this same password in the admin login page.
+
+Saving TRANSPORT_ADMIN_TOKEN to Cloudflare...
+
+ ⛅️ wrangler 4.79.0 (update available 4.95.0)
+─────────────────────────────────────────────
+�� Creating the secret for the Worker "vendora-tools"
+✨ Success! Uploaded secret TRANSPORT_ADMIN_TOKEN
+
+============================================================
+4. Optional phone notification webhook
+============================================================
+
+============================================================
+5. Checking live API
+============================================================
+Health status: 200
+{"ok":true,"service":"vendora-transport-api","routes":["/api/transport/admin","/api/transport/event","/api/transport/whatsapp-lead"]}
+PS>TerminatingError(Invoke-WebRequest): "{"ok":false,"error":"Unauthorized"}"
+Admin API check: 401 Unauthorized is GOOD here. It means the route exists and waits for your new password.
+
+DONE.
+Open this page and use the NEW password you just typed:
+https://getvendora.net/bahrain-saudi-gcc-transport/admin/
+
+Log saved at: E:\Users\Hussain Alyaqoob\Documents\GitHub\public\bahrain-saudi-gcc-transport\transport-admin-repair-20260529-011933.log
+**********************
+Windows PowerShell transcript end
+End time: 20260529012215
+**********************

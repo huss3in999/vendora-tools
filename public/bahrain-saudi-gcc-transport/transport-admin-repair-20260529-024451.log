@@ -1,0 +1,64 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20260529024451
+Username: DESKTOP-UK5BRGP\Hussain Alyaqoob
+RunAs User: DESKTOP-UK5BRGP\Hussain Alyaqoob
+Configuration Name: 
+Machine: DESKTOP-UK5BRGP (Microsoft Windows NT 10.0.19045.0)
+Host Application: powershell -NoProfile -ExecutionPolicy Bypass -File E:\Users\Hussain Alyaqoob\Documents\GitHub\public\bahrain-saudi-gcc-transport\REPAIR-ADMIN-STAYS-OPEN.ps1
+Process ID: 9948
+PSVersion: 5.1.19041.6456
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.19041.6456
+BuildVersion: 10.0.19041.6456
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Vendora Transport Admin Full Repair
+
+This window will stay open. If anything fails, copy the red error or open the log file.
+Working folder: E:\Users\Hussain Alyaqoob\Documents\GitHub\public
+Log file: E:\Users\Hussain Alyaqoob\Documents\GitHub\public\bahrain-saudi-gcc-transport\transport-admin-repair-20260529-024451.log
+
+============================================================
+1. Checking Cloudflare login
+============================================================
+
+ ⛅️ wrangler 4.79.0 (update available 4.95.0)
+─────────────────────────────────────────────
+Getting User settings...
+�� You are logged in with an OAuth Token, associated with the email huss3in999@gmail.com.
+┌────────────────────────────────┬──────────────────────────────────┐
+│ Account Name                   │ Account ID                       │
+├────────────────────────────────┼──────────────────────────────────┤
+│ Huss3in999@gmail.com's Account │ 3f5dcaaeaf14a8a1c4bbda38d93ceda0 │
+└────────────────────────────────┴──────────────────────────────────┘
+�� Token Permissions:
+Scope (Access)
+- account (read)
+- user (read)
+- workers (write)
+- workers_kv (write)
+- workers_routes (write)
+- workers_scripts (write)
+- workers_tail (read)
+- d1 (write)
+- pages (write)
+- zone (read)
+- ssl_certs (write)
+- ai (write)
+- ai-search (write)
+- ai-search (run)
+- queues (write)
+- pipelines (write)
+- secrets_store (write)
+- containers (write)
+- cloudchamber (write)
+- connectivity (admin)
+- offline_access
+
+============================================================
+2. Deploying the live Worker/API
+============================================================

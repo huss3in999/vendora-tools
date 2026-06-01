@@ -25,6 +25,12 @@
     "enabled": true,
     "head_sampling_rate": 1
   },
+  "triggers": {
+    // 19:00 UTC = 22:00 Asia/Bahrain — end-of-day visitor & lead summary.
+    "crons": [
+      "0 19 * * *"
+    ]
+  },
   "d1_databases": [
     {
       "binding": "TRANSPORT_DB",
