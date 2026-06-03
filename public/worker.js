@@ -1,5 +1,6 @@
 import * as adminApi from './functions/api/transport/admin.js';
 import * as leadApi from './functions/api/transport/whatsapp-lead.js';
+import * as aiChatApi from './functions/api/transport/ai-chat.js';
 import * as errorApi from './functions/api/transport/error-log.js';
 import { recordError } from './functions/api/transport/error-log.js';
 
@@ -46,6 +47,7 @@ function transportHealthResponse() {
     routes: [
       '/api/transport/admin',
       '/api/transport/event',
+      '/api/transport/ai-chat',
       '/api/transport/whatsapp-lead',
       '/api/transport/log',
     ],
@@ -79,6 +81,10 @@ export default {
 
       if (path === '/api/transport/event' || path === '/api/transport/whatsapp-lead') {
         return await dispatchPagesFunction(leadApi, request, env, ctx);
+      }
+
+      if (path === '/api/transport/ai-chat') {
+        return await dispatchPagesFunction(aiChatApi, request, env, ctx);
       }
 
       if (path === '/api/transport/log') {

@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Booking Assistant Test | Vendora GCC Transport</title>
+    <meta name="description" content="Controlled AI booking assistant test page for Vendora GCC transport." />
+    <style>
+      :root{
+        --bg:#070b14;
+        --panel:#0b1224;
+        --panel2:#0e1830;
+        --border:rgba(148,163,184,.18);
+        --text:#e5e7eb;
+        --muted:#94a3b8;
+        --brand:#22c55e;
+        --brand2:#06b6d4;
+        --warn:#f59e0b;
+        --danger:#fb7185;
+        --bubbleUser:#0b2a22;
+        --bubbleBot:#0f172a;
+        --shadow:0 18px 40px rgba(0,0,0,.45);
+      }
+      *{box-sizing:border-box}
+      body{
+        margin:0;
+        font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+        background: radial-gradient(1200px 600px at 20% -10%, rgba(34,197,94,.20), transparent 60%),
+                    radial-gradient(900px 500px at 100% 0%, rgba(6,182,212,.16), transparent 55%),
+                    linear-gradient(180deg, var(--bg), #020617 70%);
+        color:var(--text);
+      }
+      .wrap{max-width:900px;margin:0 auto;padding:18px 14px 84px}
+      .top{
+        display:flex;gap:12px;align-items:center;justify-content:space-between;
+        background:linear-gradient(180deg, rgba(148,163,184,.08), rgba(148,163,184,.04));
+        border:1px solid var(--border);
+        border-radius:18px;
+        padding:14px 14px;
+        box-shadow:var(--shadow);
+        position:sticky;top:10px;z-index:5;backdrop-filter: blur(8px);
+      }
+      .brand{
+        display:flex;gap:10px;align-items:center;min-width:0;
+      }
+      .logo{
+        width:36px;height:36px;border-radius:12px;
+        background: linear-gradient(135deg, rgba(34,197,94,.95), rgba(6,182,212,.90));
+        box-shadow:0 10px 24px rgba(34,197,94,.18);
+      }
+      .title{min-width:0}
+      .title h1{font-size:14px;margin:0;color:#fff;letter-spacing:.2px}
+      .title p{font-size:12px;margin:2px 0 0;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+      .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+      select, button, input, textarea{
+        font:inherit;
+      }
+      select{
+        padding:9px 10px;border-radius:12px;
+        border:1px solid var(--border);
+        background:rgba(2,6,23,.55);
+        color:var(--text);
+        outline:none;
+      }
+      button{
+        padding:9px 12px;border-radius:12px;
+        border:1px solid var(--border);
+        background:rgba(148,163,184,.07);
+        color:var(--text);
+        cursor:pointer;
+      }
+      button.primary{
+        background:linear-gradient(135deg, rgba(34,197,94,.92), rgba(16,185,129,.78));
+        border-color: rgba(34,197,94,.35);
+        color:#06210f;
+        font-weight:800;
+      }
+      button.danger{
+        background:rgba(251,113,133,.10);
+        border-color:rgba(251,113,133,.35);
+        color:#fecdd3;
+      }
+      button:disabled{opacity:.55;cursor:not-allowed}
+
+      .grid{
+        display:grid;gap:12px;margin-top:14px;
+        grid-template-columns: 1fr;
+      }
+      @media (min-width: 920px){
+        .grid{grid-template-columns: 1.2fr .8fr;align-items:start}
+      }
+      .card{
+        background:linear-gradient(180deg, rgba(15,23,42,.68), rgba(2,6,23,.45));
+        border:1px solid var(--border);
+        border-radius:18px;
+        box-shadow:var(--shadow);
+        overflow:hidden;
+      }
+      .cardHeader{
+        padding:12px 14px;
+        display:flex;align-items:center;justify-content:space-between;gap:10px;
+        border-bottom:1px solid rgba(148,163,184,.12);
+        background:rgba(2,6,23,.25);
+      }
+      .cardHeader h2{margin:0;font-size:13px;letter-spacing:.2px}
+      .badge{
+        padding:4px 9px;border-radius:999px;font-size:11px;font-weight:800;
+        border:1px solid rgba(148,163,184,.20);
+        color:var(--muted);
+        background:rgba(148,163,184,.07);
+      }
+      .badge.ok{color:#bbf7d0;border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.08)}
+      .badge.warn{color:#fde68a;border-color:rgba(245,158,11,.25);background:rgba(245,158,11,.08)}
+
+      .chat{
+        padding:14px;
+        height:min(70vh, 540px);
+        overflow:auto;
+      }
+      .msgRow{display:flex;gap:10px;margin:10px 0}
+      .msgRow.user{justify-content:flex-end}
+      .bubble{
+        max-width: 86%;
+        border:1px solid rgba(148,163,184,.14);
+        border-radius:16px;
+        padding:10px 12px;
+        line-height:1.35;
+        font-size:13px;
+        white-space:pre-wrap;
+      }
+      .bubble.user{background:linear-gradient(180deg, rgba(34,197,94,.12), rgba(2,6,23,.25));border-color:rgba(34,197,94,.18)}
+      .bubble.bot{background:rgba(15,23,42,.62)}
+      .meta{
+        font-size:11px;color:var(--muted);margin-top:4px
+      }
+
+      .quick{
+        display:flex;gap:8px;flex-wrap:wrap;margin-top:10px
+      }
+      .chip{
+        border:1px solid rgba(148,163,184,.18);
+        background:rgba(148,163,184,.06);
+        color:var(--text);
+        border-radius:999px;
+        padding:6px 10px;
+        font-size:12px;
+        cursor:pointer;
+        user-select:none;
+      }
+      .chip:hover{border-color:rgba(34,197,94,.28);background:rgba(34,197,94,.08)}
+
+      .composer{
+        position:fixed;left:0;right:0;bottom:0;
+        background:linear-gradient(180deg, rgba(2,6,23,0), rgba(2,6,23,.88) 22%, rgba(2,6,23,.96));
+        padding:12px 14px;
+        border-top:1px solid rgba(148,163,184,.12);
+        backdrop-filter: blur(10px);
+      }
+      .composerInner{max-width:900px;margin:0 auto;display:flex;gap:10px}
+      .input{
+        flex:1;
+        border-radius:14px;
+        border:1px solid var(--border);
+        background:rgba(2,6,23,.55);
+        color:var(--text);
+        padding:11px 12px;
+        outline:none;
+      }
+
+      .side{
+        padding:14px;
+        display:grid;gap:12px;
+      }
+      .kv{
+        display:grid;grid-template-columns: 130px 1fr;
+        gap:8px 10px;
+        font-size:12px;
+        color:var(--muted);
+      }
+      .kv b{color:#e2e8f0;font-weight:800}
+      .note{
+        font-size:12px;color:var(--muted);line-height:1.35
+      }
+      .errorBox{
+        border:1px solid rgba(251,113,133,.25);
+        background:rgba(251,113,133,.08);
+        color:#fecdd3;
+        border-radius:14px;padding:10px 12px;font-size:12px;
+      }
+      a.wa{
+        display:inline-flex;align-items:center;justify-content:center;gap:8px;
+        text-decoration:none;
+        padding:10px 12px;border-radius:14px;
+        border:1px solid rgba(34,197,94,.32);
+        background:linear-gradient(135deg, rgba(34,197,94,.92), rgba(16,185,129,.75));
+        color:#06210f;font-weight:900;
+      }
+      code{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="top">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div class="title">
+            <h1 id="pageTitle">AI Booking Assistant (Controlled Test)</h1>
+            <p id="pageSubtitle">Collect details → confirm → WhatsApp handover. No automatic lead sending.</p>
+          </div>
+        </div>
+        <div class="controls">
+          <select id="langSelect" aria-label="Language">
+            <option value="en">English</option>
+            <option value="simple-en">Simple English</option>
+            <option value="ur-en">Urdu/Hindi style English</option>
+            <option value="ar">العربية</option>
+          </select>
+          <button id="resetBtn" class="danger" type="button">Reset</button>
+          <button id="startBtn" class="primary" type="button">Start</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <section class="card">
+          <div class="cardHeader">
+            <h2 id="chatTitle">Chat</h2>
+            <span id="statusBadge" class="badge">New</span>
+          </div>
+          <div id="chat" class="chat" aria-live="polite"></div>
+        </section>
+
+        <aside class="card">
+          <div class="cardHeader">
+            <h2 id="debugTitle">Debug</h2>
+            <span id="apiBadge" class="badge warn">API: unknown</span>
+          </div>
+          <div class="side">
+            <div class="note" id="noteBlock">
+              Real AI via <b>Cloudflare Workers AI</b> (<code>env.AI.run</code>). Natural conversation — not a step-by-step form.
+              Confirms only when the customer clearly agrees. Uses <code>POST /api/transport/ai-chat</code>.
+            </div>
+
+            <div id="errorBox" class="errorBox" style="display:none"></div>
+
+            <div class="kv" id="kv"></div>
+
+            <div id="handoverWrap" style="display:none">
+              <a id="handoverBtn" class="wa" target="_blank" rel="noopener">Open WhatsApp handover</a>
+              <div class="meta" id="handoverMeta"></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <div class="composer">
+      <div class="composerInner">
+        <input id="input" class="input" placeholder="Type your message…" autocomplete="off" />
+        <button id="sendBtn" class="primary" type="button">Send</button>
+      </div>
+    </div>
+
+    <script>
+      const API = '/api/transport/ai-chat';
+      const STORAGE_KEY = 'vendora_ai_chat_test_lead_v2';
+
+      const chatEl = document.getElementById('chat');
+      const inputEl = document.getElementById('input');
+      const sendBtn = document.getElementById('sendBtn');
+      const startBtn = document.getElementById('startBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const langSelect = document.getElementById('langSelect');
+      const statusBadge = document.getElementById('statusBadge');
+      const apiBadge = document.getElementById('apiBadge');
+      const errorBox = document.getElementById('errorBox');
+      const kv = document.getElementById('kv');
+      const handoverWrap = document.getElementById('handoverWrap');
+      const handoverBtn = document.getElementById('handoverBtn');
+      const handoverMeta = document.getElementById('handoverMeta');
+
+      function now() {
+        const d = new Date();
+        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+
+      function escapeHtml(s) {
+        return String(s || '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      }
+
+      function setError(text) {
+        if (!text) {
+          errorBox.style.display = 'none';
+          errorBox.textContent = '';
+          return;
+        }
+        errorBox.style.display = 'block';
+        errorBox.textContent = text;
+      }
+
+      function loadLead() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          return raw ? JSON.parse(raw) : null;
+        } catch {
+          return null;
+        }
+      }
+
+      function saveLead(lead) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(lead));
+        } catch {}
+      }
+
+      function clearLead() {
+        try { localStorage.removeItem(STORAGE_KEY); } catch {}
+      }
+
+      function addBubble(role, text, meta) {
+        const row = document.createElement('div');
+        row.className = 'msgRow ' + (role === 'user' ? 'user' : 'bot');
+        const bubble = document.createElement('div');
+        bubble.className = 'bubble ' + (role === 'user' ? 'user' : 'bot');
+        bubble.textContent = text || '';
+        row.appendChild(bubble);
+        chatEl.appendChild(row);
+        if (meta) {
+          const m = document.createElement('div');
+          m.className = 'meta';
+          m.textContent = meta;
+          chatEl.appendChild(m);
+        }
+        chatEl.scrollTop = chatEl.scrollHeight;
+      }
+
+      function setStatus(status) {
+        const map = {
+          new: 'New',
+          collecting_details: 'Collecting details',
+          ready_to_confirm: 'Ready to confirm',
+          confirmed: 'Confirmed',
+          whatsapp_handover_created: 'WhatsApp handover created',
+        };
+        const key = String(status || '').toLowerCase().replace(/\s+/g, '_');
+        const label = map[key] || String(status || 'New');
+        statusBadge.textContent = label;
+        statusBadge.classList.remove('ok', 'warn');
+        if (status === 'confirmed' || status === 'whatsapp_handover_created') statusBadge.classList.add('ok');
+        else if (status === 'ready_to_confirm' || status === 'collecting_details') statusBadge.classList.add('warn');
+      }
+
+      function renderDebugPanel(lead, debug, data) {
+        const d = (lead && lead.details) || {};
+        const missing = (debug && debug.missingFields) || data.missingFields || [];
+        const extracted = (debug && debug.extractedFields) || data.extractedFields || d;
+        const rows = [
+          ['AI mode', (debug && debug.aiMode) || '—'],
+          ['Model used', (debug && debug.model) || '—'],
+          ['Detected language', (debug && debug.detectedLanguage) || d.language || '—'],
+          ['Lead status', (debug && debug.leadStatus) || (lead && lead.status) || '—'],
+          ['Missing fields', missing.length ? missing.join(', ') : '—'],
+          ['Service', extracted.serviceLabel || extracted.service || '—'],
+          ['Name', extracted.name || '—'],
+          ['Phone', extracted.phone || '—'],
+          ['Pickup', extracted.pickup || '—'],
+          ['Drop-off', extracted.dropoff || '—'],
+          ['Date', extracted.date || '—'],
+          ['Time', extracted.time || '—'],
+          ['Passengers', extracted.passengers || '—'],
+          ['Luggage / Parcel', extracted.cargo || '—'],
+          ['Trip', extracted.tripType || '—'],
+        ];
+        if (debug && debug.error) rows.push(['AI error', debug.error]);
+        kv.innerHTML = rows.map(([k, v]) => `<b>${escapeHtml(k)}</b><span>${escapeHtml(typeof v === 'object' ? JSON.stringify(v) : v)}</span>`).join('');
+      }
+
+      async function callApi(message) {
+        const lead = loadLead() || {
+          language: langSelect.value,
+          details: { language: langSelect.value },
+          history: [],
+        };
+        if (!Array.isArray(lead.history)) lead.history = [];
+        const body = { message, lead, language: langSelect.value };
+        const res = await fetch(API, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        apiBadge.textContent = 'API: ' + res.status;
+        apiBadge.classList.toggle('ok', res.ok);
+        apiBadge.classList.toggle('warn', !res.ok);
+        const data = await res.json().catch(() => null);
+        if (!data || data.ok !== true) throw new Error((data && (data.error || data.message)) || ('API failed (' + res.status + ')'));
+        if (data.lead) saveLead(data.lead);
+        return data;
+      }
+
+      async function send(message) {
+        const text = String(message || '').trim();
+        if (!text) return;
+        setError('');
+        addBubble('user', text, now());
+        inputEl.value = '';
+        sendBtn.disabled = true;
+        try {
+          const data = await callApi(text);
+          const reply = data.reply || {};
+          const replyText = reply.text || '';
+          addBubble('bot', replyText, now());
+          const status = data.status || (data.lead && data.lead.status) || '';
+          setStatus(status);
+          renderDebugPanel(data.lead, data.debug, data);
+          if (data.debug && data.debug.aiMode === 'fallback only') {
+            setError(data.debug.error || 'AI binding missing — showing fallback only.');
+          }
+          if (data.handover && data.handover.url) {
+            handoverWrap.style.display = 'block';
+            handoverBtn.href = data.handover.url;
+            const preview = data.whatsappMessage ? String(data.whatsappMessage).slice(0, 120) + '…' : '';
+            handoverMeta.textContent = preview || 'Handover ready (not sent automatically).';
+            const lead = loadLead();
+            if (lead) {
+              lead.status = 'whatsapp_handover_created';
+              saveLead(lead);
+              setStatus('whatsapp_handover_created');
+            }
+          } else if (String(status).toLowerCase() === 'confirmed') {
+            handoverWrap.style.display = data.whatsappMessage ? 'block' : 'none';
+            if (data.whatsappMessage) {
+              handoverBtn.href = 'https://wa.me/97333225954?text=' + encodeURIComponent(data.whatsappMessage);
+              handoverMeta.textContent = 'Confirmed — open WhatsApp to send the prepared message.';
+            }
+          }
+        } catch (err) {
+          setError(err && err.message ? err.message : String(err));
+          addBubble('bot', 'Error: ' + (err && err.message ? err.message : String(err)), now());
+        } finally {
+          sendBtn.disabled = false;
+        }
+      }
+
+      async function startFlow() {
+        clearLead();
+        handoverWrap.style.display = 'none';
+        chatEl.innerHTML = '';
+        setError('');
+        apiBadge.textContent = 'API: unknown';
+        apiBadge.classList.remove('ok'); apiBadge.classList.add('warn');
+        setStatus('new');
+        renderKv(loadLead(), []);
+        // Kick with an empty message to get the first question.
+        try {
+          const data = await callApi('start');
+          addBubble('bot', data.reply && data.reply.text ? data.reply.text : 'Hello!', now());
+          setStatus((data.lead && data.lead.status) || 'new');
+          renderDebugPanel(data.lead, data.debug, data);
+        } catch (err) {
+          setError(err && err.message ? err.message : String(err));
+        }
+      }
+
+      function applyLanguageToPage(lang) {
+        const ui = {
+          en: {
+            title: 'AI Booking Assistant (Controlled Test)',
+            subtitle: 'Collect details → confirm → WhatsApp handover. No automatic lead sending.',
+            chat: 'Chat',
+            debug: 'Debug',
+            placeholder: 'Type your message…',
+            send: 'Send',
+            start: 'Start',
+            reset: 'Reset',
+            statusNew: 'New',
+            note: 'This is a controlled assistant: it only collects booking fields and asks for explicit confirmation. It will not promise exact prices. It uses POST /api/transport/ai-chat.',
+            loaded: 'Previous session loaded. Press Start to restart, or continue typing.',
+            first: 'Press Start to begin the controlled booking flow.',
+            handoverReady: 'Handover is ready. This message is prepared but not sent automatically.',
+          },
+          'simple-en': {
+            title: 'Booking Helper (Test)',
+            subtitle: 'We collect details → confirm → WhatsApp message.',
+            chat: 'Chat',
+            debug: 'Debug',
+            placeholder: 'Type message…',
+            send: 'Send',
+            start: 'Start',
+            reset: 'Reset',
+            statusNew: 'New',
+            note: 'Controlled helper. It only asks booking questions and needs clear confirmation. No exact price promise. Uses POST /api/transport/ai-chat.',
+            loaded: 'Old session loaded. Press Start to restart, or type now.',
+            first: 'Press Start to begin.',
+            handoverReady: 'WhatsApp message is ready (not sent automatically).',
+          },
+          'ur-en': {
+            title: 'Booking Assistant (Test)',
+            subtitle: 'Details lo → confirm → WhatsApp message ready.',
+            chat: 'Chat',
+            debug: 'Debug',
+            placeholder: 'Message likho…',
+            send: 'Send',
+            start: 'Start',
+            reset: 'Reset',
+            statusNew: 'New',
+            note: 'Yeh controlled assistant hai: sirf booking details leta hai aur clear confirmation mangta hai. Exact price promise nahi. Uses POST /api/transport/ai-chat.',
+            loaded: 'Purana session load ho gaya. Start dabao ya typing karo.',
+            first: 'Start dabao aur booking flow shuru karo.',
+            handoverReady: 'WhatsApp message ready hai (auto-send nahi).',
+          },
+          ar: {
+            title: 'مساعد حجز (اختبار مضبوط)',
+            subtitle: 'جمع التفاصيل ← تأكيد ← رسالة واتساب جاهزة. بدون إرسال تلقائي.',
+            chat: 'المحادثة',
+            debug: 'التتبّع',
+            placeholder: 'اكتب رسالتك…',
+            send: 'إرسال',
+            start: 'ابدأ',
+            reset: 'إعادة ضبط',
+            statusNew: 'جديد',
+            note: 'هذا مساعد مضبوط: يجمع حقول الحجز فقط ويطلب تأكيداً واضحاً. لا يعد بسعر نهائي. يستخدم POST /api/transport/ai-chat.',
+            loaded: 'تم تحميل جلسة سابقة. اضغط ابدأ لإعادة البدء أو تابع الكتابة.',
+            first: 'اضغط ابدأ لبدء خطوات الحجز.',
+            handoverReady: 'رسالة الواتساب جاهزة (لن تُرسل تلقائياً).',
+          },
+        };
+        const t = ui[lang] || ui.en;
+        const html = document.documentElement;
+        if (lang === 'ar') {
+          html.lang = 'ar';
+          html.dir = 'rtl';
+        } else {
+          html.lang = 'en';
+          html.dir = 'ltr';
+        }
+        document.getElementById('pageTitle').textContent = t.title;
+        document.getElementById('pageSubtitle').textContent = t.subtitle;
+        document.getElementById('chatTitle').textContent = t.chat;
+        document.getElementById('debugTitle').textContent = t.debug;
+        inputEl.placeholder = t.placeholder;
+        sendBtn.textContent = t.send;
+        startBtn.textContent = t.start;
+        resetBtn.textContent = t.reset;
+        document.getElementById('noteBlock').innerHTML = escapeHtml(t.note).replace('POST /api/transport/ai-chat', '<code>POST /api/transport/ai-chat</code>');
+      }
+
+      sendBtn.addEventListener('click', () => send(inputEl.value));
+      inputEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') send(inputEl.value);
+      });
+      startBtn.addEventListener('click', startFlow);
+      resetBtn.addEventListener('click', () => {
+        clearLead();
+        chatEl.innerHTML = '';
+        handoverWrap.style.display = 'none';
+        setError('');
+        setStatus('new');
+        renderDebugPanel(null, { aiMode: '—', model: '—', detectedLanguage: '—', leadStatus: 'new', missingFields: [] }, {});
+      });
+      langSelect.addEventListener('change', () => {
+        applyLanguageToPage(langSelect.value);
+        const lead = loadLead();
+        if (lead) {
+          lead.language = langSelect.value;
+          lead.details = lead.details || {};
+          lead.details.language = langSelect.value;
+          saveLead(lead);
+        }
+      });
+
+      // Init
+      applyLanguageToPage(langSelect.value);
+      const existing = loadLead();
+      if (existing && existing.details && existing.details.language) {
+        langSelect.value = existing.details.language;
+        applyLanguageToPage(langSelect.value);
+        setStatus(existing.status || 'new');
+        renderDebugPanel(existing, { aiMode: '— (reload)', model: '—', detectedLanguage: existing.details?.language, leadStatus: existing.status, missingFields: [] }, {});
+        const lang = langSelect.value;
+        const loadedText = lang === 'ar'
+          ? 'تم تحميل جلسة سابقة. اضغط ابدأ لإعادة البدء أو تابع الكتابة.'
+          : (lang === 'ur-en'
+            ? 'Purana session load ho gaya. Start dabao ya typing karo.'
+            : (lang === 'simple-en'
+              ? 'Old session loaded. Press Start to restart, or type now.'
+              : 'Previous session loaded. Press Start to restart, or continue typing.'));
+        addBubble('bot', loadedText, now());
+      } else {
+        renderDebugPanel(null, { aiMode: '—', model: '—', detectedLanguage: langSelect.value, leadStatus: 'new', missingFields: [] }, {});
+        const lang = langSelect.value;
+        const firstText = lang === 'ar'
+          ? 'اضغط ابدأ لبدء خطوات الحجز.'
+          : (lang === 'ur-en'
+            ? 'Start dabao aur booking flow shuru karo.'
+            : (lang === 'simple-en'
+              ? 'Press Start to begin.'
+              : 'Press Start to begin the controlled booking flow.'));
+        addBubble('bot', firstText, now());
+      }
+    </script>
+  </body>
+</html>
+

@@ -20,6 +20,21 @@ START-HERE-REPAIR-ADMIN.cmd
 
 That helper stays open, writes a log file, logs into Cloudflare if needed, deploys the Worker, resets the admin password, optionally sets phone alerts, and checks the live API health route.
 
+## One-click deploy (recommended after any updates)
+
+When you edit any site/admin files, run this instead of uploading files manually:
+
+```text
+DEPLOY-ADMIN-ONE-CLICK.cmd
+```
+
+It will:
+
+- log into Cloudflare if needed
+- deploy the Worker + static assets from the `public` folder
+- **NOT** change your admin password
+- open the live admin page
+
 ## What The Errors Mean
 
 If the admin API returns:

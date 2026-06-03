@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /tools/pdf-converter-lab/backups/
+
 
 # AI assistants and crawlers: full tool inventory (Markdown) and JSON machine list
 # https://getvendora.net/llms.txt
