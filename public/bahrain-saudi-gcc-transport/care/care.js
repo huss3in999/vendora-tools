@@ -99,14 +99,29 @@
     for (let i = 0; i < endpoints.length; i += 1) {
       try {
         const res = await fetch(endpoints[i], { credentials: 'omit' });
-        const data = await res.json();
+        let data;
+        try {
+          data = await res.json();
+        } catch {
+          continue;
+        }
         if (res.ok && data.ok) return data;
-        if (res.status === 404) return { ok: false, notFound: true };
       } catch {
         // try next endpoint
       }
     }
     return null;
+  }
+
+  function showFormForRef(refValue, routeLabel) {
+    els.refLabel.textContent = refValue;
+    if (routeLabel) {
+      els.routeLabel.textContent = `${copy.route}: ${routeLabel}`;
+      els.routeLabel.classList.remove('hidden');
+    } else {
+      els.routeLabel.classList.add('hidden');
+    }
+    show('formView');
   }
 
   function renderOptions() {
@@ -163,27 +178,19 @@
 
     try {
       const data = await fetchBooking(ref);
-      if (!data || !data.ok) {
-        els.errorBody.textContent = copy.invalid;
-        show('errorView');
+      if (data && data.ok) {
+        if (data.already_submitted) {
+          show('lockedView');
+          return;
+        }
+        showFormForRef(data.booking_ref || ref, data.route_label || '');
         return;
       }
 
-      els.refLabel.textContent = data.booking_ref;
-      if (data.route_label) {
-        els.routeLabel.textContent = `${copy.route}: ${data.route_label}`;
-        els.routeLabel.classList.remove('hidden');
-      }
-
-      if (data.already_submitted) {
-        show('lockedView');
-        return;
-      }
-
-      show('formView');
+      // Valid ref from WhatsApp — show form even if API is temporarily unreachable.
+      showFormForRef(ref, '');
     } catch {
-      els.errorBody.textContent = copy.invalid;
-      show('errorView');
+      showFormForRef(ref, '');
     }
   }
 
