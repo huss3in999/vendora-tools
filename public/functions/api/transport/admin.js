@@ -1,6 +1,6 @@
 import { ensureErrorSchema, recordError } from './error-log.js';
 import { buildNtfyHeaders, getNtfyToken, resolveNtfyPublishUrl } from './whatsapp-lead.js';
-import { getPassengerCareAdminRows } from './passenger-care.js';
+import { getPassengerCareAdminRows, deletePassengerCareFeedback } from './passenger-care.js';
 
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
@@ -17,6 +17,14 @@ const VISIT_COUNT_EXPR = "CASE WHEN json_valid(raw_payload) THEN CAST(COALESCE(j
 const SESSION_PAGE_VIEWS_EXPR = "CASE WHEN json_valid(raw_payload) THEN CAST(COALESCE(json_extract(raw_payload, '$.sessionPageViews'), 1) AS INTEGER) ELSE 1 END";
 const TRAFFIC_SOURCE_EXPR = "COALESCE(NULLIF(utm_source, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.firstTrafficSource'), '') END, CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.trafficSource'), '') END, 'direct/unknown')";
 const CAMPAIGN_EXPR = "COALESCE(NULLIF(utm_campaign, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.utmCampaign'), '') END, 'no campaign')";
+const NON_CLICK_SERVICE_SQL = "COALESCE(service_type, '') NOT IN ('pageview', 'passenger-care-pageview', 'passenger-care-stub')";
+const NON_CLICK_ROUTE_SQL = "COALESCE(route_slug, '') NOT IN ('passenger-care', 'passenger-care-stub')";
+const EXCLUDE_ADMIN_SQL = "COALESCE(page_path, '') NOT LIKE '%/admin/%'";
+const EXCLUDE_CARE_PATH_SQL = "COALESCE(page_path, '') NOT LIKE '%/care/%'";
+const TRANSPORT_PRESENCE_SQL = `${EXCLUDE_ADMIN_SQL} AND ((${EXCLUDE_CARE_PATH_SQL} AND COALESCE(service_type, '') = 'pageview') OR (${NON_CLICK_SERVICE_SQL} AND ${NON_CLICK_ROUTE_SQL}))`;
+const CARE_PRESENCE_SQL = `${EXCLUDE_ADMIN_SQL} AND (COALESCE(service_type, '') = 'passenger-care-pageview' OR COALESCE(page_path, '') LIKE '%/care/%')`;
+const CUSTOMER_PRESENCE_SQL = EXCLUDE_ADMIN_SQL;
+const ONLINE_WINDOW_SQL = "clicked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-5 minutes')";
 
 const ADMIN_COLUMNS = [
   ['status', "ALTER TABLE whatsapp_leads ADD COLUMN status TEXT DEFAULT 'new'"],
@@ -301,7 +309,7 @@ async function sendTestNotification(env) {
 }
 
 function eventClause(eventType) {
-  if (eventType === 'lead') return "COALESCE(service_type, '') <> 'pageview'";
+  if (eventType === 'lead') return `${NON_CLICK_SERVICE_SQL} AND ${NON_CLICK_ROUTE_SQL}`;
   if (eventType === 'pageview') return "COALESCE(service_type, '') = 'pageview'";
   return '';
 }
@@ -588,23 +596,22 @@ async function getSummary(env, request) {
     WHERE visitor_id IS NOT NULL
   `);
 
-  // "Online now" = activity in the last 5 minutes. Intentionally ignores the
-  // period filter because it always reflects the present moment.
-  // Counted by PERSON (visitor id, falling back to session), so one visitor
-  // browsing many pages or tabs only ever counts as one.
+  // "Online now" = activity in the last 5 minutes from whatsapp_leads.
+  // Transport visitors exclude admin and Passenger Care pages.
+  // Care visitors are counted separately.
   const PERSON_KEY_EXPR = `COALESCE(${VISITOR_ID_EXPR}, session_id)`;
 
   const onlineTotals = await env.TRANSPORT_DB.prepare(`
     SELECT
-      COUNT(DISTINCT ${PERSON_KEY_EXPR}) AS online_visitors,
+      COUNT(DISTINCT CASE WHEN ${TRANSPORT_PRESENCE_SQL} THEN ${PERSON_KEY_EXPR} END) AS online_transport,
+      COUNT(DISTINCT CASE WHEN ${CARE_PRESENCE_SQL} THEN ${PERSON_KEY_EXPR} END) AS online_care,
+      COUNT(DISTINCT CASE WHEN ${CUSTOMER_PRESENCE_SQL} THEN ${PERSON_KEY_EXPR} END) AS online_all,
       COUNT(DISTINCT session_id) AS online_sessions,
       COUNT(*) AS online_events
     FROM whatsapp_leads
-    WHERE clicked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-5 minutes')
+    WHERE ${ONLINE_WINDOW_SQL}
   `).first();
 
-  // One row per person: their most recent page, plus how many pages they viewed
-  // and whether they clicked WhatsApp during this online window.
   const { results: onlineRecent } = await env.TRANSPORT_DB.prepare(`
     SELECT
       person_key,
@@ -639,14 +646,53 @@ async function getSummary(env, request) {
         device_type,
         ROUND(time_on_page_ms / 1000) AS seconds_on_page,
         SUM(CASE WHEN COALESCE(service_type, '') = 'pageview' THEN 1 ELSE 0 END) OVER (PARTITION BY ${PERSON_KEY_EXPR}) AS pages_viewed,
-        SUM(CASE WHEN COALESCE(service_type, '') <> 'pageview' THEN 1 ELSE 0 END) OVER (PARTITION BY ${PERSON_KEY_EXPR}) AS whatsapp_clicks,
+        SUM(CASE WHEN ${NON_CLICK_SERVICE_SQL} AND ${NON_CLICK_ROUTE_SQL} THEN 1 ELSE 0 END) OVER (PARTITION BY ${PERSON_KEY_EXPR}) AS whatsapp_clicks,
         ROW_NUMBER() OVER (PARTITION BY ${PERSON_KEY_EXPR} ORDER BY clicked_at DESC) AS rn
       FROM whatsapp_leads
-      WHERE clicked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-5 minutes')
+      WHERE ${ONLINE_WINDOW_SQL}
+        AND ${TRANSPORT_PRESENCE_SQL}
     )
     WHERE rn = 1
     ORDER BY last_seen DESC
     LIMIT 30
+  `).all();
+
+  const { results: onlineCareRecent } = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      person_key,
+      visitor_id,
+      session_id,
+      last_seen,
+      page_path,
+      route_label,
+      route_slug,
+      language,
+      city,
+      region,
+      country,
+      device_type
+    FROM (
+      SELECT
+        ${PERSON_KEY_EXPR} AS person_key,
+        ${VISITOR_ID_EXPR} AS visitor_id,
+        session_id,
+        clicked_at AS last_seen,
+        page_path,
+        route_label,
+        route_slug,
+        language,
+        cf_city AS city,
+        cf_region AS region,
+        cf_country AS country,
+        device_type,
+        ROW_NUMBER() OVER (PARTITION BY ${PERSON_KEY_EXPR} ORDER BY clicked_at DESC) AS rn
+      FROM whatsapp_leads
+      WHERE ${ONLINE_WINDOW_SQL}
+        AND ${CARE_PRESENCE_SQL}
+    )
+    WHERE rn = 1
+    ORDER BY last_seen DESC
+    LIMIT 15
   `).all();
 
   const [
@@ -845,9 +891,13 @@ async function getSummary(env, request) {
       today: leadTotals?.today || 0,
       total_pageviews: pageviewTotals?.total_pageviews || 0,
       pageviews_today: pageviewTotals?.pageviews_today || 0,
-      online_now: onlineTotals?.online_visitors || 0,
+      online_now: onlineTotals?.online_transport || 0,
+      online_transport: onlineTotals?.online_transport || 0,
+      online_care: onlineTotals?.online_care || 0,
+      online_all: onlineTotals?.online_all || 0,
       online_sessions: onlineTotals?.online_sessions || 0,
       online_recent: onlineRecent || [],
+      online_care_recent: onlineCareRecent || [],
       by_route: byRoute,
       by_source: bySourceMerged,
       by_campaign: byCampaignMerged,
@@ -1225,6 +1275,9 @@ export async function onRequestDelete(context) {
     let response;
     if (resource === 'errors') {
       response = await deleteErrors(env, request);
+    } else if (resource === 'passenger-care') {
+      const result = await deletePassengerCareFeedback(env, request);
+      return json(result, { status: result.status || (result.ok ? 200 : 400), headers });
     } else if (resource === 'bulk' || mode === 'bulk') {
       response = await deleteBulkEvents(env, request);
     } else {

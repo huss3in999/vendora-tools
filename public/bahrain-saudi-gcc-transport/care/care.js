@@ -4,20 +4,24 @@
   const copy = lang === 'en' ? {
     loading: 'Loading your booking…',
     invalid: 'This booking reference is not valid. Please check the link from your WhatsApp message.',
-    lockedTitle: 'Feedback already submitted',
-    lockedBody: 'Thank you. Feedback for this booking reference has already been received.',
-    thanksTitle: 'Thank you',
-    thanksBody: 'Thank you for helping GCC Transport improve passenger care and service quality.',
-    thanksFooter: 'For the best support and follow-up, we recommend making future bookings through the official GCC Transport website.',
+    lockedTitle: 'Follow-up already submitted',
+    lockedBody: 'A follow-up has already been submitted for this booking.',
+    thanksTitle: 'Thank You',
+    thanksBody: 'Your feedback has been received successfully.',
+    thanksSub: 'Your input helps us improve service quality and passenger care.',
+    thanksFooter: '',
+    trustLead: 'We continuously improve our service quality and passenger experience. This follow-up takes less than 20 seconds.',
+    question: 'How did your journey or booking end?',
     route: 'Route',
-    submit: 'Submit feedback',
+    submit: 'Confirm & Submit',
     submitting: 'Sending…',
-    selectOutcome: 'Please choose what happened with your booking.',
-    optional: 'Optional details',
+    selectOutcome: 'Please choose how your journey or booking ended.',
+    optional: 'Additional Information (Optional)',
     rating: 'Service rating',
     comment: 'Comment',
     quoted: 'Quoted price (optional)',
     paid: 'Paid price (optional)',
+    footer: 'This follow-up is confidential and used only to improve service quality.',
     outcomes: {
       completed: 'Trip completed',
       cancelled: 'Booking cancelled',
@@ -29,20 +33,24 @@
   } : {
     loading: 'جاري تحميل بيانات الحجز…',
     invalid: 'رقم الحجز غير صالح. يرجى التحقق من الرابط في رسالة الواتساب.',
-    lockedTitle: 'تم إرسال الملاحظة مسبقاً',
-    lockedBody: 'شكراً لك. تم استلام ملاحظتك لهذا رقم الحجز مسبقاً.',
+    lockedTitle: 'تم إرسال المتابعة مسبقاً',
+    lockedBody: 'تم إرسال المتابعة مسبقاً لهذا الحجز.',
     thanksTitle: 'شكراً لك',
-    thanksBody: 'شكراً لمساعدتك في تحسين رعاية المسافرين وجودة الخدمة في GCC Transport.',
-    thanksFooter: 'للحصول على أفضل دعم ومتابعة، نوصي بأن تكون الحجوزات القادمة من خلال الموقع الرسمي لـ GCC Transport.',
+    thanksBody: 'تم استلام ملاحظتك بنجاح.',
+    thanksSub: 'مساهمتك تساعدنا على تحسين جودة الخدمة ورعاية المسافرين.',
+    thanksFooter: '',
+    trustLead: 'نحرص على تحسين جودة الخدمة والتأكد من رضا المسافرين. تستغرق هذه المتابعة أقل من 20 ثانية.',
+    question: 'كيف انتهت رحلتك أو طلبك؟',
     route: 'المسار',
-    submit: 'إرسال الملاحظة',
+    submit: 'تأكيد وإرسال',
     submitting: 'جاري الإرسال…',
-    selectOutcome: 'يرجى اختيار ما حدث مع طلب الحجز.',
-    optional: 'تفاصيل اختيارية',
+    selectOutcome: 'يرجى اختيار كيف انتهت رحلتك أو طلبك.',
+    optional: 'معلومات إضافية (اختياري)',
     rating: 'تقييم الخدمة',
     comment: 'ملاحظة',
     quoted: 'السعر المعروض (اختياري)',
     paid: 'السعر المدفوع (اختياري)',
+    footer: 'هذه المتابعة سرية وتستخدم فقط لتحسين جودة الخدمة.',
     outcomes: {
       completed: 'تمت الرحلة',
       cancelled: 'تم إلغاء الحجز',
@@ -56,6 +64,10 @@
   const params = new URLSearchParams(window.location.search);
   const ref = (params.get('ref') || '').trim().toUpperCase();
   const apiBase = '/bahrain-saudi-gcc-transport/api/transport/passenger-care';
+  const presenceEndpoints = [
+    '/bahrain-saudi-gcc-transport/api/transport/event',
+    '/api/transport/event',
+  ];
 
   const els = {
     loading: document.getElementById('loadingView'),
@@ -74,9 +86,13 @@
     submit: document.getElementById('submitBtn'),
     formError: document.getElementById('formError'),
     thanksBody: document.getElementById('thanksBody'),
+    thanksSub: document.getElementById('thanksSub'),
     thanksFooter: document.getElementById('thanksFooter'),
     lockedBody: document.getElementById('lockedBody'),
     errorBody: document.getElementById('errorBody'),
+    trustLead: document.getElementById('trustLead'),
+    questionText: document.getElementById('questionText'),
+    footerNote: document.getElementById('footerNote'),
   };
 
   let selectedOutcome = '';
@@ -88,6 +104,64 @@
     views.forEach((id) => {
       const node = document.getElementById(id);
       if (node) node.classList.toggle('hidden', id !== view);
+    });
+  }
+
+  function getCareSessionId() {
+    const key = 'vendora_care_session';
+    try {
+      let id = sessionStorage.getItem(key);
+      if (!id) {
+        id = crypto.randomUUID();
+        sessionStorage.setItem(key, id);
+      }
+      return id;
+    } catch {
+      return crypto.randomUUID();
+    }
+  }
+
+  function sendCarePresence() {
+    const payload = {
+      timestamp: new Date().toISOString(),
+      serviceType: 'passenger-care-pageview',
+      routeSlug: 'passenger-care',
+      routeLabel: lang === 'en' ? 'Journey Follow-Up' : 'متابعة الرحلة',
+      pagePath: window.location.pathname,
+      pageUrl: window.location.href,
+      pageTitle: document.title || '',
+      language: lang,
+      sessionId: getCareSessionId(),
+      visitorId: getCareSessionId(),
+      deviceType: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+      browserLanguage: navigator.language || '',
+      timeOnPageMs: 0,
+      scrollDepthPercent: 0,
+      interactionCount: 0,
+    };
+    const body = JSON.stringify(payload);
+    presenceEndpoints.forEach((endpoint) => {
+      try {
+        if (navigator.sendBeacon) {
+          const blob = new Blob([body], { type: 'application/json' });
+          if (navigator.sendBeacon(endpoint, blob)) return;
+        }
+      } catch { /* fall through */ }
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        credentials: 'omit',
+        body,
+        keepalive: true,
+      }).catch(() => {});
+    });
+  }
+
+  function setupCarePresence() {
+    sendCarePresence();
+    setInterval(sendCarePresence, 120000);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') sendCarePresence();
     });
   }
 
@@ -155,6 +229,9 @@
   }
 
   function applyStaticCopy() {
+    if (els.trustLead) els.trustLead.textContent = copy.trustLead;
+    if (els.questionText) els.questionText.textContent = copy.question;
+    if (els.footerNote) els.footerNote.textContent = copy.footer;
     els.optionalSummary.textContent = copy.optional;
     document.getElementById('ratingLabel').textContent = copy.rating;
     document.getElementById('commentLabel').textContent = copy.comment;
@@ -162,6 +239,7 @@
     document.getElementById('paidLabel').textContent = copy.paid;
     els.submit.textContent = copy.submit;
     els.thanksBody.textContent = copy.thanksBody;
+    if (els.thanksSub) els.thanksSub.textContent = copy.thanksSub;
     els.thanksFooter.textContent = copy.thanksFooter;
     els.lockedBody.textContent = copy.lockedBody;
     document.getElementById('thanksTitle').textContent = copy.thanksTitle;
@@ -187,7 +265,6 @@
         return;
       }
 
-      // Valid ref from WhatsApp — show form even if API is temporarily unreachable.
       showFormForRef(ref, '');
     } catch {
       showFormForRef(ref, '');
@@ -204,20 +281,22 @@
     els.submit.textContent = copy.submitting;
     els.formError.textContent = '';
 
+    const payload = {
+      ref,
+      outcome: selectedOutcome,
+      rating: selectedRating,
+      comment: els.comment.value.trim(),
+      quoted_price: els.quoted.value.trim(),
+      paid_price: els.paid.value.trim(),
+      language: lang,
+    };
+
     try {
       const res = await fetch(apiBase, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         credentials: 'omit',
-        body: JSON.stringify({
-          ref,
-          outcome: selectedOutcome,
-          rating: selectedRating,
-          comment: els.comment.value.trim(),
-          quoted_price: els.quoted.value.trim(),
-          paid_price: els.paid.value.trim(),
-          language: lang,
-        }),
+        body: JSON.stringify(payload),
       });
       let data = await res.json();
       if (!res.ok || !data.ok) {
@@ -225,15 +304,7 @@
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           credentials: 'omit',
-          body: JSON.stringify({
-            ref,
-            outcome: selectedOutcome,
-            rating: selectedRating,
-            comment: els.comment.value.trim(),
-            quoted_price: els.quoted.value.trim(),
-            paid_price: els.paid.value.trim(),
-            language: lang,
-          }),
+          body: JSON.stringify(payload),
         });
         data = await fallback.json();
         if (!fallback.ok || !data.ok) throw new Error('submit failed');
@@ -253,6 +324,7 @@
   applyStaticCopy();
   renderOptions();
   renderRating();
+  setupCarePresence();
   els.submit.addEventListener('click', submitFeedback);
   loadBooking();
 })();

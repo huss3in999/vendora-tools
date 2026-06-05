@@ -27,27 +27,28 @@
       </div>
 
       <div id="lockedView" class="locked hidden">
-        <h2 id="lockedTitle">تم إرسال الملاحظة مسبقاً</h2>
+        <h2 id="lockedTitle">تم إرسال المتابعة مسبقاً</h2>
         <p id="lockedBody" class="muted"></p>
       </div>
 
       <div id="thanksView" class="thanks hidden">
         <h2 id="thanksTitle">شكراً لك</h2>
         <p id="thanksBody" class="lead"></p>
+        <p id="thanksSub" class="lead"></p>
         <p id="thanksFooter" class="muted"></p>
       </div>
 
       <div id="formView" class="hidden">
-        <h1>رعاية المسافر</h1>
-        <p class="lead">ساعدنا في تحسين جودة الخدمة ودعم المسافرين — يستغرق الأمر أقل من دقيقة.</p>
+        <h1>متابعة الرحلة</h1>
+        <p id="trustLead" class="lead"></p>
         <div class="ref">رقم الحجز: <strong id="refLabel"></strong></div>
         <p id="routeLabel" class="route hidden"></p>
 
-        <p class="question">ماذا حدث مع طلب الحجز؟</p>
+        <p id="questionText" class="question"></p>
         <div id="outcomeOptions" class="options"></div>
 
         <details class="optional" open>
-          <summary id="optionalSummary">تفاصيل اختيارية</summary>
+          <summary id="optionalSummary"></summary>
           <div class="field">
             <label id="ratingLabel">تقييم الخدمة</label>
             <div id="ratingRow" class="rating-row"></div>
@@ -67,12 +68,12 @@
         </details>
 
         <p id="formError" class="error"></p>
-        <button id="submitBtn" class="submit" type="button" disabled>إرسال الملاحظة</button>
+        <button id="submitBtn" class="submit" type="button" disabled></button>
       </div>
     </div>
 
-    <p class="footer-note">ملاحظتك تساعدنا في تحسين جودة الخدمة. لا يلزم تسجيل دخول أو رقم هاتف.</p>
+    <p id="footerNote" class="footer-note"></p>
   </div>
-  <script src="care.js?v=20260605-care2"></script>
+  <script src="care.js?v=20260605-care3"></script>
 </body>
 </html>

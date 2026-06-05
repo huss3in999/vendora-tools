@@ -1108,7 +1108,8 @@
   function isWhatsAppTarget(link) {
     if (!link || link.tagName !== 'A') return false;
     if (link.hasAttribute('data-wa-message') || link.hasAttribute('data-booking-submit')) return true;
-    const href = String(link.href || link.getAttribute('href') || '');
+    if (link.hasAttribute('data-wa-preserved-href') || link.hasAttribute('data-track-wa')) return true;
+    const href = String(link.getAttribute('data-wa-preserved-href') || link.href || link.getAttribute('href') || '');
     return /wa\.me\/|api\.whatsapp\.com\//i.test(href);
   }
 
@@ -1192,7 +1193,12 @@
       return stripPassengerCareFromMessage(link.getAttribute('data-wa-message') || defaultArabicMessage);
     }
 
-    const href = String(link.href || link.getAttribute('href') || '');
+    const href = String(
+      link.getAttribute('data-wa-preserved-href')
+      || link.href
+      || link.getAttribute('href')
+      || '',
+    );
     if (/wa\.me\/|api\.whatsapp\.com\//i.test(href)) {
       try {
         const url = new URL(href, window.location.href);
@@ -1341,6 +1347,21 @@
     } catch (e) {
       console.error('Failed to track pageview:', e);
     }
+  }
+
+  function setupOnlineHeartbeat() {
+    const sendHeartbeat = () => {
+      try {
+        const payload = buildLeadPayload(null, null);
+        sendLeadPayload(payload, { preferBeacon: true });
+      } catch (e) {
+        // ignore heartbeat failures
+      }
+    };
+    setInterval(sendHeartbeat, 120000);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') sendHeartbeat();
+    });
   }
 
   function setupErrorReporter() {
@@ -1782,6 +1803,7 @@
     applyLanguage();
     renderIcons();
     trackPageView();
+    setupOnlineHeartbeat();
   }
 
   function initLeadOnly() {
@@ -1792,6 +1814,7 @@
     setupEngagementTracking();
     neutralizeWhatsAppHrefs();
     trackPageView();
+    setupOnlineHeartbeat();
   }
 
   if (window.pageConfig && window.pageConfig.leadOnly === true) {

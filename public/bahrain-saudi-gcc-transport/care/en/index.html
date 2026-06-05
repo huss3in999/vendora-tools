@@ -27,27 +27,28 @@
       </div>
 
       <div id="lockedView" class="locked hidden">
-        <h2 id="lockedTitle">Feedback already submitted</h2>
+        <h2 id="lockedTitle">Follow-up already submitted</h2>
         <p id="lockedBody" class="muted"></p>
       </div>
 
       <div id="thanksView" class="thanks hidden">
-        <h2 id="thanksTitle">Thank you</h2>
+        <h2 id="thanksTitle">Thank You</h2>
         <p id="thanksBody" class="lead"></p>
+        <p id="thanksSub" class="lead"></p>
         <p id="thanksFooter" class="muted"></p>
       </div>
 
       <div id="formView" class="hidden">
-        <h1>Passenger Care</h1>
-        <p class="lead">Help us improve service quality and passenger support — this takes less than a minute.</p>
+        <h1>Journey Follow-Up</h1>
+        <p id="trustLead" class="lead"></p>
         <div class="ref">Booking Ref: <strong id="refLabel"></strong></div>
         <p id="routeLabel" class="route hidden"></p>
 
-        <p class="question">What happened with your booking?</p>
+        <p id="questionText" class="question"></p>
         <div id="outcomeOptions" class="options"></div>
 
         <details class="optional" open>
-          <summary id="optionalSummary">Optional details</summary>
+          <summary id="optionalSummary"></summary>
           <div class="field">
             <label id="ratingLabel">Service rating</label>
             <div id="ratingRow" class="rating-row"></div>
@@ -67,12 +68,12 @@
         </details>
 
         <p id="formError" class="error"></p>
-        <button id="submitBtn" class="submit" type="button" disabled>Submit feedback</button>
+        <button id="submitBtn" class="submit" type="button" disabled></button>
       </div>
     </div>
 
-    <p class="footer-note">Your feedback helps us improve service quality. No login or phone number required.</p>
+    <p id="footerNote" class="footer-note"></p>
   </div>
-  <script src="../care.js?v=20260605-care2"></script>
+  <script src="../care.js?v=20260605-care3"></script>
 </body>
 </html>

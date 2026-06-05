@@ -19,6 +19,23 @@ const OUTCOMES = new Set([
   'other_transport',
 ]);
 
+const STUB_ROUTE_SLUGS = new Set(['passenger-care', 'passenger-care-stub']);
+const NON_CLICK_SERVICE_TYPES = new Set(['pageview', 'passenger-care-pageview', 'passenger-care-stub']);
+
+function isRealWhatsAppLead(row) {
+  if (!row) return false;
+  const serviceType = String(row.service_type || '').toLowerCase();
+  const routeSlug = String(row.route_slug || '').toLowerCase();
+  if (NON_CLICK_SERVICE_TYPES.has(serviceType)) return false;
+  if (STUB_ROUTE_SLUGS.has(routeSlug)) return false;
+  return true;
+}
+
+function leadUuidFromBookingRef(bookingRef) {
+  const hex = String(bookingRef || '').replace(/^GCC-/i, '').toLowerCase().padEnd(12, '0').slice(0, 12);
+  return `${hex.slice(0, 8)}-0000-4000-8000-${hex.slice(0, 12)}`;
+}
+
 let schemaReady = false;
 
 export function makeBookingRef(leadUuid) {
@@ -159,9 +176,12 @@ export async function ensurePassengerCareSchema(env) {
 
 async function findLeadByBookingRef(env, bookingRef) {
   let lead = await env.TRANSPORT_DB.prepare(`
-    SELECT lead_uuid, booking_ref, route_slug, route_label, page_path, language, clicked_at, cf_country, cf_city
+    SELECT lead_uuid, booking_ref, route_slug, route_label, page_path, language, clicked_at, cf_country, cf_city, service_type
     FROM whatsapp_leads
     WHERE booking_ref = ?
+      AND COALESCE(service_type, '') NOT IN ('pageview', 'passenger-care-pageview', 'passenger-care-stub')
+      AND COALESCE(route_slug, '') NOT IN ('passenger-care', 'passenger-care-stub')
+    ORDER BY clicked_at ASC
     LIMIT 1
   `).bind(bookingRef).first();
 
@@ -171,14 +191,16 @@ async function findLeadByBookingRef(env, bookingRef) {
   if (!/^[a-f0-9]{8}$/.test(hex)) return null;
 
   const { results } = await env.TRANSPORT_DB.prepare(`
-    SELECT lead_uuid, booking_ref, route_slug, route_label, page_path, language, clicked_at, cf_country, cf_city
+    SELECT lead_uuid, booking_ref, route_slug, route_label, page_path, language, clicked_at, cf_country, cf_city, service_type
     FROM whatsapp_leads
     WHERE lower(replace(lead_uuid, '-', '')) LIKE ?
-    ORDER BY clicked_at DESC
-    LIMIT 1
+      AND COALESCE(service_type, '') NOT IN ('pageview', 'passenger-care-pageview', 'passenger-care-stub')
+      AND COALESCE(route_slug, '') NOT IN ('passenger-care', 'passenger-care-stub')
+    ORDER BY clicked_at ASC
+    LIMIT 5
   `).bind(`${hex}%`).all();
 
-  const match = (results || [])[0];
+  const match = (results || []).find((row) => isRealWhatsAppLead(row)) || (results || [])[0];
   if (!match) return null;
 
   if (!match.booking_ref) {
@@ -259,42 +281,20 @@ export async function onRequestGet(context) {
   }
 }
 
-async function ensureLeadForBookingRef(env, bookingRef) {
-  let lead = await findLeadByBookingRef(env, bookingRef);
+async function resolveLeadForFeedback(env, bookingRef) {
+  const lead = await findLeadByBookingRef(env, bookingRef);
   if (lead) return lead;
 
-  const leadUuid = crypto.randomUUID();
-  const clickedAt = new Date().toISOString();
-  await env.TRANSPORT_DB.prepare(`
-    INSERT INTO whatsapp_leads (
-      lead_uuid,
-      booking_ref,
-      route_slug,
-      route_label,
-      page_path,
-      page_url,
-      language,
-      client_clicked_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `).bind(
-    leadUuid,
-    bookingRef,
-    'passenger-care',
-    'Passenger Care',
-    '/bahrain-saudi-gcc-transport/care/',
-    'https://getvendora.net/bahrain-saudi-gcc-transport/care/',
-    'ar',
-    clickedAt,
-  ).run();
-
   return {
-    lead_uuid: leadUuid,
+    lead_uuid: leadUuidFromBookingRef(bookingRef),
     booking_ref: bookingRef,
-    route_slug: 'passenger-care',
-    route_label: 'Passenger Care',
-    page_path: '/bahrain-saudi-gcc-transport/care/',
+    route_slug: '',
+    route_label: '',
+    page_path: '',
     language: 'ar',
-    clicked_at: clickedAt,
+    clicked_at: '',
+    cf_country: null,
+    cf_city: null,
   };
 }
 
@@ -327,7 +327,7 @@ export async function onRequestPost(context) {
       return json({ ok: true, already_submitted: true, booking_ref: bookingRef }, { status: 200, headers });
     }
 
-    const lead = await ensureLeadForBookingRef(env, bookingRef);
+    const lead = await resolveLeadForFeedback(env, bookingRef);
     if (!lead) {
       return json({ ok: false, error: 'Booking reference not found' }, { status: 404, headers });
     }
@@ -408,6 +408,8 @@ export async function getPassengerCareAdminRows(env, request) {
 
   const { results } = await env.TRANSPORT_DB.prepare(`
     SELECT
+      f.id,
+      f.lead_uuid,
       f.booking_ref,
       f.outcome,
       f.rating,
@@ -418,21 +420,48 @@ export async function getPassengerCareAdminRows(env, request) {
       f.submitted_at AS feedback_submitted_at,
       f.country AS feedback_country,
       f.city AS feedback_city,
-      l.clicked_at,
-      l.route_slug,
-      l.route_label,
-      l.page_path,
-      l.language AS lead_language,
-      l.cf_country AS lead_country,
-      l.cf_city AS lead_city
+      f.user_agent AS feedback_user_agent,
+      orig.clicked_at,
+      orig.route_slug,
+      orig.route_label,
+      orig.page_path,
+      orig.language AS lead_language,
+      orig.cf_country AS lead_country,
+      orig.cf_city AS lead_city,
+      orig.lead_uuid AS original_lead_uuid
     FROM passenger_care_feedback f
-    INNER JOIN whatsapp_leads l ON l.lead_uuid = f.lead_uuid
+    LEFT JOIN whatsapp_leads orig ON orig.id = (
+      SELECT w.id
+      FROM whatsapp_leads w
+      WHERE w.booking_ref = f.booking_ref
+        AND COALESCE(w.service_type, '') NOT IN ('pageview', 'passenger-care-pageview', 'passenger-care-stub')
+        AND COALESCE(w.route_slug, '') NOT IN ('passenger-care', 'passenger-care-stub')
+      ORDER BY w.clicked_at ASC
+      LIMIT 1
+    )
     ${whereSql}
     ORDER BY f.submitted_at DESC
     LIMIT ?
   `).bind(...bindings, limit).all();
 
   return { feedback: results || [] };
+}
+
+export async function deletePassengerCareFeedback(env, request) {
+  await ensurePassengerCareSchema(env);
+  const url = new URL(request.url);
+  const bookingRef = normalizeBookingRef(url.searchParams.get('booking_ref') || url.searchParams.get('ref'));
+  const id = Number(url.searchParams.get('id') || 0);
+
+  if (!bookingRef && !id) {
+    return { ok: false, error: 'booking_ref or id is required', status: 400 };
+  }
+
+  const result = id
+    ? await env.TRANSPORT_DB.prepare('DELETE FROM passenger_care_feedback WHERE id = ?').bind(id).run()
+    : await env.TRANSPORT_DB.prepare('DELETE FROM passenger_care_feedback WHERE booking_ref = ?').bind(bookingRef).run();
+
+  return { ok: true, deleted: result.meta?.changes || 0 };
 }
 
 export async function onRequest(context) {
