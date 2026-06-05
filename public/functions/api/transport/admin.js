@@ -1,5 +1,6 @@
 import { ensureErrorSchema, recordError } from './error-log.js';
 import { buildNtfyHeaders, getNtfyToken, resolveNtfyPublishUrl } from './whatsapp-lead.js';
+import { getPassengerCareAdminRows } from './passenger-care.js';
 
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
@@ -27,6 +28,7 @@ const ADMIN_COLUMNS = [
   ['lost_reason', 'ALTER TABLE whatsapp_leads ADD COLUMN lost_reason TEXT'],
   ['follow_up_at', 'ALTER TABLE whatsapp_leads ADD COLUMN follow_up_at TEXT'],
   ['audit_updated_at', 'ALTER TABLE whatsapp_leads ADD COLUMN audit_updated_at TEXT'],
+  ['booking_ref', 'ALTER TABLE whatsapp_leads ADD COLUMN booking_ref TEXT'],
 ];
 
 let schemaReady = false;
@@ -363,6 +365,7 @@ function buildLeadFilters(url, options = {}) {
       OR cf_city LIKE ?
       OR cf_country LIKE ?
       OR lead_uuid LIKE ?
+      OR booking_ref LIKE ?
       OR session_id LIKE ?
       OR ip_address LIKE ?
       OR admin_notes LIKE ?
@@ -371,7 +374,7 @@ function buildLeadFilters(url, options = {}) {
       OR raw_payload LIKE ?
     )`);
     const like = `%${search}%`;
-    bindings.push(like, like, like, like, like, like, like, like, like, like, like, like, like, like);
+    bindings.push(like, like, like, like, like, like, like, like, like, like, like, like, like, like, like);
   }
 
   const minSeconds = Number(url.searchParams.get('min_seconds') || 0);
@@ -404,6 +407,7 @@ function leadSelectSql() {
   return `
     id,
     lead_uuid,
+    booking_ref,
     clicked_at,
     client_clicked_at,
     route_slug,
@@ -867,6 +871,74 @@ async function getSummary(env, request) {
   };
 }
 
+async function getTrackingSummary(env, request) {
+  const url = new URL(request.url);
+  const period = url.searchParams.get('period') || '24 hours';
+  const sessionId = url.searchParams.get('session_id') || '';
+  
+  if (sessionId) {
+    const { results: journey } = await env.TRANSPORT_DB.prepare(`
+      SELECT event_id, visitor_id, session_id, created_at, page_path, event_name, event_label, button_text, target_url, referrer, ip_city, ip_country, device_type
+      FROM analytics_events
+      WHERE session_id = ?
+      ORDER BY created_at ASC
+      LIMIT 100
+    `).bind(sessionId).all();
+    return { session_id: sessionId, journey: journey || [] };
+  }
+
+  let since = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-24 hours')";
+  if (period === 'today') {
+    since = "strftime('%Y-%m-%dT00:00:00.000Z', 'now', '+3 hours')";
+  } else if (period === '7_days') {
+    since = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-7 days')";
+  }
+
+  const totals = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      COUNT(DISTINCT visitor_id) AS visitors,
+      SUM(CASE WHEN event_name = 'page_view' THEN 1 ELSE 0 END) AS page_views,
+      SUM(CASE WHEN event_name = 'whatsapp_click' THEN 1 ELSE 0 END) AS whatsapp_clicks,
+      SUM(CASE WHEN event_name = 'phone_click' THEN 1 ELSE 0 END) AS phone_clicks,
+      SUM(CASE WHEN event_name = 'ai_chat_open' THEN 1 ELSE 0 END) AS ai_chat_opens,
+      SUM(CASE WHEN event_name = 'ai_chat_confirmed' THEN 1 ELSE 0 END) AS ai_chat_confirmations
+    FROM analytics_events
+    WHERE created_at >= ${since}
+  `).first();
+
+  const { results: topPages } = await env.TRANSPORT_DB.prepare(`
+    SELECT page_path AS label, COUNT(*) AS count
+    FROM analytics_events
+    WHERE event_name = 'page_view' AND created_at >= ${since}
+    GROUP BY page_path
+    ORDER BY count DESC
+    LIMIT 15
+  `).all();
+
+  const { results: topReferrers } = await env.TRANSPORT_DB.prepare(`
+    SELECT COALESCE(NULLIF(referrer, ''), 'direct') AS label, COUNT(*) AS count
+    FROM analytics_events
+    WHERE event_name = 'page_view' AND created_at >= ${since}
+    GROUP BY label
+    ORDER BY count DESC
+    LIMIT 15
+  `).all();
+
+  const { results: recentEvents } = await env.TRANSPORT_DB.prepare(`
+    SELECT event_id, visitor_id, session_id, created_at, page_path, event_name, event_label, button_text, ip_city, ip_country
+    FROM analytics_events
+    ORDER BY created_at DESC
+    LIMIT 50
+  `).all();
+
+  return {
+    totals: totals || { visitors: 0, page_views: 0, whatsapp_clicks: 0, phone_clicks: 0, ai_chat_opens: 0, ai_chat_confirmations: 0 },
+    top_pages: topPages || [],
+    top_referrers: topReferrers || [],
+    recent_events: recentEvents || [],
+  };
+}
+
 async function getRoutes(env) {
   const { results } = await env.TRANSPORT_DB.prepare(`
     SELECT
@@ -1105,8 +1177,12 @@ export async function onRequestGet(context) {
           ? { notification_settings: await getNotificationSettings(env) }
         : resource === 'errors'
           ? await getErrors(env, request)
+        : resource === 'tracking'
+          ? await getTrackingSummary(env, request)
         : resource === 'pageviews'
           ? await getEventRows(env, request, 'pageview')
+        : resource === 'passenger-care'
+          ? await getPassengerCareAdminRows(env, request)
           : await getEventRows(env, request, 'lead');
     return json({ ok: true, ...data }, { headers });
   } catch (error) {

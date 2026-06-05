@@ -106,6 +106,12 @@
   }
 
   function emit(eventName, params) {
+    if (typeof window.vendoraTrack === 'function') {
+      try {
+        window.vendoraTrack(eventName, params || {});
+        return;
+      } catch (e) {}
+    }
     if (!eventName || typeof window.gtag !== 'function') return;
     try {
       window.gtag('event', eventName, baseParams(params || {}));

@@ -165,9 +165,12 @@
       <p id="statusLine" class="hidden rounded-2xl border px-5 py-4 text-sm"></p>
 
       <!-- NAVIGATION TABS -->
-      <nav class="grid grid-cols-2 gap-1 rounded-2xl glass-panel p-1.5 shadow-md sm:grid-cols-3 xl:grid-cols-7">
+      <nav class="grid grid-cols-2 gap-1 rounded-2xl glass-panel p-1.5 shadow-md sm:grid-cols-3 xl:grid-cols-8">
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="leads" type="button">
           <i data-lucide="message-circle" class="h-4 w-4"></i> Clicks
+        </button>
+        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="passengerCare" type="button">
+          <i data-lucide="heart-handshake" class="h-4 w-4 text-emerald-400"></i> Care
         </button>
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="pageviews" type="button">
           <i data-lucide="eye" class="h-4 w-4"></i> Visits
@@ -229,7 +232,7 @@
         <form id="filtersForm" class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
           <label class="block">
             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Search log</span>
-            <input name="search" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs outline-none" placeholder="route, city, campaign, notes" />
+            <input name="search" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs outline-none" placeholder="Booking Ref, route, city, campaign" />
           </label>
           <label class="block">
             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Route slug</span>
@@ -748,6 +751,39 @@
         </div>
       </section>
 
+      <!-- TAB: PASSENGER CARE FEEDBACK -->
+      <section id="passengerCarePanel" class="tab-panel hidden space-y-4">
+        <div class="glass-panel rounded-3xl overflow-hidden shadow-xl">
+          <div class="flex flex-col gap-2 border-b border-slate-800/80 p-5 sm:flex-row sm:items-center sm:justify-between bg-slate-900/30">
+            <div>
+              <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="heart-handshake" class="text-emerald-400"></i> Passenger Care Feedback
+              </h2>
+              <p class="text-xs text-slate-400 mt-0.5">Search by Booking Ref (GCC-XXXXXXXX) using the filter above, then open this tab.</p>
+            </div>
+          </div>
+          <div class="hidden overflow-x-auto md:block">
+            <table class="min-w-full divide-y divide-slate-800/80 text-left text-xs">
+              <thead class="bg-slate-900/50 text-slate-400 uppercase font-bold tracking-wider">
+                <tr>
+                  <th class="px-5 py-4">Booking Ref</th>
+                  <th class="px-5 py-4">WhatsApp Click</th>
+                  <th class="px-5 py-4">Route / Page</th>
+                  <th class="px-5 py-4">Language</th>
+                  <th class="px-5 py-4">Outcome</th>
+                  <th class="px-5 py-4">Rating</th>
+                  <th class="px-5 py-4">Prices</th>
+                  <th class="px-5 py-4">Feedback</th>
+                  <th class="px-5 py-4">Country</th>
+                </tr>
+              </thead>
+              <tbody id="passengerCareTable" class="divide-y divide-slate-800/60 bg-slate-950/20"></tbody>
+            </table>
+          </div>
+          <div id="passengerCareMobile" class="grid gap-4 p-4 md:hidden"></div>
+        </div>
+      </section>
+
       <!-- TAB 7: ERROR LOG -->
       <section id="errorsPanel" class="tab-panel hidden space-y-6">
         <div class="rounded-3xl glass-panel p-6 shadow-xl">
@@ -1070,7 +1106,8 @@
       filters: {},
       activePeriod: '',
       hideLikelyBots: sessionStorage.getItem('vendora_hide_bots') !== '0',
-      charts: {}
+      charts: {},
+      passengerCare: [],
     };
 
     const loginView = document.getElementById('loginView');
@@ -1820,6 +1857,52 @@
       return `<span class="${base} bg-blue-500/10 text-blue-400 border-blue-500/20">New Click</span>`;
     }
 
+    function renderPassengerCare() {
+      const rows = state.passengerCare || [];
+      const outcomeLabels = {
+        completed: 'Trip completed',
+        cancelled: 'Booking cancelled',
+        no_driver: 'No driver available',
+        no_response: 'No response received',
+        price_high: 'Price was too high',
+        other_transport: 'Found another transport option',
+      };
+      const empty = '<tr><td class="px-5 py-8 text-center text-slate-500 font-medium" colspan="9">No passenger care feedback found. Try searching a Booking Ref like GCC-XXXXXXXX.</td></tr>';
+
+      document.getElementById('passengerCareTable').innerHTML = rows.map((row) => `
+        <tr class="transition duration-150 hover:bg-slate-900/40">
+          <td class="px-5 py-4 font-bold text-emerald-300">${escapeHtml(row.booking_ref || '-')}</td>
+          <td class="px-5 py-4 text-slate-400">${escapeHtml(formatDate(row.clicked_at))}</td>
+          <td class="px-5 py-4">
+            <div class="font-bold text-white">${escapeHtml(row.route_label || row.route_slug || '-')}</div>
+            <div class="text-[10px] text-slate-400">${escapeHtml(row.page_path || '')}</div>
+          </td>
+          <td class="px-5 py-4">${escapeHtml(row.feedback_language || row.lead_language || '-')}</td>
+          <td class="px-5 py-4 font-semibold text-slate-200">${escapeHtml(outcomeLabels[row.outcome] || row.outcome || '-')}</td>
+          <td class="px-5 py-4">${row.rating ? `${escapeHtml(row.rating)}/5` : '-'}</td>
+          <td class="px-5 py-4 text-[10px] leading-relaxed">
+            ${row.quoted_price != null ? `Quoted: ${escapeHtml(row.quoted_price)}<br>` : ''}
+            ${row.paid_price != null ? `Paid: ${escapeHtml(row.paid_price)}` : (row.quoted_price == null ? '-' : '')}
+          </td>
+          <td class="px-5 py-4">
+            <div class="text-slate-300">${escapeHtml(formatDate(row.feedback_submitted_at))}</div>
+            <div class="text-[10px] text-slate-400 mt-1 max-w-xs">${escapeHtml(row.comment || '')}</div>
+          </td>
+          <td class="px-5 py-4">${escapeHtml(countryLabel(row.feedback_country || row.lead_country) || '-')}</td>
+        </tr>
+      `).join('') || empty;
+
+      document.getElementById('passengerCareMobile').innerHTML = rows.map((row) => `
+        <article class="rounded-2xl border border-slate-850 bg-slate-900/25 p-4 space-y-2">
+          <div class="font-bold text-emerald-300">${escapeHtml(row.booking_ref || '-')}</div>
+          <div class="text-xs text-slate-400">Click: ${escapeHtml(formatDate(row.clicked_at))}</div>
+          <div class="text-sm text-white">${escapeHtml(row.route_label || row.route_slug || '-')}</div>
+          <div class="text-xs text-slate-400">${escapeHtml(outcomeLabels[row.outcome] || row.outcome || '-')}</div>
+          <div class="text-xs text-slate-400">Feedback: ${escapeHtml(formatDate(row.feedback_submitted_at))}</div>
+        </article>
+      `).join('') || '<p class="text-center text-slate-500 text-sm p-4">No passenger care feedback found.</p>';
+    }
+
     function renderLeads() {
       const leads = filteredLeads();
       const pageviews = filteredPageviews();
@@ -2401,13 +2484,15 @@
     }
 
     async function loadDashboard() {
-      const [leadsData, pvsData, routesData, summaryData, notificationData, errorsData] = await Promise.all([
+      const search = state.filters.search || '';
+      const [leadsData, pvsData, routesData, summaryData, notificationData, errorsData, careData] = await Promise.all([
         api(queryFromFilters({ resource: 'leads', limit: 800 })),
         api(queryFromFilters({ resource: 'pageviews', limit: 800 })),
         api('?resource=routes'),
         api(queryFromFilters({ resource: 'summary' })),
         api('?resource=notification-settings'),
-        api('?resource=errors&limit=200').catch(() => ({ errors: state.errors }))
+        api('?resource=errors&limit=200').catch(() => ({ errors: state.errors })),
+        api(search ? `?resource=passenger-care&search=${encodeURIComponent(search)}&limit=200` : '?resource=passenger-care&limit=200'),
       ]);
       state.leads = leadsData.leads || [];
       state.pageviews = pvsData.leads || [];
@@ -2415,11 +2500,13 @@
       state.summary = summaryData.summary || {};
       state.notificationSettings = normalizeNotificationSettings(notificationData.notification_settings || state.notificationSettings);
       state.errors = errorsData.errors || [];
+      state.passengerCare = careData.feedback || [];
       
       renderFilterOptions();
       renderStats();
       renderOnlineNow();
       renderLeads();
+      renderPassengerCare();
       renderReports();
       renderRoutes();
       renderCohorts();
@@ -2530,6 +2617,7 @@
       
       const rows = [
         ['Timestamp', formatDate(lead.clicked_at)],
+        ['Booking Ref', lead.booking_ref || makeBookingRefPreview(lead.lead_uuid)],
         ['Suspicion Score', `${lead.suspicion_score || 0}% (${lead.suspicion_score > 60 ? 'HIGH RISK' : lead.suspicion_score > 30 ? 'MEDIUM' : 'LOW'})`],
         ['Customer Loyalty Profile', visitorIdFor(lead) ? `Returning Customer (Visit #${lead.visit_count || payload.visitCount || 1} | viewed ${sessionViewsFor(lead)} pages this session | Visitor ID: ${compactId(visitorIdFor(lead))})` : 'New / Session-only Visitor'],
         ['Route slug', lead.route_slug],
@@ -2573,6 +2661,11 @@
       
       document.getElementById('leadDialog').showModal();
       renderIcons();
+    }
+
+    function makeBookingRefPreview(leadUuid) {
+      const hex = String(leadUuid || '').replace(/-/g, '').slice(0, 8).toUpperCase();
+      return hex ? `GCC-${hex}` : '-';
     }
 
     function campaignText(lead) {

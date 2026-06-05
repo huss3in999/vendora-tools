@@ -1,11 +1,7 @@
 /**
- * Vendora marketing analytics (same Measurement ID as getvendora.net).
- * GA4 sends hits as soon as this script runs — do not defer until window.load
- * or Realtime / debugging will look empty while images still load.
- *
- * Optional overrides:
- *   <meta name="ga4-measurement-id" content="G-XXXX" />
- *   <script>window.__GA4_MEASUREMENT_ID__ = 'G-XXXX';</script>
+ * GetVendora Unified Analytics & Tracking Loader
+ * Handles dynamic GA4 configuration, Clarity loading, server-side /api/track telemetry,
+ * and a real-time floating Debug Overlay if ?debug_tracking=1 is active.
  */
 (function () {
   if (typeof window === 'undefined' || typeof document === 'undefined') return;
@@ -21,17 +17,8 @@
   if (!head) return;
 
   window.dataLayer = window.dataLayer || [];
-  window.gtag =
-    window.gtag ||
-    function () {
-      window.dataLayer.push(arguments);
-    };
-
-  window.clarity =
-    window.clarity ||
-    function () {
-      (window.clarity.q = window.clarity.q || []).push(arguments);
-    };
+  window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+  window.clarity = window.clarity || function () { (window.clarity.q = window.clarity.q || []).push(arguments); };
 
   function appendScript(src, attrs) {
     if (!src || document.querySelector('script[src="' + src + '"]')) return;
@@ -105,6 +92,182 @@
     return '';
   }
 
+  function generateUUID() {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0, v = c === 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  }
+
+  // Identity & Session Handlers
+  function getVisitorId() {
+    var key = '__vendora_visitor_id';
+    var vid = localStorage.getItem(key);
+    if (!vid) {
+      vid = generateUUID();
+      localStorage.setItem(key, vid);
+    }
+    return vid;
+  }
+
+  function getSessionId() {
+    var key = '__vendora_session_id';
+    var sid = sessionStorage.getItem(key);
+    if (!sid) {
+      sid = generateUUID();
+      sessionStorage.setItem(key, sid);
+    }
+    return sid;
+  }
+
+  function getUtmParam(name) {
+    var search = window.location.search || '';
+    var match = new RegExp('[?&]' + name + '=([^&]*)', 'i').exec(search);
+    return match ? decodeURIComponent(match[1].replace(/\+/g, ' ')) : '';
+  }
+
+  function getDeviceType() {
+    var ua = navigator.userAgent || '';
+    if (/tablet|ipad|playbook|silk/i.test(ua)) return 'tablet';
+    if (/mobile|iphone|ipod|android|blackberry|opera mini|iemobile/i.test(ua)) return 'mobile';
+    return 'desktop';
+  }
+
+  function getVisitCount() {
+    var key = '__vendora_visit_count';
+    var count = parseInt(localStorage.getItem(key) || '1', 10);
+    return count;
+  }
+
+  function getSessionPageViews() {
+    var key = '__vendora_session_page_views';
+    var count = parseInt(sessionStorage.getItem(key) || '0', 10) + 1;
+    sessionStorage.setItem(key, count);
+    return count;
+  }
+
+  // Local Events Queue for Debugger Widget
+  window.__vendora_debug_events = window.__vendora_debug_events || [];
+
+  function logDebugEvent(event) {
+    window.__vendora_debug_events.unshift(event);
+    if (window.__vendora_debug_events.length > 10) {
+      window.__vendora_debug_events.pop();
+    }
+    if (typeof window.__vendora_update_debug_widget === 'function') {
+      window.__vendora_update_debug_widget();
+    }
+  }
+
+  // Unified Local Tracking Function
+  window.vendoraTrackLocal = function (eventName, params) {
+    var safeParams = params || {};
+    var category = getPageCategory();
+    
+    // Core payload
+    var payload = {
+      event_id: generateUUID(),
+      visitor_id: getVisitorId(),
+      session_id: getSessionId(),
+      created_at: new Date().toISOString(),
+      page_url: window.location.href.split('#')[0],
+      page_path: window.location.pathname || '/',
+      referrer: document.referrer || '',
+      utm_source: getUtmParam('utm_source'),
+      utm_medium: getUtmParam('utm_medium'),
+      utm_campaign: getUtmParam('utm_campaign'),
+      event_name: eventName,
+      event_category: safeParams.event_category || safeParams.category || category,
+      event_label: safeParams.event_label || safeParams.label || safeParams.calculator_slug || safeParams.tool_id || '',
+      route_name: getTransportRoute() || safeParams.route_name || '',
+      button_text: safeParams.button_text || safeParams.click_text || '',
+      target_url: safeParams.target_url || safeParams.link_url || '',
+      language: (document.documentElement.getAttribute('lang') || 'en').toLowerCase(),
+      screen_width: window.innerWidth || document.documentElement.clientWidth || 0,
+      screen_height: window.innerHeight || document.documentElement.clientHeight || 0,
+      device_type: getDeviceType(),
+      lead_status: safeParams.lead_status || 'new',
+      // Attach visitor statistics matching transport CRM payloads
+      visitCount: getVisitCount(),
+      sessionPageViews: sessionStorage.getItem('__vendora_session_page_views') || '1',
+      timeOnPageMs: safeParams.timeOnPageMs || 0,
+      scrollDepthPercent: safeParams.scrollDepthPercent || 0
+    };
+
+    // Forward to GA4 (Gtag mapping)
+    if (typeof window.gtag === 'function') {
+      try {
+        var gaParams = Object.assign({}, safeParams, {
+          content_group: category,
+          page_category: category,
+          language: payload.language
+        });
+
+        // 1. Recommended GA4 events mappings
+        if (eventName === 'ai_chat_confirmed' || eventName === 'whatsapp_handover_created') {
+          window.gtag('event', 'generate_lead', Object.assign(gaParams, { value: 0, currency: 'BHD' }));
+        } else if (eventName === 'whatsapp_click' || eventName === 'phone_click') {
+          window.gtag('event', 'contact', Object.assign(gaParams, { method: eventName === 'whatsapp_click' ? 'whatsapp' : 'phone' }));
+        } else if (eventName === 'route_page_view') {
+          window.gtag('event', 'select_content', Object.assign(gaParams, { content_type: 'route', item_id: payload.route_name }));
+        } else if (eventName === 'calculator_view') {
+          window.gtag('event', 'select_content', Object.assign(gaParams, { content_type: 'calculator', item_id: payload.event_label }));
+        } else if (eventName === 'ai_chat_message_sent') {
+          window.gtag('event', 'search', Object.assign(gaParams, { search_term: '[chat message]' }));
+        }
+
+        // 2. Fire original custom GA4 events
+        window.gtag('event', eventName, gaParams);
+      } catch (err) {
+        console.error('[Tracking] GA4 dispatch failure:', err);
+      }
+    }
+
+    // POST Telemetry Server-Side
+    var url = '/api/track';
+    var payloadStr = JSON.stringify(payload);
+    var debugLog = { name: eventName, timestamp: new Date().toLocaleTimeString(), status: 'sending', error: null };
+    logDebugEvent(debugLog);
+
+    try {
+      if (typeof navigator.sendBeacon === 'function' && (eventName.indexOf('click') !== -1 || eventName.indexOf('handover') !== -1)) {
+        var success = navigator.sendBeacon(url, payloadStr);
+        if (success) {
+          debugLog.status = 'sent (beacon)';
+          logDebugEvent(debugLog);
+          return;
+        }
+      }
+      
+      fetch(url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: payloadStr,
+        keepalive: true
+      })
+      .then(function (r) {
+        if (r.ok) {
+          debugLog.status = 'success (202)';
+        } else {
+          debugLog.status = 'error';
+          debugLog.error = 'HTTP ' + r.status;
+        }
+        logDebugEvent(debugLog);
+      })
+      .catch(function (err) {
+        debugLog.status = 'failed';
+        debugLog.error = err.message || String(err);
+        logDebugEvent(debugLog);
+      });
+    } catch (err) {
+      debugLog.status = 'exception';
+      debugLog.error = err.message || String(err);
+      logDebugEvent(debugLog);
+    }
+  };
+
+  // Standard context builder (GA4 compatible)
   function analyticsContext(extra) {
     var category = getPageCategory();
     var params = {
@@ -133,7 +296,6 @@
     window.location.hostname === '127.0.0.1' ||
     window.location.hostname === 'localhost';
 
-  /** GA4: fire immediately (recommended GA behaviour). */
   function loadGa4() {
     if (!gaId || gaId.indexOf('G-') !== 0) return;
     appendScript('https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(gaId));
@@ -146,7 +308,6 @@
     appendScript('/js/analytics-router.js', { defer: 'defer' });
   }
 
-  /** Clarity + CF Web Analytics: non-blocking, after GA. */
   function loadSecondaryTools() {
     appendScript('https://www.clarity.ms/tag/w28z01fb1p');
 
@@ -164,6 +325,22 @@
     );
   }
 
+  // Update Visitor History on Entry
+  function updateSessionCounters() {
+    var pvs = getSessionPageViews();
+    var lastVisitKey = '__vendora_last_visit_time';
+    var now = Date.now();
+    var lastVisit = parseInt(localStorage.getItem(lastVisitKey) || '0', 10);
+    
+    // Visit count increases if returning after 30 minutes of inactivity
+    if (now - lastVisit > 30 * 60 * 1000) {
+      var visits = parseInt(localStorage.getItem('__vendora_visit_count') || '0', 10) + 1;
+      localStorage.setItem('__vendora_visit_count', visits);
+    }
+    localStorage.setItem(lastVisitKey, now);
+  }
+
+  updateSessionCounters();
   loadGa4();
   loadAnalyticsRouter();
 
@@ -175,11 +352,82 @@
 
   window.vendoraToolEvent = function (name, params) {
     try {
-      window.gtag('event', name, analyticsContext(params || {}));
+      window.vendoraTrackLocal(name, params);
     } catch (e) {
       /* ignore */
     }
   };
 
+  // Re-route legacy vendoraAnalytics / vendoraTrack if routers bind to them
+  window.vendoraAnalytics = {
+    getCategory: getPageCategory,
+    getTransportRoute: getTransportRoute,
+    getTransportCluster: getTransportCluster,
+    event: window.vendoraTrackLocal,
+    track: window.vendoraTrackLocal
+  };
+  window.vendoraTrack = window.vendoraTrackLocal;
   window.vendoraAnalyticsContext = analyticsContext;
+
+  // Track initial page_view to custom DB
+  window.addEventListener('load', function() {
+    window.vendoraTrackLocal('page_view', {});
+  });
+
+  // Render Real-time Debug Widget
+  if (window.location.search.indexOf('debug_tracking=1') !== -1) {
+    var container = document.createElement('div');
+    container.id = 'vendora-tracking-debug-widget';
+    container.style.position = 'fixed';
+    container.style.bottom = '15px';
+    container.style.right = '15px';
+    container.style.width = '320px';
+    container.style.maxHeight = '400px';
+    container.style.backgroundColor = '#160d29';
+    container.style.color = '#fff';
+    container.style.border = '1px solid #7952b3';
+    container.style.borderRadius = '8px';
+    container.style.padding = '12px';
+    container.style.fontSize = '12px';
+    container.style.fontFamily = 'monospace';
+    container.style.zIndex = '999999';
+    container.style.boxShadow = '0 8px 30px rgba(0,0,0,0.5)';
+    container.style.overflowY = 'auto';
+    document.body.appendChild(container);
+
+    window.__vendora_update_debug_widget = function () {
+      var widget = document.getElementById('vendora-tracking-debug-widget');
+      if (!widget) return;
+      
+      var isGaLoaded = typeof window.gtag === 'function';
+      var eventsList = window.__vendora_debug_events.map(function(ev) {
+        var statusColor = ev.status.indexOf('error') !== -1 || ev.status.indexOf('failed') !== -1 ? '#ff5252' : '#4caf50';
+        return '<div style="margin-top:6px;padding-top:6px;border-top:1px solid #332152;">' +
+               '[' + ev.timestamp + '] <strong>' + ev.name + '</strong><br/>' +
+               'Status: <span style="color:' + statusColor + '">' + ev.status + '</span>' +
+               (ev.error ? ' (' + ev.error + ')' : '') +
+               '</div>';
+      }).join('');
+
+      widget.innerHTML = '<div style="display:flex;justify-content:space-between;border-bottom:1px solid #7952b3;padding-bottom:6px;">' +
+                         '<strong>GetVendora Tracker</strong>' +
+                         '<span style="color:#ff5252;cursor:pointer;" onclick="this.parentNode.parentNode.remove();">✕</span>' +
+                         '</div>' +
+                         '<div style="margin-top:8px;">' +
+                         'GA4 Loaded: ' + (isGaLoaded ? '<span style="color:#4caf50;">YES</span>' : '<span style="color:#ff5252;">NO</span>') + '<br/>' +
+                         'GA ID: ' + gaId + '<br/>' +
+                         'Visitor ID: ' + getVisitorId().slice(0, 8) + '...<br/>' +
+                         'Session ID: ' + getSessionId().slice(0, 8) + '...<br/>' +
+                         'Tracking Endpoint: <span style="color:#4caf50;">OK (/api/track)</span>' +
+                         '</div>' +
+                         '<div style="margin-top:12px;">' +
+                         '<strong>Event History (Last 10):</strong>' +
+                         (eventsList || '<div style="color:#888;margin-top:6px;">No events fired yet.</div>') +
+                         '</div>';
+    };
+
+    window.__vendora_update_debug_widget();
+    // Fire test event to confirm tracking working status
+    window.vendoraTrackLocal('debug_ping', { category: 'debug' });
+  }
 })();

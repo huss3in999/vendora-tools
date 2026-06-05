@@ -1064,11 +1064,22 @@
       return navigator.sendBeacon(leadEndpoint, blob);
     };
 
-    if (options.preferBeacon && sendBeaconPayload()) {
-      return;
+    if (options.returnResponse) {
+      return fetch(leadEndpoint, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body,
+        keepalive: true,
+        credentials: 'omit',
+        signal: options.signal,
+      });
     }
 
-    fetch(leadEndpoint, {
+    if (options.preferBeacon && sendBeaconPayload()) {
+      return Promise.resolve(null);
+    }
+
+    return fetch(leadEndpoint, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body,
@@ -1076,7 +1087,101 @@
       credentials: 'omit',
     }).catch(() => {
       sendBeaconPayload();
+      return null;
     });
+  }
+
+  function isPassengerCareEnabled() {
+    const cfg = window.pageConfig || {};
+    return cfg.passengerCareEnabled !== false;
+  }
+
+  function makeBookingRefFromUuid(leadUuid) {
+    const hex = String(leadUuid || '').replace(/-/g, '').slice(0, 8).toUpperCase();
+    return hex ? `GCC-${hex}` : '';
+  }
+
+  function buildPassengerCareUrl(bookingRef) {
+    const origin = window.location.origin || 'https://getvendora.net';
+    const path = state.lang === 'en'
+      ? `${siteSegment}care/en/?ref=${encodeURIComponent(bookingRef)}`
+      : `${siteSegment}care/?ref=${encodeURIComponent(bookingRef)}`;
+    return `${origin}${path}`;
+  }
+
+  function buildPassengerCareBlock(bookingRef, careUrl) {
+    if (state.lang === 'en') {
+      return [
+        '',
+        '',
+        `Booking Ref: ${bookingRef}`,
+        '',
+        'Passenger Care:',
+        'Your feedback is required to help us improve service quality and passenger support:',
+        careUrl,
+      ].join('\n');
+    }
+    return [
+      '',
+      '',
+      `رقم الحجز: ${bookingRef}`,
+      '',
+      'رعاية المسافر:',
+      'ملاحظتك مهمة لمساعدتنا في تحسين جودة الخدمة ودعم المسافرين:',
+      careUrl,
+    ].join('\n');
+  }
+
+  function extractWhatsAppMessage(link) {
+    const href = link.getAttribute('href') || link.href || '';
+    if (href.includes('wa.me/') || href.includes('api.whatsapp.com/')) {
+      try {
+        const url = new URL(href, window.location.href);
+        return decodeURIComponent(url.searchParams.get('text') || '');
+      } catch {
+        return '';
+      }
+    }
+    if (link.hasAttribute('data-wa-message')) {
+      return link.getAttribute('data-wa-message') || defaultArabicMessage;
+    }
+    return '';
+  }
+
+  function openWhatsAppMessage(message) {
+    const url = toWhatsApp(message);
+    window.open(url, '_blank', 'noopener');
+  }
+
+  async function registerLeadForPassengerCare(link, event) {
+    const payload = buildLeadPayload(link, event);
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timeoutId = controller ? window.setTimeout(() => controller.abort(), 800) : null;
+    try {
+      const response = await sendLeadPayload(payload, {
+        returnResponse: true,
+        signal: controller ? controller.signal : undefined,
+      });
+      if (!response || !response.ok) return '';
+      const data = await response.json();
+      return data.booking_ref || makeBookingRefFromUuid(data.leadId || data.lead_uuid || '');
+    } catch {
+      return '';
+    } finally {
+      if (timeoutId) window.clearTimeout(timeoutId);
+    }
+  }
+
+  function trackWhatsAppClick(payload) {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'transport_whatsapp_click', {
+        route_name: payload.routeSlug,
+        button_label: payload.clickText,
+        language: payload.language,
+        page_path: payload.pagePath,
+        page_url: payload.pageUrl,
+      });
+    }
   }
 
   function setupWhatsAppLeadInterceptor() {
@@ -1087,21 +1192,33 @@
       const link = event.target.closest('a[href]');
       if (!link) return;
       const href = link.getAttribute('href') || '';
-      if (!href.includes('wa.me/') && !href.includes('api.whatsapp.com/') && !link.hasAttribute('data-wa-message') && !link.hasAttribute('data-booking-submit')) {
+      const isWhatsAppLink = href.includes('wa.me/') || href.includes('api.whatsapp.com/');
+      const isDynamicWhatsApp = link.hasAttribute('data-wa-message') || link.hasAttribute('data-booking-submit');
+      if (!isWhatsAppLink && !isDynamicWhatsApp) return;
+
+      const payload = buildLeadPayload(link, event);
+
+      if (!isPassengerCareEnabled()) {
+        sendLeadPayload(payload, { preferBeacon: true });
+        trackWhatsAppClick(payload);
         return;
       }
 
-      const payload = buildLeadPayload(link, event);
-      sendLeadPayload(payload, { preferBeacon: true });
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'transport_whatsapp_click', {
-          route_name: payload.routeSlug,
-          button_label: payload.clickText,
-          language: payload.language,
-          page_path: payload.pagePath,
-          page_url: payload.pageUrl,
-        });
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+        return;
       }
+
+      event.preventDefault();
+
+      (async () => {
+        trackWhatsAppClick(payload);
+        const baseMessage = extractWhatsAppMessage(link) || defaultArabicMessage;
+        const bookingRef = await registerLeadForPassengerCare(link, event);
+        const finalMessage = bookingRef
+          ? `${baseMessage}${buildPassengerCareBlock(bookingRef, buildPassengerCareUrl(bookingRef))}`
+          : baseMessage;
+        openWhatsAppMessage(finalMessage);
+      })();
     }, { capture: true });
   }
 

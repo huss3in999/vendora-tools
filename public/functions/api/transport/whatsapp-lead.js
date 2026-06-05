@@ -1,4 +1,5 @@
 import { recordError } from './error-log.js';
+import { ensurePassengerCareSchema, makeBookingRef } from './passenger-care.js';
 
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
@@ -554,11 +555,13 @@ async function parseJsonBody(request) {
   return JSON.parse(body);
 }
 
-async function storeLead(request, env, payload, leadUuid) {
+async function storeLead(request, env, payload, leadUuid, bookingRef) {
   const geo = getRequestGeo(request);
+  await ensurePassengerCareSchema(env);
   const stmt = env.TRANSPORT_DB.prepare(`
     INSERT INTO whatsapp_leads (
       lead_uuid,
+      booking_ref,
       client_clicked_at,
       route_slug,
       route_label,
@@ -600,11 +603,12 @@ async function storeLead(request, env, payload, leadUuid) {
       timezone_offset_minutes,
       interaction_count,
       raw_payload
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   await stmt.bind(
     leadUuid,
+    bookingRef,
     getPayloadValue(payload, 'timestamp', 80),
     getPayloadValue(payload, 'routeSlug', 160),
     getPayloadValue(payload, 'routeLabel', 240),
@@ -670,7 +674,8 @@ export async function onRequestPost(context) {
   }
 
   const leadUuid = crypto.randomUUID();
-  const write = storeLead(request, env, payload, leadUuid).catch((error) => {
+  const bookingRef = makeBookingRef(leadUuid);
+  const write = storeLead(request, env, payload, leadUuid, bookingRef).catch((error) => {
     console.error(JSON.stringify({
       event: 'transport_lead_insert_failed',
       leadUuid,
@@ -697,7 +702,7 @@ export async function onRequestPost(context) {
   context.waitUntil(write);
   context.waitUntil(notify);
 
-  return json({ ok: true, leadId: leadUuid }, { status: 202, headers });
+  return json({ ok: true, leadId: leadUuid, booking_ref: bookingRef }, { status: 202, headers });
 }
 
 export async function onRequest(context) {

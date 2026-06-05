@@ -1,7 +1,9 @@
+import * as passengerCareApi from './functions/api/transport/passenger-care.js';
 import * as adminApi from './functions/api/transport/admin.js';
 import * as leadApi from './functions/api/transport/whatsapp-lead.js';
 import * as aiChatApi from './functions/api/transport/ai-chat.js';
 import * as errorApi from './functions/api/transport/error-log.js';
+import * as trackingApi from './functions/api/transport/tracking.js';
 import { recordError } from './functions/api/transport/error-log.js';
 
 const SITE_PATH_PREFIX = '/bahrain-saudi-gcc-transport';
@@ -50,6 +52,7 @@ function transportHealthResponse() {
       '/api/transport/ai-chat',
       '/api/transport/whatsapp-lead',
       '/api/transport/log',
+      '/api/transport/passenger-care',
     ],
   }), {
     headers: {
@@ -89,6 +92,14 @@ export default {
 
       if (path === '/api/transport/log') {
         return await dispatchPagesFunction(errorApi, request, env, ctx);
+      }
+
+      if (path === '/api/track') {
+        return await dispatchPagesFunction(trackingApi, request, env, ctx);
+      }
+
+      if (path === '/api/transport/passenger-care') {
+        return await dispatchPagesFunction(passengerCareApi, request, env, ctx);
       }
 
       return await env.ASSETS.fetch(request);

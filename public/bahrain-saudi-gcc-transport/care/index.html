@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>رعاية المسافر | GCC Transport</title>
+  <link rel="stylesheet" href="care.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo">V</div>
+      <div>
+        <strong>GCC Transport</strong><br>
+        <span class="muted">رعاية المسافر</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div id="loadingView" class="status">
+        <p id="loadingText" class="muted">جاري تحميل بيانات الحجز…</p>
+      </div>
+
+      <div id="errorView" class="status hidden">
+        <p id="errorBody" class="error"></p>
+      </div>
+
+      <div id="lockedView" class="locked hidden">
+        <h2 id="lockedTitle">تم إرسال الملاحظة مسبقاً</h2>
+        <p id="lockedBody" class="muted"></p>
+      </div>
+
+      <div id="thanksView" class="thanks hidden">
+        <h2 id="thanksTitle">شكراً لك</h2>
+        <p id="thanksBody" class="lead"></p>
+        <p id="thanksFooter" class="muted"></p>
+      </div>
+
+      <div id="formView" class="hidden">
+        <h1>رعاية المسافر</h1>
+        <p class="lead">ساعدنا في تحسين جودة الخدمة ودعم المسافرين — يستغرق الأمر أقل من دقيقة.</p>
+        <div class="ref">رقم الحجز: <strong id="refLabel"></strong></div>
+        <p id="routeLabel" class="route hidden"></p>
+
+        <p class="question">ماذا حدث مع طلب الحجز؟</p>
+        <div id="outcomeOptions" class="options"></div>
+
+        <details class="optional" open>
+          <summary id="optionalSummary">تفاصيل اختيارية</summary>
+          <div class="field">
+            <label id="ratingLabel">تقييم الخدمة</label>
+            <div id="ratingRow" class="rating-row"></div>
+          </div>
+          <div class="field">
+            <label id="commentLabel" for="commentField">ملاحظة</label>
+            <textarea id="commentField" maxlength="1000"></textarea>
+          </div>
+          <div class="field">
+            <label id="quotedLabel" for="quotedField">السعر المعروض (اختياري)</label>
+            <input id="quotedField" type="number" min="0" step="0.001" inputmode="decimal">
+          </div>
+          <div class="field">
+            <label id="paidLabel" for="paidField">السعر المدفوع (اختياري)</label>
+            <input id="paidField" type="number" min="0" step="0.001" inputmode="decimal">
+          </div>
+        </details>
+
+        <p id="formError" class="error"></p>
+        <button id="submitBtn" class="submit" type="button" disabled>إرسال الملاحظة</button>
+      </div>
+    </div>
+
+    <p class="footer-note">ملاحظتك تساعدنا في تحسين جودة الخدمة. لا يلزم تسجيل دخول أو رقم هاتف.</p>
+  </div>
+  <script src="care.js"></script>
+</body>
+</html>

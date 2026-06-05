@@ -1637,6 +1637,67 @@ async function getSummary(env, request) {
   };
 }
 __name(getSummary, "getSummary");
+async function getTrackingSummary(env, request) {
+  const url = new URL(request.url);
+  const period = url.searchParams.get("period") || "24 hours";
+  const sessionId = url.searchParams.get("session_id") || "";
+  if (sessionId) {
+    const { results: journey } = await env.TRANSPORT_DB.prepare(`
+      SELECT event_id, visitor_id, session_id, created_at, page_path, event_name, event_label, button_text, target_url, referrer, ip_city, ip_country, device_type
+      FROM analytics_events
+      WHERE session_id = ?
+      ORDER BY created_at ASC
+      LIMIT 100
+    `).bind(sessionId).all();
+    return { session_id: sessionId, journey: journey || [] };
+  }
+  let since = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-24 hours')";
+  if (period === "today") {
+    since = "strftime('%Y-%m-%dT00:00:00.000Z', 'now', '+3 hours')";
+  } else if (period === "7_days") {
+    since = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-7 days')";
+  }
+  const totals = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      COUNT(DISTINCT visitor_id) AS visitors,
+      SUM(CASE WHEN event_name = 'page_view' THEN 1 ELSE 0 END) AS page_views,
+      SUM(CASE WHEN event_name = 'whatsapp_click' THEN 1 ELSE 0 END) AS whatsapp_clicks,
+      SUM(CASE WHEN event_name = 'phone_click' THEN 1 ELSE 0 END) AS phone_clicks,
+      SUM(CASE WHEN event_name = 'ai_chat_open' THEN 1 ELSE 0 END) AS ai_chat_opens,
+      SUM(CASE WHEN event_name = 'ai_chat_confirmed' THEN 1 ELSE 0 END) AS ai_chat_confirmations
+    FROM analytics_events
+    WHERE created_at >= ${since}
+  `).first();
+  const { results: topPages } = await env.TRANSPORT_DB.prepare(`
+    SELECT page_path AS label, COUNT(*) AS count
+    FROM analytics_events
+    WHERE event_name = 'page_view' AND created_at >= ${since}
+    GROUP BY page_path
+    ORDER BY count DESC
+    LIMIT 15
+  `).all();
+  const { results: topReferrers } = await env.TRANSPORT_DB.prepare(`
+    SELECT COALESCE(NULLIF(referrer, ''), 'direct') AS label, COUNT(*) AS count
+    FROM analytics_events
+    WHERE event_name = 'page_view' AND created_at >= ${since}
+    GROUP BY label
+    ORDER BY count DESC
+    LIMIT 15
+  `).all();
+  const { results: recentEvents } = await env.TRANSPORT_DB.prepare(`
+    SELECT event_id, visitor_id, session_id, created_at, page_path, event_name, event_label, button_text, ip_city, ip_country
+    FROM analytics_events
+    ORDER BY created_at DESC
+    LIMIT 50
+  `).all();
+  return {
+    totals: totals || { visitors: 0, page_views: 0, whatsapp_clicks: 0, phone_clicks: 0, ai_chat_opens: 0, ai_chat_confirmations: 0 },
+    top_pages: topPages || [],
+    top_referrers: topReferrers || [],
+    recent_events: recentEvents || []
+  };
+}
+__name(getTrackingSummary, "getTrackingSummary");
 async function getRoutes(env) {
   const { results } = await env.TRANSPORT_DB.prepare(`
     SELECT
@@ -1840,7 +1901,7 @@ async function onRequestGet(context) {
   const resource = url.searchParams.get("resource") || "leads";
   try {
     await ensureAdminSchema(env);
-    const data = resource === "routes" ? await getRoutes(env) : resource === "summary" ? await getSummary(env, request) : resource === "notification-settings" ? { notification_settings: await getNotificationSettings2(env) } : resource === "errors" ? await getErrors(env, request) : resource === "pageviews" ? await getEventRows(env, request, "pageview") : await getEventRows(env, request, "lead");
+    const data = resource === "routes" ? await getRoutes(env) : resource === "summary" ? await getSummary(env, request) : resource === "notification-settings" ? { notification_settings: await getNotificationSettings2(env) } : resource === "errors" ? await getErrors(env, request) : resource === "tracking" ? await getTrackingSummary(env, request) : resource === "pageviews" ? await getEventRows(env, request, "pageview") : await getEventRows(env, request, "lead");
     return json3({ ok: true, ...data }, { headers });
   } catch (error) {
     console.error(JSON.stringify({ event: "transport_admin_get_failed", message: error.message }));
@@ -2384,6 +2445,216 @@ async function onRequest4(context) {
 }
 __name(onRequest4, "onRequest");
 
+// functions/api/transport/tracking.js
+var tracking_exports = {};
+__export(tracking_exports, {
+  onRequest: () => onRequest5,
+  onRequestOptions: () => onRequestOptions5,
+  onRequestPost: () => onRequestPost5
+});
+var ALLOWED_ORIGINS5 = /* @__PURE__ */ new Set([
+  "https://getvendora.net",
+  "https://www.getvendora.net",
+  "http://127.0.0.1:8787",
+  "http://localhost:8787",
+  "http://127.0.0.1:4173",
+  "http://localhost:4173",
+  "http://127.0.0.1:5173",
+  "http://localhost:5173",
+  "null"
+]);
+var MAX_BODY_BYTES5 = 8192;
+function json5(data, init = {}) {
+  return new Response(JSON.stringify(data), {
+    ...init,
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store",
+      ...init.headers || {}
+    }
+  });
+}
+__name(json5, "json");
+function corsHeaders5(request) {
+  const origin = request.headers.get("origin") || "";
+  const allowedOrigin = ALLOWED_ORIGINS5.has(origin) ? origin : "https://getvendora.net";
+  return {
+    "access-control-allow-origin": allowedOrigin,
+    "access-control-allow-methods": "POST, OPTIONS",
+    "access-control-allow-headers": "content-type",
+    "access-control-max-age": "86400",
+    vary: "Origin"
+  };
+}
+__name(corsHeaders5, "corsHeaders");
+function cleanText4(value, maxLength = 500) {
+  if (typeof value !== "string") return null;
+  const cleaned = value.replace(/\s+/g, " ").trim();
+  return cleaned ? cleaned.slice(0, maxLength) : null;
+}
+__name(cleanText4, "cleanText");
+function cleanUrl2(value) {
+  const text = cleanText4(value, 1200);
+  if (!text) return null;
+  try {
+    const url = new URL(text);
+    if (!["http:", "https:"].includes(url.protocol)) return null;
+    return url.toString().slice(0, 1200);
+  } catch {
+    return null;
+  }
+}
+__name(cleanUrl2, "cleanUrl");
+function cleanInteger2(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return null;
+  return Math.max(0, Math.min(1e5, Math.round(number)));
+}
+__name(cleanInteger2, "cleanInteger");
+function normalizeCountryCode2(value) {
+  const code = cleanText4(value, 8);
+  if (!code) return null;
+  const normalized = code.toUpperCase();
+  return normalized === "XX" ? null : normalized;
+}
+__name(normalizeCountryCode2, "normalizeCountryCode");
+function getRequestGeo2(request) {
+  const cf = request.cf || {};
+  return {
+    city: cleanText4(cf.city, 120),
+    region: cleanText4(cf.region, 120) || cleanText4(cf.regionCode, 120),
+    country: normalizeCountryCode2(cf.country),
+    timezone: cleanText4(cf.timezone, 80)
+  };
+}
+__name(getRequestGeo2, "getRequestGeo");
+async function parseJsonBody5(request) {
+  const contentLength = Number(request.headers.get("content-length") || 0);
+  if (contentLength > MAX_BODY_BYTES5) throw new Error("Payload too large");
+  const body = await request.text();
+  if (body.length > MAX_BODY_BYTES5) throw new Error("Payload too large");
+  if (!body.trim()) return {};
+  return JSON.parse(body);
+}
+__name(parseJsonBody5, "parseJsonBody");
+function safePayloadJson2(payload) {
+  const compact = { ...payload };
+  delete compact.chatMessage;
+  delete compact.chatHistory;
+  delete compact.inputData;
+  return JSON.stringify(compact).slice(0, 4e3);
+}
+__name(safePayloadJson2, "safePayloadJson");
+async function writeEventToDb(request, env, payload, eventId) {
+  const geo = getRequestGeo2(request);
+  const stmt = env.TRANSPORT_DB.prepare(`
+    INSERT INTO analytics_events (
+      event_id,
+      visitor_id,
+      session_id,
+      created_at,
+      page_url,
+      page_path,
+      referrer,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      event_name,
+      event_category,
+      event_label,
+      route_name,
+      button_text,
+      target_url,
+      language,
+      device_type,
+      user_agent,
+      screen_width,
+      screen_height,
+      lead_status,
+      ip_city,
+      ip_region,
+      ip_country,
+      ip_timezone,
+      raw_payload
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `);
+  await stmt.bind(
+    eventId,
+    cleanText4(payload.visitor_id, 80) || "unknown_visitor",
+    cleanText4(payload.session_id, 120) || "unknown_session",
+    cleanText4(payload.created_at, 80) || (/* @__PURE__ */ new Date()).toISOString(),
+    cleanUrl2(payload.page_url),
+    cleanText4(payload.page_path, 300),
+    cleanUrl2(payload.referrer),
+    cleanText4(payload.utm_source, 120),
+    cleanText4(payload.utm_medium, 120),
+    cleanText4(payload.utm_campaign, 160),
+    cleanText4(payload.event_name, 120) || "unknown_event",
+    cleanText4(payload.event_category, 120),
+    cleanText4(payload.event_label, 120),
+    cleanText4(payload.route_name, 120),
+    cleanText4(payload.button_text, 160),
+    cleanUrl2(payload.target_url),
+    cleanText4(payload.language, 20),
+    cleanText4(payload.device_type, 40),
+    cleanText4(request.headers.get("user-agent"), 600),
+    cleanInteger2(payload.screen_width),
+    cleanInteger2(payload.screen_height),
+    cleanText4(payload.lead_status, 40),
+    geo.city,
+    geo.region,
+    geo.country,
+    geo.timezone,
+    safePayloadJson2(payload)
+  ).run();
+}
+__name(writeEventToDb, "writeEventToDb");
+async function onRequestOptions5(context) {
+  const { request } = context;
+  return new Response(null, { status: 204, headers: corsHeaders5(request) });
+}
+__name(onRequestOptions5, "onRequestOptions");
+async function onRequestPost5(context) {
+  const { request, env } = context;
+  const headers = corsHeaders5(request);
+  if (!env.TRANSPORT_DB) {
+    return json5({ ok: false, error: "Database binding missing" }, { status: 500, headers });
+  }
+  let payload;
+  try {
+    payload = await parseJsonBody5(request);
+  } catch {
+    return json5({ ok: false, error: "Invalid JSON payload" }, { status: 400, headers });
+  }
+  const eventId = cleanText4(payload.event_id, 80) || crypto.randomUUID();
+  const dbTask = writeEventToDb(request, env, payload, eventId).catch((error) => {
+    console.error(JSON.stringify({
+      event: "tracking_event_insert_failed",
+      eventId,
+      message: error && error.message ? error.message : String(error)
+    }));
+    return recordError(env, {
+      source: "tracking-api",
+      severity: "error",
+      message: `Tracking insert failed: ${error && error.message ? error.message : String(error)}`,
+      stack: error && error.stack ? error.stack : null,
+      pageUrl: cleanText4(payload.page_url, 1e3),
+      pagePath: cleanText4(payload.page_path, 400),
+      context: `eventId=${eventId}`
+    });
+  });
+  context.waitUntil(dbTask);
+  return json5({ ok: true, eventId }, { status: 202, headers });
+}
+__name(onRequestPost5, "onRequestPost");
+async function onRequest5(context) {
+  const method = context.request.method;
+  if (method === "OPTIONS") return onRequestOptions5(context);
+  if (method === "POST") return onRequestPost5(context);
+  return json5({ ok: false, error: "Method not allowed" }, { status: 405, headers: corsHeaders5(context.request) });
+}
+__name(onRequest5, "onRequest");
+
 // worker.js
 var SITE_PATH_PREFIX = "/bahrain-saudi-gcc-transport";
 function logicalPathname(url) {
@@ -2461,6 +2732,9 @@ var worker_default = {
       }
       if (path === "/api/transport/log") {
         return await dispatchPagesFunction(error_log_exports, request, env, ctx);
+      }
+      if (path === "/api/track") {
+        return await dispatchPagesFunction(tracking_exports, request, env, ctx);
       }
       return await env.ASSETS.fetch(request);
     } catch (error) {
