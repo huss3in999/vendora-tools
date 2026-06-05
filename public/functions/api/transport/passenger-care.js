@@ -221,11 +221,20 @@ export async function onRequestGet(context) {
   try {
     await ensurePassengerCareSchema(env);
     const lead = await findLeadByBookingRef(env, bookingRef);
-    if (!lead) {
-      return json({ ok: false, error: 'Booking reference not found' }, { status: 404, headers });
-    }
-
     const feedback = await findFeedbackByBookingRef(env, bookingRef);
+
+    if (!lead) {
+      return json({
+        ok: true,
+        booking_ref: bookingRef,
+        route_label: '',
+        page_path: '',
+        language: 'ar',
+        clicked_at: '',
+        already_submitted: Boolean(feedback),
+        provisional: true,
+      }, { headers });
+    }
 
     return json({
       ok: true,
@@ -248,6 +257,45 @@ export async function onRequestGet(context) {
     }));
     return json({ ok: false, error: 'Failed to load booking' }, { status: 500, headers });
   }
+}
+
+async function ensureLeadForBookingRef(env, bookingRef) {
+  let lead = await findLeadByBookingRef(env, bookingRef);
+  if (lead) return lead;
+
+  const leadUuid = crypto.randomUUID();
+  const clickedAt = new Date().toISOString();
+  await env.TRANSPORT_DB.prepare(`
+    INSERT INTO whatsapp_leads (
+      lead_uuid,
+      booking_ref,
+      route_slug,
+      route_label,
+      page_path,
+      page_url,
+      language,
+      client_clicked_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `).bind(
+    leadUuid,
+    bookingRef,
+    'passenger-care',
+    'Passenger Care',
+    '/bahrain-saudi-gcc-transport/care/',
+    'https://getvendora.net/bahrain-saudi-gcc-transport/care/',
+    'ar',
+    clickedAt,
+  ).run();
+
+  return {
+    lead_uuid: leadUuid,
+    booking_ref: bookingRef,
+    route_slug: 'passenger-care',
+    route_label: 'Passenger Care',
+    page_path: '/bahrain-saudi-gcc-transport/care/',
+    language: 'ar',
+    clicked_at: clickedAt,
+  };
 }
 
 export async function onRequestPost(context) {
@@ -279,7 +327,7 @@ export async function onRequestPost(context) {
       return json({ ok: true, already_submitted: true, booking_ref: bookingRef }, { status: 200, headers });
     }
 
-    const lead = await findLeadByBookingRef(env, bookingRef);
+    const lead = await ensureLeadForBookingRef(env, bookingRef);
     if (!lead) {
       return json({ ok: false, error: 'Booking reference not found' }, { status: 404, headers });
     }

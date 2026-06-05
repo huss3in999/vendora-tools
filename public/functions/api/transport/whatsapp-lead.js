@@ -424,6 +424,21 @@ function cleanText(value, maxLength = 500) {
   return cleaned ? cleaned.slice(0, maxLength) : null;
 }
 
+function cleanLeadUuid(value) {
+  const text = cleanText(value, 80);
+  if (!text) return null;
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(text)
+    ? text.toLowerCase()
+    : null;
+}
+
+function cleanBookingRefValue(value) {
+  const text = cleanText(value, 20);
+  if (!text) return null;
+  const normalized = text.toUpperCase();
+  return /^GCC-[A-F0-9]{8}$/.test(normalized) ? normalized : null;
+}
+
 function cleanUrl(value) {
   const text = cleanText(value, 1200);
   if (!text) return null;
@@ -673,8 +688,8 @@ export async function onRequestPost(context) {
     return json({ ok: false, error: 'Invalid JSON payload' }, { status: 400, headers });
   }
 
-  const leadUuid = crypto.randomUUID();
-  const bookingRef = makeBookingRef(leadUuid);
+  const leadUuid = cleanLeadUuid(payload.preassignedLeadUuid) || crypto.randomUUID();
+  const bookingRef = cleanBookingRefValue(payload.preassignedBookingRef) || makeBookingRef(leadUuid);
   const write = storeLead(request, env, payload, leadUuid, bookingRef).catch((error) => {
     console.error(JSON.stringify({
       event: 'transport_lead_insert_failed',

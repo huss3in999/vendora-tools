@@ -61,6 +61,11 @@ async function handleShortLink(request, env, ctx) {
 
   if (!candidate || !SLUG_RE.test(candidate)) return htmlPage("Short link not found", notFoundPage(), { status: 404 });
 
+  const careRedirect = resolveGccCareRedirect(candidate, env);
+  if (careRedirect) {
+    return Response.redirect(careRedirect, 302);
+  }
+
   const link = await getLink(env, candidate);
   if (!link || !link.active || isExpired(link)) {
     return htmlPage("Short link not found", notFoundPage(), { status: 404 });
@@ -82,6 +87,23 @@ function redirectLegacyProfile(url, env) {
   const slug = normalizeSlug(url.pathname.slice(3).split("/")[0]);
   if (!isValidSlug(slug)) return htmlPage("Short link not found", notFoundPage(), { status: 404 });
   return Response.redirect(`${smartOrigin(env)}/${slug}`, 301);
+}
+
+function transportCareOrigin(env) {
+  return env.TRANSPORT_CARE_ORIGIN || "https://getvendora.net/bahrain-saudi-gcc-transport";
+}
+
+function resolveGccCareRedirect(slug, env) {
+  const base = transportCareOrigin(env).replace(/\/+$/, "");
+  const englishMatch = slug.match(/^gcc-en-([a-f0-9]{8})$/);
+  if (englishMatch) {
+    return `${base}/care/en/?ref=GCC-${englishMatch[1].toUpperCase()}`;
+  }
+  const arabicMatch = slug.match(/^gcc-([a-f0-9]{8})$/);
+  if (arabicMatch) {
+    return `${base}/care/?ref=GCC-${arabicMatch[1].toUpperCase()}`;
+  }
+  return null;
 }
 
 async function createLink(request, env) {

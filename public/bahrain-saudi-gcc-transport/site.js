@@ -32,6 +32,7 @@
     sessionPageViews: 1,
     previousPagePath: '',
   };
+  let whatsAppClickLockUntil = 0;
 
   const translations = [
     ['نقل البحرين والسعودية والخليج 24 ساعة | حجز واتساب فوري | Vendora', 'Bahrain, Saudi Arabia and GCC transport 24 hours | Instant WhatsApp booking | Vendora'],
@@ -1091,6 +1092,26 @@
     });
   }
 
+  function getLeadEndpoints() {
+    const configured = config.leadEndpoint ? [config.leadEndpoint] : [];
+    const defaults = [
+      `${siteSegment.replace(/\/$/, '')}/api/transport/event`,
+      '/bahrain-saudi-gcc-transport/api/transport/event',
+      '/api/transport/event',
+      `${siteSegment.replace(/\/$/, '')}/api/transport/whatsapp-lead`,
+      '/bahrain-saudi-gcc-transport/api/transport/whatsapp-lead',
+      '/api/transport/whatsapp-lead',
+    ];
+    return [...new Set([...configured, ...defaults].filter(Boolean))];
+  }
+
+  function isWhatsAppTarget(link) {
+    if (!link || link.tagName !== 'A') return false;
+    if (link.hasAttribute('data-wa-message') || link.hasAttribute('data-booking-submit')) return true;
+    const href = String(link.href || link.getAttribute('href') || '');
+    return /wa\.me\/|api\.whatsapp\.com\//i.test(href);
+  }
+
   function isPassengerCareEnabled() {
     const cfg = window.pageConfig || {};
     return cfg.passengerCareEnabled !== false;
@@ -1099,6 +1120,26 @@
   function makeBookingRefFromUuid(leadUuid) {
     const hex = String(leadUuid || '').replace(/-/g, '').slice(0, 8).toUpperCase();
     return hex ? `GCC-${hex}` : '';
+  }
+
+  function createClientLeadIdentity() {
+    const leadUuid = (typeof crypto !== 'undefined' && crypto.randomUUID)
+      ? crypto.randomUUID()
+      : `00000000-4000-4000-8000-${Date.now().toString(16).padStart(12, '0')}`.slice(0, 36);
+    return {
+      leadUuid,
+      bookingRef: makeBookingRefFromUuid(leadUuid),
+    };
+  }
+
+  function buildPassengerCareShortUrl(bookingRef) {
+    const shortOrigin = config.careShortOrigin || 'https://g.getvendora.net';
+    const hex = String(bookingRef || '').replace(/^GCC-/i, '').toLowerCase();
+    if (!/^[a-f0-9]{8}$/.test(hex)) {
+      return buildPassengerCareUrl(bookingRef);
+    }
+    const slug = state.lang === 'en' ? `gcc-en-${hex}` : `gcc-${hex}`;
+    return `${shortOrigin.replace(/\/$/, '')}/${slug}`;
   }
 
   function buildPassengerCareUrl(bookingRef) {
@@ -1119,6 +1160,7 @@
         'Passenger Care:',
         'Your feedback is required to help us improve service quality and passenger support:',
         careUrl,
+        '',
       ].join('\n');
     }
     return [
@@ -1129,47 +1171,117 @@
       'رعاية المسافر:',
       'ملاحظتك مهمة لمساعدتنا في تحسين جودة الخدمة ودعم المسافرين:',
       careUrl,
+      '',
     ].join('\n');
   }
 
+  function stripPassengerCareFromMessage(message) {
+    const text = String(message || '').trim();
+    if (!text) return '';
+    const markers = ['\n\nرقم الحجز:', '\n\nBooking Ref:', '\nرقم الحجز:', '\nBooking Ref:'];
+    let cutAt = text.length;
+    markers.forEach((marker) => {
+      const idx = text.indexOf(marker);
+      if (idx >= 0 && idx < cutAt) cutAt = idx;
+    });
+    return text.slice(0, cutAt).trim();
+  }
+
   function extractWhatsAppMessage(link) {
-    const href = link.getAttribute('href') || link.href || '';
-    if (href.includes('wa.me/') || href.includes('api.whatsapp.com/')) {
+    if (link.hasAttribute('data-wa-message')) {
+      return stripPassengerCareFromMessage(link.getAttribute('data-wa-message') || defaultArabicMessage);
+    }
+
+    const href = String(link.href || link.getAttribute('href') || '');
+    if (/wa\.me\/|api\.whatsapp\.com\//i.test(href)) {
       try {
         const url = new URL(href, window.location.href);
-        return decodeURIComponent(url.searchParams.get('text') || '');
+        const text = url.searchParams.get('text') || '';
+        if (text) return stripPassengerCareFromMessage(decodeURIComponent(text.replace(/\+/g, ' ')));
       } catch {
         return '';
       }
-    }
-    if (link.hasAttribute('data-wa-message')) {
-      return link.getAttribute('data-wa-message') || defaultArabicMessage;
     }
     return '';
   }
 
   function openWhatsAppMessage(message) {
-    const url = toWhatsApp(message);
-    window.open(url, '_blank', 'noopener');
+    openWhatsAppUrl(toWhatsApp(message));
   }
 
-  async function registerLeadForPassengerCare(link, event) {
-    const payload = buildLeadPayload(link, event);
-    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-    const timeoutId = controller ? window.setTimeout(() => controller.abort(), 800) : null;
-    try {
-      const response = await sendLeadPayload(payload, {
-        returnResponse: true,
-        signal: controller ? controller.signal : undefined,
-      });
-      if (!response || !response.ok) return '';
-      const data = await response.json();
-      return data.booking_ref || makeBookingRefFromUuid(data.leadId || data.lead_uuid || '');
-    } catch {
-      return '';
-    } finally {
-      if (timeoutId) window.clearTimeout(timeoutId);
+  function openWhatsAppUrl(url) {
+    const now = Date.now();
+    if (window.__VENDORA_LAST_WA_URL__ === url && now - (window.__VENDORA_LAST_WA_AT__ || 0) < 2500) {
+      return;
     }
+    window.__VENDORA_LAST_WA_URL__ = url;
+    window.__VENDORA_LAST_WA_AT__ = now;
+
+    // One navigation only — window.open + wa.me often duplicates text on WhatsApp Desktop (Windows).
+    window.location.assign(url);
+  }
+
+  async function postLeadPayloadToEndpoint(endpoint, payload, signal) {
+    const body = JSON.stringify(payload);
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body,
+      keepalive: true,
+      credentials: 'omit',
+      signal,
+    });
+    if (!response.ok) return null;
+    try {
+      return await response.json();
+    } catch {
+      return null;
+    }
+  }
+
+  function registerLeadInBackground(payload) {
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timeoutId = controller ? window.setTimeout(() => controller.abort(), 4000) : null;
+    const endpoints = getLeadEndpoints();
+
+    (async () => {
+      try {
+        for (let i = 0; i < endpoints.length; i += 1) {
+          try {
+            const data = await postLeadPayloadToEndpoint(
+              endpoints[i],
+              payload,
+              controller ? controller.signal : undefined,
+            );
+            if (data && data.ok !== false) return;
+          } catch (error) {
+            if (controller && error && error.name === 'AbortError') break;
+          }
+        }
+      } finally {
+        if (timeoutId) window.clearTimeout(timeoutId);
+      }
+      sendLeadPayload(payload, { preferBeacon: true });
+    })();
+  }
+
+  function handlePassengerCareWhatsAppClick(link, event) {
+    const now = Date.now();
+    if (now < whatsAppClickLockUntil) return;
+    whatsAppClickLockUntil = now + 1200;
+
+    const payload = buildLeadPayload(link, event);
+    const identity = createClientLeadIdentity();
+    payload.preassignedLeadUuid = identity.leadUuid;
+    payload.preassignedBookingRef = identity.bookingRef;
+
+    const baseMessage = stripPassengerCareFromMessage(extractWhatsAppMessage(link) || defaultArabicMessage);
+    const careUrl = buildPassengerCareShortUrl(identity.bookingRef);
+    const finalMessage = `${baseMessage}${buildPassengerCareBlock(identity.bookingRef, careUrl)}`;
+
+    trackWhatsAppClick(payload);
+    openWhatsAppMessage(finalMessage);
+    registerLeadInBackground(payload);
   }
 
   function trackWhatsAppClick(payload) {
@@ -1185,20 +1297,16 @@
   }
 
   function setupWhatsAppLeadInterceptor() {
-    if (document.body.dataset.leadInterceptorReady === 'true') return;
-    document.body.dataset.leadInterceptorReady = 'true';
+    if (window.__VENDORA_WA_INTERCEPTOR_BOUND__) return;
+    window.__VENDORA_WA_INTERCEPTOR_BOUND__ = true;
+    if (document.body) document.body.dataset.leadInterceptorReady = 'true';
 
     document.addEventListener('click', (event) => {
-      const link = event.target.closest('a[href]');
-      if (!link) return;
-      const href = link.getAttribute('href') || '';
-      const isWhatsAppLink = href.includes('wa.me/') || href.includes('api.whatsapp.com/');
-      const isDynamicWhatsApp = link.hasAttribute('data-wa-message') || link.hasAttribute('data-booking-submit');
-      if (!isWhatsAppLink && !isDynamicWhatsApp) return;
-
-      const payload = buildLeadPayload(link, event);
+      const link = event.target.closest('a');
+      if (!isWhatsAppTarget(link)) return;
 
       if (!isPassengerCareEnabled()) {
+        const payload = buildLeadPayload(link, event);
         sendLeadPayload(payload, { preferBeacon: true });
         trackWhatsAppClick(payload);
         return;
@@ -1209,16 +1317,18 @@
       }
 
       event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
 
-      (async () => {
-        trackWhatsAppClick(payload);
-        const baseMessage = extractWhatsAppMessage(link) || defaultArabicMessage;
-        const bookingRef = await registerLeadForPassengerCare(link, event);
-        const finalMessage = bookingRef
-          ? `${baseMessage}${buildPassengerCareBlock(bookingRef, buildPassengerCareUrl(bookingRef))}`
-          : baseMessage;
-        openWhatsAppMessage(finalMessage);
-      })();
+      const payload = buildLeadPayload(link, event);
+      try {
+        handlePassengerCareWhatsAppClick(link, event);
+      } catch (error) {
+        console.error('WhatsApp passenger care click failed:', error);
+        const fallbackMessage = stripPassengerCareFromMessage(extractWhatsAppMessage(link) || defaultArabicMessage);
+        openWhatsAppMessage(fallbackMessage);
+        sendLeadPayload(payload, { preferBeacon: true });
+      }
     }, { capture: true });
   }
 
@@ -1318,13 +1428,37 @@
     }
   }
 
+  function neutralizeWhatsAppHrefs() {
+    if (!isPassengerCareEnabled()) return;
+    document.querySelectorAll('a[href*="wa.me"], a[href*="api.whatsapp.com"]').forEach((link) => {
+      if (!link.hasAttribute('data-wa-preserved-href')) {
+        const currentHref = link.getAttribute('href') || '';
+        if (currentHref && currentHref !== '#') {
+          link.setAttribute('data-wa-preserved-href', currentHref);
+        }
+      }
+      link.setAttribute('href', '#');
+      link.setAttribute('role', 'button');
+      link.removeAttribute('target');
+      link.removeAttribute('rel');
+    });
+  }
+
   function setStaticLinks() {
     document.querySelectorAll('[data-wa-message]').forEach((link) => {
+      if (isPassengerCareEnabled()) {
+        link.setAttribute('href', '#');
+        link.setAttribute('role', 'button');
+        link.removeAttribute('target');
+        link.removeAttribute('rel');
+        return;
+      }
       const message = link.getAttribute('data-wa-message') || defaultArabicMessage;
       link.href = toWhatsApp(message);
       link.target = '_blank';
       link.rel = 'noopener';
     });
+    neutralizeWhatsAppHrefs();
   }
 
   function getCurrentDepth() {
@@ -1492,7 +1626,13 @@
           toCity: toCity.value,
           notes: notes.value.trim(),
         };
-        submit.href = toWhatsApp(buildWhatsAppMessage(data));
+        submit.href = isPassengerCareEnabled() ? '#' : toWhatsApp(buildWhatsAppMessage(data));
+        if (isPassengerCareEnabled()) {
+          submit.setAttribute('role', 'button');
+          submit.removeAttribute('target');
+        } else {
+          submit.setAttribute('target', '_blank');
+        }
         summary.textContent = buildBookingSummary(data);
       };
 
@@ -1630,6 +1770,7 @@
 
   function init() {
     setupErrorReporter();
+    setupWhatsAppLeadInterceptor();
     normalizeInternalLinks();
     injectStructuredData();
     setupAttributionTracking();
@@ -1637,7 +1778,6 @@
     setStaticLinks();
     insertLanguageToggle();
     setupForms();
-    setupWhatsAppLeadInterceptor();
     injectFlagImages();
     applyLanguage();
     renderIcons();
@@ -1646,10 +1786,11 @@
 
   function initLeadOnly() {
     setupErrorReporter();
+    setupWhatsAppLeadInterceptor();
     normalizeInternalLinks();
     setupAttributionTracking();
     setupEngagementTracking();
-    setupWhatsAppLeadInterceptor();
+    neutralizeWhatsAppHrefs();
     trackPageView();
   }
 

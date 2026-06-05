@@ -82,10 +82,31 @@
   let selectedOutcome = '';
   let selectedRating = null;
 
+  const views = ['loadingView', 'formView', 'thanksView', 'lockedView', 'errorView'];
+
   function show(view) {
-    ['loading', 'formView', 'thanksView', 'lockedView', 'errorView'].forEach((id) => {
-      document.getElementById(id).classList.toggle('hidden', id !== view);
+    views.forEach((id) => {
+      const node = document.getElementById(id);
+      if (node) node.classList.toggle('hidden', id !== view);
     });
+  }
+
+  async function fetchBooking(refValue) {
+    const endpoints = [
+      `${apiBase}?ref=${encodeURIComponent(refValue)}`,
+      `/api/transport/passenger-care?ref=${encodeURIComponent(refValue)}`,
+    ];
+    for (let i = 0; i < endpoints.length; i += 1) {
+      try {
+        const res = await fetch(endpoints[i], { credentials: 'omit' });
+        const data = await res.json();
+        if (res.ok && data.ok) return data;
+        if (res.status === 404) return { ok: false, notFound: true };
+      } catch {
+        // try next endpoint
+      }
+    }
+    return null;
   }
 
   function renderOptions() {
@@ -141,9 +162,8 @@
     }
 
     try {
-      const res = await fetch(`${apiBase}?ref=${encodeURIComponent(ref)}`, { credentials: 'omit' });
-      const data = await res.json();
-      if (!res.ok || !data.ok) {
+      const data = await fetchBooking(ref);
+      if (!data || !data.ok) {
         els.errorBody.textContent = copy.invalid;
         show('errorView');
         return;
@@ -192,9 +212,24 @@
           language: lang,
         }),
       });
-      const data = await res.json();
+      let data = await res.json();
       if (!res.ok || !data.ok) {
-        throw new Error('submit failed');
+        const fallback = await fetch('/api/transport/passenger-care', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          credentials: 'omit',
+          body: JSON.stringify({
+            ref,
+            outcome: selectedOutcome,
+            rating: selectedRating,
+            comment: els.comment.value.trim(),
+            quoted_price: els.quoted.value.trim(),
+            paid_price: els.paid.value.trim(),
+            language: lang,
+          }),
+        });
+        data = await fallback.json();
+        if (!fallback.ok || !data.ok) throw new Error('submit failed');
       }
       if (data.already_submitted) {
         show('lockedView');
