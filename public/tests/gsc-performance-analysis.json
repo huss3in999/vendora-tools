@@ -1,0 +1,1612 @@
+{
+  "dateRange": {
+    "from": "2026-03-12",
+    "to": "2026-06-03"
+  },
+  "totals": {
+    "clicks": 94.0,
+    "impressions": 19483.0,
+    "ctr": 0.48
+  },
+  "gccPagesInExport": {
+    "count": 64,
+    "clicks": 54.0,
+    "impressions": 2696.0,
+    "pages": [
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait/",
+        "Clicks": 6.0,
+        "Impressions": 378.0,
+        "CTR": 0.0159,
+        "Position": 8.48
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
+        "Clicks": 8.0,
+        "Impressions": 331.0,
+        "CTR": 0.0242,
+        "Position": 14.14
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/",
+        "Clicks": 1.0,
+        "Impressions": 279.0,
+        "CTR": 0.0036,
+        "Position": 7.26
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dubai/",
+        "Clicks": 2.0,
+        "Impressions": 233.0,
+        "CTR": 0.0086,
+        "Position": 7.45
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-qatar/",
+        "Clicks": 14.0,
+        "Impressions": 220.0,
+        "CTR": 0.0636,
+        "Position": 7.88
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/dammam-to-bahrain/",
+        "Clicks": 1.0,
+        "Impressions": 128.0,
+        "CTR": 0.0078000000000000005,
+        "Position": 18.1
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-iraq/",
+        "Clicks": 2.0,
+        "Impressions": 114.0,
+        "CTR": 0.0175,
+        "Position": 7.34
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-khobar/",
+        "Clicks": 5.0,
+        "Impressions": 107.0,
+        "CTR": 0.0467,
+        "Position": 22.66
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-uae/",
+        "Clicks": 3.0,
+        "Impressions": 95.0,
+        "CTR": 0.0316,
+        "Position": 6.13
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/khobar-to-bahrain/",
+        "Clicks": 0.0,
+        "Impressions": 76.0,
+        "CTR": 0.0,
+        "Position": 19.49
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-saudi/",
+        "Clicks": 1.0,
+        "Impressions": 72.0,
+        "CTR": 0.0139,
+        "Position": 17.9
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/",
+        "Clicks": 1.0,
+        "Impressions": 71.0,
+        "CTR": 0.0141,
+        "Position": 11.77
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-dammam/",
+        "Clicks": 0.0,
+        "Impressions": 48.0,
+        "CTR": 0.0,
+        "Position": 57.31
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/khobar-to-bahrain/",
+        "Clicks": 0.0,
+        "Impressions": 41.0,
+        "CTR": 0.0,
+        "Position": 48.78
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-riyadh/",
+        "Clicks": 2.0,
+        "Impressions": 38.0,
+        "CTR": 0.0526,
+        "Position": 17.84
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/sitemap.xml",
+        "Clicks": 0.0,
+        "Impressions": 36.0,
+        "CTR": 0.0,
+        "Position": 2.25
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/riyadh-to-bahrain/",
+        "Clicks": 0.0,
+        "Impressions": 32.0,
+        "CTR": 0.0,
+        "Position": 8.62
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/",
+        "Clicks": 1.0,
+        "Impressions": 30.0,
+        "CTR": 0.0333,
+        "Position": 41.83
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-saudi/",
+        "Clicks": 0.0,
+        "Impressions": 25.0,
+        "CTR": 0.0,
+        "Position": 38.84
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-khobar/",
+        "Clicks": 0.0,
+        "Impressions": 25.0,
+        "CTR": 0.0,
+        "Position": 53.68
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/dammam-to-bahrain/",
+        "Clicks": 0.0,
+        "Impressions": 24.0,
+        "CTR": 0.0,
+        "Position": 36.75
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/parcel-delivery/",
+        "Clicks": 0.0,
+        "Impressions": 21.0,
+        "CTR": 0.0,
+        "Position": 24.05
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-bahrain/",
+        "Clicks": 1.0,
+        "Impressions": 20.0,
+        "CTR": 0.05,
+        "Position": 31.5
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/about/",
+        "Clicks": 0.0,
+        "Impressions": 19.0,
+        "CTR": 0.0,
+        "Position": 6.53
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/",
+        "Clicks": 0.0,
+        "Impressions": 19.0,
+        "CTR": 0.0,
+        "Position": 22.21
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/airport-pickup-planner/",
+        "Clicks": 0.0,
+        "Impressions": 18.0,
+        "CTR": 0.0,
+        "Position": 29.11
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-bahrain/",
+        "Clicks": 1.0,
+        "Impressions": 15.0,
+        "CTR": 0.0667,
+        "Position": 50.13
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/parcel-delivery/",
+        "Clicks": 0.0,
+        "Impressions": 14.0,
+        "CTR": 0.0,
+        "Position": 4.21
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-destinations/",
+        "Clicks": 0.0,
+        "Impressions": 13.0,
+        "CTR": 0.0,
+        "Position": 9.54
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/passenger-transport/",
+        "Clicks": 0.0,
+        "Impressions": 13.0,
+        "CTR": 0.0,
+        "Position": 36.54
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-airport-transfer/",
+        "Clicks": 0.0,
+        "Impressions": 12.0,
+        "CTR": 0.0,
+        "Position": 11.92
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/kuwait-to-bahrain/",
+        "Clicks": 1.0,
+        "Impressions": 11.0,
+        "CTR": 0.0909,
+        "Position": 9.73
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-baghdad/",
+        "Clicks": 2.0,
+        "Impressions": 9.0,
+        "CTR": 0.22219999999999998,
+        "Position": 6.44
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/about/",
+        "Clicks": 0.0,
+        "Impressions": 9.0,
+        "CTR": 0.0,
+        "Position": 3.67
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/contact/",
+        "Clicks": 0.0,
+        "Impressions": 8.0,
+        "CTR": 0.0,
+        "Position": 9.12
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-riyadh/",
+        "Clicks": 0.0,
+        "Impressions": 8.0,
+        "CTR": 0.0,
+        "Position": 31.25
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-transport/",
+        "Clicks": 0.0,
+        "Impressions": 7.0,
+        "CTR": 0.0,
+        "Position": 9.14
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/",
+        "Clicks": 0.0,
+        "Impressions": 6.0,
+        "CTR": 0.0,
+        "Position": 8.83
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-transport-planner/",
+        "Clicks": 0.0,
+        "Impressions": 6.0,
+        "CTR": 0.0,
+        "Position": 20.67
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-karbala/",
+        "Clicks": 0.0,
+        "Impressions": 5.0,
+        "CTR": 0.0,
+        "Position": 4.4
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/oman-to-bahrain/",
+        "Clicks": 0.0,
+        "Impressions": 5.0,
+        "CTR": 0.0,
+        "Position": 7.0
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-najaf/",
+        "Clicks": 0.0,
+        "Impressions": 5.0,
+        "CTR": 0.0,
+        "Position": 12.0
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/dubai-to-bahrain/",
+        "Clicks": 1.0,
+        "Impressions": 4.0,
+        "CTR": 0.25,
+        "Position": 6.75
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/qatar-to-bahrain/",
+        "Clicks": 0.0,
+        "Impressions": 4.0,
+        "CTR": 0.0,
+        "Position": 10.25
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-karbala/",
+        "Clicks": 0.0,
+        "Impressions": 3.0,
+        "CTR": 0.0,
+        "Position": 1.0
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-basra/",
+        "Clicks": 0.0,
+        "Impressions": 3.0,
+        "CTR": 0.0,
+        "Position": 2.67
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/book-private-car-bahrain-to-karbala/",
+        "Clicks": 0.0,
+        "Impressions": 3.0,
+        "CTR": 0.0,
+        "Position": 4.67
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/contact/",
+        "Clicks": 0.0,
+        "Impressions": 3.0,
+        "CTR": 0.0,
+        "Position": 7.33
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/passenger-transport/",
+        "Clicks": 0.0,
+        "Impressions": 3.0,
+        "CTR": 0.0,
+        "Position": 7.33
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/best-way-bahrain-to-karbala/",
+        "Clicks": 0.0,
+        "Impressions": 3.0,
+        "CTR": 0.0,
+        "Position": 9.0
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/kuwait-airport-to-bahrain/",
+        "Clicks": 0.0,
+        "Impressions": 3.0,
+        "CTR": 0.0,
+        "Position": 9.0
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/karbala-trip-from-bahrain/",
+        "Clicks": 0.0,
+        "Impressions": 3.0,
+        "CTR": 0.0,
+        "Position": 10.33
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/direct-transport-bahrain-to-karbala/",
+        "Clicks": 1.0,
+        "Impressions": 2.0,
+        "CTR": 0.5,
+        "Position": 3.0
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/karbala-trip-from-bahrain/",
+        "Clicks": 0.0,
+        "Impressions": 2.0,
+        "CTR": 0.0,
+        "Position": 3.5
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait-airport/",
+        "Clicks": 0.0,
+        "Impressions": 2.0,
+        "CTR": 0.0,
+        "Position": 5.0
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-destinations/",
+        "Clicks": 0.0,
+        "Impressions": 2.0,
+        "CTR": 0.0,
+        "Position": 7.5
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/arbaeen-karbala-travel-tips/",
+        "Clicks": 0.0,
+        "Impressions": 2.0,
+        "CTR": 0.0,
+        "Position": 9.0
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/ziyarat-iraq-transport/",
+        "Clicks": 0.0,
+        "Impressions": 2.0,
+        "CTR": 0.0,
+        "Position": 24.0
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-hamad-airport/",
+        "Clicks": 0.0,
+        "Impressions": 1.0,
+        "CTR": 0.0,
+        "Position": 5.0
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/private-car-bahrain-to-iraq/",
+        "Clicks": 0.0,
+        "Impressions": 1.0,
+        "CTR": 0.0,
+        "Position": 6.0
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/dammam-airport-to-bahrain/",
+        "Clicks": 0.0,
+        "Impressions": 1.0,
+        "CTR": 0.0,
+        "Position": 7.0
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-baghdad/",
+        "Clicks": 0.0,
+        "Impressions": 1.0,
+        "CTR": 0.0,
+        "Position": 8.0
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-qatar/",
+        "Clicks": 0.0,
+        "Impressions": 1.0,
+        "CTR": 0.0,
+        "Position": 10.0
+      },
+      {
+        "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/en/ziyarat-iraq-transport/",
+        "Clicks": 0.0,
+        "Impressions": 1.0,
+        "CTR": 0.0,
+        "Position": 11.0
+      }
+    ]
+  },
+  "topPagesAll": [
+    {
+      "Top pages": "https://getvendora.net/tools/commission-calculator/",
+      "Clicks": 1.0,
+      "Impressions": 2852.0,
+      "CTR": 0.0004,
+      "Position": 12.57
+    },
+    {
+      "Top pages": "https://getvendora.net/guides/commission-calculator-guide/",
+      "Clicks": 0.0,
+      "Impressions": 1160.0,
+      "CTR": 0.0,
+      "Position": 61.28
+    },
+    {
+      "Top pages": "https://getvendora.net/",
+      "Clicks": 7.0,
+      "Impressions": 971.0,
+      "CTR": 0.0072,
+      "Position": 7.95
+    },
+    {
+      "Top pages": "https://getvendora.net/tools/food-cost-calculator/",
+      "Clicks": 1.0,
+      "Impressions": 875.0,
+      "CTR": 0.0011,
+      "Position": 67.8
+    },
+    {
+      "Top pages": "https://getvendora.net/calculators/bmr-calculator/",
+      "Clicks": 0.0,
+      "Impressions": 753.0,
+      "CTR": 0.0,
+      "Position": 6.4
+    },
+    {
+      "Top pages": "https://getvendora.net/guides/delivery-commission-calculator-guide/",
+      "Clicks": 4.0,
+      "Impressions": 689.0,
+      "CTR": 0.0058,
+      "Position": 7.9
+    },
+    {
+      "Top pages": "https://getvendora.net/guides/food-cost-calculator-guide/",
+      "Clicks": 0.0,
+      "Impressions": 666.0,
+      "CTR": 0.0,
+      "Position": 71.7
+    },
+    {
+      "Top pages": "https://getvendora.net/guides/margin-calculator-guide/",
+      "Clicks": 0.0,
+      "Impressions": 475.0,
+      "CTR": 0.0,
+      "Position": 78.84
+    },
+    {
+      "Top pages": "https://getvendora.net/guides/break-even-calculator-guide/",
+      "Clicks": 1.0,
+      "Impressions": 453.0,
+      "CTR": 0.0022,
+      "Position": 12.08
+    },
+    {
+      "Top pages": "https://getvendora.net/about/",
+      "Clicks": 0.0,
+      "Impressions": 448.0,
+      "CTR": 0.0,
+      "Position": 11.34
+    },
+    {
+      "Top pages": "https://getvendora.net/calculators/roi-calculator/",
+      "Clicks": 0.0,
+      "Impressions": 423.0,
+      "CTR": 0.0,
+      "Position": 57.22
+    },
+    {
+      "Top pages": "https://getvendora.net/guides/roi-calculator-guide/",
+      "Clicks": 1.0,
+      "Impressions": 389.0,
+      "CTR": 0.0026,
+      "Position": 18.06
+    },
+    {
+      "Top pages": "https://getvendora.net/guides/daily-sales-summary-guide/",
+      "Clicks": 0.0,
+      "Impressions": 386.0,
+      "CTR": 0.0,
+      "Position": 31.7
+    },
+    {
+      "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait/",
+      "Clicks": 6.0,
+      "Impressions": 378.0,
+      "CTR": 0.0159,
+      "Position": 8.48
+    },
+    {
+      "Top pages": "https://getvendora.net/tools/small-business/",
+      "Clicks": 0.0,
+      "Impressions": 341.0,
+      "CTR": 0.0,
+      "Position": 79.43
+    },
+    {
+      "Top pages": "https://getvendora.net/tools/daily-sales-summary/",
+      "Clicks": 1.0,
+      "Impressions": 338.0,
+      "CTR": 0.003,
+      "Position": 18.66
+    },
+    {
+      "Top pages": "https://getvendora.net/tools/delivery-commission-calculator/",
+      "Clicks": 3.0,
+      "Impressions": 333.0,
+      "CTR": 0.009000000000000001,
+      "Position": 10.01
+    },
+    {
+      "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
+      "Clicks": 8.0,
+      "Impressions": 331.0,
+      "CTR": 0.0242,
+      "Position": 14.14
+    },
+    {
+      "Top pages": "https://getvendora.net/tools/receipt-generator/",
+      "Clicks": 4.0,
+      "Impressions": 313.0,
+      "CTR": 0.0128,
+      "Position": 65.21
+    },
+    {
+      "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/",
+      "Clicks": 1.0,
+      "Impressions": 279.0,
+      "CTR": 0.0036,
+      "Position": 7.26
+    },
+    {
+      "Top pages": "https://getvendora.net/guides/menu-price-calculator-guide/",
+      "Clicks": 0.0,
+      "Impressions": 277.0,
+      "CTR": 0.0,
+      "Position": 53.45
+    },
+    {
+      "Top pages": "https://getvendora.net/tools/menu-price-calculator/",
+      "Clicks": 1.0,
+      "Impressions": 249.0,
+      "CTR": 0.004,
+      "Position": 43.45
+    },
+    {
+      "Top pages": "https://getvendora.net/tools/small-business/calculators/profit/",
+      "Clicks": 1.0,
+      "Impressions": 243.0,
+      "CTR": 0.0040999999999999995,
+      "Position": 9.3
+    },
+    {
+      "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dubai/",
+      "Clicks": 2.0,
+      "Impressions": 233.0,
+      "CTR": 0.0086,
+      "Position": 7.45
+    },
+    {
+      "Top pages": "https://getvendora.net/tools/pdf-converter/compress-pdf/",
+      "Clicks": 0.0,
+      "Impressions": 232.0,
+      "CTR": 0.0,
+      "Position": 74.97
+    },
+    {
+      "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-qatar/",
+      "Clicks": 14.0,
+      "Impressions": 220.0,
+      "CTR": 0.0636,
+      "Position": 7.88
+    },
+    {
+      "Top pages": "https://getvendora.net/guides/tip-calculator-guide/",
+      "Clicks": 0.0,
+      "Impressions": 209.0,
+      "CTR": 0.0,
+      "Position": 35.16
+    },
+    {
+      "Top pages": "https://getvendora.net/calculators/time-duration/",
+      "Clicks": 0.0,
+      "Impressions": 197.0,
+      "CTR": 0.0,
+      "Position": 11.61
+    },
+    {
+      "Top pages": "https://getvendora.net/guides/markup-calculator-guide/",
+      "Clicks": 0.0,
+      "Impressions": 190.0,
+      "CTR": 0.0,
+      "Position": 17.87
+    },
+    {
+      "Top pages": "https://getvendora.net/calculators/margin-markup-calculator/",
+      "Clicks": 0.0,
+      "Impressions": 189.0,
+      "CTR": 0.0,
+      "Position": 71.66
+    },
+    {
+      "Top pages": "https://getvendora.net/tools/qr-menu-generator/",
+      "Clicks": 1.0,
+      "Impressions": 179.0,
+      "CTR": 0.005600000000000001,
+      "Position": 50.22
+    },
+    {
+      "Top pages": "https://getvendora.net/guides/vat-calculator-guide/",
+      "Clicks": 0.0,
+      "Impressions": 173.0,
+      "CTR": 0.0,
+      "Position": 62.65
+    },
+    {
+      "Top pages": "https://getvendora.net/calculator/inventory/",
+      "Clicks": 0.0,
+      "Impressions": 169.0,
+      "CTR": 0.0,
+      "Position": 76.16
+    },
+    {
+      "Top pages": "https://getvendora.net/tools/invoice-generator/",
+      "Clicks": 1.0,
+      "Impressions": 161.0,
+      "CTR": 0.0062,
+      "Position": 19.26
+    },
+    {
+      "Top pages": "https://getvendora.net/calculators/time-calculator/",
+      "Clicks": 0.0,
+      "Impressions": 161.0,
+      "CTR": 0.0,
+      "Position": 71.68
+    },
+    {
+      "Top pages": "https://getvendora.net/tools/",
+      "Clicks": 1.0,
+      "Impressions": 134.0,
+      "CTR": 0.0075,
+      "Position": 14.93
+    },
+    {
+      "Top pages": "https://getvendora.net/guides/discount-calculator-guide/",
+      "Clicks": 0.0,
+      "Impressions": 132.0,
+      "CTR": 0.0,
+      "Position": 19.68
+    },
+    {
+      "Top pages": "https://getvendora.net/calculators/area-calculator/",
+      "Clicks": 0.0,
+      "Impressions": 129.0,
+      "CTR": 0.0,
+      "Position": 80.42
+    },
+    {
+      "Top pages": "https://getvendora.net/bahrain-saudi-gcc-transport/dammam-to-bahrain/",
+      "Clicks": 1.0,
+      "Impressions": 128.0,
+      "CTR": 0.0078000000000000005,
+      "Position": 18.1
+    },
+    {
+      "Top pages": "https://getvendora.net/restaurant-calculators/",
+      "Clicks": 0.0,
+      "Impressions": 121.0,
+      "CTR": 0.0,
+      "Position": 15.62
+    }
+  ],
+  "topQueriesAll": [
+    {
+      "Top queries": "vendvora com",
+      "Clicks": 0.0,
+      "Impressions": 837.0,
+      "CTR": 0.0,
+      "Position": 9.6
+    },
+    {
+      "Top queries": "food cost calculator",
+      "Clicks": 0.0,
+      "Impressions": 239.0,
+      "CTR": 0.0,
+      "Position": 76.21
+    },
+    {
+      "Top queries": "commission calculation",
+      "Clicks": 0.0,
+      "Impressions": 222.0,
+      "CTR": 0.0,
+      "Position": 73.16
+    },
+    {
+      "Top queries": "business calculator",
+      "Clicks": 0.0,
+      "Impressions": 160.0,
+      "CTR": 0.0,
+      "Position": 82.56
+    },
+    {
+      "Top queries": "sales commission calculation",
+      "Clicks": 0.0,
+      "Impressions": 131.0,
+      "CTR": 0.0,
+      "Position": 91.11
+    },
+    {
+      "Top queries": "roi calculator",
+      "Clicks": 0.0,
+      "Impressions": 130.0,
+      "CTR": 0.0,
+      "Position": 72.64
+    },
+    {
+      "Top queries": "retail margin calculator",
+      "Clicks": 0.0,
+      "Impressions": 103.0,
+      "CTR": 0.0,
+      "Position": 69.44
+    },
+    {
+      "Top queries": "small business calculator",
+      "Clicks": 0.0,
+      "Impressions": 76.0,
+      "CTR": 0.0,
+      "Position": 77.84
+    },
+    {
+      "Top queries": "من البحرين إلى عمان كم ساعة بالسياره",
+      "Clicks": 1.0,
+      "Impressions": 70.0,
+      "CTR": 0.0143,
+      "Position": 7.41
+    },
+    {
+      "Top queries": "من البحرين إلى الكويت كم ساعة بالسياره",
+      "Clicks": 1.0,
+      "Impressions": 66.0,
+      "CTR": 0.0152,
+      "Position": 8.76
+    },
+    {
+      "Top queries": "vendora restaurant",
+      "Clicks": 0.0,
+      "Impressions": 66.0,
+      "CTR": 0.0,
+      "Position": 13.26
+    },
+    {
+      "Top queries": "daily sales reports",
+      "Clicks": 0.0,
+      "Impressions": 65.0,
+      "CTR": 0.0,
+      "Position": 64.51
+    },
+    {
+      "Top queries": "vendora",
+      "Clicks": 0.0,
+      "Impressions": 62.0,
+      "CTR": 0.0,
+      "Position": 37.81
+    },
+    {
+      "Top queries": "[calculator food cost]",
+      "Clicks": 0.0,
+      "Impressions": 58.0,
+      "CTR": 0.0,
+      "Position": 77.36
+    },
+    {
+      "Top queries": "[food pricing calculator]",
+      "Clicks": 0.0,
+      "Impressions": 57.0,
+      "CTR": 0.0,
+      "Position": 75.05
+    },
+    {
+      "Top queries": "how to calculate commission",
+      "Clicks": 0.0,
+      "Impressions": 54.0,
+      "CTR": 0.0,
+      "Position": 80.04
+    },
+    {
+      "Top queries": "calculating margin",
+      "Clicks": 0.0,
+      "Impressions": 53.0,
+      "CTR": 0.0,
+      "Position": 93.23
+    },
+    {
+      "Top queries": "mifflin-st jeor equation women 10 weight + 6.25 height - 5 age - 161",
+      "Clicks": 0.0,
+      "Impressions": 51.0,
+      "CTR": 0.0,
+      "Position": 2.33
+    },
+    {
+      "Top queries": "calculate sales commission",
+      "Clicks": 0.0,
+      "Impressions": 50.0,
+      "CTR": 0.0,
+      "Position": 81.5
+    },
+    {
+      "Top queries": "من الدمام إلى البحرين سيارة",
+      "Clicks": 0.0,
+      "Impressions": 48.0,
+      "CTR": 0.0,
+      "Position": 27.17
+    },
+    {
+      "Top queries": "calculating commission",
+      "Clicks": 0.0,
+      "Impressions": 48.0,
+      "CTR": 0.0,
+      "Position": 67.17
+    },
+    {
+      "Top queries": "area calculator",
+      "Clicks": 0.0,
+      "Impressions": 47.0,
+      "CTR": 0.0,
+      "Position": 78.51
+    },
+    {
+      "Top queries": "menu cost calculator",
+      "Clicks": 0.0,
+      "Impressions": 46.0,
+      "CTR": 0.0,
+      "Position": 80.87
+    },
+    {
+      "Top queries": "roi percentage calculator",
+      "Clicks": 0.0,
+      "Impressions": 45.0,
+      "CTR": 0.0,
+      "Position": 61.49
+    },
+    {
+      "Top queries": "restaurant daily sales report",
+      "Clicks": 0.0,
+      "Impressions": 43.0,
+      "CTR": 0.0,
+      "Position": 60.47
+    },
+    {
+      "Top queries": "how to calculate food cost",
+      "Clicks": 0.0,
+      "Impressions": 43.0,
+      "CTR": 0.0,
+      "Position": 84.77
+    },
+    {
+      "Top queries": "receipt generator",
+      "Clicks": 0.0,
+      "Impressions": 41.0,
+      "CTR": 0.0,
+      "Position": 84.76
+    },
+    {
+      "Top queries": "price margin",
+      "Clicks": 0.0,
+      "Impressions": 37.0,
+      "CTR": 0.0,
+      "Position": 82.11
+    },
+    {
+      "Top queries": "calculate catering revenue with discount",
+      "Clicks": 0.0,
+      "Impressions": 34.0,
+      "CTR": 0.0,
+      "Position": 9.71
+    },
+    {
+      "Top queries": "restaurant invoice generator",
+      "Clicks": 0.0,
+      "Impressions": 34.0,
+      "CTR": 0.0,
+      "Position": 36.91
+    },
+    {
+      "Top queries": "retail inventory method calculator",
+      "Clicks": 0.0,
+      "Impressions": 34.0,
+      "CTR": 0.0,
+      "Position": 83.56
+    },
+    {
+      "Top queries": "mifflin st jeor equation women 10 weight + 6.25 height - 5 age - 161",
+      "Clicks": 0.0,
+      "Impressions": 33.0,
+      "CTR": 0.0,
+      "Position": 2.33
+    },
+    {
+      "Top queries": "توصيل من البحرين الى قطر",
+      "Clicks": 5.0,
+      "Impressions": 32.0,
+      "CTR": 0.1562,
+      "Position": 6.06
+    },
+    {
+      "Top queries": "sasha works at an electronics store and earns an 8% commission on every \nlaptop she sells. if she earned $240 in commission from one sale, what was \nthe price of the laptop?",
+      "Clicks": 0.0,
+      "Impressions": 32.0,
+      "CTR": 0.0,
+      "Position": 6.59
+    },
+    {
+      "Top queries": "restaurant daily sales calculation",
+      "Clicks": 0.0,
+      "Impressions": 30.0,
+      "CTR": 0.0,
+      "Position": 10.53
+    },
+    {
+      "Top queries": "restaurant food cost calculator",
+      "Clicks": 0.0,
+      "Impressions": 30.0,
+      "CTR": 0.0,
+      "Position": 83.7
+    },
+    {
+      "Top queries": "menu pricing calculator",
+      "Clicks": 0.0,
+      "Impressions": 28.0,
+      "CTR": 0.0,
+      "Position": 77.18
+    },
+    {
+      "Top queries": "من البحرين إلى دبي كم ساعة بالسياره",
+      "Clicks": 0.0,
+      "Impressions": 27.0,
+      "CTR": 0.0,
+      "Position": 6.56
+    },
+    {
+      "Top queries": "كم ساعة من البحرين إلى العراق بالسيارة",
+      "Clicks": 0.0,
+      "Impressions": 27.0,
+      "CTR": 0.0,
+      "Position": 9.04
+    },
+    {
+      "Top queries": "calculate percentage return",
+      "Clicks": 0.0,
+      "Impressions": 27.0,
+      "CTR": 0.0,
+      "Position": 78.41
+    },
+    {
+      "Top queries": "cost calculator food",
+      "Clicks": 0.0,
+      "Impressions": 26.0,
+      "CTR": 0.0,
+      "Position": 74.65
+    },
+    {
+      "Top queries": "birthday calculator",
+      "Clicks": 0.0,
+      "Impressions": 26.0,
+      "CTR": 0.0,
+      "Position": 75.73
+    },
+    {
+      "Top queries": "menu price calculator",
+      "Clicks": 0.0,
+      "Impressions": 26.0,
+      "CTR": 0.0,
+      "Position": 75.73
+    },
+    {
+      "Top queries": "mifflin-st jeor equation women bmr 10 weight + 6.25 height - 5 age - 161",
+      "Clicks": 0.0,
+      "Impressions": 24.0,
+      "CTR": 0.0,
+      "Position": 4.92
+    },
+    {
+      "Top queries": "reverse commission calculator",
+      "Clicks": 0.0,
+      "Impressions": 24.0,
+      "CTR": 0.0,
+      "Position": 9.5
+    },
+    {
+      "Top queries": "margin pricing",
+      "Clicks": 0.0,
+      "Impressions": 24.0,
+      "CTR": 0.0,
+      "Position": 78.25
+    },
+    {
+      "Top queries": "mifflin-st jeor equation women bmr 10*weight + 6.25*height - 5*age - 161",
+      "Clicks": 0.0,
+      "Impressions": 23.0,
+      "CTR": 0.0,
+      "Position": 2.26
+    },
+    {
+      "Top queries": "من دبي إلى البحرين كم ساعة بالسياره",
+      "Clicks": 0.0,
+      "Impressions": 22.0,
+      "CTR": 0.0,
+      "Position": 7.18
+    },
+    {
+      "Top queries": "ev to sales calculator",
+      "Clicks": 0.0,
+      "Impressions": 22.0,
+      "CTR": 0.0,
+      "Position": 7.82
+    },
+    {
+      "Top queries": "food price calculator",
+      "Clicks": 0.0,
+      "Impressions": 22.0,
+      "CTR": 0.0,
+      "Position": 65.0
+    }
+  ],
+  "transportRelatedQueries": [
+    {
+      "Top queries": "من البحرين إلى عمان كم ساعة بالسياره",
+      "Clicks": 1.0,
+      "Impressions": 70.0,
+      "CTR": 0.0143,
+      "Position": 7.41
+    },
+    {
+      "Top queries": "من البحرين إلى الكويت كم ساعة بالسياره",
+      "Clicks": 1.0,
+      "Impressions": 66.0,
+      "CTR": 0.0152,
+      "Position": 8.76
+    },
+    {
+      "Top queries": "من الدمام إلى البحرين سيارة",
+      "Clicks": 0.0,
+      "Impressions": 48.0,
+      "CTR": 0.0,
+      "Position": 27.17
+    },
+    {
+      "Top queries": "توصيل من البحرين الى قطر",
+      "Clicks": 5.0,
+      "Impressions": 32.0,
+      "CTR": 0.1562,
+      "Position": 6.06
+    },
+    {
+      "Top queries": "من البحرين إلى دبي كم ساعة بالسياره",
+      "Clicks": 0.0,
+      "Impressions": 27.0,
+      "CTR": 0.0,
+      "Position": 6.56
+    },
+    {
+      "Top queries": "كم ساعة من البحرين إلى العراق بالسيارة",
+      "Clicks": 0.0,
+      "Impressions": 27.0,
+      "CTR": 0.0,
+      "Position": 9.04
+    },
+    {
+      "Top queries": "من دبي إلى البحرين كم ساعة بالسياره",
+      "Clicks": 0.0,
+      "Impressions": 22.0,
+      "CTR": 0.0,
+      "Position": 7.18
+    },
+    {
+      "Top queries": "من البحرين الى مسقط بالسيارة",
+      "Clicks": 0.0,
+      "Impressions": 20.0,
+      "CTR": 0.0,
+      "Position": 7.7
+    },
+    {
+      "Top queries": "من البحرين الى الامارات كم ساعه بالسياره",
+      "Clicks": 0.0,
+      "Impressions": 19.0,
+      "CTR": 0.0,
+      "Position": 6.16
+    },
+    {
+      "Top queries": "bahrain to saudi taxi",
+      "Clicks": 0.0,
+      "Impressions": 18.0,
+      "CTR": 0.0,
+      "Position": 54.83
+    },
+    {
+      "Top queries": "taxi from bahrain to saudi arabia",
+      "Clicks": 0.0,
+      "Impressions": 16.0,
+      "CTR": 0.0,
+      "Position": 54.75
+    },
+    {
+      "Top queries": "shipping from bahrain to ksa",
+      "Clicks": 0.0,
+      "Impressions": 15.0,
+      "CTR": 0.0,
+      "Position": 24.87
+    },
+    {
+      "Top queries": "توصيل من البحرين الى الدمام",
+      "Clicks": 0.0,
+      "Impressions": 15.0,
+      "CTR": 0.0,
+      "Position": 43.53
+    },
+    {
+      "Top queries": "توصيل من البحرين الى مطار الدمام",
+      "Clicks": 0.0,
+      "Impressions": 14.0,
+      "CTR": 0.0,
+      "Position": 13.0
+    },
+    {
+      "Top queries": "من البحرين إلى الكويت كم/ساعة بالسياره",
+      "Clicks": 0.0,
+      "Impressions": 13.0,
+      "CTR": 0.0,
+      "Position": 8.92
+    },
+    {
+      "Top queries": "من البحرين الى عمان كم ساعة بالسياره",
+      "Clicks": 0.0,
+      "Impressions": 11.0,
+      "CTR": 0.0,
+      "Position": 8.09
+    },
+    {
+      "Top queries": "taxi from bahrain to khobar",
+      "Clicks": 0.0,
+      "Impressions": 11.0,
+      "CTR": 0.0,
+      "Position": 55.82
+    },
+    {
+      "Top queries": "saudi to bahrain taxi",
+      "Clicks": 0.0,
+      "Impressions": 11.0,
+      "CTR": 0.0,
+      "Position": 60.09
+    },
+    {
+      "Top queries": "توصيل من البحرين الى السعودية",
+      "Clicks": 0.0,
+      "Impressions": 10.0,
+      "CTR": 0.0,
+      "Position": 41.1
+    },
+    {
+      "Top queries": "taxi bahrain to dammam",
+      "Clicks": 0.0,
+      "Impressions": 10.0,
+      "CTR": 0.0,
+      "Position": 62.8
+    },
+    {
+      "Top queries": "bahrain to dammam airport service",
+      "Clicks": 0.0,
+      "Impressions": 10.0,
+      "CTR": 0.0,
+      "Position": 74.0
+    },
+    {
+      "Top queries": "من الخبر إلى البحرين",
+      "Clicks": 0.0,
+      "Impressions": 9.0,
+      "CTR": 0.0,
+      "Position": 37.56
+    },
+    {
+      "Top queries": "bahrain to khobar taxi",
+      "Clicks": 0.0,
+      "Impressions": 9.0,
+      "CTR": 0.0,
+      "Position": 54.56
+    },
+    {
+      "Top queries": "transport bahrain to dammam airport",
+      "Clicks": 0.0,
+      "Impressions": 9.0,
+      "CTR": 0.0,
+      "Position": 63.0
+    },
+    {
+      "Top queries": "bahrain to khobar",
+      "Clicks": 0.0,
+      "Impressions": 8.0,
+      "CTR": 0.0,
+      "Position": 47.5
+    },
+    {
+      "Top queries": "bahrain to riyadh taxi",
+      "Clicks": 0.0,
+      "Impressions": 8.0,
+      "CTR": 0.0,
+      "Position": 48.25
+    },
+    {
+      "Top queries": "dammam to bahrain transportation",
+      "Clicks": 0.0,
+      "Impressions": 8.0,
+      "CTR": 0.0,
+      "Position": 51.25
+    },
+    {
+      "Top queries": "توصيل من البحرين الى الكويت",
+      "Clicks": 1.0,
+      "Impressions": 7.0,
+      "CTR": 0.1429,
+      "Position": 10.0
+    },
+    {
+      "Top queries": "khobar to bahrain taxi",
+      "Clicks": 0.0,
+      "Impressions": 7.0,
+      "CTR": 0.0,
+      "Position": 46.86
+    },
+    {
+      "Top queries": "gcc transportation services",
+      "Clicks": 0.0,
+      "Impressions": 7.0,
+      "CTR": 0.0,
+      "Position": 71.86
+    },
+    {
+      "Top queries": "airport pickup saudi arabia",
+      "Clicks": 0.0,
+      "Impressions": 7.0,
+      "CTR": 0.0,
+      "Position": 78.57
+    },
+    {
+      "Top queries": "driver from bahrain to dammam",
+      "Clicks": 0.0,
+      "Impressions": 6.0,
+      "CTR": 0.0,
+      "Position": 54.0
+    },
+    {
+      "Top queries": "مواصلات من البحرين الى مطار الدمام",
+      "Clicks": 0.0,
+      "Impressions": 5.0,
+      "CTR": 0.0,
+      "Position": 7.8
+    },
+    {
+      "Top queries": "al khobar to bahrain taxi",
+      "Clicks": 0.0,
+      "Impressions": 5.0,
+      "CTR": 0.0,
+      "Position": 48.6
+    },
+    {
+      "Top queries": "taxi service khobar",
+      "Clicks": 0.0,
+      "Impressions": 5.0,
+      "CTR": 0.0,
+      "Position": 51.8
+    },
+    {
+      "Top queries": "bahrain to al khobar",
+      "Clicks": 0.0,
+      "Impressions": 5.0,
+      "CTR": 0.0,
+      "Position": 57.6
+    },
+    {
+      "Top queries": "من الرياض إلى البحرين بالسيارة",
+      "Clicks": 0.0,
+      "Impressions": 4.0,
+      "CTR": 0.0,
+      "Position": 9.25
+    },
+    {
+      "Top queries": "السفر من الرياض إلى البحرين بالسيارة",
+      "Clicks": 0.0,
+      "Impressions": 4.0,
+      "CTR": 0.0,
+      "Position": 19.5
+    },
+    {
+      "Top queries": "توصيل من البحرين الى الخبر",
+      "Clicks": 0.0,
+      "Impressions": 4.0,
+      "CTR": 0.0,
+      "Position": 37.25
+    },
+    {
+      "Top queries": "taxi from khobar to bahrain",
+      "Clicks": 0.0,
+      "Impressions": 4.0,
+      "CTR": 0.0,
+      "Position": 47.0
+    }
+  ],
+  "topCountries": [
+    {
+      "Country": "United States",
+      "Clicks": 15.0,
+      "Impressions": 10671.0,
+      "CTR": 0.0014000000000000002,
+      "Position": 38.89
+    },
+    {
+      "Country": "Bahrain",
+      "Clicks": 50.0,
+      "Impressions": 1423.0,
+      "CTR": 0.0351,
+      "Position": 10.07
+    },
+    {
+      "Country": "India",
+      "Clicks": 4.0,
+      "Impressions": 1259.0,
+      "CTR": 0.0032,
+      "Position": 15.01
+    },
+    {
+      "Country": "United Kingdom",
+      "Clicks": 2.0,
+      "Impressions": 959.0,
+      "CTR": 0.0021,
+      "Position": 57.58
+    },
+    {
+      "Country": "Saudi Arabia",
+      "Clicks": 4.0,
+      "Impressions": 570.0,
+      "CTR": 0.006999999999999999,
+      "Position": 31.77
+    },
+    {
+      "Country": "Canada",
+      "Clicks": 0.0,
+      "Impressions": 494.0,
+      "CTR": 0.0,
+      "Position": 39.27
+    },
+    {
+      "Country": "Australia",
+      "Clicks": 0.0,
+      "Impressions": 330.0,
+      "CTR": 0.0,
+      "Position": 43.52
+    },
+    {
+      "Country": "Philippines",
+      "Clicks": 1.0,
+      "Impressions": 255.0,
+      "CTR": 0.0039000000000000003,
+      "Position": 29.4
+    },
+    {
+      "Country": "South Africa",
+      "Clicks": 0.0,
+      "Impressions": 208.0,
+      "CTR": 0.0,
+      "Position": 52.99
+    },
+    {
+      "Country": "Pakistan",
+      "Clicks": 3.0,
+      "Impressions": 193.0,
+      "CTR": 0.0155,
+      "Position": 19.63
+    },
+    {
+      "Country": "Kuwait",
+      "Clicks": 2.0,
+      "Impressions": 175.0,
+      "CTR": 0.011399999999999999,
+      "Position": 11.11
+    },
+    {
+      "Country": "Brazil",
+      "Clicks": 0.0,
+      "Impressions": 172.0,
+      "CTR": 0.0,
+      "Position": 22.78
+    },
+    {
+      "Country": "Vietnam",
+      "Clicks": 0.0,
+      "Impressions": 136.0,
+      "CTR": 0.0,
+      "Position": 26.21
+    },
+    {
+      "Country": "Egypt",
+      "Clicks": 0.0,
+      "Impressions": 99.0,
+      "CTR": 0.0,
+      "Position": 20.07
+    },
+    {
+      "Country": "Malaysia",
+      "Clicks": 1.0,
+      "Impressions": 83.0,
+      "CTR": 0.012,
+      "Position": 28.66
+    }
+  ],
+  "topDevices": [
+    {
+      "Device": "Mobile",
+      "Clicks": 64.0,
+      "Impressions": 6132.0,
+      "CTR": 0.0104,
+      "Position": 15.47
+    },
+    {
+      "Device": "Desktop",
+      "Clicks": 30.0,
+      "Impressions": 13266.0,
+      "CTR": 0.0023,
+      "Position": 41.93
+    },
+    {
+      "Device": "Tablet",
+      "Clicks": 0.0,
+      "Impressions": 85.0,
+      "CTR": 0.0,
+      "Position": 30.6
+    }
+  ],
+  "dailyLast14": [
+    {
+      "Date": "2026-05-21",
+      "Clicks": 0.0,
+      "Impressions": 259.0,
+      "CTR": 0.0,
+      "Position": 41.1
+    },
+    {
+      "Date": "2026-05-22",
+      "Clicks": 1.0,
+      "Impressions": 324.0,
+      "CTR": 0.0031,
+      "Position": 34.5
+    },
+    {
+      "Date": "2026-05-23",
+      "Clicks": 2.0,
+      "Impressions": 434.0,
+      "CTR": 0.0046,
+      "Position": 40.2
+    },
+    {
+      "Date": "2026-05-24",
+      "Clicks": 4.0,
+      "Impressions": 368.0,
+      "CTR": 0.0109,
+      "Position": 37.2
+    },
+    {
+      "Date": "2026-05-25",
+      "Clicks": 1.0,
+      "Impressions": 401.0,
+      "CTR": 0.0025,
+      "Position": 33.2
+    },
+    {
+      "Date": "2026-05-26",
+      "Clicks": 3.0,
+      "Impressions": 416.0,
+      "CTR": 0.0072,
+      "Position": 32.2
+    },
+    {
+      "Date": "2026-05-27",
+      "Clicks": 3.0,
+      "Impressions": 504.0,
+      "CTR": 0.006,
+      "Position": 38.2
+    },
+    {
+      "Date": "2026-05-28",
+      "Clicks": 6.0,
+      "Impressions": 642.0,
+      "CTR": 0.009300000000000001,
+      "Position": 26.6
+    },
+    {
+      "Date": "2026-05-29",
+      "Clicks": 5.0,
+      "Impressions": 726.0,
+      "CTR": 0.0069,
+      "Position": 35.4
+    },
+    {
+      "Date": "2026-05-30",
+      "Clicks": 3.0,
+      "Impressions": 813.0,
+      "CTR": 0.0037,
+      "Position": 29.9
+    },
+    {
+      "Date": "2026-05-31",
+      "Clicks": 3.0,
+      "Impressions": 583.0,
+      "CTR": 0.0051,
+      "Position": 31.2
+    },
+    {
+      "Date": "2026-06-01",
+      "Clicks": 4.0,
+      "Impressions": 598.0,
+      "CTR": 0.0067,
+      "Position": 37.2
+    },
+    {
+      "Date": "2026-06-02",
+      "Clicks": 2.0,
+      "Impressions": 419.0,
+      "CTR": 0.0048,
+      "Position": 30.9
+    },
+    {
+      "Date": "2026-06-03",
+      "Clicks": 3.0,
+      "Impressions": 537.0,
+      "CTR": 0.005600000000000001,
+      "Position": 24.0
+    }
+  ]
+}

@@ -1611,3 +1611,74 @@ body.lang-en .seo-common-searches li {
   content: none;
   display: none;
 }
+
+/* Airport route visual + company trust (GCC airport pages only) */
+.airport-route-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  padding: 22px 20px;
+  margin-top: 8px;
+}
+.arv-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 120px;
+  text-align: center;
+  font-size: 0.92rem;
+}
+.arv-node strong {
+  font-size: 1.15rem;
+  letter-spacing: 0.04em;
+  color: var(--text, #f4f7f6);
+}
+.arv-node .flag-emoji {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+.arv-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 14px;
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  color: var(--muted, #9fb1c9);
+  text-align: center;
+}
+.airport-code-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.airport-code-table th,
+.airport-code-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: start;
+}
+.airport-code-table th {
+  color: var(--muted, #9fb1c9);
+  font-weight: 600;
+}
+.company-trust-card p {
+  margin: 0;
+}
+.company-trust-card strong {
+  color: var(--brand, #00d084);
+}
+@media (max-width: 640px) {
+  .airport-route-visual {
+    flex-direction: column;
+  }
+  .arv-line {
+    transform: rotate(90deg);
+    margin: 4px 0;
+  }
+}

@@ -1,0 +1,294 @@
+{
+  "generatedAt": "2026-06-07T10:34:11.766Z",
+  "domain": "getvendora.net",
+  "sitemapCounts": {
+    "main": 457,
+    "tools": 385,
+    "gccAr": 60,
+    "gccEn": 48
+  },
+  "totalGccHtmlPages": 113,
+  "gccIndexablePages": 109,
+  "gccNoindexPages": 3,
+  "totalToolHtmlPages": 385,
+  "toolIndexablePages": 385,
+  "technicalIssues": [
+    {
+      "type": "gcc_missing_ga",
+      "path": "/bahrain-saudi-gcc-transport/ai-chat-test//"
+    },
+    {
+      "type": "public_missing_ga",
+      "path": "/bahrain-saudi-gcc-transport/ai-chat-test//"
+    },
+    {
+      "type": "public_missing_ga",
+      "path": "/tools/small-business/smb-row-manifest.inc.html"
+    }
+  ],
+  "liveSampleChecks": [
+    {
+      "url": "https://getvendora.net/",
+      "status": 200,
+      "ok": true,
+      "robots": "index, follow",
+      "hasGa": true
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/",
+      "status": 200,
+      "ok": true,
+      "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+      "hasGa": true
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
+      "status": 200,
+      "ok": true,
+      "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+      "hasGa": true
+    },
+    {
+      "url": "https://getvendora.net/calculator/finance/cagr-calculator/",
+      "status": 200,
+      "ok": true,
+      "robots": "index, follow",
+      "hasGa": true
+    },
+    {
+      "url": "https://getvendora.net/robots.txt",
+      "status": 200,
+      "ok": true,
+      "robots": "",
+      "hasGa": false
+    }
+  ],
+  "transportAnalytics": {
+    "totalPageviews": 133,
+    "pageviewsToday": 2,
+    "totalVisitors": 99,
+    "whatsappLeads": 9,
+    "bySource": [
+      {
+        "label": "google",
+        "count": 7,
+        "clicks": 7,
+        "pageviews": 26,
+        "completed": 0,
+        "contacted": 0,
+        "cancelled": 0,
+        "spam": 0,
+        "revenue": 0
+      },
+      {
+        "label": "direct/unknown",
+        "count": 2,
+        "clicks": 2,
+        "pageviews": 105,
+        "completed": 0,
+        "contacted": 0,
+        "cancelled": 0,
+        "spam": 0,
+        "revenue": 0
+      },
+      {
+        "label": "facebook",
+        "count": 0,
+        "clicks": 0,
+        "pageviews": 1,
+        "completed": 0,
+        "contacted": 0,
+        "cancelled": 0,
+        "spam": 0,
+        "revenue": 0
+      },
+      {
+        "label": "chatgpt.com",
+        "count": 0,
+        "clicks": 0,
+        "pageviews": 1,
+        "completed": 0,
+        "contacted": 0,
+        "cancelled": 0,
+        "spam": 0,
+        "revenue": 0
+      }
+    ],
+    "topPages": [
+      {
+        "label": "/bahrain-saudi-gcc-transport/",
+        "count": 55,
+        "sessions": 52,
+        "avg_time_on_page_ms": 211
+      },
+      {
+        "label": "/bahrain-saudi-gcc-transport/bahrain-airport-transfer/",
+        "count": 24,
+        "sessions": 3,
+        "avg_time_on_page_ms": 1199006
+      },
+      {
+        "label": "/bahrain-saudi-gcc-transport/en/",
+        "count": 8,
+        "sessions": 2,
+        "avg_time_on_page_ms": 39
+      },
+      {
+        "label": "/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
+        "count": 4,
+        "sessions": 4,
+        "avg_time_on_page_ms": 74
+      },
+      {
+        "label": "/bahrain-saudi-gcc-transport/parcel-delivery/",
+        "count": 3,
+        "sessions": 3,
+        "avg_time_on_page_ms": 133
+      },
+      {
+        "label": "/bahrain-saudi-gcc-transport/bahrain-to-uae/",
+        "count": 3,
+        "sessions": 3,
+        "avg_time_on_page_ms": 292
+      },
+      {
+        "label": "/bahrain-saudi-gcc-transport/bahrain-to-qatar/",
+        "count": 3,
+        "sessions": 2,
+        "avg_time_on_page_ms": 175
+      },
+      {
+        "label": "/bahrain-saudi-gcc-transport/private-car-bahrain-to-iraq/",
+        "count": 2,
+        "sessions": 2,
+        "avg_time_on_page_ms": 4
+      },
+      {
+        "label": "/bahrain-saudi-gcc-transport/gcc-destinations/",
+        "count": 2,
+        "sessions": 2,
+        "avg_time_on_page_ms": 3
+      },
+      {
+        "label": "/bahrain-saudi-gcc-transport/bahrain-to-najaf-driving-time/",
+        "count": 2,
+        "sessions": 2,
+        "avg_time_on_page_ms": 92
+      },
+      {
+        "label": "/bahrain-saudi-gcc-transport/bahrain-to-kuwait/",
+        "count": 2,
+        "sessions": 2,
+        "avg_time_on_page_ms": 115
+      },
+      {
+        "label": "/bahrain-saudi-gcc-transport/saudi-to-bahrain/",
+        "count": 1,
+        "sessions": 1,
+        "avg_time_on_page_ms": 432
+      }
+    ]
+  },
+  "gccSamplePages": [
+    {
+      "path": "/bahrain-saudi-gcc-transport/about//",
+      "title": "من نحن | خدمة نقل خاصة بين البحرين والسعودية والخليج | Vendora",
+      "h1": "من نحن: نقل خاص موثوق بين البحرين ودول الخليج"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/ai-chat-test//",
+      "title": "AI Booking Assistant Test | Vendora GCC Transport",
+      "h1": "AI Booking Assistant (Controlled Test)"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/airport-pickup-planner//",
+      "title": "مخطط توصيل المطار | البحرين السعودية مطار الدمام والخليج",
+      "h1": "مخطط توصيل واستقبال المطار للبحرين والسعودية ودول الخليج"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/airport-transfer//",
+      "title": "توصيل واستقبال المطار | مطار البحرين ومطارات الخليج | Vendora",
+      "h1": "توصيل واستقبال المطار"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/arbaeen-karbala-travel-tips//",
+      "title": "نصائح السفر إلى كربلاء في موسم الأربعين | Vendora Transport",
+      "h1": "نصائح السفر إلى كربلاء في موسم الأربعين"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/arbaeen-packing-list//",
+      "title": "ماذا تأخذ معك في زيارة الأربعين | Vendora Transport",
+      "h1": "ماذا تأخذ معك في زيارة الأربعين"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/arbaeen-season-bahrain-to-karbala//",
+      "title": "موسم الأربعين من البحرين إلى كربلاء | Vendora Transport",
+      "h1": "موسم الأربعين من البحرين إلى كربلاء"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/arbaeen-transport//",
+      "title": "نقل الأربعين من البحرين إلى العراق | كربلاء والنجف | Vendora",
+      "h1": "نقل الأربعين من البحرين إلى العراق"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-airport-transfer//",
+      "title": "توصيل مطار البحرين | استقبال وتاكسي مطار البحرين | Vendora",
+      "h1": "توصيل مطار البحرين"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-baghdad//",
+      "title": "توصيل من البحرين إلى بغداد | نقل خاص إلى العراق | Vendora",
+      "h1": "توصيل من البحرين إلى بغداد بسيارة خاصة"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-basra//",
+      "title": "توصيل من البحرين إلى البصرة | نقل خاص إلى العراق | Vendora",
+      "h1": "توصيل من البحرين إلى البصرة بسيارة خاصة"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-dammam//",
+      "title": "Bahrain to Dammam Private Driver &amp; Chauffeur — King Fahd Causeway | توصيل خاص من البحرين للدمام GMC XL | Vendora",
+      "h1": "النقل من البحرين إلى الدمام"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-dammam-airport//",
+      "title": "توصيل إلى مطار الدمام من البحرين | مطار الملك فهد | Vendora",
+      "h1": "توصيل إلى مطار الدمام من البحرين"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-dubai//",
+      "title": "من البحرين إلى دبي بسيارة خاصة | 24 ساعة | مدة 8-10 ساعات | Vendora",
+      "h1": "حجز بري خاص من البحرين إلى دبي"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-hamad-airport//",
+      "title": "توصيل إلى مطار حمد من البحرين | مطار الدوحة | Vendora",
+      "h1": "توصيل إلى مطار حمد من البحرين"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-iraq//",
+      "title": "من البحرين إلى العراق بسيارة خاصة | حجز يومي عبر واتساب | Vendora",
+      "h1": "حجز نقل خاص من البحرين إلى العراق"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-karbala//",
+      "title": "توصيل من البحرين إلى كربلاء | نقل خاص وزيارات العراق | Vendora",
+      "h1": "توصيل من البحرين إلى كربلاء بسيارة خاصة"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-karbala-route-plan//",
+      "title": "خط سير السفر من البحرين إلى كربلاء | Vendora Transport",
+      "h1": "خط سير السفر من البحرين إلى كربلاء"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-khobar//",
+      "title": "النقل من البحرين إلى الخبر | خدمة ركاب وطرود 24 ساعة | Vendora",
+      "h1": "النقل من البحرين إلى الخبر"
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-kuwait//",
+      "title": "من البحرين إلى الكويت بسيارة خاصة | 24 ساعة | مدة 6-7 ساعات | Vendora",
+      "h1": "حجز نقل خاص من البحرين إلى الكويت"
+    }
+  ]
+}
