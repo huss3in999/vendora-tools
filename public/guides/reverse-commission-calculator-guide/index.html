@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <link rel="apple-touch-icon" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reverse Commission Calculator Guide — Find the Original Sale | Vendora</title>
+  <meta name="description" content="Reverse commission formula explained: find the original sale from commission pay and rate. Examples, word problems, and free calculator." />
+  <meta name="keywords" content="reverse commission calculator, reverse commission formula, find sale from commission, commission word problem" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://getvendora.net/guides/reverse-commission-calculator-guide/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Reverse Commission Calculator Guide — Find the Original Sale | Vendora" />
+  <meta property="og:description" content="Reverse commission formula explained: find the original sale from commission pay and rate. Examples, word problems, and free calculator." />
+  <meta property="og:url" content="https://getvendora.net/guides/reverse-commission-calculator-guide/" />
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Reverse Commission Calculator Guide — Find the Original Sale | Vendora" />
+  <meta name="twitter:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg" />
+  <meta name="twitter:description" content="Reverse commission formula explained: find the original sale from commission pay and rate. Examples, word problems, and free calculator." />
+  <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "GetVendora", "item": "https://getvendora.net/"},
+                {"@type": "ListItem", "position": 2, "name": "Guides", "item": "https://getvendora.net/guides/"},
+                {"@type": "ListItem", "position": 3, "name": "Reverse Commission Calculator Guide", "item": "https://getvendora.net/guides/reverse-commission-calculator-guide/"}
+            ]
+        },
+        {
+            "@type": "Article",
+            "headline": "Reverse Commission Calculator Guide: Find the Original Sale",
+            "description": "Reverse commission formula explained: find the original sale from commission pay and rate. Examples, word problems, and free calculator.",
+            "mainEntityOfPage": {"@type": "WebPage", "@id": "https://getvendora.net/guides/reverse-commission-calculator-guide/"},
+            "author": {"@type": "Organization", "name": "Vendora Editorial Team"},
+            "publisher": {
+                "@type": "Organization",
+                "name": "Vendora",
+                "logo": {"@type": "ImageObject", "url": "https://getvendora.net/images/street-bites-featured-wrap.svg"}
+            },
+            "datePublished": "2026-06-11",
+            "dateModified": "2026-06-11",
+            "image": "https://getvendora.net/images/street-bites-featured-wrap.svg"
+        },
+        {
+            "@type": "FAQPage",
+            "mainEntity": [
+                {"@type": "Question", "name": "What is a reverse commission calculator?", "acceptedAnswer": {"@type": "Answer", "text": "It finds the original sale amount when you know the commission paid and the commission rate. Formula: Sales = Commission ÷ (Rate ÷ 100)."}},
+                                          {"@type": "Question", "name": "How do you calculate reverse commission?", "acceptedAnswer": {"@type": "Answer", "text": "Divide the commission amount by the rate expressed as a decimal. Example: $240 at 8% → $240 ÷ 0.08 = $3,000 sale."}},
+                                          {"@type": "Question", "name": "If I earned $240 at 8% commission, what was the sale?", "acceptedAnswer": {"@type": "Answer", "text": "$3,000. Check: $3,000 × 0.08 = $240."}},
+                                          {"@type": "Question", "name": "How do you find commission rate from a sale?", "acceptedAnswer": {"@type": "Answer", "text": "Divide commission by sales and multiply by 100. Example: $240 ÷ $3,000 × 100 = 8%."}},
+                                          {"@type": "Question", "name": "Can reverse commission include base salary?", "acceptedAnswer": {"@type": "Answer", "text": "No. Reverse commission isolates the variable commission portion. Base salary is added separately in total pay calculations."}},
+                                          {"@type": "Question", "name": "Where is the reverse commission tool on GetVendora?", "acceptedAnswer": {"@type": "Answer", "text": "Use the reverse mode in the free commission calculator at getvendora.net/tools/commission-calculator/ — enter commission amount and rate to find the sale."}}
+            ]
+        }
+    ]
+}
+  </script>
+  <script defer src="/assets/clarity-helper.js"></script>
+<style>
+  /* Scoped CSS for Vendora SEO Guide to ensure premium presentation */
+  .vendora-guide-wrapper {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #334155;
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    background: #ffffff;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  /* Hero Section Styles */
+  .vendora-hero {
+    background: #0f172a;
+    border-radius: 16px;
+    padding: 60px 20px 40px;
+    margin-bottom: 50px;
+    color: #f8fafc;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .vendora-hero-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: 0.4;
+    background: radial-gradient(circle at top right, #10b981 0%, transparent 40%),
+                radial-gradient(circle at bottom left, #047857 0%, transparent 40%);
+    z-index: 1;
+  }
+
+  .vendora-hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .vendora-hero h1 {
+    color: #ffffff;
+    font-size: 2.75rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  .vendora-hero p.lead {
+    font-size: 1.25rem;
+    color: #cbd5e1;
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+  }
+
+  /* SVG Dashboard Visual */
+  .vendora-hero-visual {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 750px;
+    margin: 0 auto;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .v-dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 16px;
+  }
+  
+  .v-dash-dot { height: 12px; width: 12px; background: #ef4444; border-radius: 50%; display: inline-block; box-shadow: 20px 0 0 #eab308, 40px 0 0 #22c55e;}
+  
+  .v-dash-title { color: #e2e8f0; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .v-dash-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .v-dash-card {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: left;
+  }
+
+  .v-dash-card-title { font-size: 0.875rem; color: #94a3b8; margin-bottom: 8px; }
+  .v-dash-card-value { font-size: 1.5rem; color: #ffffff; font-weight: 700; }
+  .v-dash-card-value.red { color: #ef4444; }
+  .v-dash-card-value.green { color: #10b981; }
+
+  /* Content Typography & Layout */
+  .vendora-content {
+    padding: 0 20px;
+  }
+
+  .vendora-content h2 { 
+    color: #0f172a; 
+    font-size: 2rem; 
+    font-weight: 700; 
+    margin: 50px 0 24px; 
+    letter-spacing: -0.01em;
+  }
+
+  .vendora-content h3 { 
+    color: #1e293b; 
+    font-size: 1.35rem; 
+    font-weight: 600; 
+    margin: 32px 0 16px; 
+  }
+
+  .vendora-content p { 
+    margin-bottom: 24px; 
+    font-size: 1.05rem;
+  }
+
+  .vendora-content ul, .vendora-content ol { 
+    margin-bottom: 32px; 
+    padding-left: 24px; 
+    font-size: 1.05rem;
+  }
+
+  .vendora-content li { 
+    margin-bottom: 12px; 
+  }
+
+  .vendora-content strong {
+    color: #0f172a;
+  }
+
+  .vendora-content a { 
+    color: #10b981; 
+    text-decoration: none; 
+    font-weight: 600; 
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .vendora-content a:hover { 
+    border-color: #10b981; 
+  }
+
+  /* Highlight Boxes & Callouts */
+  .vendora-highlight { 
+    background: #ecfdf5; 
+    border-left: 4px solid #10b981; 
+    padding: 24px; 
+    border-radius: 0 8px 8px 0; 
+    margin: 40px 0; 
+  }
+  
+  .vendora-highlight h4 {
+    color: #047857;
+    margin: 0 0 12px 0;
+    font-size: 1.15rem;
+  }
+
+  .vendora-highlight p:last-child {
+    margin-bottom: 0;
+  }
+
+  .vendora-table-wrapper {
+    overflow-x: auto;
+    margin: 32px 0;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .vendora-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.95rem;
+  }
+
+  .vendora-table th {
+    background: #f8fafc;
+    padding: 16px;
+    font-weight: 600;
+    color: #0f172a;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .vendora-table td {
+    padding: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #334155;
+  }
+
+  /* FAQ Section */
+  .vendora-faq-item {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .vendora-faq-item:last-child {
+    border-bottom: none;
+  }
+
+  /* CTA Section */
+  .vendora-cta-section { 
+    background: #f8fafc; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 16px; 
+    padding: 50px 30px; 
+    text-align: center; 
+    margin-top: 60px; 
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  }
+
+  .vendora-cta-section h2 {
+    margin-top: 0;
+  }
+
+  .vendora-btn { 
+    display: inline-block; 
+    background: #10b981; 
+    color: #ffffff !important; 
+    font-weight: 600; 
+    font-size: 1.125rem;
+    padding: 16px 32px; 
+    border-radius: 8px; 
+    text-decoration: none !important; 
+    transition: all 0.2s ease; 
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
+    margin: 20px 0;
+  }
+
+  .vendora-btn:hover { 
+    background: #059669; 
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -1px rgba(16, 185, 129, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .vendora-hero { padding: 40px 15px 30px; }
+    .vendora-hero h1 { font-size: 2rem; }
+    .v-dash-grid { grid-template-columns: 1fr; }
+    .vendora-content h2 { font-size: 1.75rem; }
+  }
+</style>
+</head>
+<body>
+<article class="vendora-guide-wrapper">
+<!-- phase13-discovery -->
+<nav aria-label="Breadcrumb" style="max-width:900px;margin:0 auto;padding:16px 20px 0;font-size:0.9rem;color:#64748b;">
+  <a href="/" style="color:#10b981;text-decoration:none;">GetVendora</a> › <a href="/guides/" style="color:#10b981;text-decoration:none;">Guides</a> › Reverse Commission Calculator Guide
+</nav>
+
+  <header class="vendora-hero">
+    <div class="vendora-hero-bg"></div>
+    <div class="vendora-hero-content">
+      <h1>Reverse Commission Calculator Guide: Find the Original Sale</h1>
+      <p class="lead">Earned a commission but need the sale amount? Learn the reverse formula with examples. <a href="/tools/commission-calculator/">Use the free reverse commission calculator</a></p>
+      <div class="vendora-highlight" style="text-align:left;margin:24px auto;max-width:720px;">
+        <p><strong>Quick answer:</strong> <strong>Sales = Commission ÷ (Rate ÷ 100)</strong>. If you earned <strong>$240</strong> at <strong>8%</strong>, the sale was <strong>$3,000</strong> because $240 ÷ 0.08 = $3,000.</p>
+      </div>
+    </div>
+  </header>
+  <section class="vendora-content">
+
+    <p>A <strong>reverse commission calculator</strong> answers the opposite question from a normal sales commission tool. Instead of “how much do I earn on this sale?” you ask: <em>“what was the original sale if I earned this commission at this rate?”</em> GetVendora’s <a href="/tools/commission-calculator/">commission calculator</a> includes reverse mode — and this guide explains the math behind it.</p>
+
+    <h2>What Is Reverse Commission?</h2>
+    <p>Standard commission: <strong>Commission = Sales × (Rate ÷ 100)</strong></p>
+    <p>Reverse commission: <strong>Sales = Commission ÷ (Rate ÷ 100)</strong></p>
+    <p>Example: you earned <strong>$240</strong> at an <strong>8%</strong> rate. Original sale = $240 ÷ 0.08 = <strong>$3,000</strong>. This matches a common Google Search word-problem pattern (32 impressions, position ~6.6 in recent GSC data).</p>
+
+    <h2>When You Need Reverse Commission Math</h2>
+    <ul>
+      <li><strong>Sales reps verifying payouts:</strong> You received a commission deposit but not the gross sale on the statement.</li>
+      <li><strong>Managers auditing deals:</strong> Confirm the implied sale size from a commission line item.</li>
+      <li><strong>Freelancers &amp; caterers:</strong> A booking agent took 10% — you know their fee, not the client’s total contract value.</li>
+      <li><strong>Homework &amp; training:</strong> Word problems like “8% commission on a laptop sale earned $240 — what was the price?”</li>
+    </ul>
+
+    <h2>Reverse Commission Formula Step by Step</h2>
+    <ol>
+      <li>Convert the rate to decimal: 8% → 0.08</li>
+      <li>Divide commission by that decimal: $240 ÷ 0.08 = $3,000</li>
+      <li>Check forward: $3,000 × 0.08 = $240 ✓</li>
+    </ol>
+    <div class="vendora-table-wrapper">
+      <table class="vendora-table">
+        <thead><tr><th>Commission earned</th><th>Rate</th><th>Implied sale (reverse)</th></tr></thead>
+        <tbody>
+          <tr><td>$240</td><td>8%</td><td>$3,000</td></tr>
+          <tr><td>$500</td><td>10%</td><td>$5,000</td></tr>
+          <tr><td>$150</td><td>5%</td><td>$3,000</td></tr>
+          <tr><td>$600</td><td>12%</td><td>$5,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Worked Word Problem</h2>
+    <p><strong>Question:</strong> A salesperson earns 8% commission on every laptop sold. If they earned $240 in commission from one sale, what was the price of the laptop?</p>
+    <p><strong>Solution:</strong> Sale = $240 ÷ 0.08 = <strong>$3,000</strong>.</p>
+    <p>Open the <a href="/tools/commission-calculator/">commission calculator</a>, use the reverse commission section, enter $240 commission and 8% rate — the tool returns the same $3,000 sale.</p>
+
+    <h2>Reverse Rate vs Reverse Sale</h2>
+    <p>Two related reverse calculations appear in business:</p>
+    <ul>
+      <li><strong>Find the sale</strong> (given commission + rate) — covered above.</li>
+      <li><strong>Find the effective rate</strong> (given commission + sale): Rate = (Commission ÷ Sales) × 100. Example: $240 on $3,000 → 8%.</li>
+    </ul>
+    <p>For full payout planning including base salary, see our <a href="/guides/commission-calculator-guide/">commission calculator guide</a>.</p>
+
+    <h2>Common Mistakes</h2>
+    <h3>1. Forgetting to Convert the Percentage</h3>
+    <p>Dividing $240 by 8 instead of 0.08 gives $30 — wrong by a factor of 100. Always divide by the decimal form of the rate.</p>
+    <h3>2. Using Net Commission on Gross Sales</h3>
+    <p>If taxes or fees were removed before commission was calculated, reverse the same base amount your plan uses — usually net sales, not invoice total with tax.</p>
+    <h3>3. Mixing Up Tiered Rates</h3>
+    <p>Reverse math assumes a single flat rate. Tiered plans need segment-by-segment calculation.</p>
+    
+    
+    <h2>Related Guides</h2>
+    <ul>
+      <li><a href="/guides/commission-calculator-guide/">Commission calculator guide</a> — full sales commission planning</li>
+      <li><a href="/guides/daily-sales-summary-guide/">Daily sales summary guide</a> — end-of-day restaurant reporting</li>
+    </ul>
+    <h2>Popular Tools</h2>
+    <ul>
+      <li><a href="/tools/commission-calculator/">Commission calculator</a> — reverse mode built in</li>
+      <li><a href="/tools/hourly-to-salary-calculator/">Hourly to salary calculator</a> — total pay planning</li>
+      <li><a href="/tools/daily-sales-summary/">Daily sales summary</a> — track net sales and AOV</li>
+    </ul>
+
+    <h2>Frequently Asked Questions (FAQ)</h2>
+    <div class="vendora-faq-item">
+      <h3>What is a reverse commission calculator?</h3>
+      <p>It finds the original sale amount when you know the commission paid and the commission rate. Formula: Sales = Commission ÷ (Rate ÷ 100).</p>
+    </div>
+
+    <div class="vendora-faq-item">
+      <h3>How do you calculate reverse commission?</h3>
+      <p>Divide the commission amount by the rate expressed as a decimal. Example: $240 at 8% → $240 ÷ 0.08 = $3,000 sale.</p>
+    </div>
+
+    <div class="vendora-faq-item">
+      <h3>If I earned $240 at 8% commission, what was the sale?</h3>
+      <p>$3,000. Check: $3,000 × 0.08 = $240.</p>
+    </div>
+
+    <div class="vendora-faq-item">
+      <h3>How do you find commission rate from a sale?</h3>
+      <p>Divide commission by sales and multiply by 100. Example: $240 ÷ $3,000 × 100 = 8%.</p>
+    </div>
+
+    <div class="vendora-faq-item">
+      <h3>Can reverse commission include base salary?</h3>
+      <p>No. Reverse commission isolates the variable commission portion. Base salary is added separately in total pay calculations.</p>
+    </div>
+
+    <div class="vendora-faq-item">
+      <h3>Where is the reverse commission tool on GetVendora?</h3>
+      <p>Use the reverse mode in the free commission calculator at getvendora.net/tools/commission-calculator/ — enter commission amount and rate to find the sale.</p>
+    </div>
+    <div class="vendora-cta-section">
+      <h2>Run the Reverse Calculation</h2>
+      <p>Enter your commission amount and rate in the free commission calculator — reverse mode finds the original sale instantly.</p>
+      <a href="https://getvendora.net/tools/commission-calculator/" class="vendora-btn">Open Commission Calculator</a>
+    </div>
+  </section>
+</article>
+<script defer src="../../assets/analytics-loader.js"></script>
+</body>
+</html>

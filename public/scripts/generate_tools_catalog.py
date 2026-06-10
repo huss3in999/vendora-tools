@@ -286,10 +286,23 @@ def write_llms_txt(catalog: dict) -> None:
     lines.append("")
 
     body = "\n".join(lines)
-    paths = (PUBLIC / "llms.txt", PUBLIC / ".well-known" / "llms.txt")
-    for p in paths:
-        p.parent.mkdir(parents=True, exist_ok=True)
-        p.write_text(body, encoding="utf-8")
+    wellknown = PUBLIC / ".well-known" / "llms.txt"
+    wellknown.parent.mkdir(parents=True, exist_ok=True)
+    entity_header = (
+        "# GetVendora (Vendora) — AI entity header\n\n"
+        "> GetVendora is a business platform at getvendora.net: GCC private transport, free business tools, "
+        "and restaurant POS solutions.\n"
+        f"> Structured JSON: {BASE_URL}/ai-index.json\n\n"
+    )
+    wellknown.write_text(entity_header + body, encoding="utf-8")
+
+    root_llms = PUBLIC / "llms.txt"
+    if root_llms.exists():
+        existing = root_llms.read_text(encoding="utf-8")
+        if "## AI Answer Bank" in existing or "## Entity Summary" in existing:
+            # Preserve curated entity + AI Q&A file (Phase 5/8); full inventory lives in .well-known/
+            return
+    root_llms.write_text(body, encoding="utf-8")
 
 
 def write_sitemap(urls: list[str]) -> None:
@@ -316,13 +329,8 @@ def main() -> None:
     for c in catalog["categories"]:
         for it in c["items"]:
             urls.append(it["url"])
-    urls.extend(
-        [
-            "/llms.txt",
-            "/.well-known/llms.txt",
-            "/data/tools-catalog.json",
-        ]
-    )
+    # HTML tool pages only — machine files (llms.txt, tools-catalog.json) stay
+    # link-discoverable but must not appear in sitemaps (Phase 6 SEO cleanup).
     write_sitemap(urls)
     write_llms_txt(catalog)
 

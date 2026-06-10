@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Owner Dashboard | Gourmet Tomorrow Analytics</title>
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="styles.css?v=15">
+  
+  <!-- Boxicons CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+
+  <style>
+    /* Clickable KPI Dashboard Cards */
+    .clickable-kpi {
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .clickable-kpi:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 107, 53, 0.15);
+      border-color: var(--color-primary);
+    }
+    .clickable-kpi:active {
+      transform: translateY(-1px);
+    }
+
+    /* Unified Menu Item Rows */
+    .admin-menu-item-row {
+      display: flex;
+      gap: 16px;
+      padding: 16px;
+      background: var(--bg-surface-elevated);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      align-items: center;
+      position: relative;
+      transition: background-color 0.2s ease;
+    }
+    .admin-menu-item-row:hover {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+    .admin-menu-item-img {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-xs);
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+    }
+    .admin-menu-item-details {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .admin-menu-item-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .admin-menu-item-price {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--color-success);
+    }
+    
+    /* Interactive Checkbox Grid inside menu catalog cards */
+    .menu-item-toggles {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 8px 12px;
+      border-radius: var(--radius-xs);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: 4px;
+    }
+    .menu-item-toggles label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+      user-select: none;
+      transition: color 0.15s ease;
+    }
+    .menu-item-toggles label:hover {
+      color: white;
+    }
+    .menu-item-toggles label input {
+      accent-color: var(--color-primary);
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+    }
+    .admin-menu-item-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .today-story-export-card {
+      margin-bottom: 28px;
+      padding: 24px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 182, 39, 0.22);
+      background:
+        radial-gradient(circle at top right, rgba(255, 107, 53, 0.12), transparent 45%),
+        linear-gradient(180deg, rgba(255, 182, 39, 0.05), rgba(22, 22, 26, 0.9));
+    }
+
+    .story-theme-picker {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .story-theme-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface-elevated);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .story-theme-btn i {
+      font-size: 1.4rem;
+      color: var(--color-secondary);
+    }
+
+    .story-theme-btn.active,
+    .story-theme-btn:hover {
+      border-color: rgba(255, 182, 39, 0.55);
+      color: var(--text-primary);
+      box-shadow: 0 8px 24px rgba(255, 107, 53, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .story-workspace {
+      display: grid;
+      grid-template-columns: minmax(260px, 340px) minmax(280px, 1fr);
+      gap: 28px;
+      align-items: start;
+      margin-top: 8px;
+    }
+
+    .story-workspace-mobile {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .story-preview-first-mobile {
+      order: -1;
+    }
+
+    .story-editor-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface-elevated);
+    }
+
+    .story-editor-panel h4 {
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+    }
+
+    .story-editor-toggles {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .story-editor-toggles label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    #story-menuapp-options {
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 10px;
+      margin-top: 4px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .story-item-editor-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 420px;
+      overflow-y: auto;
+    }
+
+    .story-item-editor-row {
+      display: grid;
+      grid-template-columns: 18px 52px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .story-item-editor-row img {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+    }
+
+    .story-item-editor-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .story-item-editor-fields input[type="text"] {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: white;
+      font-size: 0.82rem;
+    }
+
+    .story-item-editor-fields label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .story-preview-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .story-preview-viewport {
+      width: 100%;
+      max-width: min(360px, 100vw - 48px);
+      min-height: 200px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 2px solid rgba(255, 182, 39, 0.4);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+      background: #050507;
+      position: relative;
+      transition: height 0.15s ease;
+    }
+
+    .story-preview-scaler {
+      transform-origin: top left;
+      width: 1080px;
+      height: 1920px;
+      pointer-events: none;
+    }
+
+    .story-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 360px;
+    }
+
+    .story-actions .admin-btn-primary,
+    .story-actions .admin-btn-outline {
+      justify-content: center;
+      width: 100%;
+      padding: 14px 18px;
+      font-size: 0.95rem;
+    }
+
+    .story-share-btn {
+      background: var(--gradient-whatsapp) !important;
+      border: none !important;
+      color: white !important;
+    }
+
+    /* ---- Story capture frame (1080x1920) ---- */
+    .story-frame {
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      position: relative;
+      font-family: 'Outfit', 'Inter', sans-serif;
+      color: #fff;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .story-frame * { box-sizing: border-box; }
+
+    .story-head {
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+      padding: 44px 44px 18px;
+      text-align: center;
+    }
+
+    .story-logo {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 14px;
+      border-radius: 24px;
+      object-fit: contain;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 2px solid rgba(255, 210, 130, 0.45);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    .story-kicker {
+      font-size: 28px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      opacity: 0.82;
+      margin-bottom: 10px;
+    }
+
+    .story-title {
+      font-size: 68px;
+      line-height: 0.95;
+      font-weight: 800;
+      margin: 0 0 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .story-tagline {
+      margin-top: 6px !important;
+      font-size: 24px !important;
+    }
+
+    .story-frame-dense .story-head { padding: 32px 40px 10px; }
+    .story-frame-dense .story-logo { width: 72px; height: 72px; margin-bottom: 10px; }
+    .story-frame-dense .story-kicker { font-size: 22px; margin-bottom: 6px; }
+    .story-frame-dense .story-title { font-size: 52px; }
+    .story-frame-dense .story-date,
+    .story-frame-dense .story-brand { font-size: 26px; }
+
+    .story-date,
+    .story-brand {
+      font-size: 34px;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+    }
+
+    .story-body {
+      position: relative;
+      z-index: 2;
+      padding: 6px 36px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .story-hero-card,
+    .story-single-card,
+    .story-grid-card {
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.42);
+      flex-shrink: 0;
+    }
+
+    .story-hero-card {
+      border-radius: 28px;
+    }
+
+    .story-single-card {
+      border-radius: 30px;
+      flex: 1;
+    }
+
+    .story-duo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .story-card-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      flex: 1;
+      min-height: 0;
+      align-content: start;
+    }
+
+    .story-grid-card {
+      border-radius: 22px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.36);
+    }
+
+    .story-grid-card-span {
+      grid-column: 1 / -1;
+      width: calc(50% - 7px);
+      justify-self: center;
+    }
+
+    .story-card-overlay {
+      position: absolute;
+      inset: auto 0 0 0;
+      z-index: 2;
+      padding: 28px 26px 30px;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 28%, rgba(0,0,0,0.82) 100%);
+    }
+
+    .story-card-overlay h2 {
+      margin: 0 0 6px;
+      font-size: 40px;
+      line-height: 1.05;
+      font-weight: 800;
+      text-shadow: 0 4px 18px rgba(0,0,0,0.55);
+    }
+
+    .story-card-overlay .story-price {
+      display: inline-block;
+      font-size: 32px;
+      font-weight: 800;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(255, 182, 39, 0.92);
+      color: #16161a;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.28);
+    }
+
+    .story-card-compact .story-card-overlay { padding: 14px 16px 16px; }
+    .story-card-compact .story-card-overlay h2 { font-size: 28px; }
+    .story-card-compact .story-card-overlay .story-price { font-size: 22px; padding: 4px 12px; }
+
+    .story-card-tiny .story-card-overlay { padding: 10px 12px 12px; }
+    .story-card-tiny .story-card-overlay h2 { font-size: 22px; margin-bottom: 4px; }
+    .story-card-tiny .story-card-overlay .story-price { font-size: 18px; padding: 3px 10px; }
+
+    .story-foot {
+      flex-shrink: 0;
+      position: relative;
+      z-index: 3;
+      padding: 18px 40px 32px;
+      text-align: center;
+      font-size: 26px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      margin-top: auto;
+    }
+
+    .story-tpl-luxury {
+      background: radial-gradient(circle at 50% -10%, rgba(255, 182, 39, 0.22), transparent 42%), linear-gradient(180deg, #121015 0%, #0a090c 100%);
+    }
+
+    .story-tpl-luxury .story-kicker { color: #ffd88d; }
+    .story-tpl-luxury .story-title {
+      background: linear-gradient(135deg, #fff8eb, #ffd88d 45%, #ff9b4d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .story-tpl-luxury .story-date { color: rgba(255, 220, 170, 0.8); }
+    .story-tpl-luxury .story-brand { color: #fff; font-weight: 700; margin-top: 8px; }
+    .story-tpl-luxury .story-foot { color: rgba(255, 220, 170, 0.75); background: linear-gradient(180deg, transparent, rgba(0,0,0,0.55)); }
+
+    .story-tpl-modern {
+      background: #0f1014;
+    }
+
+    .story-tpl-modern::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 12px;
+      background: linear-gradient(180deg, #ff6b35, #ffb627);
+    }
+
+    .story-tpl-modern .story-head { text-align: left; padding-left: 72px; }
+    .story-tpl-modern .story-logo { margin-left: 0; }
+    .story-tpl-modern .story-title { font-size: 86px; color: #fff; }
+    .story-tpl-modern .story-title span { color: #ff6b35; display: block; }
+    .story-tpl-modern .story-body { padding-left: 56px; padding-right: 56px; }
+    .story-tpl-modern .story-card-overlay .story-price { background: #ff6b35; color: #fff; }
+    .story-tpl-modern .story-foot { color: rgba(255,255,255,0.65); text-align: left; padding-left: 72px; }
+
+    .story-tpl-vibrant {
+      background: linear-gradient(165deg, #ff6b35 0%, #ff4d6d 42%, #9d0208 100%);
+    }
+
+    .story-tpl-vibrant::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.42) 72%, rgba(0,0,0,0.62) 100%);
+      pointer-events: none;
+    }
+
+    .story-tpl-vibrant .story-title { color: #fff; text-shadow: 0 6px 24px rgba(0,0,0,0.35); }
+    .story-tpl-vibrant .story-kicker { color: rgba(255,255,255,0.9); }
+    .story-tpl-vibrant .story-hero-card,
+    .story-tpl-vibrant .story-single-card,
+    .story-tpl-vibrant .story-grid-card {
+      border: 3px solid rgba(255,255,255,0.22);
+    }
+    .story-tpl-vibrant .story-card-overlay .story-price { background: #fff; color: #c9184a; }
+    .story-tpl-vibrant .story-foot { color: rgba(255,255,255,0.92); }
+
+    .story-tpl-menuapp {
+      background: #16161a;
+      color: #fff;
+    }
+
+    .story-menuapp-header {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 40px 36px 22px;
+      flex-shrink: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .story-menuapp-header .story-logo {
+      width: 88px;
+      height: 88px;
+      margin: 0;
+      border-radius: 22px;
+    }
+
+    .story-menuapp-brand h1 {
+      margin: 0 0 6px;
+      font-size: 46px;
+      line-height: 1.05;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff7e8, #ffd88d 45%, #ff8b4d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .story-menuapp-brand p {
+      margin: 0;
+      font-size: 26px;
+      color: rgba(255, 255, 255, 0.72);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .story-menuapp-body {
+      flex: 1;
+      padding: 20px 32px 16px;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .story-menuapp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-content: start;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .story-menuapp-density-compact .story-menu-card-img-wrap {
+      aspect-ratio: 4 / 3;
+    }
+
+    .story-menuapp-density-compact .story-menu-card-title {
+      font-size: 22px;
+      min-height: 1.4em;
+      -webkit-line-clamp: 1;
+    }
+
+    .story-menuapp-density-compact .story-menu-card-price {
+      font-size: 26px;
+    }
+
+    .story-menuapp-density-compact .story-menu-card-content {
+      padding: 10px 12px 12px;
+      gap: 6px;
+    }
+
+    .story-menu-card.no-actions .story-menu-card-content {
+      padding-bottom: 12px;
+    }
+
+    .story-menu-card.no-actions .story-menu-card-title {
+      min-height: 1.2em;
+    }
+
+    .story-menu-card {
+      background: #1f1f23;
+      border: 1px solid rgba(46, 196, 182, 0.28);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    .story-menu-card-img-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #121215;
+      overflow: hidden;
+    }
+
+    .story-menu-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .story-menu-card-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #2ec4b6 0%, #00f5d4 100%);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    }
+
+    .story-menu-card-content {
+      padding: 14px 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .story-menu-card-title {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.15;
+      font-weight: 700;
+      color: #fff;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 2.3em;
+    }
+
+    .story-menu-card-price {
+      font-size: 30px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .story-menu-card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .story-menu-btn-preorder {
+      flex: 1;
+      border: none;
+      border-radius: 12px;
+      padding: 11px 8px;
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #ff6b35 0%, #ffb627 100%);
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(255, 107, 53, 0.28);
+    }
+
+    .story-menu-btn-reserve {
+      flex: 1;
+      border-radius: 12px;
+      padding: 11px 8px;
+      font-size: 17px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.82);
+      background: #2a2a30;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      text-align: center;
+    }
+
+    .story-tpl-menuapp .story-foot {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 24px;
+    }
+
+    .story-empty-msg {
+      padding: 120px 60px;
+      text-align: center;
+      font-size: 38px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.5;
+    }
+
+    #story-html-capture {
+      position: fixed;
+      left: -9999px;
+      top: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) {
+      .story-workspace,
+      .story-workspace-mobile {
+        grid-template-columns: 1fr;
+      }
+      .story-theme-picker {
+        grid-template-columns: 1fr;
+      }
+      .story-preview-viewport {
+        max-width: min(100%, 340px);
+        margin: 0 auto;
+      }
+      .story-actions {
+        max-width: min(100%, 340px);
+        margin: 0 auto;
+      }
+      .story-preview-first-mobile {
+        order: -1;
+      }
+    }
+
+    @media (min-width: 901px) {
+      .story-workspace-mobile {
+        grid-template-columns: minmax(300px, 1fr) minmax(260px, 340px);
+      }
+      .story-preview-first-mobile {
+        order: 0;
+      }
+    }
+
+    /* Mobile Responsive styling overrides */
+    @media (max-width: 768px) {
+      .admin-menu-item-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .admin-menu-item-img {
+        width: 100%;
+        height: 160px;
+      }
+      .menu-item-toggles {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+      .admin-menu-item-actions {
+        justify-content: flex-end;
+        border-top: 1px solid var(--border-color);
+        padding-top: 10px;
+        margin-top: 4px;
+      }
+      .charts-grid {
+        grid-template-columns: 1fr !important;
+      }
+      #settings-management {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
+</head>
+<body class="admin-body admin-app-body">
+
+  <!-- Admin Sticky Navigation -->
+  <nav class="admin-nav">
+    <div class="container admin-nav-content">
+      <div class="logo">
+        <i class="bx bxs-hot"></i>
+        <span>Gourmet</span>Admin
+      </div>
+      
+      <!-- Live Sync status indicator -->
+      <div class="db-mode-indicator">
+        <div class="indicator-dot local" id="db-indicator-dot"></div>
+        <span id="db-indicator-text">Local Demo Mode</span>
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:center;">
+        <div class="admin-notification-bell" id="admin-bell" title="Unread tomorrow requests activity">
+          <i class="bx bx-bell"></i>
+          <span class="bell-badge" id="admin-bell-badge" style="display: none;">0</span>
+        </div>
+        <button class="admin-btn-outline" id="reset-demo-btn" title="Reset daily requests, request counts, and confirmed menu">
+          <i class="bx bx-refresh"></i> Reset Daily Requests
+        </button>
+        <a href="index.html" class="admin-btn-primary">
+          <i class="bx bx-store-alt"></i> View Shop
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-top: 32px; padding-bottom: 80px;">
+    
+    <!-- Title Section -->
+    <div style="margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <h1>Menu Control</h1>
+        <p style="color: var(--text-secondary);">Add dishes, set today availability, confirm tomorrow's menu, and manage customer requests.</p>
+      </div>
+    </div>
+
+    <!-- Admin Section Tabs -->
+    <div class="menu-sections-tabs" id="admin-sections-tabs">
+      <button class="section-tab active" data-section="menu">
+        <i class="bx bx-food-menu"></i> Menu
+      </button>
+      <button class="section-tab" data-section="orders">
+        <i class="bx bx-shopping-bag"></i> Orders
+      </button>
+      <button class="section-tab" data-section="requests" id="admin-tab-btn-requests">
+        <i class="bx bx-message-square-detail"></i> Requests
+        <span class="bell-badge" id="requests-tab-badge" style="display: none; position: static; margin-left: 6px;">0</span>
+      </button>
+      <button class="section-tab" data-section="plan">
+        <i class="bx bx-calendar-check"></i> Tomorrow Plan
+      </button>
+      <button class="section-tab" data-section="suggestions">
+        <i class="bx bx-comment-add"></i> Suggestions
+      </button>
+      <button class="section-tab" data-section="social">
+        <i class="bx bx-share-alt"></i> Social
+      </button>
+      <button class="section-tab" data-section="customers">
+        <i class="bx bx-group"></i> Customers
+      </button>
+      <button class="section-tab" data-section="settings">
+        <i class="bx bx-cog"></i> Settings
+      </button>
+      <button class="section-tab" data-section="dashboard">
+        <i class="bx bx-bar-chart-alt-2"></i> Reports
+      </button>
+    </div>
+
+    <!-- Dynamic System Alerts Container -->
+    <div id="admin-config-alert-container"></div>
+
+    <!-- 1. DASHBOARD TAB -->
+    <div id="admin-tab-dashboard" class="admin-tab-content">
+      <!-- Clickable KPI Metric Summary Grid -->
+      <section class="dashboard-grid" style="margin-top: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+        <div class="dashboard-card-kpi clickable-kpi" data-target-section="orders" id="kpi-card-orders">
+          <span class="kpi-title">Today's Orders</span>
+          <div class="kpi-value" id="kpi-today-orders">0</div>
+          <div class="kpi-trend neutral"><i class="bx bx-shopping-bag"></i> Click to view orders list</div>
+        </div>
+
+        <div class="dashboard-card-kpi clickable-kpi" data-target-section="requests" id="kpi-card-requests" style="border-color: rgba(255, 182, 39, 0.25);">
+          <span class="kpi-title">Tomorrow Requests</span>
+          <div class="kpi-value" id="kpi-tomorrow-requests" style="color: var(--color-secondary);">0</div>
+          <div class="kpi-trend neutral" style="color: var(--color-secondary);"><i class="bx bx-calendar-star"></i> Click to approve requested dishes</div>
+        </div>
+
+        <div class="dashboard-card-kpi clickable-kpi" data-target-section="suggestions" id="kpi-card-suggestions">
+          <span class="kpi-title">New Suggestions</span>
+          <div class="kpi-value" id="kpi-new-suggestions">0</div>
+          <div class="kpi-trend neutral"><i class="bx bx-comment-add"></i> Click to view customer suggestions</div>
+        </div>
+
+        <div class="dashboard-card-kpi clickable-kpi" data-target-section="menu" data-filter="today" id="kpi-card-today-menu">
+          <span class="kpi-title">Today Menu Items</span>
+          <div class="kpi-value" id="kpi-today-menu-count">0</div>
+          <div class="kpi-trend neutral"><i class="bx bx-calendar-today"></i> Click to filter catalog by Today</div>
+        </div>
+        
+        <div class="dashboard-card-kpi clickable-kpi" data-target-section="menu" data-filter="tomorrow" id="kpi-card-tomorrow-menu">
+          <span class="kpi-title">Tomorrow Menu Items</span>
+          <div class="kpi-value" id="kpi-tomorrow-menu-count" style="color: var(--color-success);">0</div>
+          <div class="kpi-trend neutral" style="color: var(--color-success);"><i class="bx bx-calendar-check"></i> Click to filter catalog by Tomorrow</div>
+        </div>
+
+        <div class="dashboard-card-kpi clickable-kpi" data-target-section="menu" data-filter="soldout" id="kpi-card-soldout" style="border-color: rgba(230, 57, 70, 0.25);">
+          <span class="kpi-title">Sold Out Items</span>
+          <div class="kpi-value" id="kpi-sold-out-count" style="color: var(--color-danger);">0</div>
+          <div class="kpi-trend neutral" style="color: var(--color-danger);"><i class="bx bx-tag"></i> Click to filter catalog by Sold Out</div>
+        </div>
+      </section>
+
+      <!-- Visual Charts Analytics Grid -->
+      <section class="charts-grid">
+        <!-- Top Selling vs Viewed Items Bar Chart -->
+        <div class="chart-card">
+          <div class="chart-header-row">
+            <h3 class="chart-title">Item Engagement: Views vs. Orders</h3>
+            <span style="font-size:0.75rem; color:var(--text-muted); display:flex; gap:10px; align-items:center;">
+              <span><i class="bx bxs-square" style="color:var(--color-primary);"></i> Ordered</span>
+              <span><i class="bx bxs-square" style="color:var(--color-secondary);"></i> Viewed</span>
+            </span>
+          </div>
+          <div class="svg-chart-container" id="items-chart-container">
+            <div style="width:100%; text-align:center; color:var(--text-muted); font-size:0.85rem; padding-bottom:40px;">
+              No engagement data logged yet. Open customer site to view items!
+            </div>
+          </div>
+        </div>
+
+        <!-- Preferred Fulfillment Times -->
+        <div class="chart-card">
+          <h3 class="chart-title mb-2">Tomorrow Preferred Slots</h3>
+          <div class="metric-row-list" id="slots-chart-container" style="flex-grow:1; display:flex; flex-direction:column; justify-content:center;">
+            <p style="text-align:center; color:var(--text-muted); font-size:0.85rem;">No time slots requested yet.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Live customer clickstream log feed -->
+      <section class="admin-data-grid" style="grid-template-columns: 1fr; margin-top: 24px;">
+        <div class="admin-logs-card" style="width: 100%;">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 16px;">
+            <h3 class="chart-title" style="margin:0;">Live Behavior Feed</h3>
+            <span class="badge badge-outline" style="font-size:0.7rem;">Active Session Log</span>
+          </div>
+          <div class="log-stream-wrapper" id="behavior-log-stream" style="height: 350px;">
+            <div style="text-align:center; color:var(--text-muted); font-size:0.85rem; padding-top:60px;">
+              Waiting for customer interactions...
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 2. ORDERS TAB -->
+    <div id="admin-tab-orders" class="admin-tab-content">
+      <section class="admin-menu-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h3 class="chart-title" style="font-size:1.4rem;">Incoming Orders Control</h3>
+            <p style="color:var(--text-secondary); font-size:0.85rem; margin-top:2px;">Track and update customer pre-orders. Change order statuses directly.</p>
+          </div>
+          <div style="background: var(--bg-surface-elevated); padding: 8px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-weight: 700; color: var(--color-success); display: flex; align-items: center; gap: 8px;">
+            <span>Expected Today Revenue:</span>
+            <span id="orders-kpi-revenue">$0.000</span>
+          </div>
+        </div>
+        
+        <div class="table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer Name</th>
+                <th>Phone</th>
+                <th>Time & Fulfillment</th>
+                <th>Dishes Ordered</th>
+                <th>Total</th>
+                <th>WhatsApp Status</th>
+                <th>Status</th>
+                <th style="min-width: 250px; text-align: center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body">
+              <tr>
+                <td colspan="9" style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+                  No orders yet.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- 3. MENU TAB -->
+    <div id="admin-tab-menu" class="admin-tab-content active">
+      <section class="admin-menu-card" id="menu-management">
+        <div class="admin-control-hero">
+          <div>
+            <span class="admin-control-label">Live menu controls</span>
+            <h2>Choose exactly what customers see today and tomorrow.</h2>
+            <p>Use Available Today for food customers can order now. Use Confirmed Tomorrow for food you will cook tomorrow. Turn Visible off to hide an item without deleting its history.</p>
+          </div>
+          <div class="admin-control-actions">
+            <button class="admin-btn-primary" id="quick-add-dish-btn">
+              <i class="bx bx-plus"></i> Add Food
+            </button>
+            <button class="admin-btn-outline" id="quick-settings-btn">
+              <i class="bx bx-cog"></i> Shop Settings
+            </button>
+          </div>
+        </div>
+
+        <div class="menu-manager-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h3 class="chart-title" style="font-size:1.4rem;">Food Catalog</h3>
+            <p style="color:var(--text-secondary); font-size:0.85rem; margin-top:2px;">Add, edit, delete, hide, sell out, and choose today's or tomorrow's menu.</p>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="admin-btn-outline danger-outline" id="btn-clear-menu">
+              <i class="bx bx-trash"></i> Clear Demo Menu
+            </button>
+            <button class="admin-btn-outline" id="btn-copy-today-tomorrow" style="border-color: var(--color-primary); color: var(--color-primary); font-weight:600; padding: 8px 16px; display:inline-flex; align-items:center; gap:6px; background:transparent; cursor:pointer;">
+              <i class="bx bx-copy-alt"></i> Copy Today to Tomorrow
+            </button>
+            <button class="admin-btn-primary" id="add-dish-btn">
+              <i class="bx bx-plus"></i> Add New Food
+            </button>
+          </div>
+        </div>
+
+        <!-- Search & Filter Toolbar -->
+        <div class="admin-search-filter-bar" style="display:flex; gap:16px; margin-bottom:20px; flex-wrap:wrap; background:var(--bg-surface-elevated); padding:16px; border-radius:var(--radius-sm); border:1px solid var(--border-color); align-items:center;">
+          <div style="flex-grow:1; min-width:200px; display: flex; flex-direction: column; gap: 4px;">
+            <label class="form-label" style="font-size:0.75rem; margin-bottom: 0;">Search Food</label>
+            <input type="text" id="admin-search-dishes" class="form-input" placeholder="Search dish..." style="padding: 8px 12px; font-size:0.85rem;">
+          </div>
+          <div style="width:160px; display: flex; flex-direction: column; gap: 4px;">
+            <label class="form-label" style="font-size:0.75rem; margin-bottom: 0;">Category</label>
+            <select id="admin-filter-category" class="form-input" style="padding: 8px 12px; font-size:0.85rem; background:var(--bg-surface);">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+          <div style="width:160px; display: flex; flex-direction: column; gap: 4px;">
+            <label class="form-label" style="font-size:0.75rem; margin-bottom: 0;">Status Filter</label>
+            <select id="admin-filter-status" class="form-input" style="padding: 8px 12px; font-size:0.85rem; background:var(--bg-surface);">
+              <option value="all">All Items</option>
+              <option value="today">Available Today</option>
+              <option value="tomorrow">Confirmed Tomorrow</option>
+              <option value="soldout">Sold Out</option>
+              <option value="hidden">Hidden</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;" id="admin-menu-list">
+          <!-- Rendered dynamically by admin.js -->
+        </div>
+      </section>
+    </div>
+
+    <!-- 4. REQUESTS TAB -->
+    <div id="admin-tab-requests" class="admin-tab-content">
+      <section class="admin-demand-section" id="tomorrow-demand" style="display: flex; flex-direction: column; gap: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <h2 style="font-size: 1.8rem;"><i class="bx bx-calendar-star" style="color: var(--color-primary);"></i> Customer Requests for Tomorrow</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Today's customer requests only. They auto-clear after 24 hours so yesterday's requests never mix with new ones. Approve a dish to show it in the customer Tomorrow menu.</p>
+          </div>
+          
+          <!-- Voting Deadline Settings -->
+          <div class="db-mode-indicator" style="background: var(--bg-surface); padding: 8px 16px; display: flex; align-items: center; gap: 10px;">
+            <i class="bx bx-timer" style="font-size: 1.2rem; color: var(--color-secondary);"></i>
+            <span>Voting Deadline:</span>
+            <select id="voting-deadline-select" style="background: var(--bg-surface-elevated); border: 1px solid var(--border-color); padding: 4px 8px; border-radius: var(--radius-sm); font-size: 0.8rem; color: white;">
+              <option value="11:00 PM">11:00 PM (Default)</option>
+              <option value="10:00 PM">10:00 PM</option>
+              <option value="9:00 PM">9:00 PM</option>
+              <option value="8:00 PM">8:00 PM</option>
+            </select>
+            <span id="voting-deadline-countdown" style="font-size: 0.85rem; font-weight: 700; color: var(--color-primary);">--:--:-- left</span>
+          </div>
+        </div>
+
+        <!-- Smart highlights box for alerts -->
+        <div id="demand-alerts-container" style="display: flex; flex-direction: column; gap: 10px;">
+          <!-- Dynamically rendered smart demand highlights -->
+        </div>
+
+        <!-- Voting KPI Metrics Row -->
+        <div class="dashboard-grid" style="margin-top: 0;">
+          <div class="dashboard-card-kpi" style="border-color: rgba(255, 182, 39, 0.2); pointer-events: none;">
+            <span class="kpi-title">Total Votes</span>
+            <div class="kpi-value" id="kpi-vote-count">0</div>
+            <div class="kpi-trend neutral"><i class="bx bx-poll"></i> Total requests</div>
+          </div>
+          <div class="dashboard-card-kpi" style="border-color: rgba(46, 196, 182, 0.2); pointer-events: none;">
+            <span class="kpi-title">Reserved Portions</span>
+            <div class="kpi-value" id="kpi-reserve-count">0</div>
+            <div class="kpi-trend positive" style="color: var(--color-success);"><i class="bx bx-shopping-bag"></i> Firm reservations</div>
+          </div>
+          <div class="dashboard-card-kpi" style="pointer-events: none;">
+            <span class="kpi-title">Expected Interest Sales</span>
+            <div class="kpi-value" id="kpi-vote-expected-sales">$0.00</div>
+            <div class="kpi-trend neutral"><i class="bx bx-dollar-circle"></i> Based on votes</div>
+          </div>
+          <div class="dashboard-card-kpi" style="border-color: rgba(255, 107, 53, 0.2); pointer-events: none;">
+            <span class="kpi-title">Voter Conversion</span>
+            <div class="kpi-value" id="kpi-voter-conversion">0.0%</div>
+            <div class="kpi-trend positive" id="kpi-voter-conversion-trend"><i class="bx bx-undo"></i> Returned to order</div>
+          </div>
+        </div>
+
+        <!-- Popularity Rankings -->
+        <div class="chart-card" style="padding: 20px;">
+          <h3 class="chart-title mb-2"><i class="bx bx-trophy" style="color: var(--color-secondary);"></i> Popularity Rankings</h3>
+          <div style="display: flex; gap: 16px; justify-content: space-around; align-items: flex-end; padding: 16px 0; min-height: 120px;" id="podium-rankings-wrapper">
+            <!-- Dynamically generated podium items -->
+          </div>
+        </div>
+
+        <!-- Chef Daily Summary Card -->
+        <div class="admin-orders-card chef-summary-card" id="chef-summary-box" style="width: 100%;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+            <h3 class="chart-title" style="margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+              <i class="bx bx-dish" style="color: var(--color-primary); font-size: 1.4rem;"></i> Chef Summary for Tomorrow
+            </h3>
+            <button class="admin-btn-primary" id="btn-send-chef-summary" style="background: var(--gradient-whatsapp); border: none; padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; color: white; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);">
+              <i class="bx bxl-whatsapp" style="font-size: 1.2rem;"></i> Send Summary to Chef
+            </button>
+          </div>
+          <div id="chef-summary-content">
+            <p style="color: var(--text-muted); font-size: 0.9rem;">No tomorrow requests yet.</p>
+          </div>
+        </div>
+
+        <!-- Cooking Decisions Table & Details stream -->
+        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; margin-bottom: 8px;" class="charts-grid">
+          <div class="admin-orders-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 16px; gap: 8px; flex-wrap: wrap;">
+              <h3 class="chart-title">Requests Inbox</h3>
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Approve sends dish to Tomorrow Plan</span>
+                <button class="admin-btn-outline" id="delete-all-inbox-requests-btn" style="padding: 4px 10px; font-size: 0.75rem; border-color: var(--color-danger); color: var(--color-danger);">
+                  <i class="bx bx-trash"></i> Delete All
+                </button>
+              </div>
+            </div>
+            <div class="table-wrapper" style="margin-top: 0;">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Dish Detail</th>
+                    <th style="text-align: center;">Customers Count</th>
+                    <th style="text-align: center;">Total Requested</th>
+                    <th>Suggested Cook Qty</th>
+                    <th>Status</th>
+                    <th style="text-align: center; min-width: 140px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="cooking-decision-table-body">
+                  <tr>
+                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 20px;">
+                      No tomorrow requests yet.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Custom & Suggested Food Requests Details List -->
+          <div class="admin-logs-card" style="display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 16px; gap: 8px; flex-wrap: wrap;">
+              <h3 class="chart-title">Customer Requests Details</h3>
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <span class="badge badge-outline" id="requests-list-count" style="font-size: 0.7rem;">0 requests</span>
+                <button class="admin-btn-outline" id="delete-all-requests-btn" style="padding: 4px 10px; font-size: 0.75rem; border-color: var(--color-danger); color: var(--color-danger);">
+                  <i class="bx bx-trash"></i> Delete All Requests
+                </button>
+              </div>
+            </div>
+            <div class="log-stream-wrapper" id="requests-details-stream" style="flex-grow: 1; height: 350px;">
+              <div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding-top: 60px;">
+                No tomorrow requests yet.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 5. TOMORROW PLAN TAB -->
+    <div id="admin-tab-plan" class="admin-tab-content">
+      <section class="admin-menu-card">
+        <div class="admin-control-hero">
+          <div>
+            <span class="admin-control-label">Customer-visible tomorrow menu</span>
+            <h2>Tomorrow Plan</h2>
+            <p>Choose what you will cook tomorrow. Confirmed dishes appear on the customer menu in the Confirmed For Tomorrow section.</p>
+          </div>
+          <div class="admin-control-actions">
+            <button class="admin-btn-outline" id="plan-open-requests-btn">
+              <i class="bx bx-message-square-detail"></i> Review Requests
+            </button>
+            <button class="admin-btn-primary" id="plan-open-menu-btn">
+              <i class="bx bx-food-menu"></i> Open Food Catalog
+            </button>
+          </div>
+        </div>
+
+        <div class="tomorrow-plan-grid">
+          <div class="admin-orders-card">
+            <div class="plan-card-header">
+              <div>
+                <h3 class="chart-title">Confirmed For Tomorrow</h3>
+                <p>Customers can see these dishes under Tomorrow.</p>
+              </div>
+              <span class="badge badge-outline" id="tomorrow-plan-count">0 confirmed</span>
+            </div>
+            <div id="tomorrow-plan-live-list" class="tomorrow-plan-list">
+              <p class="muted-empty">No dishes confirmed for tomorrow yet.</p>
+            </div>
+          </div>
+
+          <div class="admin-orders-card">
+            <div class="plan-card-header">
+              <div>
+                <h3 class="chart-title">Choose From Food Catalog</h3>
+                <p>Turn Cook Tomorrow on/off without opening each dish.</p>
+              </div>
+            </div>
+            <div id="tomorrow-plan-catalog-list" class="tomorrow-plan-list">
+              <p class="muted-empty">No menu items yet.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 6. SUGGESTIONS TAB -->
+    <div id="admin-tab-suggestions" class="admin-tab-content">
+      <section class="admin-menu-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 16px;">
+          <div>
+            <h3 class="chart-title" style="font-size:1.4rem;">Customer Custom Dish Suggestions</h3>
+            <p style="color:var(--text-secondary); font-size:0.85rem; margin-top:2px;">Dishes suggested by customers that are not in the current menu. Grouped by dish name.</p>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Suggested Dish Name</th>
+                <th style="text-align: center;">Suggestions Count</th>
+                <th>Suggested By</th>
+                <th>Additional Notes / Preferences</th>
+                <th>Status</th>
+                <th style="text-align: center; min-width: 250px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="suggestions-table-body">
+              <tr>
+                <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+                  No suggestions yet.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- 7. SOCIAL MEDIA TAB -->
+    <div id="admin-tab-social" class="admin-tab-content">
+      <section class="today-story-export-card" id="today-story-export">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;">
+          <div>
+            <span class="admin-control-label">WhatsApp · TikTok · Instagram</span>
+            <h3 class="chart-title" style="font-size:1.45rem; margin:6px 0 8px;">Today's Menu Story</h3>
+            <p style="color:var(--text-secondary); font-size:0.9rem; max-width:640px; margin:0;">
+              Pick a design — <strong>Menu Cards</strong> matches your customer app and auto-splits into multiple pages. Mark items <strong>Available Today</strong>, then download.
+            </p>
+          </div>
+          <span class="badge badge-outline" id="story-today-count" style="font-size:0.75rem;">0 today</span>
+        </div>
+
+        <div class="story-theme-picker" id="story-theme-picker">
+          <button type="button" class="story-theme-btn" data-story-theme="luxury">
+            <i class="bx bx-diamond"></i> Luxury Gold
+          </button>
+          <button type="button" class="story-theme-btn" data-story-theme="modern">
+            <i class="bx bx-layout"></i> Modern Clean
+          </button>
+          <button type="button" class="story-theme-btn" data-story-theme="vibrant">
+            <i class="bx bx-purchase-tag-alt"></i> Vibrant Fresh
+          </button>
+          <button type="button" class="story-theme-btn" data-story-theme="menuapp">
+            <i class="bx bx-mobile-alt"></i> Menu Cards
+          </button>
+        </div>
+
+        <div class="story-workspace story-workspace-mobile">
+          <div class="story-preview-column story-preview-first-mobile">
+            <div class="story-preview-viewport" id="story-preview-viewport">
+              <div class="story-preview-scaler" id="story-preview-scaler"></div>
+            </div>
+            <div class="story-actions">
+              <button type="button" class="admin-btn-primary" id="btn-download-story">
+                <i class="bx bx-download"></i> Download Story Image
+              </button>
+              <button type="button" class="admin-btn-outline story-share-btn" id="btn-share-story">
+                <i class="bx bxl-whatsapp"></i> Share to WhatsApp
+              </button>
+              <p id="story-export-status" style="font-size:0.82rem; color:var(--text-muted); margin:4px 0 0; text-align:center;">
+                Live preview in your browser — no auto-refresh while you design.
+              </p>
+            </div>
+          </div>
+
+          <div class="story-editor-panel">
+            <h4><i class="bx bx-edit-alt"></i> Customize dishes</h4>
+            <div class="story-editor-toggles">
+              <label><input type="checkbox" id="story-show-all-prices" checked> Show prices</label>
+              <div id="story-menuapp-options" style="display:none;">
+                <label><input type="checkbox" id="story-menuapp-show-badge" checked> Show &quot;Chef Selected&quot; badge on photo</label>
+                <label><input type="checkbox" id="story-menuapp-show-buttons" checked> Show Pre-Order / Reserve buttons</label>
+              </div>
+            </div>
+            <div class="story-item-editor-list" id="story-item-editor-list">
+              <p style="color:var(--text-muted); font-size:0.82rem; margin:0;">Mark dishes as Available Today in the Menu tab.</p>
+            </div>
+          </div>
+        </div>
+        <div id="story-html-capture" aria-hidden="true"></div>
+      </section>
+    </div>
+
+    <!-- 8. CUSTOMERS TAB -->
+    <div id="admin-tab-customers" class="admin-tab-content">
+      <section class="admin-menu-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 16px; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <h3 class="chart-title" style="font-size:1.4rem;">Customer History Explorer</h3>
+            <p style="color:var(--text-secondary); font-size:0.85rem; margin-top:2px;">Track orders and favorite requested dishes per customer phone number</p>
+          </div>
+          <div style="width: 250px;">
+            <input type="text" id="admin-search-customers" class="form-input" placeholder="Search name or phone..." style="padding: 8px 12px; font-size: 0.85rem;">
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Customer Detail</th>
+                <th style="text-align: center;">Total Orders</th>
+                <th>Favorite Dishes</th>
+                <th style="text-align: center;">Total Spend</th>
+                <th>Last Order Date</th>
+              </tr>
+            </thead>
+            <tbody id="customers-table-body">
+              <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+                  No customers registered yet. Place pre-orders on the storefront!
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- 7. SETTINGS TAB -->
+    <div id="admin-tab-settings" class="admin-tab-content">
+      <section class="admin-menu-card" id="settings-management" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+        <!-- Settings Form -->
+        <div class="admin-orders-card" style="padding: 24px;">
+          <h3 class="chart-title" style="font-size: 1.3rem; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+            <i class="bx bx-palette" style="color: var(--color-primary);"></i> Branding & Shop Settings
+          </h3>
+          
+          <form id="settings-form" onsubmit="event.preventDefault();">
+            <div class="settings-save-strip">
+              <div>
+                <strong>Shop settings</strong>
+                <span id="settings-save-status">Upload images or change fields, then save once.</span>
+              </div>
+              <button type="submit" class="admin-btn-primary" id="save-settings-top-btn">
+                <i class="bx bx-save"></i> Save Settings
+              </button>
+            </div>
+            <div class="admin-branding-panel">
+              <div class="admin-branding-preview">
+                <div class="admin-branding-logo-frame">
+                  <img id="settings-logo-preview" src="" alt="Logo preview">
+                  <div class="admin-branding-logo-empty" id="settings-logo-empty">
+                    <i class="bx bx-image-add"></i>
+                    <span>No logo yet</span>
+                  </div>
+                </div>
+                <div>
+                  <strong id="settings-brand-preview-name">Your Business</strong>
+                  <span id="settings-brand-preview-tagline">Upload your logo and set the customer-facing name.</span>
+                </div>
+              </div>
+              <div class="admin-branding-fields">
+                <div class="form-group">
+                  <label class="form-label" for="settings-business-name">Business Name *</label>
+                  <input type="text" id="settings-business-name" class="form-input" placeholder="Nada Kitchen" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="settings-business-tagline">Brand Tagline</label>
+                  <input type="text" id="settings-business-tagline" class="form-input" placeholder="Fresh homemade food, cooked daily.">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="settings-business-logo">Logo</label>
+                  <div class="admin-upload-row">
+                    <input type="text" id="settings-business-logo" class="form-input" placeholder="Upload logo or paste image URL">
+                    <div class="image-upload-btn-wrapper">
+                      <button type="button" class="admin-btn-primary"><i class="bx bx-upload"></i> Upload Logo</button>
+                      <input type="file" id="settings-business-logo-file" accept="image/*">
+                    </div>
+                  </div>
+                  <div class="admin-branding-actions">
+                    <button type="button" class="admin-btn-outline danger-outline" id="settings-remove-logo-btn">
+                      <i class="bx bx-trash"></i> Remove Logo
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="settings-brand-logo-size">Logo size on customer menu</label>
+                  <div style="display:flex; align-items:center; gap:12px;">
+                    <input type="range" id="settings-brand-logo-size" min="40" max="140" step="4" value="72" style="flex:1;">
+                    <strong id="settings-brand-logo-size-value" style="min-width:52px;">72px</strong>
+                  </div>
+                  <p class="admin-field-help">Make the logo bigger if customers cannot see it clearly on phone.</p>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="settings-brand-logo-placement">Logo position</label>
+                  <select id="settings-brand-logo-placement" class="form-input">
+                    <option value="header">Top header (next to business name)</option>
+                    <option value="hero">Home hero (big and clear)</option>
+                    <option value="both">Header + home hero</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="settings-hero-image">Hero / Cover Image</label>
+                  <p class="admin-field-help">This replaces the big demo burger on the customer home screen. Use your best food photo, kitchen photo, or branded cover image.</p>
+                  <div class="admin-hero-image-preview">
+                    <img id="settings-hero-preview" src="" alt="Hero image preview">
+                    <div class="admin-hero-image-empty" id="settings-hero-empty">
+                      <i class="bx bx-image"></i>
+                      <span>No hero image yet</span>
+                    </div>
+                  </div>
+                  <div class="admin-upload-row">
+                    <input type="text" id="settings-hero-image" class="form-input" placeholder="Upload hero image or paste image URL">
+                    <div class="image-upload-btn-wrapper">
+                      <button type="button" class="admin-btn-primary"><i class="bx bx-upload"></i> Upload Hero</button>
+                      <input type="file" id="settings-hero-image-file" accept="image/*">
+                    </div>
+                  </div>
+                  <div class="admin-branding-actions">
+                    <button type="button" class="admin-btn-outline danger-outline" id="settings-remove-hero-btn">
+                      <i class="bx bx-trash"></i> Remove Hero Image
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="settings-whatsapp-order">WhatsApp Order Number *</label>
+                <input type="text" id="settings-whatsapp-order" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="settings-chef-whatsapp">Chef WhatsApp Number *</label>
+                <input type="text" id="settings-chef-whatsapp" class="form-input" required>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="settings-currency-symbol">Currency Symbol *</label>
+                <input type="text" id="settings-currency-symbol" class="form-input" placeholder="e.g. BD" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="settings-currency-code">Currency Code *</label>
+                <input type="text" id="settings-currency-code" class="form-input" placeholder="e.g. BHD" required>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="settings-restaurant-status">Restaurant Status *</label>
+                <select id="settings-restaurant-status" class="form-input" style="background:var(--bg-surface-elevated);" required>
+                  <option value="open">Open (Accept Orders)</option>
+                  <option value="closed">Closed (Stop Orders)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="settings-restaurant-timezone">Restaurant Timezone *</label>
+                <input type="text" id="settings-restaurant-timezone" class="form-input" placeholder="e.g. Asia/Bahrain" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="settings-voting-deadline">Voting/Request Deadline *</label>
+                <select id="settings-voting-deadline" class="form-input" style="background:var(--bg-surface-elevated);" required>
+                  <option value="08:00 PM">08:00 PM</option>
+                  <option value="09:00 PM">09:00 PM</option>
+                  <option value="10:00 PM">10:00 PM</option>
+                  <option value="11:00 PM">11:00 PM</option>
+                  <option value="12:00 AM">12:00 AM</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="settings-delivery-options">Fulfillment Options *</label>
+                <select id="settings-delivery-options" class="form-input" style="background:var(--bg-surface-elevated);" required>
+                  <option value="both">Both (Delivery & Pickup)</option>
+                  <option value="delivery">Delivery Only</option>
+                  <option value="pickup">Pickup Only</option>
+                  <option value="none">Ordering Disabled</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="settings-control-panel">
+              <h4>Customer Features</h4>
+              <div class="settings-checkbox-grid">
+                <label><input type="checkbox" id="settings-enable-preorders"> Enable Pre-orders</label>
+                <label><input type="checkbox" id="settings-enable-requests"> Enable Tomorrow Requests</label>
+                <label><input type="checkbox" id="settings-enable-suggest"> Enable Dish Suggestions</label>
+                <label><input type="checkbox" id="settings-show-counts"> Show Request Counts</label>
+                <label><input type="checkbox" id="settings-allow-requests-closed"> Allow Requests While Closed</label>
+                <label><input type="checkbox" id="settings-delivery-enabled"> Accept Delivery</label>
+                <label><input type="checkbox" id="settings-pickup-enabled"> Accept Pickup</label>
+              </div>
+            </div>
+
+            <div class="settings-control-panel">
+              <h4>Required Customer Fields</h4>
+              <div class="settings-required-grid">
+                <div>
+                  <strong>Pre-orders</strong>
+                  <label><input type="checkbox" id="settings-order-name-required"> Name required</label>
+                  <label><input type="checkbox" id="settings-order-phone-required"> Phone required</label>
+                  <label><input type="checkbox" id="settings-order-time-required"> Time slot required</label>
+                  <label><input type="checkbox" id="settings-order-notes-required"> Notes required</label>
+                </div>
+                <div>
+                  <strong>Tomorrow requests</strong>
+                  <label><input type="checkbox" id="settings-request-name-required"> Name required</label>
+                  <label><input type="checkbox" id="settings-request-phone-required"> Phone required</label>
+                  <label><input type="checkbox" id="settings-request-time-required"> Time slot required</label>
+                  <label><input type="checkbox" id="settings-request-notes-required"> Notes required</label>
+                </div>
+                <div>
+                  <strong>Dish suggestions</strong>
+                  <label><input type="checkbox" id="settings-suggestion-name-required"> Name required</label>
+                  <label><input type="checkbox" id="settings-suggestion-phone-required"> Phone required</label>
+                  <label><input type="checkbox" id="settings-suggestion-notes-required"> Notes required</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-control-panel">
+              <h4>Request Cleanup</h4>
+              <div class="settings-checkbox-grid">
+                <label><input type="checkbox" id="settings-request-auto-clear-enabled"> Auto-clear old request records</label>
+              </div>
+              <div class="form-row" style="margin-top: 12px;">
+                <div class="form-group">
+                  <label class="form-label" for="settings-request-auto-clear-hours">Keep request status for (hours)</label>
+                  <input type="number" id="settings-request-auto-clear-hours" class="form-input" min="1" max="168" step="1" placeholder="24">
+                </div>
+              </div>
+            </div>
+              
+            <button type="submit" class="checkout-btn" id="save-settings-btn" style="width: 100%;">
+              Save Settings <i class="bx bx-save"></i>
+            </button>
+          </form>
+        </div>
+        
+        <!-- Category Management -->
+        <div class="admin-orders-card" style="padding: 24px; display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px;">
+            <h3 class="chart-title" style="font-size: 1.3rem; margin: 0;">
+              <i class="bx bx-grid-alt" style="color: var(--color-secondary);"></i> Category Manager
+            </h3>
+            <button class="admin-btn-primary" id="btn-add-category" style="padding: 6px 12px; font-size: 0.8rem;">
+              <i class="bx bx-plus"></i> Add Category
+            </button>
+          </div>
+          
+          <div id="admin-category-list" style="flex-grow: 1; display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto;">
+            <!-- Dynamically populated category rows -->
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- Add/Edit Dish Modal -->
+  <div class="modal-overlay" id="dish-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="dish-modal-title">Add New Food</h3>
+        <button class="modal-close" id="dish-modal-close"><i class="bx bx-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="dish-form" onsubmit="event.preventDefault();">
+          <input type="hidden" id="dish-id">
+          
+          <div class="form-group">
+            <label class="form-label" for="dish-title">Food Name *</label>
+            <input type="text" id="dish-title" class="form-input" placeholder="e.g. Garlic Butter Shrimp Rice" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="dish-category">Category *</label>
+              <select id="dish-category" class="form-input" style="background:var(--bg-surface-elevated);" required>
+                <!-- Generated dynamically by admin.js -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="dish-price">Price *</label>
+              <input type="number" id="dish-price" class="form-input" step="0.001" min="0" placeholder="e.g. 12.990" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="dish-image">Food Photo *</label>
+            <p class="admin-field-help">Upload from your phone or computer. Photos are compressed automatically before they go live on the menu.</p>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <input type="text" id="dish-image" class="form-input" placeholder="Upload a photo or paste an image URL" required style="flex-grow: 1;">
+              <div class="image-upload-btn-wrapper" style="position: relative; overflow: hidden; display: inline-block;">
+                <button type="button" class="admin-btn-outline" style="padding: 12px; height: 100%; border-radius: var(--radius-sm); border-color:var(--border-color); background:transparent; color:var(--text-secondary); cursor:pointer;"><i class="bx bx-upload"></i> Upload</button>
+                <input type="file" id="dish-image-file" accept="image/*" style="position: absolute; font-size: 100px; right: 0; top: 0; opacity: 0; cursor: pointer;">
+              </div>
+            </div>
+            <div id="image-upload-preview-container" style="margin-top: 8px; display: none; align-items: center; gap: 8px;">
+              <img id="image-upload-preview" src="" style="max-height: 48px; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+              <span style="font-size: 0.75rem; color: var(--color-success);">Compressed image ready</span>
+            </div>
+          </div>
+
+          <div class="form-row" style="margin-bottom: 20px;">
+            <div class="form-group">
+              <label class="form-label" for="dish-available-from">Available From (Optional)</label>
+              <input type="time" id="dish-available-from" class="form-input" style="background:var(--bg-surface-elevated);">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="dish-available-to">Available To (Optional)</label>
+              <input type="time" id="dish-available-to" class="form-input" style="background:var(--bg-surface-elevated);">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="dish-desc">Short Description <span style="color:var(--text-muted); font-weight:600;">(optional)</span></label>
+            <textarea id="dish-desc" class="form-input" rows="3" placeholder="Optional: ingredients, cooking method, spice level, etc."></textarea>
+          </div>
+
+          <!-- Toggles for Stock and Tags -->
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:24px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.9rem; user-select:none;">
+              <input type="checkbox" id="dish-available" checked style="width:18px; height:18px; accent-color:var(--color-primary);"> Available Today
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.9rem; user-select:none;">
+              <input type="checkbox" id="dish-confirmed-tomorrow" style="width:18px; height:18px; accent-color:var(--color-primary);"> Confirmed Tomorrow
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.9rem; user-select:none;">
+              <input type="checkbox" id="dish-visible" checked style="width:18px; height:18px; accent-color:var(--color-primary);"> Visible (Show in Shop)
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.9rem; user-select:none;">
+              <input type="checkbox" id="dish-popular" style="width:18px; height:18px; accent-color:var(--color-secondary);"> Popular Badge
+            </label>
+          </div>
+
+          <button type="submit" class="checkout-btn" id="save-dish-btn">
+            Save Food Item <i class="bx bx-save"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Category Modal -->
+  <div class="modal-overlay" id="category-modal">
+    <div class="modal-card" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3 id="category-modal-title">Add Category</h3>
+        <button class="modal-close" id="category-modal-close"><i class="bx bx-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="category-form" onsubmit="event.preventDefault();">
+          <input type="hidden" id="category-id">
+          
+          <div class="form-group">
+            <label class="form-label" for="category-name">Category Name *</label>
+            <input type="text" id="category-name" class="form-input" placeholder="e.g. Rice meals" required>
+          </div>
+          
+          <div style="margin-bottom:20px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:0.9rem;">
+              <input type="checkbox" id="category-hidden" style="width:18px; height:18px; accent-color:var(--color-primary);"> Hide category in shop
+            </label>
+          </div>
+
+          <button type="submit" class="checkout-btn" id="save-category-btn">
+            Save Category <i class="bx bx-save"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS Files -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" crossorigin="anonymous"></script>
+  <script src="firebase-config.js?v=28"></script>
+  <script src="admin-story-export.js?v=28"></script>
+  <script src="admin.js?v=28"></script>
+  
+</body>
+</html>

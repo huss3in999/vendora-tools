@@ -1,0 +1,257 @@
+{
+  "pages": [
+    {
+      "url": "https://getvendora.net/tools/commission-calculator/",
+      "keywords": [
+        "commission calculation",
+        "sales commission calculation",
+        "how to calculate commission",
+        "reverse commission calculator",
+        "calculate sales commission"
+      ],
+      "sections": [
+        "Worked example above fold",
+        "How to calculate commission formula"
+      ],
+      "faq_schema": "Added 3 GSC-matched FAQ items (visible + schema)",
+      "title_meta_changed": true,
+      "file": "tools/commission-calculator/index.html",
+      "expected_impact": "High — 2,852 impressions at pos 12.6; CTR lift target 0.04% → 1%+"
+    },
+    {
+      "url": "https://getvendora.net/calculators/bmr-calculator/",
+      "keywords": [
+        "mifflin-st jeor equation",
+        "BMR calculator",
+        "mifflin st jeor equation women"
+      ],
+      "sections": [
+        "Worked example above fold",
+        "Mifflin-St Jeor formula block"
+      ],
+      "faq_schema": "Added 2 equation FAQ items",
+      "title_meta_changed": true,
+      "file": "calculators/bmr-calculator/index.html",
+      "expected_impact": "High — 753 imp, pos 6.4; equation queries at pos 2.3"
+    },
+    {
+      "url": "https://getvendora.net/tools/food-cost-calculator/",
+      "keywords": [
+        "food cost calculator",
+        "how to calculate food cost",
+        "restaurant food cost calculator",
+        "menu cost calculator"
+      ],
+      "sections": [
+        "Food cost % formula + example",
+        "How to calculate section"
+      ],
+      "faq_schema": "Added 2 FAQ items",
+      "title_meta_changed": true,
+      "file": "tools/food-cost-calculator/index.html",
+      "expected_impact": "Medium-high — 875 imp; tool at pos 67 needs snippet match"
+    },
+    {
+      "url": "https://getvendora.net/tools/delivery-commission-calculator/",
+      "keywords": [
+        "delivery commission calculator",
+        "delivery app fees",
+        "restaurant delivery cost"
+      ],
+      "sections": [
+        "Worked example",
+        "Guide + food cost internal links"
+      ],
+      "faq_schema": "Added 1 FAQ item",
+      "title_meta_changed": true,
+      "file": "tools/delivery-commission-calculator/index.html",
+      "expected_impact": "Medium — 333 imp, pos 10; pairs with guide (689 imp)"
+    },
+    {
+      "url": "https://getvendora.net/tools/daily-sales-summary/",
+      "keywords": [
+        "daily sales reports",
+        "restaurant daily sales calculation",
+        "restaurant daily sales report"
+      ],
+      "sections": [
+        "Daily sales definition + example"
+      ],
+      "faq_schema": "Added 1 FAQ item",
+      "title_meta_changed": true,
+      "file": "tools/daily-sales-summary/index.html",
+      "expected_impact": "Medium — 338 imp; query at pos 10.5"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-qatar/",
+      "keywords": [
+        "توصيل من البحرين إلى قatar",
+        "bahrain to qatar transport"
+      ],
+      "sections": [
+        "Answer-first Arabic duration block",
+        "Price FAQ (no fixed price)",
+        "WhatsApp quote CTA"
+      ],
+      "faq_schema": "Added visible price FAQ + FAQPage entry",
+      "title_meta_changed": false,
+      "file": "bahrain-saudi-gcc-transport/bahrain-to-qatar/index.html",
+      "expected_impact": "Medium-high — transport clicks + Arabic duration queries"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait/",
+      "keywords": [
+        "من البحرين إلى الكويت كم ساعة بالسياره"
+      ],
+      "sections": [
+        "Answer-first Arabic duration block",
+        "Price FAQ (no fixed price)",
+        "WhatsApp quote CTA"
+      ],
+      "faq_schema": "Added visible price FAQ + FAQPage entry",
+      "title_meta_changed": false,
+      "file": "bahrain-saudi-gcc-transport/bahrain-to-kuwait/index.html",
+      "expected_impact": "Medium-high — transport clicks + Arabic duration queries"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
+      "keywords": [
+        "من البحرين إلى الدمام سيارة",
+        "taxi bahrain to dammam",
+        "bahrain to dammam airport service",
+        "driver from bahrain to dammam"
+      ],
+      "sections": [
+        "Causeway + duration answer-first"
+      ],
+      "faq_schema": "Existing FAQ retained",
+      "title_meta_changed": false,
+      "file": "bahrain-saudi-gcc-transport/bahrain-to-dammam/index.html",
+      "expected_impact": "High — 8 clicks, 331 imp"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-khobar/",
+      "keywords": [
+        "taxi from bahrain to khobar",
+        "bahrain to khobar taxi",
+        "taxi bahrain to dammam",
+        "bahrain to al khobar"
+      ],
+      "sections": [
+        "Taxi/causeway answer-first block"
+      ],
+      "faq_schema": "Existing FAQ retained",
+      "title_meta_changed": false,
+      "file": "bahrain-saudi-gcc-transport/bahrain-to-khobar/index.html",
+      "expected_impact": "Medium-high — 5 clicks, 4.67% CTR"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/",
+      "keywords": [
+        "من البحرين إلى عمان كم ساعة بالسياره"
+      ],
+      "sections": [
+        "Answer-first Arabic duration block",
+        "Price FAQ (no fixed price)",
+        "WhatsApp quote CTA"
+      ],
+      "faq_schema": "Added visible price FAQ + FAQPage entry",
+      "title_meta_changed": false,
+      "file": "bahrain-saudi-gcc-transport/bahrain-to-oman/index.html",
+      "expected_impact": "Medium-high — transport clicks + Arabic duration queries"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dubai/",
+      "keywords": [
+        "من البحرين إلى دبي كم ساعة بالسياره"
+      ],
+      "sections": [
+        "Answer-first Arabic duration block",
+        "Price FAQ (no fixed price)",
+        "WhatsApp quote CTA"
+      ],
+      "faq_schema": "Added visible price FAQ + FAQPage entry",
+      "title_meta_changed": false,
+      "file": "bahrain-saudi-gcc-transport/bahrain-to-dubai/index.html",
+      "expected_impact": "Medium-high — transport clicks + Arabic duration queries"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/dammam-to-bahrain/",
+      "keywords": [
+        "من الدمام إلى البحرين سيارة",
+        "dammam to bahrain transportation"
+      ],
+      "sections": [
+        "Causeway taxi answer-first",
+        "Price FAQ",
+        "FAQPage schema added"
+      ],
+      "faq_schema": "New FAQPage schema where missing",
+      "title_meta_changed": false,
+      "file": "bahrain-saudi-gcc-transport/dammam-to-bahrain/index.html",
+      "expected_impact": "Medium — reverse route + taxi GSC queries"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/khobar-to-bahrain/",
+      "keywords": [
+        "من الخبر إلى البحرين",
+        "taxi from khobar to bahrain",
+        "khobar to bahrain taxi"
+      ],
+      "sections": [
+        "Causeway taxi answer-first",
+        "Price FAQ",
+        "FAQPage schema added"
+      ],
+      "faq_schema": "New FAQPage schema where missing",
+      "title_meta_changed": false,
+      "file": "bahrain-saudi-gcc-transport/khobar-to-bahrain/index.html",
+      "expected_impact": "Medium — reverse route + taxi GSC queries"
+    },
+    {
+      "url": "https://getvendora.net/",
+      "keywords": [
+        "vendvora com",
+        "vendora",
+        "vendora restaurant"
+      ],
+      "sections": [
+        "Most searched internal links section"
+      ],
+      "faq_schema": "None added",
+      "title_meta_changed": false,
+      "file": "index.html",
+      "expected_impact": "Medium — 971 imp; strengthens money page discovery"
+    },
+    {
+      "url": "https://getvendora.net/about/",
+      "keywords": [
+        "vendora restaurant",
+        "what is getvendora"
+      ],
+      "sections": [
+        "GetVendora at a glance answer-first",
+        "Money page links"
+      ],
+      "faq_schema": "Existing FAQ retained",
+      "title_meta_changed": false,
+      "file": "about/index.html",
+      "expected_impact": "Low-medium — 448 imp brand queries"
+    },
+    {
+      "url": "https://getvendora.net/contact/",
+      "keywords": [
+        "getvendora contact",
+        "transport booking"
+      ],
+      "sections": [
+        "Quick answers section",
+        "Tool + route links"
+      ],
+      "faq_schema": "None added",
+      "title_meta_changed": false,
+      "file": "contact/index.html",
+      "expected_impact": "Low — supports conversion paths from brand traffic"
+    }
+  ]
+}

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <link rel="apple-touch-icon" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BMR Calculator Guide — Mifflin-St Jeor Equation Explained | Vendora</title>
+  <meta name="description" content="Learn BMR and the Mifflin-St Jeor equation with worked examples. Free BMR calculator for men and women — resting calories explained step by step." />
+  <meta name="keywords" content="BMR calculator guide, mifflin-st jeor equation, basal metabolic rate, BMR formula women, BMR formula men" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://getvendora.net/guides/bmr-calculator-guide/" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="BMR Calculator Guide — Mifflin-St Jeor Equation Explained | Vendora" />
+  <meta property="og:description" content="Learn BMR and the Mifflin-St Jeor equation with worked examples. Free BMR calculator for men and women — resting calories explained step by step." />
+  <meta property="og:url" content="https://getvendora.net/guides/bmr-calculator-guide/" />
+  <meta property="og:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BMR Calculator Guide — Mifflin-St Jeor Equation Explained | Vendora" />
+  <meta name="twitter:image" content="https://getvendora.net/images/street-bites-featured-wrap.svg" />
+  <meta name="twitter:description" content="Learn BMR and the Mifflin-St Jeor equation with worked examples. Free BMR calculator for men and women — resting calories explained step by step." />
+  <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "GetVendora", "item": "https://getvendora.net/"},
+                {"@type": "ListItem", "position": 2, "name": "Guides", "item": "https://getvendora.net/guides/"},
+                {"@type": "ListItem", "position": 3, "name": "BMR Calculator Guide", "item": "https://getvendora.net/guides/bmr-calculator-guide/"}
+            ]
+        },
+        {
+            "@type": "Article",
+            "headline": "BMR Calculator Guide: Mifflin-St Jeor Equation & Resting Calories",
+            "description": "Learn BMR and the Mifflin-St Jeor equation with worked examples. Free BMR calculator for men and women — resting calories explained step by step.",
+            "mainEntityOfPage": {"@type": "WebPage", "@id": "https://getvendora.net/guides/bmr-calculator-guide/"},
+            "author": {"@type": "Organization", "name": "Vendora Editorial Team"},
+            "publisher": {
+                "@type": "Organization",
+                "name": "Vendora",
+                "logo": {"@type": "ImageObject", "url": "https://getvendora.net/images/street-bites-featured-wrap.svg"}
+            },
+            "datePublished": "2026-06-11",
+            "dateModified": "2026-06-11",
+            "image": "https://getvendora.net/images/street-bites-featured-wrap.svg"
+        },
+        {
+            "@type": "FAQPage",
+            "mainEntity": [
+                {"@type": "Question", "name": "What is the Mifflin-St Jeor equation for women?", "acceptedAnswer": {"@type": "Answer", "text": "BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age − 161. This is the formula used in the GetVendora BMR calculator for female inputs."}},
+                                          {"@type": "Question", "name": "What is the Mifflin-St Jeor equation for men?", "acceptedAnswer": {"@type": "Answer", "text": "BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age + 5. Enter your metrics in the calculator for an instant result."}},
+                                          {"@type": "Question", "name": "What is the difference between BMR and TDEE?", "acceptedAnswer": {"@type": "Answer", "text": "BMR is calories burned at rest. TDEE includes activity — it is typically BMR multiplied by an activity factor (for example 1.2 for sedentary, 1.55 for moderately active)."}},
+                                          {"@type": "Question", "name": "Is BMR the same as my daily calorie target?", "acceptedAnswer": {"@type": "Answer", "text": "No. You need additional calories above BMR for daily movement and exercise. Use BMR as the base, then add activity."}},
+                                          {"@type": "Question", "name": "How accurate is the Mifflin-St Jeor equation?", "acceptedAnswer": {"@type": "Answer", "text": "It is among the most validated resting-metabolism formulas for general adults. Individual results can still vary by roughly 10%."}},
+                                          {"@type": "Question", "name": "Which units does the calculator use?", "acceptedAnswer": {"@type": "Answer", "text": "Metric: kilograms for weight, centimeters for height, and years for age — as labeled on the calculator form."}}
+            ]
+        }
+    ]
+}
+  </script>
+  <script defer src="/assets/clarity-helper.js"></script>
+<style>
+  /* Scoped CSS for Vendora SEO Guide to ensure premium presentation */
+  .vendora-guide-wrapper {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #334155;
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    background: #ffffff;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  /* Hero Section Styles */
+  .vendora-hero {
+    background: #0f172a;
+    border-radius: 16px;
+    padding: 60px 20px 40px;
+    margin-bottom: 50px;
+    color: #f8fafc;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .vendora-hero-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: 0.4;
+    background: radial-gradient(circle at top right, #10b981 0%, transparent 40%),
+                radial-gradient(circle at bottom left, #047857 0%, transparent 40%);
+    z-index: 1;
+  }
+
+  .vendora-hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .vendora-hero h1 {
+    color: #ffffff;
+    font-size: 2.75rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+
+  .vendora-hero p.lead {
+    font-size: 1.25rem;
+    color: #cbd5e1;
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+  }
+
+  /* SVG Dashboard Visual */
+  .vendora-hero-visual {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 750px;
+    margin: 0 auto;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .v-dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 16px;
+  }
+  
+  .v-dash-dot { height: 12px; width: 12px; background: #ef4444; border-radius: 50%; display: inline-block; box-shadow: 20px 0 0 #eab308, 40px 0 0 #22c55e;}
+  
+  .v-dash-title { color: #e2e8f0; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+
+  .v-dash-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .v-dash-card {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: left;
+  }
+
+  .v-dash-card-title { font-size: 0.875rem; color: #94a3b8; margin-bottom: 8px; }
+  .v-dash-card-value { font-size: 1.5rem; color: #ffffff; font-weight: 700; }
+  .v-dash-card-value.red { color: #ef4444; }
+  .v-dash-card-value.green { color: #10b981; }
+
+  /* Content Typography & Layout */
+  .vendora-content {
+    padding: 0 20px;
+  }
+
+  .vendora-content h2 { 
+    color: #0f172a; 
+    font-size: 2rem; 
+    font-weight: 700; 
+    margin: 50px 0 24px; 
+    letter-spacing: -0.01em;
+  }
+
+  .vendora-content h3 { 
+    color: #1e293b; 
+    font-size: 1.35rem; 
+    font-weight: 600; 
+    margin: 32px 0 16px; 
+  }
+
+  .vendora-content p { 
+    margin-bottom: 24px; 
+    font-size: 1.05rem;
+  }
+
+  .vendora-content ul, .vendora-content ol { 
+    margin-bottom: 32px; 
+    padding-left: 24px; 
+    font-size: 1.05rem;
+  }
+
+  .vendora-content li { 
+    margin-bottom: 12px; 
+  }
+
+  .vendora-content strong {
+    color: #0f172a;
+  }
+
+  .vendora-content a { 
+    color: #10b981; 
+    text-decoration: none; 
+    font-weight: 600; 
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .vendora-content a:hover { 
+    border-color: #10b981; 
+  }
+
+  /* Highlight Boxes & Callouts */
+  .vendora-highlight { 
+    background: #ecfdf5; 
+    border-left: 4px solid #10b981; 
+    padding: 24px; 
+    border-radius: 0 8px 8px 0; 
+    margin: 40px 0; 
+  }
+  
+  .vendora-highlight h4 {
+    color: #047857;
+    margin: 0 0 12px 0;
+    font-size: 1.15rem;
+  }
+
+  .vendora-highlight p:last-child {
+    margin-bottom: 0;
+  }
+
+  .vendora-table-wrapper {
+    overflow-x: auto;
+    margin: 32px 0;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .vendora-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.95rem;
+  }
+
+  .vendora-table th {
+    background: #f8fafc;
+    padding: 16px;
+    font-weight: 600;
+    color: #0f172a;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .vendora-table td {
+    padding: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #334155;
+  }
+
+  /* FAQ Section */
+  .vendora-faq-item {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  
+  .vendora-faq-item:last-child {
+    border-bottom: none;
+  }
+
+  /* CTA Section */
+  .vendora-cta-section { 
+    background: #f8fafc; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 16px; 
+    padding: 50px 30px; 
+    text-align: center; 
+    margin-top: 60px; 
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  }
+
+  .vendora-cta-section h2 {
+    margin-top: 0;
+  }
+
+  .vendora-btn { 
+    display: inline-block; 
+    background: #10b981; 
+    color: #ffffff !important; 
+    font-weight: 600; 
+    font-size: 1.125rem;
+    padding: 16px 32px; 
+    border-radius: 8px; 
+    text-decoration: none !important; 
+    transition: all 0.2s ease; 
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
+    margin: 20px 0;
+  }
+
+  .vendora-btn:hover { 
+    background: #059669; 
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -1px rgba(16, 185, 129, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .vendora-hero { padding: 40px 15px 30px; }
+    .vendora-hero h1 { font-size: 2rem; }
+    .v-dash-grid { grid-template-columns: 1fr; }
+    .vendora-content h2 { font-size: 1.75rem; }
+  }
+</style>
+</head>
+<body>
+<article class="vendora-guide-wrapper">
+<!-- phase13-discovery -->
+<nav aria-label="Breadcrumb" style="max-width:900px;margin:0 auto;padding:16px 20px 0;font-size:0.9rem;color:#64748b;">
+  <a href="/" style="color:#10b981;text-decoration:none;">GetVendora</a> › <a href="/guides/" style="color:#10b981;text-decoration:none;">Guides</a> › BMR Calculator Guide
+</nav>
+
+  <header class="vendora-hero">
+    <div class="vendora-hero-bg"></div>
+    <div class="vendora-hero-content">
+      <h1>BMR Calculator Guide: Mifflin-St Jeor Equation & Resting Calories</h1>
+      <p class="lead">Understand basal metabolic rate, use the Mifflin-St Jeor formula, and calculate resting calories with worked examples. <a href="/calculators/bmr-calculator/">Open the free BMR calculator</a></p>
+      <div class="vendora-highlight" style="text-align:left;margin:24px auto;max-width:720px;">
+        <p><strong>Quick answer:</strong> For a 30-year-old woman (165 cm, 70 kg), Mifflin-St Jeor gives BMR ≈ <strong>1,411 kcal/day</strong> at rest. For a 30-year-old man (175 cm, 70 kg), BMR ≈ <strong>1,665 kcal/day</strong>. Use the calculator below for your numbers.</p>
+      </div>
+    </div>
+  </header>
+  <section class="vendora-content">
+
+    <p>Basal metabolic rate (BMR) is the number of calories your body burns at complete rest — before walking, working, or exercise. Our free <a href="/calculators/bmr-calculator/">BMR calculator</a> uses the <strong>Mifflin-St Jeor equation</strong>, which Google Search data shows is one of the highest-impression query clusters for this page (753 impressions, average position 6.4 in the last 90 days).</p>
+
+    <h2>What Is BMR and Why Measure It?</h2>
+    <p>BMR represents the energy required for breathing, circulation, cell production, and basic organ function. It is <em>not</em> your total daily calorie target — activity adds on top. Still, BMR is the foundation for nutrition planning, weight management, and fitness coaching.</p>
+    <ul>
+      <li><strong>Weight loss planning:</strong> Know your resting burn before setting a safe calorie deficit.</li>
+      <li><strong>Meal planning:</strong> Dietitians start with BMR before applying activity multipliers.</li>
+      <li><strong>Fitness benchmarks:</strong> Compare resting metabolism across cut/bulk phases.</li>
+    </ul>
+
+    <h2>The Mifflin-St Jeor Equation</h2>
+    <p>Published in 1990, Mifflin-St Jeor is widely used because it performs well across general adult populations. The calculator on GetVendora applies these formulas:</p>
+    <div class="vendora-highlight">
+      <h4>Women</h4>
+      <p><strong>BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age − 161</strong></p>
+      <h4>Men</h4>
+      <p><strong>BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age + 5</strong></p>
+    </div>
+
+    <h2>Worked Examples</h2>
+    <div class="vendora-table-wrapper">
+      <table class="vendora-table">
+        <thead><tr><th>Profile</th><th>Inputs</th><th>Approximate BMR</th></tr></thead>
+        <tbody>
+          <tr><td>Woman, 30 years</td><td>165 cm, 70 kg</td><td><strong>~1,411 kcal/day</strong></td></tr>
+          <tr><td>Man, 30 years</td><td>175 cm, 70 kg</td><td><strong>~1,665 kcal/day</strong></td></tr>
+          <tr><td>Woman, 45 years</td><td>160 cm, 65 kg</td><td><strong>~1,315 kcal/day</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Use the <a href="/calculators/bmr-calculator/">BMR calculator</a> for your exact numbers — results update instantly with no signup.</p>
+
+    <h2>BMR vs TDEE: What Comes Next?</h2>
+    <p>Total daily energy expenditure (TDEE) = BMR × activity factor. Sedentary office work might use 1.2× BMR; very active jobs or athletes might use 1.6–1.9×. BMR alone answers “resting calories”; TDEE answers “what should I eat today?”</p>
+    <p>If you are building a restaurant or wellness business on GetVendora, pair this guide with our <a href="/tools/food-cost-calculator/">food cost calculator</a> for menu math — different domain, same precision mindset.</p>
+
+    <h2>How to Use the BMR Calculator Step by Step</h2>
+    <ol>
+      <li>Enter age, sex, height (cm), and weight (kg).</li>
+      <li>Click calculate — the tool applies Mifflin-St Jeor automatically.</li>
+      <li>Read the result as <em>resting</em> calories per day.</li>
+      <li>Multiply by an activity factor if you need TDEE (see FAQ below).</li>
+    </ol>
+
+    <h2>When BMR Estimates May Differ From Reality</h2>
+    <p>Equations are population averages. Muscle mass, thyroid conditions, medications, genetics, and pregnancy can shift real metabolism. Treat BMR as a strong starting estimate — not a medical diagnosis.</p>
+    
+    
+    <h2>Related Guides</h2>
+    <ul>
+      <li><a href="/guides/commission-calculator-guide/">Commission calculator guide</a> — sales payout math for business owners</li>
+      <li><a href="/guides/food-cost-calculator-guide/">Food cost calculator guide</a> — restaurant menu costing</li>
+      <li><a href="/guides/delivery-commission-calculator-guide/">Delivery commission guide</a> — margin after app fees</li>
+    </ul>
+    <h2>Popular Tools</h2>
+    <ul>
+      <li><a href="/calculators/bmr-calculator/">BMR calculator</a> — instant Mifflin-St Jeor results</li>
+      <li><a href="/tools/commission-calculator/">Commission calculator</a> — sales pay and reverse rate</li>
+      <li><a href="/tools/food-cost-calculator/">Food cost calculator</a> — recipe and menu cost %</li>
+    </ul>
+
+    <h2>Frequently Asked Questions (FAQ)</h2>
+    <div class="vendora-faq-item">
+      <h3>What is the Mifflin-St Jeor equation for women?</h3>
+      <p>BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age − 161. This is the formula used in the GetVendora BMR calculator for female inputs.</p>
+    </div>
+
+    <div class="vendora-faq-item">
+      <h3>What is the Mifflin-St Jeor equation for men?</h3>
+      <p>BMR = 10 × weight(kg) + 6.25 × height(cm) − 5 × age + 5. Enter your metrics in the calculator for an instant result.</p>
+    </div>
+
+    <div class="vendora-faq-item">
+      <h3>What is the difference between BMR and TDEE?</h3>
+      <p>BMR is calories burned at rest. TDEE includes activity — it is typically BMR multiplied by an activity factor (for example 1.2 for sedentary, 1.55 for moderately active).</p>
+    </div>
+
+    <div class="vendora-faq-item">
+      <h3>Is BMR the same as my daily calorie target?</h3>
+      <p>No. You need additional calories above BMR for daily movement and exercise. Use BMR as the base, then add activity.</p>
+    </div>
+
+    <div class="vendora-faq-item">
+      <h3>How accurate is the Mifflin-St Jeor equation?</h3>
+      <p>It is among the most validated resting-metabolism formulas for general adults. Individual results can still vary by roughly 10%.</p>
+    </div>
+
+    <div class="vendora-faq-item">
+      <h3>Which units does the calculator use?</h3>
+      <p>Metric: kilograms for weight, centimeters for height, and years for age — as labeled on the calculator form.</p>
+    </div>
+    <div class="vendora-cta-section">
+      <h2>Calculate Your BMR Now</h2>
+      <p>Get an instant resting calorie estimate with the free Mifflin-St Jeor BMR calculator — no signup required.</p>
+      <a href="https://getvendora.net/calculators/bmr-calculator/" class="vendora-btn">Open BMR Calculator</a>
+    </div>
+  </section>
+</article>
+<script defer src="../../assets/analytics-loader.js"></script>
+</body>
+</html>

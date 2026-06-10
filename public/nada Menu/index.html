@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Gourmet tomorrow | Premium Food Pre-Order & Next-Day Dining</title>
+  <meta name="description" content="Choose your premium meal today and enjoy fresh, chef-prepared next-day delivery or pickup. Skip the wait and dine elegantly.">
+  
+  <!-- PWA Capabilities -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#16161a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Gourmet Tomorrow">
+  <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=180&q=80">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="styles.css?v=26">
+  
+  <!-- Google Fonts & Boxicons CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+</head>
+<body>
+
+  <!-- Floating Closed Status Banner -->
+  <div class="closed-banner" id="closed-banner" style="display: none;">
+    <i class="bx bx-info-circle"></i> Orders are currently closed. You can still submit requests for tomorrow.
+  </div>
+
+  <!-- Header Navigation -->
+  <header>
+    <div class="container nav-wrapper">
+      <a href="#" class="logo" id="nav-logo">
+        <i class="bx bxs-hot"></i>
+        <span>Gourmet</span>tomorrow
+      </a>
+      
+      <ul class="nav-links">
+        <li><a href="#" class="active" id="link-home">Home</a></li>
+        <li><a href="#menu" id="link-menu">Menu</a></li>
+        <li><a href="#voting" id="link-voting">Request Food</a></li>
+        <li><a href="#menu" id="link-suggest">Suggest Dish</a></li>
+        <li><a href="#about" id="link-about">How it works</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="cart-toggle" id="request-basket-btn" aria-label="Open tomorrow request basket" style="margin-right: 8px; border-color: rgba(255, 182, 39, 0.35);">
+          <i class="bx bx-calendar-star" style="color: var(--color-secondary);"></i>
+          <span>Requests</span>
+          <div class="cart-toggle-badge" id="request-badge" style="background: var(--color-secondary); color: black;">0</div>
+        </button>
+        <button class="cart-toggle" id="cart-btn" aria-label="Open pre-order cart">
+          <i class="bx bx-shopping-bag"></i>
+          <span>Cart</span>
+          <div class="cart-toggle-badge" id="cart-badge">0</div>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Landing Section -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-brand-logo" id="hero-brand-logo" hidden></div>
+        <span class="badge badge-primary hero-tag">Freshness Reserved</span>
+        <h1>Choose Your Meal<br><span>For Tomorrow</span></h1>
+        <p class="hero-subtitle" id="hero-brand-tagline">
+          We cook fresh daily based on pre-orders. Choose your gourmet dishes today to secure your slot, reduce food waste, and receive hot meals on your schedule tomorrow.
+        </p>
+        <a href="#menu" class="hero-cta" id="hero-action-btn">
+          Pre-Order Now <i class="bx bx-right-arrow-alt"></i>
+        </a>
+      </div>
+      <div class="hero-image-wrapper">
+        <div class="hero-image-glow"></div>
+        <img src="" alt="" class="hero-img" id="hero-rotating-img">
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works & Info Banner -->
+  <section class="info-banner" id="about">
+    <div class="container info-grid">
+      <div class="info-item">
+        <i class="bx bx-calendar-check"></i>
+        <div>
+          <h4>Pre-Order Today</h4>
+          <p>Secure your order before 11:00 PM tonight.</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <i class="bx bx-dish"></i>
+        <div>
+          <h4>Fresh Cooked Daily</h4>
+          <p>Our chefs buy fresh ingredients tomorrow morning.</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <i class="bx bx-time-five"></i>
+        <div>
+          <h4>On Your Schedule</h4>
+          <p>Pick delivery or pickup at your chosen time slot.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu Filtering & Display Section -->
+  <section class="menu-section" id="menu">
+    <div class="container">
+
+      <!-- Section Navigation Tabs (shown only on mobile) -->
+      <div class="menu-sections-tabs" id="menu-sections-tabs">
+        <button class="section-tab active" data-section="today">
+          <i class="bx bx-food-menu"></i> Menu
+        </button>
+        <button class="section-tab" data-section="tomorrow">
+          <i class="bx bx-calendar-check"></i> Tomorrow
+        </button>
+        <button class="section-tab" data-section="request">
+          <i class="bx bx-message-square-add"></i> Request
+        </button>
+        <button class="section-tab" data-section="suggest">
+          <i class="bx bx-comment-add"></i> Suggest
+        </button>
+      </div>
+
+      <div class="menu-search-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+        <!-- Category Slider -->
+        <div class="categories-slider" id="category-tabs" style="margin-bottom: 0; flex-grow: 1;">
+          <!-- Rendered dynamically by app.js -->
+        </div>
+        <div class="menu-search">
+          <i class="bx bx-search"></i>
+          <input type="text" id="menu-search-input" placeholder="Search full menu..." aria-label="Search menu items">
+        </div>
+      </div>
+
+      <!-- 1. Full Menu Section -->
+      <div id="section-available-today" class="menu-section-block active">
+        <div class="section-header">
+          <div class="section-title">
+            <h2>Full Menu</h2>
+            <p>Available today appears first, then tomorrow plan, then request-only. Sold out stays at the bottom.</p>
+          </div>
+        </div>
+        <div class="food-grid" id="today-food-list">
+          <!-- Dynamically populated full menu food cards -->
+          <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-secondary);">
+            <i class="bx bx-loader-alt bx-spin" style="font-size: 2rem; color: var(--color-primary);"></i>
+            <p style="margin-top: 10px;">Loading full menu...</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 2. Confirmed For Tomorrow Section -->
+      <div id="section-confirmed-tomorrow" class="menu-section-block">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="badge glow-effect" style="margin-bottom: 8px; background: var(--gradient-success); color: white;"><i class="bx bx-check-shield"></i> Confirmed for Tomorrow</span>
+            <h2>Tomorrow Plan</h2>
+            <p>Owner-confirmed dishes planned for tomorrow. Pre-order or reserve yours.</p>
+          </div>
+        </div>
+        <div class="food-grid" id="tomorrow-food-list">
+          <!-- Dynamically populated confirmed tomorrow food cards -->
+          <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">No items confirmed for tomorrow yet.</p>
+        </div>
+      </div>
+      
+      <!-- 3. Request For Tomorrow Section -->
+      <div id="section-request-tomorrow" class="menu-section-block">
+        <div class="section-header">
+          <div class="section-title">
+            <h2>Request For Tomorrow</h2>
+            <p>Your selected requests only. Add dishes from Full Menu, then change quantity or remove here.</p>
+          </div>
+        </div>
+        <div class="request-inline-summary" id="request-inline-summary" style="display: none;">
+          <div>
+            <span class="badge badge-secondary">Selected Requests</span>
+            <h3>Your request basket</h3>
+            <p id="request-inline-text">No selected requests yet.</p>
+          </div>
+          <button type="button" class="checkout-btn" id="request-inline-submit-btn">
+            Submit Requests <i class="bx bx-check-double"></i>
+          </button>
+        </div>
+        <div class="request-suggest-cta" id="request-suggest-cta">
+          <div>
+            <strong>Do not see what you want?</strong>
+            <span>Suggest a new dish and the owner can review it in Admin &gt; Suggestions.</span>
+          </div>
+          <button type="button" class="admin-btn-outline" id="request-suggest-btn">
+            Suggest New Dish
+          </button>
+        </div>
+        <div class="request-selected-list" id="request-food-list">
+          <!-- Dynamically populated selected request rows -->
+          <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-secondary);">
+            <i class="bx bx-loader-alt bx-spin" style="font-size: 2rem; color: var(--color-primary);"></i>
+            <p style="margin-top: 10px;">Loading selected requests...</p>
+          </div>
+        </div>
+        <div class="request-status-panel" id="request-status-panel" style="display: none;">
+          <div class="request-status-header">
+            <span class="badge badge-secondary">My Requests</span>
+            <h3>Request status</h3>
+            <p>Check whether your submitted dishes are pending, approved, or not available this time.</p>
+          </div>
+          <div class="request-status-list" id="request-status-list"></div>
+        </div>
+      </div>
+
+      <!-- 4. Suggest New Dish Section -->
+      <div id="section-suggest-dish" class="menu-section-block">
+        <div class="section-header">
+          <div class="section-title">
+            <h2>Suggest New Dish</h2>
+            <p>Don't see your favorite dish? Suggest it directly to the chef below!</p>
+          </div>
+        </div>
+        <div class="custom-request-box" style="margin-top: 10px; border-color: rgba(255, 182, 39, 0.35);">
+          <form id="dish-suggestion-form" onsubmit="event.preventDefault();">
+            <div class="form-group">
+              <label class="form-label" for="sug-dish-name">Suggested Dish Name *</label>
+              <input type="text" id="sug-dish-name" class="form-input" placeholder="e.g. Garlic Seafood Pasta" required>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" id="sug-cust-name-label" for="sug-cust-name">Your Full Name</label>
+                <input type="text" id="sug-cust-name" class="form-input" placeholder="e.g. John Doe">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" id="sug-cust-phone-label" for="sug-cust-phone">Phone Number</label>
+                <input type="tel" id="sug-cust-phone" class="form-input" placeholder="e.g. +973XXXXXXXX">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" id="sug-notes-label" for="sug-notes">Additional Notes / Preferences</label>
+              <textarea id="sug-notes" class="form-input" rows="3" placeholder="Extra spicy, serving size, specific ingredients, etc."></textarea>
+            </div>
+            
+            <button type="submit" class="checkout-btn" style="background: var(--gradient-gold); color: black; width: 100%;">
+              Submit Dish Suggestion <i class="bx bx-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Slide-out Cart Drawer -->
+  <div class="cart-drawer-overlay" id="cart-overlay"></div>
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h3>Your Tomorrow Order</h3>
+      <button class="cart-close-btn" id="cart-close-btn" aria-label="Close cart">
+        <i class="bx bx-x"></i>
+      </button>
+    </div>
+    
+    <div class="cart-items-wrapper" id="cart-items-list">
+      <!-- Generated dynamically by app.js -->
+      <div class="cart-empty">
+        <i class="bx bx-basket"></i>
+        <p>Your pre-order list is empty.<br>Choose delicious meals to fill it!</p>
+      </div>
+    </div>
+    
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>Total Tomorrow:</span>
+        <span class="cart-total-price" id="cart-total-val">$0.00</span>
+      </div>
+      <button class="checkout-btn" id="cart-checkout-btn">
+        Proceed to Pre-Order <i class="bx bx-right-arrow-alt"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Slide-out Request Basket Drawer -->
+  <div class="cart-drawer-overlay" id="request-overlay"></div>
+  <div class="cart-drawer" id="request-drawer" style="border-left-color: var(--color-secondary);">
+    <div class="cart-header" style="border-bottom-color: var(--border-color);">
+      <h3>Tomorrow Request Basket</h3>
+      <button class="cart-close-btn" id="request-close-btn" aria-label="Close request basket">
+        <i class="bx bx-x"></i>
+      </button>
+    </div>
+    
+    <div class="cart-items-wrapper" id="request-items-list">
+      <!-- Generated dynamically by app.js -->
+      <div class="cart-empty">
+        <i class="bx bx-calendar-star" style="color: var(--color-secondary); font-size: 3rem;"></i>
+        <p>Your request basket is empty.<br>Request dishes you want to eat tomorrow!</p>
+      </div>
+    </div>
+    
+    <div class="cart-footer" style="border-top-color: var(--border-color);">
+      <div class="cart-total-row">
+        <span>Items Selected:</span>
+        <span class="cart-total-price" id="request-total-count" style="color: var(--color-secondary);">0 items</span>
+      </div>
+      <button class="checkout-btn" id="request-checkout-btn" style="background: var(--gradient-gold); color: black;">
+        Submit Requests <i class="bx bx-check-double"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Item Detail Modal -->
+  <div class="modal-overlay" id="detail-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Dish Details</h3>
+        <button class="modal-close" id="detail-modal-close"><i class="bx bx-x"></i></button>
+      </div>
+      <div class="modal-body" id="detail-modal-body">
+        <!-- Dynamically rendered -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout & Confirmation Modal -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Pre-Order Checkout</h3>
+        <button class="modal-close" id="checkout-modal-close"><i class="bx bx-x"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="checkout-form" onsubmit="event.preventDefault();">
+          
+          <!-- Toggle Delivery vs Pickup -->
+          <div class="toggle-group">
+            <input type="radio" name="orderType" id="opt-delivery" class="toggle-opt" value="Delivery" checked>
+            <label for="opt-delivery" class="toggle-label">
+              <i class="bx bx-navigation"></i> Delivery Tomorrow
+            </label>
+            
+            <input type="radio" name="orderType" id="opt-pickup" class="toggle-opt" value="Pickup">
+            <label for="opt-pickup" class="toggle-label">
+              <i class="bx bx-store-alt"></i> Store Pickup
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="checkout-name-label" for="cust-name">Your Full Name *</label>
+            <input type="text" id="cust-name" class="form-input" placeholder="e.g. John Doe" required autocomplete="name">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="checkout-phone-label" for="cust-phone">Phone Number *</label>
+            <input type="tel" id="cust-phone" class="form-input" placeholder="e.g. +1234567890" required autocomplete="tel">
+          </div>
+
+          <!-- Tomorrow Delivery Preferred Time Slot -->
+          <div class="form-group">
+            <label class="form-label" id="checkout-time-label">Preferred Time Slot Tomorrow *</label>
+            <div class="time-slot-grid" id="time-slots-container">
+              <!-- Dynamically generated in app.js -->
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="checkout-notes-label" for="cust-notes">Special Requests / Notes</label>
+            <textarea id="cust-notes" class="form-input" rows="3" placeholder="Allergies, extra sauce, gate codes, etc."></textarea>
+          </div>
+
+          <!-- Order Summary review box -->
+          <div class="checkout-summary-box">
+            <h4 class="checkout-summary-title">Summary Review</h4>
+            <div id="checkout-items-summary">
+              <!-- Dynamically rendered -->
+            </div>
+            <div class="conf-row total" style="margin-top:12px;">
+              <span>Total Tomorrow:</span>
+              <span id="checkout-total-val" style="color:var(--color-primary); font-family:var(--font-headings); font-weight:700;">$0.00</span>
+            </div>
+          </div>
+
+          <button type="submit" class="checkout-btn" id="submit-order-btn">
+            Submit Pre-Order <i class="bx bx-check-circle"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Success Confirmation Screen -->
+  <div class="modal-overlay" id="success-modal">
+    <div class="modal-card">
+      <div class="modal-body success-screen">
+        <div class="success-icon-wrapper">
+          <i class="bx bx-check"></i>
+        </div>
+        <h2>Pre-Order Placed!</h2>
+        <p class="success-subtitle">We have reserved your slot for tomorrow morning.</p>
+        
+        <div class="confirmation-card">
+          <div class="conf-row">
+            <span>Order Code:</span>
+            <strong id="conf-order-id" style="color:var(--text-primary);">ORD-000000</strong>
+          </div>
+          <div class="conf-row">
+            <span>Customer:</span>
+            <span id="conf-customer-name">John Doe</span>
+          </div>
+          <div class="conf-row">
+            <span>Fulfillment:</span>
+            <span id="conf-fulfillment-type">Delivery</span>
+          </div>
+          <div class="conf-row">
+            <span>Preferred Time:</span>
+            <strong id="conf-time-slot" style="color:var(--color-secondary);">12:00 PM - 1:00 PM</strong>
+          </div>
+          <div class="conf-row total">
+            <span>Total Expected:</span>
+            <span id="conf-total-price" style="color:var(--color-primary);">$0.00</span>
+          </div>
+        </div>
+
+        <button class="whatsapp-redirect-btn" id="whatsapp-btn">
+          <i class="bx bxl-whatsapp" style="font-size:1.4rem;"></i> Send Order to WhatsApp
+        </button>
+        
+        <button class="checkout-btn" id="confirm-sent-btn" style="margin-top: 12px; background: var(--gradient-success); color: black; display: none; width: 100%;">
+          <i class="bx bx-check-circle" style="font-size:1.2rem;"></i> I Sent My Order
+        </button>
+        
+        <div>
+          <button class="close-success-btn" id="success-close-btn">
+            Back to Menu
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+  
+  <!-- Request for Tomorrow Modal -->
+  <div class="modal-overlay" id="request-tomorrow-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Request Food for Tomorrow</h3>
+        <button class="modal-close" id="request-modal-close"><i class="bx bx-x"></i></button>
+      </div>
+      
+      <!-- Modal Form State -->
+      <div class="modal-body" id="request-modal-form-body">
+        <div class="checkout-summary-box" style="margin-bottom: 20px; border-color: rgba(255, 182, 39, 0.35);">
+          <h4 class="checkout-summary-title" style="color: var(--color-secondary);">Tomorrow Requests Summary</h4>
+          <div id="request-items-summary" style="max-height: 120px; overflow-y: auto;">
+            <!-- Dynamically populated summary of requested items -->
+          </div>
+        </div>
+        
+        <form id="request-tomorrow-form" onsubmit="event.preventDefault();">
+          <div class="form-group">
+            <label class="form-label" id="request-name-label" for="request-name">Your Full Name</label>
+            <input type="text" id="request-name" class="form-input" placeholder="e.g. John Doe" autocomplete="name">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="request-phone-label" for="request-phone">Phone Number *</label>
+            <input type="tel" id="request-phone" class="form-input" placeholder="e.g. +1234567890" required autocomplete="tel">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="request-time-label" for="request-time">Preferred Time Slot *</label>
+            <select id="request-time" class="form-input" style="background:var(--bg-surface-elevated);" required>
+              <option value="12:00 PM - 1:00 PM">12:00 PM - 1:00 PM</option>
+              <option value="1:00 PM - 2:00 PM">1:00 PM - 2:00 PM</option>
+              <option value="2:00 PM - 3:00 PM">2:00 PM - 3:00 PM</option>
+              <option value="3:00 PM - 4:00 PM">3:00 PM - 4:00 PM</option>
+              <option value="4:00 PM - 5:00 PM">4:00 PM - 5:00 PM</option>
+              <option value="5:00 PM - 6:00 PM">5:00 PM - 6:00 PM</option>
+              <option value="6:00 PM - 7:00 PM">6:00 PM - 7:00 PM</option>
+              <option value="7:00 PM - 8:00 PM">7:00 PM - 8:00 PM</option>
+              <option value="8:00 PM - 9:00 PM">8:00 PM - 9:00 PM</option>
+              <option value="9:00 PM - 10:00 PM">9:00 PM - 10:00 PM</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" id="request-notes-label" for="request-notes">Special Requests / Notes</label>
+            <textarea id="request-notes" class="form-input" rows="2" placeholder="Allergies, spicy level, extra sauce, etc."></textarea>
+          </div>
+
+          <button type="submit" class="checkout-btn" id="submit-request-btn" style="background: var(--gradient-gold); color: black;">
+            Submit Tomorrow Requests <i class="bx bx-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+
+      <!-- Modal Success State (hidden initially) -->
+      <div class="modal-body success-screen" id="request-modal-success-body" style="display: none; text-align: center; padding: 30px 20px;">
+        <div class="success-icon-wrapper" style="background: rgba(255, 182, 39, 0.1); border-color: var(--color-secondary); color: var(--color-secondary);">
+          <i class="bx bx-check-double"></i>
+        </div>
+        <h2>Request Submitted!</h2>
+        <p class="success-subtitle" style="margin-top: 10px; margin-bottom: 24px; color: var(--text-secondary);">
+          Thank you. Your request has been counted. If this item is selected for tomorrow, we may contact you.
+        </p>
+
+        <div class="confirmation-card" style="margin-bottom: 24px; text-align: left; border-color: rgba(255, 182, 39, 0.3);">
+          <div id="conf-req-items-list" style="max-height: 150px; overflow-y: auto; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
+            <!-- List of requested items -->
+          </div>
+          <div class="conf-row">
+            <span>Preferred Time:</span>
+            <span id="conf-req-time">12:00 PM</span>
+          </div>
+        </div>
+
+        <button class="whatsapp-redirect-btn" id="request-whatsapp-btn" style="background: var(--gradient-whatsapp); box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);">
+          <i class="bx bxl-whatsapp" style="font-size: 1.4rem;"></i> Send My Food Request on WhatsApp
+        </button>
+
+        <button class="close-success-btn" id="request-success-close-btn" style="margin-top: 16px;">
+          Back to Menu
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-logo">
+        <i class="bx bxs-hot"></i>
+        <span>Gourmet</span>tomorrow
+      </div>
+      <p style="margin-bottom: 8px;">Fresh Next-Day Dining. Pre-orders close at 11:00 PM daily.</p>
+      <p style="font-size: 0.75rem; opacity: 0.6;">&copy; 2026 Gourmet Tomorrow. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-bottom-nav">
+    <a href="#" class="bottom-nav-item active" id="btn-nav-home">
+      <i class="bx bx-home-alt"></i>
+      <span>Home</span>
+    </a>
+    <a href="#menu" class="bottom-nav-item" id="btn-nav-menu">
+      <i class="bx bx-dish"></i>
+      <span>Menu</span>
+    </a>
+    <a href="#menu" class="bottom-nav-item" id="btn-nav-request">
+      <div style="position: relative; display: inline-flex;">
+        <i class="bx bx-message-square-add"></i>
+        <span class="nav-badge-dot" id="request-badge-dot" style="display: none;"></span>
+      </div>
+      <span>Request</span>
+    </a>
+    <a href="#" class="bottom-nav-item" id="btn-nav-cart">
+      <div style="position: relative; display: inline-flex;">
+        <i class="bx bx-shopping-bag"></i>
+        <span class="nav-badge-count" id="cart-badge-bottom">0</span>
+      </div>
+      <span>Cart</span>
+    </a>
+  </nav>
+
+  <!-- JS Files -->
+  <script src="firebase-config.js?v=25"></script>
+  <script src="app.js?v=25"></script>
+  
+  
+  <!-- Register Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js?v=25')
+          .then(reg => console.log('Service Worker registered!', reg))
+          .catch(err => console.log('Service Worker registration failed: ', err));
+      });
+    }
+  </script>
+</body>
+</html>

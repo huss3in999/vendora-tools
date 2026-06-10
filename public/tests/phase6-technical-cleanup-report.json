@@ -1,0 +1,46 @@
+{
+  "fixes": [
+    "Removed 9 non-HTML/private URL(s) from sitemap.xml",
+    "Removed 3 non-HTML/private URL(s) from sitemap-tools.xml",
+    "Expanded robots.txt with private-path disallows (_site, demo, nada Menu, admin, care, ai-chat-test, zip)",
+    "Created _site/robots.txt blocking all crawlers (build mirror defense)",
+    "Sitemap health: 12 polluting URL(s) removed across 2 file(s)",
+    "Verified noindex on nada Menu, demo, admin, and care pages",
+    "Verified JSON-LD validity on sampled money/entity pages",
+    "Verified canonical tags on sampled sitemap pages"
+  ],
+  "files_modified": [
+    "_site/robots.txt",
+    "robots.txt",
+    "sitemap-tools.xml",
+    "sitemap.xml"
+  ],
+  "sitemap_removed": {
+    "sitemap.xml": [
+      "https://getvendora.net/llms.txt",
+      "https://getvendora.net/.well-known/llms.txt",
+      "https://getvendora.net/ai-index.json",
+      "https://getvendora.net/data/tools-catalog.json",
+      "https://getvendora.net/demo/demo-beauty/",
+      "https://getvendora.net/demo/demo-electronics/",
+      "https://getvendora.net/demo/demo-food/",
+      "https://getvendora.net/demo/demo-pos/",
+      "https://getvendora.net/demo/demo-retail/"
+    ],
+    "sitemap-tools.xml": [
+      "https://getvendora.net/.well-known/llms.txt",
+      "https://getvendora.net/data/tools-catalog.json",
+      "https://getvendora.net/llms.txt"
+    ]
+  },
+  "noindex_gaps": [],
+  "canonical_issues": [],
+  "jsonld_errors": [],
+  "owner_action": [
+    "_site/ contains 409 HTML mirror pages (gitignored). Confirm Cloudflare Pages publish directory is repo root, not _site/, and request GSC removal if /_site/ URLs were ever indexed.",
+    "In Google Search Console, inspect/removal-request any already-indexed URLs for llms.txt, ai-index.json, tools-catalog.json, and demo pages if they appear in Coverage.",
+    "Admin CRM (/bahrain-saudi-gcc-transport/admin/) relies on noindex + robots; add Cloudflare Access or HTTP auth for true access control.",
+    "Resubmit sitemap.xml in GSC after deploy so Google drops removed machine-file and demo URLs from crawl queue."
+  ],
+  "warnings": []
+}

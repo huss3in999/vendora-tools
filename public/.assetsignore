@@ -8,10 +8,13 @@
 **/e2e/**
 **/test-results
 **/test-results/**
+**/tests/google-analytics-audit-*
 **/.wrangler
 **/.wrangler/**
 **/.git
 **/.git/**
+**/.codex-remote-attachments
+**/.codex-remote-attachments/**
 **/zip
 **/zip/**
 package-lock.json

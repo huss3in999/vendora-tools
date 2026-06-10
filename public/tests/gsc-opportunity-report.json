@@ -1,0 +1,543 @@
+{
+  "dateRange": {
+    "from": "2026-03-12",
+    "to": "2026-06-03"
+  },
+  "totals": {
+    "clicks": 94.0,
+    "impressions": 19483.0,
+    "ctr": 0.48
+  },
+  "top20": [
+    {
+      "url": "https://getvendora.net/tools/commission-calculator/",
+      "path": "/tools/commission-calculator/",
+      "clicks": 1.0,
+      "impressions": 2852.0,
+      "ctr": 0.0004,
+      "position": 12.57,
+      "section": "Tools"
+    },
+    {
+      "url": "https://getvendora.net/guides/commission-calculator-guide/",
+      "path": "/guides/commission-calculator-guide/",
+      "clicks": 0.0,
+      "impressions": 1160.0,
+      "ctr": 0.0,
+      "position": 61.28,
+      "section": "Guides"
+    },
+    {
+      "url": "https://getvendora.net/",
+      "path": "/",
+      "clicks": 7.0,
+      "impressions": 971.0,
+      "ctr": 0.0072,
+      "position": 7.95,
+      "section": "Homepage"
+    },
+    {
+      "url": "https://getvendora.net/tools/food-cost-calculator/",
+      "path": "/tools/food-cost-calculator/",
+      "clicks": 1.0,
+      "impressions": 875.0,
+      "ctr": 0.0011,
+      "position": 67.8,
+      "section": "Tools"
+    },
+    {
+      "url": "https://getvendora.net/calculators/bmr-calculator/",
+      "path": "/calculators/bmr-calculator/",
+      "clicks": 0.0,
+      "impressions": 753.0,
+      "ctr": 0.0,
+      "position": 6.4,
+      "section": "Calculators"
+    },
+    {
+      "url": "https://getvendora.net/guides/delivery-commission-calculator-guide/",
+      "path": "/guides/delivery-commission-calculator-guide/",
+      "clicks": 4.0,
+      "impressions": 689.0,
+      "ctr": 0.0058,
+      "position": 7.9,
+      "section": "Guides"
+    },
+    {
+      "url": "https://getvendora.net/guides/food-cost-calculator-guide/",
+      "path": "/guides/food-cost-calculator-guide/",
+      "clicks": 0.0,
+      "impressions": 666.0,
+      "ctr": 0.0,
+      "position": 71.7,
+      "section": "Guides"
+    },
+    {
+      "url": "https://getvendora.net/guides/margin-calculator-guide/",
+      "path": "/guides/margin-calculator-guide/",
+      "clicks": 0.0,
+      "impressions": 475.0,
+      "ctr": 0.0,
+      "position": 78.84,
+      "section": "Guides"
+    },
+    {
+      "url": "https://getvendora.net/guides/break-even-calculator-guide/",
+      "path": "/guides/break-even-calculator-guide/",
+      "clicks": 1.0,
+      "impressions": 453.0,
+      "ctr": 0.0022,
+      "position": 12.08,
+      "section": "Guides"
+    },
+    {
+      "url": "https://getvendora.net/about/",
+      "path": "/about/",
+      "clicks": 0.0,
+      "impressions": 448.0,
+      "ctr": 0.0,
+      "position": 11.34,
+      "section": "Restaurant/POS pages"
+    },
+    {
+      "url": "https://getvendora.net/calculators/roi-calculator/",
+      "path": "/calculators/roi-calculator/",
+      "clicks": 0.0,
+      "impressions": 423.0,
+      "ctr": 0.0,
+      "position": 57.22,
+      "section": "Calculators"
+    },
+    {
+      "url": "https://getvendora.net/guides/roi-calculator-guide/",
+      "path": "/guides/roi-calculator-guide/",
+      "clicks": 1.0,
+      "impressions": 389.0,
+      "ctr": 0.0026,
+      "position": 18.06,
+      "section": "Guides"
+    },
+    {
+      "url": "https://getvendora.net/guides/daily-sales-summary-guide/",
+      "path": "/guides/daily-sales-summary-guide/",
+      "clicks": 0.0,
+      "impressions": 386.0,
+      "ctr": 0.0,
+      "position": 31.7,
+      "section": "Guides"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait/",
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-kuwait/",
+      "clicks": 6.0,
+      "impressions": 378.0,
+      "ctr": 0.0159,
+      "position": 8.48,
+      "section": "Transport pages"
+    },
+    {
+      "url": "https://getvendora.net/tools/small-business/",
+      "path": "/tools/small-business/",
+      "clicks": 0.0,
+      "impressions": 341.0,
+      "ctr": 0.0,
+      "position": 79.43,
+      "section": "Tools"
+    },
+    {
+      "url": "https://getvendora.net/tools/daily-sales-summary/",
+      "path": "/tools/daily-sales-summary/",
+      "clicks": 1.0,
+      "impressions": 338.0,
+      "ctr": 0.003,
+      "position": 18.66,
+      "section": "Tools"
+    },
+    {
+      "url": "https://getvendora.net/tools/delivery-commission-calculator/",
+      "path": "/tools/delivery-commission-calculator/",
+      "clicks": 3.0,
+      "impressions": 333.0,
+      "ctr": 0.009000000000000001,
+      "position": 10.01,
+      "section": "Tools"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
+      "clicks": 8.0,
+      "impressions": 331.0,
+      "ctr": 0.0242,
+      "position": 14.14,
+      "section": "Transport pages"
+    },
+    {
+      "url": "https://getvendora.net/tools/receipt-generator/",
+      "path": "/tools/receipt-generator/",
+      "clicks": 4.0,
+      "impressions": 313.0,
+      "ctr": 0.0128,
+      "position": 65.21,
+      "section": "Tools"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/",
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-oman/",
+      "clicks": 1.0,
+      "impressions": 279.0,
+      "ctr": 0.0036,
+      "position": 7.26,
+      "section": "Transport pages"
+    }
+  ],
+  "closeToSuccess": [
+    {
+      "url": "https://getvendora.net/tools/commission-calculator/",
+      "path": "/tools/commission-calculator/",
+      "clicks": 1.0,
+      "impressions": 2852.0,
+      "ctr": 0.0004,
+      "position": 12.57,
+      "section": "Tools"
+    },
+    {
+      "url": "https://getvendora.net/",
+      "path": "/",
+      "clicks": 7.0,
+      "impressions": 971.0,
+      "ctr": 0.0072,
+      "position": 7.95,
+      "section": "Homepage"
+    },
+    {
+      "url": "https://getvendora.net/calculators/bmr-calculator/",
+      "path": "/calculators/bmr-calculator/",
+      "clicks": 0.0,
+      "impressions": 753.0,
+      "ctr": 0.0,
+      "position": 6.4,
+      "section": "Calculators"
+    },
+    {
+      "url": "https://getvendora.net/guides/delivery-commission-calculator-guide/",
+      "path": "/guides/delivery-commission-calculator-guide/",
+      "clicks": 4.0,
+      "impressions": 689.0,
+      "ctr": 0.0058,
+      "position": 7.9,
+      "section": "Guides"
+    },
+    {
+      "url": "https://getvendora.net/guides/break-even-calculator-guide/",
+      "path": "/guides/break-even-calculator-guide/",
+      "clicks": 1.0,
+      "impressions": 453.0,
+      "ctr": 0.0022,
+      "position": 12.08,
+      "section": "Guides"
+    },
+    {
+      "url": "https://getvendora.net/about/",
+      "path": "/about/",
+      "clicks": 0.0,
+      "impressions": 448.0,
+      "ctr": 0.0,
+      "position": 11.34,
+      "section": "Restaurant/POS pages"
+    },
+    {
+      "url": "https://getvendora.net/guides/roi-calculator-guide/",
+      "path": "/guides/roi-calculator-guide/",
+      "clicks": 1.0,
+      "impressions": 389.0,
+      "ctr": 0.0026,
+      "position": 18.06,
+      "section": "Guides"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait/",
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-kuwait/",
+      "clicks": 6.0,
+      "impressions": 378.0,
+      "ctr": 0.0159,
+      "position": 8.48,
+      "section": "Transport pages"
+    },
+    {
+      "url": "https://getvendora.net/tools/daily-sales-summary/",
+      "path": "/tools/daily-sales-summary/",
+      "clicks": 1.0,
+      "impressions": 338.0,
+      "ctr": 0.003,
+      "position": 18.66,
+      "section": "Tools"
+    },
+    {
+      "url": "https://getvendora.net/tools/delivery-commission-calculator/",
+      "path": "/tools/delivery-commission-calculator/",
+      "clicks": 3.0,
+      "impressions": 333.0,
+      "ctr": 0.009000000000000001,
+      "position": 10.01,
+      "section": "Tools"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
+      "clicks": 8.0,
+      "impressions": 331.0,
+      "ctr": 0.0242,
+      "position": 14.14,
+      "section": "Transport pages"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/",
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-oman/",
+      "clicks": 1.0,
+      "impressions": 279.0,
+      "ctr": 0.0036,
+      "position": 7.26,
+      "section": "Transport pages"
+    },
+    {
+      "url": "https://getvendora.net/tools/small-business/calculators/profit/",
+      "path": "/tools/small-business/calculators/profit/",
+      "clicks": 1.0,
+      "impressions": 243.0,
+      "ctr": 0.0040999999999999995,
+      "position": 9.3,
+      "section": "Tools"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dubai/",
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-dubai/",
+      "clicks": 2.0,
+      "impressions": 233.0,
+      "ctr": 0.0086,
+      "position": 7.45,
+      "section": "Transport pages"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-qatar/",
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-qatar/",
+      "clicks": 14.0,
+      "impressions": 220.0,
+      "ctr": 0.0636,
+      "position": 7.88,
+      "section": "Transport pages"
+    },
+    {
+      "url": "https://getvendora.net/calculators/time-duration/",
+      "path": "/calculators/time-duration/",
+      "clicks": 0.0,
+      "impressions": 197.0,
+      "ctr": 0.0,
+      "position": 11.61,
+      "section": "Calculators"
+    },
+    {
+      "url": "https://getvendora.net/guides/markup-calculator-guide/",
+      "path": "/guides/markup-calculator-guide/",
+      "clicks": 0.0,
+      "impressions": 190.0,
+      "ctr": 0.0,
+      "position": 17.87,
+      "section": "Guides"
+    },
+    {
+      "url": "https://getvendora.net/tools/invoice-generator/",
+      "path": "/tools/invoice-generator/",
+      "clicks": 1.0,
+      "impressions": 161.0,
+      "ctr": 0.0062,
+      "position": 19.26,
+      "section": "Tools"
+    },
+    {
+      "url": "https://getvendora.net/tools/",
+      "path": "/tools/",
+      "clicks": 1.0,
+      "impressions": 134.0,
+      "ctr": 0.0075,
+      "position": 14.93,
+      "section": "Tools"
+    },
+    {
+      "url": "https://getvendora.net/guides/discount-calculator-guide/",
+      "path": "/guides/discount-calculator-guide/",
+      "clicks": 0.0,
+      "impressions": 132.0,
+      "ctr": 0.0,
+      "position": 19.68,
+      "section": "Guides"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/dammam-to-bahrain/",
+      "path": "/bahrain-saudi-gcc-transport/dammam-to-bahrain/",
+      "clicks": 1.0,
+      "impressions": 128.0,
+      "ctr": 0.0078000000000000005,
+      "position": 18.1,
+      "section": "Transport pages"
+    },
+    {
+      "url": "https://getvendora.net/restaurant-calculators/",
+      "path": "/restaurant-calculators/",
+      "clicks": 0.0,
+      "impressions": 121.0,
+      "ctr": 0.0,
+      "position": 15.62,
+      "section": "Restaurant/POS pages"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-iraq/",
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-iraq/",
+      "clicks": 2.0,
+      "impressions": 114.0,
+      "ctr": 0.0175,
+      "position": 7.34,
+      "section": "Iraq/Ziyarat pages"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-uae/",
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-uae/",
+      "clicks": 3.0,
+      "impressions": 95.0,
+      "ctr": 0.0316,
+      "position": 6.13,
+      "section": "Transport pages"
+    },
+    {
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/khobar-to-bahrain/",
+      "path": "/bahrain-saudi-gcc-transport/khobar-to-bahrain/",
+      "clicks": 0.0,
+      "impressions": 76.0,
+      "ctr": 0.0,
+      "position": 19.49,
+      "section": "Transport pages"
+    }
+  ],
+  "zeroImpressionSitemapBySection": {
+    "Other": [
+      "/.well-known/llms.txt/",
+      "/ai-index.json/",
+      "/all-tools/",
+      "/data/tools-catalog.json/",
+      "/llms.txt/",
+      "/privacy-policy/"
+    ],
+    "Airport pages": [
+      "/bahrain-saudi-gcc-transport/airport-transfer/",
+      "/bahrain-saudi-gcc-transport/bahrain-to-dammam-airport/",
+      "/bahrain-saudi-gcc-transport/hamad-airport-to-bahrain/"
+    ],
+    "Iraq/Ziyarat pages": [
+      "/bahrain-saudi-gcc-transport/arbaeen-karbala-travel-tips/",
+      "/bahrain-saudi-gcc-transport/arbaeen-packing-list/",
+      "/bahrain-saudi-gcc-transport/arbaeen-season-bahrain-to-karbala/",
+      "/bahrain-saudi-gcc-transport/bahrain-to-karbala-route-plan/",
+      "/bahrain-saudi-gcc-transport/bahrain-to-najaf-driving-time/",
+      "/bahrain-saudi-gcc-transport/best-car-for-iraq-family-travel/",
+      "/bahrain-saudi-gcc-transport/best-time-bahrain-to-iraq/",
+      "/bahrain-saudi-gcc-transport/best-way-bahrain-to-karbala/",
+      "/bahrain-saudi-gcc-transport/book-private-car-bahrain-to-karbala/",
+      "/bahrain-saudi-gcc-transport/book-private-car-bahrain-to-najaf/",
+      "/bahrain-saudi-gcc-transport/direct-transport-bahrain-to-karbala/",
+      "/bahrain-saudi-gcc-transport/en/arbaeen-packing-list/",
+      "/bahrain-saudi-gcc-transport/en/arbaeen-season-bahrain-to-karbala/",
+      "/bahrain-saudi-gcc-transport/en/arbaeen-transport/",
+      "/bahrain-saudi-gcc-transport/en/bahrain-to-basra/"
+    ],
+    "Transport pages": [
+      "/bahrain-saudi-gcc-transport/en/bahrain-to-dubai/",
+      "/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/",
+      "/bahrain-saudi-gcc-transport/en/bahrain-to-oman/",
+      "/bahrain-saudi-gcc-transport/en/bahrain-to-uae/",
+      "/bahrain-saudi-gcc-transport/en/riyadh-to-bahrain/"
+    ],
+    "Calculators": [
+      "/calculator/",
+      "/calculator/finance/",
+      "/calculator/finance/accounts-receivable-turnover-calculator/",
+      "/calculator/finance/annual-recurring-revenue-calculator/",
+      "/calculator/finance/asset-turnover-calculator/",
+      "/calculator/finance/burn-rate-calculator/",
+      "/calculator/finance/cagr-calculator/",
+      "/calculator/finance/cap-rate-calculator/",
+      "/calculator/finance/cash-conversion-cycle-calculator/",
+      "/calculator/finance/cash-on-cash-return-calculator/",
+      "/calculator/finance/cash-ratio-calculator/",
+      "/calculator/finance/current-ratio-calculator/",
+      "/calculator/finance/days-payable-outstanding-calculator/",
+      "/calculator/finance/days-sales-outstanding-calculator/",
+      "/calculator/finance/debt-ratio-calculator/"
+    ],
+    "Restaurant/POS pages": [
+      "/contact/"
+    ],
+    "Guides": [
+      "/guides/",
+      "/guides/invoice-generator-guide/",
+      "/guides/profit-margin-calculator-guide/",
+      "/guides/qr-menu-generator-guide/",
+      "/guides/receipt-generator-guide/"
+    ],
+    "Tools": [
+      "/tools/ai-break-even-date/",
+      "/tools/ai-cash-flow-risk-detector/",
+      "/tools/ai-customer-profitability/",
+      "/tools/ai-profit-leak-finder/",
+      "/tools/ai-sales-trend-analyzer/",
+      "/tools/delivery-cost-calculator/",
+      "/tools/ebay-fee-calculator/",
+      "/tools/hourly-to-salary-calculator/",
+      "/tools/inventory-tracker/",
+      "/tools/no-tax-on-overtime-calculator/",
+      "/tools/purchase-order-generator/",
+      "/tools/quotation-generator/",
+      "/tools/restaurant-profit-dashboard/",
+      "/tools/shift-scheduler/",
+      "/tools/small-business/calculators/3d-printer-buy-vs-outsource/"
+    ],
+    "PDF tools": [
+      "/tools/pdf-converter/",
+      "/tools/pdf-converter/add-page-numbers/",
+      "/tools/pdf-converter/add-watermark/",
+      "/tools/pdf-converter/excel-to-pdf/",
+      "/tools/pdf-converter/image-to-pdf/",
+      "/tools/pdf-converter/jpg-to-pdf/",
+      "/tools/pdf-converter/merge-pdf/",
+      "/tools/pdf-converter/pdf-to-excel/",
+      "/tools/pdf-converter/pdf-to-jpg/",
+      "/tools/pdf-converter/pdf-to-word/",
+      "/tools/pdf-converter/rotate-pdf/",
+      "/tools/pdf-converter/split-pdf/",
+      "/tools/pdf-converter/word-to-pdf/"
+    ]
+  },
+  "zeroImpressionCounts": {
+    "Other": 6,
+    "Airport pages": 3,
+    "Iraq/Ziyarat pages": 37,
+    "Transport pages": 5,
+    "Calculators": 171,
+    "Restaurant/POS pages": 1,
+    "Guides": 5,
+    "Tools": 177,
+    "PDF tools": 13
+  },
+  "modifiedFiles": [
+    "bahrain-saudi-gcc-transport/bahrain-to-oman/index.html",
+    "bahrain-saudi-gcc-transport/khobar-to-bahrain/index.html",
+    "bahrain-saudi-gcc-transport/bahrain-airport-transfer/index.html",
+    "bahrain-saudi-gcc-transport/parcel-delivery/index.html",
+    "bahrain-saudi-gcc-transport/bahrain-to-dammam/index.html",
+    "calculators/bmr-calculator/index.html",
+    "tools/commission-calculator/index.html",
+    "index.html",
+    "about/index.html",
+    "guides/delivery-commission-calculator-guide/index.html",
+    "bahrain-saudi-gcc-transport/dammam-to-bahrain/index.html"
+  ],
+  "allPagesWithImpressions": 98
+}

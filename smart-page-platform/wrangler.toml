@@ -3,6 +3,8 @@ main = "./server.ts"
 compatibility_date = "2026-04-23"
 
 [[routes]]
+# DOMAIN OWNERSHIP: smart.getvendora.net belongs only to Smart Page Platform.
+# Do not move this route to vendora-branded-smart-links; /p/<code> customer pages depend on it.
 pattern = "smart.getvendora.net"
 custom_domain = true
 

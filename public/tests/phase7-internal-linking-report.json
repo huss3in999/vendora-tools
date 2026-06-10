@@ -1,0 +1,1001 @@
+{
+  "pages_improved": [],
+  "links_created": [],
+  "files_modified": [],
+  "orphans": [
+    "/bahrain-saudi-gcc-transport/dubai-to-bahrain/",
+    "/bahrain-saudi-gcc-transport/kuwait-to-bahrain/",
+    "/bahrain-saudi-gcc-transport/oman-to-bahrain/",
+    "/bahrain-saudi-gcc-transport/qatar-to-bahrain/",
+    "/tools/pdf-converter/add-page-numbers/",
+    "/tools/pdf-converter/add-watermark/",
+    "/tools/pdf-converter/compress-pdf/",
+    "/tools/pdf-converter/excel-to-pdf/",
+    "/tools/pdf-converter/image-to-pdf/",
+    "/tools/pdf-converter/jpg-to-pdf/",
+    "/tools/pdf-converter/merge-pdf/",
+    "/tools/pdf-converter/pdf-to-excel/",
+    "/tools/pdf-converter/pdf-to-jpg/",
+    "/tools/pdf-converter/pdf-to-word/",
+    "/tools/pdf-converter/rotate-pdf/",
+    "/tools/pdf-converter/split-pdf/",
+    "/tools/pdf-converter/word-to-pdf/",
+    "/tools/pdf-converter-lab/backups/live-before-integration/add-page-numbers/",
+    "/tools/pdf-converter-lab/backups/live-before-integration/add-watermark/",
+    "/tools/pdf-converter-lab/backups/live-before-integration/compress-pdf/",
+    "/tools/pdf-converter-lab/backups/live-before-integration/excel-to-pdf/",
+    "/tools/pdf-converter-lab/backups/live-before-integration/image-to-pdf/",
+    "/tools/pdf-converter-lab/backups/live-before-integration/jpg-to-pdf/",
+    "/tools/pdf-converter-lab/backups/live-before-integration/merge-pdf/",
+    "/tools/pdf-converter-lab/backups/live-before-integration/pdf-to-excel/",
+    "/tools/pdf-converter-lab/backups/live-before-integration/pdf-to-jpg/",
+    "/tools/pdf-converter-lab/backups/live-before-integration/pdf-to-word/",
+    "/tools/pdf-converter-lab/backups/live-before-integration/rotate-pdf/",
+    "/tools/pdf-converter-lab/backups/live-before-integration/split-pdf/",
+    "/tools/pdf-converter-lab/backups/live-before-integration/word-to-pdf/",
+    "/tools/small-business/calculators/budget/",
+    "/tools/small-business/calculators/build-or-buy/",
+    "/tools/small-business/calculators/burn-rate/",
+    "/tools/small-business/calculators/burndown-chart/",
+    "/tools/small-business/calculators/business-budget/",
+    "/tools/small-business/calculators/business-loan/",
+    "/tools/small-business/calculators/business-valuation/",
+    "/tools/small-business/calculators/california-sales-tax/",
+    "/tools/small-business/calculators/car-depreciation/",
+    "/tools/small-business/calculators/cash-conversion-cycle/",
+    "/tools/small-business/calculators/cash-flow-to-debt/",
+    "/tools/small-business/calculators/cash-ratio/",
+    "/tools/small-business/calculators/churn-rate/",
+    "/tools/small-business/calculators/commission/",
+    "/tools/small-business/calculators/cost-of-capital/",
+    "/tools/small-business/calculators/cost-of-doing-business/",
+    "/tools/small-business/calculators/cost-of-equity/",
+    "/tools/small-business/calculators/cpa/",
+    "/tools/small-business/calculators/cpc-cpm/",
+    "/tools/small-business/calculators/cpm/",
+    "/tools/small-business/calculators/cross-price-elasticity/",
+    "/tools/small-business/calculators/days-inventory-outstanding/",
+    "/tools/small-business/calculators/days-sales-outstanding/",
+    "/tools/small-business/calculators/dcf/",
+    "/tools/small-business/calculators/deadweight-loss/",
+    "/tools/small-business/calculators/debt/",
+    "/tools/small-business/calculators/debt-avalanche/",
+    "/tools/small-business/calculators/debt-consolidation/",
+    "/tools/small-business/calculators/debt-payoff/",
+    "/tools/small-business/calculators/debt-snowball/",
+    "/tools/small-business/calculators/debt-to-asset/",
+    "/tools/small-business/calculators/debt-to-capital/",
+    "/tools/small-business/calculators/debt-to-equity/",
+    "/tools/small-business/calculators/deferred-payment-loan/",
+    "/tools/small-business/calculators/degree-of-operating-leverage/",
+    "/tools/small-business/calculators/depreciation/",
+    "/tools/small-business/calculators/direct-material-price-variance/",
+    "/tools/small-business/calculators/discount/",
+    "/tools/small-business/calculators/discount-rate/",
+    "/tools/small-business/calculators/divdend-discount-model/",
+    "/tools/small-business/calculators/double-discount/",
+    "/tools/small-business/calculators/ebit/",
+    "/tools/small-business/calculators/ebitda/",
+    "/tools/small-business/calculators/ebitda-multiple/",
+    "/tools/small-business/calculators/economic-injury-disaster-loan/",
+    "/tools/small-business/calculators/economic-profit/",
+    "/tools/small-business/calculators/ending-inventory/",
+    "/tools/small-business/calculators/ev-to-sales/",
+    "/tools/small-business/calculators/expense-ratio/",
+    "/tools/small-business/calculators/fifo-for-inventories/",
+    "/tools/small-business/calculators/financial-leverage-ratio/",
+    "/tools/small-business/calculators/fixed-asset-turnover/",
+    "/tools/small-business/calculators/florida-sales-tax/",
+    "/tools/small-business/calculators/free-cash-flow/",
+    "/tools/small-business/calculators/free-cash-flow-to-equity/",
+    "/tools/small-business/calculators/free-cash-flow-to-firm/",
+    "/tools/small-business/calculators/futures-contract/",
+    "/tools/small-business/calculators/gmroi/",
+    "/tools/small-business/calculators/gross-rent-multiplier/",
+    "/tools/small-business/calculators/gross-to-net/",
+    "/tools/small-business/calculators/home-improvement-loan/",
+    "/tools/small-business/calculators/hr-software-roi/",
+    "/tools/small-business/calculators/income-elasticity-demand/",
+    "/tools/small-business/calculators/interest-coverage-ratio/",
+    "/tools/small-business/calculators/levered-free-cash-flow/",
+    "/tools/small-business/calculators/loan/",
+    "/tools/small-business/calculators/loan-balance/",
+    "/tools/small-business/calculators/loan-comparison/",
+    "/tools/small-business/calculators/loan-interest/",
+    "/tools/small-business/calculators/loan-payment/"
+  ],
+  "orphan_count": 175,
+  "weak_links_lt3": [
+    {
+      "path": "/guides/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-karbala-route-plan/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/best-car-for-iraq-family-travel/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/book-private-car-bahrain-to-najaf/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/direct-transport-bahrain-to-karbala/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/family-travel-bahrain-to-iraq/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/karbala-trip-from-bahrain/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/najaf-trip-from-bahrain/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/overland-travel-bahrain-to-iraq/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/pilgrims-transport-bahrain-to-iraq/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/private-car-vs-other-iraq-travel/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/arbaeen-karbala-travel-tips/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/arbaeen-packing-list/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/arbaeen-season-bahrain-to-karbala/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/bahrain-to-karbala-route-plan/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/bahrain-to-najaf-driving-time/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/best-car-for-iraq-family-travel/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/best-time-bahrain-to-iraq/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/best-way-bahrain-to-karbala/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/book-private-car-bahrain-to-karbala/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/book-private-car-bahrain-to-najaf/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/direct-transport-bahrain-to-karbala/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/family-transport-bahrain-najaf-karbala/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/family-travel-bahrain-to-iraq/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/iraq-ziyarat-private-car-bahrain/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/karbala-trip-from-bahrain/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/najaf-trip-from-bahrain/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/overland-travel-bahrain-to-iraq/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/pilgrims-transport-bahrain-to-iraq/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/private-car-bahrain-to-iraq/",
+      "inbound": 1
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/en/private-car-vs-other-iraq-travel/",
+      "inbound": 1
+    },
+    {
+      "path": "/calculator/finance/days-payable-outstanding-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/finance/dividend-payout-ratio-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/finance/enterprise-value-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/finance/price-to-earnings-ratio-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/finance/rent-to-revenue-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/finance/runway-net-burn-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/finance/savings-goal-monthly-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/finance/simple-interest-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/finance/straight-line-depreciation-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/food/spoilage-waste-percent-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/general/customer-churn-rate-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/general/price-elasticity-point-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/inventory/inventory-sell-through-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/operations/shift-premium-pay-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/profit/bundle-value-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/profit/commission-split-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/profit/fixed-cost-per-unit-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/profit/gross-booking-value-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/profit/sales-tax-exclusive-from-total-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/profit/sequential-discount-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/restaurant/average-check-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/restaurant/food-cost-percent-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculator/restaurant/labor-cost-percent-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/calculators/restaurant-nutrition-calculator/",
+      "inbound": 2
+    },
+    {
+      "path": "/guides/break-even-calculator-guide/",
+      "inbound": 2
+    },
+    {
+      "path": "/guides/discount-calculator-guide/",
+      "inbound": 2
+    },
+    {
+      "path": "/guides/invoice-generator-guide/",
+      "inbound": 2
+    },
+    {
+      "path": "/guides/margin-calculator-guide/",
+      "inbound": 2
+    },
+    {
+      "path": "/guides/markup-calculator-guide/",
+      "inbound": 2
+    },
+    {
+      "path": "/guides/menu-price-calculator-guide/",
+      "inbound": 2
+    },
+    {
+      "path": "/guides/profit-margin-calculator-guide/",
+      "inbound": 2
+    },
+    {
+      "path": "/guides/qr-menu-generator-guide/",
+      "inbound": 2
+    },
+    {
+      "path": "/guides/receipt-generator-guide/",
+      "inbound": 2
+    },
+    {
+      "path": "/guides/roi-calculator-guide/",
+      "inbound": 2
+    },
+    {
+      "path": "/guides/tip-calculator-guide/",
+      "inbound": 2
+    },
+    {
+      "path": "/guides/vat-calculator-guide/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/ai-profit-leak-finder/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/quotation-generator/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/restaurant-profit-dashboard/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/staff-schedule-generator/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/work-hours-overtime-calculator/",
+      "inbound": 1
+    },
+    {
+      "path": "/tools/small-business/calculators/3d-printer-buy-vs-outsource/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/accounting-profit/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/accumulated-depreciation/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/actual-cash-value/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/after-tax-cost-of-debt/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/amortization/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/average-fixed-cost/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/bond-price/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/break-even/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/cogs/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/contribution-margin/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/ebitda-margin/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/gross-margin/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/inventory-turnover/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/labor-cost/",
+      "inbound": 2
+    },
+    {
+      "path": "/tools/small-business/calculators/profit/",
+      "inbound": 2
+    }
+  ],
+  "weak_link_count": 88,
+  "sitemap_only": [
+    "/bahrain-saudi-gcc-transport/dubai-to-bahrain/",
+    "/bahrain-saudi-gcc-transport/kuwait-to-bahrain/",
+    "/bahrain-saudi-gcc-transport/oman-to-bahrain/",
+    "/bahrain-saudi-gcc-transport/qatar-to-bahrain/",
+    "/tools/pdf-converter/add-page-numbers/",
+    "/tools/pdf-converter/add-watermark/",
+    "/tools/pdf-converter/compress-pdf/",
+    "/tools/pdf-converter/excel-to-pdf/",
+    "/tools/pdf-converter/image-to-pdf/",
+    "/tools/pdf-converter/jpg-to-pdf/",
+    "/tools/pdf-converter/merge-pdf/",
+    "/tools/pdf-converter/pdf-to-excel/",
+    "/tools/pdf-converter/pdf-to-jpg/",
+    "/tools/pdf-converter/pdf-to-word/",
+    "/tools/pdf-converter/rotate-pdf/",
+    "/tools/pdf-converter/split-pdf/",
+    "/tools/pdf-converter/word-to-pdf/",
+    "/tools/small-business/calculators/budget/",
+    "/tools/small-business/calculators/build-or-buy/",
+    "/tools/small-business/calculators/burn-rate/",
+    "/tools/small-business/calculators/burndown-chart/",
+    "/tools/small-business/calculators/business-budget/",
+    "/tools/small-business/calculators/business-loan/",
+    "/tools/small-business/calculators/business-valuation/",
+    "/tools/small-business/calculators/california-sales-tax/",
+    "/tools/small-business/calculators/car-depreciation/",
+    "/tools/small-business/calculators/cash-conversion-cycle/",
+    "/tools/small-business/calculators/cash-flow-to-debt/",
+    "/tools/small-business/calculators/cash-ratio/",
+    "/tools/small-business/calculators/churn-rate/",
+    "/tools/small-business/calculators/commission/",
+    "/tools/small-business/calculators/cost-of-capital/",
+    "/tools/small-business/calculators/cost-of-doing-business/",
+    "/tools/small-business/calculators/cost-of-equity/",
+    "/tools/small-business/calculators/cpa/",
+    "/tools/small-business/calculators/cpc-cpm/",
+    "/tools/small-business/calculators/cpm/",
+    "/tools/small-business/calculators/cross-price-elasticity/",
+    "/tools/small-business/calculators/days-inventory-outstanding/",
+    "/tools/small-business/calculators/days-sales-outstanding/",
+    "/tools/small-business/calculators/dcf/",
+    "/tools/small-business/calculators/deadweight-loss/",
+    "/tools/small-business/calculators/debt/",
+    "/tools/small-business/calculators/debt-avalanche/",
+    "/tools/small-business/calculators/debt-consolidation/",
+    "/tools/small-business/calculators/debt-payoff/",
+    "/tools/small-business/calculators/debt-snowball/",
+    "/tools/small-business/calculators/debt-to-asset/",
+    "/tools/small-business/calculators/debt-to-capital/",
+    "/tools/small-business/calculators/debt-to-equity/"
+  ],
+  "sitemap_only_count": 162,
+  "top50_impressions": [
+    {
+      "path": "/tools/commission-calculator/",
+      "impressions": 2852.0,
+      "clicks": 1.0,
+      "position": 12.57
+    },
+    {
+      "path": "/guides/commission-calculator-guide/",
+      "impressions": 1160.0,
+      "clicks": 0.0,
+      "position": 61.28
+    },
+    {
+      "path": "/",
+      "impressions": 971.0,
+      "clicks": 7.0,
+      "position": 7.95
+    },
+    {
+      "path": "/tools/food-cost-calculator/",
+      "impressions": 875.0,
+      "clicks": 1.0,
+      "position": 67.8
+    },
+    {
+      "path": "/calculators/bmr-calculator/",
+      "impressions": 753.0,
+      "clicks": 0.0,
+      "position": 6.4
+    },
+    {
+      "path": "/guides/delivery-commission-calculator-guide/",
+      "impressions": 689.0,
+      "clicks": 4.0,
+      "position": 7.9
+    },
+    {
+      "path": "/guides/food-cost-calculator-guide/",
+      "impressions": 666.0,
+      "clicks": 0.0,
+      "position": 71.7
+    },
+    {
+      "path": "/guides/margin-calculator-guide/",
+      "impressions": 475.0,
+      "clicks": 0.0,
+      "position": 78.84
+    },
+    {
+      "path": "/guides/break-even-calculator-guide/",
+      "impressions": 453.0,
+      "clicks": 1.0,
+      "position": 12.08
+    },
+    {
+      "path": "/about/",
+      "impressions": 448.0,
+      "clicks": 0.0,
+      "position": 11.34
+    },
+    {
+      "path": "/calculators/roi-calculator/",
+      "impressions": 423.0,
+      "clicks": 0.0,
+      "position": 57.22
+    },
+    {
+      "path": "/guides/roi-calculator-guide/",
+      "impressions": 389.0,
+      "clicks": 1.0,
+      "position": 18.06
+    },
+    {
+      "path": "/guides/daily-sales-summary-guide/",
+      "impressions": 386.0,
+      "clicks": 0.0,
+      "position": 31.7
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-kuwait/",
+      "impressions": 378.0,
+      "clicks": 6.0,
+      "position": 8.48
+    },
+    {
+      "path": "/tools/small-business/",
+      "impressions": 341.0,
+      "clicks": 0.0,
+      "position": 79.43
+    },
+    {
+      "path": "/tools/daily-sales-summary/",
+      "impressions": 338.0,
+      "clicks": 1.0,
+      "position": 18.66
+    },
+    {
+      "path": "/tools/delivery-commission-calculator/",
+      "impressions": 333.0,
+      "clicks": 3.0,
+      "position": 10.01
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
+      "impressions": 331.0,
+      "clicks": 8.0,
+      "position": 14.14
+    },
+    {
+      "path": "/tools/receipt-generator/",
+      "impressions": 313.0,
+      "clicks": 4.0,
+      "position": 65.21
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-oman/",
+      "impressions": 279.0,
+      "clicks": 1.0,
+      "position": 7.26
+    },
+    {
+      "path": "/guides/menu-price-calculator-guide/",
+      "impressions": 277.0,
+      "clicks": 0.0,
+      "position": 53.45
+    },
+    {
+      "path": "/tools/menu-price-calculator/",
+      "impressions": 249.0,
+      "clicks": 1.0,
+      "position": 43.45
+    },
+    {
+      "path": "/tools/small-business/calculators/profit/",
+      "impressions": 243.0,
+      "clicks": 1.0,
+      "position": 9.3
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-dubai/",
+      "impressions": 233.0,
+      "clicks": 2.0,
+      "position": 7.45
+    },
+    {
+      "path": "/tools/pdf-converter/compress-pdf/",
+      "impressions": 232.0,
+      "clicks": 0.0,
+      "position": 74.97
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-qatar/",
+      "impressions": 220.0,
+      "clicks": 14.0,
+      "position": 7.88
+    },
+    {
+      "path": "/guides/tip-calculator-guide/",
+      "impressions": 209.0,
+      "clicks": 0.0,
+      "position": 35.16
+    },
+    {
+      "path": "/calculators/time-duration/",
+      "impressions": 197.0,
+      "clicks": 0.0,
+      "position": 11.61
+    },
+    {
+      "path": "/guides/markup-calculator-guide/",
+      "impressions": 190.0,
+      "clicks": 0.0,
+      "position": 17.87
+    },
+    {
+      "path": "/calculators/margin-markup-calculator/",
+      "impressions": 189.0,
+      "clicks": 0.0,
+      "position": 71.66
+    },
+    {
+      "path": "/tools/qr-menu-generator/",
+      "impressions": 179.0,
+      "clicks": 1.0,
+      "position": 50.22
+    },
+    {
+      "path": "/guides/vat-calculator-guide/",
+      "impressions": 173.0,
+      "clicks": 0.0,
+      "position": 62.65
+    },
+    {
+      "path": "/calculator/inventory/",
+      "impressions": 169.0,
+      "clicks": 0.0,
+      "position": 76.16
+    },
+    {
+      "path": "/tools/invoice-generator/",
+      "impressions": 161.0,
+      "clicks": 1.0,
+      "position": 19.26
+    },
+    {
+      "path": "/calculators/time-calculator/",
+      "impressions": 161.0,
+      "clicks": 0.0,
+      "position": 71.68
+    },
+    {
+      "path": "/tools/",
+      "impressions": 134.0,
+      "clicks": 1.0,
+      "position": 14.93
+    },
+    {
+      "path": "/guides/discount-calculator-guide/",
+      "impressions": 132.0,
+      "clicks": 0.0,
+      "position": 19.68
+    },
+    {
+      "path": "/calculators/area-calculator/",
+      "impressions": 129.0,
+      "clicks": 0.0,
+      "position": 80.42
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/dammam-to-bahrain/",
+      "impressions": 128.0,
+      "clicks": 1.0,
+      "position": 18.1
+    },
+    {
+      "path": "/restaurant-calculators/",
+      "impressions": 121.0,
+      "clicks": 0.0,
+      "position": 15.62
+    }
+  ],
+  "top50_clicks": [
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-qatar/",
+      "impressions": 220.0,
+      "clicks": 14.0,
+      "position": 7.88
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
+      "impressions": 331.0,
+      "clicks": 8.0,
+      "position": 14.14
+    },
+    {
+      "path": "/",
+      "impressions": 971.0,
+      "clicks": 7.0,
+      "position": 7.95
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-kuwait/",
+      "impressions": 378.0,
+      "clicks": 6.0,
+      "position": 8.48
+    },
+    {
+      "path": "/guides/delivery-commission-calculator-guide/",
+      "impressions": 689.0,
+      "clicks": 4.0,
+      "position": 7.9
+    },
+    {
+      "path": "/tools/receipt-generator/",
+      "impressions": 313.0,
+      "clicks": 4.0,
+      "position": 65.21
+    },
+    {
+      "path": "/tools/delivery-commission-calculator/",
+      "impressions": 333.0,
+      "clicks": 3.0,
+      "position": 10.01
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-dubai/",
+      "impressions": 233.0,
+      "clicks": 2.0,
+      "position": 7.45
+    },
+    {
+      "path": "/tools/commission-calculator/",
+      "impressions": 2852.0,
+      "clicks": 1.0,
+      "position": 12.57
+    },
+    {
+      "path": "/tools/food-cost-calculator/",
+      "impressions": 875.0,
+      "clicks": 1.0,
+      "position": 67.8
+    },
+    {
+      "path": "/guides/break-even-calculator-guide/",
+      "impressions": 453.0,
+      "clicks": 1.0,
+      "position": 12.08
+    },
+    {
+      "path": "/guides/roi-calculator-guide/",
+      "impressions": 389.0,
+      "clicks": 1.0,
+      "position": 18.06
+    },
+    {
+      "path": "/tools/daily-sales-summary/",
+      "impressions": 338.0,
+      "clicks": 1.0,
+      "position": 18.66
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/bahrain-to-oman/",
+      "impressions": 279.0,
+      "clicks": 1.0,
+      "position": 7.26
+    },
+    {
+      "path": "/tools/menu-price-calculator/",
+      "impressions": 249.0,
+      "clicks": 1.0,
+      "position": 43.45
+    },
+    {
+      "path": "/tools/small-business/calculators/profit/",
+      "impressions": 243.0,
+      "clicks": 1.0,
+      "position": 9.3
+    },
+    {
+      "path": "/tools/qr-menu-generator/",
+      "impressions": 179.0,
+      "clicks": 1.0,
+      "position": 50.22
+    },
+    {
+      "path": "/tools/invoice-generator/",
+      "impressions": 161.0,
+      "clicks": 1.0,
+      "position": 19.26
+    },
+    {
+      "path": "/tools/",
+      "impressions": 134.0,
+      "clicks": 1.0,
+      "position": 14.93
+    },
+    {
+      "path": "/bahrain-saudi-gcc-transport/dammam-to-bahrain/",
+      "impressions": 128.0,
+      "clicks": 1.0,
+      "position": 18.1
+    },
+    {
+      "path": "/guides/commission-calculator-guide/",
+      "impressions": 1160.0,
+      "clicks": 0.0,
+      "position": 61.28
+    },
+    {
+      "path": "/calculators/bmr-calculator/",
+      "impressions": 753.0,
+      "clicks": 0.0,
+      "position": 6.4
+    },
+    {
+      "path": "/guides/food-cost-calculator-guide/",
+      "impressions": 666.0,
+      "clicks": 0.0,
+      "position": 71.7
+    },
+    {
+      "path": "/guides/margin-calculator-guide/",
+      "impressions": 475.0,
+      "clicks": 0.0,
+      "position": 78.84
+    },
+    {
+      "path": "/about/",
+      "impressions": 448.0,
+      "clicks": 0.0,
+      "position": 11.34
+    },
+    {
+      "path": "/calculators/roi-calculator/",
+      "impressions": 423.0,
+      "clicks": 0.0,
+      "position": 57.22
+    },
+    {
+      "path": "/guides/daily-sales-summary-guide/",
+      "impressions": 386.0,
+      "clicks": 0.0,
+      "position": 31.7
+    },
+    {
+      "path": "/tools/small-business/",
+      "impressions": 341.0,
+      "clicks": 0.0,
+      "position": 79.43
+    },
+    {
+      "path": "/guides/menu-price-calculator-guide/",
+      "impressions": 277.0,
+      "clicks": 0.0,
+      "position": 53.45
+    },
+    {
+      "path": "/tools/pdf-converter/compress-pdf/",
+      "impressions": 232.0,
+      "clicks": 0.0,
+      "position": 74.97
+    },
+    {
+      "path": "/guides/tip-calculator-guide/",
+      "impressions": 209.0,
+      "clicks": 0.0,
+      "position": 35.16
+    },
+    {
+      "path": "/calculators/time-duration/",
+      "impressions": 197.0,
+      "clicks": 0.0,
+      "position": 11.61
+    },
+    {
+      "path": "/guides/markup-calculator-guide/",
+      "impressions": 190.0,
+      "clicks": 0.0,
+      "position": 17.87
+    },
+    {
+      "path": "/calculators/margin-markup-calculator/",
+      "impressions": 189.0,
+      "clicks": 0.0,
+      "position": 71.66
+    },
+    {
+      "path": "/guides/vat-calculator-guide/",
+      "impressions": 173.0,
+      "clicks": 0.0,
+      "position": 62.65
+    },
+    {
+      "path": "/calculator/inventory/",
+      "impressions": 169.0,
+      "clicks": 0.0,
+      "position": 76.16
+    },
+    {
+      "path": "/calculators/time-calculator/",
+      "impressions": 161.0,
+      "clicks": 0.0,
+      "position": 71.68
+    },
+    {
+      "path": "/guides/discount-calculator-guide/",
+      "impressions": 132.0,
+      "clicks": 0.0,
+      "position": 19.68
+    },
+    {
+      "path": "/calculators/area-calculator/",
+      "impressions": 129.0,
+      "clicks": 0.0,
+      "position": 80.42
+    },
+    {
+      "path": "/restaurant-calculators/",
+      "impressions": 121.0,
+      "clicks": 0.0,
+      "position": 15.62
+    }
+  ],
+  "priority_targets_improved": []
+}

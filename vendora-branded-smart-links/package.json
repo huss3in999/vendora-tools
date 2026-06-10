@@ -7,7 +7,7 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "test": "powershell -ExecutionPolicy Bypass -File scripts/run-tests.ps1",
-    "check": "node --check src/index.js"
+    "check": "node --check src/index.js && node scripts/check-domain-ownership.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",

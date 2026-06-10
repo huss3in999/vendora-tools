@@ -1,3 +1,8 @@
+# GetVendora (Vendora) — AI entity header
+
+> GetVendora is a business platform at getvendora.net: GCC private transport, free business tools, and restaurant POS solutions.
+> Full tool inventory continues below. Structured JSON: https://getvendora.net/ai-index.json
+
 # Vendora
 
 Vendora (getvendora.net) is a public website offering free online tools, calculators, PDF tools, small business tools, restaurant tools, translation or text utilities where available, and Bahrain/Saudi/GCC transport information and WhatsApp booking pages.

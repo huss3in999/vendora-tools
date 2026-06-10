@@ -5,8 +5,8 @@
   <link rel="apple-touch-icon" href="https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daily Sales Summary Tool | Restaurant Revenue, AOV &amp; Sales Mix</title>
-  <meta name="description" content="Track daily restaurant sales: revenue, profit, average order value, discounts, refunds, and category mix. Free daily sales summary for owners and managers.">
+  <title>Daily Sales Summary — Restaurant Sales Report &amp; AOV Tool Free</title>
+  <meta name="description" content="Free restaurant daily sales summary: net sales, average order value, and mix in one view. Build your end-of-day sales report in minutes — no signup.">
   <meta name="keywords" content="daily sales summary, restaurant daily sales summary, restaurant sales tracking, daily sales report, average order value, sales mix restaurant">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://getvendora.net/tools/daily-sales-summary/">
@@ -15,13 +15,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://getvendora.net/tools/daily-sales-summary/">
   <meta name="twitter:card" content="summary_large_image">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFY197R2MS"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-DFY197R2MS');
-  </script>
+  
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -52,7 +46,7 @@
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    "mainEntity": [
+    "mainEntity": [{"@type": "Question", "name": "How do you calculate restaurant daily sales?", "acceptedAnswer": {"@type": "Answer", "text": "Sum all orders for the day, subtract discounts and refunds for net sales, then divide net sales by order count for average order value."}}, 
       {"@type": "Question", "name": "What is a daily sales summary in a restaurant?", "acceptedAnswer": {"@type": "Answer", "text": "A daily sales summary gives restaurant owners a quick view of orders, sales, costs, and profit for one day so they can review performance without a full reporting system."}},
       {"@type": "Question", "name": "Why is average order value important?", "acceptedAnswer": {"@type": "Answer", "text": "Average order value helps you see how much each order is worth on average, which can guide menu design, upsells, and promotion decisions."}},
       {"@type": "Question", "name": "Should discounts and refunds be included?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Discounts and refunds reduce the sales you actually keep, so including them gives a more realistic net sales and profit view."}},
@@ -146,7 +140,7 @@
   <script defer src="/assets/clarity-helper.js"></script>
 
 
-  <script defer src="/assets/analytics-loader.js"></script>
+  <script defer src="../../assets/analytics-loader.js"></script>
 </head>
 <body class="vendora-tool">
   <main class="page-shell">
@@ -176,6 +170,12 @@
       <p class="helper-note" style="margin:18px 0 0; max-width:760px;">Built for restaurants, cafes, food trucks, takeaways, cloud kitchens, bakeries, and similar food businesses that want a quick daily view without a full reporting setup.</p>
     </section>
     <section class="tool-layout">
+<!-- phase10-content -->
+<section class="card input-card" aria-label="Daily sales example">
+  <h2 class="section-title">What is a restaurant daily sales summary?</h2>
+  <p class="section-copy">A daily sales report totals orders, gross and net sales, discounts, and average order value for one day. <strong>Example:</strong> 80 orders, $2,400 gross, $180 discounts → $2,220 net sales, AOV ≈ $27.75.</p>
+</section>
+
       <section class="card input-card" aria-labelledby="calculator-heading">
         <h2 class="section-title" id="calculator-heading">Enter your daily numbers</h2>
         <p class="section-copy">Start with sales and orders first, then add costs and optional sales mix details for a fuller day-end summary.</p>
@@ -305,6 +305,7 @@
         <article class="faq-item"><h3>Should discounts and refunds be included?</h3><p>Yes. Discounts and refunds reduce the sales you actually keep, so including them gives a more realistic view of net sales and profit.</p></article>
         <article class="faq-item"><h3>Can I use this for cafes and food trucks?</h3><p>Yes. It works well for restaurants, cafes, food trucks, takeaways, cloud kitchens, bakeries, caterers, and similar food businesses.</p></article>
         <article class="faq-item"><h3>Does this replace a POS report?</h3><p>No. This tool is best used as a simple daily review helper. It complements POS reporting, but it does not replace a full operations or accounting report.</p></article>
+        <article class="faq-item"><h3>How do you calculate restaurant daily sales?</h3><p>Sum all orders for the day, subtract discounts and refunds for net sales, then divide net sales by order count for average order value.</p></article>
       </div>
     </section>
 
@@ -339,7 +340,12 @@
       <p>Use our free tools to calculate food cost, menu price, delivery commission, and generate invoices quickly.</p>
     </section>
 
-  </main>
+  
+<!-- phase7-authority-links -->
+<section class="phase7-authority-links" aria-label="Related high-traffic pages" style="margin:24px auto;padding:16px 20px;border-top:1px solid rgba(0,0,0,.08);">
+  <p style="margin:0;font-size:0.95rem;line-height:1.7;"><strong>Related popular pages:</strong> <a href="../../guides/daily-sales-summary-guide/" style="margin-right:12px;">Daily sales guide</a> · <a href="../../tools/commission-calculator/" style="margin-right:12px;">Commission calculator</a> · <a href="../../tools/food-cost-calculator/" style="margin-right:12px;">Food cost calculator</a> · <a href="../../tools/delivery-commission-calculator/" style="margin-right:12px;">Delivery commission calculator</a></p>
+</section>
+</main>
 
   <a class="btn btn-primary sticky-cta" href="/">Open Vendora POS</a>
   <a href="/contact/" onclick="window.open('https://wa.me/97333404044?text=Hi%20Vendora%2C%20I%20need%20support%20with%20the%20daily%20sales%20summary%20tool', '_blank', 'noopener'); return false;" target="_blank" rel="noopener noreferrer" class="whatsapp-support-fab" aria-label="Chat on WhatsApp for support"><span>WhatsApp Support</span></a>
@@ -408,8 +414,6 @@
     populateCurrencies();
     [elements.currency, elements.totalOrders, elements.totalSales, elements.cogs, elements.deliverySales, elements.dineInSales, elements.takeawaySales, elements.discounts, elements.refunds, elements.laborCost, elements.otherExpenses].forEach((element) => { element.addEventListener("input", calculate); element.addEventListener("change", calculate); });
     elements.exampleButton.addEventListener("click", fillExample); elements.resetButton.addEventListener("click", resetForm); elements.copyButton.addEventListener("click", copyResults); calculate();
-  </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-</body>
+  </script></body>
 </html>
 

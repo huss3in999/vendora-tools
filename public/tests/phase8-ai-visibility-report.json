@@ -1,0 +1,67 @@
+{
+  "aiVisibilityScore": 90,
+  "strengths": [
+    "llms.txt entity block",
+    "ai-index.json",
+    "robots allows AI files",
+    "homepage Organization",
+    "homepage LocalBusiness transport",
+    "homepage FAQPage",
+    "transport Service schema",
+    "tools CollectionPage",
+    "commission WebApplication/FAQ",
+    "bmr WebApplication"
+  ],
+  "weaknesses": [],
+  "fixes": [
+    "Added AI Answer Bank with 10 answer-first Q&As + machine discovery links",
+    "Prepended GetVendora entity header + ai-index.json pointer to .well-known/llms.txt",
+    "Expanded ai-index.json: GetVendora entity, aiAnswers (8 Q&As), relationships, discovery URLs; removed corrupted Arabic keywords",
+    "Added explicit Allow rules for AI discovery files",
+    "Linked ai-index.json from index.html",
+    "Linked ai-index.json from index.html",
+    "Linked ai-index.json from index.html",
+    "Linked ai-index.json from index.html",
+    "Expanded homepage FAQPage schema with 6 AI-target Q&As",
+    "Added 3 AI-target FAQ schema entries on About page",
+    "Added GetVendora tools + restaurant tools FAQ schema on tools hub",
+    "Added FAQ \"How do I travel from Bahrain to Kuwait?\" to EN route schema",
+    "Added FAQ \"How do I travel from Bahrain to Qatar?\" to EN route schema",
+    "Added FAQ \"How do I travel from Bahrain to Dammam?\" to EN route schema",
+    "Added FAQ \"How do I travel from Bahrain to Oman?\" to EN route schema",
+    "Added FAQ \"How do I travel from Bahrain to Dubai?\" to EN route schema",
+    "Linked platform ai-index.json from transport llms.txt"
+  ],
+  "filesModified": [
+    ".well-known/llms.txt",
+    "about/index.html",
+    "ai-index.json",
+    "bahrain-saudi-gcc-transport/en/bahrain-to-dammam/index.html",
+    "bahrain-saudi-gcc-transport/en/bahrain-to-dubai/index.html",
+    "bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/index.html",
+    "bahrain-saudi-gcc-transport/en/bahrain-to-oman/index.html",
+    "bahrain-saudi-gcc-transport/en/bahrain-to-qatar/index.html",
+    "bahrain-saudi-gcc-transport/index.html",
+    "bahrain-saudi-gcc-transport/llms.txt",
+    "index.html",
+    "llms.txt",
+    "robots.txt",
+    "tools/index.html"
+  ],
+  "aiQueryCoverage": {
+    "What is GetVendora?": true,
+    "What services does GetVendora provide?": true,
+    "What is Vendora Transport?": true,
+    "How do I travel from Bahrain to Kuwait?": true,
+    "How do I travel from Bahrain to Qatar?": true,
+    "How do I travel from Bahrain to Dammam?": true,
+    "What tools does GetVendora provide?": true,
+    "What restaurant tools does GetVendora provide?": true
+  },
+  "ownerActions": [
+    "Register brand entity in Google Knowledge Panel / Bing Places if eligible (requires owner verification).",
+    "Publish genuine customer reviews on visible pages before adding Review/AggregateRating schema.",
+    "Keep ai-index.json and llms.txt in sync when adding major new services (run scripts after catalog regeneration).",
+    "Monitor ChatGPT Search / Perplexity citations manually — no guaranteed submission endpoint exists."
+  ]
+}

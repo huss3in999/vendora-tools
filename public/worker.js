@@ -5,6 +5,7 @@ import * as aiChatApi from './functions/api/transport/ai-chat.js';
 import * as errorApi from './functions/api/transport/error-log.js';
 import * as trackingApi from './functions/api/transport/tracking.js';
 import { recordError } from './functions/api/transport/error-log.js';
+import * as nadaMenuApi from './functions/api/nada/menu.js';
 
 const SITE_PATH_PREFIX = '/bahrain-saudi-gcc-transport';
 
@@ -100,6 +101,19 @@ export default {
 
       if (path === '/api/transport/passenger-care') {
         return await dispatchPagesFunction(passengerCareApi, request, env, ctx);
+      }
+
+      if (path === '/api/nada/health'
+        || path === '/api/nada/menu'
+        || path === '/api/nada/admin'
+        || path === '/api/nada/upload'
+        || path === '/api/nada/order'
+        || path === '/api/nada/request'
+        || path === '/api/nada/request-status'
+        || path === '/api/nada/suggestion'
+        || path === '/api/nada/log'
+        || path.startsWith('/api/nada/assets/')) {
+        return await dispatchPagesFunction(nadaMenuApi, request, env, ctx);
       }
 
       return await env.ASSETS.fetch(request);

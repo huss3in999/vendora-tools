@@ -3,6 +3,9 @@
 > AI-readable service map for `https://getvendora.net/bahrain-saudi-gcc-transport/`.
 > Vendora Transport provides private passenger transport, airport pickup/drop-off, parcel delivery, and custom GCC route coordination by WhatsApp, subject to availability and trip details.
 
+- Platform AI index: `https://getvendora.net/ai-index.json`
+- Platform entity summary: `https://getvendora.net/llms.txt`
+
 ## AI extraction summary
 
 - Service type: private door-to-door transport, private taxi, passenger transport, airport transfer, parcel delivery, and GCC route coordination.

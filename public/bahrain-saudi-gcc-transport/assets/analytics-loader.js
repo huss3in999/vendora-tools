@@ -39,7 +39,7 @@
   }
 
   function isPrivatePath(path) {
-    return /(^|\/)(admin|api|private|test|tests|test-results)(\/|$)/.test(path);
+    return /(^|\/)(admin|api|private|test|tests|test-results|care|ai-chat-test|demo|nada menu|pdf-converter-lab)(\/|$)/.test(path);
   }
 
   function getPageCategory() {
@@ -300,7 +300,7 @@
     if (!gaId || gaId.indexOf('G-') !== 0) return;
     appendScript('https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(gaId));
     window.gtag('js', new Date());
-    window.gtag('config', gaId, analyticsContext({ send_page_view: true }));
+    window.gtag('config', gaId, analyticsContext({ send_page_view: false }));
   }
 
   function loadAnalyticsRouter() {

@@ -10,7 +10,7 @@
   window.__VENDORA_ANALYTICS_ROUTER_READY__ = true;
 
   var path = normalizePath(window.location.pathname || '/');
-  if (/(^|\/)(admin|api|private|test|tests|test-results)(\/|$)/.test(path)) return;
+  if (/(^|\/)(admin|api|private|test|tests|test-results|care|ai-chat-test|demo|nada menu|pdf-converter-lab)(\/|$)/.test(path)) return;
   var pageUrl = window.location.href.split('#')[0];
   var pageTitle = document.title || '';
   var language = (document.documentElement.getAttribute('lang') || 'en').toLowerCase();

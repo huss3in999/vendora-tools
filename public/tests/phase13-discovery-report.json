@@ -1,0 +1,65 @@
+{
+  "sitemap_changes": [
+    {
+      "file": "sitemap.xml",
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/king-fahd-causeway-guide/"
+    },
+    {
+      "file": "_site\\sitemap.xml",
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/king-fahd-causeway-guide/"
+    },
+    {
+      "file": "bahrain-saudi-gcc-transport\\sitemap-gcc-transport.xml",
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/king-fahd-causeway-guide/"
+    },
+    {
+      "file": "_site\\bahrain-saudi-gcc-transport\\sitemap-gcc-transport.xml",
+      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/king-fahd-causeway-guide/"
+    },
+    {
+      "file": "sitemap.xml",
+      "url": "https://getvendora.net/guides/bmr-calculator-guide/"
+    },
+    {
+      "file": "_site\\sitemap.xml",
+      "url": "https://getvendora.net/guides/bmr-calculator-guide/"
+    },
+    {
+      "file": "sitemap.xml",
+      "url": "https://getvendora.net/guides/reverse-commission-calculator-guide/"
+    },
+    {
+      "file": "_site\\sitemap.xml",
+      "url": "https://getvendora.net/guides/reverse-commission-calculator-guide/"
+    }
+  ],
+  "files_modified": [
+    "sitemap.xml",
+    "_site\\sitemap.xml",
+    "bahrain-saudi-gcc-transport\\sitemap-gcc-transport.xml",
+    "_site\\bahrain-saudi-gcc-transport\\sitemap-gcc-transport.xml",
+    "bahrain-saudi-gcc-transport\\king-fahd-causeway-guide\\index.html",
+    "guides\\bmr-calculator-guide\\index.html",
+    "guides\\reverse-commission-calculator-guide\\index.html",
+    "guides/index.html",
+    "bahrain-saudi-gcc-transport\\index.html",
+    "index.html",
+    "tools\\index.html",
+    "calculators\\bmr-calculator\\index.html"
+  ],
+  "new_internal_links": [
+    "guides/index.html → bmr-calculator-guide, reverse-commission-calculator-guide",
+    "calculators/bmr-calculator → bmr-calculator-guide (prominent)"
+  ],
+  "meta_fixes": [
+    "Added twitter:title/description to causeway guide",
+    "Added twitter:image to guides\\bmr-calculator-guide\\index.html",
+    "Added twitter:image to guides\\reverse-commission-calculator-guide\\index.html"
+  ],
+  "discovery_sections": [
+    "guides\\bmr-calculator-guide\\index.html",
+    "guides\\reverse-commission-calculator-guide\\index.html"
+  ],
+  "indexing_readiness_score": 92,
+  "estimated_discovery_days": "3–14 days (sitemap + hub links); 14–30 days for full ranking stabilization"
+}

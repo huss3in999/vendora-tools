@@ -5,11 +5,10 @@ A standalone Cloudflare Workers project for branded URL short links and smart la
 ## Domains
 
 - Public short links: `https://go.getvendora.net/<slug>`
-- Professional smart links: `https://smart.getvendora.net/<slug>`
 - Optional ultra-short links: `https://g.getvendora.net/<slug>`
 - Creator/admin app: `https://links.getvendora.net/`
 
-This project is separate from the existing Vendora website and Smart Page Platform.
+This project is separate from the existing Vendora website and Smart Page Platform. `smart.getvendora.net` belongs to the Smart Page Platform landing-page app.
 
 ## Features
 
@@ -22,7 +21,7 @@ This project is separate from the existing Vendora website and Smart Page Platfo
 - 30-day expiry for anonymous links
 - KV auto-delete for expiring links
 - Admin-selectable URL style: standard, ultra-short, or country-style Vendora path
-- Legacy profile links like `/p/<slug>` redirect to the cleaner `https://smart.getvendora.net/<slug>` form
+- Legacy profile links like `/p/<slug>` redirect to the standard `https://go.getvendora.net/<slug>` form
 - Admin-selectable expiry: never, 30 days, or 90 days
 - Admin dashboard protected by `ADMIN_PASSWORD`
 - Create, edit, deactivate, delete, search, filter links
@@ -174,35 +173,25 @@ custom_domain = true
 [[routes]]
 pattern = "links.getvendora.net"
 custom_domain = true
-
-[[routes]]
-pattern = "smart.getvendora.net"
-custom_domain = true
 ```
 
 ## URL Strategy
 
-The platform supports four URL styles:
+The platform supports three URL styles:
 
-1. Professional smart link:
-
-```text
-https://smart.getvendora.net/hussain
-```
-
-2. Standard Vendora short link:
+1. Standard Vendora short link:
 
 ```text
 https://go.getvendora.net/brand-offer
 ```
 
-3. Ultra-short Vendora link:
+2. Ultra-short Vendora link:
 
 ```text
 https://g.getvendora.net/offer
 ```
 
-4. Country-style Vendora path:
+3. Country-style Vendora path:
 
 ```text
 https://go.getvendora.net/cos-bh-offer

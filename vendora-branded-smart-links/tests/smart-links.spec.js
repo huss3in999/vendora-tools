@@ -46,7 +46,7 @@ test("Redirect preview page loads and analytics count increases", async ({ page,
   expect(second.status()).toBe(200);
 });
 
-test("Professional smart URL style uses smart domain", async ({ request }) => {
+test("Removed smart domain mode falls back to standard short domain", async ({ request }) => {
   const customSlug = slug("hussain");
   const login = await request.post("/admin/login", { form: { password: "test-admin-password" } });
   expect(login.status()).toBe(200);
@@ -64,7 +64,7 @@ test("Professional smart URL style uses smart domain", async ({ request }) => {
   expect(created.ok()).toBeTruthy();
 
   const admin = await request.get(`/admin?q=${customSlug}`);
-  expect(await admin.text()).toContain(`https://smart.getvendora.net/${customSlug}`);
+  expect(await admin.text()).toContain(`https://go.getvendora.net/${customSlug}`);
 });
 
 test("Ultra one-letter domain can include brand in path", async ({ request }) => {
@@ -115,10 +115,11 @@ test("Slashy paths resolve by joining with hyphens", async ({ request }) => {
   expect(response.headers().location).toBe("https://example.com/ae");
 });
 
-test("Legacy profile URL redirects to clean smart URL", async ({ request }) => {
+test("Legacy profile URL redirects to a non-smart short URL", async ({ request }) => {
   const response = await request.get("/p/hussain", { maxRedirects: 0 });
   expect(response.status()).toBe(301);
-  expect(response.headers().location).toBe("https://smart.getvendora.net/hussain");
+  expect(response.headers().location).not.toContain("smart.getvendora.net");
+  expect(response.headers().location).toMatch(/\/hussain$/);
 });
 
 test("Admin login page loads", async ({ page }) => {
