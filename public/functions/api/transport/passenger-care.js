@@ -38,6 +38,13 @@ function leadUuidFromBookingRef(bookingRef) {
 
 let schemaReady = false;
 
+const REVIEW_ROUTE_COLUMNS = [
+  ['route_slug', 'ALTER TABLE passenger_care_feedback ADD COLUMN route_slug TEXT'],
+  ['route_label', 'ALTER TABLE passenger_care_feedback ADD COLUMN route_label TEXT'],
+  ['review_approved', 'ALTER TABLE passenger_care_feedback ADD COLUMN review_approved INTEGER DEFAULT 0'],
+  ['review_approved_at', 'ALTER TABLE passenger_care_feedback ADD COLUMN review_approved_at TEXT'],
+];
+
 export function makeBookingRef(leadUuid) {
   const hex = String(leadUuid || '').replace(/-/g, '').slice(0, 8).toUpperCase();
   return hex ? `GCC-${hex}` : null;
@@ -54,7 +61,7 @@ function json(data, init = {}) {
   });
 }
 
-function corsHeaders(request) {
+export function corsHeaders(request) {
   const origin = request.headers.get('origin') || '';
   const allowedOrigin = ALLOWED_ORIGINS.has(origin) ? origin : 'https://getvendora.net';
   return {
@@ -171,7 +178,64 @@ export async function ensurePassengerCareSchema(env) {
     CREATE INDEX IF NOT EXISTS idx_pcf_submitted_at ON passenger_care_feedback(submitted_at)
   `).run();
 
+  const feedbackInfo = await env.TRANSPORT_DB.prepare('PRAGMA table_info(passenger_care_feedback)').all();
+  const feedbackColumns = new Set((feedbackInfo.results || []).map((row) => row.name));
+  for (const [name, sql] of REVIEW_ROUTE_COLUMNS) {
+    if (feedbackColumns.has(name)) continue;
+    try {
+      await env.TRANSPORT_DB.prepare(sql).run();
+    } catch (error) {
+      if (!String(error.message || error).toLowerCase().includes('duplicate column')) {
+        throw error;
+      }
+    }
+  }
+
+  await env.TRANSPORT_DB.prepare(`
+    CREATE INDEX IF NOT EXISTS idx_pcf_route_reviews
+    ON passenger_care_feedback(route_slug, review_approved, submitted_at DESC)
+  `).run();
+
+  await env.TRANSPORT_DB.prepare(`
+    UPDATE passenger_care_feedback
+    SET
+      route_slug = COALESCE(NULLIF(route_slug, ''), (
+        SELECT w.route_slug
+        FROM whatsapp_leads w
+        WHERE w.booking_ref = passenger_care_feedback.booking_ref
+          AND COALESCE(w.service_type, '') NOT IN ('pageview', 'passenger-care-pageview', 'passenger-care-stub')
+          AND COALESCE(w.route_slug, '') NOT IN ('passenger-care', 'passenger-care-stub')
+        ORDER BY w.clicked_at ASC
+        LIMIT 1
+      )),
+      route_label = COALESCE(NULLIF(route_label, ''), (
+        SELECT w.route_label
+        FROM whatsapp_leads w
+        WHERE w.booking_ref = passenger_care_feedback.booking_ref
+          AND COALESCE(w.service_type, '') NOT IN ('pageview', 'passenger-care-pageview', 'passenger-care-stub')
+          AND COALESCE(w.route_slug, '') NOT IN ('passenger-care', 'passenger-care-stub')
+        ORDER BY w.clicked_at ASC
+        LIMIT 1
+      ))
+    WHERE route_slug IS NULL OR route_slug = ''
+  `).run();
+
   schemaReady = true;
+}
+
+function cleanRouteSlug(value) {
+  const slug = cleanText(value, 160);
+  if (!slug) return null;
+  return slug.replace(/[^a-z0-9-]/gi, '').toLowerCase() || null;
+}
+
+function canPublishAsRouteReview(row) {
+  if (!row) return false;
+  if (String(row.outcome || '') !== 'completed') return false;
+  if (row.rating === null || row.rating === undefined) return false;
+  const slug = cleanRouteSlug(row.route_slug);
+  if (!slug || STUB_ROUTE_SLUGS.has(slug)) return false;
+  return true;
 }
 
 async function findLeadByBookingRef(env, bookingRef) {
@@ -350,8 +414,12 @@ export async function onRequestPost(context) {
         country,
         city,
         ip_hash,
-        user_agent
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        user_agent,
+        route_slug,
+        route_label,
+        review_approved,
+        review_approved_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NULL)
     `).bind(
       lead.lead_uuid,
       bookingRef,
@@ -366,6 +434,8 @@ export async function onRequestPost(context) {
       geo.city || null,
       await hashIp(request),
       cleanText(request.headers.get('user-agent'), 600),
+      cleanRouteSlug(lead.route_slug),
+      cleanText(lead.route_label || lead.route_slug, 240),
     ).run();
 
     return json({ ok: true, already_submitted: false, booking_ref: bookingRef }, { status: 201, headers });
@@ -421,9 +491,13 @@ export async function getPassengerCareAdminRows(env, request) {
       f.country AS feedback_country,
       f.city AS feedback_city,
       f.user_agent AS feedback_user_agent,
+      f.route_slug AS stored_route_slug,
+      f.route_label AS stored_route_label,
+      COALESCE(f.review_approved, 0) AS review_approved,
+      f.review_approved_at,
       orig.clicked_at,
-      orig.route_slug,
-      orig.route_label,
+      COALESCE(NULLIF(f.route_slug, ''), orig.route_slug) AS route_slug,
+      COALESCE(NULLIF(f.route_label, ''), orig.route_label) AS route_label,
       orig.page_path,
       orig.language AS lead_language,
       orig.cf_country AS lead_country,
@@ -445,6 +519,113 @@ export async function getPassengerCareAdminRows(env, request) {
   `).bind(...bindings, limit).all();
 
   return { feedback: results || [] };
+}
+
+export async function getPublicRouteReviews(env, routeSlug, limit = 5) {
+  await ensurePassengerCareSchema(env);
+  const slug = cleanRouteSlug(routeSlug);
+  if (!slug || STUB_ROUTE_SLUGS.has(slug)) {
+    return { route: slug || '', average_rating: null, review_count: 0, reviews: [] };
+  }
+
+  const stats = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      COUNT(*) AS review_count,
+      ROUND(AVG(rating), 1) AS average_rating
+    FROM passenger_care_feedback
+    WHERE route_slug = ?
+      AND COALESCE(review_approved, 0) = 1
+      AND outcome = 'completed'
+      AND rating IS NOT NULL
+  `).bind(slug).first();
+
+  const { results } = await env.TRANSPORT_DB.prepare(`
+    SELECT rating, comment, submitted_at
+    FROM passenger_care_feedback
+    WHERE route_slug = ?
+      AND COALESCE(review_approved, 0) = 1
+      AND outcome = 'completed'
+      AND rating IS NOT NULL
+    ORDER BY submitted_at DESC
+    LIMIT ?
+  `).bind(slug, limit).all();
+
+  return {
+    route: slug,
+    average_rating: stats?.average_rating ?? null,
+    review_count: Number(stats?.review_count || 0),
+    reviews: (results || []).map((row) => ({
+      rating: row.rating,
+      comment: cleanText(row.comment, 1000),
+      date: row.submitted_at ? String(row.submitted_at).slice(0, 10) : null,
+    })),
+  };
+}
+
+export async function updatePassengerCareReviewApproval(env, payload) {
+  await ensurePassengerCareSchema(env);
+  const bookingRef = normalizeBookingRef(payload.booking_ref || payload.bookingRef);
+  if (!bookingRef) {
+    return { ok: false, error: 'booking_ref is required', status: 400 };
+  }
+
+  const approved = payload.approved === true
+    || payload.approved === 1
+    || payload.approved === '1'
+    || payload.approved === 'true';
+
+  const row = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      f.booking_ref,
+      f.outcome,
+      f.rating,
+      COALESCE(NULLIF(f.route_slug, ''), orig.route_slug) AS route_slug
+    FROM passenger_care_feedback f
+    LEFT JOIN whatsapp_leads orig ON orig.id = (
+      SELECT w.id
+      FROM whatsapp_leads w
+      WHERE w.booking_ref = f.booking_ref
+        AND COALESCE(w.service_type, '') NOT IN ('pageview', 'passenger-care-pageview', 'passenger-care-stub')
+        AND COALESCE(w.route_slug, '') NOT IN ('passenger-care', 'passenger-care-stub')
+      ORDER BY w.clicked_at ASC
+      LIMIT 1
+    )
+    WHERE f.booking_ref = ?
+    LIMIT 1
+  `).bind(bookingRef).first();
+
+  if (!row) {
+    return { ok: false, error: 'Feedback not found', status: 404 };
+  }
+
+  if (approved && !canPublishAsRouteReview(row)) {
+    return {
+      ok: false,
+      error: 'Only completed trips with a rating and linked route can be approved for public display',
+      status: 400,
+    };
+  }
+
+  const result = await env.TRANSPORT_DB.prepare(`
+    UPDATE passenger_care_feedback
+    SET
+      route_slug = COALESCE(NULLIF(route_slug, ''), ?),
+      review_approved = ?,
+      review_approved_at = ?
+    WHERE booking_ref = ?
+  `).bind(
+    cleanRouteSlug(row.route_slug),
+    approved ? 1 : 0,
+    approved ? new Date().toISOString() : null,
+    bookingRef,
+  ).run();
+
+  return {
+    ok: true,
+    booking_ref: bookingRef,
+    review_approved: approved ? 1 : 0,
+    changes: result.meta?.changes || 0,
+  };
 }
 
 export async function deletePassengerCareFeedback(env, request) {

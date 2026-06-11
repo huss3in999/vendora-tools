@@ -1,4 +1,5 @@
 import * as passengerCareApi from './functions/api/transport/passenger-care.js';
+import * as routeReviewsApi from './functions/api/transport/route-reviews.js';
 import * as adminApi from './functions/api/transport/admin.js';
 import * as leadApi from './functions/api/transport/whatsapp-lead.js';
 import * as aiChatApi from './functions/api/transport/ai-chat.js';
@@ -54,6 +55,7 @@ function transportHealthResponse() {
       '/api/transport/whatsapp-lead',
       '/api/transport/log',
       '/api/transport/passenger-care',
+      '/api/transport/route-reviews',
     ],
   }), {
     headers: {
@@ -101,6 +103,10 @@ export default {
 
       if (path === '/api/transport/passenger-care') {
         return await dispatchPagesFunction(passengerCareApi, request, env, ctx);
+      }
+
+      if (path === '/api/transport/route-reviews') {
+        return await dispatchPagesFunction(routeReviewsApi, request, env, ctx);
       }
 
       if (path === '/api/nada/health'

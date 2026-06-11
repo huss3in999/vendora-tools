@@ -1,6 +1,6 @@
 import { ensureErrorSchema, recordError } from './error-log.js';
 import { buildNtfyHeaders, getNtfyToken, resolveNtfyPublishUrl } from './whatsapp-lead.js';
-import { getPassengerCareAdminRows, deletePassengerCareFeedback } from './passenger-care.js';
+import { getPassengerCareAdminRows, deletePassengerCareFeedback, updatePassengerCareReviewApproval } from './passenger-care.js';
 
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
@@ -1319,6 +1319,11 @@ async function handleAdminWrite(context) {
 
   try {
     await ensureAdminSchema(env);
+    if (resource === 'passenger-care-review') {
+      const result = await updatePassengerCareReviewApproval(env, payload);
+      return json(result, { status: result.status || (result.ok ? 200 : 400), headers });
+    }
+
     const response = resource === 'lead'
       ? await updateLeadOutcome(env, payload)
       : resource === 'notification-settings'

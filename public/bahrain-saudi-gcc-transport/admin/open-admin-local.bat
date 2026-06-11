@@ -2,7 +2,7 @@
 setlocal
 
 set "PUBLIC_ROOT=%~dp0..\.."
-set "ADMIN_URL=http://127.0.0.1:4173/bahrain-saudi-gcc-transport/admin/"
+set "ADMIN_URL=http://127.0.0.1:4173/bahrain-saudi-gcc-transport/admin/?local=1"
 
 echo Starting local static server for Vendora Transport admin...
 echo.

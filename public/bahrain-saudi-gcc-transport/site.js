@@ -1789,6 +1789,132 @@
     renderIcons();
   }
 
+  const ROUTE_REVIEW_EXCLUDED_SLUGS = new Set([
+    'home',
+    'english-home',
+    'contact',
+    'about',
+    'passenger-transport',
+    'parcel-delivery',
+    'gcc-destinations',
+    'care',
+    'admin',
+    'passenger-care',
+    'tracking-dashboard',
+    'sitemap-index',
+    'llms',
+    'en',
+  ]);
+
+  function resolveRouteReviewsApiUrl() {
+    return window.location.pathname.startsWith('/bahrain-saudi-gcc-transport/')
+      ? '/bahrain-saudi-gcc-transport/api/transport/route-reviews'
+      : '/api/transport/route-reviews';
+  }
+
+  function renderReviewStars(rating) {
+    const value = Math.max(1, Math.min(5, Number(rating) || 0));
+    return '★'.repeat(value) + '☆'.repeat(5 - value);
+  }
+
+  function formatReviewDate(value) {
+    if (!value) return '';
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return value;
+    return date.toLocaleDateString(state.lang === 'en' ? 'en-GB' : 'ar-BH', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  }
+
+  function buildRouteReviewsSection(data) {
+    const count = Number(data.review_count || 0);
+    if (!count) return null;
+
+    const average = data.average_rating != null ? Number(data.average_rating).toFixed(1) : null;
+    const isEn = state.lang === 'en';
+    const title = isEn ? 'Passenger Reviews' : 'تقييمات الركاب';
+    const averageLabel = isEn ? 'Average Rating' : 'متوسط التقييم';
+    const basedOn = isEn
+      ? `Based on ${count} verified ${count === 1 ? 'trip' : 'trips'}`
+      : `بناءً على ${count} ${count === 1 ? 'رحلة موثّقة' : 'رحلات موثّقة'}`;
+    const latestLabel = isEn ? 'Latest reviews' : 'أحدث التقييمات';
+    const verifiedLabel = isEn ? 'Verified passenger trip' : 'رحلة راكب موثّقة';
+
+    const reviewCards = (data.reviews || []).map((review) => {
+      const comment = review.comment
+        ? `<p class="route-review-comment">${review.comment.replace(/[<>&"']/g, (char) => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;',
+        }[char]))}</p>`
+        : `<p class="route-review-comment">${isEn ? 'Verified trip feedback submitted after booking.' : 'تم إرسال تقييم موثّق بعد الحجز.'}</p>`;
+      return `
+        <article class="route-review-card">
+          <div class="route-review-stars" aria-label="${review.rating}/5">${renderReviewStars(review.rating)}</div>
+          ${comment}
+          <div class="route-review-meta">${verifiedLabel}${review.date ? ` · ${formatReviewDate(review.date)}` : ''}</div>
+        </article>`;
+    }).join('');
+
+    const section = document.createElement('section');
+    section.className = 'section route-reviews-section';
+    section.setAttribute('data-route-reviews', '1');
+    section.innerHTML = `
+      <div class="container section-shell">
+        <div class="section-head">
+          <h2>${title}</h2>
+          <p>${isEn ? 'Approved feedback from verified Passenger Care submissions only.' : 'تقييمات معتمدة من نموذج Passenger Care فقط بعد رحلات موثّقة.'}</p>
+        </div>
+        <div class="route-reviews-wrap">
+          <div class="route-reviews-summary">
+            <div><strong>${averageLabel}:</strong> ${average || '-'} / 5</div>
+            <div>${basedOn}</div>
+          </div>
+          <div>
+            <h3 style="margin:0 0 12px;font-size:1rem;">${latestLabel}</h3>
+            <div class="route-reviews-list">${reviewCards}</div>
+          </div>
+        </div>
+      </div>`;
+    return section;
+  }
+
+  function mountRouteReviewsSection(section) {
+    if (!section) return;
+    const anchor = document.querySelector('.faq-wrap')?.closest('.section')
+      || document.querySelector('footer.footer')
+      || document.querySelector('main');
+    if (!anchor) return;
+    if (anchor.matches('footer.footer, main')) {
+      anchor.parentNode.insertBefore(section, anchor);
+    } else {
+      anchor.parentNode.insertBefore(section, anchor);
+    }
+  }
+
+  async function initRouteReviews() {
+    const path = window.location.pathname.replace(/\\/g, '/');
+    if (!path.includes('/bahrain-saudi-gcc-transport/')) return;
+    if (path.includes('/care/') || path.includes('/admin/')) return;
+
+    const slug = getRouteSlug();
+    if (!slug || ROUTE_REVIEW_EXCLUDED_SLUGS.has(slug)) return;
+    if (document.querySelector('[data-route-reviews]')) return;
+
+    try {
+      const response = await fetch(`${resolveRouteReviewsApiUrl()}?route=${encodeURIComponent(slug)}&limit=3`, {
+        credentials: 'omit',
+      });
+      if (!response.ok) return;
+      const data = await response.json();
+      if (!data.ok || !data.review_count) return;
+      mountRouteReviewsSection(buildRouteReviewsSection(data));
+      renderIcons();
+    } catch (error) {
+      /* silent fail on route pages */
+    }
+  }
+
   function init() {
     setupErrorReporter();
     setupWhatsAppLeadInterceptor();
@@ -1804,6 +1930,7 @@
     renderIcons();
     trackPageView();
     setupOnlineHeartbeat();
+    initRouteReviews();
   }
 
   function initLeadOnly() {
