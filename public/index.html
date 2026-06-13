@@ -853,6 +853,29 @@
       color: var(--home-text-muted);
       text-align: center;
     }
+    .popular-tools {
+      padding: 24px 16px;
+    }
+    .popular-tools h2 {
+      margin-bottom: 16px;
+    }
+    .tool-links {
+      display: grid;
+      gap: 12px;
+    }
+    .tool-links a {
+      display: block;
+      padding: 14px 16px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      color: var(--home-text);
+    }
+    .tool-links a:hover {
+      border-color: rgba(0, 208, 132, 0.45);
+      color: var(--home-blue);
+    }
     .home-tools-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1613,6 +1636,20 @@
         <p class="home-hero-note">
           Looking for Vendora Pro? <a href="#features">See the POS and operations section</a>.
         </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="popular-tools home-section" aria-labelledby="popular-tools-title">
+    <div class="home-container">
+      <div class="home-panel home-section-panel">
+        <h2 id="popular-tools-title" class="home-section-title">Popular Free Business Tools</h2>
+        <div class="tool-links">
+          <a href="tools/commission-calculator/">Commission Calculator</a>
+          <a href="tools/delivery-commission-calculator/">Delivery Commission Calculator</a>
+          <a href="tools/receipt-generator/">Receipt Generator</a>
+          <a href="calculators/bmr-calculator/">BMR Calculator</a>
+        </div>
       </div>
     </div>
   </section>
