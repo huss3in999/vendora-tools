@@ -12,8 +12,8 @@ binding = "ASSETS"
 [[d1_databases]]
 binding = "DB"
 database_name = "cash-control-db"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "7d58e703-460b-4729-8058-21b10a9c2d77"
 
 [vars]
-OWNER_PIN = "CHANGE_ME_OWNER"
-WORKER_PIN = "CHANGE_ME_WORKER"
+OWNER_PIN = "1111"
+WORKER_PIN = "1111"

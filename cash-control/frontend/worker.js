@@ -6,6 +6,7 @@ import * as api from './api.js';
 import {
   formatBD, formatDate, todayLabel, showToast, showLoading, navigate,
   amountInput, noteInput, backHeader, screenLayout, EXPENSE_CATEGORIES,
+  cashBreakdown, heroCashBlock, bindInstallButton,
 } from './app.js';
 
 // ─── Bottom nav for worker ───────────────────────────────────────────────────
@@ -30,15 +31,11 @@ function workerBottomNav(active) {
 
 // ─── Dashboard card helper ───────────────────────────────────────────────────
 
-function statCard(label, value, { highlight = false, diff = null } = {}) {
-  const diffHtml = diff != null
-    ? `<span class="diff ${diff >= 0 ? 'positive' : 'negative'}">${diff >= 0 ? '+' : ''}${formatBD(diff)}</span>`
-    : '';
+function statCard(label, value, { highlight = false } = {}) {
   return `
     <div class="stat-card ${highlight ? 'highlight' : ''}">
       <span class="stat-label">${label}</span>
       <span class="stat-value">${value}</span>
-      ${diffHtml}
     </div>`;
 }
 
@@ -57,9 +54,6 @@ export function renderWorkerScreen(screen, data) {
 }
 
 async function renderWorkerDashboard(d) {
-  const diffClass = d.last_closing_difference == null ? '' :
-    d.last_closing_difference >= 0 ? 'positive' : 'negative';
-
   return screenLayout(`
     <header class="top-bar">
       <div>
@@ -71,19 +65,17 @@ async function renderWorkerDashboard(d) {
 
     ${d.test_mode ? '<div class="test-banner">⚠️ Test Mode ON</div>' : ''}
 
-    <div class="hero-card">
-      <p class="hero-label">Expected Cash Now</p>
-      <p class="hero-value">${formatBD(d.expected_cash_now)}</p>
-    </div>
+    ${heroCashBlock(d, { label: 'Total Cash Now', sub: 'Opening + sales − expenses = what you have' })}
 
+    ${cashBreakdown(d, 'Total Cash Now')}
+
+    <div class="section-title">Other Today</div>
     <div class="stat-grid">
-      ${statCard('Opening Cash', formatBD(d.opening_cash))}
-      ${statCard('Cash Sales Today', formatBD(d.cash_sales_today))}
-      ${statCard('BenefitPay Today', formatBD(d.benefitpay_today))}
+      ${statCard('BenefitPay (to owner)', formatBD(d.benefitpay_today))}
       ${statCard('Expenses Today', formatBD(d.expenses_today))}
-      ${statCard('Last Closing Diff', d.last_closing_difference != null ? formatBD(d.last_closing_difference) : '—', { diff: null })}
       ${statCard('Toys This Month', formatBD(d.toys_month_balance))}
     </div>
+    <p class="form-hint">BenefitPay does not add to worker cash — it goes to you.</p>
 
     <div class="action-grid">
       <button class="action-btn" data-nav="add-cash-sale">
@@ -105,6 +97,10 @@ async function renderWorkerDashboard(d) {
       <button class="action-btn" data-nav="worker-toys">
         <span class="action-icon">🎮</span>
         <span>Toys Collection</span>
+      </button>
+      <button class="action-btn hidden" id="install-app-btn">
+        <span class="action-icon">APP</span>
+        <span>Install App</span>
       </button>
     </div>
   `, { bottomNav: workerBottomNav('worker-dashboard') });
@@ -163,7 +159,7 @@ async function renderCloseDay(d) {
   return screenLayout(`
     ${backHeader('Close Day')}
     <div class="hero-card secondary">
-      <p class="hero-label">Expected Cash Now</p>
+      <p class="hero-label">Cash With You Now</p>
       <p class="hero-value">${formatBD(d.expected_cash_now)}</p>
     </div>
     <form id="close-day-form" class="form-screen">
@@ -231,6 +227,7 @@ async function loadWorkerDashboard() {
     document.querySelector('[data-action="logout"]')?.addEventListener('click', () => {
       import('./app.js').then(m => m.logout());
     });
+    bindInstallButton('install-app-btn');
   } catch (err) {
     showToast(err.message, 'error');
   }

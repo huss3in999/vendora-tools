@@ -146,7 +146,8 @@ async function handleApi(request, env, url) {
 
     // Settings
     if (method === 'GET' && path === '/api/settings') {
-      return json(await getSettings(env));
+      requireRole(session, 'owner');
+      return json(await getSettings(env, session));
     }
     if (method === 'PUT' && path === '/api/settings') {
       requireRole(session, 'owner');
@@ -159,6 +160,24 @@ async function handleApi(request, env, url) {
       return json(await deleteAllTestData(env));
     }
 
+    // Bulk void (owner only)
+    if (method === 'POST' && path === '/api/transactions/bulk-void') {
+      requireRole(session, 'owner');
+      return json(await bulkVoidTransactions(request, env, session));
+    }
+
+    // Bulk delete (owner only)
+    if (method === 'POST' && path === '/api/transactions/bulk-delete') {
+      requireRole(session, 'owner');
+      return json(await bulkDeleteTransactions(request, env, session));
+    }
+
+    // Owner sets opening cash for today
+    if (method === 'POST' && path === '/api/opening-cash') {
+      requireRole(session, 'owner');
+      return json(await setOpeningCash(request, env, session));
+    }
+
     return json({ error: 'Not found' }, 404);
   } catch (err) {
     const status = err.status || 500;
@@ -169,30 +188,42 @@ async function handleApi(request, env, url) {
 // ─── Auth ────────────────────────────────────────────────────────────────────
 
 async function login(request, env) {
-  const { pin } = await request.json();
+  const { pin, role: requestedRole } = await request.json();
   if (!pin) throw httpError(400, 'PIN required');
 
-  const ownerPin = env.OWNER_PIN || 'CHANGE_ME_OWNER';
-  const workerPin = env.WORKER_PIN || 'CHANGE_ME_WORKER';
+  const pins = await getPinSettings(env);
 
-  let role = null;
-  let name = null;
-  let userId = null;
+  if (requestedRole === 'worker' && !pins.worker_access_enabled) {
+    throw httpError(403, 'Worker access is currently disabled. Please contact owner.');
+  }
 
-  if (pin === ownerPin) {
-    role = 'owner';
-    name = 'Owner';
-    userId = 1;
-  } else if (pin === workerPin) {
-    role = 'worker';
-    name = 'Worker';
-    userId = 2;
-  } else {
+  if (pin !== pins.owner_pin && pin !== pins.worker_pin) {
     throw httpError(401, 'Invalid PIN');
   }
 
-  const token = await createSessionToken({ userId, role, name }, env);
-  return { token, role, name };
+  // Same PIN for both roles — user picks Owner or Worker on login screen
+  if (pins.owner_pin === pins.worker_pin && pin === pins.owner_pin) {
+    if (requestedRole === 'worker') {
+      if (!pins.worker_access_enabled) {
+        throw httpError(403, 'Worker access is currently disabled. Please contact owner.');
+      }
+      const token = await createSessionToken({ userId: 2, role: 'worker', name: 'Worker' }, env);
+      return { token, role: 'worker', name: 'Worker' };
+    }
+    const token = await createSessionToken({ userId: 1, role: 'owner', name: 'Owner' }, env);
+    return { token, role: 'owner', name: 'Owner' };
+  }
+
+  if (pin === pins.owner_pin) {
+    const token = await createSessionToken({ userId: 1, role: 'owner', name: 'Owner' }, env);
+    return { token, role: 'owner', name: 'Owner' };
+  }
+
+  if (!pins.worker_access_enabled) {
+    throw httpError(403, 'Worker access is currently disabled. Please contact owner.');
+  }
+  const token = await createSessionToken({ userId: 2, role: 'worker', name: 'Worker' }, env);
+  return { token, role: 'worker', name: 'Worker' };
 }
 
 async function createSessionToken(payload, env) {
@@ -236,21 +267,81 @@ async function hmacSign(message, secret) {
 
 // ─── Settings ────────────────────────────────────────────────────────────────
 
-async function getSettings(env) {
-  const row = await env.DB.prepare(
-    "SELECT value FROM app_settings WHERE key = 'test_mode'",
-  ).first();
-  return { test_mode: row?.value === '1' };
+async function getSetting(env, key) {
+  const row = await env.DB.prepare('SELECT value FROM app_settings WHERE key = ?').bind(key).first();
+  return row?.value ?? null;
+}
+
+async function setSetting(env, key, value) {
+  await env.DB.prepare(`
+    INSERT INTO app_settings (key, value, updated_at) VALUES (?, ?, datetime('now'))
+    ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = datetime('now')
+  `).bind(key, String(value)).run();
+}
+
+async function getPinSettings(env) {
+  const dbOwner = await getSetting(env, 'owner_pin');
+  const dbWorker = await getSetting(env, 'worker_pin');
+  const workerAccess = await getSetting(env, 'worker_access_enabled');
+  const legacyWorkerLogin = await getSetting(env, 'worker_login_enabled');
+  const workerAccessEnabled = workerAccess ?? legacyWorkerLogin;
+  return {
+    owner_pin: dbOwner || env.OWNER_PIN || '1111',
+    worker_pin: dbWorker || env.WORKER_PIN || '1111',
+    worker_access_enabled: workerAccessEnabled !== '0',
+  };
+}
+
+async function getSettings(env, session = null) {
+  const testRow = await getSetting(env, 'test_mode');
+  const pins = await getPinSettings(env);
+  const result = {
+    test_mode: testRow === '1',
+    worker_access_enabled: pins.worker_access_enabled,
+    worker_login_enabled: pins.worker_access_enabled,
+    pins_configured: !!(await getSetting(env, 'owner_pin')) || !!(await getSetting(env, 'worker_pin')),
+  };
+  // Owner-only admin info (never return actual PIN values)
+  if (session?.role === 'owner') {
+    result.worker_access = pins.worker_access_enabled ? 'enabled' : 'disabled';
+  }
+  return result;
 }
 
 async function updateSettings(request, env, session) {
   const body = await request.json();
+  const pins = await getPinSettings(env);
+
   if (typeof body.test_mode === 'boolean') {
-    await env.DB.prepare(
-      "INSERT INTO app_settings (key, value, updated_at) VALUES ('test_mode', ?, datetime('now')) ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = datetime('now')",
-    ).bind(body.test_mode ? '1' : '0').run();
+    await setSetting(env, 'test_mode', body.test_mode ? '1' : '0');
   }
-  return getSettings(env);
+
+  const workerAccess =
+    typeof body.worker_access_enabled === 'boolean'
+      ? body.worker_access_enabled
+      : body.worker_login_enabled;
+  if (typeof workerAccess === 'boolean') {
+    await setSetting(env, 'worker_access_enabled', workerAccess ? '1' : '0');
+  }
+
+  // Change worker PIN (owner only)
+  if (body.new_worker_pin != null) {
+    const wp = String(body.new_worker_pin).trim();
+    if (wp.length < 4) throw httpError(400, 'Worker PIN must be at least 4 characters');
+    await setSetting(env, 'worker_pin', wp);
+  }
+
+  // Change owner PIN — require current owner PIN
+  if (body.new_owner_pin != null) {
+    const op = String(body.new_owner_pin).trim();
+    if (op.length < 4) throw httpError(400, 'Owner PIN must be at least 4 characters');
+    if (!body.current_owner_pin || body.current_owner_pin !== pins.owner_pin) {
+      throw httpError(403, 'Current owner PIN is wrong');
+    }
+    await setSetting(env, 'owner_pin', op);
+  }
+
+  return getSettings(env, session);
 }
 
 async function isTestMode(env) {
@@ -292,24 +383,72 @@ function activeFilter(includeTest) {
 async function getOpeningCash(env, businessDate, includeTest) {
   const { testClause } = activeFilter(includeTest);
 
-  // Previous day's closing actual_cash
-  const prev = await env.DB.prepare(`
-    SELECT actual_cash FROM daily_closings
+  // Owner manual override for this date
+  const manual = await getSetting(env, `opening_cash_${businessDate}`);
+  if (manual != null && manual !== '') return parseFloat(manual);
+
+  const lastClose = await env.DB.prepare(`
+    SELECT actual_cash, business_date FROM daily_closings
     WHERE business_date < ? AND status = 'active' AND ${testClause}
     ORDER BY business_date DESC LIMIT 1
   `).bind(businessDate).first();
 
-  if (prev) return prev.actual_cash;
+  if (lastClose) {
+    // Start from last close, add all daily cash activity AFTER close date but BEFORE today
+    const afterClose = await env.DB.prepare(`
+      SELECT type, COALESCE(SUM(amount), 0) as total
+      FROM transactions
+      WHERE wallet = 'daily_cash' AND status = 'active' AND ${testClause}
+        AND business_date > ? AND business_date < ?
+        AND type IN ('cash_sale', 'cash_added_by_owner', 'expense', 'cash_taken_by_owner', 'correction')
+      GROUP BY type
+    `).bind(lastClose.business_date, businessDate).all();
 
-  // First day — check if there's an opening correction or cash_added before this date
-  const added = await env.DB.prepare(`
-    SELECT COALESCE(SUM(amount), 0) as total FROM transactions
+    const map = {};
+    for (const row of afterClose.results) map[row.type] = row.total;
+
+    return lastClose.actual_cash
+      + (map.cash_sale || 0)
+      + (map.cash_added_by_owner || 0)
+      - (map.expense || 0)
+      - (map.cash_taken_by_owner || 0)
+      + (map.correction || 0);
+  }
+
+  // No closing record — sum ALL daily cash activity before today
+  return calcBalanceBeforeDate(env, businessDate, includeTest);
+}
+
+async function calcBalanceBeforeDate(env, businessDate, includeTest) {
+  const { testClause } = activeFilter(includeTest);
+  const sums = await env.DB.prepare(`
+    SELECT type, COALESCE(SUM(amount), 0) as total
+    FROM transactions
     WHERE wallet = 'daily_cash' AND status = 'active' AND ${testClause}
-      AND type IN ('cash_added_by_owner', 'correction')
-      AND business_date <= ?
-  `).bind(businessDate).first();
+      AND business_date < ?
+      AND type IN ('cash_sale', 'cash_added_by_owner', 'expense', 'cash_taken_by_owner', 'correction')
+    GROUP BY type
+  `).bind(businessDate).all();
 
-  return added?.total || 0;
+  const map = {};
+  for (const row of sums.results) map[row.type] = row.total;
+
+  return (map.cash_sale || 0)
+    + (map.cash_added_by_owner || 0)
+    - (map.expense || 0)
+    - (map.cash_taken_by_owner || 0)
+    + (map.correction || 0);
+}
+
+async function setOpeningCash(request, env, session) {
+  const body = await request.json();
+  const { amount, note } = body;
+  if (amount == null || amount < 0) throw httpError(400, 'Amount required');
+
+  const today = todayStr();
+  await setSetting(env, `opening_cash_${today}`, parseFloat(amount));
+
+  return { success: true, opening_cash: parseFloat(amount), note: note || null };
 }
 
 async function calcExpectedCash(env, businessDate, includeTest) {
@@ -397,7 +536,12 @@ async function getWorkerDashboard(env, session) {
     cash_sales_today: await sumByType(env, { businessDate: today, types: ['cash_sale'], wallet: 'daily_cash', includeTest }),
     benefitpay_today: await sumByType(env, { businessDate: today, types: ['benefitpay_sale'], wallet: 'benefitpay', includeTest }),
     expenses_today: await sumByType(env, { businessDate: today, types: ['expense'], wallet: 'daily_cash', includeTest }),
+    cash_added_today: await sumByType(env, { businessDate: today, types: ['cash_added_by_owner'], wallet: 'daily_cash', includeTest }),
+    cash_taken_today: await sumByType(env, { businessDate: today, types: ['cash_taken_by_owner'], wallet: 'daily_cash', includeTest }),
+    corrections_today: await sumByType(env, { businessDate: today, types: ['correction'], wallet: 'daily_cash', includeTest }),
     expected_cash_now: expected,
+    last_closing_actual: lastClosing?.actual_cash ?? null,
+    last_closing_date: lastClosing?.business_date ?? null,
     last_closing_difference: lastClosing?.difference ?? null,
     toys_month_balance: await calcToysBalance(env, includeTest),
     test_mode: includeTest,
@@ -409,15 +553,33 @@ async function getOwnerDashboard(env, session) {
   const today = todayStr();
   const ms = monthStart();
 
-  const expected = await calcExpectedCash(env, today, includeTest);
+  const opening = await getOpeningCash(env, today, includeTest);
   const lastClosing = await getLastClosing(env, includeTest);
+  const todayCashSales = await sumByType(env, { businessDate: today, types: ['cash_sale'], wallet: 'daily_cash', includeTest });
+  const todayBenefitPay = await sumByType(env, { businessDate: today, types: ['benefitpay_sale'], wallet: 'benefitpay', includeTest });
+  const todayExpenses = await sumByType(env, { businessDate: today, types: ['expense'], wallet: 'daily_cash', includeTest });
+  const cashAddedToday = await sumByType(env, { businessDate: today, types: ['cash_added_by_owner'], wallet: 'daily_cash', includeTest });
+  const cashTakenToday = await sumByType(env, { businessDate: today, types: ['cash_taken_by_owner'], wallet: 'daily_cash', includeTest });
+  const correctionsToday = await sumByType(env, { businessDate: today, types: ['correction'], wallet: 'daily_cash', includeTest });
+  const lastActualClosing = lastClosing?.actual_cash ?? opening;
+  const expected = lastActualClosing
+    + todayCashSales
+    + cashAddedToday
+    - todayExpenses
+    - cashTakenToday
+    + correctionsToday;
 
   return {
     expected_cash_with_worker: expected,
-    today_cash_sales: await sumByType(env, { businessDate: today, types: ['cash_sale'], wallet: 'daily_cash', includeTest }),
-    today_benefitpay: await sumByType(env, { businessDate: today, types: ['benefitpay_sale'], wallet: 'benefitpay', includeTest }),
-    today_expenses: await sumByType(env, { businessDate: today, types: ['expense'], wallet: 'daily_cash', includeTest }),
-    last_actual_closing: lastClosing?.actual_cash ?? null,
+    opening_cash: lastActualClosing,
+    today_cash_sales: todayCashSales,
+    today_benefitpay: todayBenefitPay,
+    today_expenses: todayExpenses,
+    cash_added_today: cashAddedToday,
+    cash_taken_today: cashTakenToday,
+    corrections_today: correctionsToday,
+    last_actual_closing: lastActualClosing,
+    last_closing_date: lastClosing?.business_date ?? null,
     last_closing_difference: lastClosing?.difference ?? null,
     toys_month_balance: await calcToysBalance(env, includeTest),
     month_cash_sales: await sumByType(env, { monthStart: ms, types: ['cash_sale'], wallet: 'daily_cash', includeTest }),
@@ -639,16 +801,16 @@ async function exportCsv(env, session, params) {
   const { testClause } = activeFilter(includeTest);
 
   const rows = await env.DB.prepare(`
-    SELECT business_date, type, wallet, amount, category, note, status, is_test,
-           created_by, created_at, void_reason, edit_reason
+    SELECT created_at, business_date, type, wallet, amount, category, note,
+           created_by, status, is_test
     FROM transactions WHERE ${testClause} AND status != 'deleted'
     ORDER BY created_at DESC
   `).all();
 
-  const header = 'Date,Type,Wallet,Amount,Category,Note,Status,Test,Created By,Created At,Void Reason,Edit Reason\n';
+  const header = 'date/time,business date,type,wallet,amount,category,note,created by,status,is_test\n';
   const lines = rows.results.map(r =>
-    [r.business_date, r.type, r.wallet, r.amount, r.category, r.note, r.status,
-     r.is_test ? 'YES' : 'NO', r.created_by, r.created_at, r.void_reason, r.edit_reason]
+    [r.created_at, r.business_date, r.type, r.wallet, r.amount, r.category, r.note,
+     r.created_by, r.status, r.is_test ? 'YES' : 'NO']
       .map(v => `"${(v ?? '').toString().replace(/"/g, '""')}"`).join(','),
   ).join('\n');
 
@@ -666,6 +828,46 @@ async function deleteAllTestData(env) {
   await env.DB.prepare("DELETE FROM transactions WHERE is_test = 1").run();
   await env.DB.prepare("DELETE FROM daily_closings WHERE is_test = 1").run();
   return { success: true, message: 'All test data deleted' };
+}
+
+async function bulkVoidTransactions(request, env, session) {
+  const { ids, void_reason } = await request.json();
+  if (!Array.isArray(ids) || ids.length === 0) throw httpError(400, 'Select entries to void');
+  if (!void_reason) throw httpError(400, 'Void reason required');
+
+  let count = 0;
+  for (const id of ids) {
+    const existing = await env.DB.prepare('SELECT status FROM transactions WHERE id = ?').bind(id).first();
+    if (existing?.status === 'active') {
+      await env.DB.prepare(`
+        UPDATE transactions SET status = 'voided', void_reason = ?, updated_by = ?, updated_at = datetime('now')
+        WHERE id = ?
+      `).bind(void_reason, session.name, id).run();
+      count++;
+    }
+  }
+  return { success: true, voided: count };
+}
+
+async function bulkDeleteTransactions(request, env, session) {
+  const { ids } = await request.json();
+  if (!Array.isArray(ids) || ids.length === 0) throw httpError(400, 'Select entries to delete');
+
+  let count = 0;
+  for (const id of ids) {
+    const existing = await env.DB.prepare('SELECT * FROM transactions WHERE id = ?').bind(id).first();
+    if (!existing) continue;
+    if (existing.is_test === 1) {
+      await env.DB.prepare('DELETE FROM transactions WHERE id = ?').bind(id).run();
+    } else {
+      await env.DB.prepare(`
+        UPDATE transactions SET status = 'deleted', updated_by = ?, updated_at = datetime('now')
+        WHERE id = ?
+      `).bind(session.name, id).run();
+    }
+    count++;
+  }
+  return { success: true, deleted: count };
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

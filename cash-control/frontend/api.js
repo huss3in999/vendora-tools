@@ -5,12 +5,17 @@
 
 const API_BASE = '';
 
-let authToken = sessionStorage.getItem('cc_token') || null;
+let authToken = localStorage.getItem('cc_token') || sessionStorage.getItem('cc_token') || null;
 
 export function setToken(token) {
   authToken = token;
-  if (token) sessionStorage.setItem('cc_token', token);
-  else sessionStorage.removeItem('cc_token');
+  if (token) {
+    sessionStorage.setItem('cc_token', token);
+    localStorage.setItem('cc_token', token);
+  } else {
+    sessionStorage.removeItem('cc_token');
+    localStorage.removeItem('cc_token');
+  }
 }
 
 export function getToken() {
@@ -21,6 +26,8 @@ export function clearAuth() {
   setToken(null);
   sessionStorage.removeItem('cc_role');
   sessionStorage.removeItem('cc_name');
+  localStorage.removeItem('cc_role');
+  localStorage.removeItem('cc_name');
 }
 
 async function request(path, options = {}) {
@@ -45,8 +52,8 @@ async function request(path, options = {}) {
 
 // ─── Auth ────────────────────────────────────────────────────────────────────
 
-export function login(pin) {
-  return request('/api/login', { method: 'POST', body: JSON.stringify({ pin }) });
+export function login(pin, role) {
+  return request('/api/login', { method: 'POST', body: JSON.stringify({ pin, role }) });
 }
 
 // ─── Dashboards ──────────────────────────────────────────────────────────────
@@ -110,6 +117,18 @@ export function updateSettings(data) {
 
 export function deleteAllTestData() {
   return request('/api/test-data', { method: 'DELETE' });
+}
+
+export function bulkVoidTransactions(ids, void_reason) {
+  return request('/api/transactions/bulk-void', { method: 'POST', body: JSON.stringify({ ids, void_reason }) });
+}
+
+export function bulkDeleteTransactions(ids) {
+  return request('/api/transactions/bulk-delete', { method: 'POST', body: JSON.stringify({ ids }) });
+}
+
+export function setOpeningCash(amount, note) {
+  return request('/api/opening-cash', { method: 'POST', body: JSON.stringify({ amount, note }) });
 }
 
 // ─── Export ──────────────────────────────────────────────────────────────────

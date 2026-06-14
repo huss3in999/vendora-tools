@@ -9,8 +9,8 @@ import { renderOwnerScreen, ownerScreens } from './owner.js';
 // ─── State ───────────────────────────────────────────────────────────────────
 
 const state = {
-  role: sessionStorage.getItem('cc_role') || null,
-  name: sessionStorage.getItem('cc_name') || null,
+  role: localStorage.getItem('cc_role') || sessionStorage.getItem('cc_role') || null,
+  name: localStorage.getItem('cc_name') || sessionStorage.getItem('cc_name') || null,
   screen: 'login',
   screenData: {},
 };
@@ -67,6 +67,8 @@ export function logout() {
   api.clearAuth();
   state.role = null;
   state.name = null;
+  localStorage.removeItem('cc_role');
+  localStorage.removeItem('cc_name');
   navigate('login');
 }
 
@@ -96,6 +98,160 @@ export const WALLET_LABELS = {
   benefitpay: 'BenefitPay',
   toys_monthly: 'Toys',
 };
+
+// ─── Cash breakdown (worker + owner dashboards) ──────────────────────────────
+
+/**
+ * @param {object} d - dashboard data with opening, sales, expenses, total
+ * @param {string} totalLabel - label for the final total row
+ * @param {string} totalKey - property name for total amount
+ */
+export function cashBreakdown(d, totalLabel = 'Total Cash Now', totalKey = 'expected_cash_now', options = {}) {
+  const total = d[totalKey] ?? 0;
+  const baseLabel = options.baseLabel || 'From Before Today';
+  const rows = [
+    { label: baseLabel, amount: d.opening_cash || 0, type: 'base' },
+    { label: 'Cash Sales Today', amount: d.cash_sales_today ?? d.today_cash_sales ?? 0, type: 'add' },
+    { label: "Today's Expenses", amount: d.expenses_today ?? d.today_expenses ?? 0, type: 'sub' },
+  ];
+  const added = d.cash_added_today || 0;
+  const taken = d.cash_taken_today || 0;
+  const corrections = d.corrections_today || 0;
+  if (added > 0) rows.push({ label: 'Cash Added by Owner', amount: added, type: 'add' });
+  if (taken > 0) rows.push({ label: 'Cash Taken by Owner', amount: taken, type: 'sub' });
+  if (corrections) rows.push({ label: 'Corrections', amount: Math.abs(corrections), type: corrections >= 0 ? 'add' : 'sub' });
+
+  const rowHtml = rows.map(r => {
+    const prefix = r.type === 'add' ? '+' : r.type === 'sub' ? '−' : '';
+    const cls = r.type === 'add' ? 'add' : r.type === 'sub' ? 'sub' : 'base';
+    return `
+      <div class="breakdown-row ${cls}">
+        <span class="breakdown-label">${prefix ? `<span class="breakdown-sign">${prefix}</span>` : ''}${r.label}</span>
+        <span class="breakdown-amt">${formatBD(r.amount)}</span>
+      </div>`;
+  }).join('');
+
+  const opening = d.opening_cash || 0;
+  const lastActual = d.last_closing_actual ?? d.last_actual_closing;
+  const lastDate = d.last_closing_date;
+  let hint = '';
+  if (opening > 0) {
+    hint = `<p class="breakdown-hint">${formatBD(opening)} carried over from before today</p>`;
+  } else if (lastActual != null && lastDate) {
+    hint = `<p class="breakdown-hint">Last close (${lastDate}): ${formatBD(lastActual)} was counted</p>`;
+  }
+
+  return `
+    <div class="cash-breakdown">
+      <div class="section-title">How this total is calculated</div>
+      ${rowHtml}
+      <div class="breakdown-row total">
+        <span class="breakdown-label">= ${totalLabel}</span>
+        <span class="breakdown-amt">${formatBD(total)}</span>
+      </div>
+      ${hint}
+    </div>`;
+}
+
+/** Big hero block: total on top, before today + sales today visible immediately */
+export function heroCashBlock(d, { totalKey = 'expected_cash_now', label = 'Total Cash Now', sub = 'All cash the worker has right now', heroClass = '', baseLabel = 'From Before Today' } = {}) {
+  const total = d[totalKey] ?? 0;
+  const opening = d.opening_cash || 0;
+  const sales = d.cash_sales_today ?? d.today_cash_sales ?? 0;
+  const expenses = d.expenses_today ?? d.today_expenses ?? 0;
+  const taken = d.cash_taken_today || 0;
+
+  return `
+    <div class="hero-card ${heroClass}">
+      <p class="hero-label">${label}</p>
+      <p class="hero-value">${formatBD(total)}</p>
+      <p class="hero-sub">${sub}</p>
+      <div class="hero-quick-stats">
+        <div class="quick-stat">
+          <span class="quick-label">${baseLabel}</span>
+          <span class="quick-value">${formatBD(opening)}</span>
+        </div>
+        <div class="quick-stat highlight-stat">
+          <span class="quick-label">Cash Sales Today</span>
+          <span class="quick-value">${formatBD(sales)}</span>
+        </div>
+      </div>
+      ${expenses > 0 || taken > 0 ? `
+        <div class="hero-deduct">
+          ${expenses > 0 ? `<span>− Expenses Today: ${formatBD(expenses)}</span>` : ''}
+          ${taken > 0 ? `<span>− Taken by Owner: ${formatBD(taken)}</span>` : ''}
+        </div>` : ''}
+    </div>`;
+}
+
+// ─── PWA — owner only can install ────────────────────────────────────────────
+
+let deferredInstallPrompt = null;
+
+export function setupPwaForRole() {
+  // Keep the manifest available for both owner and worker installs.
+  document.querySelector('link[rel="manifest"]')?.remove();
+  document.querySelector('meta[name="apple-mobile-web-app-capable"]')?.remove();
+
+  if (false) {
+    return;
+  }
+
+  // Enable PWA install and service worker for all logged-in roles.
+  if (!document.querySelector('link[rel="manifest"]')) {
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = '/manifest.json';
+    document.head.appendChild(link);
+  }
+  const appleCap = document.createElement('meta');
+  appleCap.name = 'apple-mobile-web-app-capable';
+  appleCap.content = 'yes';
+  document.head.appendChild(appleCap);
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+  }
+}
+
+function isStandaloneApp() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function refreshInstallButton(btnId) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.classList.toggle('hidden', isStandaloneApp() || !deferredInstallPrompt);
+}
+
+export function bindInstallButton(btnId = 'install-app-btn') {
+  refreshInstallButton(btnId);
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    refreshInstallButton(btnId);
+  });
+
+  window.addEventListener('appinstalled', () => {
+    deferredInstallPrompt = null;
+    refreshInstallButton(btnId);
+  });
+
+  document.getElementById(btnId)?.addEventListener('click', async () => {
+    if (isStandaloneApp()) {
+      refreshInstallButton(btnId);
+      return;
+    }
+    if (!deferredInstallPrompt) {
+      showToast('Use browser menu → Add to Home screen', 'info');
+      return;
+    }
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    refreshInstallButton(btnId);
+  });
+}
 
 // ─── Shared form components ──────────────────────────────────────────────────
 
@@ -149,7 +305,8 @@ function renderLogin() {
             return `<button type="button" class="pin-key" data-key="${k}">${k}</button>`;
           }).join('')}
         </div>
-        <button type="submit" class="btn btn-primary btn-full">Login</button>
+        <button type="submit" class="btn btn-primary btn-full" data-role="owner">Login as Owner</button>
+        <button type="submit" class="btn btn-secondary btn-full" data-role="worker" style="margin-top:10px">Login as Worker</button>
       </form>
     </div>
   `);
@@ -174,16 +331,20 @@ function bindLogin() {
     e.preventDefault();
     const pin = input.value.trim();
     if (!pin) return showToast('Enter your PIN', 'error');
+    const role = e.submitter?.dataset?.role || 'owner';
     try {
       showLoading(true);
-      const res = await api.login(pin);
+      const res = await api.login(pin, role);
       api.setToken(res.token);
       state.role = res.role;
       state.name = res.name;
       sessionStorage.setItem('cc_role', res.role);
       sessionStorage.setItem('cc_name', res.name);
+      localStorage.setItem('cc_role', res.role);
+      localStorage.setItem('cc_name', res.name);
       navigate(res.role === 'owner' ? 'owner-dashboard' : 'worker-dashboard');
       showToast(`Welcome, ${res.name}`, 'success');
+      setupPwaForRole(res.role);
     } catch (err) {
       showToast(err.message, 'error');
       input.value = '';
@@ -245,13 +406,9 @@ window.addEventListener('auth-expired', () => {
   logout();
 });
 
-// Register service worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js').catch(() => {});
-}
-
 // Auto-navigate if session exists
 if (state.role && api.getToken()) {
+  setupPwaForRole(state.role);
   navigate(state.role === 'owner' ? 'owner-dashboard' : 'worker-dashboard');
 } else {
   render();

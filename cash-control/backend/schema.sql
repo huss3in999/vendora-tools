@@ -73,3 +73,4 @@ INSERT OR IGNORE INTO users (id, name, role, pin_key, status) VALUES
 
 -- Default settings
 INSERT OR IGNORE INTO app_settings (key, value) VALUES ('test_mode', '0');
+INSERT OR IGNORE INTO app_settings (key, value) VALUES ('worker_access_enabled', '1');

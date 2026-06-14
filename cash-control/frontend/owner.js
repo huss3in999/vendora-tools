@@ -6,7 +6,7 @@ import * as api from './api.js';
 import {
   formatBD, formatDateTime, todayLabel, showToast, showLoading, navigate,
   amountInput, noteInput, backHeader, screenLayout, EXPENSE_CATEGORIES,
-  TYPE_LABELS, WALLET_LABELS,
+  TYPE_LABELS, WALLET_LABELS, cashBreakdown, heroCashBlock, bindInstallButton,
 } from './app.js';
 
 // ─── Bottom nav for owner ────────────────────────────────────────────────────
@@ -37,6 +37,24 @@ function statCard(label, value, { highlight = false } = {}) {
     </div>`;
 }
 
+function ownerDashboardStats(d) {
+  const lastActual = d.last_actual_closing != null ? formatBD(d.last_actual_closing) : '-';
+  const lastDifference = d.last_closing_difference != null ? formatBD(d.last_closing_difference) : '-';
+
+  return `
+    <div class="section-title">Owner Dashboard</div>
+    <div class="stat-grid owner-stat-order">
+      ${statCard('Today Cash Sales', formatBD(d.today_cash_sales))}
+      ${statCard('Today BenefitPay', formatBD(d.today_benefitpay))}
+      ${statCard('Today Expenses', formatBD(d.today_expenses))}
+      ${statCard('Cash Taken By Owner Today', formatBD(d.cash_taken_today || 0))}
+      ${statCard('Cash Added By Owner Today', formatBD(d.cash_added_today || 0))}
+      ${statCard('Last Actual Closing', lastActual)}
+      ${statCard('Last Closing Difference', lastDifference)}
+      ${statCard('Toys Saved This Month', formatBD(d.toys_month_balance), { highlight: true })}
+    </div>`;
+}
+
 // ─── Screen renderers ────────────────────────────────────────────────────────
 
 export function renderOwnerScreen(screen, data) {
@@ -53,34 +71,108 @@ export function renderOwnerScreen(screen, data) {
 
 async function renderOwnerDashboard(d) {
   return screenLayout(`
+    ${heroCashBlock(d, {
+      totalKey: 'expected_cash_with_worker',
+      label: 'Cash With Worker Now',
+      sub: 'Last actual closing + cash sales + owner added - expenses - owner taken + corrections',
+      heroClass: 'owner cash-now',
+      baseLabel: 'Last Actual Closing',
+    })}
+
     <header class="top-bar">
       <div>
         <p class="top-date">${todayLabel()}</p>
-        <h1 class="top-title">Owner Dashboard</h1>
+        <h1 class="top-title">Cash Control</h1>
       </div>
       <button class="btn-icon" data-action="logout" title="Logout">⏻</button>
     </header>
 
     ${d.test_mode ? '<div class="test-banner">⚠️ Test Mode ON — test entries affect balances</div>' : ''}
 
-    <div class="hero-card owner">
-      <p class="hero-label">Expected Cash With Worker</p>
-      <p class="hero-value">${formatBD(d.expected_cash_with_worker)}</p>
+    ${ownerDashboardStats(d)}
+
+    ${false ? heroCashBlock(d, {
+      totalKey: 'expected_cash_with_worker',
+      label: 'Total Cash With Worker',
+      sub: 'Opening + sales − expenses − taken = total now',
+      heroClass: 'owner',
+    }) : ''}
+
+    ${cashBreakdown(d, 'Cash With Worker Now', 'expected_cash_with_worker', { baseLabel: 'Last Actual Closing' })}
+
+    <div class="section-title">Quick Actions</div>
+    <div class="action-grid owner-actions">
+      <button class="action-btn" data-action="owner-took-cash">
+        <span class="action-icon">BD</span><span>Owner Took Cash</span>
+      </button>
+      <button class="action-btn" data-action="owner-added-cash">
+        <span class="action-icon">BD</span><span>Owner Added Cash</span>
+      </button>
+      <button class="action-btn" data-action="add-expense">
+        <span class="action-icon">-</span><span>Add Expense</span>
+      </button>
+      <button class="action-btn" data-action="add-cash-sale">
+        <span class="action-icon">+</span><span>Add Cash Sale</span>
+      </button>
+      <button class="action-btn" data-action="add-benefitpay-sale">
+        <span class="action-icon">BP</span><span>Add BenefitPay Sale</span>
+      </button>
+      <button class="action-btn" data-action="close-day">
+        <span class="action-icon">OK</span><span>Close Day</span>
+      </button>
+      <button class="action-btn" data-nav="owner-toys">
+        <span class="action-icon">T</span><span>Toys</span>
+      </button>
+      <button class="action-btn" data-nav="settings">
+        <span class="action-icon">SET</span><span>Settings</span>
+      </button>
+      <button class="action-btn hidden" id="install-app-btn">
+        <span class="action-icon">APP</span><span>Install App</span>
+      </button>
+    </div>
+    <div class="action-grid owner-actions hidden">
+      <button class="action-btn" data-nav="owner-cash">
+        <span class="action-icon">💸</span><span>Take / Add Cash</span>
+      </button>
+      <button class="action-btn" data-action="quick-take">
+        <span class="action-icon">⬇️</span><span>Quick Take Cash</span>
+      </button>
+      <button class="action-btn" data-nav="transactions">
+        <span class="action-icon">📋</span><span>Transactions</span>
+      </button>
+      <button class="action-btn" data-action="export">
+        <span class="action-icon">📤</span><span>Export CSV</span>
+      </button>
     </div>
 
-    <div class="section-title">Today</div>
+    <div class="hidden">
+    <div class="section-title">Other Today</div>
     <div class="stat-grid">
-      ${statCard('Cash Sales', formatBD(d.today_cash_sales))}
-      ${statCard('BenefitPay', formatBD(d.today_benefitpay))}
-      ${statCard('Expenses', formatBD(d.today_expenses))}
+      ${statCard('BenefitPay (to you)', formatBD(d.today_benefitpay))}
+      ${statCard('Expenses Today', formatBD(d.today_expenses))}
+      ${statCard('Taken Today', formatBD(d.cash_taken_today || 0))}
+    </div>
     </div>
 
+    <div class="hidden">
     <div class="section-title">Last Closing</div>
     <div class="stat-grid two-col">
       ${statCard('Actual Counted', d.last_actual_closing != null ? formatBD(d.last_actual_closing) : '—')}
       ${statCard('Difference', d.last_closing_difference != null ? formatBD(d.last_closing_difference) : '—')}
     </div>
+    </div>
 
+    <div class="section-title">Reports</div>
+    <div class="action-grid owner-actions secondary-actions">
+      <button class="action-btn" data-nav="transactions">
+        <span class="action-icon">ðŸ“‹</span><span>Transactions</span>
+      </button>
+      <button class="action-btn" data-action="export">
+        <span class="action-icon">ðŸ“¤</span><span>Export CSV</span>
+      </button>
+    </div>
+
+    <div class="hidden">
     <div class="section-title">This Month</div>
     <div class="stat-grid">
       ${statCard('Cash Sales', formatBD(d.month_cash_sales))}
@@ -88,14 +180,6 @@ async function renderOwnerDashboard(d) {
       ${statCard('Expenses', formatBD(d.month_expenses))}
       ${statCard('Toys Saved', formatBD(d.toys_month_balance), { highlight: true })}
     </div>
-
-    <div class="action-grid owner-actions">
-      <button class="action-btn" data-nav="transactions">
-        <span class="action-icon">📋</span><span>Transactions</span>
-      </button>
-      <button class="action-btn" data-action="export">
-        <span class="action-icon">📤</span><span>Export CSV</span>
-      </button>
     </div>
   `, { bottomNav: ownerBottomNav('owner-dashboard') });
 }
@@ -106,7 +190,8 @@ function renderOwnerCash() {
     <div class="cash-actions">
       <form id="cash-taken-form" class="form-card">
         <h3>Cash Taken From Worker</h3>
-        ${amountInput('taken-amount', 'Amount')}
+        <p class="setting-desc">When you take money from the worker, enter it here. Total cash will go down.</p>
+        ${amountInput('taken-amount', 'Amount You Took')}
         ${noteInput('taken-note')}
         <button type="submit" class="btn btn-warning btn-full">Record Cash Taken</button>
       </form>
@@ -115,6 +200,13 @@ function renderOwnerCash() {
         ${amountInput('added-amount', 'Amount')}
         ${noteInput('added-note')}
         <button type="submit" class="btn btn-success btn-full">Record Cash Added</button>
+      </form>
+      <form id="opening-cash-form" class="form-card">
+        <h3>Set Starting Cash Today</h3>
+        <p class="setting-desc">If worker already had cash before today (no close day done), set it here once.</p>
+        ${amountInput('opening-amount', 'Cash From Before Today')}
+        ${noteInput('opening-note')}
+        <button type="submit" class="btn btn-secondary btn-full">Set Opening Cash</button>
       </form>
     </div>
   `, { bottomNav: ownerBottomNav('owner-cash') });
@@ -141,6 +233,14 @@ async function renderTransactions(data) {
         <input type="checkbox" id="filter-test" ${filters.test_only ? 'checked' : ''}> Test only
       </label>
     </div>
+    <div class="bulk-bar hidden" id="bulk-bar">
+      <span id="bulk-count">0 selected</span>
+      <button class="btn-sm btn-warning" id="bulk-void-btn">Void Selected</button>
+      <button class="btn-sm btn-danger" id="bulk-delete-btn">Delete Selected</button>
+    </div>
+    <label class="select-all-row">
+      <input type="checkbox" id="select-all-tx"> Select all on screen
+    </label>
     <div class="tx-list" id="tx-list">
       ${transactions.length === 0
         ? '<p class="empty-msg">No transactions found</p>'
@@ -157,6 +257,7 @@ function renderTxRow(tx) {
 
   return `
     <div class="tx-row ${tx.is_test ? 'test' : ''} ${isVoided ? 'voided' : ''}" data-id="${tx.id}">
+      ${tx.status === 'active' ? `<label class="tx-check"><input type="checkbox" class="tx-select" value="${tx.id}"></label>` : ''}
       <div class="tx-main">
         <span class="tx-type">${TYPE_LABELS[tx.type] || tx.type}</span>
         <span class="tx-amount ${amountClass}">${isVoided ? '~~' : ''}${sign}${formatBD(tx.amount)}${isVoided ? '~~' : ''}</span>
@@ -235,31 +336,155 @@ async function renderOwnerToys(d) {
 
 async function renderSettings(d) {
   return screenLayout(`
-    ${backHeader('Settings')}
+    ${backHeader('Admin Settings')}
     <div class="settings-list">
-      <div class="setting-row">
-        <div>
-          <strong>Test Mode</strong>
-          <p class="setting-desc">New entries marked as test data</p>
-        </div>
-        <label class="toggle">
-          <input type="checkbox" id="test-mode-toggle" ${d.test_mode ? 'checked' : ''}>
-          <span class="toggle-slider"></span>
-        </label>
+
+      <div class="setting-section">
+        <h3>📱 Install App (Owner Only)</h3>
+        <p class="setting-desc">Add to your phone home screen. Worker uses the link in browser only.</p>
+        <button class="btn btn-primary btn-full hidden" id="install-app-btn">Install on My Phone</button>
+        <p class="form-hint">If button hidden: Chrome menu → Add to Home screen</p>
       </div>
 
-      <button class="btn btn-warning btn-full" id="delete-test-btn">Delete All Test Data</button>
-      <button class="btn btn-secondary btn-full" id="export-btn">Export CSV Report</button>
+      <div class="setting-section">
+        <h3>🔐 PIN & Access Control</h3>
+        <form id="pin-form" class="form-card">
+          <div class="form-group">
+            <label>New Worker PIN</label>
+            <input type="password" id="new-worker-pin" inputmode="numeric" placeholder="Leave blank to keep current">
+          </div>
+          <div class="form-group">
+            <label>New Owner PIN</label>
+            <input type="password" id="new-owner-pin" inputmode="numeric" placeholder="Leave blank to keep current">
+          </div>
+          <div class="form-group">
+            <label>Current Owner PIN (required to change owner PIN)</label>
+            <input type="password" id="current-owner-pin" inputmode="numeric">
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Save PIN Changes</button>
+        </form>
+        <div class="setting-row">
+          <div>
+            <strong>Worker Can Login</strong>
+            <p class="setting-desc">Turn off to block worker access</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="worker-login-toggle" ${d.worker_login_enabled !== false ? 'checked' : ''}>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-section">
+        <h3>⚙️ App Settings</h3>
+        <div class="setting-row">
+          <div>
+            <strong>Test Mode</strong>
+            <p class="setting-desc">New entries marked as test data</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="test-mode-toggle" ${d.test_mode ? 'checked' : ''}>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <button class="btn btn-warning btn-full" id="delete-test-btn">Delete All Test Data</button>
+        <button class="btn btn-secondary btn-full" id="export-btn">Export CSV Report</button>
+      </div>
 
       <div class="danger-zone">
         <h3>⚠️ Danger Zone</h3>
-        <p>Resetting the app requires manual database cleanup. Contact your developer.</p>
+        <p>Use Transactions → select multiple → bulk void or delete.</p>
       </div>
     </div>
   `, { bottomNav: ownerBottomNav('settings') });
 }
 
 // ─── Screen bindings ─────────────────────────────────────────────────────────
+
+async function renderAdminSettings(d) {
+  const workerAccessEnabled = d.worker_access_enabled !== false;
+  return screenLayout(`
+    ${backHeader('Admin Settings')}
+    <div class="settings-list admin-settings">
+
+      <section class="admin-card">
+        <div class="admin-card-head">
+          <span class="admin-kicker">Security</span>
+          <h3>PIN Management</h3>
+          <p class="setting-desc">PINs are checked and changed by the backend. They are never stored in public frontend JavaScript.</p>
+        </div>
+        <form id="pin-form">
+          <div class="form-group">
+            <label>New Owner PIN</label>
+            <input type="password" id="new-owner-pin" inputmode="numeric" placeholder="Leave blank to keep current">
+          </div>
+          <div class="form-group">
+            <label>Current Owner PIN</label>
+            <input type="password" id="current-owner-pin" inputmode="numeric" placeholder="Required to change owner PIN">
+          </div>
+          <div class="form-group">
+            <label>New Worker PIN</label>
+            <input type="password" id="new-worker-pin" inputmode="numeric" placeholder="Leave blank to keep current">
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Save PIN Changes</button>
+        </form>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-head">
+          <span class="admin-kicker">Access</span>
+          <h3>Worker Access</h3>
+          <p class="setting-desc">Disable worker login temporarily without affecting owner access.</p>
+        </div>
+        <div class="setting-row">
+          <div>
+            <strong>Worker Access</strong>
+            <p class="setting-desc">${workerAccessEnabled ? 'Worker can currently login.' : 'Worker login is currently disabled.'}</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="worker-access-toggle" ${workerAccessEnabled ? 'checked' : ''}>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-head">
+          <span class="admin-kicker">Testing</span>
+          <h3>Test Mode</h3>
+          <p class="setting-desc">When test mode is on, new records are marked as test data and show a TEST badge.</p>
+        </div>
+        <div class="setting-row">
+          <div>
+            <strong>Test Mode</strong>
+            <p class="setting-desc">${d.test_mode ? 'New records are currently marked as test.' : 'New records are currently live records.'}</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="test-mode-toggle" ${d.test_mode ? 'checked' : ''}>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-head">
+          <span class="admin-kicker">Reports</span>
+          <h3>Data Tools</h3>
+          <p class="setting-desc">Export transactions or remove all test records when testing is complete.</p>
+        </div>
+        <button class="btn btn-warning btn-full" id="delete-test-btn">Delete All Test Data</button>
+        <button class="btn btn-secondary btn-full" id="export-btn">Export CSV Report</button>
+        <button class="btn btn-primary btn-full hidden" id="install-app-btn">Install on My Phone</button>
+        <p class="form-hint">Install option appears when supported by the browser.</p>
+      </section>
+
+      <div class="danger-zone">
+        <h3>Owner Only</h3>
+        <p>These settings require an owner session. Worker accounts cannot open or change admin settings.</p>
+      </div>
+    </div>
+  `, { bottomNav: ownerBottomNav('settings') });
+}
 
 export function ownerScreens(screen, data) {
   switch (screen) {
@@ -272,17 +497,118 @@ export function ownerScreens(screen, data) {
   }
 }
 
+function readAmount(message) {
+  const amountStr = prompt(message);
+  if (!amountStr) return null;
+  const amount = parseFloat(amountStr);
+  if (!amount || amount <= 0) {
+    showToast('Enter a valid amount', 'error');
+    return null;
+  }
+  return amount;
+}
+
+async function saveQuickEntry(action, successMessage) {
+  try {
+    showLoading(true);
+    await action();
+    showToast(successMessage, 'success');
+    loadOwnerDashboard();
+  } catch (err) {
+    showToast(err.message, 'error');
+  } finally {
+    showLoading(false);
+  }
+}
+
+function bindOwnerQuickActions() {
+  document.querySelector('[data-action="owner-took-cash"]')?.addEventListener('click', async () => {
+    const amount = readAmount('How much cash did owner take from the worker? (BD)');
+    if (amount == null) return;
+    const note = prompt('Note (optional):') || undefined;
+    await saveQuickEntry(() => api.cashTakenByOwner(amount, note), `Recorded: owner took ${formatBD(amount)}`);
+  });
+
+  document.querySelector('[data-action="owner-added-cash"]')?.addEventListener('click', async () => {
+    const amount = readAmount('How much cash did owner add to the worker? (BD)');
+    if (amount == null) return;
+    const note = prompt('Note (optional):') || undefined;
+    await saveQuickEntry(() => api.cashAddedToWorker(amount, note), `Recorded: owner added ${formatBD(amount)}`);
+  });
+
+  document.querySelector('[data-action="add-expense"]')?.addEventListener('click', async () => {
+    const amount = readAmount('Expense amount? (BD)');
+    if (amount == null) return;
+    const category = prompt(`Category:\n${EXPENSE_CATEGORIES.join('\n')}`) || 'Other';
+    const note = prompt('Note (optional):') || undefined;
+    await saveQuickEntry(
+      () => api.createTransaction({ type: 'expense', amount, category, note }),
+      `Expense saved: ${formatBD(amount)}`,
+    );
+  });
+
+  document.querySelector('[data-action="add-cash-sale"]')?.addEventListener('click', async () => {
+    const amount = readAmount('Cash sale amount? (BD)');
+    if (amount == null) return;
+    const note = prompt('Note (optional):') || undefined;
+    await saveQuickEntry(
+      () => api.createTransaction({ type: 'cash_sale', amount, note }),
+      `Cash sale saved: ${formatBD(amount)}`,
+    );
+  });
+
+  document.querySelector('[data-action="add-benefitpay-sale"]')?.addEventListener('click', async () => {
+    const amount = readAmount('BenefitPay sale amount? (BD)');
+    if (amount == null) return;
+    const note = prompt('Note (optional):') || undefined;
+    await saveQuickEntry(
+      () => api.createTransaction({ type: 'benefitpay_sale', amount, note }),
+      `BenefitPay sale saved: ${formatBD(amount)}`,
+    );
+  });
+
+  document.querySelector('[data-action="close-day"]')?.addEventListener('click', async () => {
+    const actual_cash = readAmount('Actual cash counted with worker now? (BD)');
+    if (actual_cash == null) return;
+    const note = prompt('Closing note (optional):') || undefined;
+    if (!confirm(`Close day with actual cash ${formatBD(actual_cash)}?`)) return;
+    await saveQuickEntry(
+      () => api.closeDay({ actual_cash, note }),
+      `Day closed at ${formatBD(actual_cash)}`,
+    );
+  });
+}
+
 async function loadOwnerDashboard() {
   try {
     const d = await api.getOwnerDashboard();
     const html = await renderOwnerDashboard(d);
     document.getElementById('app').innerHTML = html;
     bindOwnerNav('owner-dashboard');
-    document.querySelector('[data-action="export"]')?.addEventListener('click', async () => {
+    bindOwnerQuickActions();
+    bindInstallButton('install-app-btn');
+    document.querySelectorAll('[data-action="export"]').forEach(btn => btn.addEventListener('click', async () => {
       try {
         showLoading(true);
         await api.exportCsv(d.test_mode);
         showToast('Export downloaded', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        showLoading(false);
+      }
+    }));
+    document.querySelector('[data-action="quick-take"]')?.addEventListener('click', async () => {
+      const amountStr = prompt('How much cash did you take from the worker? (BD)');
+      if (!amountStr) return;
+      const amount = parseFloat(amountStr);
+      if (!amount || amount <= 0) return showToast('Enter a valid amount', 'error');
+      const note = prompt('Note (optional):') || undefined;
+      try {
+        showLoading(true);
+        await api.cashTakenByOwner(amount, note);
+        showToast(`Recorded: took ${formatBD(amount)}`, 'success');
+        loadOwnerDashboard();
       } catch (err) {
         showToast(err.message, 'error');
       } finally {
@@ -326,6 +652,8 @@ async function loadTransactions(filters) {
       loadTransactions({ ...filters, test_only: e.target.checked });
     });
 
+    bindBulkActions(filters, res.transactions);
+
     document.getElementById('tx-list').addEventListener('click', async (e) => {
       const btn = e.target.closest('[data-action]');
       if (!btn) return;
@@ -367,6 +695,65 @@ async function loadTransactions(filters) {
   }
 }
 
+function bindBulkActions(filters, transactions) {
+  const bulkBar = document.getElementById('bulk-bar');
+  const bulkCount = document.getElementById('bulk-count');
+  const selectAll = document.getElementById('select-all-tx');
+
+  function updateBulkBar() {
+    const selected = [...document.querySelectorAll('.tx-select:checked')].map(c => parseInt(c.value, 10));
+    if (selected.length > 0) {
+      bulkBar.classList.remove('hidden');
+      bulkCount.textContent = `${selected.length} selected`;
+    } else {
+      bulkBar.classList.add('hidden');
+    }
+    return selected;
+  }
+
+  document.querySelectorAll('.tx-select').forEach(cb => {
+    cb.addEventListener('change', updateBulkBar);
+  });
+
+  selectAll?.addEventListener('change', (e) => {
+    document.querySelectorAll('.tx-select').forEach(cb => { cb.checked = e.target.checked; });
+    updateBulkBar();
+  });
+
+  document.getElementById('bulk-void-btn')?.addEventListener('click', async () => {
+    const ids = [...document.querySelectorAll('.tx-select:checked')].map(c => parseInt(c.value, 10));
+    if (!ids.length) return;
+    const reason = prompt(`Void ${ids.length} entries. Reason (required):`);
+    if (!reason) return;
+    try {
+      showLoading(true);
+      const res = await api.bulkVoidTransactions(ids, reason);
+      showToast(`${res.voided} entries voided`, 'success');
+      loadTransactions(filters);
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      showLoading(false);
+    }
+  });
+
+  document.getElementById('bulk-delete-btn')?.addEventListener('click', async () => {
+    const ids = [...document.querySelectorAll('.tx-select:checked')].map(c => parseInt(c.value, 10));
+    if (!ids.length) return;
+    if (!confirm(`Delete ${ids.length} entries? Test entries are removed permanently.`)) return;
+    try {
+      showLoading(true);
+      const res = await api.bulkDeleteTransactions(ids);
+      showToast(`${res.deleted} entries deleted`, 'success');
+      loadTransactions(filters);
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      showLoading(false);
+    }
+  });
+}
+
 function bindOwnerCash() {
   document.getElementById('cash-taken-form').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -392,6 +779,23 @@ function bindOwnerCash() {
       showLoading(true);
       await api.cashAddedToWorker(amount, note || undefined);
       showToast('Cash added recorded', 'success');
+      e.target.reset();
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      showLoading(false);
+    }
+  });
+
+  document.getElementById('opening-cash-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const amount = parseFloat(document.getElementById('opening-amount').value);
+    const note = document.getElementById('opening-note').value.trim();
+    if (!confirm(`Set starting cash today to ${formatBD(amount)}? Do this once at start of day.`)) return;
+    try {
+      showLoading(true);
+      await api.setOpeningCash(amount, note || undefined);
+      showToast('Opening cash set', 'success');
       e.target.reset();
     } catch (err) {
       showToast(err.message, 'error');
@@ -429,8 +833,9 @@ async function loadOwnerToys() {
 async function loadSettings() {
   try {
     const d = await api.getSettings();
-    document.getElementById('app').innerHTML = await renderSettings(d);
+    document.getElementById('app').innerHTML = await renderAdminSettings(d);
     bindOwnerNav('settings');
+    bindInstallButton('install-app-btn');
 
     document.getElementById('test-mode-toggle').addEventListener('change', async (e) => {
       try {
@@ -463,6 +868,45 @@ async function loadSettings() {
         showLoading(true);
         await api.exportCsv(true);
         showToast('Export downloaded', 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    document.getElementById('worker-access-toggle')?.addEventListener('change', async (e) => {
+      try {
+        showLoading(true);
+        await api.updateSettings({ worker_access_enabled: e.target.checked });
+        showToast(`Worker access ${e.target.checked ? 'enabled' : 'disabled'}`, 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+        e.target.checked = !e.target.checked;
+      } finally {
+        showLoading(false);
+      }
+    });
+
+    document.getElementById('pin-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const new_worker_pin = document.getElementById('new-worker-pin').value.trim();
+      const new_owner_pin = document.getElementById('new-owner-pin').value.trim();
+      const current_owner_pin = document.getElementById('current-owner-pin').value.trim();
+      const payload = {};
+      if (new_worker_pin) payload.new_worker_pin = new_worker_pin;
+      if (new_owner_pin) {
+        payload.new_owner_pin = new_owner_pin;
+        payload.current_owner_pin = current_owner_pin;
+      }
+      if (!payload.new_worker_pin && !payload.new_owner_pin) {
+        return showToast('Enter a new PIN to save', 'error');
+      }
+      try {
+        showLoading(true);
+        await api.updateSettings(payload);
+        showToast('PIN updated', 'success');
+        e.target.reset();
       } catch (err) {
         showToast(err.message, 'error');
       } finally {

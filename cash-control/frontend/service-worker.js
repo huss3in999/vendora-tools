@@ -3,8 +3,21 @@
  * Caches app shell for fast offline loading. API calls always go to network.
  */
 
-const CACHE_NAME = 'cash-control-v1';
-const SHELL = ['/', '/index.html', '/styles.css', '/app.js', '/api.js', '/worker.js', '/owner.js', '/manifest.json'];
+const CACHE_NAME = 'cash-control-v5';
+const SHELL = [
+  '/',
+  '/index.html',
+  '/styles.css?v=5',
+  '/app.js',
+  '/api.js',
+  '/worker.js',
+  '/owner.js',
+  '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/apple-touch-icon.png',
+  '/robots.txt',
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -28,7 +41,23 @@ self.addEventListener('fetch', (event) => {
   // API requests: network only
   if (url.pathname.startsWith('/api/')) return;
 
-  // App shell: cache first, then network
+  if (event.request.method !== 'GET') return;
+
+  // Navigations: network first, cached app shell if offline.
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put('/index.html', clone));
+          return response;
+        })
+        .catch(() => caches.match('/index.html')),
+    );
+    return;
+  }
+
+  // Static app shell: cache first, then network, then offline shell fallback.
   event.respondWith(
     caches.match(event.request).then((cached) =>
       cached || fetch(event.request).then((response) => {
@@ -37,7 +66,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }
         return response;
-      }),
+      }).catch(() => caches.match('/index.html')),
     ),
   );
 });
