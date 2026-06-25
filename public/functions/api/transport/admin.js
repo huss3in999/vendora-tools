@@ -951,10 +951,75 @@ async function getTrackingSummary(env, request) {
       SUM(CASE WHEN event_name = 'whatsapp_click' THEN 1 ELSE 0 END) AS whatsapp_clicks,
       SUM(CASE WHEN event_name = 'phone_click' THEN 1 ELSE 0 END) AS phone_clicks,
       SUM(CASE WHEN event_name = 'ai_chat_open' THEN 1 ELSE 0 END) AS ai_chat_opens,
-      SUM(CASE WHEN event_name = 'ai_chat_confirmed' THEN 1 ELSE 0 END) AS ai_chat_confirmations
+      SUM(CASE WHEN event_name = 'ai_chat_confirmed' THEN 1 ELSE 0 END) AS ai_chat_confirmations,
+      SUM(CASE WHEN event_name = 'gcc_guide_page_view' AND language = 'ar' THEN 1 ELSE 0 END) AS gcc_ar_views,
+      SUM(CASE WHEN event_name = 'gcc_guide_page_view' AND language = 'en' THEN 1 ELSE 0 END) AS gcc_en_views,
+      SUM(CASE WHEN event_name = 'gcc_guide_page_view' THEN 1 ELSE 0 END) AS gcc_total_views,
+      SUM(CASE WHEN event_name = 'gcc_guide_planner_start' THEN 1 ELSE 0 END) AS gcc_planner_starts,
+      SUM(CASE WHEN event_name = 'gcc_guide_quote_generated' THEN 1 ELSE 0 END) AS gcc_quotes_generated,
+      SUM(CASE WHEN event_name = 'gcc_guide_whatsapp_click' THEN 1 ELSE 0 END) AS gcc_whatsapp_clicks,
+      SUM(CASE WHEN event_name = 'gcc_guide_airport_route_detected' THEN 1 ELSE 0 END) AS gcc_airport_routes,
+      SUM(CASE WHEN event_name = 'gcc_guide_custom_location_used' THEN 1 ELSE 0 END) AS gcc_custom_locations
     FROM analytics_events
     WHERE created_at >= ${since}
   `).first();
+
+  const [
+    topPickupCountryRow,
+    topDestCountryRow,
+    topPickupLocRow,
+    topDestLocRow,
+    topPurposeRow,
+    { results: recentGccEvents }
+  ] = await Promise.all([
+    env.TRANSPORT_DB.prepare(`
+      SELECT json_extract(raw_payload, '$.pickup_country') AS label, COUNT(*) AS count
+      FROM analytics_events
+      WHERE event_name = 'gcc_guide_whatsapp_click' AND created_at >= ${since}
+        AND json_extract(raw_payload, '$.pickup_country') IS NOT NULL
+        AND json_extract(raw_payload, '$.pickup_country') <> ''
+      GROUP BY label ORDER BY count DESC LIMIT 1
+    `).first(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT json_extract(raw_payload, '$.destination_country') AS label, COUNT(*) AS count
+      FROM analytics_events
+      WHERE event_name = 'gcc_guide_whatsapp_click' AND created_at >= ${since}
+        AND json_extract(raw_payload, '$.destination_country') IS NOT NULL
+        AND json_extract(raw_payload, '$.destination_country') <> ''
+      GROUP BY label ORDER BY count DESC LIMIT 1
+    `).first(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT json_extract(raw_payload, '$.pickup_location') AS label, COUNT(*) AS count
+      FROM analytics_events
+      WHERE event_name = 'gcc_guide_whatsapp_click' AND created_at >= ${since}
+        AND json_extract(raw_payload, '$.pickup_location') IS NOT NULL
+        AND json_extract(raw_payload, '$.pickup_location') <> ''
+      GROUP BY label ORDER BY count DESC LIMIT 1
+    `).first(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT json_extract(raw_payload, '$.destination_location') AS label, COUNT(*) AS count
+      FROM analytics_events
+      WHERE event_name = 'gcc_guide_whatsapp_click' AND created_at >= ${since}
+        AND json_extract(raw_payload, '$.destination_location') IS NOT NULL
+        AND json_extract(raw_payload, '$.destination_location') <> ''
+      GROUP BY label ORDER BY count DESC LIMIT 1
+    `).first(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT json_extract(raw_payload, '$.purpose') AS label, COUNT(*) AS count
+      FROM analytics_events
+      WHERE event_name = 'gcc_guide_whatsapp_click' AND created_at >= ${since}
+        AND json_extract(raw_payload, '$.purpose') IS NOT NULL
+        AND json_extract(raw_payload, '$.purpose') <> ''
+      GROUP BY label ORDER BY count DESC LIMIT 1
+    `).first(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT event_id, visitor_id, session_id, created_at, page_path, event_name, event_label, button_text, ip_city, ip_country
+      FROM analytics_events
+      WHERE event_name LIKE 'gcc_guide_%' AND created_at >= ${since}
+      ORDER BY created_at DESC
+      LIMIT 30
+    `).all()
+  ]);
 
   const { results: topPages } = await env.TRANSPORT_DB.prepare(`
     SELECT page_path AS label, COUNT(*) AS count
@@ -986,6 +1051,22 @@ async function getTrackingSummary(env, request) {
     top_pages: topPages || [],
     top_referrers: topReferrers || [],
     recent_events: recentEvents || [],
+    gcc_summary: {
+      ar_views: totals?.gcc_ar_views || 0,
+      en_views: totals?.gcc_en_views || 0,
+      total_views: totals?.gcc_total_views || 0,
+      planner_starts: totals?.gcc_planner_starts || 0,
+      quotes_generated: totals?.gcc_quotes_generated || 0,
+      whatsapp_clicks: totals?.gcc_whatsapp_clicks || 0,
+      airport_routes: totals?.gcc_airport_routes || 0,
+      custom_locations: totals?.gcc_custom_locations || 0,
+      top_pickup_country: topPickupCountryRow?.label || '-',
+      top_destination_country: topDestCountryRow?.label || '-',
+      top_pickup_location: topPickupLocRow?.label || '-',
+      top_destination_location: topDestLocRow?.label || '-',
+      top_purpose: topPurposeRow?.label || '-',
+      recent_events: recentGccEvents || []
+    }
   };
 }
 

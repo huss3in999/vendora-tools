@@ -172,7 +172,7 @@
       session_id: getSessionId(),
       created_at: new Date().toISOString(),
       page_url: window.location.href.split('#')[0],
-      page_path: window.location.pathname || '/',
+      page_path: (window.location.pathname || '/').replace(/\/index\.html$/, '/'),
       referrer: document.referrer || '',
       utm_source: getUtmParam('utm_source'),
       utm_medium: getUtmParam('utm_medium'),
@@ -194,6 +194,13 @@
       timeOnPageMs: safeParams.timeOnPageMs || 0,
       scrollDepthPercent: safeParams.scrollDepthPercent || 0
     };
+
+    // Merge all extra custom properties from safeParams
+    for (var key in safeParams) {
+      if (safeParams.hasOwnProperty(key) && !payload.hasOwnProperty(key)) {
+        payload[key] = safeParams[key];
+      }
+    }
 
     // Forward to GA4 (Gtag mapping)
     if (typeof window.gtag === 'function') {
@@ -273,7 +280,7 @@
     var params = {
       content_group: category,
       page_category: category,
-      page_path: window.location.pathname || '/',
+      page_path: (window.location.pathname || '/').replace(/\/index\.html$/, '/'),
       page_url: window.location.href.split('#')[0],
       language: (document.documentElement.getAttribute('lang') || 'en').toLowerCase(),
     };

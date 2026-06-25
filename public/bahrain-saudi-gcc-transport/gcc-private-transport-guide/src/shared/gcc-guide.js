@@ -430,8 +430,204 @@
     updateConditionalFields(form);
   }
 
+  const lang = document.documentElement.lang.slice(0, 2) || "en";
+
+  // --- TRACKING CODE START ---
+  function getPlannerData(formEl) {
+    let pickupVal = value(formEl, "pickupLocation");
+    if (pickupVal === "other") {
+      pickupVal = value(formEl, "pickupCustom") || "";
+    }
+    let destVal = value(formEl, "destinationLocation");
+    if (destVal === "other") {
+      destVal = value(formEl, "destinationCustom") || "";
+    }
+    
+    const pickupLocSelect = formEl.querySelector('[name="pickupLocation"]');
+    const destLocSelect = formEl.querySelector('[name="destinationLocation"]');
+    const pickupOption = (pickupLocSelect && pickupLocSelect.selectedIndex >= 0) ? pickupLocSelect.options[pickupLocSelect.selectedIndex] : null;
+    const destOption = (destLocSelect && destLocSelect.selectedIndex >= 0) ? destLocSelect.options[destLocSelect.selectedIndex] : null;
+    const isPickupAirport = pickupOption && pickupOption.dataset.airport === "true";
+    const isDestAirport = destOption && destOption.dataset.airport === "true";
+    
+    const customUsed = (value(formEl, "pickupLocation") === "other" || value(formEl, "destinationLocation") === "other");
+
+    return {
+      language: lang,
+      page: 'gcc_private_transport_guide',
+      pickup_country: value(formEl, "pickupCountry") || "",
+      pickup_location: pickupVal || "",
+      destination_country: value(formEl, "destinationCountry") || "",
+      destination_location: destVal || "",
+      trip_type: value(formEl, "tripType") || "",
+      purpose: value(formEl, "purpose") || "",
+      is_airport_route: (isPickupAirport || isDestAirport) ? 1 : 0,
+      custom_location_used: customUsed ? 1 : 0,
+      date: value(formEl, "date") || "",
+      time: value(formEl, "time") || "",
+      passengers: value(formEl, "passengers") || "",
+      luggage: value(formEl, "luggage") || "",
+      notes: value(formEl, "notes") || "",
+      flight_number: value(formEl, "flightNumber") || "",
+      timestamp: new Date().toISOString()
+    };
+  }
+
+  function getTrackingPayload(eventName, extra = {}) {
+    const formEl = document.querySelector("[data-route-planner]");
+    const plannerDetails = formEl ? getPlannerData(formEl) : {
+      language: lang,
+      page: 'gcc_private_transport_guide',
+      timestamp: new Date().toISOString()
+    };
+    return Object.assign({}, plannerDetails, extra);
+  }
+
+  function fireTelemetry(eventName, extra = {}) {
+    const payload = getTrackingPayload(eventName, extra);
+    if (typeof window.vendoraTrackLocal === 'function') {
+      window.vendoraTrackLocal(eventName, payload);
+    }
+  }
+
+  function sendLeadEvent(serviceType, extra = {}) {
+    const utmSource = new URLSearchParams(window.location.search).get('utm_source') || '';
+    const utmMedium = new URLSearchParams(window.location.search).get('utm_medium') || '';
+    const utmCampaign = new URLSearchParams(window.location.search).get('utm_campaign') || '';
+    
+    const pagePath = window.location.pathname.replace(/\/index\.html$/, '/');
+    const pageUrl = window.location.href.split('#')[0];
+    
+    let deviceType = 'desktop';
+    const ua = navigator.userAgent || '';
+    if (/tablet|ipad|playbook|silk/i.test(ua)) deviceType = 'tablet';
+    else if (/mobile|iphone|ipod|android|blackberry|opera mini|iemobile/i.test(ua)) deviceType = 'mobile';
+
+    const visitorId = localStorage.getItem('__vendora_visitor_id') || 'unknown';
+    const sessionId = sessionStorage.getItem('__vendora_session_id') || 'unknown';
+
+    const payload = Object.assign({
+      timestamp: new Date().toISOString(),
+      routeSlug: 'gcc-private-transport-guide',
+      routeLabel: document.title || 'GCC Private Transport Guide',
+      pageUrl: pageUrl,
+      pagePath: pagePath,
+      pageTitle: document.title || '',
+      serviceType: serviceType,
+      language: lang,
+      deviceType: deviceType,
+      sessionId: sessionId,
+      visitorId: visitorId,
+      utmSource: utmSource,
+      utmMedium: utmMedium,
+      utmCampaign: utmCampaign,
+      referrer: document.referrer || '',
+      browserLanguage: navigator.language || '',
+      screenWidth: window.innerWidth,
+      screenHeight: window.innerHeight,
+      timeOnPageMs: 0
+    }, extra);
+
+    const body = JSON.stringify(payload);
+    
+    if (navigator.sendBeacon && serviceType !== 'pageview') {
+      const blob = new Blob([body], { type: 'application/json' });
+      navigator.sendBeacon('/api/transport/event', blob);
+    } else {
+      fetch('/api/transport/event', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: body,
+        keepalive: true
+      }).catch(err => {});
+    }
+  }
+
+  // Track initial page_view on load
+  window.addEventListener('load', function() {
+    fireTelemetry('gcc_guide_page_view');
+    sendLeadEvent('pageview');
+  });
+
+  // Track planner interactions
+  let plannerStarted = false;
+  function markPlannerStarted() {
+    if (!plannerStarted) {
+      plannerStarted = true;
+      fireTelemetry('gcc_guide_planner_start');
+    }
+  }
+
+  function handleQuoteGeneration() {
+    if (window.__VENDORA_QUOTE_TRACKED__) return;
+    window.__VENDORA_QUOTE_TRACKED__ = true;
+    setTimeout(() => { window.__VENDORA_QUOTE_TRACKED__ = false; }, 1000);
+    
+    fireTelemetry('gcc_guide_quote_generated');
+    fireTelemetry('gcc_guide_whatsapp_click', { click_location: 'planner' });
+    
+    const formEl = document.querySelector("[data-route-planner]");
+    if (formEl) {
+      const plannerData = getPlannerData(formEl);
+      sendLeadEvent('passenger_transport', Object.assign({
+        fromCountry: plannerData.pickup_country,
+        fromCity: plannerData.pickup_location,
+        toCountry: plannerData.destination_country,
+        toCity: plannerData.destination_location,
+        clickText: lang === "ar" ? "إرسال الطلب عبر واتساب" : "Send request on WhatsApp",
+        targetUrl: document.querySelector(formEl.dataset.whatsapp)?.href || ""
+      }, plannerData));
+    }
+  }
+
+  // Track static/floating WhatsApp clicks via delegation
+  document.addEventListener('click', function(e) {
+    const link = e.target.closest('a');
+    if (!link) return;
+    
+    const href = link.getAttribute('href') || '';
+    const isWa = href.indexOf('wa.me') !== -1 || link.classList.contains('floating-wa') || link.dataset.waStatic;
+    if (!isWa) return;
+    
+    // Determine click location
+    let clickLoc = 'unknown';
+    if (link.classList.contains('floating-wa')) {
+      clickLoc = 'floating button';
+    } else if (link.id === 'planner-whatsapp' || link.closest('#planner') || link.hasAttribute('data-planner-submit')) {
+      clickLoc = 'planner';
+    } else if (link.closest('.hero')) {
+      clickLoc = 'hero';
+    } else if (link.closest('footer') || link.closest('.footer')) {
+      clickLoc = 'final CTA';
+    } else if (link.closest('.route-card') || link.closest('.route-grid')) {
+      clickLoc = 'route card';
+    } else if (link.closest('#faq') || link.closest('.faq-group')) {
+      clickLoc = 'FAQ';
+    }
+    
+    // Fire click event (only for non-planner clicks; planner is handled by handleQuoteGeneration)
+    if (clickLoc !== 'planner') {
+      fireTelemetry('gcc_guide_whatsapp_click', { click_location: clickLoc });
+    }
+    
+    if (clickLoc === 'planner') {
+      handleQuoteGeneration();
+    } else {
+      const formEl = document.querySelector("[data-route-planner]");
+      const plannerData = formEl ? getPlannerData(formEl) : {};
+      sendLeadEvent('whatsapp_click', Object.assign({
+        fromCountry: plannerData.pickup_country || "",
+        fromCity: plannerData.pickup_location || "",
+        toCountry: plannerData.destination_country || "",
+        toCity: plannerData.destination_location || "",
+        clickText: link.textContent.trim(),
+        targetUrl: link.href || ""
+      }, plannerData));
+    }
+  });
+  // --- TRACKING CODE END ---
+
   function initForm(form) {
-    const lang = form.dataset.lang || "en";
     const db = locationsData[lang];
     const pickupCountrySelect = form.querySelector('[name="pickupCountry"]');
     const destCountrySelect = form.querySelector('[name="destinationCountry"]');
@@ -455,12 +651,14 @@
       pickupCountrySelect.addEventListener("change", () => {
         updateLocations(form, "pickup");
         updatePlanner(form);
+        fireTelemetry('gcc_guide_pickup_country_select', { pickup_country: pickupCountrySelect.value });
       });
     }
     if (destCountrySelect) {
       destCountrySelect.addEventListener("change", () => {
         updateLocations(form, "destination");
         updatePlanner(form);
+        fireTelemetry('gcc_guide_destination_country_select', { destination_country: destCountrySelect.value });
       });
     }
     
@@ -469,6 +667,18 @@
       pickupLocSelect.addEventListener("change", () => {
         updateConditionalFields(form);
         updatePlanner(form);
+        
+        const val = pickupLocSelect.value;
+        fireTelemetry('gcc_guide_pickup_location_select', { pickup_location: val === "other" ? value(form, "pickupCustom") : val });
+        
+        const opt = pickupLocSelect.options[pickupLocSelect.selectedIndex];
+        const isAirport = opt && opt.dataset.airport === "true";
+        if (isAirport) {
+          fireTelemetry('gcc_guide_airport_route_detected', { airport: val, role: 'pickup' });
+        }
+        if (val === "other") {
+          fireTelemetry('gcc_guide_custom_location_used', { role: 'pickup', custom_value: value(form, "pickupCustom") });
+        }
       });
     }
     const destLocSelect = form.querySelector('[name="destinationLocation"]');
@@ -476,12 +686,36 @@
       destLocSelect.addEventListener("change", () => {
         updateConditionalFields(form);
         updatePlanner(form);
+        
+        const val = destLocSelect.value;
+        fireTelemetry('gcc_guide_destination_location_select', { destination_location: val === "other" ? value(form, "destinationCustom") : val });
+        
+        const opt = destLocSelect.options[destLocSelect.selectedIndex];
+        const isAirport = opt && opt.dataset.airport === "true";
+        if (isAirport) {
+          fireTelemetry('gcc_guide_airport_route_detected', { airport: val, role: 'destination' });
+        }
+        if (val === "other") {
+          fireTelemetry('gcc_guide_custom_location_used', { role: 'destination', custom_value: value(form, "destinationCustom") });
+        }
+      });
+    }
+
+    const pickupCustomInput = form.querySelector('[name="pickupCustom"]');
+    if (pickupCustomInput) {
+      pickupCustomInput.addEventListener("change", () => {
+        fireTelemetry('gcc_guide_custom_location_used', { role: 'pickup', custom_value: pickupCustomInput.value.trim() });
+      });
+    }
+    const destCustomInput = form.querySelector('[name="destinationCustom"]');
+    if (destCustomInput) {
+      destCustomInput.addEventListener("change", () => {
+        fireTelemetry('gcc_guide_custom_location_used', { role: 'destination', custom_value: destCustomInput.value.trim() });
       });
     }
   }
 
   function updatePlanner(form) {
-    const lang = form.dataset.lang || document.documentElement.lang.slice(0, 2) || "en";
     const t = i18n[lang] || i18n.en;
     
     let pickupVal = value(form, "pickupLocation");
@@ -531,9 +765,12 @@
   document.querySelectorAll("[data-route-planner]").forEach((form) => {
     initForm(form);
     
-    // Add form-level delegation for change and input to ensure all fields trigger updates
-    form.addEventListener("input", () => updatePlanner(form));
+    form.addEventListener("input", () => {
+      markPlannerStarted();
+      updatePlanner(form);
+    });
     form.addEventListener("change", () => {
+      markPlannerStarted();
       updateConditionalFields(form);
       updatePlanner(form);
     });
@@ -541,6 +778,7 @@
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       updatePlanner(form);
+      handleQuoteGeneration();
       const link = document.querySelector(form.dataset.whatsapp);
       if (link && link.href) window.open(link.href, "_blank", "noopener");
     });

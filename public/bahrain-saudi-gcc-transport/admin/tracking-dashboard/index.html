@@ -350,6 +350,10 @@
     <header>
       <h1>GetVendora <span class="logo">Tracking Dashboard</span></h1>
       <div style="display: flex; gap: 10px; align-items: center;">
+        <select id="filter-select" class="input-field" style="margin-bottom:0; width:160px;" onchange="renderDashboard()">
+          <option value="all">All Pages / Sources</option>
+          <option value="gcc_private_transport_guide">GCC Guide Page Only</option>
+        </select>
         <select id="period-select" class="input-field" style="margin-bottom:0; width:130px;" onchange="loadData()">
           <option value="24 hours">Past 24 Hours</option>
           <option value="today">Today (Bahrain)</option>
@@ -384,6 +388,70 @@
       <div class="metric-card">
         <span class="metric-label">AI Bookings</span>
         <div id="m-bookings" class="metric-value" style="color:var(--success-color);">—</div>
+      </div>
+    </div>
+
+    <!-- GCC Guide Analytics Summary Card -->
+    <div class="card" id="gcc-guide-analytics-card" style="margin-top: 10px;">
+      <h2 class="card-title" style="color: var(--primary-hover); border-bottom-color: var(--primary-color);">GCC Private Transport Guide Performance</h2>
+      
+      <!-- Metrics Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin-bottom: 25px;">
+        <div style="background: rgba(0,0,0,0.25); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+          <span style="font-size: 10px; color: var(--text-muted); display: block; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Arabic Visits</span>
+          <strong id="gcc-ar-views" style="font-size: 20px; color: white;">0</strong>
+        </div>
+        <div style="background: rgba(0,0,0,0.25); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+          <span style="font-size: 10px; color: var(--text-muted); display: block; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">English Visits</span>
+          <strong id="gcc-en-views" style="font-size: 20px; color: white;">0</strong>
+        </div>
+        <div style="background: rgba(0,0,0,0.25); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+          <span style="font-size: 10px; color: var(--text-muted); display: block; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Total Visits</span>
+          <strong id="gcc-total-views" style="font-size: 20px; color: white;">0</strong>
+        </div>
+        <div style="background: rgba(0,0,0,0.25); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+          <span style="font-size: 10px; color: var(--text-muted); display: block; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Planner Started</span>
+          <strong id="gcc-planner-starts" style="font-size: 20px; color: white;">0</strong>
+        </div>
+        <div style="background: rgba(0,0,0,0.25); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+          <span style="font-size: 10px; color: var(--text-muted); display: block; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Quotes Generated</span>
+          <strong id="gcc-quotes-generated" style="font-size: 20px; color: var(--success-color);">0</strong>
+        </div>
+        <div style="background: rgba(0,0,0,0.25); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+          <span style="font-size: 10px; color: var(--text-muted); display: block; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">WA Clicks</span>
+          <strong id="gcc-whatsapp-clicks" style="font-size: 20px; color: var(--success-color);">0</strong>
+        </div>
+        <div style="background: rgba(0,0,0,0.25); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+          <span style="font-size: 10px; color: var(--text-muted); display: block; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Airport Routes</span>
+          <strong id="gcc-airport-routes" style="font-size: 20px; color: white;">0</strong>
+        </div>
+        <div style="background: rgba(0,0,0,0.25); padding: 12px; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+          <span style="font-size: 10px; color: var(--text-muted); display: block; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Custom Locs</span>
+          <strong id="gcc-custom-locations" style="font-size: 20px; color: white;">0</strong>
+        </div>
+      </div>
+
+      <!-- Top Selections -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 25px;">
+        <div style="background: rgba(0, 0, 0, 0.15); padding: 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03);">
+          <h3 style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; letter-spacing: 0.5px;">Top Selections</h3>
+          <div class="list-item"><span class="label">Top Pickup Country</span><span id="gcc-top-pickup-country" style="font-weight:600; color: white;">-</span></div>
+          <div class="list-item"><span class="label">Top Destination Country</span><span id="gcc-top-dest-country" style="font-weight:600; color: white;">-</span></div>
+          <div class="list-item"><span class="label">Top Travel Purpose</span><span id="gcc-top-purpose" style="font-weight:600; color: white;">-</span></div>
+        </div>
+        <div style="background: rgba(0, 0, 0, 0.15); padding: 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03);">
+          <h3 style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; letter-spacing: 0.5px;">Top Locations</h3>
+          <div class="list-item"><span class="label">Top Pickup Location</span><span id="gcc-top-pickup-loc" style="font-weight:600; color: white; text-align: right;">-</span></div>
+          <div class="list-item"><span class="label">Top Destination Location</span><span id="gcc-top-dest-loc" style="font-weight:600; color: white; text-align: right;">-</span></div>
+        </div>
+      </div>
+
+      <!-- Recent Guide Events -->
+      <div style="background: rgba(0, 0, 0, 0.15); padding: 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03);">
+        <h3 style="font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; letter-spacing: 0.5px;">Recent Guide Events</h3>
+        <div id="gcc-recent-events" style="max-height: 250px; overflow-y: auto;">
+          <p style="color: var(--text-muted); padding: 10px; font-size:12px;">No guide events logged yet.</p>
+        </div>
       </div>
     </div>
 
@@ -492,7 +560,8 @@
         })
         .then(res => {
           if (!res.ok) throw new Error(res.error || 'Server error');
-          renderDashboard(res);
+          window.dashboardData = res;
+          renderDashboard();
           if (callback) callback(null);
         })
         .catch(err => {
@@ -501,7 +570,10 @@
         });
     }
 
-    function renderDashboard(data) {
+    function renderDashboard() {
+      const data = window.dashboardData || {};
+      const filter = document.getElementById('filter-select').value;
+      
       // 1. Render Metrics
       const totals = data.totals || {};
       document.getElementById('m-visitors').textContent = totals.visitors || 0;
@@ -511,8 +583,51 @@
       document.getElementById('m-chat').textContent = totals.ai_chat_opens || 0;
       document.getElementById('m-bookings').textContent = totals.ai_chat_confirmations || 0;
 
-      // 2. Render Top Pages
-      const pages = data.top_pages || [];
+      // 2. Render GCC Guide Summary
+      const gccSummary = data.gcc_summary || {};
+      document.getElementById('gcc-ar-views').textContent = gccSummary.ar_views || 0;
+      document.getElementById('gcc-en-views').textContent = gccSummary.en_views || 0;
+      document.getElementById('gcc-total-views').textContent = gccSummary.total_views || 0;
+      document.getElementById('gcc-planner-starts').textContent = gccSummary.planner_starts || 0;
+      document.getElementById('gcc-quotes-generated').textContent = gccSummary.quotes_generated || 0;
+      document.getElementById('gcc-whatsapp-clicks').textContent = gccSummary.whatsapp_clicks || 0;
+      document.getElementById('gcc-airport-routes').textContent = gccSummary.airport_routes || 0;
+      document.getElementById('gcc-custom-locations').textContent = gccSummary.custom_locations || 0;
+
+      document.getElementById('gcc-top-pickup-country').textContent = gccSummary.top_pickup_country || '-';
+      document.getElementById('gcc-top-dest-country').textContent = gccSummary.top_destination_country || '-';
+      document.getElementById('gcc-top-purpose').textContent = gccSummary.top_purpose || '-';
+      document.getElementById('gcc-top-pickup-loc').textContent = gccSummary.top_pickup_location || '-';
+      document.getElementById('gcc-top-dest-loc').textContent = gccSummary.top_destination_location || '-';
+
+      const gccEvents = gccSummary.recent_events || [];
+      const gccEventsDiv = document.getElementById('gcc-recent-events');
+      if (gccEvents.length === 0) {
+        gccEventsDiv.innerHTML = '<p style="color: var(--text-muted); padding: 10px; font-size:12px; text-align: center;">No guide events logged yet.</p>';
+      } else {
+        gccEventsDiv.innerHTML = gccEvents.map(e => {
+          const date = new Date(e.created_at).toLocaleTimeString();
+          const name = e.event_name;
+          const detail = e.button_text || e.event_label || e.page_path;
+          const loc = [e.ip_city, e.ip_country].filter(Boolean).join(', ') || 'unknown location';
+          return `
+            <div class="event-row" onclick="viewSessionJourney('${e.session_id}')">
+              <div class="event-header">
+                <span class="event-name" style="color: var(--primary-hover);">${name}</span>
+                <span class="event-time">${date}</span>
+              </div>
+              <div class="event-meta" style="font-size:11px;">Details: <strong>${detail}</strong></div>
+              <div style="font-size:10px; color:var(--text-muted);">Session: ${e.session_id.slice(0, 8)}... · Location: ${loc}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // 3. Render Top Pages
+      let pages = data.top_pages || [];
+      if (filter === 'gcc_private_transport_guide') {
+        pages = pages.filter(p => p.label && p.label.indexOf('gcc-private-transport-guide') !== -1);
+      }
       const pagesDiv = document.getElementById('top-pages-list');
       if (pages.length === 0) {
         pagesDiv.innerHTML = '<p style="color: var(--text-muted); padding: 10px;">No page views tracked.</p>';
@@ -525,7 +640,7 @@
         `).join('');
       }
 
-      // 3. Render Top Referrers
+      // 4. Render Top Referrers
       const referrers = data.top_referrers || [];
       const refDiv = document.getElementById('top-referrers-list');
       if (referrers.length === 0) {
@@ -539,8 +654,11 @@
         `).join('');
       }
 
-      // 4. Render Event Stream
-      const events = data.recent_events || [];
+      // 5. Render Event Stream
+      let events = data.recent_events || [];
+      if (filter === 'gcc_private_transport_guide') {
+        events = events.filter(e => e.event_name.startsWith('gcc_guide_') || (e.page_path && e.page_path.indexOf('gcc-private-transport-guide') !== -1));
+      }
       const eventsDiv = document.getElementById('events-stream');
       if (events.length === 0) {
         eventsDiv.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">No events logged yet.</p>';

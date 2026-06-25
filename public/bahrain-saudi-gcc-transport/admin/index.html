@@ -2792,9 +2792,23 @@
         ['Origin Country', lead.cf_country ? countryLabel(lead.cf_country) : '-'],
         ['IP Address', lead.ip_address || '-'],
         ['Network User Agent', lead.user_agent || '-'],
-        ['Cloudflare Edge Ray ID', lead.request_ray_id || '-'],
-        ...visitorEnvironmentRows(payload)
+        ['Cloudflare Edge Ray ID', lead.request_ray_id || '-']
       ];
+      
+      if (payload.pickup_country) rows.push(['Selected Pickup Country', payload.pickup_country]);
+      if (payload.pickup_location) rows.push(['Selected Pickup Location', payload.pickup_location]);
+      if (payload.destination_country) rows.push(['Selected Destination Country', payload.destination_country]);
+      if (payload.destination_location) rows.push(['Selected Destination Location', payload.destination_location]);
+      if (payload.trip_type) rows.push(['Selected Trip Type', payload.trip_type]);
+      if (payload.purpose) rows.push(['Travel Purpose', payload.purpose]);
+      if (payload.passengers) rows.push(['Passengers', payload.passengers]);
+      if (payload.luggage) rows.push(['Luggage', payload.luggage]);
+      if (payload.flight_number || payload.flightNumber) rows.push(['Flight Number', payload.flight_number || payload.flightNumber]);
+      if (payload.date) rows.push(['Travel Date', payload.date]);
+      if (payload.time) rows.push(['Travel Time', payload.time]);
+      if (payload.notes) rows.push(['Custom Notes', payload.notes]);
+
+      rows.push(...visitorEnvironmentRows(payload));
       
       document.getElementById('leadDetails').innerHTML = rows.map(([label, value]) => `
         <div class="rounded-xl bg-slate-950/40 border border-slate-850 p-3.5">
