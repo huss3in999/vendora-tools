@@ -1,0 +1,27 @@
+# GCC Private Transport Guide Production Images
+
+Place approved production images for the GCC Private Transport Guide in this folder.
+
+Do not place generic taxi stock photos here. Each image must support trust, SEO, explanation, or conversion.
+
+## Required Images
+
+| Filename | Section placement | Recommended dimensions | Arabic ALT text | English ALT text | Caption if needed | Image type | Priority |
+|---|---|---:|---|---|---|---|---|
+| `gcc-private-transport-hero.webp` | Hero section | 1800x1200 | سيارة خاصة من GetVendora جاهزة لرحلة نقل بين دول الخليج | GetVendora private transport vehicle ready for a GCC cross-border journey | AR: تنسيق رحلات خاصة بين البحرين والسعودية ودول الخليج. EN: Private GCC transport coordinated for routes, airports, families and business trips. | real photo preferred / realistic generated acceptable | P1 |
+| `whatsapp-private-transport-booking.webp` | Route planner / WhatsApp quote section | 1200x800 | طلب سعر رحلة خاصة عبر واتساب مع GetVendora | WhatsApp quote request for GetVendora private transport | AR: أرسل تفاصيل الرحلة مرة واحدة ليتم تنسيق الطلب بوضوح. EN: Send the key trip details once so the journey can be coordinated clearly. | realistic generated or real staged photo | P1 |
+| `gcc-route-map-bahrain-saudi-qatar-kuwait-uae-oman-iraq.webp` | Country guide / route map section | 1600x1000 | خريطة مسارات التوصيل الخاص بين البحرين والسعودية وقطر والكويت والإمارات وعمان والعراق | GCC private transport route map covering Bahrain Saudi Arabia Qatar Kuwait UAE Oman and Iraq | AR: مسارات رئيسية من البحرين إلى السعودية وبقية دول الخليج والعراق. EN: Key private transport corridors from Bahrain to Saudi Arabia, the wider GCC and Iraq. | map illustration | P1 |
+| `king-fahd-causeway-private-transfer.webp` | Saudi and King Fahd Causeway section | 1400x900 | رحلة توصيل خاصة عبر جسر الملك فهد بين البحرين والسعودية | Private transport across King Fahd Causeway between Bahrain and Saudi Arabia | AR: خطط وقت الجسر والحدود قبل رحلات الخبر والدمام والرياض. EN: Plan Causeway and border timing before Khobar, Dammam and Riyadh trips. | real photo preferred / realistic generated acceptable | P1 |
+| `bahrain-airport-private-transfer.webp` | Airport transfers section | 1400x900 | توصيل خاص من وإلى مطار البحرين ودول الخليج | Private airport transfer pickup for Bahrain and GCC routes | AR: أرسل رقم الرحلة والوقت وعدد الشنط قبل طلب السعر. EN: Send flight number, timing and luggage count before requesting a quote. | real photo preferred / realistic generated acceptable | P1 |
+| `gcc-airport-transfer-luggage.webp` | Fleet and luggage / airport timing section | 1200x800 | تخطيط الشنط والحقائب قبل توصيل مطار خاص بين دول الخليج | Luggage planning for private GCC airport transfers | No caption required unless used as a feature card. | real photo or realistic generated | P2 |
+| `family-gcc-private-transport.webp` | Family travel / fleet and luggage section | 1200x800 | توصيل عائلات بين دول الخليج مع شنط ومساحة مناسبة | Family private transport across the GCC with luggage planning | AR: عدد الأطفال والشنط يساعد في اختيار السيارة المناسبة. EN: Children count and luggage details help match the right vehicle. | real photo with consent or realistic generated without clear faces | P1 |
+| `business-vip-gcc-transfer.webp` | Business/VIP travel planning section | 1200x800 | توصيل خاص لرجال الأعمال وVIP بين البحرين ودول الخليج | Business and VIP private transport for Bahrain and GCC routes | AR: للمواعيد المهمة، أرسل وقت الاجتماع وموقع الاستلام ومتطلبات الانتظار. EN: For important appointments, send meeting time, pickup point and waiting needs. | realistic generated or real staged photo | P2 |
+| `gcc-parcel-document-delivery.webp` | Parcel/document delivery limitations section | 1200x800 | تنسيق توصيل مستندات وطرود بين دول الخليج حسب الطلب | Parcel and document delivery coordination for GCC transport routes | AR: قبول الطرود والمستندات يعتمد على النوع والمسار والوقت. EN: Parcel and document acceptance depends on item type, route and timing. | real staged photo or realistic generated | P2 |
+| `gcc-border-documents-checklist.webp` | Passenger responsibility / limitations section | 1200x800 | قائمة تجهيز مستندات السفر قبل التنقل بين دول الخليج | Border and travel document checklist for GCC private transport passengers | AR: المستندات ومتطلبات السفر مسؤولية المسافر. EN: Travel documents and official requirements are the passenger's responsibility. | map/checklist illustration or realistic generated | P2 |
+| `gcc-vehicle-size-comparison.webp` | Vehicle size / luggage guidance section | 1200x800 | مقارنة حجم السيارة والشنط قبل رحلة خاصة بين دول الخليج | Vehicle size and luggage comparison for GCC private transport | AR: عدد الركاب والشنط يحدد السيارة الأنسب. EN: Passenger count and luggage details help choose the right vehicle. | realistic generated or simple explanatory illustration | P2 |
+| `getvendora-journey-coordination.webp` | Trust section: what GetVendora helps coordinate | 1200x800 | تنسيق رحلة GetVendora من الاستلام إلى الوصول عبر واتساب | GetVendora journey coordination from pickup to destination by WhatsApp | AR: GetVendora تنسق تفاصيل الرحلة قبل الانطلاق. EN: GetVendora coordinates the trip details before departure. | realistic generated or clean process illustration | P1 |
+
+## Priority Key
+
+- `P1`: Needed before live launch.
+- `P2`: Strongly recommended before live launch, but can be added after the first approved image pass if needed.

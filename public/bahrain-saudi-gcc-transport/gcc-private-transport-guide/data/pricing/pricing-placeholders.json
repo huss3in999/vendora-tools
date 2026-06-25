@@ -1,0 +1,21 @@
+{
+  "status": "placeholder_only",
+  "rule": "Do not publish fixed prices until the approved pricing table is provided.",
+  "quoteFactors": [
+    "route",
+    "pickup location",
+    "destination",
+    "date",
+    "time",
+    "passenger count",
+    "luggage count",
+    "vehicle suitability",
+    "waiting time",
+    "return trip",
+    "multi-stop requirements"
+  ],
+  "displayCopy": {
+    "en": "Request a quote for this route. Price depends on route, timing, passengers, luggage, vehicle needs and return details.",
+    "ar": "اطلب سعر هذا المسار. السعر يعتمد على المسار والوقت وعدد الركاب والشنط ونوع السيارة وتفاصيل العودة."
+  }
+}

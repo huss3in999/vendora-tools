@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f5ebe0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dec8ac"/>
+      <stop offset="50%" stop-color="#cda87e"/>
+      <stop offset="100%" stop-color="#b6905d"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#4a3e3d" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="500" height="500" fill="url(#bg)"/>
+  
+  <!-- Outer Gold Ring (Instagram Highlight style) -->
+  <circle cx="250" cy="250" r="230" fill="none" stroke="url(#gold)" stroke-width="4" opacity="0.4"/>
+  <circle cx="250" cy="250" r="222" fill="none" stroke="#fff" stroke-width="2" opacity="0.6"/>
+
+  <!-- Botanical Leaf -->
+  <path d="M 200 380 Q 120 320 180 200 Q 280 250 200 380 Z" fill="#0f3a22" opacity="0.08"/>
+
+  <!-- Comb and Oil Droplet Group -->
+  <g filter="url(#shadow)" transform="translate(0, -10)">
+    <!-- Wooden Comb -->
+    <path d="M 160 220 L 340 220 C 350 220 350 240 340 240 L 160 240 C 150 240 150 220 160 220 Z" fill="#cda87e"/>
+    <!-- Comb Teeth -->
+    <rect x="175" y="240" width="8" height="60" rx="2" fill="#b6905d"/>
+    <rect x="195" y="240" width="8" height="60" rx="2" fill="#b6905d"/>
+    <rect x="215" y="240" width="8" height="60" rx="2" fill="#b6905d"/>
+    <rect x="235" y="240" width="8" height="60" rx="2" fill="#b6905d"/>
+    <rect x="255" y="240" width="8" height="60" rx="2" fill="#b6905d"/>
+    <rect x="275" y="240" width="8" height="60" rx="2" fill="#b6905d"/>
+    <rect x="295" y="240" width="8" height="60" rx="2" fill="#b6905d"/>
+    <rect x="315" y="240" width="8" height="60" rx="2" fill="#b6905d"/>
+
+    <!-- Oil Droplet -->
+    <path d="M 250 280 Q 250 280 230 320 A 25 25 0 0 0 270 320 Q 250 280 250 280 Z" fill="#ffb703" opacity="0.95"/>
+    <circle cx="245" cy="305" r="4" fill="#fff" opacity="0.5"/>
+  </g>
+</svg>

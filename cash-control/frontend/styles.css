@@ -869,3 +869,48 @@ select { appearance: none; cursor: pointer; }
   .stat-grid, .action-grid { max-width: 480px; margin-left: auto; margin-right: auto; }
   .hero-card { max-width: 480px; margin-left: auto; margin-right: auto; }
 }
+
+/* ─── Manage Entries Screen ─────────────────────────────────────────────────── */
+
+.manage-tabs {
+  display: flex;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+.manage-tab {
+  flex: 1;
+  text-align: center;
+  padding: 14px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.15s;
+}
+
+.manage-tab.active {
+  color: var(--primary-light);
+  border-bottom-color: var(--primary-light);
+  background: rgba(20, 184, 166, 0.05);
+}
+
+.tx-row.deleted {
+  opacity: 0.55;
+  border-left: 3px solid var(--danger);
+}
+
+.badge-danger {
+  display: inline-block;
+  padding: 2px 6px;
+  background: #7f1d1d;
+  color: #fecaca;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 4px;
+  margin-left: 4px;
+}

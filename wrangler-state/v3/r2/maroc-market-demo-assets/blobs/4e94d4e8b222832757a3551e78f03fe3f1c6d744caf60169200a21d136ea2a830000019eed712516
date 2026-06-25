@@ -1,0 +1,21 @@
+{
+  "settings": {
+    "storeName": "Test Maroc Store"
+  },
+  "products": [
+    {
+      "id": "prod-1",
+      "nameAr": "منتج تجريبي",
+      "price": 1.5,
+      "visible": true
+    }
+  ],
+  "categories": [
+    {
+      "nameAr": "العروض",
+      "nameEn": "sale",
+      "visible": true,
+      "sortOrder": 0
+    }
+  ]
+}

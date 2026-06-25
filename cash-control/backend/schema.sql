@@ -40,6 +40,10 @@ CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status);
 CREATE INDEX IF NOT EXISTS idx_transactions_wallet ON transactions(wallet);
 CREATE INDEX IF NOT EXISTS idx_transactions_type ON transactions(type);
 CREATE INDEX IF NOT EXISTS idx_transactions_test ON transactions(is_test);
+CREATE INDEX IF NOT EXISTS idx_transactions_dashboard
+  ON transactions(status, is_test, business_date, wallet, type);
+CREATE INDEX IF NOT EXISTS idx_transactions_toys_month
+  ON transactions(wallet, status, is_test, business_date, type);
 
 -- End-of-day closing records
 CREATE TABLE IF NOT EXISTS daily_closings (
@@ -58,6 +62,8 @@ CREATE TABLE IF NOT EXISTS daily_closings (
 );
 
 CREATE INDEX IF NOT EXISTS idx_closings_date ON daily_closings(business_date);
+CREATE INDEX IF NOT EXISTS idx_closings_active_date
+  ON daily_closings(status, is_test, business_date);
 
 -- App settings (test mode, etc.)
 CREATE TABLE IF NOT EXISTS app_settings (
@@ -74,3 +80,9 @@ INSERT OR IGNORE INTO users (id, name, role, pin_key, status) VALUES
 -- Default settings
 INSERT OR IGNORE INTO app_settings (key, value) VALUES ('test_mode', '0');
 INSERT OR IGNORE INTO app_settings (key, value) VALUES ('worker_access_enabled', '1');
+INSERT OR IGNORE INTO app_settings (key, value) VALUES ('notifications_enabled', '0');
+INSERT OR IGNORE INTO app_settings (key, value) VALUES ('business_day_start_hour', '16');
+INSERT OR IGNORE INTO app_settings (key, value) VALUES ('auth_version', '1');
+INSERT OR IGNORE INTO app_settings (key, value) VALUES ('owner_auth_version', '1');
+INSERT OR IGNORE INTO app_settings (key, value) VALUES ('worker_auth_version', '1');
+INSERT OR IGNORE INTO app_settings (key, value) VALUES ('expense_options', '["Potato","Petrol","Tea","Food products","Drinks","Packaging","Cleaning","Maintenance","Delivery","Other"]');

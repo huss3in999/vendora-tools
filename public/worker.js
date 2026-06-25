@@ -7,6 +7,8 @@ import * as errorApi from './functions/api/transport/error-log.js';
 import * as trackingApi from './functions/api/transport/tracking.js';
 import { recordError } from './functions/api/transport/error-log.js';
 import * as nadaMenuApi from './functions/api/nada/menu.js';
+import * as marocMarketApi from './functions/api/maroc-market/image.js';
+
 
 const SITE_PATH_PREFIX = '/bahrain-saudi-gcc-transport';
 
@@ -74,6 +76,10 @@ export default {
     const path = logicalPathname(url);
 
     try {
+      if (path.startsWith('/demo/maroc-market/api/')) {
+        return await dispatchPagesFunction(marocMarketApi, request, env, ctx);
+      }
+
       if (path === '/api/transport/health') {
         if (request.method.toUpperCase() === 'OPTIONS') {
           return new Response(null, { status: 204, headers: transportHealthResponse().headers });

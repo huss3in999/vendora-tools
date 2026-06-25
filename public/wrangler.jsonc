@@ -43,6 +43,10 @@
     {
       "binding": "VENDORA_IMAGES",
       "bucket_name": "vendora-images"
+    },
+    {
+      "binding": "MAROC_MARKET_ASSETS",
+      "bucket_name": "maroc-market-demo-assets"
     }
   ],
   "ai": {

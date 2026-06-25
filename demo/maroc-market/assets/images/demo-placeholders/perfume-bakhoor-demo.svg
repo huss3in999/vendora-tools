@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#fdf4e7"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dec8ac"/>
+      <stop offset="50%" stop-color="#cda87e"/>
+      <stop offset="100%" stop-color="#b6905d"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#4a3e3d" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+
+  <rect width="500" height="500" fill="url(#bg)"/>
+  
+  <!-- Outer Gold Ring -->
+  <circle cx="250" cy="250" r="230" fill="none" stroke="url(#gold)" stroke-width="4" opacity="0.4"/>
+  <circle cx="250" cy="250" r="222" fill="none" stroke="#fff" stroke-width="2" opacity="0.6"/>
+
+  <!-- Smoke -->
+  <g stroke="#ffffff" fill="none" stroke-linecap="round" opacity="0.5" filter="url(#shadow)">
+    <path d="M 230 180 Q 200 130 230 100 T 215 60" stroke-width="6"/>
+  </g>
+
+  <!-- Incense Burner Group -->
+  <g filter="url(#shadow)" transform="translate(0, -10)">
+    <!-- Mabkhara top bowl -->
+    <path d="M 210 260 L 290 260 L 310 210 L 190 210 Z" fill="url(#gold)"/>
+    <!-- Pillar and Base -->
+    <path d="M 235 260 L 265 260 L 265 310 L 235 310 Z" fill="url(#gold)"/>
+    <path d="M 210 310 L 290 310 L 300 325 L 200 325 Z" fill="url(#gold)"/>
+    
+    <!-- Burning Charcoal glow -->
+    <ellipse cx="250" cy="208" rx="14" ry="4" fill="#ff4d00"/>
+    <ellipse cx="250" cy="208" rx="6" ry="1.5" fill="#ffea00"/>
+  </g>
+</svg>

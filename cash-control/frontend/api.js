@@ -4,18 +4,55 @@
  */
 
 const API_BASE = '';
+const FETCH_TIMEOUT_MS = 8000;
+const CACHE_TTLS = {
+  '/api/settings': 30000,
+  '/api/expense-options': 30000,
+  '/api/toys/month': 10000,
+  '/api/dashboard/worker': 8000,
+  '/api/dashboard/owner': 8000,
+  '/api/activity': 5000,
+};
 
-let authToken = localStorage.getItem('cc_token') || sessionStorage.getItem('cc_token') || null;
+localStorage.removeItem('cc_token');
+let authToken = sessionStorage.getItem('cc_token') || null;
+let currentScreen = 'init';
+const responseCache = new Map();
+const pendingRequests = new Map();
+
+export function setCurrentScreen(screen) {
+  currentScreen = screen || 'unknown';
+}
+
+function cacheBasePath(path) {
+  return path.split('?')[0];
+}
+
+function cacheKey(path) {
+  return path;
+}
+
+function cacheTtl(path) {
+  return CACHE_TTLS[cacheBasePath(path)] || 0;
+}
+
+function logPerf(path, duration, source, extra = '') {
+  const suffix = extra ? ` ${extra}` : '';
+  console.log(`[CashControl PERF] screen=${currentScreen} endpoint=${path} duration=${duration}ms source=${source}${suffix}`);
+}
+
+function invalidateCache() {
+  responseCache.clear();
+}
 
 export function setToken(token) {
   authToken = token;
   if (token) {
     sessionStorage.setItem('cc_token', token);
-    localStorage.setItem('cc_token', token);
   } else {
     sessionStorage.removeItem('cc_token');
-    localStorage.removeItem('cc_token');
   }
+  localStorage.removeItem('cc_token');
 }
 
 export function getToken() {
@@ -31,23 +68,65 @@ export function clearAuth() {
 }
 
 async function request(path, options = {}) {
+  const method = options.method || 'GET';
+  const key = `${method}:${cacheKey(path)}:${options.body || ''}`;
+  const ttl = method === 'GET' ? cacheTtl(path) : 0;
+  const started = Date.now();
+
+  if (ttl > 0) {
+    const cached = responseCache.get(key);
+    if (cached && Date.now() - cached.time < ttl) {
+      logPerf(path, Date.now() - started, 'cache');
+      return cached.data;
+    }
+  }
+
+  if (pendingRequests.has(key)) {
+    logPerf(path, Date.now() - started, 'pending', 'deduped=true');
+    return pendingRequests.get(key);
+  }
+
   const headers = { 'Content-Type': 'application/json', ...options.headers };
   if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
 
-  const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
-  if (res.status === 401) {
-    clearAuth();
-    window.dispatchEvent(new Event('auth-expired'));
-    throw new Error('Session expired. Please login again.');
-  }
+  const promise = (async () => {
+    try {
+      const res = await fetch(`${API_BASE}${path}`, { ...options, headers, signal: controller.signal });
 
-  const contentType = res.headers.get('Content-Type') || '';
-  if (contentType.includes('text/csv')) return res;
+      if (res.status === 401 && path !== '/api/login') {
+        clearAuth();
+        window.dispatchEvent(new Event('auth-expired'));
+        throw new Error('Session expired. Please login again.');
+      }
 
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.error || 'Request failed');
-  return data;
+      const contentType = res.headers.get('Content-Type') || '';
+      if (contentType.includes('text/csv')) {
+        logPerf(path, Date.now() - started, 'network');
+        return res;
+      }
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Request failed');
+      if (ttl > 0) responseCache.set(key, { data, time: Date.now() });
+      if (method !== 'GET') invalidateCache();
+      logPerf(path, Date.now() - started, 'network');
+      return data;
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        throw new Error('Request timed out. Please check connection and try again.');
+      }
+      throw err;
+    } finally {
+      clearTimeout(timeout);
+      pendingRequests.delete(key);
+    }
+  })();
+
+  pendingRequests.set(key, promise);
+  return promise;
 }
 
 // ─── Auth ────────────────────────────────────────────────────────────────────
@@ -75,6 +154,11 @@ export function createTransaction(data) {
 export function getTransactions(params = {}) {
   const qs = new URLSearchParams(params).toString();
   return request(`/api/transactions?${qs}`);
+}
+
+export function getActivity(params = {}) {
+  const qs = new URLSearchParams(params).toString();
+  return request(`/api/activity?${qs}`);
 }
 
 export function updateTransaction(id, data) {
@@ -115,6 +199,14 @@ export function updateSettings(data) {
   return request('/api/settings', { method: 'PUT', body: JSON.stringify(data) });
 }
 
+export function getExpenseOptions() {
+  return request('/api/expense-options');
+}
+
+export function updateExpenseOptions(options) {
+  return request('/api/expense-options', { method: 'PUT', body: JSON.stringify({ options }) });
+}
+
 export function deleteAllTestData() {
   return request('/api/test-data', { method: 'DELETE' });
 }
@@ -129,6 +221,19 @@ export function bulkDeleteTransactions(ids) {
 
 export function setOpeningCash(amount, note) {
   return request('/api/opening-cash', { method: 'POST', body: JSON.stringify({ amount, note }) });
+}
+
+export function getClosings(params = {}) {
+  const qs = new URLSearchParams(params).toString();
+  return request(`/api/closings?${qs}`);
+}
+
+export function voidClosing(id, void_reason) {
+  return request(`/api/closings/${id}/void`, { method: 'POST', body: JSON.stringify({ void_reason }) });
+}
+
+export function deleteClosing(id) {
+  return request(`/api/closings/${id}`, { method: 'DELETE' });
 }
 
 // ─── Export ──────────────────────────────────────────────────────────────────

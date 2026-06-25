@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maroc Market BH Admin</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%230f3a22' d='M32 4l7 21 21 7-21 7-7 21-7-21-21-7 21-7z'/%3E%3Cpath fill='%23b22b2f' d='M32 13l4 15 15 4-15 4-4 15-4-15-15-4 15-4z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="admin-page">
+  <main class="admin-shell">
+    <section class="login-card" id="loginCard">
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-type">MAROC<br>MARKET <small>BH</small></span>
+      </a>
+      <h1>لوحة التحكم</h1>
+      <p>أدخلي كلمة مرور العرض التجريبي.</p>
+      <form id="loginForm">
+        <input type="password" id="passwordInput" placeholder="كلمة المرور" autocomplete="current-password">
+        <button class="btn primary wide" type="submit">دخول</button>
+      </form>
+      <small id="loginError"></small>
+    </section>
+
+    <section class="admin-dashboard hidden" id="dashboard">
+      <header class="admin-header">
+        <div>
+          <h1>إدارة Maroc Market BH</h1>
+          <p>منتجات، إعدادات، ورسائل واتساب للعرض التجريبي.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn ghost" id="btnExportData" type="button">تصدير البيانات (JSON)</button>
+          <a class="btn ghost" href="index.html">عرض المتجر</a>
+        </div>
+      </header>
+
+      <section class="stats-grid" id="statsGrid"></section>
+      <p class="admin-demo-note">Changes are published to the demo catalog after clicking Save/Publish. Export JSON is still available as backup.</p>
+
+      <section class="admin-layout">
+        <div class="admin-panel">
+          <div class="panel-title">
+            <h2>المنتجات</h2>
+            <button class="btn primary" id="newProduct" type="button">إضافة منتج</button>
+          </div>
+          <div class="admin-products" id="adminProducts"></div>
+        </div>
+
+        <form class="admin-panel product-form" id="productForm">
+          <h2 id="formTitle">إضافة / تعديل منتج</h2>
+          <input type="hidden" id="productId">
+          <label>اسم المنتج بالعربي<input id="nameAr" required></label>
+          <label>اسم المنتج بالإنجليزي اختياري<input id="nameEn"></label>
+          <label>السعر BD<input id="price" type="number" step="0.001" min="0" required></label>
+          <label>التصنيف<input id="category" required></label>
+          <label>الوصف المختصر<textarea id="shortDescription" required></textarea></label>
+          <label>الفوائد<textarea id="benefits"></textarea></label>
+          <label>طريقة الاستخدام<textarea id="howToUse"></textarea></label>
+          <label>مناسب لـ<textarea id="suitableFor"></textarea></label>
+          <label>رابط الصورة الرئيسية<input id="image" placeholder="assets/images/products/argan-oil.jpg"></label>
+          <div class="upload-section">
+            <div class="upload-group">
+              <span class="upload-label">رفع الصورة الرئيسية (800x800)</span>
+              <input type="file" id="productImageFile" accept="image/jpeg,image/png,image/webp" style="display:none">
+              <div class="upload-dropzone" id="productImageDropzone">
+                <div class="dropzone-prompt" id="productImagePrompt">اسحبي الصورة هنا أو انقري للرفع</div>
+                <div class="dropzone-preview hidden" id="productImagePreviewContainer">
+                  <img id="productImagePreview" src="" alt="Preview">
+                  <div class="dropzone-info">
+                    <span id="productImageSizeInfo"></span>
+                    <button class="btn btn-danger btn-sm delete-overlay" id="btnDeleteProductImage" type="button">×</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="upload-group">
+              <span class="upload-label">معرض الصور الإضافية</span>
+              <input type="file" id="productGalleryFile" accept="image/jpeg,image/png,image/webp" style="display:none" multiple>
+              <button class="btn ghost btn-sm" id="btnUploadGallery" type="button">إضافة صور لمعرض المنتج</button>
+              <div class="gallery-previews" id="productGalleryPreviews"></div>
+            </div>
+          </div>
+          <div class="switches">
+            <label><input id="visible" type="checkbox" checked> ظاهر</label>
+            <label><input id="soldOut" type="checkbox"> نفد</label>
+            <label><input id="featured" type="checkbox" checked> مميز</label>
+          </div>
+          <p style="color: #b22b2f; font-size: 13px; font-weight: bold; margin-bottom: 8px; text-align: center;">بعد رفع الصور، اضغط حفظ/نشر حتى تظهر التغييرات في الموقع للجميع.</p>
+          <button class="btn primary wide" type="submit">حفظ ونشر التغييرات</button>
+        </form>
+      </section>
+
+      <!-- Category Management -->
+      <section class="admin-panel categories-layout">
+        <div class="panel-title">
+          <h2>إدارة التصنيفات</h2>
+          <button class="btn primary" id="newCategoryBtn" type="button">إضافة تصنيف جديد</button>
+        </div>
+        <div class="categories-container" id="adminCategories"></div>
+        
+        <!-- Inline Category Form -->
+        <form id="categoryForm" class="category-form hidden" style="border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin-top: 12px; background: #fffaf4;">
+          <h3 id="catFormTitle" style="margin: 0 0 10px; font-size: 14px; color: var(--green);">إضافة / تعديل تصنيف</h3>
+          <input type="hidden" id="categoryId">
+          <label>اسم التصنيف (بالعربية)<input id="catNameAr" required></label>
+          <label>اسم التصنيف (بالإنجليزية) - رمز داخلي<input id="catNameEn" required></label>
+          
+          <div class="upload-group" style="margin: 10px 0;">
+            <span class="upload-label">صورة التصنيف <small>(500x500)</small></span>
+            <input type="file" id="catUploadFile" accept="image/jpeg,image/png,image/webp" style="display:none">
+            <div class="upload-dropzone compact" id="catDropzone">
+              <div class="dropzone-prompt" id="catPrompt">انقري لرفع صورة التصنيف</div>
+              <div class="dropzone-preview hidden" id="catPreviewContainer">
+                <img id="catPreview" src="" alt="Category Preview">
+                <button class="btn btn-danger btn-sm delete-overlay" id="btnDeleteCatImage" type="button">×</button>
+              </div>
+            </div>
+            <input type="hidden" id="catImageInput">
+          </div>
+          
+          <div class="switches" style="margin: 10px 0;">
+            <label><input id="catVisible" type="checkbox" checked> ظاهر في المتجر</label>
+          </div>
+          <label>الترتيب (Sort Order)<input id="catOrder" type="number" value="0" required></label>
+          
+          <p style="color: #b22b2f; font-size: 12px; font-weight: bold; margin-bottom: 6px;">بعد رفع الصور، اضغط حفظ/نشر حتى تظهر التغييرات في الموقع للجميع.</p>
+          <div class="form-buttons" style="margin-top: 12px;">
+            <button class="btn primary" type="submit">حفظ ونشر التغييرات</button>
+            <button class="btn ghost" id="btnCancelCategory" type="button">إلغاء</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="admin-panel settings-panel">
+        <h2>الإعدادات</h2>
+        <form id="settingsForm">
+          <label>رقم واتساب<input id="whatsappNumber"></label>
+          <label>اسم المتجر<input id="storeName"></label>
+          <label>رسالة التوصيل<input id="deliveryMessage"></label>
+          <label>عنوان البطل<input id="heroTitleSetting"></label>
+          <label>العنوان الفرعي<input id="heroSubtitleSetting"></label>
+          <label>رابط Instagram<input id="instagramLink" placeholder="https://instagram.com/..."></label>
+          <label>رابط Facebook<input id="facebookLink" placeholder="https://facebook.com/..."></label>
+          <label>رابط TikTok<input id="tiktokLink" placeholder="https://tiktok.com/@..."></label>
+          <label class="inline-setting"><input id="showOfferBanner" type="checkbox"> إظهار بانر العروض</label>
+          <label>نص العروض<input id="offerBanner"></label>
+          <label>نص الفوتر<input id="footerText"></label>
+          
+          <div class="settings-uploads">
+            <h3 style="margin: 0 0 10px; font-size: 14px; color: var(--green);">رفع وتعديل صور الموقع</h3>
+            <div class="settings-upload-grid">
+              <!-- Logo Upload -->
+              <div class="upload-group">
+                <span class="upload-label">شعار المتجر (Logo) <small>(500x500)</small></span>
+                <input type="file" id="logoUploadFile" accept="image/jpeg,image/png,image/webp" style="display:none">
+                <div class="upload-dropzone compact" id="logoDropzone">
+                  <div class="dropzone-prompt" id="logoPrompt">انقري لرفع الشعار</div>
+                  <div class="dropzone-preview hidden" id="logoPreviewContainer">
+                    <img id="logoPreview" src="" alt="Logo">
+                    <button class="btn btn-danger btn-sm delete-overlay" id="btnDeleteLogo" type="button">×</button>
+                  </div>
+                </div>
+                <input type="hidden" id="logoInput">
+              </div>
+
+              <!-- Desktop Hero Upload -->
+              <div class="upload-group">
+                <span class="upload-label">صورة الكمبيوتر (Desktop Hero) <small>(1600x520)</small></span>
+                <input type="file" id="heroDesktopUploadFile" accept="image/jpeg,image/png,image/webp" style="display:none">
+                <div class="upload-dropzone compact" id="heroDesktopDropzone">
+                  <div class="dropzone-prompt" id="heroDesktopPrompt">صورة الكمبيوتر</div>
+                  <div class="dropzone-preview hidden" id="heroDesktopPreviewContainer">
+                    <img id="heroDesktopPreview" src="" alt="Desktop Hero">
+                    <button class="btn btn-danger btn-sm delete-overlay" id="btnDeleteHeroDesktop" type="button">×</button>
+                  </div>
+                </div>
+                <input type="hidden" id="heroDesktopInput">
+              </div>
+
+              <!-- Mobile Hero Upload -->
+              <div class="upload-group">
+                <span class="upload-label">صورة الجوال (Mobile Hero) <small>(900x650)</small></span>
+                <input type="file" id="heroMobileUploadFile" accept="image/jpeg,image/png,image/webp" style="display:none">
+                <div class="upload-dropzone compact" id="heroMobileDropzone">
+                  <div class="dropzone-prompt" id="heroMobilePrompt">صورة الجوال</div>
+                  <div class="dropzone-preview hidden" id="heroMobilePreviewContainer">
+                    <img id="heroMobilePreview" src="" alt="Mobile Hero">
+                    <button class="btn btn-danger btn-sm delete-overlay" id="btnDeleteHeroMobile" type="button">×</button>
+                  </div>
+                </div>
+                <input type="hidden" id="heroMobileInput">
+              </div>
+
+              <!-- Offer Banner Upload -->
+              <div class="upload-group">
+                <span class="upload-label">بانر العروض (Offer Banner) <small>(1200x400)</small></span>
+                <input type="file" id="offerBannerUploadFile" accept="image/jpeg,image/png,image/webp" style="display:none">
+                <div class="upload-dropzone compact" id="offerBannerDropzone">
+                  <div class="dropzone-prompt" id="offerBannerPrompt">بانر العروض</div>
+                  <div class="dropzone-preview hidden" id="offerBannerPreviewContainer">
+                    <img id="offerBannerPreview" src="" alt="Offer Banner">
+                    <button class="btn btn-danger btn-sm delete-overlay" id="btnDeleteOfferBanner" type="button">×</button>
+                  </div>
+                </div>
+                <input type="hidden" id="offerBannerInput">
+              </div>
+            </div>
+          </div>
+          
+          <p style="color: #b22b2f; font-size: 13px; font-weight: bold; margin-top: 10px; margin-bottom: 6px;">بعد رفع الصور، اضغط حفظ/نشر حتى تظهر التغييرات في الموقع للجميع.</p>
+          <button class="btn primary" type="submit" style="margin-top: 14px;">حفظ ونشر التغييرات</button>
+        </form>
+      </section>
+    </section>
+  </main>
+  <div id="toast" class="toast"></div>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

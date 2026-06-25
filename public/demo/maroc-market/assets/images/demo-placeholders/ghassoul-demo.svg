@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#faf6f0"/>
+      <stop offset="100%" stop-color="#e8ded1"/>
+    </radialGradient>
+    <linearGradient id="clay" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8a735b"/>
+      <stop offset="60%" stop-color="#735e49"/>
+      <stop offset="100%" stop-color="#554432"/>
+    </linearGradient>
+    <linearGradient id="bowl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c19b78"/>
+      <stop offset="100%" stop-color="#8a6745"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dec8ac"/>
+      <stop offset="50%" stop-color="#cda87e"/>
+      <stop offset="100%" stop-color="#b6905d"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="12" stdDeviation="8" flood-color="#4a3e3d" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="500" height="500" fill="url(#bg)"/>
+  
+  <path d="M 120 450 L 120 220 A 130 130 0 0 1 380 220 L 380 450" fill="none" stroke="#dec8ac" stroke-width="1" opacity="0.3"/>
+  
+  <!-- Shadow -->
+  <ellipse cx="250" cy="385" rx="120" ry="22" fill="#dec8ac" opacity="0.5"/>
+
+  <!-- Clay chunks next to bowl -->
+  <g filter="url(#shadow)">
+    <!-- Chunk 1 -->
+    <path d="M 110 370 L 150 360 L 160 380 L 120 390 Z" fill="url(#clay)"/>
+    <!-- Chunk 2 -->
+    <path d="M 330 375 L 375 365 L 360 390 L 320 385 Z" fill="#735e49"/>
+  </g>
+
+  <!-- Bowl and Clay powder -->
+  <g filter="url(#shadow)">
+    <!-- Back Rim Clay Powder -->
+    <ellipse cx="250" cy="300" rx="100" ry="20" fill="url(#clay)"/>
+    
+    <!-- Powder Mound -->
+    <path d="M 180 300 Q 250 250 320 300 Z" fill="url(#clay)"/>
+    <ellipse cx="250" cy="290" rx="50" ry="10" fill="#a48c73" opacity="0.4"/>
+
+    <!-- Bowl Body -->
+    <path d="M 140 300 C 140 280 360 280 360 300 C 360 355 310 380 250 380 C 190 380 140 355 140 300 Z" fill="url(#bowl)"/>
+    <path d="M 140 300 C 140 312 360 312 360 300" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.2"/>
+
+    <!-- Gold Ornament Band -->
+    <path d="M 160 330 Q 250 345 340 330" fill="none" stroke="url(#gold)" stroke-width="3" opacity="0.75"/>
+  </g>
+</svg>

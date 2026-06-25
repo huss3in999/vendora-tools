@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maroc Market BH | منتجات مغربية طبيعية</title>
+  <meta name="description" content="متجر تجريبي لمنتجات مغربية طبيعية في البحرين.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%230f3a22' d='M32 4l7 21 21 7-21 7-7 21-7-21-21-7 21-7z'/%3E%3Cpath fill='%23b22b2f' d='M32 13l4 15 15 4-15 4-4 15-4-15-15-4 15-4z'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="storefront">
+  <div class="site-shell">
+    <div class="top-info" aria-label="معلومات المتجر">
+      <span>توصيل لجميع مناطق البحرين</span>
+      <span>الدفع عند الاستلام</span>
+      <span>اطلبي بسهولة عبر واتساب</span>
+    </div>
+
+    <header class="main-header">
+      <button class="icon-only mobile-menu" aria-label="القائمة">☰</button>
+      <a class="brand" href="#home" aria-label="Maroc Market BH">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-type">MAROC<br>MARKET <small>BH</small></span>
+      </a>
+      <form class="search" role="search">
+        <input id="searchInput" type="search" placeholder="ابحث عن منتج طبيعي..." autocomplete="off">
+        <button type="submit" aria-label="بحث">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.2-4.2m1.2-5.3a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"/></svg>
+        </button>
+      </form>
+      <nav class="header-actions" aria-label="اختصارات">
+        <a class="link-icon" id="headerWhatsapp" href="#" target="_blank" rel="noopener">واتساب <span aria-hidden="true">☎</span></a>
+        <button class="link-icon cart-open" type="button">السلة <span class="cart-badge">0</span></button>
+      </nav>
+      <button class="cart-mobile cart-open" type="button" aria-label="السلة"><span class="cart-badge">0</span></button>
+    </header>
+
+    <nav class="desktop-nav" aria-label="روابط رئيسية">
+      <a class="active" href="#home">الرئيسية</a>
+      <a href="#products">المتجر</a>
+      <a href="#products">عناية الشعر</a>
+      <a href="#products">عناية البشرة</a>
+      <a href="#products">زيوت طبيعية</a>
+      <a href="#products">الأعشاب</a>
+      <a href="#products">العروض</a>
+      <a href="#footer">من نحن</a>
+      <a class="whatsapp-chip" id="navWhatsapp" href="#" target="_blank" rel="noopener">اطلبي عبر واتساب</a>
+    </nav>
+
+    <main id="home">
+      <section class="hero" aria-labelledby="heroTitle">
+        <div class="hero-media" aria-hidden="true">
+          <!-- Replace with desktop hero 1600 x 520 px and mobile hero 900 x 650 px when final images are ready. -->
+          <div class="hero-product hero-bottle"></div>
+          <div class="hero-product hero-jar"></div>
+          <div class="hero-product hero-bowl"></div>
+        </div>
+        <div class="hero-copy">
+          <h1 id="heroTitle">منتجات مغربية طبيعية</h1>
+          <p class="hero-subtitle">من قلب المغرب إلى البحرين</p>
+          <p class="hero-text">نختار لكم أجود الزيوت، الأعشاب، وخلطات العناية لطلب جمالك الطبيعي كل يوم.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#products">تسوقي الآن</a>
+            <a class="btn ghost" id="heroWhatsapp" href="#" target="_blank" rel="noopener">اطلبي عبر واتساب</a>
+          </div>
+        </div>
+        <div class="moroccan-stars" aria-hidden="true"></div>
+      </section>
+
+      <section class="categories" aria-label="التصنيفات">
+        <div class="category-track" id="categoryTrack"></div>
+      </section>
+
+      <section class="section-head" id="products">
+        <a href="#products">عرض الكل</a>
+        <h2>منتجات مميزة</h2>
+      </section>
+      <section class="products-grid" id="productsGrid" aria-label="منتجات مميزة"></section>
+
+      <section class="section-head popular-title">
+        <span></span>
+        <h2>الأكثر طلباً</h2>
+      </section>
+      <section class="trust-strip" aria-label="مميزات المتجر">
+        <article><span class="trust-icon truck"></span><strong>توصيل سريع</strong><p>لكافة مناطق البحرين</p></article>
+        <article><span class="trust-icon pay"></span><strong>الدفع عند الاستلام</strong><p>ادفعي عند وصول طلبك</p></article>
+        <article><span class="trust-icon whats"></span><strong>اطلبي عبر واتساب</strong><p>تواصلي معنا بسهولة وأمان</p></article>
+        <article><span class="trust-icon leaf"></span><strong>منتجات طبيعية 100%</strong><p>مختارة بعناية وجودة مضمونة</p></article>
+      </section>
+    </main>
+
+    <footer class="footer" id="footer">
+      <div class="newsletter">
+        <h3>اشتركي في نشرتنا</h3>
+        <p>احصلي على عروض حصرية ونصائح طبيعية</p>
+        <form>
+          <input type="email" placeholder="بريدك الإلكتروني">
+          <button type="submit">اشتراك</button>
+        </form>
+        <div class="socials" aria-label="روابط اجتماعية"><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+      <div>
+        <h3>روابط سريعة</h3>
+        <a href="#products">عن المتجر</a>
+        <a href="#products">سياسة الشحن</a>
+        <a href="#products">سياسة الاسترجاع</a>
+        <a href="#products">الأسئلة الشائعة</a>
+        <a href="#products">تواصل معنا</a>
+      </div>
+      <div>
+        <h3>التصنيفات</h3>
+        <a href="#products">عناية الشعر</a>
+        <a href="#products">عناية البشرة</a>
+        <a href="#products">زيوت طبيعية</a>
+        <a href="#products">الأعشاب</a>
+        <a href="#products">العروض</a>
+      </div>
+      <div class="footer-brand">
+        <a class="brand brand-light" href="#home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-type">MAROC<br>MARKET <small>BH</small></span>
+        </a>
+        <p>منتجات مغربية طبيعية من قلب المغرب إلى البحرين</p>
+      </div>
+      <small class="copyright">© 2024 Maroc Market BH. جميع الحقوق محفوظة.</small>
+    </footer>
+  </div>
+
+  <button class="floating-whatsapp" id="floatingWhatsapp" type="button" aria-label="واتساب">☎</button>
+
+  <nav class="bottom-nav" aria-label="تنقل الهاتف">
+    <a class="active" href="#home"><span>⌂</span>الرئيسية</a>
+    <a href="#products"><span>▦</span>التصنيفات</a>
+    <a href="#products" id="bottomSearch"><span>⌕</span>بحث</a>
+    <a href="#" class="cart-open"><span>🛒</span>السلة</a>
+    <a href="#" id="bottomWhatsapp" target="_blank" rel="noopener"><span>☎</span>واتساب</a>
+  </nav>
+
+  <aside class="cart-panel" id="cartPanel" aria-hidden="true" aria-label="سلة التسوق">
+    <div class="panel-card">
+      <header>
+        <h2>السلة</h2>
+        <button class="close-panel" type="button" aria-label="إغلاق">×</button>
+      </header>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-total"><span>الإجمالي</span><strong id="cartTotal">0.000 BD</strong></div>
+      <button class="btn primary wide" id="orderCart" type="button">اطلبي عبر واتساب</button>
+      <button class="btn ghost wide" id="clearCart" type="button">تفريغ السلة</button>
+    </div>
+  </aside>
+
+  <dialog class="quick-view" id="quickView">
+    <button class="modal-close" value="cancel" aria-label="إغلاق">×</button>
+    <div id="quickViewContent"></div>
+  </dialog>
+
+  <template id="productTemplate">
+    <article class="product-card">
+      <button class="details-btn" type="button" aria-label="تفاصيل">تفاصيل</button>
+      <div class="product-image-wrapper">
+        <img class="product-card-img" loading="lazy" alt="">
+      </div>
+      <div class="product-info">
+        <h3></h3>
+        <p></p>
+        <strong></strong>
+        <button class="add-cart" type="button">أضف للسلة</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

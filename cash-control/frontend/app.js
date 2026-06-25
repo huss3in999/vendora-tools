@@ -2,18 +2,21 @@
  * Cash Control — Main app router, login, shared UI helpers
  */
 
-import * as api from './api.js';
-import { renderWorkerScreen, workerScreens } from './worker.js';
-import { renderOwnerScreen, ownerScreens } from './owner.js';
+import * as api from './api.js?v=13';
+import { renderWorkerScreen, workerScreens } from './worker.js?v=13';
+import { renderOwnerScreen, ownerScreens } from './owner.js?v=13';
 
 // ─── State ───────────────────────────────────────────────────────────────────
 
 const state = {
-  role: localStorage.getItem('cc_role') || sessionStorage.getItem('cc_role') || null,
-  name: localStorage.getItem('cc_name') || sessionStorage.getItem('cc_name') || null,
+  role: sessionStorage.getItem('cc_role') || null,
+  name: sessionStorage.getItem('cc_name') || null,
   screen: 'login',
   screenData: {},
 };
+
+localStorage.removeItem('cc_role');
+localStorage.removeItem('cc_name');
 
 // ─── Formatting ──────────────────────────────────────────────────────────────
 
@@ -56,6 +59,7 @@ export function showLoading(show) {
 export function navigate(screen, data = {}) {
   state.screen = screen;
   state.screenData = data;
+  api.setCurrentScreen(screen);
   render();
 }
 
@@ -75,21 +79,21 @@ export function logout() {
 // ─── Expense categories ──────────────────────────────────────────────────────
 
 export const EXPENSE_CATEGORIES = [
-  'Food products', 'Drinks', 'Packaging', 'Cleaning',
-  'Maintenance', 'Delivery', 'Other',
+  'Potato', 'Petrol', 'Tea', 'Food products', 'Drinks', 'Packaging',
+  'Cleaning', 'Maintenance', 'Delivery', 'Other',
 ];
 
 // ─── Transaction type labels ─────────────────────────────────────────────────
 
 export const TYPE_LABELS = {
-  cash_sale: 'Cash Sale',
+  cash_sale: 'Cash Received',
   benefitpay_sale: 'BenefitPay',
   expense: 'Expense',
-  cash_taken_by_owner: 'Cash Taken',
-  cash_added_by_owner: 'Cash Added',
-  closing_count: 'Day Closing',
+  cash_taken_by_owner: 'Owner Took Cash',
+  cash_added_by_owner: 'Owner Added Cash',
+  closing_count: 'Cash Count',
   toy_collection: 'Toys Collection',
-  toy_collected_by_owner: 'Toys Collected',
+  toy_collected_by_owner: 'Toys Money Taken',
   correction: 'Correction',
 };
 
@@ -108,11 +112,11 @@ export const WALLET_LABELS = {
  */
 export function cashBreakdown(d, totalLabel = 'Total Cash Now', totalKey = 'expected_cash_now', options = {}) {
   const total = d[totalKey] ?? 0;
-  const baseLabel = options.baseLabel || 'From Before Today';
+  const baseLabel = options.baseLabel || 'Previous Cash Balance';
   const rows = [
     { label: baseLabel, amount: d.opening_cash || 0, type: 'base' },
-    { label: 'Cash Sales Today', amount: d.cash_sales_today ?? d.today_cash_sales ?? 0, type: 'add' },
-    { label: "Today's Expenses", amount: d.expenses_today ?? d.today_expenses ?? 0, type: 'sub' },
+    { label: 'Cash Received Today', amount: d.cash_sales_today ?? d.today_cash_sales ?? 0, type: 'add' },
+    { label: "Expenses / Removals Today", amount: d.expenses_today ?? d.today_expenses ?? 0, type: 'sub' },
   ];
   const added = d.cash_added_today || 0;
   const taken = d.cash_taken_today || 0;
@@ -136,9 +140,13 @@ export function cashBreakdown(d, totalLabel = 'Total Cash Now', totalKey = 'expe
   const lastDate = d.last_closing_date;
   let hint = '';
   if (opening > 0) {
-    hint = `<p class="breakdown-hint">${formatBD(opening)} carried over from before today</p>`;
-  } else if (lastActual != null && lastDate) {
-    hint = `<p class="breakdown-hint">Last close (${lastDate}): ${formatBD(lastActual)} was counted</p>`;
+    hint = `<p class="breakdown-hint">${formatBD(opening)} is cash carried from previous days before today's entries.</p>`;
+  } else {
+    hint = '<p class="breakdown-hint">No previous cash balance before today.</p>';
+  }
+
+  if (getState().role === 'owner') {
+    hint += `<button class="btn-sm" style="margin: 8px auto 0; display: block;" data-nav="manage-entries">Manage Entries</button>`;
   }
 
   return `
@@ -154,7 +162,7 @@ export function cashBreakdown(d, totalLabel = 'Total Cash Now', totalKey = 'expe
 }
 
 /** Big hero block: total on top, before today + sales today visible immediately */
-export function heroCashBlock(d, { totalKey = 'expected_cash_now', label = 'Total Cash Now', sub = 'All cash the worker has right now', heroClass = '', baseLabel = 'From Before Today' } = {}) {
+export function heroCashBlock(d, { totalKey = 'expected_cash_now', label = 'Total Cash Now', sub = 'All cash the worker has right now', heroClass = '', baseLabel = 'Previous Cash Balance' } = {}) {
   const total = d[totalKey] ?? 0;
   const opening = d.opening_cash || 0;
   const sales = d.cash_sales_today ?? d.today_cash_sales ?? 0;
@@ -172,13 +180,13 @@ export function heroCashBlock(d, { totalKey = 'expected_cash_now', label = 'Tota
           <span class="quick-value">${formatBD(opening)}</span>
         </div>
         <div class="quick-stat highlight-stat">
-          <span class="quick-label">Cash Sales Today</span>
+          <span class="quick-label">Cash Received Today</span>
           <span class="quick-value">${formatBD(sales)}</span>
         </div>
       </div>
       ${expenses > 0 || taken > 0 ? `
         <div class="hero-deduct">
-          ${expenses > 0 ? `<span>− Expenses Today: ${formatBD(expenses)}</span>` : ''}
+          ${expenses > 0 ? `<span>− Expenses / Removals Today: ${formatBD(expenses)}</span>` : ''}
           ${taken > 0 ? `<span>− Taken by Owner: ${formatBD(taken)}</span>` : ''}
         </div>` : ''}
     </div>`;
@@ -340,8 +348,6 @@ function bindLogin() {
       state.name = res.name;
       sessionStorage.setItem('cc_role', res.role);
       sessionStorage.setItem('cc_name', res.name);
-      localStorage.setItem('cc_role', res.role);
-      localStorage.setItem('cc_name', res.name);
       navigate(res.role === 'owner' ? 'owner-dashboard' : 'worker-dashboard');
       showToast(`Welcome, ${res.name}`, 'success');
       setupPwaForRole(res.role);
@@ -360,6 +366,7 @@ function bindLogin() {
 function render() {
   const app = document.getElementById('app');
   let html = '';
+  api.setCurrentScreen(state.screen);
 
   if (!state.role || state.screen === 'login') {
     html = renderLogin();
@@ -399,14 +406,7 @@ function bindEvents() {
   if (state.role === 'owner') ownerScreens(state.screen, state.screenData);
 }
 
-// ─── Init ────────────────────────────────────────────────────────────────────
-
-window.addEventListener('auth-expired', () => {
-  showToast('Session expired', 'error');
-  logout();
-});
-
-// Auto-navigate if session exists
+// Init auto-navigate if session exists
 if (state.role && api.getToken()) {
   setupPwaForRole(state.role);
   navigate(state.role === 'owner' ? 'owner-dashboard' : 'worker-dashboard');

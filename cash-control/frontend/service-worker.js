@@ -3,15 +3,15 @@
  * Caches app shell for fast offline loading. API calls always go to network.
  */
 
-const CACHE_NAME = 'cash-control-v5';
+const CACHE_NAME = 'cash-control-v13';
 const SHELL = [
   '/',
   '/index.html',
-  '/styles.css?v=5',
-  '/app.js',
-  '/api.js',
-  '/worker.js',
-  '/owner.js',
+  '/styles.css?v=13',
+  '/app.js?v=13',
+  '/api.js?v=13',
+  '/worker.js?v=13',
+  '/owner.js?v=13',
   '/manifest.json',
   '/icon-192.png',
   '/icon-512.png',
@@ -38,6 +38,10 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
+  // Browser extensions can trigger chrome-extension:// requests from this page.
+  // Those schemes cannot be stored in Cache API, so ignore them completely.
+  if (!['http:', 'https:'].includes(url.protocol)) return;
+
   // API requests: network only
   if (url.pathname.startsWith('/api/')) return;
 
@@ -61,7 +65,7 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cached) =>
       cached || fetch(event.request).then((response) => {
-        if (response.ok && event.request.method === 'GET') {
+        if (response.ok && event.request.method === 'GET' && response.type !== 'opaque') {
           const clone = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
         }

@@ -2,7 +2,8 @@
   "name": "vendora-public",
   "private": true,
   "devDependencies": {
-    "@playwright/test": "^1.49.1"
+    "@playwright/test": "^1.49.1",
+    "wrangler": "^4.103.0"
   },
   "scripts": {
     "test:e2e": "playwright test -c e2e/playwright.config.cjs"

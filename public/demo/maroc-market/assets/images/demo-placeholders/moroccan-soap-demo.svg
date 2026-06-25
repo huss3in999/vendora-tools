@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fffcf9"/>
+      <stop offset="100%" stop-color="#eae0d5"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dec8ac"/>
+      <stop offset="50%" stop-color="#cda87e"/>
+      <stop offset="100%" stop-color="#b6905d"/>
+    </linearGradient>
+    <linearGradient id="clay" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4f3824"/>
+      <stop offset="70%" stop-color="#3c2415"/>
+      <stop offset="100%" stop-color="#24140b"/>
+    </linearGradient>
+    <linearGradient id="jarGlass" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2d3a24"/>
+      <stop offset="50%" stop-color="#4a5f3d"/>
+      <stop offset="100%" stop-color="#1b2414"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#4a3e3d" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="500" height="500" fill="url(#bg)"/>
+  
+  <!-- Decorative Arch -->
+  <path d="M 120 450 L 120 220 A 130 130 0 0 1 380 220 L 380 450" fill="none" stroke="#dec8ac" stroke-width="1.5" opacity="0.4"/>
+  
+  <!-- Shadow -->
+  <ellipse cx="250" cy="400" rx="110" ry="20" fill="#dec8ac" opacity="0.4"/>
+  
+  <!-- Soap smear next to jar -->
+  <path d="M 130 380 Q 90 390 120 415 Q 160 410 170 390 Z" fill="url(#clay)" opacity="0.85" filter="url(#shadow)"/>
+  <ellipse cx="120" cy="400" rx="8" ry="4" fill="#dec8ac" opacity="0.3"/>
+
+  <!-- Jar Group -->
+  <g filter="url(#shadow)">
+    <!-- Jar Lid (Gold/Metallic) -->
+    <path d="M 175 220 C 175 210 325 210 325 220 L 325 240 C 325 245 175 245 175 240 Z" fill="url(#gold)"/>
+    <rect x="180" y="240" width="140" height="8" rx="2" fill="#8a6c3f"/>
+
+    <!-- Jar Body (Green Glass) -->
+    <path d="M 160 255 L 340 255 C 360 255 365 270 365 285 L 365 370 C 365 385 350 395 330 395 L 170 395 C 150 395 135 385 135 370 L 135 285 C 135 270 140 255 160 255 Z" fill="url(#jarGlass)"/>
+    
+    <!-- Soap Inside (Visible through glass bottom) -->
+    <path d="M 145 320 C 145 320 170 310 250 310 C 330 310 355 320 355 320 L 355 370 C 355 380 340 385 325 385 L 175 385 C 160 385 145 380 145 370 Z" fill="url(#clay)" opacity="0.75"/>
+    
+    <!-- Premium Label -->
+    <rect x="185" y="270" width="130" height="55" rx="4" fill="url(#gold)"/>
+    <rect x="190" y="274" width="120" height="47" rx="2" fill="#0f3a22"/>
+    
+    <!-- Label Ornament -->
+    <circle cx="250" cy="297" r="14" fill="url(#gold)" opacity="0.9"/>
+    <path d="M 245 297 L 255 297 M 250 292 L 250 302" stroke="#0f3a22" stroke-width="1.5"/>
+  </g>
+</svg>

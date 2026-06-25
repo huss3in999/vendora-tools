@@ -1,0 +1,23 @@
+# GCC Private Transport Guide QA Checklist
+
+- Existing live pages are untouched.
+- Existing route pages are untouched.
+- Sitemaps are not updated yet.
+- Navigation is not updated yet.
+- Arabic page is fully Arabic and uses `lang="ar"` with `dir="rtl"`.
+- English page is fully English and uses `lang="en"` with `dir="ltr"`.
+- No fake reviews are present.
+- No fake license claims are present.
+- No fixed prices are present.
+- Pricing copy uses request-quote placeholders only.
+- No border, visa, customs, airport, or travel approval guarantees are present.
+- Passenger document responsibility is stated clearly.
+- Route planner is deterministic JavaScript only.
+- Route planner does not use AI.
+- Route planner does not calculate fixed prices.
+- Schema only includes supportable facts.
+- Internal links are useful to customers.
+- Mobile layout is readable and tap-friendly.
+- Desktop layout feels premium and professional.
+- Placeholder images are replaced with approved final assets before live launch.
+- `noindex,nofollow` is reviewed before live publication.

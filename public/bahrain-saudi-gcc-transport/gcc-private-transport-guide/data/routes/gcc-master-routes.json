@@ -1,0 +1,54 @@
+{
+  "status": "draft",
+  "pricing": "request_quote_only",
+  "routes": [
+    {
+      "group": "bahrain_saudi_core",
+      "routes": [
+        "Bahrain to Khobar",
+        "Bahrain to Dammam",
+        "Bahrain to Dammam Airport",
+        "Bahrain to Riyadh",
+        "Saudi Arabia to Bahrain"
+      ]
+    },
+    {
+      "group": "wider_gcc",
+      "routes": [
+        "Bahrain to Qatar",
+        "Bahrain to Kuwait",
+        "Bahrain to UAE",
+        "Bahrain to Oman"
+      ]
+    },
+    {
+      "group": "iraq_ziyarat",
+      "routes": [
+        "Bahrain to Iraq",
+        "Bahrain to Najaf",
+        "Bahrain to Karbala",
+        "Bahrain to Baghdad",
+        "Bahrain to Basra"
+      ]
+    },
+    {
+      "group": "airport_transfers",
+      "routes": [
+        "Bahrain Airport",
+        "Dammam Airport",
+        "Riyadh Airport",
+        "Hamad Airport",
+        "Kuwait Airport",
+        "Dubai Airport",
+        "Abu Dhabi Airport",
+        "Muscat Airport"
+      ]
+    }
+  ],
+  "safetyRules": [
+    "No fixed prices until approved pricing data exists.",
+    "No border, visa, customs, airport, or travel approval guarantees.",
+    "Passenger documents are the passenger's responsibility.",
+    "Route planner output is guidance and quote-request text only."
+  ]
+}

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f0e5da"/>
+    </radialGradient>
+    <linearGradient id="darkGlass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3c2f2f"/>
+      <stop offset="50%" stop-color="#1e1515"/>
+      <stop offset="100%" stop-color="#0a0505"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dec8ac"/>
+      <stop offset="50%" stop-color="#cda87e"/>
+      <stop offset="100%" stop-color="#b6905d"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="12" stdDeviation="10" flood-color="#3a2e2d" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <rect width="500" height="500" fill="url(#bg)"/>
+  
+  <!-- Arch -->
+  <path d="M 120 450 L 120 220 A 130 130 0 0 1 380 220 L 380 450" fill="none" stroke="#dec8ac" stroke-width="1" opacity="0.4"/>
+  
+  <!-- Ground Shadow -->
+  <ellipse cx="250" cy="415" rx="80" ry="15" fill="#cda87e" opacity="0.35"/>
+
+  <!-- Seeds scattered -->
+  <g fill="#1f1818" opacity="0.9">
+    <ellipse cx="180" cy="410" rx="8" ry="4" transform="rotate(25, 180, 410)"/>
+    <ellipse cx="195" cy="413" rx="6" ry="3" transform="rotate(-15, 195, 413)"/>
+    <ellipse cx="205" cy="408" rx="7" ry="4" transform="rotate(40, 205, 408)"/>
+    <ellipse cx="300" cy="411" rx="8" ry="4" transform="rotate(-30, 300, 411)"/>
+    <ellipse cx="315" cy="414" rx="7" ry="3.5" transform="rotate(10, 315, 414)"/>
+    <ellipse cx="285" cy="415" rx="6" ry="3" transform="rotate(50, 285, 415)"/>
+  </g>
+
+  <!-- Bottle Group -->
+  <g filter="url(#shadow)">
+    <!-- Cap -->
+    <path d="M 225 155 L 275 155 L 270 120 L 230 120 Z" fill="url(#gold)"/>
+    <rect x="220" y="155" width="60" height="12" rx="2" fill="#8a6c3f"/>
+
+    <!-- Bottle Body (Dark Glass) -->
+    <path d="M 195 200 C 195 185 210 185 220 185 L 280 185 C 290 185 305 185 305 200 L 305 380 C 305 395 290 405 275 405 L 225 405 C 210 405 195 395 195 380 Z" fill="url(#darkGlass)"/>
+    
+    <!-- Glass reflection highlight -->
+    <path d="M 205 215 L 205 385" stroke="#fff" stroke-width="2" opacity="0.15" stroke-linecap="round"/>
+
+    <!-- Gold Label -->
+    <rect x="210" y="240" width="80" height="100" rx="5" fill="url(#gold)"/>
+    <rect x="215" y="245" width="70" height="90" rx="3" fill="#201010"/>
+    
+    <!-- Label Detail -->
+    <line x1="230" y1="265" x2="270" y2="265" stroke="url(#gold)" stroke-width="2"/>
+    <!-- Seed motif on label -->
+    <ellipse cx="250" cy="295" rx="10" ry="5" fill="url(#gold)" transform="rotate(-45, 250, 295)"/>
+    <ellipse cx="250" cy="295" rx="8" ry="4" fill="#201010" transform="rotate(-45, 250, 295)"/>
+    <line x1="235" y1="315" x2="265" y2="315" stroke="url(#gold)" stroke-width="1"/>
+  </g>
+</svg>
