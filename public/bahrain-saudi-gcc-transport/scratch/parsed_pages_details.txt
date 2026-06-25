@@ -1,0 +1,241 @@
+=========================================
+ARABIC PAGE DETAILS
+=========================================
+Title: خدمة توصيل خاصة بين دول الخليج | البحرين السعودية قطر الكويت الإمارات عمان العراق
+H1: ['خدمة توصيل خاصة بين دول الخليج من GetVendora']
+H2 count: 14
+  H2: ماذا يغطي هذا الدليل؟
+  H2: أرسل تفاصيل الرحلة واحصل على طلب سعر منظم
+  H2: لماذا الحجز مع شركة يختلف؟
+  H2: أكثر رحلات الخليج طلباً
+  H2: ما الذي يجب معرفته قبل الحجز؟
+  H2: ما الذي تساعد GetVendora في تنسيقه؟
+  H2: ما الذي يجب على المسافر التأكد منه؟
+  H2: التوصيل الخاص في دول الخليج حسب الدولة
+  H2: توصيل المطارات
+  H2: جسر الملك فهد والحدود
+  H2: صفحات موجودة تساعدك في اختيار المسار
+  H2: طلب سعر فقط إلى أن يتم اعتماد جدول الأسعار
+  H2: إجابات مهمة قبل طلب السعر
+  H2: GetVendora تنسق الرحلة، لا ترسل سائقاً عشوائياً
+H3 count: 28
+  H3: 1. خيار السواق الخارجي
+  H3: 2. الحجز المنسق مع GetVendora
+  H3: 3. مناسب للعائلات والمطارات
+  H3: 4. مسؤولية واضحة
+  H3: البحرين إلى الخبر
+  H3: البحرين إلى الدمام
+  H3: البحرين إلى الرياض
+  H3: البحرين إلى العراق
+  H3: مدن المنطقة الشرقية
+  H3: قطر والدوحة
+  H3: الكويت ومدينة الكويت
+  H3: الإمارات وعمان
+  H3: متى تنطلق لرحلات المطار؟
+  H3: كيف تختار حجم السيارة؟
+  H3: حدود توصيل الطرود والمستندات
+  H3: ما الذي تجهزه قبل السفر عبر الحدود؟
+  H3: ماذا ترسل في واتساب؟
+  H3: رحلات العودة في نفس اليوم
+  H3: الرحلات الطويلة داخل الخليج
+  H3: العائلة والشنط
+  H3: رجال الأعمال وVIP
+  H3: السعودية
+  H3: قطر
+  H3: الكويت
+  H3: الإمارات
+  H3: عمان
+  H3: العراق
+  H3: ما الذي يؤثر على السعر؟
+Alts: ['سيارة خاصة من GetVendora جاهزة لرحلة نقل بين دول الخليج', 'مساحة شنط وحقائب لرحلة خاصة بين دول الخليج', 'حقائب سفر عائلية وعربة أطفال مرتبة في صندوق سيارة خاصة', 'تنسيق توصيل مستندات وطرود بين دول الخليج', 'سيارة خاصة مناسبة لرحلات رجال الأعمال بين البحرين ودول الخليج', 'توصيل مطار خاص وحقائب السفر في صندوق السيارة ليلاً', 'خريطة مسارات التوصيل الخاص بين البحرين والسعودية وقطر والكويت والإمارات وعمان']
+FAQs count: 8
+  Q: هل يوجد سعر ثابت؟
+  A: لا يوجد سعر ثابت منشور حالياً. يتم إرسال السعر بعد معرفة المسار والوقت وعدد الركاب والشنط ونوع الرحلة.
+
+  Q: هل تضمنون عبور الحدود أو التأشيرة؟
+  A: لا. لا يمكن ضمان الموافقة الحدودية أو التأشيرة أو أي إجراء رسمي. المسافر مسؤول عن مستنداته ومتطلبات سفره.
+
+  Q: هل يمكن الحجز لعودة في نفس اليوم؟
+  A: نعم يمكن طلب ذلك، لكن السعر والتوفر يعتمدان على المسار ووقت الانتظار والعودة.
+
+  Q: متى أنطلق لرحلة المطار؟
+  A: أرسل رقم الرحلة ووقت الوصول أو المغادرة المطلوب. الرحلات التي تعبر الحدود تحتاج وقتاً إضافياً للطريق أو الجسر أو الإجراءات الرسمية.
+
+  Q: ما التفاصيل المطلوبة في واتساب؟
+  A: أرسل نقطة الانطلاق، الوجهة، التاريخ، الوقت، عدد الركاب، عدد الشنط، ورقم الرحلة إذا كانت الرحلة للمطار.
+
+  Q: هل يمكن توصيل مستندات أو طرود؟
+  A: يمكن طلب توصيل مستندات أو طرود حسب نوع الغرض والمسار والوقت. يجب توضيح التفاصيل قبل القبول.
+
+  Q: هل الصفحة بديل عن صفحات المسارات؟
+  A: لا. هذه الصفحة دليل رئيسي يربط المسارات المهمة، بينما صفحات المسارات تعطي تفاصيل أكثر لكل اتجاه.
+
+  Q: ما حجم السيارة المناسب؟
+  A: أرسل عدد الركاب والشنط والأطفال ومدة الطريق واحتياج الراحة حتى يتم تنسيق طلب السيارة المناسبة بدل التخمين من عدد الركاب فقط.
+
+Links count: 41
+  Link: #main -> تجاوز إلى المحتوى
+  Link: /bahrain-saudi-gcc-transport/ -> V
+        
+          GetVendora Transport
+          دليل التوصيل الخاص بين دول الخليج
+  Link: #planner -> خطط الرحلة
+  Link: #routes -> المسارات
+  Link: #airports -> المطارات
+  Link: #faq -> الأسئلة
+  Link: ../en/gcc-private-transport-guide/ -> النسخة الإنجليزية
+  Link: #planner -> خطط رحلتك واطلب تسعيرها
+  Link: #planner -> مخطط الرحلة ↙
+  Link: #routes -> المسارات الشائعة ↙
+  Link: #saudi-causeway -> السعودية والجسر ↙
+  Link: #airports -> توصيل المطارات ↙
+  Link: #countries -> أدلة الدول ↙
+  Link: #fleet-luggage -> السيارة والشنط ↙
+  Link: #family -> سفر العائلات ↙
+  Link: #business-vip -> رجال الأعمال وVIP ↙
+  Link: #parcel-docs -> الطرود والمستندات ↙
+  Link: #pricing -> إرشاد السعر ↙
+  Link: #faq -> الأسئلة الشائعة ↙
+  Link: #planner -> احجز رحلة منسقة مع GetVendora
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-khobar/ -> تفاصيل المسار
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-dammam/ -> تفاصيل المسار
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-riyadh/ -> تفاصيل المسار
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-iraq/ -> تفاصيل المسار
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-qatar/ -> مسار قطر
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-kuwait/ -> مسار الكويت
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-uae/ -> مسار الإمارات
+  Link: /bahrain-saudi-gcc-transport/airport-transfer/ -> خدمات المطار
+  Link: /bahrain-saudi-gcc-transport/king-fahd-causeway-guide/ -> دليل الجسر
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-saudi/ -> البحرين إلى السعودية
+  Link: /bahrain-saudi-gcc-transport/saudi-to-bahrain/ -> السعودية إلى البحرين
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-dammam-airport/ -> البحرين إلى مطار الدمام
+  Link: /bahrain-saudi-gcc-transport/dammam-airport-to-bahrain/ -> مطار الدمام إلى البحرين
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-qatar/ -> البحرين إلى قطر
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-kuwait/ -> البحرين إلى الكويت
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-uae/ -> البحرين إلى الإمارات
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-oman/ -> البحرين إلى عمان
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-najaf/ -> البحرين إلى النجف
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-karbala/ -> البحرين إلى كربلاء
+  Link: /bahrain-saudi-gcc-transport/parcel-delivery/ -> توصيل الطرود
+  Link: /bahrain-saudi-gcc-transport/passenger-transport/ -> نقل الركاب
+
+=========================================
+ENGLISH PAGE DETAILS
+=========================================
+Title: GCC Private Transport Guide | Bahrain, Saudi Arabia, Qatar, Kuwait, UAE, Oman & Iraq
+H1: ['GCC Private Transport Guide by GetVendora']
+H2 count: 14
+  H2: What this GCC transport guide covers
+  H2: Send the right trip details before asking for a quote
+  H2: Why booking with a company is different
+  H2: High-demand private transport routes
+  H2: What to prepare before booking
+  H2: What GetVendora helps coordinate
+  H2: What must be checked by the passenger
+  H2: GCC private transport by country
+  H2: Airport transfers
+  H2: King Fahd Causeway and borders
+  H2: Existing pages that help customers choose a route
+  H2: Request quote only until pricing is approved
+  H2: Important answers before requesting a quote
+  H2: GetVendora coordinates the journey, not just a random driver
+H3 count: 28
+  H3: 1. Random driver option
+  H3: 2. GetVendora coordinated booking
+  H3: 3. Best for families and airport trips
+  H3: 4. Clear responsibility
+  H3: Bahrain to Khobar
+  H3: Bahrain to Dammam
+  H3: Bahrain to Riyadh
+  H3: Bahrain to Iraq
+  H3: Eastern Province cities
+  H3: Qatar and Doha
+  H3: Kuwait and Kuwait City
+  H3: UAE and Oman
+  H3: When to leave for airport trips
+  H3: How to choose vehicle size
+  H3: Parcel and document limitations
+  H3: What to prepare before border travel
+  H3: What to send on WhatsApp
+  H3: Same-day return trips
+  H3: Long-distance GCC travel
+  H3: Family and luggage planning
+  H3: Business and VIP planning
+  H3: Saudi Arabia
+  H3: Qatar
+  H3: Kuwait
+  H3: UAE
+  H3: Oman
+  H3: Iraq
+  H3: What affects the quote?
+Alts: ['GetVendora private transport vehicle ready for a GCC cross-border journey', 'Luggage space for private GCC transport trips', 'Family suitcases and stroller organized in private transfer trunk', 'Parcel and document delivery coordination for GCC routes', 'Private vehicle for business transport between Bahrain and GCC destinations', 'Private airport transfer suitcases in vehicle trunk at night', 'GCC route map for Bahrain Saudi Qatar Kuwait UAE and Oman private transport']
+FAQs count: 8
+  Q: Do you publish fixed prices here?
+  A: No. This page uses request-quote placeholders until an approved pricing table is provided.
+
+  Q: Do you guarantee border or visa approval?
+  A: No. Border approval, visa approval and official travel procedures cannot be guaranteed. Passengers are responsible for their documents and requirements.
+
+  Q: Can I request a same-day return?
+  A: Yes, you can request it. Quote and availability depend on route, waiting time and return timing.
+
+  Q: When should I leave for an airport trip?
+  A: Send the flight number and required arrival or departure time. Routes that cross borders need extra time for road, Causeway or official procedures.
+
+  Q: What should I send on WhatsApp?
+  A: Send pickup point, destination, date, time, passengers, luggage and flight number if the trip is airport-related.
+
+  Q: Can you deliver documents or parcels?
+  A: Parcel and document delivery can be requested depending on item type, route and timing. Details must be confirmed first.
+
+  Q: Does this replace the route pages?
+  A: No. This is the master guide. Route pages remain useful for exact city, airport and country details.
+
+  Q: Which vehicle size should I request?
+  A: Share passenger count, luggage, children, trip length and comfort needs. GetVendora can then coordinate the right vehicle request instead of guessing from passenger count alone.
+
+Links count: 41
+  Link: #main -> Skip to content
+  Link: /bahrain-saudi-gcc-transport/en/ -> V
+        
+          GetVendora Transport
+          GCC private transport guide
+  Link: #planner -> Plan trip
+  Link: #routes -> Routes
+  Link: #airports -> Airports
+  Link: #faq -> FAQs
+  Link: ../../gcc-private-transport-guide/ -> Arabic version
+  Link: #planner -> Plan Trip & Request Quote
+  Link: #planner -> Route planner ↘
+  Link: #routes -> Popular routes ↘
+  Link: #saudi-causeway -> Saudi and Causeway ↘
+  Link: #airports -> Airport transfers ↘
+  Link: #countries -> Country guides ↘
+  Link: #fleet-luggage -> Fleet and luggage ↘
+  Link: #family -> Family travel ↘
+  Link: #business-vip -> Business/VIP ↘
+  Link: #parcel-docs -> Parcel/document delivery ↘
+  Link: #pricing -> Pricing guidance ↘
+  Link: #faq -> FAQs ↘
+  Link: #planner -> Book a coordinated GetVendora trip
+  Link: /bahrain-saudi-gcc-transport/en/bahrain-to-khobar/ -> View route
+  Link: /bahrain-saudi-gcc-transport/en/bahrain-to-dammam/ -> View route
+  Link: /bahrain-saudi-gcc-transport/en/bahrain-to-riyadh/ -> View route
+  Link: /bahrain-saudi-gcc-transport/en/bahrain-to-iraq/ -> View route
+  Link: /bahrain-saudi-gcc-transport/en/bahrain-to-qatar/ -> Qatar route
+  Link: /bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/ -> Kuwait route
+  Link: /bahrain-saudi-gcc-transport/en/bahrain-to-uae/ -> UAE route
+  Link: /bahrain-saudi-gcc-transport/airport-transfer/ -> Airport transfers
+  Link: /bahrain-saudi-gcc-transport/king-fahd-causeway-guide/ -> Causeway guide
+  Link: /bahrain-saudi-gcc-transport/en/bahrain-to-saudi/ -> Bahrain to Saudi Arabia transport
+  Link: /bahrain-saudi-gcc-transport/en/saudi-to-bahrain/ -> Saudi Arabia to Bahrain transport
+  Link: /bahrain-saudi-gcc-transport/bahrain-to-dammam-airport/ -> Bahrain to Dammam Airport transfer
+  Link: /bahrain-saudi-gcc-transport/dammam-airport-to-bahrain/ -> Dammam Airport to Bahrain taxi
+  Link: /bahrain-saudi-gcc-transport/en/bahrain-to-qatar/ -> Bahrain to Qatar private transport
+  Link: /bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/ -> Bahrain to Kuwait private transport
+  Link: /bahrain-saudi-gcc-transport/en/bahrain-to-uae/ -> Bahrain to UAE private transport
+  Link: /bahrain-saudi-gcc-transport/en/bahrain-to-oman/ -> Bahrain to Oman private transport
+  Link: /bahrain-saudi-gcc-transport/en/bahrain-to-najaf/ -> Bahrain to Najaf transport
+  Link: /bahrain-saudi-gcc-transport/en/bahrain-to-karbala/ -> Bahrain to Karbala transport
+  Link: /bahrain-saudi-gcc-transport/en/parcel-delivery/ -> Parcel delivery
+  Link: /bahrain-saudi-gcc-transport/en/passenger-transport/ -> Passenger transport

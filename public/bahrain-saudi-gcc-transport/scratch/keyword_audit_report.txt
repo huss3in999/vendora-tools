@@ -1,0 +1,108 @@
+=== KEYWORD COVERAGE REPORT ===
+Total Keywords checked: 90
+Covered: 90
+Score: 100.00%
+
+Group: country
+  Bahrain / Al-Bahrain: COVERED
+  Saudi Arabia / Al-Saudia: COVERED
+  Qatar / Qatar: COVERED
+  Kuwait / Al-Kuwait: COVERED
+  UAE / Al-Imarat: COVERED
+  Oman / Oman: COVERED
+  Iraq / Al-Iraq: COVERED
+Group: city
+  Khobar: COVERED
+  Dammam: COVERED
+  Riyadh: COVERED
+  Saar: COVERED
+  Seef: COVERED
+  Juffair: COVERED
+  Dhahran: COVERED
+  Jubail: COVERED
+  Qatif: COVERED
+  Hofuf: COVERED
+  Al Ahsa: COVERED
+  Ras Tanura: COVERED
+  Abqaiq: COVERED
+  Najaf: COVERED
+  Karbala: COVERED
+  Baghdad: COVERED
+  Basra: COVERED
+Group: airport
+  Bahrain Airport: COVERED
+  Dammam Airport: COVERED
+  Riyadh Airport: COVERED
+  Doha Airport: COVERED
+  Kuwait Airport: COVERED
+  Najaf Airport: COVERED
+  Baghdad Airport: COVERED
+Group: arabic_phrase
+  transport from Bahrain to Saudi: COVERED
+  delivery from Bahrain to Dammam: COVERED
+  private driver from Bahrain: COVERED
+  private car: COVERED
+  airport delivery: COVERED
+  King Fahd causeway: COVERED
+  limousine Bahrain Saudi: COVERED
+  towsil mashawir: COVERED
+  driver for causeway: COVERED
+  reception from DMM airport: COVERED
+  family transfer: COVERED
+  pilgrim transfer: COVERED
+  arbaeen transfer: COVERED
+Group: english_phrase
+  Bahrain to Saudi transport: COVERED
+  private driver: COVERED
+  private taxi: COVERED
+  airport transfers: COVERED
+  family travel: COVERED
+  business travel: COVERED
+  King Fahd causeway private car: COVERED
+  KSA cross-border chauffeur: COVERED
+  corporate causeway transfer: COVERED
+  same car across border: COVERED
+  visa run transport: COVERED
+  same day visa U-turn: COVERED
+Group: gulf_dialect
+  abi towsil: COVERED
+  abgha mashwar: COVERED
+  kam towsil / bikam: COVERED
+  shlon ahjiz: COVERED
+  shno el-se3r: COVERED
+  waddi: COVERED
+  mashwar: COVERED
+Group: airport_intent
+  flight number: COVERED
+  airport pickup: COVERED
+  Bahrain Airport to Khobar taxi: COVERED
+  Dammam Airport to Bahrain pickup: COVERED
+Group: price_intent
+  what affects the quote: COVERED
+  no fixed price: COVERED
+  request a quote: COVERED
+  Bahrain to Dammam taxi price: COVERED
+Group: family_intent
+  GMC Yukon: COVERED
+  7-seater: COVERED
+  extra luggage: COVERED
+  child seat: COVERED
+Group: business_vip_intent
+  business meeting: COVERED
+  executive chauffeur: COVERED
+  VIP airport transfer: COVERED
+  Aramco compounds / Dhahran Aramco: COVERED
+  Diplomatic Area: COVERED
+Group: whats_app_intent
+  WhatsApp booking: COVERED
+  what details to send: COVERED
+  send pickup point: COVERED
+Group: border_causeway_intent
+  King Fahd Causeway: COVERED
+  wait time: COVERED
+  Jesr app: COVERED
+  tolls: COVERED
+Group: iraq_ziyarat_intent
+  Ziyarat: COVERED
+  Najaf / kearbala routes: COVERED
+  Arbaeen transport: COVERED
