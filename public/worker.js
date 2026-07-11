@@ -124,6 +124,88 @@ function publicContactSection(settings, lang) {
   return `<section class="section public-contact-section"><div class="container"><div class="glass public-contact-card"><h2>${isEn ? 'Contact numbers' : 'أرقام التواصل'}</h2>${numbers.join('')}</div></div></section>`;
 }
 
+function publicPricingRoutes(config) {
+  return (config.routes || []).filter((route) => (
+    route.is_active !== false
+    && route.public_price_enabled !== false
+    && route.price_kind !== 'request_quote'
+    && route.price_bhd != null
+    && Number.isFinite(Number(route.price_bhd))
+  ));
+}
+
+function pricingCards(config, lang) {
+  const isEn = lang === 'en';
+  const settings = config.settings || DEFAULT_PUBLIC_SETTINGS;
+  const phone = settings.booking_whatsapp_enabled ? settings.booking_whatsapp : '';
+  return publicPricingRoutes(config).map((route) => {
+    const amount = Number(route.price_bhd).toFixed(Number(route.price_bhd) % 1 ? 3 : 0);
+    const name = isEn ? route.route_name_en : route.route_name_ar;
+    const prefix = route.price_kind === 'from' ? (isEn ? 'From ' : 'ابتداءً من ') : '';
+    const unit = route.unit_kind === 'per_day'
+      ? (isEn ? 'per additional day' : 'لليوم الإضافي')
+      : route.unit_kind === 'package'
+        ? (isEn ? 'per package' : 'للباقة')
+        : (isEn ? 'per vehicle, one way' : 'للمركبة، اتجاه واحد');
+    const sar = route.approximate_sar_enabled
+      ? `<span>${isEn ? 'approx.' : 'تقريباً'} ${Math.round(Number(route.price_bhd) * Number(settings.sar_per_bhd || 10))} SAR</span>`
+      : '';
+    const included = isEn ? route.included_en : route.included_ar;
+    const message = isEn
+      ? `Hello, I would like to check availability for ${name}.`
+      : `مرحباً، أود التحقق من توفر خدمة ${name}.`;
+    const action = phone
+      ? `<a href="https://wa.me/${escapeHtml(phone)}?text=${encodeURIComponent(message)}" data-track-wa>${isEn ? 'Check availability' : 'تحقق من التوفر'}</a>`
+      : '';
+    return `<article class="price-card" data-route="${escapeHtml(route.route_slug)}"><h2>${escapeHtml(name)}</h2><p class="price"><strong>${escapeHtml(prefix)}${escapeHtml(amount)} BHD</strong>${sar}</p><p>${unit}</p>${included ? `<p>${escapeHtml(included)}</p>` : ''}${action}</article>`;
+  }).join('');
+}
+
+function pricingSchema(url, config, lang) {
+  const isEn = lang === 'en';
+  const routes = publicPricingRoutes(config);
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: routes.map((route, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      item: {
+        '@type': 'Service',
+        name: isEn ? route.route_name_en : route.route_name_ar,
+        url: `${url}#${route.route_slug}`,
+        offers: {
+          '@type': 'Offer',
+          price: Number(route.price_bhd),
+          priceCurrency: 'BHD',
+          description: route.unit_kind === 'package'
+            ? (isEn ? 'Per complete vehicle package' : 'لباقة المركبة الكاملة')
+            : route.unit_kind === 'per_day'
+              ? (isEn ? 'Per qualifying additional vehicle day' : 'لكل يوم مركبة إضافي مؤهل')
+              : (isEn ? 'One way per complete vehicle' : 'اتجاه واحد للمركبة كاملة'),
+        },
+      },
+    })),
+  }).replace(/</g, '\\u003c');
+}
+
+function homepageFaq(settings) {
+  const capacity = escapeHtml(settings.passenger_capacity_ar || 'حتى 7 ركاب حسب المركبة المؤكدة وسعة الأمتعة.');
+  const payments = [settings.cash_enabled ? 'الدفع النقدي' : '', settings.benefitpay_enabled ? 'BenefitPay' : ''].filter(Boolean).join(' أو ');
+  return [
+    ['هل السعر للشخص أم للسيارة كاملة؟', 'الأسعار العامة المعروضة هي للمركبة كاملة وليست لكل راكب.'],
+    ['هل الأسعار للذهاب فقط؟', 'نعم، سعر المسار القياسي هو لاتجاه واحد ما لم يُذكر أنه باقة أو يوم إضافي. اطلب تسعيرة منفصلة للذهاب والعودة.'],
+    ['كم عدد الركاب المسموح؟', capacity],
+    ['هل رسوم جسر الملك فهد مشمولة؟', 'توضح بطاقة كل مسار ما إذا كانت الرسوم المعتادة ورسوم الجسر مشمولة. راجع وصف السعر قبل إرسال الطلب.'],
+    ['هل تتوفر رحلة ذهاب وعودة؟', 'نعم، يمكن طلب رحلة ذهاب وعودة، ويُحسب السعر وفق المسار والمدة وأيام الانتظار المطلوبة.'],
+    ['هل يمكن الحجز للمطار؟', 'نعم، تتوفر طلبات التوصيل والاستقبال من المطارات. أرسل رقم الرحلة والموعد وعدد الركاب والأمتعة.'],
+    ['هل يمكن ترتيب سيارة ليوم كامل؟', 'نعم، تتوفر باقات محددة ليوم كامل حسب الوجهة والتوفر.'],
+    ['ما المعلومات المطلوبة لتأكيد الحجز؟', 'مكان وموعد الاستلام، الوجهة، عدد الركاب، عدد الحقائب، وأي رقم رحلة أو طلب خاص.'],
+    ['كيف يتم الدفع؟', payments ? `طرق الدفع المتاحة حالياً: ${escapeHtml(payments)}.` : 'تُؤكد طريقة الدفع المتاحة عند تأكيد الطلب.'],
+    ['كيف يتم تأكيد السيارة والتوفر؟', 'بعد إرسال التفاصيل عبر واتساب، يتم تأكيد السائق والمركبة المناسبة والسعر النهائي والتوفر قبل الرحلة.'],
+  ].map(([question, answer]) => `<details class="faq-item"><summary>${question}</summary><p>${answer}</p></details>`).join('');
+}
+
 async function rewriteTransportHtml(request, response, env) {
   const contentType = response.headers.get('content-type') || '';
   const path = new URL(request.url).pathname;
@@ -140,6 +222,7 @@ async function rewriteTransportHtml(request, response, env) {
   const bookingNumber = route?.whatsapp_override || settings.booking_whatsapp;
   const canonical = `https://getvendora.net${path}`;
   const serialized = JSON.stringify(config).replace(/</g, '\\u003c');
+  const isPricingPage = slug === 'prices';
 
   const transformed = new HTMLRewriter()
     .on('script[type="application/ld+json"]', { element(element) {
@@ -147,6 +230,21 @@ async function rewriteTransportHtml(request, response, env) {
     } })
     .on('head', { element(element) {
       element.append(`<script type="application/json" id="transport-public-config">${serialized}</script><script type="application/ld+json" data-vendora-schema>${publicSchema(canonical, config, route, lang)}</script>`, { html: true });
+    } })
+    .on('#priceList', { element(element) {
+      if (isPricingPage) element.setInnerContent(pricingCards(config, lang), { html: true });
+    } })
+    .on('#pricesSchema', { element(element) {
+      if (isPricingPage) element.setInnerContent(pricingSchema(canonical, config, lang));
+    } })
+    .on('.faq-wrap', { element(element) {
+      if (slug === 'home' && lang === 'ar') element.setInnerContent(homepageFaq(settings), { html: true });
+    } })
+    .on('.phase7-authority-links', { element(element) {
+      element.remove();
+    } })
+    .on('.en-sub', { element(element) {
+      if (lang === 'ar') element.remove();
     } })
     .on('a', { element(element) {
       const href = element.getAttribute('href') || '';
@@ -235,6 +333,17 @@ export default {
     const path = logicalPathname(url);
 
     try {
+      if (path === '/ai-chat-test' || path.startsWith('/ai-chat-test/')
+        || path === '/scratch' || path.startsWith('/scratch/')
+        || path === '/tests' || path.startsWith('/tests/')
+        || path === '/test-results' || path.startsWith('/test-results/')
+        || path === '/api/debug' || path.startsWith('/api/debug/')) {
+        return new Response('Not found', {
+          status: 404,
+          headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'no-store' },
+        });
+      }
+
       if (path.startsWith('/demo/maroc-market/api/')) {
         return await dispatchPagesFunction(marocMarketApi, request, env, ctx);
       }

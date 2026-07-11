@@ -13,6 +13,22 @@
   },
   "routes": [
     {
+      "pattern": "getvendora.net/api/transport/*",
+      "zone_name": "getvendora.net"
+    },
+    {
+      "pattern": "getvendora.net/bahrain-saudi-gcc-transport/*",
+      "zone_name": "getvendora.net"
+    },
+    {
+      "pattern": "www.getvendora.net/api/transport/*",
+      "zone_name": "getvendora.net"
+    },
+    {
+      "pattern": "www.getvendora.net/bahrain-saudi-gcc-transport/*",
+      "zone_name": "getvendora.net"
+    },
+    {
       "pattern": "getvendora.net/*",
       "zone_name": "getvendora.net"
     },

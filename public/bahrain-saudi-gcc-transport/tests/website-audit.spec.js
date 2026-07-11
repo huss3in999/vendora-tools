@@ -5,7 +5,22 @@ import { fileURLToPath } from 'node:url';
 
 const LIVE = process.env.AUDIT_LIVE === '1' || process.env.CI === 'true';
 const baseURL = LIVE ? 'https://getvendora.net' : 'http://127.0.0.1:4173';
-const ADMIN_TOKEN = process.env.TRANSPORT_ADMIN_TOKEN || '33404044';
+const ADMIN_TOKEN = process.env.TRANSPORT_ADMIN_TOKEN || '';
+
+async function createLiveLead(request) {
+  const response = await request.post(`${baseURL}/api/transport/event`, {
+    data: {
+      event: 'whatsapp_click',
+      routeSlug: 'production-audit',
+      routeLabel: 'Production audit',
+      pagePath: '/bahrain-saudi-gcc-transport/en/prices/',
+      language: 'en',
+      serviceType: 'private_transport',
+    },
+  });
+  expect(response.status()).toBe(201);
+  return response.json();
+}
 
 test.describe.configure({ mode: 'parallel' });
 
@@ -14,9 +29,7 @@ test.describe('Live API health (requires deployed worker)', () => {
 
   for (const path of [
     '/api/transport/health',
-    '/api/transport/passenger-care?ref=GCC-00000000',
     '/bahrain-saudi-gcc-transport/api/transport/health',
-    '/bahrain-saudi-gcc-transport/api/transport/passenger-care?ref=GCC-00000000',
   ]) {
     test(`GET ${path} returns 200`, async ({ request }) => {
       const res = await request.get(`${baseURL}${path}`);
@@ -26,10 +39,22 @@ test.describe('Live API health (requires deployed worker)', () => {
     });
   }
 
+  for (const path of [
+    '/api/transport/passenger-care?ref=GCC-00000000',
+    '/bahrain-saudi-gcc-transport/api/transport/passenger-care?ref=GCC-00000000',
+  ]) {
+    test(`GET ${path} securely rejects a missing care token`, async ({ request }) => {
+      const res = await request.get(`${baseURL}${path}`);
+      expect(res.status()).toBe(400);
+      const data = await res.json();
+      expect(data.ok).toBe(false);
+    });
+  }
+
   test('Passenger Care POST submit and duplicate lock', async ({ request }) => {
-    const ref = `GCC-${Date.now().toString(16).slice(-8).toUpperCase().padStart(8, '0')}`;
+    const lead = await createLiveLead(request);
     const post1 = await request.post(`${baseURL}/api/transport/passenger-care`, {
-      data: { ref, outcome: 'completed', language: 'en', comment: 'audit' },
+      data: { token: lead.care_token, outcome: 'completed', language: 'en', comment: 'audit' },
     });
     expect(post1.status()).toBe(201);
     const body1 = await post1.json();
@@ -37,18 +62,19 @@ test.describe('Live API health (requires deployed worker)', () => {
     expect(body1.already_submitted).toBe(false);
 
     const post2 = await request.post(`${baseURL}/api/transport/passenger-care`, {
-      data: { ref, outcome: 'completed', language: 'en' },
+      data: { token: lead.care_token, outcome: 'completed', language: 'en' },
     });
     expect(post2.status()).toBe(200);
     const body2 = await post2.json();
     expect(body2.already_submitted).toBe(true);
 
-    await request.delete(`${baseURL}/api/transport/admin?resource=passenger-care&booking_ref=${encodeURIComponent(ref)}`, {
+    if (ADMIN_TOKEN) await request.delete(`${baseURL}/api/transport/admin?resource=passenger-care&booking_ref=${encodeURIComponent(lead.booking_ref)}`, {
       headers: { authorization: `Bearer ${ADMIN_TOKEN}` },
     });
   });
 
   test('Admin unlock and dashboard', async ({ request }) => {
+    test.skip(!ADMIN_TOKEN, 'TRANSPORT_ADMIN_TOKEN is required for authenticated production verification');
     const summary = await request.get(`${baseURL}/api/transport/admin?resource=summary`, {
       headers: { authorization: `Bearer ${ADMIN_TOKEN}` },
     });
@@ -82,12 +108,12 @@ test.describe('GCC Transport tracking samples', () => {
 
   test('Care page POST works in browser', async ({ page }) => {
     test.skip(!LIVE, 'Live only');
-    const ref = `GCC-${Date.now().toString(16).slice(-8).toUpperCase().padStart(8, '0')}`;
-    await page.goto(`${baseURL}/bahrain-saudi-gcc-transport/care/en/?ref=${ref}`, { waitUntil: 'domcontentloaded' });
+    const lead = await createLiveLead(page.request);
+    await page.goto(`${baseURL}/bahrain-saudi-gcc-transport/care/en/?token=${encodeURIComponent(lead.care_token)}`, { waitUntil: 'domcontentloaded' });
     await page.locator('[data-outcome="completed"]').click();
     await page.locator('#submitBtn').click();
     await expect(page.locator('#thanksView')).toBeVisible({ timeout: 15000 });
-    await page.request.delete(`${baseURL}/api/transport/admin?resource=passenger-care&booking_ref=${encodeURIComponent(ref)}`, {
+    if (ADMIN_TOKEN) await page.request.delete(`${baseURL}/api/transport/admin?resource=passenger-care&booking_ref=${encodeURIComponent(lead.booking_ref)}`, {
       headers: { authorization: `Bearer ${ADMIN_TOKEN}` },
     });
   });
