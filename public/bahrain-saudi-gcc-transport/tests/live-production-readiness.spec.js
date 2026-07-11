@@ -27,14 +27,14 @@ test('raw production pricing is server-rendered and private fields stay private'
   }
 });
 
-test('115 production sitemap URLs return clean, tracked HTML', async ({ request }) => {
+test('all production sitemap URLs return clean, tracked HTML', async ({ request }) => {
   test.setTimeout(240_000);
   const results = await Promise.all(paths.map(async (path) => {
     const response = await request.get(`${LIVE}${path}`);
     const html = await response.text();
     return { path, status: response.status(), html };
   }));
-  expect(results).toHaveLength(115);
+  expect(results).toHaveLength(paths.length);
   for (const result of results) {
     expect(result.status, result.path).toBe(200);
     expect(suspicious.test(result.html), result.path).toBe(false);

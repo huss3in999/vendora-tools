@@ -653,6 +653,16 @@
     ['الدفع نقداً أو BenefitPay مع توفر رحلات ذهاب وعودة.', 'Cash or BenefitPay payment with round-trip options available.'],
     ['اختر الخدمة ونقطة الانطلاق والوجهة، ثم أرسل الطلب مباشرة إلى الواتساب.', 'Choose the service, pickup point, and destination, then send the request directly to WhatsApp.'],
     ['أضف الوقت أو عدد الركاب أو أي ملاحظة مفيدة.', 'Add the time, passenger count, or any useful note.'],
+    ['سيارة مع سائق يوم كامل وVIP في البحرين | GetVendora', 'Bahrain full-day car with driver and VIP transport | GetVendora'],
+    ['سيارة مع سائق ليوم كامل وخدمة VIP في البحرين', 'Full-day car with driver and VIP transport in Bahrain'],
+    ['متى تناسبك خدمة اليوم الكامل؟', 'When is a full-day driver useful?'],
+    ['التسوق والجولات', 'Shopping and sightseeing'],
+    ['الاجتماعات والأعمال', 'Business meetings'],
+    ['VIP والضيوف', 'VIP guests'],
+    ['أكثر من يوم', 'Multi-day plans'],
+    ['ما الذي يجب تأكيده قبل الحجز؟', 'What must be confirmed before booking?'],
+    ['اطلب سيارة مع سائق', 'Request a car with driver'],
+    ['الساعات والمواقع', 'Hours and stops'],
   ].sort((a, b) => b[0].length - a[0].length);
   const exactTranslations = new Map(translations.map(([ar, en]) => [ar.trim(), en]));
 

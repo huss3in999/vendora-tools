@@ -27,6 +27,7 @@ function transportRouteSlug(pathname) {
   const aliases = {
     'king-fahd-causeway-guide': 'king-fahd-causeway',
     'dammam-airport-to-bahrain': 'bahrain-to-dammam-airport',
+    'full-day-vip-driver': 'bahrain-sightseeing-full-day',
   };
   return aliases[slug] || slug;
 }
@@ -80,6 +81,20 @@ function publicSchema(url, config, route, lang) {
     url,
     inLanguage: lang,
     isPartOf: { '@id': `https://getvendora.net${base}#website` },
+  }, {
+    '@type': 'BreadcrumbList',
+    '@id': `${url}#breadcrumb`,
+    itemListElement: [{
+      '@type': 'ListItem',
+      position: 1,
+      name: lang === 'en' ? 'Transport home' : 'الرئيسية',
+      item: `https://getvendora.net${base}${lang === 'en' ? 'en/' : ''}`,
+    }, {
+      '@type': 'ListItem',
+      position: 2,
+      name: route ? (lang === 'en' ? route.route_name_en : route.route_name_ar) : (lang === 'en' ? 'Transport information' : 'معلومات النقل'),
+      item: url,
+    }],
   }];
   if (route) {
     const service = {
@@ -206,6 +221,13 @@ function homepageFaq(settings) {
   ].map(([question, answer]) => `<details class="faq-item"><summary>${question}</summary><p>${answer}</p></details>`).join('');
 }
 
+function arabicDmmAuthoritySection(path, settings) {
+  const inbound = path.includes('/dammam-airport-to-bahrain/');
+  const capacity = escapeHtml(settings.passenger_capacity_ar || 'حتى 7 ركاب حسب المركبة والأمتعة');
+  const payment = [settings.cash_enabled ? 'نقداً' : '', settings.benefitpay_enabled ? 'BenefitPay' : ''].filter(Boolean).join(' أو ');
+  return `<section class="section dmm-authority"><div class="container section-shell"><div class="section-head"><h2>${inbound ? 'دليل الاستقبال من مطار الملك فهد DMM إلى البحرين' : 'دليل التوصيل من البحرين إلى مطار الملك فهد DMM'}</h2><p>رمز DMM يعني مطار الملك فهد الدولي في الدمام. يتم تأكيد السائق والمركبة والوقت وسعة الحقائب قبل الرحلة.</p></div><div class="route-grid"><article class="route-card"><h3>ما المعلومات المطلوبة؟</h3><p>${inbound ? 'شركة الطيران ورقم الرحلة ووقت الوصول وعدد الركاب والحقائب والعنوان داخل البحرين.' : 'موقع الاستلام وموعد الإقلاع وشركة الطيران ورقم الرحلة وعدد الركاب والأطفال والحقائب.'}</p></article><article class="route-card"><h3>${inbound ? 'أين تكون نقطة اللقاء؟' : 'كم أبكر يجب المغادرة؟'}</h3><p>${inbound ? 'لا نفترض نقطة لقاء ثابتة؛ يتم الاتفاق على الصالة والموقع مع السائق عند التأكيد.' : 'يعتمد وقت الخروج على موقع الاستلام وازدحام الجسر وإجراءات الحدود وموعد إنهاء إجراءات الطيران. اترك هامشاً مريحاً وتحقق من شركة الطيران.'}</p></article><article class="route-card"><h3>كم عدد الركاب والحقائب؟</h3><p>${capacity}. سبعة ركاب مع حقائب كثيرة قد يحتاجون مركبة مختلفة أو سيارتين.</p></article><article class="route-card"><h3>هل يمكن طلب GMC/XL أو مقعد طفل؟</h3><p>يمكن إرسال الطلب، لكن نوع المركبة ومقعد الطفل يعتمدان على التوفر والتأكيد المسبق.</p></article><article class="route-card"><h3>${inbound ? 'ماذا لو تأخرت الرحلة؟' : 'هل السعر للمركبة أم للراكب؟'}</h3><p>${inbound ? 'أرسل تحديث التأخير عبر واتساب. متابعة الرحلة والانتظار المشمول لا يُفترضان ما لم يتم تأكيدهما.' : 'السعر العام المعروض للمركبة كاملة وليس لكل راكب، وهو لاتجاه واحد ما لم توضح إعدادات المسار غير ذلك.'}</p></article><article class="route-card"><h3>العودة والانتظار والتوقفات</h3><p>يمكن طلب عودة أو انتظار أو توقف إضافي، وتُؤكد مدته وسعره بصورة منفصلة قبل الرحلة.</p></article><article class="route-card"><h3>هل يمكن الاستفسار ليلاً؟</h3><p>يمكن إرسال الاستفسار على مدار 24 ساعة، بينما يبقى التوفر الفعلي ووقت الرد خاضعين للتأكيد.</p></article><article class="route-card"><h3>كيف يتم الدفع والتأكيد؟</h3><p>${payment ? `طرق الدفع المنشورة: ${escapeHtml(payment)}. ` : ''}بعد مراجعة التفاصيل يتم تأكيد السعر والسائق والمركبة والتوفر عبر واتساب.</p></article></div><div class="notice"><h3>الوثائق والحدود ومعلومات الرحلة</h3><p>قد يتغير وقت العبور بسبب حركة جسر الملك فهد وإجراءات الجوازات والجمارك. القواعد قابلة للتغيير ولا تضمن GetVendora دخول أي مسافر. تحقق من الأهلية والوثائق عبر <a href="https://www.bahrain.bh/wps/portal/ar/" rel="noopener">البوابة الوطنية لمملكة البحرين</a> و<a href="https://kfca.sa/" rel="noopener">المؤسسة العامة لجسر الملك فهد</a> و<a href="https://visa.visitsaudi.com/" rel="noopener">بوابة التأشيرة السعودية الرسمية</a>. تحقق من حالة الرحلة عبر <a href="https://kfia.sa/" rel="noopener">مطار الملك فهد الدولي</a> أو شركة الطيران.</p><p><small>آخر مراجعة لمعلومات السفر: 11 يوليو 2026.</small></p></div></div></section>`;
+}
+
 async function rewriteTransportHtml(request, response, env) {
   const contentType = response.headers.get('content-type') || '';
   const path = new URL(request.url).pathname;
@@ -262,6 +284,9 @@ async function rewriteTransportHtml(request, response, env) {
       if (slug === 'contact') {
         const contactHtml = publicContactSection(settings, lang);
         if (contactHtml) element.append(contactHtml, { html: true });
+      }
+      if (lang === 'ar' && (path.includes('/bahrain-to-dammam-airport/') || path.includes('/dammam-airport-to-bahrain/'))) {
+        element.append(arabicDmmAuthoritySection(path, settings), { html: true });
       }
     } })
     .transform(response);
