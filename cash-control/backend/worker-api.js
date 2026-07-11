@@ -22,6 +22,9 @@ const WALLET_BY_TYPE = {
   correction: 'daily_cash',
 };
 
+const DAILY_CASH_REMOVAL_TYPES = ['expense', 'cash_taken_by_owner'];
+const TOYS_REMOVAL_TYPES = ['toy_collected_by_owner'];
+const OVERDRAW_EPSILON = 0.0005;
 const SESSION_TTL_MS = 12 * 60 * 60 * 1000; // 12 hours
 
 function nowMs() {
@@ -573,6 +576,17 @@ function yearStart(dateStr = null) {
   return `${year}-01-01`;
 }
 
+function previousDateStr(dateStr = null) {
+  const parts = dateStr
+    ? {
+        year: parseInt(dateStr.slice(0, 4), 10),
+        month: parseInt(dateStr.slice(5, 7), 10),
+        day: parseInt(dateStr.slice(8, 10), 10),
+      }
+    : bahrainNowParts();
+  return dateStringFromParts(previousLocalDate(parts));
+}
+
 // Mon start
 function weekStart() {
   const p = bahrainNowParts();
@@ -581,6 +595,14 @@ function weekStart() {
   const diff = day === 0 ? 6 : day - 1;
   d.setUTCDate(d.getUTCDate() - diff);
   return d.toISOString().slice(0, 10);
+}
+
+function quarterStart(dateStr = null) {
+  const parts = dateStr
+    ? { year: parseInt(dateStr.slice(0, 4), 10), month: parseInt(dateStr.slice(5, 7), 10) }
+    : bahrainNowParts();
+  const startMonth = Math.floor((parts.month - 1) / 3) * 3 + 1;
+  return `${parts.year}-${String(startMonth).padStart(2, '0')}-01`;
 }
 
 // ─── Balance calculations ────────────────────────────────────────────────────
@@ -707,18 +729,56 @@ async function sumByType(env, { businessDate, monthStart: ms, types, wallet, inc
 
 async function calcToysBalance(env, includeTest, businessDate = null) {
   const { testClause } = activeFilter(includeTest);
-  const ms = monthStart(businessDate);
 
-  const rows = await env.DB.prepare(`
-    SELECT type, COALESCE(SUM(amount), 0) as total FROM transactions
+  const row = await env.DB.prepare(`
+    SELECT COALESCE(SUM(
+      CASE
+        WHEN type = 'toy_collection' THEN amount
+        WHEN type = 'toy_collected_by_owner' THEN -amount
+        ELSE 0
+      END
+    ), 0) as balance
+    FROM transactions
     WHERE wallet = 'toys_monthly' AND status = 'active' AND ${testClause}
-      AND type IN ('toy_collection', 'toy_collected_by_owner') AND business_date >= ?
-    GROUP BY type
-  `).bind(ms).all();
+      AND type IN ('toy_collection', 'toy_collected_by_owner')
+  `).first();
 
-  const map = {};
-  for (const row of rows.results || []) map[row.type] = row.total;
-  return (map.toy_collection || 0) - (map.toy_collected_by_owner || 0);
+  return row?.balance || 0;
+}
+
+function appendOverdrawReason(note, reason) {
+  const reasonText = (reason || '').trim();
+  if (!reasonText) return note || null;
+  return note ? `${note}\nOverdraw reason: ${reasonText}` : `Overdraw reason: ${reasonText}`;
+}
+
+async function requireOverdrawReasonIfNeeded(env, {
+  type,
+  amount,
+  businessDate,
+  includeTest,
+  overdrawReason,
+}) {
+  let available = null;
+  let label = '';
+
+  if (DAILY_CASH_REMOVAL_TYPES.includes(type)) {
+    available = await calcExpectedCash(env, businessDate, includeTest);
+    label = 'worker cash';
+  } else if (TOYS_REMOVAL_TYPES.includes(type)) {
+    available = await calcToysBalance(env, includeTest, businessDate);
+    label = 'toys balance';
+  } else {
+    return;
+  }
+
+  if (amount <= available + OVERDRAW_EPSILON) return;
+  if ((overdrawReason || '').trim()) return;
+
+  throw httpError(
+    409,
+    `This is more than the available ${label} (${available.toFixed(3)} BD). Enter a reason if it was paid from POS or owner money.`,
+  );
 }
 
 async function getTodaySums(env, businessDate, includeTest) {
@@ -766,6 +826,107 @@ async function getRecentActivity(env, includeTest, limit = 10) {
   return rows.results || [];
 }
 
+function applyTransactionFilters(sql, binds, params, today) {
+  const period = params.get('period');
+  const dateFrom = params.get('date_from');
+  const dateTo = params.get('date_to');
+
+  if (dateFrom) {
+    sql += ' AND business_date >= ?';
+    binds.push(dateFrom);
+  }
+
+  if (dateTo) {
+    sql += ' AND business_date <= ?';
+    binds.push(dateTo);
+  }
+
+  if (!dateFrom && !dateTo) {
+    if (period === 'today') {
+      sql += ' AND business_date = ?';
+      binds.push(today);
+    } else if (period === 'yesterday') {
+      sql += ' AND business_date = ?';
+      binds.push(previousDateStr(today));
+    } else if (period === 'week') {
+      sql += ' AND business_date >= ?';
+      binds.push(weekStart());
+    } else if (period === 'month') {
+      sql += ' AND business_date >= ?';
+      binds.push(monthStart(today));
+    } else if (period === 'quarter') {
+      sql += ' AND business_date >= ?';
+      binds.push(quarterStart(today));
+    } else if (period === 'year') {
+      sql += ' AND business_date >= ?';
+      binds.push(yearStart(today));
+    }
+  }
+
+  const wallet = params.get('wallet');
+  if (wallet) {
+    sql += ' AND wallet = ?';
+    binds.push(wallet);
+  }
+
+  const type = params.get('type');
+  if (type) {
+    sql += ' AND type = ?';
+    binds.push(type);
+  }
+
+  const q = (params.get('q') || '').trim();
+  if (q) {
+    const like = `%${q.toLowerCase()}%`;
+    sql += ` AND (
+      lower(COALESCE(type, '')) LIKE ?
+      OR lower(COALESCE(wallet, '')) LIKE ?
+      OR lower(COALESCE(category, '')) LIKE ?
+      OR lower(COALESCE(note, '')) LIKE ?
+      OR lower(COALESCE(created_by, '')) LIKE ?
+      OR business_date LIKE ?
+      OR CAST(amount AS TEXT) LIKE ?
+    )`;
+    binds.push(like, like, like, like, like, `%${q}%`, `%${q}%`);
+  }
+
+  return sql;
+}
+
+async function transactionSummary(env, whereSql, binds) {
+  const row = await env.DB.prepare(`
+    SELECT
+      COUNT(*) as count,
+      COALESCE(SUM(CASE WHEN type IN ('expense', 'cash_taken_by_owner', 'toy_collected_by_owner') THEN amount ELSE 0 END), 0) as negative_total,
+      COALESCE(SUM(CASE WHEN type NOT IN ('expense', 'cash_taken_by_owner', 'toy_collected_by_owner') THEN amount ELSE 0 END), 0) as positive_total,
+      COALESCE(SUM(CASE WHEN type = 'expense' THEN amount ELSE 0 END), 0) as expense_total,
+      COALESCE(SUM(CASE WHEN type = 'cash_sale' THEN amount ELSE 0 END), 0) as cash_sales_total,
+      COALESCE(SUM(CASE WHEN type = 'benefitpay_sale' THEN amount ELSE 0 END), 0) as benefitpay_total,
+      COALESCE(SUM(CASE WHEN type = 'cash_taken_by_owner' THEN amount ELSE 0 END), 0) as owner_taken_total,
+      COALESCE(SUM(CASE WHEN type = 'cash_added_by_owner' THEN amount ELSE 0 END), 0) as owner_added_total,
+      COALESCE(SUM(CASE WHEN type = 'correction' THEN amount ELSE 0 END), 0) as correction_total,
+      COALESCE(SUM(CASE WHEN type = 'toy_collection' THEN amount ELSE 0 END), 0) as toys_added_total,
+      COALESCE(SUM(CASE WHEN type = 'toy_collected_by_owner' THEN amount ELSE 0 END), 0) as toys_taken_total,
+      COALESCE(SUM(CASE
+        WHEN type IN ('expense', 'cash_taken_by_owner', 'toy_collected_by_owner') THEN -amount
+        ELSE amount
+      END), 0) as net_total
+    FROM transactions
+    ${whereSql}
+  `).bind(...binds).first();
+
+  const categoryRows = await env.DB.prepare(`
+    SELECT COALESCE(category, 'Uncategorized') as category, COALESCE(SUM(amount), 0) as total, COUNT(*) as count
+    FROM transactions
+    ${whereSql} AND type = 'expense'
+    GROUP BY COALESCE(category, 'Uncategorized')
+    ORDER BY total DESC
+    LIMIT 8
+  `).bind(...binds).all();
+
+  return { ...row, top_expense_categories: categoryRows.results || [] };
+}
+
 // ─── Dashboards ──────────────────────────────────────────────────────────────
 
 async function getWorkerDashboard(env, session) {
@@ -780,12 +941,14 @@ async function getWorkerDashboard(env, session) {
     todaySums,
     toysMonthBalance,
     monthExpenses,
+    totalExpenses,
   ] = await Promise.all([
     timed('openingQuery', () => getOpeningCash(env, today, includeTest), timings),
     timed('closingQuery', () => getLastClosing(env, includeTest), timings),
     timed('todayTotalsQuery', () => getTodaySums(env, today, includeTest), timings),
     timed('toysQuery', () => calcToysBalance(env, includeTest, today), timings),
     timed('monthExpensesQuery', () => sumByType(env, { monthStart: monthStart(today), types: ['expense'], wallet: 'daily_cash', includeTest }), timings),
+    timed('totalExpensesQuery', () => sumByType(env, { types: ['expense'], wallet: 'daily_cash', includeTest }), timings),
   ]);
   const expected = opening
     + todaySums.cash_sale
@@ -811,6 +974,7 @@ async function getWorkerDashboard(env, session) {
     last_closing_difference: lastClosing?.difference ?? null,
     toys_month_balance: toysMonthBalance,
     month_expenses: monthExpenses,
+    total_expenses: totalExpenses,
     test_mode: includeTest,
   };
 }
@@ -830,6 +994,7 @@ async function getOwnerDashboard(env, session) {
     monthCashSales,
     monthBenefitpay,
     monthExpenses,
+    totalExpenses,
   ] = await Promise.all([
     timed('openingQuery', () => getOpeningCash(env, today, includeTest), timings),
     timed('closingQuery', () => getLastClosing(env, includeTest), timings),
@@ -838,6 +1003,7 @@ async function getOwnerDashboard(env, session) {
     timed('monthCashQuery', () => sumByType(env, { monthStart: ms, types: ['cash_sale'], wallet: 'daily_cash', includeTest }), timings),
     timed('monthBenefitpayQuery', () => sumByType(env, { monthStart: ms, types: ['benefitpay_sale'], wallet: 'benefitpay', includeTest }), timings),
     timed('monthExpensesQuery', () => sumByType(env, { monthStart: ms, types: ['expense'], wallet: 'daily_cash', includeTest }), timings),
+    timed('totalExpensesQuery', () => sumByType(env, { types: ['expense'], wallet: 'daily_cash', includeTest }), timings),
   ]);
   const expected = opening
     + todaySums.cash_sale
@@ -866,6 +1032,7 @@ async function getOwnerDashboard(env, session) {
     month_cash_sales: monthCashSales,
     month_benefitpay: monthBenefitpay,
     month_expenses: monthExpenses,
+    total_expenses: totalExpenses,
     test_mode: includeTest,
   };
 }
@@ -874,9 +1041,10 @@ async function getOwnerDashboard(env, session) {
 
 async function createTransaction(request, env, session) {
   const body = await request.json();
-  const { type, amount, category, note, source } = body;
+  const { type, amount, category, note, source, overdraw_reason } = body;
+  const parsedAmount = parseFloat(amount);
 
-  if (!type || amount == null || amount <= 0) {
+  if (!type || !Number.isFinite(parsedAmount) || parsedAmount <= 0) {
     throw httpError(400, 'Type and positive amount required');
   }
 
@@ -897,14 +1065,22 @@ async function createTransaction(request, env, session) {
   const wallet = WALLET_BY_TYPE[type];
   const businessDate = await businessDateStr(env);
 
+  await requireOverdrawReasonIfNeeded(env, {
+    type,
+    amount: parsedAmount,
+    businessDate,
+    includeTest,
+    overdrawReason: overdraw_reason,
+  });
+
   // For toy_collection, source goes in category field
   const cat = type === 'toy_collection' ? (source || category || 'Machine') : (category || null);
-  const noteText = note || null;
+  const noteText = appendOverdrawReason(note || null, overdraw_reason);
 
   const result = await env.DB.prepare(`
     INSERT INTO transactions (business_date, type, wallet, amount, category, note, is_test, created_by)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `).bind(businessDate, type, wallet, parseFloat(amount), cat, noteText, isTest, session.name).run();
+  `).bind(businessDate, type, wallet, parsedAmount, cat, noteText, isTest, session.name).run();
 
   return { id: result.meta.last_row_id, success: true };
 }
@@ -913,62 +1089,47 @@ async function listTransactions(env, session, params) {
   const includeTest = params.get('show_test') === '1' || await isTestMode(env);
   const { testClause } = activeFilter(includeTest);
 
-  let sql = `SELECT * FROM transactions WHERE ${testClause}`;
+  let whereSql = `WHERE ${testClause}`;
   const binds = [];
   const today = await businessDateStr(env);
-
-  const period = params.get('period');
-  if (period === 'today') { sql += ' AND business_date = ?'; binds.push(today); }
-  else if (period === 'week') { sql += ' AND business_date >= ?'; binds.push(weekStart()); }
-  else if (period === 'month') { sql += ' AND business_date >= ?'; binds.push(monthStart(today)); }
-
-  const wallet = params.get('wallet');
-  if (wallet) { sql += ' AND wallet = ?'; binds.push(wallet); }
+  whereSql = applyTransactionFilters(whereSql, binds, params, today);
 
   const status = params.get('status');
-  if (status) { sql += ' AND status = ?'; binds.push(status); }
-  else { sql += " AND status != 'deleted'"; }
+  if (status) { whereSql += ' AND status = ?'; binds.push(status); }
+  else { whereSql += " AND status != 'deleted'"; }
 
   if (params.get('test_only') === '1') {
-    sql += ' AND is_test = 1';
+    whereSql += ' AND is_test = 1';
   }
 
-  sql += ' ORDER BY created_at DESC LIMIT 500';
+  const limit = Math.min(Math.max(parseInt(params.get('limit') || '500', 10) || 500, 50), 1000);
+  const summary = await transactionSummary(env, whereSql, binds);
+  const sql = `SELECT * FROM transactions ${whereSql} ORDER BY created_at DESC LIMIT ?`;
 
-  const rows = await env.DB.prepare(sql).bind(...binds).all();
-  return { transactions: rows.results };
+  const rows = await env.DB.prepare(sql).bind(...binds, limit).all();
+  return { transactions: rows.results, summary, limit };
 }
 
 async function listActivity(env, session, params) {
   const includeTest = params.get('show_test') === '1' || await isTestMode(env);
   const { testClause } = activeFilter(includeTest);
-  const period = params.get('period') || 'today';
   const today = await businessDateStr(env);
-  const limit = Math.min(Math.max(parseInt(params.get('limit') || '100', 10) || 100, 20), 300);
+  const limit = Math.min(Math.max(parseInt(params.get('limit') || '300', 10) || 300, 20), 1000);
 
-  let sql = `
+  let whereSql = `WHERE ${testClause} AND status = 'active'`;
+  const binds = [];
+  whereSql = applyTransactionFilters(whereSql, binds, params, today);
+
+  const summary = await transactionSummary(env, whereSql, binds);
+  const sql = `
     SELECT id, business_date, created_at, type, wallet, amount, category, note, created_by, is_test
     FROM transactions
-    WHERE ${testClause} AND status = 'active'
+    ${whereSql}
+    ORDER BY created_at DESC LIMIT ?
   `;
-  const binds = [];
 
-  if (period === 'today') {
-    sql += ' AND business_date = ?';
-    binds.push(today);
-  } else if (period === 'month') {
-    sql += ' AND business_date >= ?';
-    binds.push(monthStart(today));
-  } else if (period === 'year') {
-    sql += ' AND business_date >= ?';
-    binds.push(yearStart(today));
-  }
-
-  sql += ' ORDER BY created_at DESC LIMIT ?';
-  binds.push(limit);
-
-  const rows = await env.DB.prepare(sql).bind(...binds).all();
-  return { period, activity: rows.results || [] };
+  const rows = await env.DB.prepare(sql).bind(...binds, limit).all();
+  return { period: params.get('period') || 'today', activity: rows.results || [], summary, limit };
 }
 
 async function updateTransaction(request, env, session, id) {
@@ -1164,18 +1325,15 @@ async function getToysMonth(env, session) {
   const totalStart = nowMs();
   const timings = {};
   const includeTest = await timed('settings', () => isTestMode(env), timings);
-  const today = await businessDateStr(env);
-  const ms = monthStart(today);
   const { testClause } = activeFilter(includeTest);
 
-  const balance = await timed('balanceQuery', () => calcToysBalance(env, includeTest, today), timings);
+  const balance = await timed('balanceQuery', () => calcToysBalance(env, includeTest), timings);
 
   const history = await timed('historyQuery', () => env.DB.prepare(`
     SELECT * FROM transactions
-    WHERE wallet = 'toys_monthly' AND ${testClause} AND status != 'deleted'
-      AND business_date >= ?
+    WHERE wallet = 'toys_monthly' AND ${testClause} AND status = 'active'
     ORDER BY created_at DESC LIMIT 100
-  `).bind(ms).all(), timings);
+  `).all(), timings);
 
   logApiPerf('/api/toys/month', timings, totalStart);
 
@@ -1184,17 +1342,33 @@ async function getToysMonth(env, session) {
 
 async function collectToys(request, env, session) {
   const body = await request.json();
-  const { amount, note } = body;
+  const { amount, note, overdraw_reason } = body;
+  const parsedAmount = parseFloat(amount);
 
-  if (!amount || amount <= 0) throw httpError(400, 'Amount required');
+  if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) throw httpError(400, 'Amount required');
 
   const includeTest = await isTestMode(env);
   const isTest = includeTest ? 1 : 0;
+  const businessDate = await businessDateStr(env);
+
+  await requireOverdrawReasonIfNeeded(env, {
+    type: 'toy_collected_by_owner',
+    amount: parsedAmount,
+    businessDate,
+    includeTest,
+    overdrawReason: overdraw_reason,
+  });
 
   const result = await env.DB.prepare(`
     INSERT INTO transactions (business_date, type, wallet, amount, note, is_test, created_by, category)
     VALUES (?, 'toy_collected_by_owner', 'toys_monthly', ?, ?, ?, ?, 'Owner collection')
-  `).bind(await businessDateStr(env), parseFloat(amount), note || null, isTest, session.name).run();
+  `).bind(
+    businessDate,
+    parsedAmount,
+    appendOverdrawReason(note || null, overdraw_reason),
+    isTest,
+    session.name,
+  ).run();
 
   return { id: result.meta.last_row_id, success: true };
 }

@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="robots" content="noindex, nofollow" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GetVendora Tracking Dashboard | Admin Console</title>
+  <title>Legacy Tracking | GetVendora Admin</title>
   <style>
     :root {
       --bg-color: #0c071d;
@@ -341,25 +342,25 @@
     <h2>Admin Login</h2>
     <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 14px;">Enter your admin token to view tracking analytics</p>
     <input type="password" id="admin-token" class="input-field" placeholder="Enter Token">
-    <button onclick="login()" class="btn btn-primary" style="width: 100%;">Access Dashboard</button>
+    <button id="login-btn" class="btn btn-primary" style="width: 100%;">Access Dashboard</button>
     <p id="auth-error" class="error-msg" style="display: none;">Invalid Token</p>
   </div>
 
   <!-- Dashboard Container -->
   <div id="dashboard" class="container" style="display: none;">
     <header>
-      <h1>GetVendora <span class="logo">Tracking Dashboard</span></h1>
+      <h1>GetVendora <span class="logo">Legacy Tracking</span></h1>
       <div style="display: flex; gap: 10px; align-items: center;">
-        <select id="filter-select" class="input-field" style="margin-bottom:0; width:160px;" onchange="renderDashboard()">
+        <select id="filter-select" class="input-field" style="margin-bottom:0; width:160px;">
           <option value="all">All Pages / Sources</option>
           <option value="gcc_private_transport_guide">GCC Guide Page Only</option>
         </select>
-        <select id="period-select" class="input-field" style="margin-bottom:0; width:130px;" onchange="loadData()">
+        <select id="period-select" class="input-field" style="margin-bottom:0; width:130px;">
           <option value="24 hours">Past 24 Hours</option>
           <option value="today">Today (Bahrain)</option>
           <option value="7_days">Past 7 Days</option>
         </select>
-        <button onclick="logout()" class="btn btn-secondary">Logout</button>
+        <button id="logout-btn" class="btn btn-secondary">Logout</button>
       </div>
     </header>
 
@@ -486,11 +487,11 @@
   </div>
 
   <!-- Session Trace Modal -->
-  <div id="journey-modal" class="modal" onclick="closeModal()">
-    <div class="modal-content" onclick="event.stopPropagation()">
+  <div id="journey-modal" class="modal">
+    <div class="modal-content">
       <div class="modal-header">
         <h3>Visitor Session Journey</h3>
-        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+        <button id="close-modal-btn" class="btn btn-secondary">Close</button>
       </div>
       <div id="journey-steps">
         <p style="color: var(--text-muted);">Loading session steps...</p>
@@ -501,8 +502,14 @@
   <script>
     const tokenKey = '__vendora_admin_token';
 
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, character => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+      }[character]));
+    }
+
     function getHeaders() {
-      const token = localStorage.getItem(tokenKey) || '';
+      const token = sessionStorage.getItem(tokenKey) || '';
       return {
         'x-admin-token': token,
         'content-type': 'application/json'
@@ -510,7 +517,7 @@
     }
 
     window.onload = function() {
-      const token = localStorage.getItem(tokenKey);
+      const token = sessionStorage.getItem(tokenKey);
       if (token) {
         showDashboard();
         loadData();
@@ -532,10 +539,10 @@
     function login() {
       const input = document.getElementById('admin-token').value.trim();
       if (!input) return;
-      localStorage.setItem(tokenKey, input);
+      sessionStorage.setItem(tokenKey, input);
       loadData(function(err) {
         if (err) {
-          localStorage.removeItem(tokenKey);
+          sessionStorage.removeItem(tokenKey);
           document.getElementById('auth-error').style.display = 'block';
         } else {
           document.getElementById('auth-error').style.display = 'none';
@@ -545,7 +552,7 @@
     }
 
     function logout() {
-      localStorage.removeItem(tokenKey);
+      sessionStorage.removeItem(tokenKey);
       showLogin();
     }
 
@@ -611,13 +618,13 @@
           const detail = e.button_text || e.event_label || e.page_path;
           const loc = [e.ip_city, e.ip_country].filter(Boolean).join(', ') || 'unknown location';
           return `
-            <div class="event-row" onclick="viewSessionJourney('${e.session_id}')">
+            <div class="event-row" role="button" tabindex="0" data-session-id="${escapeHtml(e.session_id || '')}">
               <div class="event-header">
-                <span class="event-name" style="color: var(--primary-hover);">${name}</span>
-                <span class="event-time">${date}</span>
+                <span class="event-name" style="color: var(--primary-hover);">${escapeHtml(name)}</span>
+                <span class="event-time">${escapeHtml(date)}</span>
               </div>
-              <div class="event-meta" style="font-size:11px;">Details: <strong>${detail}</strong></div>
-              <div style="font-size:10px; color:var(--text-muted);">Session: ${e.session_id.slice(0, 8)}... · Location: ${loc}</div>
+              <div class="event-meta" style="font-size:11px;">Details: <strong>${escapeHtml(detail)}</strong></div>
+              <div style="font-size:10px; color:var(--text-muted);">Session: ${escapeHtml(String(e.session_id || '').slice(0, 8))}... · Location: ${escapeHtml(loc)}</div>
             </div>
           `;
         }).join('');
@@ -634,8 +641,8 @@
       } else {
         pagesDiv.innerHTML = pages.map(p => `
           <div class="list-item">
-            <span class="label">${p.label}</span>
-            <span class="badge">${p.count}</span>
+            <span class="label">${escapeHtml(p.label)}</span>
+            <span class="badge">${escapeHtml(p.count)}</span>
           </div>
         `).join('');
       }
@@ -648,8 +655,8 @@
       } else {
         refDiv.innerHTML = referrers.map(r => `
           <div class="list-item">
-            <span class="label">${r.label}</span>
-            <span class="badge">${r.count}</span>
+            <span class="label">${escapeHtml(r.label)}</span>
+            <span class="badge">${escapeHtml(r.count)}</span>
           </div>
         `).join('');
       }
@@ -669,13 +676,13 @@
           const detail = e.button_text || e.event_label || e.page_path;
           const loc = [e.ip_city, e.ip_country].filter(Boolean).join(', ') || 'unknown location';
           return `
-            <div class="event-row" onclick="viewSessionJourney('${e.session_id}')">
+            <div class="event-row" role="button" tabindex="0" data-session-id="${escapeHtml(e.session_id || '')}">
               <div class="event-header">
-                <span class="event-name">${name}</span>
-                <span class="event-time">${date}</span>
+                <span class="event-name">${escapeHtml(name)}</span>
+                <span class="event-time">${escapeHtml(date)}</span>
               </div>
-              <div class="event-meta">Details: <strong>${detail}</strong></div>
-              <div style="font-size:11px; color:var(--text-muted);">Session: ${e.session_id.slice(0, 8)}... · Location: ${loc}</div>
+              <div class="event-meta">Details: <strong>${escapeHtml(detail)}</strong></div>
+              <div style="font-size:11px; color:var(--text-muted);">Session: ${escapeHtml(String(e.session_id || '').slice(0, 8))}... · Location: ${escapeHtml(loc)}</div>
             </div>
           `;
         }).join('');
@@ -703,22 +710,42 @@
               const detail = [step.button_text, step.event_label, step.target_url].filter(Boolean).join(' · ');
               return `
                 <div class="journey-step">
-                  <div class="journey-time">${time}</div>
-                  <div class="journey-action">${actionLabel}</div>
-                  ${detail ? `<div style="color:var(--text-muted); font-size:11px;">${detail}</div>` : ''}
+                  <div class="journey-time">${escapeHtml(time)}</div>
+                  <div class="journey-action">${escapeHtml(actionLabel)}</div>
+                  ${detail ? `<div style="color:var(--text-muted); font-size:11px;">${escapeHtml(detail)}</div>` : ''}
                 </div>
               `;
             }).join('');
           }
         })
         .catch(err => {
-          stepsDiv.innerHTML = '<p class="error-msg">Failed to load journey: ' + err.message + '</p>';
+          stepsDiv.textContent = 'Failed to load journey: ' + String(err.message || 'Unknown error');
         });
     }
 
     function closeModal() {
       document.getElementById('journey-modal').classList.remove('active');
     }
+
+    document.addEventListener('click', event => {
+      const row = event.target.closest('[data-session-id]');
+      if (row) viewSessionJourney(row.dataset.sessionId || '');
+    });
+    document.getElementById('login-btn').addEventListener('click', login);
+    document.getElementById('logout-btn').addEventListener('click', logout);
+    document.getElementById('filter-select').addEventListener('change', renderDashboard);
+    document.getElementById('period-select').addEventListener('change', loadData);
+    document.getElementById('close-modal-btn').addEventListener('click', closeModal);
+    document.getElementById('journey-modal').addEventListener('click', event => {
+      if (event.target.id === 'journey-modal') closeModal();
+    });
+    document.addEventListener('keydown', event => {
+      const row = event.target.closest('[data-session-id]');
+      if (row && (event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        viewSessionJourney(row.dataset.sessionId || '');
+      }
+    });
   </script>
 </body>
 </html>

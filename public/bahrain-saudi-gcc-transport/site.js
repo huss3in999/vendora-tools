@@ -1,6 +1,17 @@
 (function () {
-  const config = window.pageConfig || {};
-  const phoneNumber = config.phoneNumber || '97333225954';
+  function readPublicConfig() {
+    try {
+      const node = document.getElementById('transport-public-config');
+      return node ? JSON.parse(node.textContent || '{}') : {};
+    } catch {
+      return {};
+    }
+  }
+  const publicConfig = readPublicConfig();
+  const config = { ...(window.pageConfig || {}), ...(publicConfig.settings || {}) };
+  const phoneNumber = config.booking_whatsapp_enabled === false
+    ? ''
+    : (config.booking_whatsapp || config.phoneNumber || '97333225954');
   const siteSegment = '/bahrain-saudi-gcc-transport/';
   const defaultArabicMessage = config.defaultWhatsAppMessage || 'مرحباً، أود معرفة تفاصيل الحجز والخدمة.';
   const leadEndpoint = config.leadEndpoint || (`${siteSegment.replace(/\/$/, '')}/api/transport/event`);
@@ -1012,6 +1023,7 @@
     const rect = (link && link.getBoundingClientRect) ? link.getBoundingClientRect() : null;
     const utm = getUtmParams();
     const firstTouch = getFirstTouch();
+    const publicRoute = (publicConfig.routes || []).find((item) => item.route_slug === routeSlug);
     const referrer = document.referrer || '';
     return {
       timestamp: new Date().toISOString(),
@@ -1022,6 +1034,8 @@
       pageTitle: document.title || '',
       pageQuery: window.location.search || '',
       targetUrl: link ? (link.href || '') : '',
+      bookingPhoneUsed: publicRoute?.whatsapp_override || phoneNumber,
+      publicPriceShown: publicRoute?.price_bhd ?? null,
       sessionId: getSessionId(),
       pageLoadedAt,
       timeOnPageMs: Date.now() - pageStartedAt,
@@ -1114,40 +1128,14 @@
   }
 
   function isPassengerCareEnabled() {
-    const cfg = window.pageConfig || {};
-    return cfg.passengerCareEnabled !== false;
+    return config.passengerCareEnabled !== false;
   }
 
-  function makeBookingRefFromUuid(leadUuid) {
-    const hex = String(leadUuid || '').replace(/-/g, '').slice(0, 8).toUpperCase();
-    return hex ? `GCC-${hex}` : '';
-  }
-
-  function createClientLeadIdentity() {
-    const leadUuid = (typeof crypto !== 'undefined' && crypto.randomUUID)
-      ? crypto.randomUUID()
-      : `00000000-4000-4000-8000-${Date.now().toString(16).padStart(12, '0')}`.slice(0, 36);
-    return {
-      leadUuid,
-      bookingRef: makeBookingRefFromUuid(leadUuid),
-    };
-  }
-
-  function buildPassengerCareShortUrl(bookingRef) {
-    const shortOrigin = config.careShortOrigin || 'https://g.getvendora.net';
-    const hex = String(bookingRef || '').replace(/^GCC-/i, '').toLowerCase();
-    if (!/^[a-f0-9]{8}$/.test(hex)) {
-      return buildPassengerCareUrl(bookingRef);
-    }
-    const slug = state.lang === 'en' ? `gcc-en-${hex}` : `gcc-${hex}`;
-    return `${shortOrigin.replace(/\/$/, '')}/${slug}`;
-  }
-
-  function buildPassengerCareUrl(bookingRef) {
+  function buildPassengerCareUrl(careToken) {
     const origin = window.location.origin || 'https://getvendora.net';
     const path = state.lang === 'en'
-      ? `${siteSegment}care/en/?ref=${encodeURIComponent(bookingRef)}`
-      : `${siteSegment}care/?ref=${encodeURIComponent(bookingRef)}`;
+      ? `${siteSegment}care/en/?token=${encodeURIComponent(careToken)}`
+      : `${siteSegment}care/?token=${encodeURIComponent(careToken)}`;
     return `${origin}${path}`;
   }
 
@@ -1245,49 +1233,120 @@
     }
   }
 
-  function registerLeadInBackground(payload) {
+  async function registerLead(payload) {
     const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-    const timeoutId = controller ? window.setTimeout(() => controller.abort(), 4000) : null;
+    const timeoutId = controller ? window.setTimeout(() => controller.abort(), 6000) : null;
     const endpoints = getLeadEndpoints();
-
-    (async () => {
-      try {
-        for (let i = 0; i < endpoints.length; i += 1) {
-          try {
-            const data = await postLeadPayloadToEndpoint(
-              endpoints[i],
-              payload,
-              controller ? controller.signal : undefined,
-            );
-            if (data && data.ok !== false) return;
-          } catch (error) {
-            if (controller && error && error.name === 'AbortError') break;
-          }
+    try {
+      for (let i = 0; i < endpoints.length; i += 1) {
+        try {
+          const data = await postLeadPayloadToEndpoint(
+            endpoints[i],
+            payload,
+            controller ? controller.signal : undefined,
+          );
+          if (data && data.ok !== false && data.booking_ref && data.care_token) return data;
+        } catch (error) {
+          if (controller && error && error.name === 'AbortError') break;
         }
-      } finally {
-        if (timeoutId) window.clearTimeout(timeoutId);
       }
-      sendLeadPayload(payload, { preferBeacon: true });
-    })();
+    } finally {
+      if (timeoutId) window.clearTimeout(timeoutId);
+    }
+    return null;
   }
 
-  function handlePassengerCareWhatsAppClick(link, event) {
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;',
+    }[char]));
+  }
+
+  function showBookingReadyModal(message, onContinue, bookingRef) {
+    const old = document.getElementById('vendora-booking-ready');
+    if (old) old.remove();
+    const previousFocus = document.activeElement;
+    const en = state.lang === 'en';
+    const modal = document.createElement('div');
+    modal.id = 'vendora-booking-ready';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'vendora-booking-title');
+    modal.innerHTML = `<div class="vendora-booking-backdrop" data-booking-cancel></div><div class="vendora-booking-dialog"><h2 id="vendora-booking-title">${en ? 'Your request is ready' : 'تم تجهيز طلبك'}</h2><p>${en ? 'Your request reference has been created. Continue to WhatsApp to confirm availability and the final price.' : 'تم إنشاء مرجع لطلبك. تابع إلى واتساب لتأكيد التوفر والسعر النهائي.'}</p>${bookingRef ? `<p><strong>${en ? 'Request reference' : 'رقم الطلب'}: <bdi dir="ltr">${escapeHtml(bookingRef)}</bdi></strong></p>` : ''}<div class="vendora-booking-actions"><button type="button" data-booking-cancel>${en ? 'Back and edit request' : 'العودة وتعديل الطلب'}</button><button type="button" data-booking-continue>${en ? 'Continue to WhatsApp' : 'المتابعة إلى واتساب'}</button></div></div>`;
+    const style = document.createElement('style');
+    style.textContent = '#vendora-booking-ready{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:1rem}.vendora-booking-backdrop{position:absolute;inset:0;background:rgba(2,6,23,.76)}.vendora-booking-dialog{position:relative;max-width:32rem;width:100%;background:#fff;color:#172033;border-radius:1rem;padding:1.5rem;box-shadow:0 24px 70px rgba(0,0,0,.35)}.vendora-booking-dialog h2{margin:0 0 .6rem}.vendora-booking-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}.vendora-booking-dialog button{min-height:48px;border:0;border-radius:.7rem;padding:.8rem 1rem;background:#168b4b;color:#fff;font:inherit;font-weight:700;cursor:pointer}.vendora-booking-dialog [data-booking-cancel]{background:#e8edf2;color:#172033}.vendora-booking-dialog button:focus-visible{outline:3px solid #f5b942;outline-offset:3px}';
+    modal.appendChild(style);
+    document.body.appendChild(modal);
+    const continueButton = modal.querySelector('[data-booking-continue]');
+    const close = () => {
+      modal.remove();
+      document.removeEventListener('keydown', onKeydown);
+      if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
+    };
+    const onKeydown = (event) => {
+      if (event.key === 'Escape') close();
+    };
+    modal.querySelectorAll('[data-booking-cancel]').forEach((node) => node.addEventListener('click', close));
+    continueButton.addEventListener('click', () => {
+      close();
+      onContinue(message);
+    }, { once: true });
+    document.addEventListener('keydown', onKeydown);
+    continueButton.focus();
+  }
+
+  function collectOptionalContact() {
+    const nameEnabled = config.customer_name_enabled === true;
+    const phoneEnabled = config.customer_phone_enabled === true;
+    if (!nameEnabled && !phoneEnabled) return Promise.resolve({});
+    return new Promise((resolve) => {
+      const modal = document.createElement('div');
+      modal.id = 'vendora-contact-step';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      const en = state.lang === 'en';
+      modal.innerHTML = `<div class="vendora-booking-backdrop"></div><form class="vendora-booking-dialog"><h2>${en ? 'Prepare your request' : 'تجهيز طلبك'}</h2><p>${en ? 'These details are used only to identify and follow up this transport request.' : 'تستخدم هذه البيانات فقط لتمييز طلب النقل ومتابعته.'}</p>${nameEnabled ? `<label>${en ? 'Name' : 'الاسم'}<input name="customerName" maxlength="100" ${config.customer_name_required ? 'required' : ''}></label>` : ''}${phoneEnabled ? `<label>${en ? 'Contact number' : 'رقم التواصل'}<input name="customerPhone" inputmode="tel" maxlength="20" ${config.customer_phone_required ? 'required' : ''}></label>` : ''}${phoneEnabled && config.follow_up_consent_enabled ? `<label class="vendora-consent"><input name="followUpConsent" type="checkbox" required> ${en ? 'I agree to be contacted about this request.' : 'أوافق على التواصل معي بشأن هذا الطلب.'}</label>` : ''}<div><button type="button" data-cancel>${en ? 'Cancel' : 'إلغاء'}</button><button type="submit">${en ? 'Prepare request' : 'تجهيز الطلب'}</button></div></form>`;
+      const style = document.createElement('style');
+      style.textContent = '#vendora-contact-step{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:1rem}.vendora-booking-backdrop{position:absolute;inset:0;background:rgba(2,6,23,.76)}.vendora-booking-dialog{position:relative;max-width:32rem;width:100%;background:#fff;color:#172033;border-radius:1rem;padding:1.5rem;box-shadow:0 24px 70px rgba(0,0,0,.35)}.vendora-booking-dialog label{display:grid;gap:.35rem;margin-top:.8rem;font-weight:700}.vendora-booking-dialog input:not([type=checkbox]){min-height:44px;border:1px solid #a9b3c1;border-radius:.6rem;padding:.6rem;font:inherit}.vendora-booking-dialog button{min-height:44px;margin:1rem .25rem 0;border:0;border-radius:.7rem;padding:.7rem 1rem;background:#168b4b;color:#fff;font:inherit;font-weight:700}.vendora-booking-dialog [data-cancel]{background:#e8edf2;color:#172033}.vendora-consent{grid-template-columns:auto 1fr!important;align-items:start;font-weight:400!important}';
+      modal.appendChild(style);
+      document.body.appendChild(modal);
+      const form = modal.querySelector('form');
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const data = new FormData(form);
+        const phone = String(data.get('customerPhone') || '').replace(/[^\d+]/g, '').slice(0, 16);
+        if (phone && !/^\+?\d{7,15}$/.test(phone)) {
+          form.querySelector('[name="customerPhone"]').setCustomValidity(en ? 'Enter a valid contact number.' : 'أدخل رقم تواصل صحيحاً.');
+          form.reportValidity();
+          return;
+        }
+        modal.remove();
+        resolve({ customerName: String(data.get('customerName') || '').trim().slice(0, 100), customerPhone: phone, followUpConsent: data.get('followUpConsent') === 'on' });
+      });
+      modal.querySelector('[data-cancel]').addEventListener('click', () => { modal.remove(); resolve(null); });
+      form.querySelector('input')?.focus();
+    });
+  }
+
+  async function handlePassengerCareWhatsAppClick(link, event) {
     const now = Date.now();
     if (now < whatsAppClickLockUntil) return;
     whatsAppClickLockUntil = now + 1200;
 
     const payload = buildLeadPayload(link, event);
-    const identity = createClientLeadIdentity();
-    payload.preassignedLeadUuid = identity.leadUuid;
-    payload.preassignedBookingRef = identity.bookingRef;
-
+    const contact = await collectOptionalContact();
+    if (contact === null) return;
+    Object.assign(payload, contact);
     const baseMessage = stripPassengerCareFromMessage(extractWhatsAppMessage(link) || defaultArabicMessage);
-    const careUrl = buildPassengerCareShortUrl(identity.bookingRef);
-    const finalMessage = `${baseMessage}${buildPassengerCareBlock(identity.bookingRef, careUrl)}`;
-
     trackWhatsAppClick(payload);
-    openWhatsAppMessage(finalMessage);
-    registerLeadInBackground(payload);
+    const lead = await registerLead(payload);
+    if (!lead) {
+      showBookingReadyModal(baseMessage, openWhatsAppMessage, '');
+      return;
+    }
+    const careUrl = buildPassengerCareUrl(lead.care_token);
+    const finalMessage = `${baseMessage}${buildPassengerCareBlock(lead.booking_ref, careUrl)}`;
+    showBookingReadyModal(finalMessage, openWhatsAppMessage, lead.booking_ref);
   }
 
   function trackWhatsAppClick(payload) {
@@ -1328,7 +1387,11 @@
 
       const payload = buildLeadPayload(link, event);
       try {
-        handlePassengerCareWhatsAppClick(link, event);
+        handlePassengerCareWhatsAppClick(link, event).catch((error) => {
+          console.error('WhatsApp passenger care click failed:', error);
+          const fallbackMessage = stripPassengerCareFromMessage(extractWhatsAppMessage(link) || defaultArabicMessage);
+          showBookingReadyModal(fallbackMessage, openWhatsAppMessage);
+        });
       } catch (error) {
         console.error('WhatsApp passenger care click failed:', error);
         const fallbackMessage = stripPassengerCareFromMessage(extractWhatsAppMessage(link) || defaultArabicMessage);

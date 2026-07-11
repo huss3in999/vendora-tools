@@ -252,8 +252,8 @@ export async function exportCsv(showTest = false) {
 
 // ─── Owner cash actions ──────────────────────────────────────────────────────
 
-export function cashTakenByOwner(amount, note) {
-  return createTransaction({ type: 'cash_taken_by_owner', amount, note });
+export function cashTakenByOwner(amount, note, overdraw_reason) {
+  return createTransaction({ type: 'cash_taken_by_owner', amount, note, overdraw_reason });
 }
 
 export function cashAddedToWorker(amount, note) {

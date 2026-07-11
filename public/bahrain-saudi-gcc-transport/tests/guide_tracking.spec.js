@@ -122,12 +122,12 @@ test.describe('GCC Private Transport Guide Telemetry & Tracking Integration', ()
     const clickEvent = trackRequests.find(r => r.event_name === 'gcc_guide_whatsapp_click');
     expect(clickEvent.click_location).toBe('planner');
     expect(clickEvent.pickup_country).toBe('Bahrain');
-    expect(clickEvent.pickup_location).toBe('Bahrain International Airport (BAH)');
     expect(clickEvent.destination_country).toBe('Saudi Arabia');
-    expect(clickEvent.destination_location).toBe('Dammam Custom District');
-    expect(clickEvent.flight_number).toBe('GF 999');
     expect(clickEvent.custom_location_used).toBe(1);
     expect(clickEvent.is_airport_route).toBe(1);
+    expect(clickEvent.pickup_location).toBeUndefined();
+    expect(clickEvent.destination_location).toBeUndefined();
+    expect(clickEvent.flight_number).toBeUndefined();
 
     // Verify that sendLeadEvent passed the complete details of the route planner form
     await expect.poll(() => leadRequests.length).toBeGreaterThan(0);

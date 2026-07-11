@@ -166,13 +166,13 @@ Opening cash = previous day's actual closing count.
 
 Recorded separately. Does **not** affect worker cash.
 
-### Toys Monthly Balance
+### Toys Balance
 
 ```
 Toy Collections - Owner Collections = Toys Balance
 ```
 
-Resets conceptually each month (filtered by current month).
+Carries forward across months. Old active toys records remain part of the balance until the owner records money taken or voids/deletes a record.
 
 ---
 

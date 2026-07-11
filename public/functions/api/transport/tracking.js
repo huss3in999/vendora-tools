@@ -1,4 +1,5 @@
 import { recordError } from './error-log.js';
+import { checkRateLimit, rateLimitResponse } from './rate-limit.js';
 
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
@@ -173,6 +174,8 @@ export async function onRequestOptions(context) {
 export async function onRequestPost(context) {
   const { request, env } = context;
   const headers = corsHeaders(request);
+  const rate = checkRateLimit(request, 'transport-tracking', { limit: 60, windowMs: 60_000 });
+  if (!rate.ok) return rateLimitResponse(rate, headers);
 
   if (!env.TRANSPORT_DB) {
     return json({ ok: false, error: 'Database binding missing' }, { status: 500, headers });

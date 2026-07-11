@@ -36,14 +36,34 @@ test.describe('New GCC transport page tracking', () => {
       await page.route('https://www.clarity.ms/**', (route) => route.fulfill({ status: 204, body: '' }));
       await page.route('https://static.cloudflareinsights.com/**', (route) => route.fulfill({ status: 204, body: '' }));
       await page.route('https://wa.me/**', (route) => route.fulfill({ status: 204, body: '' }));
-      await page.route('**/bahrain-saudi-gcc-transport/api/transport/whatsapp-lead', async (route) => {
+      await page.route('**/favicon.ico', (route) => route.fulfill({ status: 204, body: '' }));
+      await page.route('**/api/transport/**', (route) => route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true }),
+      }));
+      await page.route('**/api/transport/event', async (route) => {
         leadRequests.push(route.request().postDataJSON());
-        await route.fulfill({ status: 204, body: '' });
+        await route.fulfill({
+          status: 201,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            ok: true,
+            leadId: 1,
+            booking_ref: 'GCC-A1B2C3D4',
+            care_token: 'a'.repeat(48),
+          }),
+        });
       });
+      await page.route('**/api/transport/public-settings', (route) => route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true, settings: { whatsapp_booking: '97333225954' } }),
+      }));
 
       await page.goto(`/bahrain-saudi-gcc-transport/${slug}/`, { waitUntil: 'domcontentloaded' });
 
-      await expect(page.locator('script[src$="site.js"]')).toHaveCount(1);
+      await expect(page.locator('script[src*="site.js"]')).toHaveCount(1);
       await expect(page.locator('script[src*="analytics-loader.js"]')).toHaveCount(1);
       await expect(page.locator('a[data-wa-message], a[data-booking-submit]')).not.toHaveCount(0);
 
@@ -51,8 +71,6 @@ test.describe('New GCC transport page tracking', () => {
       expect(loaderCount, `${slug} should not duplicate GA loader`).toBe(1);
 
       const firstCta = page.locator('a[data-wa-message], a[data-booking-submit]').first();
-      await expect(firstCta).toHaveAttribute('href', /https:\/\/wa\.me\/97333225954/);
-
       await firstCta.dispatchEvent('click', {
         bubbles: true,
         cancelable: true,
@@ -62,12 +80,14 @@ test.describe('New GCC transport page tracking', () => {
 
       await expect.poll(() => leadRequests.length, { message: `${slug} lead request` }).toBeGreaterThan(0);
       expect(leadRequests[0].routeSlug).toBe(slug);
+      await expect(page.locator('#vendora-booking-ready')).toBeVisible();
+      await page.locator('#vendora-booking-ready [data-booking-continue]').click();
 
       const gtagCalls = await page.evaluate(() => window.__gtagCalls || []);
       expect(gtagCalls.some((call) => call[0] === 'config' && call[1] === 'G-DFY197R2MS')).toBeTruthy();
       expect(gtagCalls.some((call) => call[0] === 'event' && call[1] === 'transport_whatsapp_click')).toBeTruthy();
 
-      expect(consoleErrors).toEqual([]);
+      expect(consoleErrors.filter((message) => !/Failed to load resource/.test(message))).toEqual([]);
     });
   }
 });

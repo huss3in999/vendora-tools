@@ -11,7 +11,7 @@
   <!-- Fonts and Icon libraries -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <script src="../assets/lucide.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script>
@@ -173,7 +173,7 @@
       <p id="statusLine" class="hidden rounded-2xl border px-5 py-4 text-sm"></p>
 
       <!-- NAVIGATION TABS -->
-      <nav class="grid grid-cols-2 gap-1 rounded-2xl glass-panel p-1.5 shadow-md sm:grid-cols-3 xl:grid-cols-8">
+      <nav class="grid grid-cols-2 gap-1 rounded-2xl glass-panel p-1.5 shadow-md sm:grid-cols-3 xl:grid-cols-9">
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="leads" type="button">
           <i data-lucide="message-circle" class="h-4 w-4"></i> Clicks
         </button>
@@ -190,7 +190,10 @@
           <i data-lucide="bar-chart-3" class="h-4 w-4"></i> Charts
         </button>
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="pricing" type="button">
-          <i data-lucide="coins" class="h-4 w-4"></i> Prices
+          <i data-lucide="coins" class="h-4 w-4"></i><span>Route Pricing<br><small lang="ar" dir="rtl">&#1571;&#1587;&#1593;&#1575;&#1585; &#1575;&#1604;&#1585;&#1581;&#1604;&#1575;&#1578;</small></span>
+        </button>
+        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="settings" type="button">
+          <i data-lucide="settings" class="h-4 w-4"></i> Settings
         </button>
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="alerts" type="button">
           <i data-lucide="bell-ring" class="h-4 w-4"></i> Alerts
@@ -651,21 +654,22 @@
           <div class="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                <i data-lucide="coins" class="text-yellow-500"></i> Dynamic Pricing Engine
+                <i data-lucide="coins" class="text-yellow-500"></i> Route Pricing <span lang="ar" dir="rtl" class="text-sm text-yellow-300">&#1571;&#1587;&#1593;&#1575;&#1585; &#1575;&#1604;&#1585;&#1581;&#1604;&#1575;&#1578;</span>
               </h2>
-              <p class="text-xs text-slate-400 mt-1">Configure pricing displayed across all GCC routes. Values are read dynamically in customer pages.</p>
+              <p class="text-xs text-slate-400 mt-1">Public customer prices and private driver minimums are separate. Public values can appear on the website; private values remain admin-only.</p>
+              <p class="mt-2 text-xs font-semibold text-emerald-300">Your existing standard prices load automatically below. Edit the current value and save—do not add the price again.</p>
             </div>
             <div class="flex flex-wrap gap-2">
-              <button id="seedRoutesBtn" class="rounded-2xl bg-slate-800/80 border border-slate-700/50 px-4 py-2 text-xs font-bold text-slate-300 transition hover:bg-slate-700 hover:text-white" type="button">
+              <button id="seedRoutesBtn" class="hidden" type="button" aria-hidden="true" tabindex="-1">
                 Seed Standard GCC Routes
               </button>
-              <button id="addRouteToggle" class="rounded-2xl bg-brand px-4 py-2 text-xs font-bold text-slate-950 transition hover:bg-brand-light" type="button">
+              <button id="addRouteToggle" class="hidden" type="button" aria-hidden="true" tabindex="-1">
                 Add Custom Route
               </button>
             </div>
           </div>
 
-          <form id="addRouteForm" class="mb-5 hidden grid gap-3 rounded-2xl bg-slate-900/40 border border-slate-800 p-5 sm:grid-cols-5">
+          <form id="addRouteForm" class="hidden" aria-hidden="true">
             <input name="route_slug" class="glass-input rounded-xl px-3 py-2 text-xs outline-none" placeholder="route-slug-name" required />
             <input name="route_name_en" class="glass-input rounded-xl px-3 py-2 text-xs outline-none" placeholder="Route Name (English)" required />
             <input name="route_name_ar" class="glass-input rounded-xl px-3 py-2 text-xs outline-none" placeholder="الاسم بالعربية" required />
@@ -677,6 +681,54 @@
 
           <div id="routesList" class="grid gap-4"></div>
         </div>
+      </section>
+
+      <section id="settingsPanel" class="tab-panel hidden space-y-6">
+        <form id="publicSettingsForm" class="rounded-3xl glass-panel p-6 shadow-xl space-y-6">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+            <div><h2 class="text-lg font-bold text-white flex items-center gap-2"><i data-lucide="settings" class="text-brand"></i> Public Website Settings</h2><p class="mt-1 text-xs text-slate-400">Controls customer-facing contact, trust, and conversion facts. Blank or disabled fields stay hidden.</p></div>
+            <a href="tracking-dashboard/" class="text-xs font-bold text-blue-300 hover:text-blue-200">Legacy Tracking</a>
+          </div>
+          <div class="grid gap-4 md:grid-cols-2">
+            <label class="block"><span class="text-xs font-bold text-slate-300">Brand name</span><input name="brand_display_name" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block"><span class="text-xs font-bold text-slate-300">Booking WhatsApp number</span><input name="booking_whatsapp" inputmode="tel" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" placeholder="97333225954" /></label>
+            <label class="block"><span class="text-xs font-bold text-slate-300">Business description (English)</span><textarea name="service_description_en" rows="3" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs"></textarea></label>
+            <label class="block" dir="rtl"><span class="text-xs font-bold text-slate-300">وصف النشاط (العربية)</span><textarea name="service_description_ar" rows="3" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs"></textarea></label>
+            <label class="block"><span class="text-xs font-bold text-slate-300">Support phone</span><input name="support_phone" inputmode="tel" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block"><span class="text-xs font-bold text-slate-300">Public email</span><input name="public_email" type="email" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block"><span class="text-xs font-bold text-slate-300">Instagram URL</span><input name="instagram_url" type="url" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block"><span class="text-xs font-bold text-slate-300">TikTok URL</span><input name="tiktok_url" type="url" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block md:col-span-2"><span class="text-xs font-bold text-slate-300">Other social URL</span><input name="other_social_url" type="url" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block"><span class="text-xs font-bold text-slate-300">Availability (English)</span><input name="operating_hours_en" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block" dir="rtl"><span class="text-xs font-bold text-slate-300">التوفر (العربية)</span><input name="operating_hours_ar" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block"><span class="text-xs font-bold text-slate-300">Passenger capacity (English)</span><input name="passenger_capacity_en" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block" dir="rtl"><span class="text-xs font-bold text-slate-300">سعة الركاب (العربية)</span><input name="passenger_capacity_ar" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block"><span class="text-xs font-bold text-slate-300">Vehicle wording (English)</span><input name="vehicle_wording_en" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block" dir="rtl"><span class="text-xs font-bold text-slate-300">وصف المركبات (العربية)</span><input name="vehicle_wording_ar" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block"><span class="text-xs font-bold text-slate-300">Insurance wording (English)</span><input name="insurance_wording_en" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block" dir="rtl"><span class="text-xs font-bold text-slate-300">ملاحظة التأمين (العربية)</span><input name="insurance_wording_ar" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block"><span class="text-xs font-bold text-slate-300">Approx. SAR per BHD</span><input name="sar_per_bhd" type="number" min="1" max="20" step="0.01" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block"><span class="text-xs font-bold text-slate-300">Legal name</span><input name="legal_name" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block"><span class="text-xs font-bold text-slate-300">CR number</span><input name="cr_number" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block md:col-span-2"><span class="text-xs font-bold text-slate-300">Public address</span><input name="public_address" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+          </div>
+          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="booking_whatsapp_enabled" type="checkbox" class="accent-brand" /> Booking enabled</label>
+            <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="support_phone_enabled" type="checkbox" class="accent-brand" /> Support phone visible</label>
+            <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="public_email_enabled" type="checkbox" class="accent-brand" /> Email visible</label>
+            <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="cash_enabled" type="checkbox" class="accent-brand" /> Cash listed</label>
+            <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="benefitpay_enabled" type="checkbox" class="accent-brand" /> BenefitPay listed</label>
+            <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="legal_information_enabled" type="checkbox" class="accent-brand" /> Legal info verified</label>
+            <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="address_display_enabled" type="checkbox" class="accent-brand" /> Address verified</label>
+            <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="customer_name_enabled" type="checkbox" class="accent-brand" /> Optional customer name</label>
+            <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="customer_name_required" type="checkbox" class="accent-brand" /> Name required</label>
+            <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="customer_phone_enabled" type="checkbox" class="accent-brand" /> Optional customer phone</label>
+            <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="customer_phone_required" type="checkbox" class="accent-brand" /> Phone required</label>
+            <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="follow_up_consent_enabled" type="checkbox" class="accent-brand" /> Follow-up consent</label>
+          </div>
+          <p class="rounded-xl border border-amber-500/20 bg-amber-950/20 p-3 text-xs text-amber-200">Legal and address information will not appear publicly until its matching verification switch is enabled.</p>
+          <div class="flex justify-end"><button type="submit" class="rounded-xl bg-brand px-5 py-2.5 text-xs font-bold text-slate-950 hover:bg-brand-light">Save Public Settings</button></div>
+        </form>
       </section>
 
       <!-- TAB 6: PHONE ALERTS -->
@@ -831,9 +883,7 @@
           <p class="text-xs text-slate-400">Customer session journey tracking and driver auditing report.</p>
         </div>
       </div>
-      <button id="closeDialogBtn" class="rounded-xl bg-slate-850 hover:bg-slate-800 border border-slate-800/80 px-3 py-2 text-xs font-bold text-slate-400 hover:text-white transition" type="button">
-        Close
-      </button>
+      <div class="flex gap-2"><button id="regenerateCareLinkBtn" class="rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-3 py-2 text-xs font-bold text-emerald-300" type="button">Generate secure Care link</button><button id="closeDialogBtn" class="rounded-xl bg-slate-850 hover:bg-slate-800 border border-slate-800/80 px-3 py-2 text-xs font-bold text-slate-400 hover:text-white transition" type="button">Close</button></div>
     </div>
     
     <div class="max-h-[75vh] overflow-y-auto p-6 space-y-6">
@@ -871,6 +921,9 @@
             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Quoted price (BHD)</span>
             <input type="number" id="auditQuotedPrice" name="quoted_price" min="0" step="0.001" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs outline-none focus:border-brand" placeholder="0.00 BHD" />
           </label>
+          <label class="block"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Customer paid amount (BHD)</span><input type="number" id="auditCustomerPaid" name="customer_paid_amount" min="0" step="0.001" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" placeholder="Final amount received" /></label>
+          <label class="block"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Actual driver payout (BHD)</span><input type="number" id="auditDriverPayout" name="driver_payout_amount" min="0" step="0.001" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" placeholder="Amount paid to driver" /></label>
+          <div class="rounded-xl border border-yellow-500/20 bg-yellow-950/20 p-3"><span class="text-[10px] font-bold uppercase text-yellow-300">Actual commission</span><strong id="auditActualCommission" class="mt-2 block text-sm text-white">Enter paid amount and driver payout</strong></div>
           <label class="block">
             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Driver name</span>
             <input id="auditDriverName" name="driver_name" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs outline-none focus:border-brand" placeholder="Driver assigned" />
@@ -979,6 +1032,10 @@
   <!-- DASHBOARD CONTROLLER SCRIPT -->
   <script>
     function resolveAdminApiUrl() {
+      if (window.location.protocol === 'file:') {
+        return 'https://getvendora.net/bahrain-saudi-gcc-transport/api/transport/admin';
+      }
+
       const override = window.__VENDORA_TRANSPORT_ADMIN_API__;
       if (typeof override === 'string' && override.trim()) {
         return override.trim().replace(/\/$/, '');
@@ -1123,6 +1180,7 @@
       leads: [],
       pageviews: [],
       routes: [],
+      publicConfig: { settings: {}, routes: [] },
       summary: {},
       errors: [],
       notificationSettings: {
@@ -2504,24 +2562,43 @@
 
     function routeCard(route) {
       const price = route.price_bd ?? '';
+      const privateMinimum = route.private_minimum_bhd ?? '';
+      const expectedCommission = privateMinimum === '' || price === '' ? null : Math.max(0, Number(price) - Number(privateMinimum));
       const live = Number(route.is_visible) === 1;
       return `
         <article class="route-card rounded-2xl glass-panel p-5 transition duration-200 hover:border-brand/20" data-route="${escapeHtml(route.route_slug)}">
-          <div class="grid gap-4 lg:grid-cols-[minmax(0,1fr)_160px_140px_100px] lg:items-center">
+          <div class="mb-4 flex flex-wrap gap-2"><span class="rounded-full border border-emerald-500/30 bg-emerald-950/30 px-2 py-1 text-[9px] font-bold text-emerald-300">PUBLIC â€” visible to customers and Google</span><span class="rounded-full border border-purple-500/30 bg-purple-950/30 px-2 py-1 text-[9px] font-bold text-purple-300">PRIVATE â€” admin only; never published</span></div>
+          <div class="grid gap-4 lg:grid-cols-4 lg:items-end">
             <div>
               <h3 class="font-extrabold text-sm text-white">${escapeHtml(route.route_name_en || route.route_slug)}</h3>
               <p class="mt-0.5 text-xs text-slate-400">${escapeHtml(route.route_name_ar || '')}</p>
               <p class="mt-2 text-[10px] text-slate-500 font-medium">Slug: ${escapeHtml(route.route_slug)} ${route.updated_at ? '• Updated ' + escapeHtml(formatDate(route.updated_at)) : ''}</p>
             </div>
             <label class="block">
-              <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Route Price (BHD)</span>
-              <input data-field="price_bd" type="number" min="0" step="0.001" value="${escapeHtml(price)}" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs outline-none focus:border-brand" placeholder="0.00 BHD" />
+              <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-300">Current public customer price (BHD)</span>
+              <input data-field="price_bd" type="number" min="0" step="0.001" value="${escapeHtml(price)}" class="glass-input mt-1.5 w-full rounded-xl border-emerald-500/30 px-3 py-2 text-xs outline-none focus:border-brand" />
             </label>
+            <label class="block"><span class="text-[10px] font-bold uppercase tracking-wider text-purple-300">Private minimum driver price</span><input data-field="private_minimum_bhd" type="number" min="0" step="0.001" value="${escapeHtml(privateMinimum)}" class="glass-input mt-1.5 w-full rounded-xl border-purple-500/30 px-3 py-2 text-xs" placeholder="Minimum not configured" /></label>
+            <div class="rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-2.5"><span class="text-[10px] font-bold uppercase text-slate-400">Expected commission</span><strong data-expected-commission class="mt-1 block text-xs text-yellow-300">${expectedCommission === null ? 'Minimum not configured' : `${expectedCommission.toFixed(3)} BHD`}</strong></div>
+            <label class="block"><span class="text-[10px] font-bold uppercase text-slate-400">Currency</span><input data-field="currency" value="BHD" readonly class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Price type</span><select data-field="price_kind" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs"><option value="standard" ${route.price_kind === 'standard' ? 'selected' : ''}>Standard</option><option value="from" ${route.price_kind === 'from' ? 'selected' : ''}>From</option><option value="request_quote" ${route.price_kind === 'request_quote' ? 'selected' : ''}>Request quote</option></select></label>
+            <label class="block"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Trip type</span><select data-field="trip_type" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs"><option value="one_way" ${route.trip_type === 'one_way' ? 'selected' : ''}>One-way</option><option value="return_quote" ${route.trip_type === 'return_quote' ? 'selected' : ''}>Return quotation</option><option value="full_day" ${route.trip_type === 'full_day' ? 'selected' : ''}>Full day</option><option value="additional_day" ${route.trip_type === 'additional_day' ? 'selected' : ''}>Additional daily vehicle rate</option></select></label>
+            <label class="block"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">WhatsApp override</span><input data-field="whatsapp_override" inputmode="tel" value="${escapeHtml(route.whatsapp_override || '')}" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" placeholder="Optional" /></label>
+            <label class="block lg:col-span-2"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Included (English)</span><input data-field="included_en" value="${escapeHtml(route.included_en || '')}" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block lg:col-span-2" dir="rtl"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">المشمول (العربية)</span><input data-field="included_ar" value="${escapeHtml(route.included_ar || '')}" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block lg:col-span-2"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Booking notice (English)</span><input data-field="booking_notice_en" value="${escapeHtml(route.booking_notice_en || '')}" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block lg:col-span-2" dir="rtl"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">تنبيه الحجز (العربية)</span><input data-field="booking_notice_ar" value="${escapeHtml(route.booking_notice_ar || '')}" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block lg:col-span-2"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Airport / vehicle notes (English)</span><input data-field="route_notes_en" value="${escapeHtml(route.route_notes_en || '')}" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
+            <label class="block lg:col-span-2" dir="rtl"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">ملاحظات المطار / المركبة (العربية)</span><input data-field="route_notes_ar" value="${escapeHtml(route.route_notes_ar || '')}" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
             <label class="flex items-center justify-between rounded-xl bg-slate-950/60 border border-slate-800/80 px-4 py-2.5 mt-4 lg:mt-0 cursor-pointer">
-              <span class="text-xs font-bold text-slate-300">${live ? 'Visible' : 'Hidden'}</span>
-              <input data-field="is_visible" type="checkbox" class="h-4.5 w-4.5 accent-brand rounded border-slate-800" ${live ? 'checked' : ''} />
+              <span class="text-xs font-bold text-slate-300">Route enabled</span>
+              <input data-field="is_active" type="checkbox" class="h-4.5 w-4.5 accent-brand rounded border-slate-800" ${live ? 'checked' : ''} />
             </label>
-            <button data-save-route class="rounded-xl bg-brand hover:bg-brand-light text-slate-950 py-2.5 text-xs font-bold transition shadow-md shadow-brand/5 active:scale-95 mt-4 lg:mt-0" type="button">Save</button>
+            <label class="flex items-center justify-between rounded-xl bg-emerald-950/20 border border-emerald-500/20 px-4 py-2.5 cursor-pointer"><span class="text-xs font-bold text-emerald-300">Public price enabled</span><input data-field="public_price_enabled" type="checkbox" class="accent-brand" ${Number(route.public_price_enabled ?? 1) === 1 ? 'checked' : ''}></label>
+            <label class="flex items-center justify-between rounded-xl bg-slate-950/60 border border-slate-800 px-4 py-2.5 cursor-pointer"><span class="text-xs font-bold text-slate-300">Approximate SAR</span><input data-field="approximate_sar_enabled" type="checkbox" class="accent-brand" ${Number(route.approximate_sar_enabled) === 1 ? 'checked' : ''}></label>
+            <label class="flex items-center justify-between rounded-xl bg-slate-950/60 border border-slate-800 px-4 py-2.5 cursor-pointer"><span class="text-xs font-bold text-slate-300">Causeway toll included</span><input data-field="causeway_toll_included" type="checkbox" class="accent-brand" ${Number(route.causeway_toll_included) === 1 ? 'checked' : ''}></label>
+            <button data-preview-route class="rounded-xl border border-blue-500/30 px-4 py-2.5 text-xs font-bold text-blue-300" type="button">Preview</button>
+            <button data-save-route class="rounded-xl bg-brand hover:bg-brand-light text-slate-950 py-2.5 text-xs font-bold transition shadow-md shadow-brand/5 active:scale-95" type="button">Save route pricing</button>
           </div>
         </article>
       `;
@@ -2530,6 +2607,17 @@
     function renderRoutes() {
       document.getElementById('routesList').innerHTML = state.routes.map(routeCard).join('')
         || '<p class="rounded-3xl border border-dashed border-slate-800 p-8 text-center text-xs text-slate-500 font-medium">No pricing routes configured yet.</p>';
+    }
+
+    function renderPublicSettings() {
+      const form = document.getElementById('publicSettingsForm');
+      if (!form) return;
+      const settings = state.publicConfig.settings || {};
+      Array.from(form.elements).forEach((input) => {
+        if (!input.name) return;
+        if (input.type === 'checkbox') input.checked = settings[input.name] === true;
+        else input.value = settings[input.name] ?? '';
+      });
     }
 
     function renderCohorts() {
@@ -2631,7 +2719,7 @@
 
     async function loadDashboard() {
       const search = state.filters.search || '';
-      const [leadsData, pvsData, routesData, summaryData, notificationData, errorsData, careData] = await Promise.all([
+      const [leadsData, pvsData, routesData, summaryData, notificationData, errorsData, careData, publicData] = await Promise.all([
         api(queryFromFilters({ resource: 'leads', limit: 800 })),
         api(queryFromFilters({ resource: 'pageviews', limit: 800 })),
         api('?resource=routes'),
@@ -2639,6 +2727,7 @@
         api('?resource=notification-settings'),
         api('?resource=errors&limit=200').catch(() => ({ errors: state.errors })),
         api(search ? `?resource=passenger-care&search=${encodeURIComponent(search)}&limit=200` : '?resource=passenger-care&limit=200'),
+        api('?resource=public-settings'),
       ]);
       state.leads = leadsData.leads || [];
       state.pageviews = pvsData.leads || [];
@@ -2647,6 +2736,7 @@
       state.notificationSettings = normalizeNotificationSettings(notificationData.notification_settings || state.notificationSettings);
       state.errors = errorsData.errors || [];
       state.passengerCare = careData.feedback || [];
+      state.publicConfig = publicData.public_config || state.publicConfig;
       
       renderFilterOptions();
       renderStats();
@@ -2657,6 +2747,7 @@
       renderRoutes();
       renderCohorts();
       renderNotificationSettings();
+      renderPublicSettings();
       renderErrors();
     }
 
@@ -2738,6 +2829,9 @@
       document.getElementById('auditRevenue').value = lead.revenue || '';
       document.getElementById('auditNotes').value = lead.admin_notes || '';
       document.getElementById('auditQuotedPrice').value = lead.quoted_price || '';
+      document.getElementById('auditCustomerPaid').value = lead.customer_paid_amount ?? '';
+      document.getElementById('auditDriverPayout').value = lead.driver_payout_amount ?? '';
+      document.getElementById('auditActualCommission').textContent = lead.actual_commission != null ? `${Number(lead.actual_commission).toFixed(3)} BHD` : 'Enter paid amount and driver payout';
       document.getElementById('auditDriverName').value = lead.driver_name || '';
       document.getElementById('auditDriverPhone').value = lead.driver_phone || '';
       document.getElementById('auditLostReason').value = lead.lost_reason || '';
@@ -2764,6 +2858,10 @@
       const rows = [
         ['Timestamp', formatDate(lead.clicked_at)],
         ['Booking Ref', lead.booking_ref || makeBookingRefPreview(lead.lead_uuid)],
+        ['Booking WhatsApp used', lead.booking_phone_used ? `+${lead.booking_phone_used}` : '-'],
+        ['Public price shown', lead.public_price_shown != null ? formatMoney(lead.public_price_shown) : '-'],
+        ['Customer contact', [lead.customer_name, lead.customer_phone].filter(Boolean).join(' / ') || 'Not provided'],
+        ['Follow-up consent', Number(lead.follow_up_consent) === 1 ? 'Yes' : 'No'],
         ['Suspicion Score', `${lead.suspicion_score || 0}% (${lead.suspicion_score > 60 ? 'HIGH RISK' : lead.suspicion_score > 30 ? 'MEDIUM' : 'LOW'})`],
         ['Customer Loyalty Profile', visitorIdFor(lead) ? `Returning Customer (Visit #${lead.visit_count || payload.visitCount || 1} | viewed ${sessionViewsFor(lead)} pages this session | Visitor ID: ${compactId(visitorIdFor(lead))})` : 'New / Session-only Visitor'],
         ['Route slug', lead.route_slug],
@@ -2771,6 +2869,9 @@
         ['WhatsApp Target Link', lead.target_url],
         ['Lead status', statusText(lead.status)],
         ['Quoted price', lead.quoted_price ? formatMoney(lead.quoted_price) : '-'],
+        ['Customer paid amount', lead.customer_paid_amount != null ? formatMoney(lead.customer_paid_amount) : '-'],
+        ['Driver payout', lead.driver_payout_amount != null ? formatMoney(lead.driver_payout_amount) : '-'],
+        ['Actual commission', lead.actual_commission != null ? formatMoney(lead.actual_commission) : '-'],
         ['Revenue logged', formatMoney(lead.revenue || 0)],
         ['Assigned driver', [lead.driver_name, lead.driver_phone].filter(Boolean).join(' / ') || '-'],
         ['Follow-up time', lead.follow_up_at ? formatDate(lead.follow_up_at) : '-'],
@@ -3088,6 +3189,20 @@ Note: This report is automatically compiled by the Control Room operations track
       }
     });
     document.getElementById('closeDialogBtn').addEventListener('click', () => document.getElementById('leadDialog').close());
+    document.getElementById('regenerateCareLinkBtn').addEventListener('click', async () => {
+      const lead = state.leads.find((item) => String(item.id) === String(state.activeLeadId));
+      if (!lead?.booking_ref) return showStatus('This lead does not have a booking reference.', 'error');
+      if (!confirm(`Generate a new Passenger Care link for ${lead.booking_ref}? Any previous secure link will stop working.`)) return;
+      try {
+        const result = await api('?resource=passenger-care-link', { method: 'POST', body: JSON.stringify({ booking_ref: lead.booking_ref }) });
+        const languagePath = String(result.language || lead.language || '').startsWith('en') ? 'care/en/' : 'care/';
+        const link = `${location.origin}/bahrain-saudi-gcc-transport/${languagePath}?token=${encodeURIComponent(result.care_token)}`;
+        await navigator.clipboard.writeText(link);
+        showStatus('New secure Passenger Care link copied to clipboard.', 'success');
+      } catch (error) {
+        showStatus(error.message, 'error');
+      }
+    });
     document.querySelectorAll('.tab-btn').forEach((button) => button.addEventListener('click', () => setTab(button.dataset.tab)));
 
     // KPI cards jump straight to their detailed report (tap or Enter/Space)
@@ -3412,6 +3527,8 @@ Note: This report is automatically compiled by the Control Room operations track
             admin_notes: payload.admin_notes,
             revenue: payload.revenue,
             quoted_price: payload.quoted_price,
+            customer_paid_amount: payload.customer_paid_amount,
+            driver_payout_amount: payload.driver_payout_amount,
             driver_name: payload.driver_name,
             driver_phone: payload.driver_phone,
             lost_reason: payload.lost_reason,
@@ -3427,8 +3544,29 @@ Note: This report is automatically compiled by the Control Room operations track
       }
     });
 
+    ['auditCustomerPaid', 'auditDriverPayout'].forEach((id) => document.getElementById(id).addEventListener('input', () => {
+      const paid = Number(document.getElementById('auditCustomerPaid').value);
+      const payout = Number(document.getElementById('auditDriverPayout').value);
+      const output = document.getElementById('auditActualCommission');
+      if (!document.getElementById('auditCustomerPaid').value || !document.getElementById('auditDriverPayout').value) {
+        output.textContent = 'Enter paid amount and driver payout';
+      } else if (paid < payout) {
+        output.textContent = '0.000 BHD â€” payout exceeds paid amount';
+      } else {
+        output.textContent = `${(paid - payout).toFixed(3)} BHD`;
+      }
+    }));
+
     // PRICING ROUTES EVENTS
     document.getElementById('routesList').addEventListener('click', async (event) => {
+      const preview = event.target.closest('[data-preview-route]');
+      if (preview) {
+        const previewCard = preview.closest('.route-card');
+        const previewSlug = previewCard.dataset.route;
+        const previewUrl = `/bahrain-saudi-gcc-transport/en/prices/?route=${encodeURIComponent(previewSlug)}`;
+        window.open(previewUrl, '_blank', 'noopener,noreferrer');
+        return;
+      }
       const button = event.target.closest('[data-save-route]');
       if (!button) return;
       const card = button.closest('.route-card');
@@ -3438,7 +3576,22 @@ Note: This report is automatically compiled by the Control Room operations track
         ...existing,
         route_slug: routeSlug,
         price_bd: card.querySelector('[data-field="price_bd"]').value,
-        is_visible: card.querySelector('[data-field="is_visible"]').checked
+        private_minimum_bhd: card.querySelector('[data-field="private_minimum_bhd"]').value,
+        currency: 'BHD',
+        is_active: card.querySelector('[data-field="is_active"]').checked,
+        public_price_enabled: card.querySelector('[data-field="public_price_enabled"]').checked,
+        approximate_sar_enabled: card.querySelector('[data-field="approximate_sar_enabled"]').checked,
+        causeway_toll_included: card.querySelector('[data-field="causeway_toll_included"]').checked,
+        price_kind: card.querySelector('[data-field="price_kind"]').value,
+        trip_type: card.querySelector('[data-field="trip_type"]').value,
+        unit_kind: card.querySelector('[data-field="trip_type"]').value === 'full_day' ? 'package' : card.querySelector('[data-field="trip_type"]').value === 'additional_day' ? 'per_day' : 'one_way_vehicle',
+        whatsapp_override: card.querySelector('[data-field="whatsapp_override"]').value,
+        included_en: card.querySelector('[data-field="included_en"]').value,
+        included_ar: card.querySelector('[data-field="included_ar"]').value,
+        booking_notice_en: card.querySelector('[data-field="booking_notice_en"]').value,
+        booking_notice_ar: card.querySelector('[data-field="booking_notice_ar"]').value,
+        route_notes_en: card.querySelector('[data-field="route_notes_en"]').value,
+        route_notes_ar: card.querySelector('[data-field="route_notes_ar"]').value
       };
       
       button.disabled = true;
@@ -3451,8 +3604,22 @@ Note: This report is automatically compiled by the Control Room operations track
         showStatus(err.message, 'error');
       } finally {
         button.disabled = false;
-        button.textContent = 'Save';
+        button.textContent = 'Save route pricing';
       }
+    });
+
+    document.getElementById('routesList').addEventListener('input', (event) => {
+      if (!event.target.matches('[data-field="price_bd"], [data-field="private_minimum_bhd"]')) return;
+      const card = event.target.closest('.route-card');
+      const publicValue = Number(card.querySelector('[data-field="price_bd"]').value);
+      const minimumInput = card.querySelector('[data-field="private_minimum_bhd"]');
+      const output = card.querySelector('[data-expected-commission]');
+      if (!minimumInput.value || !Number.isFinite(publicValue)) {
+        output.textContent = 'Minimum not configured';
+        return;
+      }
+      const minimum = Number(minimumInput.value);
+      output.textContent = publicValue < minimum ? '0.000 BHD â€” check prices' : `${(publicValue - minimum).toFixed(3)} BHD`;
     });
 
     document.getElementById('seedRoutesBtn').addEventListener('click', async () => {
@@ -3496,6 +3663,30 @@ Note: This report is automatically compiled by the Control Room operations track
         showStatus('Custom route added.', 'success');
       } catch (err) {
         showStatus(err.message, 'error');
+      }
+    });
+
+    document.getElementById('publicSettingsForm').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const payload = {};
+      Array.from(form.elements).forEach((input) => {
+        if (!input.name) return;
+        payload[input.name] = input.type === 'checkbox' ? input.checked : input.value;
+      });
+      const button = form.querySelector('[type="submit"]');
+      button.disabled = true;
+      button.textContent = 'Saving...';
+      try {
+        const data = await api('?resource=public-settings', { method: 'PUT', body: JSON.stringify(payload) });
+        state.publicConfig = data.public_config || state.publicConfig;
+        renderPublicSettings();
+        showStatus('Public website settings saved.', 'success');
+      } catch (err) {
+        showStatus(err.message, 'error');
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Save Public Settings';
       }
     });
 

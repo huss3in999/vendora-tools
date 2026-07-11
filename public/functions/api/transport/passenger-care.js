@@ -10,7 +10,16 @@ const ALLOWED_ORIGINS = new Set([
 
 const MAX_BODY_BYTES = 4096;
 const BOOKING_REF_RE = /^GCC-[A-F0-9]{8}$/i;
+const CARE_TOKEN_RE = /^[a-f0-9]{48}$/i;
 const OUTCOMES = new Set([
+  'driver_contacted',
+  'driver_no_contact',
+  'booking_confirmed',
+  'customer_declined',
+  'driver_unavailable',
+  'trip_completed',
+  'trip_cancelled',
+  'other',
   'completed',
   'cancelled',
   'no_driver',
@@ -48,6 +57,11 @@ const REVIEW_ROUTE_COLUMNS = [
 export function makeBookingRef(leadUuid) {
   const hex = String(leadUuid || '').replace(/-/g, '').slice(0, 8).toUpperCase();
   return hex ? `GCC-${hex}` : null;
+}
+
+export function makeCareToken() {
+  const bytes = crypto.getRandomValues(new Uint8Array(24));
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
 }
 
 function json(data, init = {}) {
@@ -101,6 +115,11 @@ function normalizeBookingRef(value) {
   return BOOKING_REF_RE.test(normalized) ? normalized : null;
 }
 
+function normalizeCareToken(value) {
+  const text = cleanText(value, 64);
+  return text && CARE_TOKEN_RE.test(text) ? text.toLowerCase() : null;
+}
+
 function normalizeCountryCode(value) {
   const code = cleanText(value, 8);
   if (!code) return null;
@@ -149,6 +168,22 @@ export async function ensurePassengerCareSchema(env) {
       ON whatsapp_leads(booking_ref)
     `).run();
   }
+  const leadColumns = [
+    ['care_token', 'TEXT'],
+    ['booking_phone_used', 'TEXT'],
+    ['public_price_shown', 'REAL'],
+    ['customer_name', 'TEXT'],
+    ['customer_phone', 'TEXT'],
+    ['follow_up_consent', 'INTEGER DEFAULT 0'],
+  ];
+  for (const [name, type] of leadColumns) {
+    if (!existing.has(name)) {
+      await env.TRANSPORT_DB.prepare(`ALTER TABLE whatsapp_leads ADD COLUMN ${name} ${type}`).run();
+    }
+  }
+  await env.TRANSPORT_DB.prepare(`
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_whatsapp_leads_care_token ON whatsapp_leads(care_token)
+  `).run();
 
   await env.TRANSPORT_DB.prepare(`
     CREATE TABLE IF NOT EXISTS passenger_care_feedback (
@@ -231,7 +266,7 @@ function cleanRouteSlug(value) {
 
 function canPublishAsRouteReview(row) {
   if (!row) return false;
-  if (String(row.outcome || '') !== 'completed') return false;
+  if (!['completed', 'trip_completed'].includes(String(row.outcome || ''))) return false;
   if (row.rating === null || row.rating === undefined) return false;
   const slug = cleanRouteSlug(row.route_slug);
   if (!slug || STUB_ROUTE_SLUGS.has(slug)) return false;
@@ -278,6 +313,17 @@ async function findLeadByBookingRef(env, bookingRef) {
   return match;
 }
 
+async function findLeadByCareToken(env, careToken) {
+  return env.TRANSPORT_DB.prepare(`
+    SELECT lead_uuid, booking_ref, care_token, route_slug, route_label, page_path, language, clicked_at, cf_country, cf_city, service_type
+    FROM whatsapp_leads
+    WHERE care_token = ?
+      AND COALESCE(service_type, '') NOT IN ('pageview', 'passenger-care-pageview', 'passenger-care-stub')
+      AND COALESCE(route_slug, '') NOT IN ('passenger-care', 'passenger-care-stub')
+    LIMIT 1
+  `).bind(careToken).first();
+}
+
 async function findFeedbackByBookingRef(env, bookingRef) {
   return env.TRANSPORT_DB.prepare(`
     SELECT booking_ref, outcome, rating, comment, quoted_price, paid_price, language, submitted_at, country, city
@@ -294,33 +340,24 @@ export async function onRequestOptions(context) {
 export async function onRequestGet(context) {
   const { request, env } = context;
   const headers = corsHeaders(request);
+  const rate = checkRateLimit(request, 'passenger-care-read', { limit: 30, windowMs: 60_000 });
+  if (!rate.ok) return rateLimitResponse(rate, headers);
 
   if (!env.TRANSPORT_DB) {
     return json({ ok: false, error: 'Database binding missing' }, { status: 500, headers });
   }
 
-  const bookingRef = normalizeBookingRef(new URL(request.url).searchParams.get('ref'));
-  if (!bookingRef) {
-    return json({ ok: false, error: 'Invalid booking reference' }, { status: 400, headers });
+  const careToken = normalizeCareToken(new URL(request.url).searchParams.get('token'));
+  if (!careToken) {
+    return json({ ok: false, error: 'Invalid or missing Passenger Care token' }, { status: 400, headers });
   }
 
   try {
     await ensurePassengerCareSchema(env);
-    const lead = await findLeadByBookingRef(env, bookingRef);
+    const lead = await findLeadByCareToken(env, careToken);
+    if (!lead) return json({ ok: false, error: 'Passenger Care link not found' }, { status: 404, headers });
+    const bookingRef = lead.booking_ref;
     const feedback = await findFeedbackByBookingRef(env, bookingRef);
-
-    if (!lead) {
-      return json({
-        ok: true,
-        booking_ref: bookingRef,
-        route_label: '',
-        page_path: '',
-        language: 'ar',
-        clicked_at: '',
-        already_submitted: Boolean(feedback),
-        provisional: true,
-      }, { headers });
-    }
 
     return json({
       ok: true,
@@ -345,26 +382,11 @@ export async function onRequestGet(context) {
   }
 }
 
-async function resolveLeadForFeedback(env, bookingRef) {
-  const lead = await findLeadByBookingRef(env, bookingRef);
-  if (lead) return lead;
-
-  return {
-    lead_uuid: leadUuidFromBookingRef(bookingRef),
-    booking_ref: bookingRef,
-    route_slug: '',
-    route_label: '',
-    page_path: '',
-    language: 'ar',
-    clicked_at: '',
-    cf_country: null,
-    cf_city: null,
-  };
-}
-
 export async function onRequestPost(context) {
   const { request, env } = context;
   const headers = corsHeaders(request);
+  const rate = checkRateLimit(request, 'passenger-care-write', { limit: 10, windowMs: 60_000 });
+  if (!rate.ok) return rateLimitResponse(rate, headers);
 
   if (!env.TRANSPORT_DB) {
     return json({ ok: false, error: 'Database binding missing' }, { status: 500, headers });
@@ -377,23 +399,23 @@ export async function onRequestPost(context) {
     return json({ ok: false, error: 'Invalid JSON payload' }, { status: 400, headers });
   }
 
-  const bookingRef = normalizeBookingRef(payload.ref || payload.booking_ref);
+  const careToken = normalizeCareToken(payload.token);
   const outcome = cleanText(payload.outcome, 40);
-  if (!bookingRef || !outcome || !OUTCOMES.has(outcome)) {
-    return json({ ok: false, error: 'Invalid booking reference or outcome' }, { status: 400, headers });
+  if (!careToken || !outcome || !OUTCOMES.has(outcome)) {
+    return json({ ok: false, error: 'Invalid Passenger Care token or outcome' }, { status: 400, headers });
   }
 
   try {
     await ensurePassengerCareSchema(env);
 
+    const lead = await findLeadByCareToken(env, careToken);
+    if (!lead || !lead.booking_ref) {
+      return json({ ok: false, error: 'Passenger Care link not found' }, { status: 404, headers });
+    }
+    const bookingRef = lead.booking_ref;
     const existing = await findFeedbackByBookingRef(env, bookingRef);
     if (existing) {
       return json({ ok: true, already_submitted: true, booking_ref: bookingRef }, { status: 200, headers });
-    }
-
-    const lead = await resolveLeadForFeedback(env, bookingRef);
-    if (!lead) {
-      return json({ ok: false, error: 'Booking reference not found' }, { status: 404, headers });
     }
 
     const geo = getRequestGeo(request);
@@ -535,7 +557,7 @@ export async function getPublicRouteReviews(env, routeSlug, limit = 5) {
     FROM passenger_care_feedback
     WHERE route_slug = ?
       AND COALESCE(review_approved, 0) = 1
-      AND outcome = 'completed'
+      AND outcome IN ('completed', 'trip_completed')
       AND rating IS NOT NULL
   `).bind(slug).first();
 
@@ -544,7 +566,7 @@ export async function getPublicRouteReviews(env, routeSlug, limit = 5) {
     FROM passenger_care_feedback
     WHERE route_slug = ?
       AND COALESCE(review_approved, 0) = 1
-      AND outcome = 'completed'
+      AND outcome IN ('completed', 'trip_completed')
       AND rating IS NOT NULL
     ORDER BY submitted_at DESC
     LIMIT ?
@@ -628,6 +650,18 @@ export async function updatePassengerCareReviewApproval(env, payload) {
   };
 }
 
+export async function regeneratePassengerCareToken(env, payload) {
+  await ensurePassengerCareSchema(env);
+  const bookingRef = normalizeBookingRef(payload.booking_ref || payload.bookingRef);
+  if (!bookingRef) return { ok: false, error: 'booking_ref is required', status: 400 };
+  const lead = await findLeadByBookingRef(env, bookingRef);
+  if (!lead || !isRealWhatsAppLead(lead)) return { ok: false, error: 'Lead not found', status: 404 };
+  const careToken = makeCareToken();
+  await env.TRANSPORT_DB.prepare('UPDATE whatsapp_leads SET care_token = ? WHERE lead_uuid = ?')
+    .bind(careToken, lead.lead_uuid).run();
+  return { ok: true, booking_ref: bookingRef, care_token: careToken, language: lead.language || 'ar' };
+}
+
 export async function deletePassengerCareFeedback(env, request) {
   await ensurePassengerCareSchema(env);
   const url = new URL(request.url);
@@ -652,3 +686,4 @@ export async function onRequest(context) {
   if (method === 'POST') return onRequestPost(context);
   return json({ ok: false, error: 'Method not allowed' }, { status: 405, headers: corsHeaders(context.request) });
 }
+import { checkRateLimit, rateLimitResponse } from './rate-limit.js';

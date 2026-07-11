@@ -603,11 +603,50 @@ select { appearance: none; cursor: pointer; }
   align-items: center;
 }
 
-.filters select {
+.filters select,
+.filter-panel select,
+.filter-panel input {
   flex: 1;
   min-width: 120px;
   padding: 10px;
   font-size: 14px;
+}
+
+.filter-panel {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.filter-panel input,
+.filter-panel select {
+  width: 100%;
+  min-width: 0;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.date-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.date-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.filter-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
 }
 
 .filter-check {
@@ -617,6 +656,48 @@ select { appearance: none; cursor: pointer; }
   font-size: 13px;
   color: var(--text-muted);
   white-space: nowrap;
+}
+
+.summary-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  padding: 0 16px 12px;
+}
+
+.summary-strip div,
+.category-summary div {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  min-width: 0;
+}
+
+.summary-strip span,
+.category-summary span,
+.category-summary small {
+  display: block;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.summary-strip strong,
+.category-summary strong {
+  display: block;
+  margin-top: 3px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.summary-strip strong.positive { color: var(--success); }
+.summary-strip strong.negative { color: var(--danger); }
+
+.category-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 0 16px 12px;
 }
 
 .tx-list {
@@ -693,6 +774,15 @@ select { appearance: none; cursor: pointer; }
   color: var(--text-muted);
   padding: 32px;
   font-size: 14px;
+}
+
+@media (max-width: 430px) {
+  .filter-grid,
+  .date-grid,
+  .summary-strip,
+  .category-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* ─── Settings ──────────────────────────────────────────────────────────────── */

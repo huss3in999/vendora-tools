@@ -8,6 +8,8 @@
 **/e2e/**
 **/test-results
 **/test-results/**
+**/tests
+**/tests/**
 **/tests/google-analytics-audit-*
 **/.wrangler
 **/.wrangler/**
@@ -24,3 +26,37 @@ worker.js
 AGENTS.md
 .gitignore
 .assetsignore
+
+# Transport production containment: deploy public pages/assets, not operational
+# logs, repair helpers, research workspaces, source drafts, or raw/private media.
+bahrain-saudi-gcc-transport/*.log
+bahrain-saudi-gcc-transport/*.bat
+bahrain-saudi-gcc-transport/*.cmd
+bahrain-saudi-gcc-transport/*.ps1
+bahrain-saudi-gcc-transport/ADMIN-DEPLOY-NOTES.md
+bahrain-saudi-gcc-transport/GCC-IMAGE-PROMPTS.md
+bahrain-saudi-gcc-transport/scratch
+bahrain-saudi-gcc-transport/scratch/**
+bahrain-saudi-gcc-transport/scripts
+bahrain-saudi-gcc-transport/scripts/**
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/src/ar
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/src/ar/**
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/src/en
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/src/en/**
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/assets
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/assets/**
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/content
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/content/**
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/data
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/data/**
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/planning
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/planning/**
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/qa
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/qa/**
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/references
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/references/**
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/research
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/research/**
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/seo
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/seo/**
+bahrain-saudi-gcc-transport/gcc-private-transport-guide/*.md

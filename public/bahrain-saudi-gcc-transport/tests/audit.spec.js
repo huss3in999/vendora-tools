@@ -24,7 +24,7 @@ function parseSitemapPaths(xml) {
   return [...new Set(paths)];
 }
 
-const sitemapXml = readFileSync(join(root, 'sitemap.xml'), 'utf8');
+const sitemapXml = readFileSync(join(root, 'sitemap-gcc-transport.xml'), 'utf8');
 const ROUTES = parseSitemapPaths(sitemapXml);
 
 test.describe('SEO & page shell', () => {
@@ -83,7 +83,7 @@ test.describe('Interactive UI', () => {
 
     await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
     await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
-    await expect(page.locator('h1').first()).toContainText('تاكسي خاص من البحرين إلى الدمام');
+    await expect(page.locator('h1').first()).toContainText(/البحرين.*الدمام/);
   });
 
   test('Arabic contact: EN pill falls back to English hub', async ({ page }) => {
@@ -95,11 +95,19 @@ test.describe('Interactive UI', () => {
   });
 
   test('booking form submit builds wa.me link', async ({ page }) => {
+    await page.route('**/api/transport/event', (route) => route.fulfill({
+      status: 201,
+      contentType: 'application/json',
+      body: JSON.stringify({ ok: true, leadId: 1, booking_ref: 'GCC-A1B2C3D4', care_token: 'a'.repeat(48) }),
+    }));
     await page.goto('/bahrain-saudi-gcc-transport/');
     const submit = page.locator('[data-booking-submit]');
     await submit.waitFor({ state: 'visible' });
-    const href = await submit.getAttribute('href');
-    expect(href).toMatch(/^https:\/\/wa\.me\/97333225954\?text=/);
+    await submit.click();
+    await expect(page.locator('#vendora-booking-ready')).toBeVisible();
+    const whatsapp = page.waitForRequest((request) => request.url().startsWith('https://wa.me/97333225954'));
+    await page.locator('#vendora-booking-ready [data-booking-continue]').click();
+    await whatsapp;
   });
 });
 

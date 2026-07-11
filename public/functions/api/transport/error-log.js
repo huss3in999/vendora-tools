@@ -1,3 +1,5 @@
+import { checkRateLimit, rateLimitResponse } from './rate-limit.js';
+
 /**
  * Shared transport error log.
  *
@@ -133,6 +135,8 @@ export async function onRequestOptions(context) {
 export async function onRequestPost(context) {
   const { request, env, ctx } = context;
   const headers = corsHeaders(request);
+  const rate = checkRateLimit(request, 'transport-error-log', { limit: 20, windowMs: 60_000 });
+  if (!rate.ok) return rateLimitResponse(rate, headers);
 
   let payload;
   try {

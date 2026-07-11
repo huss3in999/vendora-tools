@@ -24,7 +24,7 @@ test.describe('Admin dashboard', () => {
 
     await page.goto('/bahrain-saudi-gcc-transport/admin/');
 
-    const apiUrl = await page.evaluate(() => window.__VENDORA_TRANSPORT_ADMIN_RESOLVED_API__);
+    const apiUrl = await page.evaluate(() => resolveAdminApiUrl());
     expect(apiUrl).toBe('https://getvendora.net/bahrain-saudi-gcc-transport/api/transport/admin');
     await expect(page.locator('#localPreviewNotice')).toBeVisible();
 
@@ -43,10 +43,10 @@ test.describe('Admin dashboard', () => {
     const fileUrl = new URL('../admin/index.html', import.meta.url).href;
     await page.goto(fileUrl);
 
-    const apiUrl = await page.evaluate(() => window.__VENDORA_TRANSPORT_ADMIN_RESOLVED_API__);
+    const apiUrl = await page.evaluate(() => resolveAdminApiUrl());
 
-    expect(apiUrl).toBe('https://getvendora.net/bahrain-saudi-gcc-transport/api/transport/admin');
-    await expect(page.locator('#localPreviewNotice')).toBeVisible();
+    await expect(page).toHaveURL('https://getvendora.net/bahrain-saudi-gcc-transport/admin/');
+    expect(apiUrl).toBe('/bahrain-saudi-gcc-transport/api/transport/admin');
   });
 
   test('retries the root admin API when the prefixed route returns 404', async ({ page }) => {

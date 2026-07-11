@@ -2,12 +2,12 @@
  * Owner screens — dashboard, transactions, edit/void, settings, toys collection
  */
 
-import * as api from './api.js?v=13';
+import * as api from './api.js?v=18';
 import {
   formatBD, formatDateTime, todayLabel, showToast, showLoading, navigate,
   amountInput, noteInput, backHeader, screenLayout, EXPENSE_CATEGORIES,
   TYPE_LABELS, WALLET_LABELS, cashBreakdown, heroCashBlock, bindInstallButton, getState,
-} from './app.js?v=13';
+} from './app.js?v=18';
 
 let ownerDashboardHtml = '';
 let transactionsHtml = '';
@@ -17,6 +17,89 @@ let ownerExpenseOptions = [
   'Potato', 'Petrol', 'Tea', 'Food products', 'Drinks', 'Packaging',
   'Cleaning', 'Maintenance', 'Delivery', 'Other',
 ];
+
+const TYPE_OPTIONS = [
+  ['cash_sale', 'Cash Received'],
+  ['expense', 'Expense / Removal'],
+  ['cash_taken_by_owner', 'Owner Took Cash'],
+  ['cash_added_by_owner', 'Owner Added Cash'],
+  ['benefitpay_sale', 'BenefitPay'],
+  ['toy_collection', 'Toys Added'],
+  ['toy_collected_by_owner', 'Toys Taken'],
+  ['correction', 'Correction'],
+];
+
+function esc(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[c]));
+}
+
+function summaryPanel(summary = {}) {
+  const topCategories = summary.top_expense_categories || [];
+  const optional = [
+    ['BenefitPay', summary.benefitpay_total, 'positive'],
+    ['Owner Added', summary.owner_added_total, 'positive'],
+    ['Toys Added', summary.toys_added_total, 'positive'],
+    ['Toys Taken', summary.toys_taken_total, 'negative'],
+  ].filter(([, amount]) => Math.abs(amount || 0) >= 0.0005);
+  const cards = [
+    ['Records', summary.count || 0, ''],
+    ['Cash Sales', summary.cash_sales_total || 0, 'positive'],
+    ['Expenses', summary.expense_total || 0, 'negative'],
+    ['Owner Took', summary.owner_taken_total || 0, 'negative'],
+    ...optional,
+    ['Net Movement', summary.net_total || 0, ''],
+  ];
+
+  return `
+    <div class="summary-strip">
+      ${cards.map(([label, amount, cls]) => `
+        <div>
+          <span>${label}</span>
+          <strong class="${cls}">${label === 'Records' ? amount : formatBD(amount)}</strong>
+        </div>`).join('')}
+    </div>
+    ${topCategories.length ? `
+      <div class="category-summary">
+        ${topCategories.map(c => `
+          <div>
+            <span>${esc(c.category)}</span>
+            <strong>${formatBD(c.total)}</strong>
+            <small>${c.count} records</small>
+          </div>`).join('')}
+      </div>` : ''}`;
+}
+
+function isOverdrawError(err) {
+  return (err?.message || '').includes('Enter a reason');
+}
+
+async function createTransactionWithOverdrawReason(payload) {
+  try {
+    return await api.createTransaction(payload);
+  } catch (err) {
+    if (!isOverdrawError(err)) throw err;
+    const reason = prompt(`${err.message}\n\nReason required:`);
+    if (!reason?.trim()) throw err;
+    return api.createTransaction({ ...payload, overdraw_reason: reason.trim() });
+  }
+}
+
+async function collectToysWithOverdrawReason(payload) {
+  try {
+    return await api.collectToys(payload);
+  } catch (err) {
+    if (!isOverdrawError(err)) throw err;
+    const reason = prompt(`${err.message}\n\nReason required:`);
+    if (!reason?.trim()) throw err;
+    return api.collectToys({ ...payload, overdraw_reason: reason.trim() });
+  }
+}
 
 // ─── Bottom nav for owner ────────────────────────────────────────────────────
 
@@ -61,9 +144,10 @@ function ownerDashboardStats(d) {
       ${statCard('Work Day Net Cash', formatBD(todayNet), { highlight: true })}
       ${statCard('Cash With Worker Now', formatBD(d.expected_cash_with_worker), { highlight: true })}
       ${statCard('Expenses This Month', formatBD(d.month_expenses || 0))}
+      ${statCard('Total Expenses', formatBD(d.total_expenses || 0))}
       ${statCard('Owner Added Today', formatBD(d.cash_added_today || 0))}
       ${statCard('Owner Took Today', formatBD(d.cash_taken_today || 0))}
-      ${statCard('Toys This Month Separate', formatBD(d.toys_month_balance), { highlight: true })}
+      ${statCard('Toys Saved Separate', formatBD(d.toys_month_balance), { highlight: true })}
     </div>`;
 }
 
@@ -198,15 +282,20 @@ function renderOwnerCash() {
 }
 
 async function renderTransactions(data) {
-  const { transactions = [], filters = {} } = data;
+  const { transactions = [], filters = {}, summary = {} } = data;
   return screenLayout(`
     ${backHeader('Transactions')}
-    <div class="filters">
+    <form id="transaction-filter-form" class="filter-panel">
+      <input type="search" id="filter-q" placeholder="Search mint, toys, note, date..." value="${esc(filters.q)}">
+      <div class="filter-grid">
       <select id="filter-period">
+        <option value="" ${!filters.period ? 'selected' : ''}>All Time</option>
         <option value="today" ${filters.period === 'today' ? 'selected' : ''}>Today</option>
+        <option value="yesterday" ${filters.period === 'yesterday' ? 'selected' : ''}>Yesterday</option>
         <option value="week" ${filters.period === 'week' ? 'selected' : ''}>This Week</option>
         <option value="month" ${filters.period === 'month' ? 'selected' : ''}>This Month</option>
-        <option value="" ${!filters.period ? 'selected' : ''}>All</option>
+        <option value="quarter" ${filters.period === 'quarter' ? 'selected' : ''}>This Quarter</option>
+        <option value="year" ${filters.period === 'year' ? 'selected' : ''}>This Year</option>
       </select>
       <select id="filter-wallet">
         <option value="">All Wallets</option>
@@ -214,10 +303,24 @@ async function renderTransactions(data) {
         <option value="benefitpay" ${filters.wallet === 'benefitpay' ? 'selected' : ''}>BenefitPay</option>
         <option value="toys_monthly" ${filters.wallet === 'toys_monthly' ? 'selected' : ''}>Toys</option>
       </select>
+      <select id="filter-type">
+        <option value="" ${!filters.type ? 'selected' : ''}>All Types</option>
+        ${TYPE_OPTIONS.map(([value, label]) => `<option value="${value}" ${filters.type === value ? 'selected' : ''}>${label}</option>`).join('')}
+      </select>
+      </div>
+      <div class="filter-grid date-grid">
+        <label>From <input type="date" id="filter-date-from" value="${esc(filters.date_from)}"></label>
+        <label>To <input type="date" id="filter-date-to" value="${esc(filters.date_to)}"></label>
+      </div>
       <label class="filter-check">
         <input type="checkbox" id="filter-test" ${filters.test_only ? 'checked' : ''}> Test only
       </label>
-    </div>
+      <div class="filter-actions">
+        <button type="submit" class="btn btn-primary">Search</button>
+        <button type="button" class="btn btn-secondary" id="filter-clear">Clear</button>
+      </div>
+    </form>
+    ${summaryPanel(summary)}
     <div class="bulk-bar hidden" id="bulk-bar">
       <span id="bulk-count">0 selected</span>
       <button class="btn-sm btn-warning" id="bulk-void-btn">Void Selected</button>
@@ -295,7 +398,7 @@ async function renderOwnerToys(d) {
   return screenLayout(`
     ${backHeader('Toys Money')}
     <div class="hero-card toys">
-      <p class="hero-label">Toys Saved This Month</p>
+      <p class="hero-label">Toys Money Saved</p>
       <p class="hero-value">${formatBD(d.balance)}</p>
       <p class="hero-sub">Separate from worker cash</p>
     </div>
@@ -315,7 +418,7 @@ async function renderOwnerToys(d) {
       ${noteInput('collect-note')}
       <button type="submit" class="btn btn-warning btn-full">Record Toys Money Taken</button>
     </form>
-    <div class="section-title">This Month History</div>
+    <div class="section-title">Toys History</div>
     <div class="tx-list compact">
       ${history.length === 0 ? '<p class="empty-msg">No toys records this month</p>' :
         history.map(t => `
@@ -335,6 +438,7 @@ async function renderOwnerToys(d) {
 function renderManageEntries(data) {
   const activeTab = data.tab || 'transactions';
   const records = data.records || [];
+  const filters = data.filters || {};
 
   const tabsHtml = `
     <div class="manage-tabs">
@@ -356,6 +460,41 @@ function renderManageEntries(data) {
   return screenLayout(`
     ${backHeader('Manage Entries')}
     ${tabsHtml}
+    <form id="manage-filter-form" class="filter-panel">
+      <input type="search" id="manage-filter-q" placeholder="Search mint, toys, note, date..." value="${esc(filters.q)}">
+      <div class="filter-grid">
+        <select id="manage-filter-period">
+          <option value="" ${!filters.period ? 'selected' : ''}>All Time</option>
+          <option value="today" ${filters.period === 'today' ? 'selected' : ''}>Today</option>
+          <option value="yesterday" ${filters.period === 'yesterday' ? 'selected' : ''}>Yesterday</option>
+          <option value="week" ${filters.period === 'week' ? 'selected' : ''}>This Week</option>
+          <option value="month" ${filters.period === 'month' ? 'selected' : ''}>This Month</option>
+          <option value="quarter" ${filters.period === 'quarter' ? 'selected' : ''}>This Quarter</option>
+          <option value="year" ${filters.period === 'year' ? 'selected' : ''}>This Year</option>
+        </select>
+        <select id="manage-filter-wallet">
+          <option value="">All Wallets</option>
+          <option value="daily_cash" ${filters.wallet === 'daily_cash' ? 'selected' : ''}>Daily Cash</option>
+          <option value="benefitpay" ${filters.wallet === 'benefitpay' ? 'selected' : ''}>BenefitPay</option>
+          <option value="toys_monthly" ${filters.wallet === 'toys_monthly' ? 'selected' : ''}>Toys</option>
+        </select>
+        <select id="manage-filter-type">
+          <option value="" ${!filters.type ? 'selected' : ''}>All Types</option>
+          ${TYPE_OPTIONS.map(([value, label]) => `<option value="${value}" ${filters.type === value ? 'selected' : ''}>${label}</option>`).join('')}
+        </select>
+      </div>
+      <div class="filter-grid date-grid">
+        <label>From <input type="date" id="manage-filter-date-from" value="${esc(filters.date_from)}"></label>
+        <label>To <input type="date" id="manage-filter-date-to" value="${esc(filters.date_to)}"></label>
+      </div>
+      <label class="filter-check">
+        <input type="checkbox" id="manage-filter-test" ${filters.test_only ? 'checked' : ''}> Test only
+      </label>
+      <div class="filter-actions">
+        <button type="submit" class="btn btn-primary">Search</button>
+        <button type="button" class="btn btn-secondary" id="manage-filter-clear">Clear</button>
+      </div>
+    </form>
     <div class="tx-list">
       ${listHtml}
     </div>
@@ -572,8 +711,8 @@ export function ownerScreens(screen, data) {
     case 'owner-cash': bindOwnerCash(); break;
     case 'owner-toys': loadOwnerToys(); break;
     case 'settings': loadSettings(); break;
-    case 'edit-entry': bindEditEntry(data.transaction, data.returnTo); break;
-    case 'manage-entries': loadManageEntries(data.tab || 'transactions'); break;
+    case 'edit-entry': bindEditEntry(data.transaction, data.returnTo, data.filters); break;
+    case 'manage-entries': loadManageEntries(data.tab || 'transactions', data.filters || { period: 'month' }); break;
   }
 }
 
@@ -608,7 +747,10 @@ function bindOwnerQuickActions() {
     const amount = readAmount('How much cash did owner take from the worker? (BD)');
     if (amount == null) return;
     const note = prompt('Note (optional):') || undefined;
-    await saveQuickEntry(() => api.cashTakenByOwner(amount, note), `Recorded: owner took ${formatBD(amount)}`);
+    await saveQuickEntry(
+      () => createTransactionWithOverdrawReason({ type: 'cash_taken_by_owner', amount, note }),
+      `Recorded: owner took ${formatBD(amount)}`,
+    );
   });
 
   document.querySelector('[data-action="owner-added-cash"]')?.addEventListener('click', async () => {
@@ -626,7 +768,7 @@ function bindOwnerQuickActions() {
     const category = prompt(`Paid for / company:\n${ownerExpenseOptions.join('\n')}`) || 'Other';
     const note = prompt('Note (optional):') || undefined;
     await saveQuickEntry(
-      () => api.createTransaction({ type: 'expense', amount, category, note }),
+      () => createTransactionWithOverdrawReason({ type: 'expense', amount, category, note }),
       `Expense / removal saved: ${formatBD(amount)}`,
     );
   });
@@ -691,7 +833,7 @@ async function loadOwnerDashboard() {
       const note = prompt('Note (optional):') || undefined;
       try {
         showLoading(true);
-        await api.cashTakenByOwner(amount, note);
+        await createTransactionWithOverdrawReason({ type: 'cash_taken_by_owner', amount, note });
         showToast(`Recorded: took ${formatBD(amount)}`, 'success');
         loadOwnerDashboard();
       } catch (err) {
@@ -713,7 +855,7 @@ function bindOwnerNav(active) {
     btn.addEventListener('click', () => navigate(btn.dataset.nav));
   });
   document.querySelector('[data-action="logout"]')?.addEventListener('click', () => {
-    import('./app.js?v=13').then(m => m.logout());
+      import('./app.js?v=18').then(m => m.logout());
   });
 }
 
@@ -722,23 +864,29 @@ async function loadTransactions(filters) {
     const params = {};
     if (filters.period) params.period = filters.period;
     if (filters.wallet) params.wallet = filters.wallet;
+    if (filters.type) params.type = filters.type;
+    if (filters.q) params.q = filters.q;
+    if (filters.date_from) params.date_from = filters.date_from;
+    if (filters.date_to) params.date_to = filters.date_to;
     if (filters.test_only) params.test_only = '1';
     params.show_test = '1';
+    params.limit = '1000';
 
     const res = await api.getTransactions(params);
-    transactionsHtml = await renderTransactions({ transactions: res.transactions, filters });
+    transactionsHtml = await renderTransactions({ transactions: res.transactions, filters, summary: res.summary });
     if (getState().screen !== 'transactions' || !document.getElementById('app')) return;
     document.getElementById('app').innerHTML = transactionsHtml;
     bindOwnerNav('transactions');
 
-    document.getElementById('filter-period').addEventListener('change', (e) => {
-      loadTransactions({ ...filters, period: e.target.value });
+    document.getElementById('transaction-filter-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      loadTransactions(readTransactionFilters());
     });
-    document.getElementById('filter-wallet').addEventListener('change', (e) => {
-      loadTransactions({ ...filters, wallet: e.target.value });
+    document.getElementById('filter-clear').addEventListener('click', () => {
+      loadTransactions({ period: 'month' });
     });
     document.getElementById('filter-test').addEventListener('change', (e) => {
-      loadTransactions({ ...filters, test_only: e.target.checked });
+      loadTransactions({ ...readTransactionFilters(), test_only: e.target.checked });
     });
 
     bindBulkActions(filters, res.transactions);
@@ -782,6 +930,38 @@ async function loadTransactions(filters) {
   } catch (err) {
     showToast(err.message, 'error');
   }
+}
+
+function readTransactionFilters() {
+  const filters = {
+    q: document.getElementById('filter-q')?.value.trim(),
+    period: document.getElementById('filter-period')?.value,
+    wallet: document.getElementById('filter-wallet')?.value,
+    type: document.getElementById('filter-type')?.value,
+    date_from: document.getElementById('filter-date-from')?.value,
+    date_to: document.getElementById('filter-date-to')?.value,
+    test_only: document.getElementById('filter-test')?.checked,
+  };
+  Object.keys(filters).forEach((key) => {
+    if (!filters[key]) delete filters[key];
+  });
+  return filters;
+}
+
+function readManageFilters() {
+  const filters = {
+    q: document.getElementById('manage-filter-q')?.value.trim(),
+    period: document.getElementById('manage-filter-period')?.value,
+    wallet: document.getElementById('manage-filter-wallet')?.value,
+    type: document.getElementById('manage-filter-type')?.value,
+    date_from: document.getElementById('manage-filter-date-from')?.value,
+    date_to: document.getElementById('manage-filter-date-to')?.value,
+    test_only: document.getElementById('manage-filter-test')?.checked,
+  };
+  Object.keys(filters).forEach((key) => {
+    if (!filters[key]) delete filters[key];
+  });
+  return filters;
 }
 
 function bindBulkActions(filters, transactions) {
@@ -850,7 +1030,7 @@ function bindOwnerCash() {
     const note = document.getElementById('taken-note').value.trim();
     try {
       showLoading(true);
-      await api.cashTakenByOwner(amount, note || undefined);
+      await createTransactionWithOverdrawReason({ type: 'cash_taken_by_owner', amount, note: note || undefined });
       ownerDashboardHtml = '';
       transactionsHtml = '';
       showToast('Cash taken recorded', 'success');
@@ -929,7 +1109,7 @@ async function loadOwnerToys() {
       const note = document.getElementById('collect-note').value.trim();
       try {
         showLoading(true);
-        await api.collectToys({ amount, note: note || undefined });
+        await collectToysWithOverdrawReason({ amount, note: note || undefined });
         ownerToysHtml = '';
         transactionsHtml = '';
         showToast('Toys money taken recorded', 'success');
@@ -1088,7 +1268,7 @@ async function loadSettings() {
   }
 }
 
-function bindEditEntry(tx, returnTo = 'transactions') {
+function bindEditEntry(tx, returnTo = 'transactions', returnFilters = { period: 'month' }) {
   document.getElementById('edit-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const amount = parseFloat(document.getElementById('amount').value);
@@ -1101,7 +1281,7 @@ function bindEditEntry(tx, returnTo = 'transactions') {
       ownerDashboardHtml = '';
       transactionsHtml = '';
       showToast('Entry updated', 'success');
-      navigate(returnTo === 'manage-entries' ? 'manage-entries' : 'transactions', { filters: { period: 'month' } });
+      navigate(returnTo === 'manage-entries' ? 'manage-entries' : 'transactions', { filters: returnFilters || { period: 'month' } });
     } catch (err) {
       showToast(err.message, 'error');
     } finally {
@@ -1112,18 +1292,28 @@ function bindEditEntry(tx, returnTo = 'transactions') {
 
 // ─── Manage Entries Controller ───────────────────────────────────────────────
 
-async function loadManageEntries(tab = 'transactions') {
+async function loadManageEntries(tab = 'transactions', filters = { period: 'month' }) {
   try {
     let records = [];
     if (tab === 'transactions') {
-      const res = await api.getTransactions({ show_test: '1' });
+      const params = {};
+      if (filters.period) params.period = filters.period;
+      if (filters.wallet) params.wallet = filters.wallet;
+      if (filters.type) params.type = filters.type;
+      if (filters.q) params.q = filters.q;
+      if (filters.date_from) params.date_from = filters.date_from;
+      if (filters.date_to) params.date_to = filters.date_to;
+      if (filters.test_only) params.test_only = '1';
+      params.show_test = '1';
+      params.limit = '1000';
+      const res = await api.getTransactions(params);
       records = res.transactions || [];
     } else {
       const res = await api.getClosings({ show_test: '1' });
       records = res.closings || [];
     }
 
-    const html = renderManageEntries({ tab, records });
+    const html = renderManageEntries({ tab, records, filters });
     if (getState().screen !== 'manage-entries' || !document.getElementById('app')) return;
     document.getElementById('app').innerHTML = html;
 
@@ -1131,8 +1321,19 @@ async function loadManageEntries(tab = 'transactions') {
 
     document.querySelectorAll('.manage-tab').forEach(btn => {
       btn.addEventListener('click', () => {
-        loadManageEntries(btn.dataset.tab);
+        loadManageEntries(btn.dataset.tab, filters);
       });
+    });
+
+    document.getElementById('manage-filter-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      loadManageEntries(tab, readManageFilters());
+    });
+    document.getElementById('manage-filter-clear')?.addEventListener('click', () => {
+      loadManageEntries(tab, {});
+    });
+    document.getElementById('manage-filter-test')?.addEventListener('change', (e) => {
+      loadManageEntries(tab, { ...readManageFilters(), test_only: e.target.checked });
     });
 
     document.getElementById('app').addEventListener('click', async (e) => {
@@ -1143,7 +1344,7 @@ async function loadManageEntries(tab = 'transactions') {
 
       if (action === 'edit-tx') {
         const tx = records.find(t => String(t.id) === String(id));
-        if (tx) navigate('edit-entry', { transaction: tx, returnTo: 'manage-entries' });
+        if (tx) navigate('edit-entry', { transaction: tx, returnTo: 'manage-entries', filters });
       } else if (action === 'void-tx') {
         const reason = prompt('Void reason (required):');
         if (!reason) return;
@@ -1154,7 +1355,7 @@ async function loadManageEntries(tab = 'transactions') {
           ownerDashboardHtml = '';
           transactionsHtml = '';
           showToast('Transaction voided successfully', 'success');
-          loadManageEntries(tab);
+          loadManageEntries(tab, filters);
         } catch (err) {
           showToast(err.message, 'error');
         } finally {
@@ -1168,7 +1369,7 @@ async function loadManageEntries(tab = 'transactions') {
           ownerDashboardHtml = '';
           transactionsHtml = '';
           showToast('Transaction deleted successfully', 'success');
-          loadManageEntries(tab);
+          loadManageEntries(tab, filters);
         } catch (err) {
           showToast(err.message, 'error');
         } finally {
@@ -1184,7 +1385,7 @@ async function loadManageEntries(tab = 'transactions') {
           ownerDashboardHtml = '';
           transactionsHtml = '';
           showToast('Closing record voided successfully', 'success');
-          loadManageEntries(tab);
+          loadManageEntries(tab, filters);
         } catch (err) {
           showToast(err.message, 'error');
         } finally {
@@ -1198,7 +1399,7 @@ async function loadManageEntries(tab = 'transactions') {
           ownerDashboardHtml = '';
           transactionsHtml = '';
           showToast('Closing record deleted successfully', 'success');
-          loadManageEntries(tab);
+          loadManageEntries(tab, filters);
         } catch (err) {
           showToast(err.message, 'error');
         } finally {

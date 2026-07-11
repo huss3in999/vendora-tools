@@ -2,9 +2,9 @@
  * Cash Control — Main app router, login, shared UI helpers
  */
 
-import * as api from './api.js?v=13';
-import { renderWorkerScreen, workerScreens } from './worker.js?v=13';
-import { renderOwnerScreen, ownerScreens } from './owner.js?v=13';
+import * as api from './api.js?v=18';
+import { renderWorkerScreen, workerScreens } from './worker.js?v=18';
+import { renderOwnerScreen, ownerScreens } from './owner.js?v=18';
 
 // ─── State ───────────────────────────────────────────────────────────────────
 
@@ -21,7 +21,8 @@ localStorage.removeItem('cc_name');
 // ─── Formatting ──────────────────────────────────────────────────────────────
 
 export function formatBD(amount) {
-  const n = parseFloat(amount) || 0;
+  const parsed = parseFloat(amount) || 0;
+  const n = Math.abs(parsed) < 0.0005 ? 0 : parsed;
   return `BD ${n.toFixed(3)}`;
 }
 

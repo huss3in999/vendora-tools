@@ -6,10 +6,10 @@ const ALLOWED_ORIGINS = new Set([
   'null',
 ]);
 
-const MAX_BODY_BYTES = 32768;
+const MAX_BODY_BYTES = 8192;
 const DEFAULT_WHATSAPP_NUMBER = '97333225954';
 const DEFAULT_MODEL = '@cf/meta/llama-3.1-8b-instruct-fast';
-const MAX_HISTORY_MESSAGES = 24;
+const MAX_HISTORY_MESSAGES = 10;
 
 const REQUIRED_FIELDS = [
   'service',
@@ -273,7 +273,7 @@ function extractJsonObject(text) {
 async function runWorkersAi(env, messages, model) {
   const result = await env.AI.run(model, {
     messages,
-    max_tokens: 900,
+    max_tokens: 500,
     temperature: 0.35,
   });
   if (result && typeof result.response === 'string') return result.response;
@@ -298,6 +298,8 @@ export async function onRequestOptions(context) {
 export async function onRequestPost(context) {
   const { request, env } = context;
   const headers = corsHeaders(request);
+  const rate = checkRateLimit(request, 'transport-ai-chat', { limit: 10, windowMs: 60_000 });
+  if (!rate.ok) return rateLimitResponse(rate, headers);
 
   let payload;
   try {
@@ -454,3 +456,4 @@ export async function onRequest(context) {
   if (method === 'POST') return onRequestPost(context);
   return json({ ok: false, error: 'Method not allowed' }, { status: 405, headers: corsHeaders(context.request) });
 }
+import { checkRateLimit, rateLimitResponse } from './rate-limit.js';

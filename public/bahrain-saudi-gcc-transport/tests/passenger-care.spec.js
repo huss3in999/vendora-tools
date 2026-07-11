@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 
 const TEST_REF = 'GCC-A1B2C3D4';
 const TEST_UUID = 'a1b2c3d4-e5f6-4789-a012-3456789abcde';
+const TEST_TOKEN = 'a'.repeat(48);
 
 function captureWhatsAppClick(page) {
   return page.waitForRequest((req) => req.url().includes('wa.me/'), { timeout: 15000 });
@@ -17,15 +18,20 @@ function mockLeadApi(page, bookingRef = TEST_REF, leadId = TEST_UUID) {
   const handler = async (route) => {
     if (route.request().method() !== 'POST') return route.continue();
     await route.fulfill({
-      status: 202,
+      status: 201,
       contentType: 'application/json',
-      body: JSON.stringify({ ok: true, leadId, booking_ref: bookingRef }),
+      body: JSON.stringify({ ok: true, leadId, booking_ref: bookingRef, care_token: TEST_TOKEN }),
     });
   };
   return Promise.all([
     page.route('**/api/transport/event', handler),
     page.route('**/bahrain-saudi-gcc-transport/api/transport/event', handler),
   ]);
+}
+
+async function continuePreparedRequest(page) {
+  await expect(page.locator('#vendora-booking-ready')).toBeVisible();
+  await page.locator('#vendora-booking-ready [data-booking-continue]').click();
 }
 
 function mockPassengerCareApi(page, options = {}) {
@@ -67,18 +73,18 @@ test.describe('Passenger Care pages', () => {
       getBody: {
         ok: true,
         booking_ref: TEST_REF,
-        route_label: 'توصيل مطار البحرين',
+        route_label: 'ØªÙˆØµÙŠÙ„ Ù…Ø·Ø§Ø± Ø§Ù„Ø¨Ø­Ø±ÙŠÙ†',
         already_submitted: false,
       },
     });
 
-    await page.goto(`/bahrain-saudi-gcc-transport/care/?ref=${TEST_REF}`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`/bahrain-saudi-gcc-transport/care/?token=${TEST_TOKEN}`, { waitUntil: 'domcontentloaded' });
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/i);
-    await expect(page.locator('h1')).toContainText('متابعة الرحلة');
+    await expect(page.locator('h1')).toContainText('\u0645\u062a\u0627\u0628\u0639\u0629 \u0627\u0644\u0631\u062d\u0644\u0629');
     await expect(page.locator('#trustLead')).toContainText('20');
-    await expect(page.locator('#questionText')).toContainText('كيف انتهت رحلتك');
-    await expect(page.locator('#submitBtn')).toContainText('تأكيد وإرسال');
-    await expect(page.locator('#footerNote')).toContainText('سرية');
+    await expect(page.locator('#questionText')).toContainText('\u0643\u064a\u0641 \u0627\u0646\u062a\u0647\u062a \u0631\u062d\u0644\u062a\u0643');
+    await expect(page.locator('#submitBtn')).toContainText('\u062a\u0623\u0643\u064a\u062f \u0648\u0625\u0631\u0633\u0627\u0644');
+    await expect(page.locator('#footerNote')).toContainText('\u0633\u0631\u064a\u0629');
   });
 
   test('English care page is noindex and loads with updated copy', async ({ page }) => {
@@ -91,7 +97,7 @@ test.describe('Passenger Care pages', () => {
       },
     });
 
-    await page.goto(`/bahrain-saudi-gcc-transport/care/en/?ref=${TEST_REF}`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`/bahrain-saudi-gcc-transport/care/en/?token=${TEST_TOKEN}`, { waitUntil: 'domcontentloaded' });
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/i);
     await expect(page.locator('h1')).toContainText('Journey Follow-Up');
     await expect(page.locator('#questionText')).toContainText('How did your journey');
@@ -122,7 +128,7 @@ test.describe('Passenger Care pages', () => {
       });
     });
 
-    await page.goto(`/bahrain-saudi-gcc-transport/care/en/?ref=${TEST_REF}`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`/bahrain-saudi-gcc-transport/care/en/?token=${TEST_TOKEN}`, { waitUntil: 'domcontentloaded' });
     await page.locator('[data-outcome="completed"]').click();
     await page.locator('#submitBtn').click();
     await expect(page.locator('#thanksView')).toBeVisible();
@@ -133,7 +139,7 @@ test.describe('Passenger Care pages', () => {
   test('Duplicate feedback lock works', async ({ page }) => {
     await mockPassengerCareApi(page, { alreadySubmitted: true });
 
-    await page.goto(`/bahrain-saudi-gcc-transport/care/en/?ref=${TEST_REF}`, { waitUntil: 'domcontentloaded' });
+    await page.goto(`/bahrain-saudi-gcc-transport/care/en/?token=${TEST_TOKEN}`, { waitUntil: 'domcontentloaded' });
     await expect(page.locator('#lockedView')).toBeVisible();
     await expect(page.locator('#lockedBody')).toContainText('already been submitted');
   });
@@ -147,13 +153,14 @@ test.describe('WhatsApp passenger care append', () => {
     await page.goto('/bahrain-saudi-gcc-transport/', { waitUntil: 'networkidle' });
     const waRequest = captureWhatsAppClick(page);
     await page.locator('a[data-wa-message]').first().click();
+    await continuePreparedRequest(page);
     const openedUrl = (await waRequest).url();
 
     expect(openedUrl).toMatch(/GCC-[A-F0-9]{8}/);
     const decoded = decodeURIComponent(openedUrl);
-    expect(decoded).toMatch(/رقم الحجز/);
-    expect(decoded).toMatch(/رعاية المسافر/);
-    expect(decoded).toMatch(/g\.getvendora\.net\/gcc-[a-f0-9]{8}/);
+    expect(decoded).toContain('\u0631\u0642\u0645 \u0627\u0644\u062d\u062c\u0632');
+    expect(decoded).toContain('\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0645\u0633\u0627\u0641\u0631');
+    expect(decoded).toContain(`/care/?token=${TEST_TOKEN}`);
   });
 
   test('Arabic airport page intercepts data-wa-message', async ({ page }) => {
@@ -163,10 +170,11 @@ test.describe('WhatsApp passenger care append', () => {
     await page.goto('/bahrain-saudi-gcc-transport/bahrain-airport-transfer/', { waitUntil: 'networkidle' });
     const waRequest = captureWhatsAppClick(page);
     await page.locator('a[data-wa-message]').first().click();
+    await continuePreparedRequest(page);
     const openedUrl = (await waRequest).url();
 
     expect(decodeURIComponent(openedUrl)).toMatch(/GCC-[A-F0-9]{8}/);
-    expect(decodeURIComponent(openedUrl)).toMatch(/رعاية المسافر/);
+    expect(decodeURIComponent(openedUrl)).toContain('\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0645\u0633\u0627\u0641\u0631');
   });
 
   test('English page hardcoded wa.me adds Booking Ref, Passenger Care, English care link', async ({ page }) => {
@@ -176,12 +184,13 @@ test.describe('WhatsApp passenger care append', () => {
     await page.goto('/bahrain-saudi-gcc-transport/en/', { waitUntil: 'networkidle' });
     const waRequest = captureWhatsAppClick(page);
     await page.locator('a[data-track-wa], a.floating-wa, a[data-wa-preserved-href]').first().click();
+    await continuePreparedRequest(page);
     const decoded = decodeURIComponent((await waRequest).url());
 
     expect(decoded).toMatch(/GCC-[A-F0-9]{8}/);
     expect(decoded).toContain('Booking Ref:');
     expect(decoded).toContain('Passenger Care:');
-    expect(decoded).toContain('g.getvendora.net/gcc-en-');
+    expect(decoded).toContain(`/care/en/?token=${TEST_TOKEN}`);
   });
 
   test('Floating WhatsApp button works', async ({ page }) => {
@@ -193,10 +202,11 @@ test.describe('WhatsApp passenger care append', () => {
     await expect(floatBtn).toBeVisible();
     const waRequest = captureWhatsAppClick(page);
     await floatBtn.click();
+    await continuePreparedRequest(page);
     expect(decodeURIComponent((await waRequest).url())).toMatch(/GCC-[A-F0-9]{8}/);
   });
 
-  test('Still opens WhatsApp with care block when lead API fails', async ({ page }) => {
+  test('API failure opens WhatsApp without a synthetic reference or care token', async ({ page }) => {
     await page.route('**/api/transport/**', async (route) => {
       if (route.request().method() === 'POST') {
         await route.fulfill({ status: 500, contentType: 'application/json', body: JSON.stringify({ ok: false }) });
@@ -216,11 +226,12 @@ test.describe('WhatsApp passenger care append', () => {
     await page.goto('/bahrain-saudi-gcc-transport/bahrain-airport-transfer/', { waitUntil: 'networkidle' });
     const waRequest = captureWhatsAppClick(page);
     await page.locator('a[data-wa-message]').first().click();
+    await continuePreparedRequest(page);
     const decoded = decodeURIComponent((await waRequest).url());
 
     expect(decoded).toContain('wa.me/');
-    expect(decoded).toMatch(/GCC-[A-F0-9]{8}/);
-    expect(decoded).toMatch(/رعاية المسافر/);
+    expect(decoded).not.toMatch(/GCC-[A-F0-9]{8}/);
+    expect(decoded).not.toContain('token=');
   });
 });
 

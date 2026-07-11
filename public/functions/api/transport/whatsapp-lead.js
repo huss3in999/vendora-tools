@@ -1,5 +1,6 @@
 import { recordError } from './error-log.js';
-import { ensurePassengerCareSchema, makeBookingRef } from './passenger-care.js';
+import { ensurePassengerCareSchema, makeBookingRef, makeCareToken } from './passenger-care.js';
+import { checkRateLimit, rateLimitResponse } from './rate-limit.js';
 
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
@@ -457,6 +458,13 @@ function cleanInteger(value) {
   return Math.max(0, Math.min(10000, Math.round(number)));
 }
 
+function cleanPrice(value) {
+  if (value === null || value === undefined || value === '') return null;
+  const number = Number(value);
+  if (!Number.isFinite(number) || number < 0 || number > 100000) return null;
+  return Math.round(number * 1000) / 1000;
+}
+
 function cleanBoundedInteger(value, min, max) {
   const number = Number(value);
   if (!Number.isFinite(number)) return null;
@@ -570,13 +578,19 @@ async function parseJsonBody(request) {
   return JSON.parse(body);
 }
 
-async function storeLead(request, env, payload, leadUuid, bookingRef) {
+async function storeLead(request, env, payload, leadUuid, bookingRef, careToken) {
   const geo = getRequestGeo(request);
   await ensurePassengerCareSchema(env);
   const stmt = env.TRANSPORT_DB.prepare(`
     INSERT INTO whatsapp_leads (
       lead_uuid,
       booking_ref,
+      care_token,
+      booking_phone_used,
+      public_price_shown,
+      customer_name,
+      customer_phone,
+      follow_up_consent,
       client_clicked_at,
       route_slug,
       route_label,
@@ -618,12 +632,18 @@ async function storeLead(request, env, payload, leadUuid, bookingRef) {
       timezone_offset_minutes,
       interaction_count,
       raw_payload
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   await stmt.bind(
     leadUuid,
     bookingRef,
+    careToken,
+    getPayloadValue(payload, 'bookingPhoneUsed', 32),
+    cleanPrice(payload.publicPriceShown),
+    getPayloadValue(payload, 'customerName', 100),
+    getPayloadValue(payload, 'customerPhone', 32),
+    payload.followUpConsent === true ? 1 : 0,
     getPayloadValue(payload, 'timestamp', 80),
     getPayloadValue(payload, 'routeSlug', 160),
     getPayloadValue(payload, 'routeLabel', 240),
@@ -676,6 +696,8 @@ export async function onRequestOptions(context) {
 export async function onRequestPost(context) {
   const { request, env } = context;
   const headers = corsHeaders(request);
+  const rate = checkRateLimit(request, 'transport-lead', { limit: 20, windowMs: 60_000 });
+  if (!rate.ok) return rateLimitResponse(rate, headers);
 
   if (!env.TRANSPORT_DB) {
     return json({ ok: false, error: 'Database binding missing' }, { status: 500, headers });
@@ -688,15 +710,18 @@ export async function onRequestPost(context) {
     return json({ ok: false, error: 'Invalid JSON payload' }, { status: 400, headers });
   }
 
-  const leadUuid = cleanLeadUuid(payload.preassignedLeadUuid) || crypto.randomUUID();
-  const bookingRef = cleanBookingRefValue(payload.preassignedBookingRef) || makeBookingRef(leadUuid);
-  const write = storeLead(request, env, payload, leadUuid, bookingRef).catch((error) => {
+  const leadUuid = crypto.randomUUID();
+  const bookingRef = makeBookingRef(leadUuid);
+  const careToken = makeCareToken();
+  try {
+    await storeLead(request, env, payload, leadUuid, bookingRef, careToken);
+  } catch (error) {
     console.error(JSON.stringify({
       event: 'transport_lead_insert_failed',
       leadUuid,
       message: error && error.message ? error.message : String(error),
     }));
-    return recordError(env, {
+    await recordError(env, {
       source: 'lead-api',
       severity: 'error',
       message: `Lead insert failed: ${error && error.message ? error.message : String(error)}`,
@@ -705,7 +730,8 @@ export async function onRequestPost(context) {
       pagePath: cleanText(payload && payload.pagePath, 400),
       context: `leadUuid=${leadUuid}`,
     });
-  });
+    return json({ ok: false, error: 'Unable to prepare booking request' }, { status: 503, headers });
+  }
   const notify = sendPhoneNotification(request, env, payload).catch((error) => {
     console.error(JSON.stringify({
       event: 'transport_notify_failed',
@@ -714,10 +740,9 @@ export async function onRequestPost(context) {
     }));
   });
 
-  context.waitUntil(write);
   context.waitUntil(notify);
 
-  return json({ ok: true, leadId: leadUuid, booking_ref: bookingRef }, { status: 202, headers });
+  return json({ ok: true, leadId: leadUuid, booking_ref: bookingRef, care_token: careToken }, { status: 201, headers });
 }
 
 export async function onRequest(context) {

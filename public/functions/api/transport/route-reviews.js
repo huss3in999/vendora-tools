@@ -1,4 +1,5 @@
 import { corsHeaders, ensurePassengerCareSchema, getPublicRouteReviews } from './passenger-care.js';
+import { checkRateLimit, rateLimitResponse } from './rate-limit.js';
 
 function json(data, init = {}) {
   return new Response(JSON.stringify(data), {
@@ -18,6 +19,8 @@ export async function onRequestOptions(context) {
 export async function onRequestGet(context) {
   const { request, env } = context;
   const headers = corsHeaders(request);
+  const rate = checkRateLimit(request, 'route-reviews', { limit: 60, windowMs: 60_000 });
+  if (!rate.ok) return rateLimitResponse(rate, headers);
 
   if (!env.TRANSPORT_DB) {
     return json({ ok: false, error: 'Database binding missing' }, { status: 500, headers });

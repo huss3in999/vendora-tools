@@ -163,6 +163,15 @@
   // Unified Local Tracking Function
   window.vendoraTrackLocal = function (eventName, params) {
     var safeParams = params || {};
+    var allowedExtraKeys = {
+      event_category: true, category: true, event_label: true, label: true,
+      calculator_slug: true, tool_id: true, route_name: true, button_text: true,
+      click_text: true, target_url: true, link_url: true, lead_status: true,
+      timeOnPageMs: true, scrollDepthPercent: true, transport_cluster: true,
+      content_group: true, page_category: true, method: true
+      , page: true, airport: true, is_airport_route: true, click_location: true,
+      custom_location_used: true, pickup_country: true, destination_country: true
+    };
     var category = getPageCategory();
     
     // Core payload
@@ -195,9 +204,10 @@
       scrollDepthPercent: safeParams.scrollDepthPercent || 0
     };
 
-    // Merge all extra custom properties from safeParams
+    // Only aggregate interaction context is allowed here. Names, phone numbers,
+    // free-form locations, travel notes and booking details stay in the protected lead flow.
     for (var key in safeParams) {
-      if (safeParams.hasOwnProperty(key) && !payload.hasOwnProperty(key)) {
+      if (safeParams.hasOwnProperty(key) && allowedExtraKeys[key] && !payload.hasOwnProperty(key)) {
         payload[key] = safeParams[key];
       }
     }
@@ -205,7 +215,10 @@
     // Forward to GA4 (Gtag mapping)
     if (typeof window.gtag === 'function') {
       try {
-        var gaParams = Object.assign({}, safeParams, {
+        var gaParams = Object.assign({}, Object.keys(safeParams).reduce(function (clean, key) {
+          if (allowedExtraKeys[key]) clean[key] = safeParams[key];
+          return clean;
+        }, {}), {
           content_group: category,
           page_category: category,
           language: payload.language

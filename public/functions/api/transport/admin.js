@@ -1,6 +1,12 @@
 import { ensureErrorSchema, recordError } from './error-log.js';
 import { buildNtfyHeaders, getNtfyToken, resolveNtfyPublishUrl } from './whatsapp-lead.js';
-import { getPassengerCareAdminRows, deletePassengerCareFeedback, updatePassengerCareReviewApproval } from './passenger-care.js';
+import { getPassengerCareAdminRows, deletePassengerCareFeedback, updatePassengerCareReviewApproval, regeneratePassengerCareToken } from './passenger-care.js';
+import {
+  ensurePublicSettingsSchema,
+  getPublicConfig,
+  savePublicRoute,
+  savePublicSettings,
+} from './public-settings.js';
 
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
@@ -37,6 +43,14 @@ const ADMIN_COLUMNS = [
   ['follow_up_at', 'ALTER TABLE whatsapp_leads ADD COLUMN follow_up_at TEXT'],
   ['audit_updated_at', 'ALTER TABLE whatsapp_leads ADD COLUMN audit_updated_at TEXT'],
   ['booking_ref', 'ALTER TABLE whatsapp_leads ADD COLUMN booking_ref TEXT'],
+  ['booking_phone_used', 'ALTER TABLE whatsapp_leads ADD COLUMN booking_phone_used TEXT'],
+  ['public_price_shown', 'ALTER TABLE whatsapp_leads ADD COLUMN public_price_shown REAL'],
+  ['customer_name', 'ALTER TABLE whatsapp_leads ADD COLUMN customer_name TEXT'],
+  ['customer_phone', 'ALTER TABLE whatsapp_leads ADD COLUMN customer_phone TEXT'],
+  ['follow_up_consent', 'ALTER TABLE whatsapp_leads ADD COLUMN follow_up_consent INTEGER DEFAULT 0'],
+  ['customer_paid_amount', 'ALTER TABLE whatsapp_leads ADD COLUMN customer_paid_amount REAL'],
+  ['driver_payout_amount', 'ALTER TABLE whatsapp_leads ADD COLUMN driver_payout_amount REAL'],
+  ['actual_commission', 'ALTER TABLE whatsapp_leads ADD COLUMN actual_commission REAL'],
 ];
 
 let schemaReady = false;
@@ -174,6 +188,16 @@ async function ensureAdminSchema(env) {
       }
     }
   }
+
+  await env.TRANSPORT_DB.prepare(`
+    CREATE TABLE IF NOT EXISTS transport_private_route_pricing (
+      route_slug TEXT PRIMARY KEY,
+      private_minimum_bhd REAL,
+      currency TEXT NOT NULL DEFAULT 'BHD',
+      updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+      CHECK (private_minimum_bhd IS NULL OR private_minimum_bhd >= 0)
+    )
+  `).run();
 
   schemaReady = true;
 }
@@ -416,6 +440,14 @@ function leadSelectSql() {
     id,
     lead_uuid,
     booking_ref,
+    booking_phone_used,
+    public_price_shown,
+    customer_name,
+    customer_phone,
+    follow_up_consent,
+    customer_paid_amount,
+    driver_payout_amount,
+    actual_commission,
     clicked_at,
     client_clicked_at,
     route_slug,
@@ -1071,25 +1103,22 @@ async function getTrackingSummary(env, request) {
 }
 
 async function getRoutes(env) {
+  await ensurePublicSettingsSchema(env);
+  await ensureAdminSchema(env);
   const { results } = await env.TRANSPORT_DB.prepare(`
     SELECT
-      id,
-      route_slug,
-      route_name_ar,
-      route_name_en,
-      origin_country,
-      origin_city,
-      destination_country,
-      destination_city,
-      price_bd,
-      currency,
-      is_visible,
-      notes_ar,
-      notes_en,
-      sort_order,
-      updated_at
-    FROM routes_pricing
-    ORDER BY sort_order ASC, route_slug ASC
+      p.*,
+      p.price_bhd AS price_bd,
+      p.is_active AS is_visible,
+      private.private_minimum_bhd,
+      CASE
+        WHEN private.private_minimum_bhd IS NULL OR p.price_bhd IS NULL THEN NULL
+        WHEN p.price_bhd < private.private_minimum_bhd THEN 0
+        ELSE ROUND(p.price_bhd - private.private_minimum_bhd, 3)
+      END AS expected_commission
+    FROM transport_public_routes p
+    LEFT JOIN transport_private_route_pricing private ON private.route_slug = p.route_slug
+    ORDER BY p.sort_order ASC, p.route_slug ASC
   `).all();
 
   return { routes: results || [] };
@@ -1104,6 +1133,11 @@ async function updateLeadOutcome(env, payload) {
   const status = cleanStatus(payload.status) || 'new';
   const revenue = cleanPrice(payload.revenue) ?? 0;
   const quotedPrice = cleanPrice(payload.quoted_price ?? payload.quotedPrice);
+  const customerPaid = cleanPrice(payload.customer_paid_amount ?? payload.customerPaidAmount);
+  const driverPayout = cleanPrice(payload.driver_payout_amount ?? payload.driverPayoutAmount);
+  const actualCommission = customerPaid !== null && driverPayout !== null
+    ? Math.max(0, Math.round((customerPaid - driverPayout) * 1000) / 1000)
+    : null;
   const adminNotes = cleanText(payload.admin_notes || payload.adminNotes, 2000);
   const driverName = cleanText(payload.driver_name || payload.driverName, 160);
   const driverPhone = cleanText(payload.driver_phone || payload.driverPhone, 80);
@@ -1119,6 +1153,9 @@ async function updateLeadOutcome(env, payload) {
       driver_name = ?,
       driver_phone = ?,
       quoted_price = ?,
+      customer_paid_amount = ?,
+      driver_payout_amount = ?,
+      actual_commission = ?,
       lost_reason = ?,
       follow_up_at = ?,
       audit_updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
@@ -1130,6 +1167,9 @@ async function updateLeadOutcome(env, payload) {
     driverName,
     driverPhone,
     quotedPrice,
+    customerPaid,
+    driverPayout,
+    actualCommission,
     lostReason,
     followUpAt,
     leadUuid,
@@ -1139,71 +1179,31 @@ async function updateLeadOutcome(env, payload) {
 }
 
 async function upsertRoute(env, payload) {
-  const routeSlug = cleanText(payload.route_slug || payload.routeSlug, 160);
-  if (!routeSlug) {
-    return json({ ok: false, error: 'route_slug is required' }, { status: 400 });
+  await ensureAdminSchema(env);
+  const route = await savePublicRoute(env, {
+    ...payload,
+    price_bhd: payload.price_bhd ?? payload.price_bd ?? payload.priceBD,
+    is_active: payload.is_active ?? payload.is_visible ?? payload.is_live ?? payload.isLive,
+  });
+  const hasPrivateMinimum = Object.prototype.hasOwnProperty.call(payload, 'private_minimum_bhd')
+    || Object.prototype.hasOwnProperty.call(payload, 'privateMinimumBhd');
+  if (hasPrivateMinimum) {
+    const value = cleanPrice(payload.private_minimum_bhd ?? payload.privateMinimumBhd);
+    await env.TRANSPORT_DB.prepare(`
+      INSERT INTO transport_private_route_pricing (route_slug, private_minimum_bhd, currency, updated_at)
+      VALUES (?, ?, 'BHD', strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+      ON CONFLICT(route_slug) DO UPDATE SET
+        private_minimum_bhd = excluded.private_minimum_bhd,
+        currency = 'BHD',
+        updated_at = excluded.updated_at
+    `).bind(route.route_slug, value).run();
   }
-
-  const priceBd = cleanPrice(payload.price_bd ?? payload.priceBD);
-  const isVisible = boolToInt(payload.is_visible ?? payload.is_live ?? payload.isLive);
-  const routeNameAr = cleanText(payload.route_name_ar || payload.routeNameAr, 240) || routeSlug;
-  const routeNameEn = cleanText(payload.route_name_en || payload.routeNameEn, 240) || routeSlug;
-  const originCountry = cleanText(payload.origin_country || payload.originCountry, 120);
-  const originCity = cleanText(payload.origin_city || payload.originCity, 120);
-  const destinationCountry = cleanText(payload.destination_country || payload.destinationCountry, 120);
-  const destinationCity = cleanText(payload.destination_city || payload.destinationCity, 120);
-  const notesAr = cleanText(payload.notes_ar || payload.notesAr, 800);
-  const notesEn = cleanText(payload.notes_en || payload.notesEn, 800);
-  const sortOrder = Number.isFinite(Number(payload.sort_order ?? payload.sortOrder))
-    ? Math.round(Number(payload.sort_order ?? payload.sortOrder))
-    : 0;
-
-  const result = await env.TRANSPORT_DB.prepare(`
-    INSERT INTO routes_pricing (
-      route_slug,
-      route_name_ar,
-      route_name_en,
-      origin_country,
-      origin_city,
-      destination_country,
-      destination_city,
-      price_bd,
-      currency,
-      is_visible,
-      notes_ar,
-      notes_en,
-      sort_order,
-      updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'BHD', ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
-    ON CONFLICT(route_slug) DO UPDATE SET
-      route_name_ar = excluded.route_name_ar,
-      route_name_en = excluded.route_name_en,
-      origin_country = excluded.origin_country,
-      origin_city = excluded.origin_city,
-      destination_country = excluded.destination_country,
-      destination_city = excluded.destination_city,
-      price_bd = excluded.price_bd,
-      is_visible = excluded.is_visible,
-      notes_ar = excluded.notes_ar,
-      notes_en = excluded.notes_en,
-      sort_order = excluded.sort_order,
-      updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
-  `).bind(
-    routeSlug,
-    routeNameAr,
-    routeNameEn,
-    originCountry,
-    originCity,
-    destinationCountry,
-    destinationCity,
-    priceBd,
-    isVisible,
-    notesAr,
-    notesEn,
-    sortOrder,
-  ).run();
-
-  return json({ ok: true, route_slug: routeSlug, changes: result.meta?.changes || 0 });
+  const privateRow = await env.TRANSPORT_DB.prepare('SELECT private_minimum_bhd FROM transport_private_route_pricing WHERE route_slug = ?').bind(route.route_slug).first();
+  const privateMinimum = privateRow?.private_minimum_bhd ?? null;
+  const expectedCommission = route.price_bhd !== null && privateMinimum !== null
+    ? Math.max(0, Math.round((route.price_bhd - privateMinimum) * 1000) / 1000)
+    : null;
+  return json({ ok: true, route_slug: route.route_slug, route: { ...route, private_minimum_bhd: privateMinimum, expected_commission: expectedCommission } });
 }
 
 async function deleteLead(env, request) {
@@ -1302,6 +1302,8 @@ export async function onRequestGet(context) {
     await ensureAdminSchema(env);
     const data = resource === 'routes'
       ? await getRoutes(env)
+      : resource === 'public-settings'
+        ? { public_config: await getPublicConfig(env, { fresh: true }) }
       : resource === 'summary'
         ? await getSummary(env, request)
         : resource === 'notification-settings'
@@ -1404,9 +1406,15 @@ async function handleAdminWrite(context) {
       const result = await updatePassengerCareReviewApproval(env, payload);
       return json(result, { status: result.status || (result.ok ? 200 : 400), headers });
     }
+    if (resource === 'passenger-care-link') {
+      const result = await regeneratePassengerCareToken(env, payload);
+      return json(result, { status: result.status || (result.ok ? 200 : 400), headers });
+    }
 
     const response = resource === 'lead'
       ? await updateLeadOutcome(env, payload)
+      : resource === 'public-settings'
+        ? json({ ok: true, public_config: await savePublicSettings(env, payload) })
       : resource === 'notification-settings'
         ? await updateNotificationSettings(env, payload)
         : resource === 'test-notification'

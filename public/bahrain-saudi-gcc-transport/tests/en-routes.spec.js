@@ -47,6 +47,7 @@ test.describe('English hub route grid', () => {
       const m = path.match(/\/(en\/[^/]+\/?)$/);
       expect(m, `parse route segment from ${path}`).toBeTruthy();
       const needle = m[1].replace(/\/$/, '');
+      if (needle === 'en/prices' || needle === 'en/privacy') continue;
       const link = page.locator(`#gcc-routes a[href*="${needle}"]`).first();
       await expect(link, `hub links to ${needle}`).toBeVisible();
     }

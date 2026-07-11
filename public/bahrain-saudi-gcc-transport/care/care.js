@@ -4,6 +4,8 @@
   const copy = lang === 'en' ? {
     loading: 'Loading your booking…',
     invalid: 'This booking reference is not valid. Please check the link from your WhatsApp message.',
+    legacy: 'This older Passenger Care link has expired. For privacy, it cannot be used to submit feedback. Request a new secure link through WhatsApp.',
+    requestLink: 'Request a new secure link',
     lockedTitle: 'Follow-up already submitted',
     lockedBody: 'A follow-up has already been submitted for this booking.',
     thanksTitle: 'Thank You',
@@ -23,6 +25,14 @@
     paid: 'Paid price (optional)',
     footer: 'This follow-up is confidential and used only to improve service quality.',
     outcomes: {
+      driver_contacted: 'Driver contacted me',
+      driver_no_contact: 'Driver did not contact me',
+      booking_confirmed: 'Booking confirmed',
+      customer_declined: 'I declined the booking',
+      driver_unavailable: 'Driver unavailable',
+      trip_completed: 'Trip completed',
+      trip_cancelled: 'Trip cancelled',
+      other: 'Other',
       completed: 'Trip completed',
       cancelled: 'Booking cancelled',
       no_driver: 'No driver available',
@@ -52,6 +62,14 @@
     paid: 'السعر المدفوع (اختياري)',
     footer: 'هذه المتابعة سرية وتستخدم فقط لتحسين جودة الخدمة.',
     outcomes: {
+      driver_contacted: 'تواصل معي السائق',
+      driver_no_contact: 'لم يتواصل معي السائق',
+      booking_confirmed: 'تم تأكيد الحجز',
+      customer_declined: 'اعتذرت عن الحجز',
+      driver_unavailable: 'السائق غير متوفر',
+      trip_completed: 'تمت الرحلة',
+      trip_cancelled: 'ألغيت الرحلة',
+      other: 'أخرى',
       completed: 'تمت الرحلة',
       cancelled: 'تم إلغاء الحجز',
       no_driver: 'لم يتوفر سائق',
@@ -61,8 +79,20 @@
     },
   };
 
+  const arabicOutcomeLabels = {
+    driver_contacted: '\u062a\u0648\u0627\u0635\u0644 \u0645\u0639\u064a \u0627\u0644\u0633\u0627\u0626\u0642',
+    driver_no_contact: '\u0644\u0645 \u064a\u062a\u0648\u0627\u0635\u0644 \u0645\u0639\u064a \u0627\u0644\u0633\u0627\u0626\u0642',
+    booking_confirmed: '\u062a\u0645 \u062a\u0623\u0643\u064a\u062f \u0627\u0644\u062d\u062c\u0632',
+    customer_declined: '\u0627\u0639\u062a\u0630\u0631\u062a \u0639\u0646 \u0627\u0644\u062d\u062c\u0632',
+    driver_unavailable: '\u0627\u0644\u0633\u0627\u0626\u0642 \u063a\u064a\u0631 \u0645\u062a\u0648\u0641\u0631',
+    trip_completed: '\u062a\u0645\u062a \u0627\u0644\u0631\u062d\u0644\u0629',
+    trip_cancelled: '\u0623\u0644\u063a\u064a\u062a \u0627\u0644\u0631\u062d\u0644\u0629',
+    other: '\u0623\u062e\u0631\u0649',
+  };
+
   const params = new URLSearchParams(window.location.search);
-  const ref = (params.get('ref') || '').trim().toUpperCase();
+  const token = (params.get('token') || '').trim().toLowerCase();
+  const legacyRef = (params.get('ref') || '').trim();
   const apiBase = '/bahrain-saudi-gcc-transport/api/transport/passenger-care';
   const presenceEndpoints = [
     '/bahrain-saudi-gcc-transport/api/transport/event',
@@ -165,10 +195,10 @@
     });
   }
 
-  async function fetchBooking(refValue) {
+  async function fetchBooking(tokenValue) {
     const endpoints = [
-      `${apiBase}?ref=${encodeURIComponent(refValue)}`,
-      `/api/transport/passenger-care?ref=${encodeURIComponent(refValue)}`,
+      `${apiBase}?token=${encodeURIComponent(tokenValue)}`,
+      `/api/transport/passenger-care?token=${encodeURIComponent(tokenValue)}`,
     ];
     for (let i = 0; i < endpoints.length; i += 1) {
       try {
@@ -200,7 +230,7 @@
 
   function renderOptions() {
     els.options.innerHTML = Object.entries(copy.outcomes).map(([value, label]) => (
-      `<button type="button" class="option-btn" data-outcome="${value}">${label}</button>`
+      `<button type="button" class="option-btn" data-outcome="${value}">${lang === 'ar' && arabicOutcomeLabels[value] ? arabicOutcomeLabels[value] : label}</button>`
     )).join('');
 
     els.options.querySelectorAll('[data-outcome]').forEach((btn) => {
@@ -248,26 +278,44 @@
   }
 
   async function loadBooking() {
-    if (!/^GCC-[A-F0-9]{8}$/.test(ref)) {
+    if (legacyRef && !token) {
+      els.errorBody.textContent = lang === 'en'
+        ? copy.legacy
+        : '\u0627\u0646\u062a\u0647\u062a \u0635\u0644\u0627\u062d\u064a\u0629 \u0631\u0627\u0628\u0637 \u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0645\u0633\u0627\u0641\u0631 \u0627\u0644\u0642\u062f\u064a\u0645. \u0644\u062d\u0645\u0627\u064a\u0629 \u0627\u0644\u062e\u0635\u0648\u0635\u064a\u0629\u060c \u0627\u0637\u0644\u0628 \u0631\u0627\u0628\u0637\u0627\u064b \u0622\u0645\u0646\u0627\u064b \u062c\u062f\u064a\u062f\u0627\u064b \u0639\u0628\u0631 \u0648\u0627\u062a\u0633\u0627\u0628.';
+      const link = document.createElement('a');
+      link.textContent = lang === 'en' ? copy.requestLink : '\u0627\u0637\u0644\u0628 \u0631\u0627\u0628\u0637\u0627\u064b \u0622\u0645\u0646\u0627\u064b \u062c\u062f\u064a\u062f\u0627\u064b';
+      link.href = `https://wa.me/97333225954?text=${encodeURIComponent(lang === 'en' ? 'Hello, please send me a new secure Passenger Care link.' : '\u0645\u0631\u062d\u0628\u0627\u064b\u060c \u064a\u0631\u062c\u0649 \u0625\u0631\u0633\u0627\u0644 \u0631\u0627\u0628\u0637 \u0622\u0645\u0646 \u062c\u062f\u064a\u062f \u0644\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0645\u0633\u0627\u0641\u0631.')}`;
+      link.className = 'care-support-link';
+      els.errorBody.after(link);
+      fetch('/bahrain-saudi-gcc-transport/api/transport/public-settings', { credentials: 'omit' }).then((response) => response.ok ? response.json() : null).then((data) => {
+        const settings = data?.settings || {};
+        const phone = settings.support_phone_enabled && settings.support_phone ? settings.support_phone : settings.booking_whatsapp;
+        if (phone) link.href = link.href.replace(/wa\.me\/\d+/, `wa.me/${phone}`);
+      }).catch(() => {});
+      show('errorView');
+      return;
+    }
+    if (!/^[a-f0-9]{48}$/.test(token)) {
       els.errorBody.textContent = copy.invalid;
       show('errorView');
       return;
     }
 
     try {
-      const data = await fetchBooking(ref);
+      const data = await fetchBooking(token);
       if (data && data.ok) {
         if (data.already_submitted) {
           show('lockedView');
           return;
         }
-        showFormForRef(data.booking_ref || ref, data.route_label || '');
+        showFormForRef(data.booking_ref || '', data.route_label || '');
         return;
       }
-
-      showFormForRef(ref, '');
+      els.errorBody.textContent = copy.invalid;
+      show('errorView');
     } catch {
-      showFormForRef(ref, '');
+      els.errorBody.textContent = copy.invalid;
+      show('errorView');
     }
   }
 
@@ -282,7 +330,7 @@
     els.formError.textContent = '';
 
     const payload = {
-      ref,
+      token,
       outcome: selectedOutcome,
       rating: selectedRating,
       comment: els.comment.value.trim(),
