@@ -1277,17 +1277,29 @@
     style.textContent = '#vendora-booking-ready{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:1rem}.vendora-booking-backdrop{position:absolute;inset:0;background:rgba(2,6,23,.76)}.vendora-booking-dialog{position:relative;max-width:32rem;width:100%;background:#fff;color:#172033;border-radius:1rem;padding:1.5rem;box-shadow:0 24px 70px rgba(0,0,0,.35)}.vendora-booking-dialog h2{margin:0 0 .6rem}.vendora-booking-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}.vendora-booking-dialog button{min-height:48px;border:0;border-radius:.7rem;padding:.8rem 1rem;background:#168b4b;color:#fff;font:inherit;font-weight:700;cursor:pointer}.vendora-booking-dialog [data-booking-cancel]{background:#e8edf2;color:#172033}.vendora-booking-dialog button:focus-visible{outline:3px solid #f5b942;outline-offset:3px}';
     modal.appendChild(style);
     document.body.appendChild(modal);
+    if (bookingRef && typeof window.vendoraTrackLocal === 'function') {
+      window.vendoraTrackLocal('prepared_dialog_view', { event_category: 'transport_funnel', lead_status: 'prepared' });
+    }
     const continueButton = modal.querySelector('[data-booking-continue]');
     const close = () => {
       modal.remove();
       document.removeEventListener('keydown', onKeydown);
       if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
     };
-    const onKeydown = (event) => {
-      if (event.key === 'Escape') close();
+    const cancel = () => {
+      if (typeof window.vendoraTrackLocal === 'function') {
+        window.vendoraTrackLocal('whatsapp_cancel', { event_category: 'transport_funnel', method: 'prepared_dialog' });
+      }
+      close();
     };
-    modal.querySelectorAll('[data-booking-cancel]').forEach((node) => node.addEventListener('click', close));
+    const onKeydown = (event) => {
+      if (event.key === 'Escape') cancel();
+    };
+    modal.querySelectorAll('[data-booking-cancel]').forEach((node) => node.addEventListener('click', cancel));
     continueButton.addEventListener('click', () => {
+      if (typeof window.vendoraTrackLocal === 'function') {
+        window.vendoraTrackLocal('whatsapp_continue', { event_category: 'transport_funnel', method: 'prepared_dialog' });
+      }
       close();
       onContinue(message);
     }, { once: true });
@@ -1344,20 +1356,24 @@
       showBookingReadyModal(baseMessage, openWhatsAppMessage, '');
       return;
     }
+    if (typeof window.vendoraTrackLocal === 'function') {
+      window.vendoraTrackLocal('lead_created', { event_category: 'transport_funnel', lead_status: 'created', route_name: payload.routeSlug });
+    }
     const careUrl = buildPassengerCareUrl(lead.care_token);
     const finalMessage = `${baseMessage}${buildPassengerCareBlock(lead.booking_ref, careUrl)}`;
     showBookingReadyModal(finalMessage, openWhatsAppMessage, lead.booking_ref);
   }
 
   function trackWhatsAppClick(payload) {
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', 'transport_whatsapp_click', {
+    if (typeof window.vendoraTrackLocal === 'function') {
+      window.vendoraTrackLocal('whatsapp_click', {
+        event_category: 'transport_funnel',
         route_name: payload.routeSlug,
-        button_label: payload.clickText,
-        language: payload.language,
-        page_path: payload.pagePath,
-        page_url: payload.pageUrl,
+        button_text: payload.clickText,
+        method: 'whatsapp',
       });
+    } else if (typeof window.gtag === 'function') {
+      window.gtag('event', 'whatsapp_click', { route_name: payload.routeSlug, method: 'whatsapp' });
     }
   }
 

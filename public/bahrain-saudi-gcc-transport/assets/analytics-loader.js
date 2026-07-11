@@ -225,11 +225,11 @@
         });
 
         // 1. Recommended GA4 events mappings
-        if (eventName === 'ai_chat_confirmed' || eventName === 'whatsapp_handover_created') {
+        if (eventName === 'ai_chat_confirmed' || eventName === 'whatsapp_handover_created' || eventName === 'lead_created') {
           window.gtag('event', 'generate_lead', Object.assign(gaParams, { value: 0, currency: 'BHD' }));
         } else if (eventName === 'whatsapp_click' || eventName === 'phone_click') {
           window.gtag('event', 'contact', Object.assign(gaParams, { method: eventName === 'whatsapp_click' ? 'whatsapp' : 'phone' }));
-        } else if (eventName === 'route_page_view') {
+        } else if (eventName === 'route_page_view' || eventName === 'route_view') {
           window.gtag('event', 'select_content', Object.assign(gaParams, { content_type: 'route', item_id: payload.route_name }));
         } else if (eventName === 'calculator_view') {
           window.gtag('event', 'select_content', Object.assign(gaParams, { content_type: 'calculator', item_id: payload.event_label }));
@@ -390,9 +390,20 @@
   window.vendoraAnalyticsContext = analyticsContext;
 
   // Track initial page_view to custom DB
-  window.addEventListener('load', function() {
+  function trackInitialPage() {
+    if (window.__VENDORA_INITIAL_ANALYTICS_TRACKED__) return;
+    window.__VENDORA_INITIAL_ANALYTICS_TRACKED__ = true;
     window.vendoraTrackLocal('page_view', {});
-  });
+    if (getPageCategory() === 'transport') {
+      window.vendoraTrackLocal('landing_page_view', { event_category: 'transport_funnel' });
+      window.vendoraTrackLocal('route_view', { event_category: 'transport_funnel', route_name: getTransportRoute() });
+      if (normalizePath(window.location.pathname).indexOf('/prices/') !== -1) {
+        window.vendoraTrackLocal('pricing_view', { event_category: 'transport_funnel' });
+      }
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', trackInitialPage, { once: true });
+  else trackInitialPage();
 
   // Render Real-time Debug Widget
   if (window.location.search.indexOf('debug_tracking=1') !== -1) {

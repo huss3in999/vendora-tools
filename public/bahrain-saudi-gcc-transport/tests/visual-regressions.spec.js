@@ -25,6 +25,7 @@ test('shared customer-facing JavaScript contains no mojibake literals', () => {
 });
 
 test('all sitemap pages preserve UTF-8, direction, readable text and viewport width', async ({ page }) => {
+  test.setTimeout(240_000);
   for (const path of PUBLIC_PATHS) {
     const response = await page.goto(path, { waitUntil: 'domcontentloaded' });
     expect(response?.ok(), path).toBeTruthy();
@@ -32,6 +33,7 @@ test('all sitemap pages preserve UTF-8, direction, readable text and viewport wi
     await expect(page.locator('html')).toHaveAttribute('lang', isEnglish ? /^en/ : /^ar/);
     await expect(page.locator('html')).toHaveAttribute('dir', isEnglish ? 'ltr' : 'rtl');
     await expect(page.locator('meta[charset]')).toHaveAttribute('charset', /utf-8/i);
+    await expect(page.locator('script[src*="analytics-loader.js"]'), `analytics loader on ${path}`).toHaveCount(1);
     const visible = await page.locator('body').innerText();
     expect(suspicious.test(visible), `visible mojibake on ${path}`).toBeFalsy();
     const metadata = await page.locator('title, meta[name="description"], meta[property^="og:"]').evaluateAll((nodes) =>

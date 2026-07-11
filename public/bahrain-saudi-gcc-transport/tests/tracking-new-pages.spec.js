@@ -61,7 +61,7 @@ test.describe('New GCC transport page tracking', () => {
         body: JSON.stringify({ ok: true, settings: { whatsapp_booking: '97333225954' } }),
       }));
 
-      await page.goto(`/bahrain-saudi-gcc-transport/${slug}/`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`/bahrain-saudi-gcc-transport/${slug}/`, { waitUntil: 'load' });
 
       await expect(page.locator('script[src*="site.js"]')).toHaveCount(1);
       await expect(page.locator('script[src*="analytics-loader.js"]')).toHaveCount(1);
@@ -85,7 +85,9 @@ test.describe('New GCC transport page tracking', () => {
 
       const gtagCalls = await page.evaluate(() => window.__gtagCalls || []);
       expect(gtagCalls.some((call) => call[0] === 'config' && call[1] === 'G-DFY197R2MS')).toBeTruthy();
-      expect(gtagCalls.some((call) => call[0] === 'event' && call[1] === 'transport_whatsapp_click')).toBeTruthy();
+      for (const eventName of ['landing_page_view', 'route_view', 'whatsapp_click', 'lead_created', 'prepared_dialog_view', 'whatsapp_continue']) {
+        expect(gtagCalls.some((call) => call[0] === 'event' && call[1] === eventName), `${slug}: ${eventName}`).toBeTruthy();
+      }
 
       expect(consoleErrors.filter((message) => !/Failed to load resource/.test(message))).toEqual([]);
     });

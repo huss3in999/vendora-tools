@@ -163,6 +163,15 @@
   // Unified Local Tracking Function
   window.vendoraTrackLocal = function (eventName, params) {
     var safeParams = params || {};
+    var allowedExtraKeys = {
+      event_category: true, category: true, event_label: true, label: true,
+      calculator_slug: true, tool_id: true, route_name: true, button_text: true,
+      click_text: true, target_url: true, link_url: true, lead_status: true,
+      timeOnPageMs: true, scrollDepthPercent: true, transport_cluster: true,
+      content_group: true, page_category: true, method: true,
+      page: true, airport: true, is_airport_route: true, click_location: true,
+      custom_location_used: true, pickup_country: true, destination_country: true
+    };
     var category = getPageCategory();
     
     // Core payload
@@ -195,9 +204,9 @@
       scrollDepthPercent: safeParams.scrollDepthPercent || 0
     };
 
-    // Merge all extra custom properties from safeParams
+    // Only aggregate, non-personal interaction context may enter general analytics.
     for (var key in safeParams) {
-      if (safeParams.hasOwnProperty(key) && !payload.hasOwnProperty(key)) {
+      if (safeParams.hasOwnProperty(key) && allowedExtraKeys[key] && !payload.hasOwnProperty(key)) {
         payload[key] = safeParams[key];
       }
     }
@@ -205,18 +214,21 @@
     // Forward to GA4 (Gtag mapping)
     if (typeof window.gtag === 'function') {
       try {
-        var gaParams = Object.assign({}, safeParams, {
+        var gaParams = Object.assign({}, Object.keys(safeParams).reduce(function (clean, key) {
+          if (allowedExtraKeys[key]) clean[key] = safeParams[key];
+          return clean;
+        }, {}), {
           content_group: category,
           page_category: category,
           language: payload.language
         });
 
         // 1. Recommended GA4 events mappings
-        if (eventName === 'ai_chat_confirmed' || eventName === 'whatsapp_handover_created') {
+        if (eventName === 'ai_chat_confirmed' || eventName === 'whatsapp_handover_created' || eventName === 'lead_created') {
           window.gtag('event', 'generate_lead', Object.assign(gaParams, { value: 0, currency: 'BHD' }));
         } else if (eventName === 'whatsapp_click' || eventName === 'phone_click') {
           window.gtag('event', 'contact', Object.assign(gaParams, { method: eventName === 'whatsapp_click' ? 'whatsapp' : 'phone' }));
-        } else if (eventName === 'route_page_view') {
+        } else if (eventName === 'route_page_view' || eventName === 'route_view') {
           window.gtag('event', 'select_content', Object.assign(gaParams, { content_type: 'route', item_id: payload.route_name }));
         } else if (eventName === 'calculator_view') {
           window.gtag('event', 'select_content', Object.assign(gaParams, { content_type: 'calculator', item_id: payload.event_label }));
@@ -377,9 +389,20 @@
   window.vendoraAnalyticsContext = analyticsContext;
 
   // Track initial page_view to custom DB
-  window.addEventListener('load', function() {
+  function trackInitialPage() {
+    if (window.__VENDORA_INITIAL_ANALYTICS_TRACKED__) return;
+    window.__VENDORA_INITIAL_ANALYTICS_TRACKED__ = true;
     window.vendoraTrackLocal('page_view', {});
-  });
+    if (getPageCategory() === 'transport') {
+      window.vendoraTrackLocal('landing_page_view', { event_category: 'transport_funnel' });
+      window.vendoraTrackLocal('route_view', { event_category: 'transport_funnel', route_name: getTransportRoute() });
+      if (normalizePath(window.location.pathname).indexOf('/prices/') !== -1) {
+        window.vendoraTrackLocal('pricing_view', { event_category: 'transport_funnel' });
+      }
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', trackInitialPage, { once: true });
+  else trackInitialPage();
 
   // Render Real-time Debug Widget
   if (window.location.search.indexOf('debug_tracking=1') !== -1) {
