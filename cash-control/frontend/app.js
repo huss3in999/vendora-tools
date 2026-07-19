@@ -2,9 +2,13 @@
  * Cash Control — Main app router, login, shared UI helpers
  */
 
-import * as api from './api.js?v=18';
-import { renderWorkerScreen, workerScreens } from './worker.js?v=18';
-import { renderOwnerScreen, ownerScreens } from './owner.js?v=18';
+import * as api from './api.js?v=25';
+import { renderWorkerScreen, workerScreens } from './worker.js?v=25';
+import { renderOwnerScreen, ownerScreens } from './owner.js?v=25';
+import { renderPurchaseScreen, purchaseScreens } from './purchases.js?v=25';
+import { renderAccountantScreen, accountantScreens } from './accountant.js?v=25';
+
+const purchaseScreenNames = new Set(['new-purchase','edit-purchase','owner-purchases','manage-products','manage-purchase-categories','manage-suppliers']);
 
 // ─── State ───────────────────────────────────────────────────────────────────
 
@@ -316,6 +320,7 @@ function renderLogin() {
         </div>
         <button type="submit" class="btn btn-primary btn-full" data-role="owner">Login as Owner</button>
         <button type="submit" class="btn btn-secondary btn-full" data-role="worker" style="margin-top:10px">Login as Worker</button>
+        <button type="submit" class="btn btn-secondary btn-full" data-role="accountant" style="margin-top:10px">Login as Accountant</button>
       </form>
     </div>
   `);
@@ -349,7 +354,7 @@ function bindLogin() {
       state.name = res.name;
       sessionStorage.setItem('cc_role', res.role);
       sessionStorage.setItem('cc_name', res.name);
-      navigate(res.role === 'owner' ? 'owner-dashboard' : 'worker-dashboard');
+      navigate(res.role === 'owner' ? 'owner-dashboard' : res.role === 'accountant' ? 'accountant-dashboard' : 'worker-dashboard');
       showToast(`Welcome, ${res.name}`, 'success');
       setupPwaForRole(res.role);
     } catch (err) {
@@ -373,8 +378,12 @@ function render() {
     html = renderLogin();
   } else if (state.role === 'worker') {
     html = renderWorkerScreen(state.screen, state.screenData);
+  } else if (state.role === 'owner' && purchaseScreenNames.has(state.screen)) {
+    html = renderPurchaseScreen(state.screen, state.screenData);
   } else if (state.role === 'owner') {
     html = renderOwnerScreen(state.screen, state.screenData);
+  } else if (state.role === 'accountant') {
+    html = renderAccountantScreen(state.screen, state.screenData);
   }
 
   app.innerHTML = html;
@@ -387,7 +396,7 @@ function bindEvents() {
   // Back buttons
   document.querySelectorAll('[data-action="back"]').forEach(btn => {
     btn.addEventListener('click', () => {
-      const home = state.role === 'owner' ? 'owner-dashboard' : 'worker-dashboard';
+      const home = state.role === 'owner' ? 'owner-dashboard' : state.role === 'accountant' ? 'accountant-dashboard' : 'worker-dashboard';
       navigate(home);
     });
   });
@@ -404,13 +413,15 @@ function bindEvents() {
 
   // Delegate screen-specific bindings
   if (state.role === 'worker') workerScreens(state.screen, state.screenData);
-  if (state.role === 'owner') ownerScreens(state.screen, state.screenData);
+  if (state.role === 'owner' && purchaseScreenNames.has(state.screen)) purchaseScreens(state.screen, state.screenData);
+  else if (state.role === 'owner') ownerScreens(state.screen, state.screenData);
+  if (state.role === 'accountant') accountantScreens(state.screen, state.screenData);
 }
 
 // Init auto-navigate if session exists
 if (state.role && api.getToken()) {
   setupPwaForRole(state.role);
-  navigate(state.role === 'owner' ? 'owner-dashboard' : 'worker-dashboard');
+  navigate(state.role === 'owner' ? 'owner-dashboard' : state.role === 'accountant' ? 'accountant-dashboard' : 'worker-dashboard');
 } else {
   render();
 }

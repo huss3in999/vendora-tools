@@ -99,6 +99,12 @@ async function handleApi(request, env, url) {
     const session = await getSession(request, env);
     if (!session) return json({ error: 'Unauthorized' }, 401);
 
+    // Accountant sessions are strictly read-only, regardless of which endpoint
+    // a caller attempts to invoke directly.
+    if (session.role === 'accountant' && method !== 'GET') {
+      return json({ error: 'Accountant access is read-only' }, 403);
+    }
+
     // Worker dashboard
     if (method === 'GET' && path === '/api/dashboard/worker') {
       if (session.role !== 'worker' && session.role !== 'owner') {
@@ -235,6 +241,93 @@ async function handleApi(request, env, url) {
       return json(await deleteClosing(env, session, deleteClosingMatch[1]));
     }
 
+    // Owner purchase and master-data APIs. Workers are denied by each read guard.
+    if (method === 'GET' && path === '/api/purchase-data') {
+      requirePurchaseReader(session);
+      return json(await getPurchaseData(env, session, url.searchParams));
+    }
+    if (method === 'GET' && path === '/api/owner-purchases') {
+      requirePurchaseReader(session);
+      return json(await listOwnerPurchases(env, session, url.searchParams));
+    }
+    if (method === 'POST' && path === '/api/owner-purchases') {
+      requireRole(session, 'owner');
+      return json(await createOwnerPurchase(request, env, session));
+    }
+    const purchaseMatch = path.match(/^\/api\/owner-purchases\/(\d+)$/);
+    if (method === 'GET' && purchaseMatch) {
+      requirePurchaseReader(session);
+      return json(await getOwnerPurchase(env, purchaseMatch[1]));
+    }
+    if (method === 'PUT' && purchaseMatch) {
+      requireRole(session, 'owner');
+      return json(await updateOwnerPurchase(request, env, session, purchaseMatch[1]));
+    }
+    if (method === 'DELETE' && purchaseMatch) {
+      requireRole(session, 'owner');
+      return json(await deleteOwnerPurchase(env, session, purchaseMatch[1]));
+    }
+    const purchaseVoidMatch = path.match(/^\/api\/owner-purchases\/(\d+)\/void$/);
+    if (method === 'POST' && purchaseVoidMatch) {
+      requireRole(session, 'owner');
+      return json(await voidOwnerPurchase(request, env, session, purchaseVoidMatch[1]));
+    }
+    const receiptMatch = path.match(/^\/api\/owner-purchases\/(\d+)\/receipt$/);
+    if (method === 'POST' && receiptMatch) {
+      requireRole(session, 'owner');
+      return uploadPurchaseReceipt(request, env, receiptMatch[1]);
+    }
+    if (method === 'GET' && receiptMatch) {
+      requirePurchaseReader(session);
+      return getPurchaseReceipt(env, receiptMatch[1]);
+    }
+    if (method === 'DELETE' && receiptMatch) {
+      requireRole(session, 'owner');
+      return json(await deletePurchaseReceipt(env, receiptMatch[1]));
+    }
+
+    for (const resource of ['products', 'purchase-categories', 'suppliers']) {
+      if (method === 'GET' && path === `/api/${resource}`) {
+        requirePurchaseReader(session);
+        return json(await listMasterData(env, resource, url.searchParams));
+      }
+      if (method === 'POST' && path === `/api/${resource}`) {
+        requireRole(session, 'owner');
+        return json(await createMasterData(request, env, resource));
+      }
+      const match = path.match(new RegExp(`^/api/${resource}/(\\d+)$`));
+      if (method === 'PUT' && match) {
+        requireRole(session, 'owner');
+        return json(await updateMasterData(request, env, resource, match[1]));
+      }
+      if (method === 'DELETE' && match && resource !== 'suppliers') {
+        requireRole(session, 'owner');
+        return json(await deleteMasterData(env, resource, match[1]));
+      }
+      if (method === 'POST' && path === `/api/${resource}/bulk-delete` && resource !== 'suppliers') {
+        requireRole(session, 'owner');
+        return json(await bulkDeleteMasterData(request, env, resource));
+      }
+    }
+
+    if (method === 'POST' && path === '/api/products/bulk') {
+      requireRole(session, 'owner');
+      return json(await createProductsBulk(request, env));
+    }
+
+    if (method === 'GET' && path === '/api/accountant/dashboard') {
+      requireRole(session, 'accountant');
+      return json(await getAccountantDashboard(env, url.searchParams));
+    }
+    if (method === 'GET' && path === '/api/accountant/expenses') {
+      requireRole(session, 'accountant');
+      return json(await getUnifiedExpenses(env, url.searchParams));
+    }
+    if (method === 'GET' && path === '/api/accountant/export.csv') {
+      requireRole(session, 'accountant');
+      return exportAccountantCsv(env, url.searchParams);
+    }
+
     return json({ error: 'Not found' }, 404);
   } catch (err) {
     const status = err.status || 500;
@@ -249,8 +342,8 @@ async function login(request, env) {
   const timings = {};
   const { pin, role: requestedRole } = await request.json();
   if (!pin) throw httpError(400, 'PIN required');
-  if (!['owner', 'worker'].includes(requestedRole)) {
-    throw httpError(400, 'Choose Owner or Worker login');
+  if (!['owner', 'worker', 'accountant'].includes(requestedRole)) {
+    throw httpError(400, 'Choose Owner, Worker or Accountant login');
   }
 
   const pins = await timed('pinSettingsQuery', () => getPinSettings(env), timings);
@@ -258,12 +351,25 @@ async function login(request, env) {
   if (requestedRole === 'worker' && !pins.worker_access_enabled) {
     throw httpError(403, 'Worker access is currently disabled. Please contact owner.');
   }
+  if (requestedRole === 'accountant' && !pins.accountant_access_enabled) {
+    throw httpError(403, 'Accountant access is currently disabled. Please contact owner.');
+  }
 
   if (requestedRole === 'owner') {
     if (pin !== pins.owner_pin) throw httpError(401, 'Invalid owner PIN');
     const token = await timed('tokenCreate', () => createSessionToken({ userId: 1, role: 'owner', name: 'Owner' }, env), timings);
     logApiPerf('/api/login', timings, totalStart);
     return { token, role: 'owner', name: 'Owner' };
+  }
+
+  if (requestedRole === 'accountant') {
+    if ([pins.owner_pin, pins.worker_pin].includes(pins.accountant_pin)) {
+      throw httpError(403, 'Accountant PIN must be different from Owner and Worker PINs.');
+    }
+    if (pin !== pins.accountant_pin) throw httpError(401, 'Invalid accountant PIN');
+    const token = await timed('tokenCreate', () => createSessionToken({ userId: 3, role: 'accountant', name: 'Accountant' }, env), timings);
+    logApiPerf('/api/login', timings, totalStart);
+    return { token, role: 'accountant', name: 'Accountant' };
   }
 
   if (pins.owner_pin === pins.worker_pin) {
@@ -280,13 +386,13 @@ async function login(request, env) {
 }
 
 async function getAuthVersion(env, role) {
-  const roleKey = role === 'worker' ? 'worker_auth_version' : 'owner_auth_version';
+  const roleKey = role === 'worker' ? 'worker_auth_version' : role === 'accountant' ? 'accountant_auth_version' : 'owner_auth_version';
   const settings = await getSettingsMap(env, [roleKey, 'auth_version']);
   return settings[roleKey] || settings.auth_version || '1';
 }
 
 async function bumpAuthVersion(env, role) {
-  const roleKey = role === 'worker' ? 'worker_auth_version' : 'owner_auth_version';
+  const roleKey = role === 'worker' ? 'worker_auth_version' : role === 'accountant' ? 'accountant_auth_version' : 'owner_auth_version';
   await setSetting(env, roleKey, String(Date.now()));
 }
 
@@ -315,6 +421,7 @@ async function getSession(request, env) {
     const pins = await getPinSettings(env);
     if (session.authVersion !== await getAuthVersion(env, session.role)) return null;
     if (session.role === 'worker' && !pins.worker_access_enabled) return null;
+    if (session.role === 'accountant' && !pins.accountant_access_enabled) return null;
 
     return session;
   } catch {
@@ -323,7 +430,11 @@ async function getSession(request, env) {
 }
 
 function requireRole(session, role) {
-  if (session.role !== role) throw httpError(403, 'Owner access required');
+  if (session.role !== role) throw httpError(403, `${role[0].toUpperCase()}${role.slice(1)} access required`);
+}
+
+function requirePurchaseReader(session) {
+  if (!['owner', 'accountant'].includes(session.role)) throw httpError(403, 'Owner or Accountant access required');
 }
 
 async function hmacSign(message, secret) {
@@ -364,19 +475,24 @@ async function getPinSettings(env) {
   const settings = await getSettingsMap(env, [
     'owner_pin',
     'worker_pin',
+    'accountant_pin',
     'worker_access_enabled',
+    'accountant_access_enabled',
     'worker_login_enabled',
     'notifications_enabled',
   ]);
   const dbOwner = settings.owner_pin;
   const dbWorker = settings.worker_pin;
+  const dbAccountant = settings.accountant_pin;
   const workerAccess = settings.worker_access_enabled;
   const legacyWorkerLogin = settings.worker_login_enabled;
   const workerAccessEnabled = workerAccess ?? legacyWorkerLogin;
   return {
     owner_pin: dbOwner || env.OWNER_PIN || '1111',
     worker_pin: dbWorker || env.WORKER_PIN || '1111',
+    accountant_pin: dbAccountant || env.ACCOUNTANT_PIN || 'CHANGE_ME_ACCOUNTANT',
     worker_access_enabled: workerAccessEnabled !== '0',
+    accountant_access_enabled: settings.accountant_access_enabled !== '0',
   };
 }
 
@@ -385,7 +501,9 @@ async function getSettings(env, session = null) {
     'test_mode',
     'owner_pin',
     'worker_pin',
+    'accountant_pin',
     'worker_access_enabled',
+    'accountant_access_enabled',
     'worker_login_enabled',
     'notifications_enabled',
     'business_day_start_hour',
@@ -395,9 +513,10 @@ async function getSettings(env, session = null) {
     test_mode: settings.test_mode === '1',
     worker_access_enabled: workerAccessEnabled,
     worker_login_enabled: workerAccessEnabled,
+    accountant_access_enabled: settings.accountant_access_enabled !== '0',
     notifications_enabled: settings.notifications_enabled === '1',
     business_day_start_hour: parseBusinessHour(settings.business_day_start_hour, 16),
-    pins_configured: !!settings.owner_pin || !!settings.worker_pin,
+    pins_configured: !!settings.owner_pin || !!settings.worker_pin || !!settings.accountant_pin,
   };
   // Owner-only admin info (never return actual PIN values)
   if (session?.role === 'owner') {
@@ -411,13 +530,16 @@ async function updateSettings(request, env, session) {
   const pins = await getPinSettings(env);
   let expireOwnerSessions = false;
   let expireWorkerSessions = false;
+  let expireAccountantSessions = false;
   const newWorkerPin = body.new_worker_pin != null ? String(body.new_worker_pin).trim() : null;
   const newOwnerPin = body.new_owner_pin != null ? String(body.new_owner_pin).trim() : null;
+  const newAccountantPin = body.new_accountant_pin != null ? String(body.new_accountant_pin).trim() : null;
   const finalWorkerPin = newWorkerPin || pins.worker_pin;
   const finalOwnerPin = newOwnerPin || pins.owner_pin;
+  const finalAccountantPin = newAccountantPin || pins.accountant_pin;
 
-  if ((newWorkerPin || newOwnerPin) && finalOwnerPin === finalWorkerPin) {
-    throw httpError(400, 'Owner PIN and Worker PIN cannot be the same.');
+  if ((newWorkerPin || newOwnerPin || newAccountantPin) && new Set([finalOwnerPin, finalWorkerPin, finalAccountantPin]).size !== 3) {
+    throw httpError(400, 'Owner, Worker and Accountant PINs must all be different.');
   }
 
   if (typeof body.test_mode === 'boolean') {
@@ -431,6 +553,10 @@ async function updateSettings(request, env, session) {
   if (typeof workerAccess === 'boolean') {
     await setSetting(env, 'worker_access_enabled', workerAccess ? '1' : '0');
     expireWorkerSessions = true;
+  }
+  if (typeof body.accountant_access_enabled === 'boolean') {
+    await setSetting(env, 'accountant_access_enabled', body.accountant_access_enabled ? '1' : '0');
+    expireAccountantSessions = true;
   }
 
   if (typeof body.notifications_enabled === 'boolean') {
@@ -460,8 +586,15 @@ async function updateSettings(request, env, session) {
     expireOwnerSessions = true;
   }
 
+  if (newAccountantPin != null) {
+    if (newAccountantPin.length < 4) throw httpError(400, 'Accountant PIN must be at least 4 characters');
+    await setSetting(env, 'accountant_pin', newAccountantPin);
+    expireAccountantSessions = true;
+  }
+
   if (expireWorkerSessions) await bumpAuthVersion(env, 'worker');
   if (expireOwnerSessions) await bumpAuthVersion(env, 'owner');
+  if (expireAccountantSessions) await bumpAuthVersion(env, 'accountant');
 
   return getSettings(env, session);
 }
@@ -1404,6 +1537,8 @@ async function exportCsv(env, session, params) {
 // ─── Delete test data ────────────────────────────────────────────────────────
 
 async function deleteAllTestData(env) {
+  await env.DB.prepare("DELETE FROM owner_purchase_items WHERE purchase_id IN (SELECT id FROM owner_purchases WHERE is_test = 1)").run();
+  await env.DB.prepare("DELETE FROM owner_purchases WHERE is_test = 1").run();
   await env.DB.prepare("DELETE FROM transactions WHERE is_test = 1").run();
   await env.DB.prepare("DELETE FROM daily_closings WHERE is_test = 1").run();
   return { success: true, message: 'All test data deleted' };
@@ -1461,6 +1596,393 @@ async function bulkDeleteTransactions(request, env, session) {
     count++;
   }
   return { success: true, deleted: count };
+}
+
+// ─── Owner purchases, master data and Accountant reporting ──────────────────
+
+const MASTER_CONFIG = {
+  products: { table: 'products', fields: ['name', 'category_id', 'default_unit', 'is_favourite', 'status', 'display_order'] },
+  'purchase-categories': { table: 'purchase_categories', fields: ['name', 'status', 'display_order'] },
+  suppliers: { table: 'suppliers', fields: ['name', 'location', 'phone', 'note', 'status'] },
+};
+
+function cleanText(value, max = 500) {
+  if (value == null) return null;
+  const text = String(value).trim();
+  return text ? text.slice(0, max) : null;
+}
+
+function positiveNumber(value, label = 'Amount') {
+  const number = Number(value);
+  if (!Number.isFinite(number) || number <= 0) throw httpError(400, `${label} must be positive`);
+  return Math.round(number * 1000) / 1000;
+}
+
+async function getPurchaseData(env, session, params) {
+  const includeHidden = session.role === 'owner' && params.get('include_hidden') === '1';
+  const statusSql = includeHidden ? '' : " WHERE status = 'active'";
+  const [categories, products, suppliers] = await Promise.all([
+    env.DB.prepare(`SELECT * FROM purchase_categories${statusSql} ORDER BY display_order, name`).all(),
+    env.DB.prepare(`SELECT p.*, c.name category_name FROM products p LEFT JOIN purchase_categories c ON c.id=p.category_id${includeHidden ? '' : " WHERE p.status = 'active'"} ORDER BY p.is_favourite DESC, CASE WHEN p.last_used_at IS NULL THEN 1 ELSE 0 END, p.last_used_at DESC, p.display_order, p.name`).all(),
+    env.DB.prepare(`SELECT * FROM suppliers${statusSql} ORDER BY CASE WHEN last_used_at IS NULL THEN 1 ELSE 0 END, last_used_at DESC, name`).all(),
+  ]);
+  return { categories: categories.results || [], products: products.results || [], suppliers: suppliers.results || [], receipt_upload_enabled: !!env.RECEIPTS };
+}
+
+async function listMasterData(env, resource, params) {
+  const config = MASTER_CONFIG[resource];
+  if (!config) throw httpError(404, 'Unknown resource');
+  const q = cleanText(params.get('q'), 100);
+  const includeHidden = params.get('include_hidden') === '1';
+  const where = [];
+  const binds = [];
+  if (!includeHidden) where.push("status = 'active'");
+  if (q) { where.push('name LIKE ?'); binds.push(`%${q}%`); }
+  const select = resource === 'products'
+    ? 'SELECT p.*, c.name category_name FROM products p LEFT JOIN purchase_categories c ON c.id=p.category_id'
+    : `SELECT * FROM ${config.table}`;
+  const qualifiedWhere = resource === 'products' ? where.map(condition => condition.replace(/^status\b/, 'p.status').replace(/^name\b/, 'p.name')) : where;
+  const orderBy = resource === 'products'
+    ? 'p.is_favourite DESC, p.last_used_at DESC, p.display_order, p.name'
+    : resource === 'purchase-categories' ? 'display_order, name' : 'name';
+  const sql = `${select}${qualifiedWhere.length ? ` WHERE ${qualifiedWhere.join(' AND ')}` : ''} ORDER BY ${orderBy}`;
+  const rows = await env.DB.prepare(sql).bind(...binds).all();
+  return { records: rows.results || [] };
+}
+
+async function createMasterData(request, env, resource) {
+  const config = MASTER_CONFIG[resource];
+  if (!config) throw httpError(404, 'Unknown resource');
+  const body = await request.json();
+  if (resource === 'products' && Array.isArray(body.names)) return createProductsBulkBody(body, env);
+  const name = cleanText(body.name, 120);
+  if (!name) throw httpError(400, 'Name required');
+  const duplicate = await env.DB.prepare(`SELECT id FROM ${config.table} WHERE name = ? COLLATE NOCASE`).bind(name).first();
+  if (duplicate) throw httpError(409, 'Name already exists');
+  const values = { ...body, name, status: body.status === 'hidden' ? 'hidden' : 'active' };
+  validateMasterValues(resource, values);
+  const fields = config.fields.filter(f => values[f] != null);
+  const placeholders = fields.map(() => '?').join(',');
+  const result = await env.DB.prepare(`INSERT INTO ${config.table} (${fields.join(',')}) VALUES (${placeholders})`).bind(...fields.map(f => values[f])).run();
+  return { success: true, id: result.meta.last_row_id };
+}
+
+async function createProductsBulk(request, env) {
+  const body = await request.json();
+  return createProductsBulkBody(body, env);
+}
+
+async function createProductsBulkBody(body, env) {
+  if (!Array.isArray(body.names)) throw httpError(400, 'Product names required');
+  const names = body.names.map(name => cleanText(name, 120)).filter(Boolean);
+  if (!names.length) throw httpError(400, 'Add at least one product');
+  if (names.length > 50) throw httpError(400, 'Add no more than 50 products at once');
+  const normalized = names.map(name => name.toLocaleLowerCase());
+  if (new Set(normalized).size !== normalized.length) throw httpError(409, 'The product list contains duplicate names');
+  const placeholders = names.map(() => '?').join(',');
+  const existing = await env.DB.prepare(`SELECT name FROM products WHERE name COLLATE NOCASE IN (${placeholders})`).bind(...names).all();
+  if (existing.results?.length) throw httpError(409, `Product already exists: ${existing.results[0].name}`);
+  const shared = {
+    category_id: body.category_id == null || body.category_id === '' ? null : body.category_id,
+    default_unit: body.default_unit,
+    display_order: body.display_order == null ? 0 : body.display_order,
+  };
+  validateMasterValues('products', shared);
+  const statements = names.map((name, index) => env.DB.prepare(`
+    INSERT INTO products (name, category_id, default_unit, display_order)
+    VALUES (?, ?, ?, ?)
+  `).bind(name, shared.category_id, shared.default_unit, Number(shared.display_order) + index));
+  await env.DB.batch(statements);
+  return { success: true, created: names.length };
+}
+
+async function updateMasterData(request, env, resource, id) {
+  const config = MASTER_CONFIG[resource];
+  if (!config) throw httpError(404, 'Unknown resource');
+  const body = await request.json();
+  if (body.name != null) {
+    body.name = cleanText(body.name, 120);
+    if (!body.name) throw httpError(400, 'Name required');
+    const duplicate = await env.DB.prepare(`SELECT id FROM ${config.table} WHERE name = ? COLLATE NOCASE AND id != ?`).bind(body.name, id).first();
+    if (duplicate) throw httpError(409, 'Name already exists');
+  }
+  const fields = config.fields.filter(f => body[f] != null);
+  if (!fields.length) throw httpError(400, 'No changes supplied');
+  if (body.status != null && !['active', 'hidden'].includes(body.status)) throw httpError(400, 'Invalid status');
+  validateMasterValues(resource, body);
+  await env.DB.prepare(`UPDATE ${config.table} SET ${fields.map(f => `${f} = ?`).join(', ')}, updated_at = datetime('now') WHERE id = ?`).bind(...fields.map(f => body[f]), id).run();
+  return { success: true };
+}
+
+async function deleteMasterData(env, resource, id) {
+  if (!['products', 'purchase-categories'].includes(resource)) throw httpError(404, 'Unknown resource');
+  if (resource === 'products') {
+    const product = await env.DB.prepare('SELECT id FROM products WHERE id=?').bind(id).first();
+    if (!product) throw httpError(404, 'Product not found');
+    const historical = await env.DB.prepare('SELECT 1 used FROM owner_purchase_items WHERE product_id=? LIMIT 1').bind(id).first();
+    if (historical) {
+      await env.DB.prepare("UPDATE products SET status='hidden',updated_at=datetime('now') WHERE id=?").bind(id).run();
+      return { success: true, action: 'archived', message: 'Product removed from purchase menus and preserved for history' };
+    }
+    await env.DB.prepare('DELETE FROM products WHERE id=?').bind(id).run();
+    return { success: true, action: 'deleted' };
+  }
+  const category = await env.DB.prepare('SELECT id FROM purchase_categories WHERE id=?').bind(id).first();
+  if (!category) throw httpError(404, 'Category not found');
+  const [productRef, purchaseRef] = await Promise.all([
+    env.DB.prepare('SELECT 1 used FROM products WHERE category_id=? LIMIT 1').bind(id).first(),
+    env.DB.prepare('SELECT 1 used FROM owner_purchases WHERE category_id=? LIMIT 1').bind(id).first(),
+  ]);
+  if (purchaseRef) {
+    await env.DB.prepare("UPDATE purchase_categories SET status='hidden',updated_at=datetime('now') WHERE id=?").bind(id).run();
+    return { success: true, action: 'archived', message: 'Category removed from purchase menus and preserved for purchase history' };
+  }
+  if (productRef) {
+    await env.DB.batch([
+      env.DB.prepare("UPDATE products SET category_id=NULL,updated_at=datetime('now') WHERE category_id=?").bind(id),
+      env.DB.prepare('DELETE FROM purchase_categories WHERE id=?').bind(id),
+    ]);
+    return { success: true, action: 'deleted', message: 'Category deleted; its products moved to Uncategorised' };
+  }
+  await env.DB.prepare('DELETE FROM purchase_categories WHERE id=?').bind(id).run();
+  return { success: true, action: 'deleted' };
+}
+
+async function bulkDeleteMasterData(request, env, resource) {
+  const { ids } = await request.json();
+  if (!Array.isArray(ids) || !ids.length || ids.length > 200) throw httpError(400, 'Select records to delete');
+  const uniqueIds = [...new Set(ids.map(Number).filter(id => Number.isInteger(id) && id > 0))];
+  if (!uniqueIds.length) throw httpError(400, 'Select valid records to delete');
+  let deleted = 0; let archived = 0;
+  for (const id of uniqueIds) {
+    const result = await deleteMasterData(env, resource, id);
+    if (result.action === 'deleted') deleted++; else archived++;
+  }
+  return { success: true, deleted, archived };
+}
+
+function validateMasterValues(resource, values) {
+  if (values.display_order != null && (!Number.isInteger(Number(values.display_order)) || Math.abs(Number(values.display_order)) > 1000000)) {
+    throw httpError(400, 'Display order must be a whole number');
+  }
+  if (values.category_id != null && values.category_id !== '' && (!Number.isInteger(Number(values.category_id)) || Number(values.category_id) <= 0)) {
+    throw httpError(400, 'Invalid category');
+  }
+  if (values.is_favourite != null && ![0, 1, '0', '1', false, true].includes(values.is_favourite)) {
+    throw httpError(400, 'Favourite must be enabled or disabled');
+  }
+  if (resource === 'products') values.default_unit = cleanText(values.default_unit, 30);
+  if (resource === 'suppliers') {
+    values.location = cleanText(values.location, 200);
+    values.phone = cleanText(values.phone, 50);
+    values.note = cleanText(values.note, 500);
+  }
+}
+
+async function purchaseSnapshots(env, body) {
+  const supplier = body.supplier_id ? await env.DB.prepare('SELECT id,name FROM suppliers WHERE id=?').bind(body.supplier_id).first() : null;
+  const category = body.category_id ? await env.DB.prepare('SELECT id,name FROM purchase_categories WHERE id=?').bind(body.category_id).first() : null;
+  return { supplier, category };
+}
+
+async function normalizePurchaseItems(env, items) {
+  if (!Array.isArray(items) || !items.length) throw httpError(400, 'Detailed purchase requires at least one item');
+  const normalized = [];
+  for (let index = 0; index < items.length; index++) {
+    const item = items[index] || {};
+    const product = item.product_id ? await env.DB.prepare('SELECT p.id,p.name,p.category_id,c.name category_name FROM products p LEFT JOIN purchase_categories c ON c.id=p.category_id WHERE p.id=?').bind(item.product_id).first() : null;
+    const name = cleanText(product?.name || item.product_name, 120);
+    if (!name) throw httpError(400, `Item ${index + 1} product name required`);
+    const lineTotal = positiveNumber(item.line_total, `Item ${index + 1} total`);
+    const quantity = item.quantity == null || item.quantity === '' ? null : positiveNumber(item.quantity, `Item ${index + 1} quantity`);
+    const unitPrice = item.unit_price == null || item.unit_price === '' ? null : positiveNumber(item.unit_price, `Item ${index + 1} unit price`);
+    normalized.push({ product_id: product?.id || null, product_name_snapshot: name, category_name_snapshot: cleanText(product?.category_name || item.category_name, 120), quantity, unit: cleanText(item.unit, 30), unit_price: unitPrice, line_total: lineTotal, note: cleanText(item.note), display_order: index });
+  }
+  return normalized;
+}
+
+async function createOwnerPurchase(request, env, session) {
+  const body = await request.json();
+  const mode = body.entry_mode;
+  if (!['detailed', 'quick'].includes(mode)) throw httpError(400, 'Entry mode must be detailed or quick');
+  const snapshots = await purchaseSnapshots(env, body);
+  const items = mode === 'detailed' ? await normalizePurchaseItems(env, body.items) : [];
+  const total = mode === 'detailed' ? Math.round(items.reduce((sum, item) => sum + item.line_total, 0) * 1000) / 1000 : positiveNumber(body.total_amount);
+  if (body.total_amount != null && Math.abs(total - Number(body.total_amount)) > 0.001) throw httpError(400, 'Purchase item totals do not match purchase total');
+  const categoryName = cleanText(snapshots.category?.name || body.category_description, 120);
+  if (mode === 'quick' && !categoryName) throw httpError(400, 'Quick purchase category or description required');
+  const businessDate = await businessDateStr(env);
+  const purchaseDate = /^\d{4}-\d{2}-\d{2}$/.test(body.purchase_date || '') ? body.purchase_date : businessDate;
+  const isTest = await isTestMode(env) ? 1 : 0;
+  const header = await env.DB.prepare(`INSERT INTO owner_purchases
+    (business_date,purchase_date,supplier_id,supplier_name_snapshot,entry_mode,category_id,category_name_snapshot,total_amount,note,is_test,created_by)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?)`).bind(businessDate,purchaseDate,snapshots.supplier?.id || null,snapshots.supplier?.name || null,mode,snapshots.category?.id || null,categoryName,total,cleanText(body.note,1000),isTest,session.name).run();
+  const purchaseId = header.meta.last_row_id;
+  try {
+    if (items.length) await env.DB.batch(items.map(item => env.DB.prepare(`INSERT INTO owner_purchase_items
+      (purchase_id,product_id,product_name_snapshot,category_name_snapshot,quantity,unit,unit_price,line_total,note,display_order)
+      VALUES (?,?,?,?,?,?,?,?,?,?)`).bind(purchaseId,item.product_id,item.product_name_snapshot,item.category_name_snapshot,item.quantity,item.unit,item.unit_price,item.line_total,item.note,item.display_order)));
+    const productIds = [...new Set(items.map(i => i.product_id).filter(Boolean))];
+    if (productIds.length) await env.DB.batch(productIds.map(id => env.DB.prepare("UPDATE products SET use_count=use_count+1,last_used_at=datetime('now') WHERE id=?").bind(id)));
+    if (snapshots.supplier?.id) await env.DB.prepare("UPDATE suppliers SET use_count=use_count+1,last_used_at=datetime('now') WHERE id=?").bind(snapshots.supplier.id).run();
+  } catch (error) {
+    await env.DB.prepare('DELETE FROM owner_purchase_items WHERE purchase_id=?').bind(purchaseId).run();
+    await env.DB.prepare('DELETE FROM owner_purchases WHERE id=?').bind(purchaseId).run();
+    throw error;
+  }
+  return { success: true, id: purchaseId, total_amount: total };
+}
+
+function applyPurchaseFilters(where, binds, params) {
+  const map = { supplier_id: 'p.supplier_id', category_id: 'p.category_id', entry_mode: 'p.entry_mode', status: 'p.status' };
+  for (const [key, column] of Object.entries(map)) if (params.get(key)) { where.push(`${column}=?`); binds.push(params.get(key)); }
+  if (params.get('test_only') === '1') where.push('p.is_test=1');
+  if (params.get('date_from')) { where.push('p.purchase_date>=?'); binds.push(params.get('date_from')); }
+  if (params.get('date_to')) { where.push('p.purchase_date<=?'); binds.push(params.get('date_to')); }
+  if (params.get('product_id')) { where.push('EXISTS (SELECT 1 FROM owner_purchase_items i WHERE i.purchase_id=p.id AND i.product_id=?)'); binds.push(params.get('product_id')); }
+  if (params.get('receipt') === '1') where.push('p.receipt_key IS NOT NULL');
+  if (params.get('receipt') === '0') where.push('p.receipt_key IS NULL');
+  if (params.get('min_amount')) { where.push('p.total_amount>=?'); binds.push(params.get('min_amount')); }
+  if (params.get('max_amount')) { where.push('p.total_amount<=?'); binds.push(params.get('max_amount')); }
+  const q = cleanText(params.get('q'), 100);
+  if (q) { const like=`%${q}%`; where.push('(p.supplier_name_snapshot LIKE ? OR p.category_name_snapshot LIKE ? OR p.note LIKE ? OR EXISTS (SELECT 1 FROM owner_purchase_items qi WHERE qi.purchase_id=p.id AND qi.product_name_snapshot LIKE ?))'); binds.push(like,like,like,like); }
+}
+
+async function listOwnerPurchases(env, session, params) {
+  const where=[]; const binds=[];
+  const includeTest = params.get('show_test') === '1' || (session.role === 'owner' && await isTestMode(env));
+  if (!includeTest) where.push('p.is_test=0');
+  if (!params.get('status')) where.push("p.status='active'");
+  applyPurchaseFilters(where, binds, params);
+  const clause=where.length ? `WHERE ${where.join(' AND ')}` : '';
+  const rows=await env.DB.prepare(`SELECT p.*,(SELECT GROUP_CONCAT(product_name_snapshot, ', ') FROM owner_purchase_items i WHERE i.purchase_id=p.id) product_summary FROM owner_purchases p ${clause} ORDER BY p.purchase_date DESC,p.created_at DESC LIMIT 1000`).bind(...binds).all();
+  const summary=await env.DB.prepare(`SELECT COUNT(*) count,COALESCE(SUM(p.total_amount),0) total FROM owner_purchases p ${clause}`).bind(...binds).first();
+  return { purchases: rows.results || [], summary };
+}
+
+async function getOwnerPurchase(env, id) {
+  const purchase=await env.DB.prepare('SELECT * FROM owner_purchases WHERE id=?').bind(id).first();
+  if (!purchase) throw httpError(404, 'Purchase not found');
+  const items=await env.DB.prepare('SELECT * FROM owner_purchase_items WHERE purchase_id=? ORDER BY display_order,id').bind(id).all();
+  return { purchase, items: items.results || [], receipt_available: !!purchase.receipt_key };
+}
+
+async function updateOwnerPurchase(request, env, session, id) {
+  const existing=await env.DB.prepare('SELECT * FROM owner_purchases WHERE id=?').bind(id).first();
+  if (!existing) throw httpError(404,'Purchase not found');
+  if (existing.status !== 'active') throw httpError(400,'Cannot edit voided/deleted purchase');
+  const body=await request.json();
+  if (!cleanText(body.edit_reason,500)) throw httpError(400,'Edit reason required');
+  const merged={...existing,...body};
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(merged.purchase_date || '')) throw httpError(400,'Valid purchase date required');
+  const snapshots=await purchaseSnapshots(env, merged);
+  const items=merged.entry_mode === 'detailed' ? await normalizePurchaseItems(env, body.items) : [];
+  const total=merged.entry_mode === 'detailed' ? Math.round(items.reduce((s,i)=>s+i.line_total,0)*1000)/1000 : positiveNumber(merged.total_amount);
+  if (body.total_amount != null && merged.entry_mode === 'detailed' && Math.abs(total-Number(body.total_amount))>0.001) throw httpError(400,'Purchase item totals do not match purchase total');
+  const categoryName=cleanText(snapshots.category?.name || body.category_description || existing.category_name_snapshot,120);
+  if (merged.entry_mode === 'quick' && !categoryName) throw httpError(400,'Quick purchase category or description required');
+  const statements=[env.DB.prepare(`UPDATE owner_purchases SET purchase_date=?,supplier_id=?,supplier_name_snapshot=?,entry_mode=?,category_id=?,category_name_snapshot=?,total_amount=?,note=?,updated_by=?,updated_at=datetime('now'),edit_reason=? WHERE id=?`).bind(merged.purchase_date,snapshots.supplier?.id || null,snapshots.supplier?.name || null,merged.entry_mode,snapshots.category?.id || null,categoryName,total,cleanText(merged.note,1000),session.name,cleanText(body.edit_reason,500),id),env.DB.prepare('DELETE FROM owner_purchase_items WHERE purchase_id=?').bind(id)];
+  statements.push(...items.map(item=>env.DB.prepare(`INSERT INTO owner_purchase_items (purchase_id,product_id,product_name_snapshot,category_name_snapshot,quantity,unit,unit_price,line_total,note,display_order) VALUES (?,?,?,?,?,?,?,?,?,?)`).bind(id,item.product_id,item.product_name_snapshot,item.category_name_snapshot,item.quantity,item.unit,item.unit_price,item.line_total,item.note,item.display_order)));
+  await env.DB.batch(statements);
+  return { success:true,total_amount:total };
+}
+
+async function voidOwnerPurchase(request, env, session, id) {
+  const { void_reason }=await request.json();
+  if (!cleanText(void_reason,500)) throw httpError(400,'Void reason required');
+  const result=await env.DB.prepare("UPDATE owner_purchases SET status='voided',void_reason=?,updated_by=?,updated_at=datetime('now') WHERE id=? AND status='active'").bind(cleanText(void_reason,500),session.name,id).run();
+  if (!result.meta.changes) throw httpError(400,'Purchase not found or not active');
+  return { success:true };
+}
+
+async function deleteOwnerPurchase(env, session, id) {
+  const existing=await env.DB.prepare('SELECT * FROM owner_purchases WHERE id=?').bind(id).first();
+  if (!existing) throw httpError(404,'Purchase not found');
+  if (existing.is_test===1) await env.DB.batch([env.DB.prepare('DELETE FROM owner_purchase_items WHERE purchase_id=?').bind(id),env.DB.prepare('DELETE FROM owner_purchases WHERE id=?').bind(id)]);
+  else await env.DB.prepare("UPDATE owner_purchases SET status='deleted',updated_by=?,updated_at=datetime('now'),void_reason='Deleted by owner' WHERE id=?").bind(session.name,id).run();
+  return { success:true };
+}
+
+async function uploadPurchaseReceipt(request, env, id) {
+  if (!env.RECEIPTS) throw httpError(503,'Receipt storage is not configured');
+  const purchase=await env.DB.prepare('SELECT receipt_key FROM owner_purchases WHERE id=?').bind(id).first();
+  if (!purchase) throw httpError(404,'Purchase not found');
+  const form=await request.formData(); const file=form.get('receipt');
+  const allowed=['image/jpeg','image/png','image/webp'];
+  if (!file || !allowed.includes(file.type)) throw httpError(400,'Receipt must be JPEG, PNG or WebP');
+  if (file.size>8*1024*1024) throw httpError(400,'Receipt must be 8 MB or smaller');
+  const ext={ 'image/jpeg':'jpg','image/png':'png','image/webp':'webp' }[file.type];
+  const key=`owner-purchases/${id}/${crypto.randomUUID()}.${ext}`;
+  await env.RECEIPTS.put(key,file.stream(),{httpMetadata:{contentType:file.type}});
+  if (purchase.receipt_key) await env.RECEIPTS.delete(purchase.receipt_key);
+  await env.DB.prepare('UPDATE owner_purchases SET receipt_key=?,receipt_name=?,receipt_type=?,updated_at=datetime(\'now\') WHERE id=?').bind(key,cleanText(file.name,200),file.type,id).run();
+  return json({success:true,receipt_available:true});
+}
+
+async function getPurchaseReceipt(env,id) {
+  if (!env.RECEIPTS) throw httpError(503,'Receipt storage is not configured');
+  const purchase=await env.DB.prepare('SELECT receipt_key,receipt_type FROM owner_purchases WHERE id=?').bind(id).first();
+  if (!purchase?.receipt_key) throw httpError(404,'Receipt not found');
+  const object=await env.RECEIPTS.get(purchase.receipt_key);
+  if (!object) throw httpError(404,'Receipt not found');
+  return new Response(object.body,{headers:{'Content-Type':purchase.receipt_type || 'application/octet-stream','Cache-Control':'private, no-store','Content-Disposition':'inline'}});
+}
+
+async function deletePurchaseReceipt(env,id) {
+  if (!env.RECEIPTS) throw httpError(503,'Receipt storage is not configured');
+  const purchase=await env.DB.prepare('SELECT receipt_key FROM owner_purchases WHERE id=?').bind(id).first();
+  if (!purchase?.receipt_key) throw httpError(404,'Receipt not found');
+  await env.RECEIPTS.delete(purchase.receipt_key);
+  await env.DB.prepare('UPDATE owner_purchases SET receipt_key=NULL,receipt_name=NULL,receipt_type=NULL,updated_at=datetime(\'now\') WHERE id=?').bind(id).run();
+  return {success:true};
+}
+
+function reportDates(params,today) {
+  const period=params.get('period') || 'month'; let from=params.get('date_from'); let to=params.get('date_to');
+  if (!from && period!=='all' && period!=='custom') from=period==='today'?today:period==='yesterday'?previousDateStr(today):period==='week'?weekStart():period==='month'?monthStart(today):null;
+  if (!to && period==='yesterday') to=previousDateStr(today); else if (!to && period!=='all') to=today;
+  return {from,to};
+}
+
+async function getAccountantDashboard(env,params) {
+  const today=await businessDateStr(env); const dates=reportDates(params,today); const testOnly=params.get('test_only')==='1'; const includeTest=params.get('show_test')==='1'||testOnly;
+  const cash=await getWorkerDashboard(env,{role:'accountant'});
+  const testSql=testOnly?'is_test=1':includeTest?'1=1':'is_test=0'; const dateSql=`${dates.from?' AND business_date>=?':''}${dates.to?' AND business_date<=?':''}`; const binds=[...(dates.from?[dates.from]:[]),...(dates.to?[dates.to]:[])];
+  const worker=await env.DB.prepare(`SELECT COALESCE(SUM(amount),0) total FROM transactions WHERE type='expense' AND status='active' AND ${testSql}${dateSql}`).bind(...binds).first();
+  const purchaseDateSql=`${dates.from?' AND purchase_date>=?':''}${dates.to?' AND purchase_date<=?':''}`;
+  const owner=await env.DB.prepare(`SELECT COALESCE(SUM(total_amount),0) total FROM owner_purchases WHERE status='active' AND ${testSql}${purchaseDateSql}`).bind(...binds).first();
+  return {cash,period:{...dates,name:params.get('period')||'month'},worker_expenses:worker.total||0,owner_purchases:owner.total||0,combined_expenses:(worker.total||0)+(owner.total||0)};
+}
+
+async function getUnifiedExpenses(env,params) {
+  const today=await businessDateStr(env); const dates=reportDates(params,today); const testOnly=params.get('test_only')==='1'; const includeTest=params.get('show_test')==='1'||testOnly; const source=params.get('source'); const rows=[];
+  const min=Number(params.get('min_amount')||0); const max=Number(params.get('max_amount')||0); const q=cleanText(params.get('q'),100)?.toLowerCase();
+  if (source!=='owner') {
+    const binds=[]; let where="type='expense' AND status='active'"+(testOnly?" AND is_test=1":includeTest?'':" AND is_test=0");
+    if(dates.from){where+=' AND business_date>=?';binds.push(dates.from);} if(dates.to){where+=' AND business_date<=?';binds.push(dates.to);}
+    const result=await env.DB.prepare(`SELECT * FROM transactions WHERE ${where} ORDER BY business_date DESC`).bind(...binds).all();
+    for(const r of result.results||[]) rows.push({id:r.id,date:r.business_date,source:'worker',record_type:'worker_expense',amount:r.amount,category:r.category,supplier:null,product_summary:null,note:r.note,receipt_available:false,entry_mode:null,created_by:r.created_by,status:r.status,is_test:r.is_test});
+  }
+  if(source!=='worker') {
+    const search=new URLSearchParams(params); if(dates.from)search.set('date_from',dates.from);if(dates.to)search.set('date_to',dates.to);search.set('status','active');if(includeTest)search.set('show_test','1');if(testOnly)search.set('test_only','1');
+    const result=await listOwnerPurchases(env,{role:'accountant'},search);
+    for(const r of result.purchases) rows.push({id:r.id,date:r.purchase_date,source:'owner',record_type:'owner_purchase',amount:r.total_amount,category:r.category_name_snapshot,supplier:r.supplier_name_snapshot,product_summary:r.product_summary,note:r.note,receipt_available:!!r.receipt_key,entry_mode:r.entry_mode,created_by:r.created_by,status:r.status,is_test:r.is_test});
+  }
+  const category=cleanText(params.get('category'),120)?.toLowerCase();
+  const filtered=rows.filter(r=>(!min||r.amount>=min)&&(!max||r.amount<=max)&&(!params.get('receipt')||(params.get('receipt')==='1')===r.receipt_available)&&(!params.get('entry_mode')||r.entry_mode===params.get('entry_mode'))&&(!category||String(r.category||'').toLowerCase().includes(category))&&(!q||JSON.stringify(r).toLowerCase().includes(q))).sort((a,b)=>b.date.localeCompare(a.date));
+  return {expenses:filtered,summary:{count:filtered.length,total:filtered.reduce((s,r)=>s+Number(r.amount),0)},period:dates};
+}
+
+function csvCell(value){return `"${String(value??'').replace(/"/g,'""')}"`;}
+async function exportAccountantCsv(env,params){
+  const kind=params.get('kind')||'combined'; let records=[]; let headers=[];
+  if(kind==='items'){
+    const expenses=await getUnifiedExpenses(env,new URLSearchParams({...Object.fromEntries(params),source:'owner'})); const ids=expenses.expenses.map(e=>e.id); headers=['Date','Purchase ID','Supplier','Product','Category','Quantity','Unit','Unit Price','Line Total','Test'];
+    for(const expense of expenses.expenses){const detail=await getOwnerPurchase(env,expense.id);for(const item of detail.items)records.push([expense.date,expense.id,expense.supplier,item.product_name_snapshot,item.category_name_snapshot,item.quantity,item.unit,item.unit_price==null?'':Number(item.unit_price).toFixed(3),Number(item.line_total).toFixed(3),expense.is_test]);}
+  }else{
+    const query=new URLSearchParams(params); if(kind==='worker')query.set('source','worker');if(kind==='purchases')query.set('source','owner'); const data=await getUnifiedExpenses(env,query); headers=['Date','Source','Record Type','Amount','Category','Supplier','Products','Note','Receipt Available','Entry Mode','Created By','Status','Test']; records=data.expenses.map(r=>[r.date,r.source,r.record_type,Number(r.amount).toFixed(3),r.category,r.supplier,r.product_summary,r.note,r.receipt_available?'Yes':'No',r.entry_mode,r.created_by,r.status,r.is_test]);
+  }
+  return new Response([headers,...records].map(row=>row.map(csvCell).join(',')).join('\r\n'),{headers:{'Content-Type':'text/csv; charset=utf-8','Content-Disposition':`attachment; filename="accountant-${kind}-${todayStr()}.csv"`}});
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

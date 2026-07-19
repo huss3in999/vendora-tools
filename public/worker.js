@@ -139,6 +139,15 @@ function publicContactSection(settings, lang) {
   return `<section class="section public-contact-section"><div class="container"><div class="glass public-contact-card"><h2>${isEn ? 'Contact numbers' : 'أرقام التواصل'}</h2>${numbers.join('')}</div></div></section>`;
 }
 
+function calculatorCrosslink(lang) {
+  const isEn = lang === 'en';
+  const href = `${SITE_PATH_PREFIX}/${isEn ? 'en/' : ''}gcc-transport-planner/`;
+  const label = isEn
+    ? 'Open the Trip Calculator to estimate the route and prepare your request'
+    : 'افتح حاسبة الرحلة لتقدير المسار وتجهيز طلبك';
+  return `<aside class="calculator-crosslink"><a href="${href}">${label}</a></aside>`;
+}
+
 function publicPricingRoutes(config) {
   return (config.routes || []).filter((route) => (
     route.is_active !== false
@@ -248,6 +257,7 @@ async function rewriteTransportHtml(request, response, env) {
 
   const transformed = new HTMLRewriter()
     .on('script[type="application/ld+json"]', { element(element) {
+      if (slug === 'gcc-transport-planner') return;
       if (element.getAttribute('id') !== 'pricesSchema') element.remove();
     } })
     .on('head', { element(element) {
@@ -279,8 +289,7 @@ async function rewriteTransportHtml(request, response, env) {
       }
     } })
     .on('main', { element(element) {
-      const html = priceSection(route, lang, settings.sar_per_bhd);
-      if (html) element.append(html, { html: true });
+      if (slug !== 'gcc-transport-planner') element.append(calculatorCrosslink(lang), { html: true });
       if (slug === 'contact') {
         const contactHtml = publicContactSection(settings, lang);
         if (contactHtml) element.append(contactHtml, { html: true });

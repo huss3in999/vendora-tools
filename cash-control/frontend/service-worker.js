@@ -3,15 +3,17 @@
  * Caches app shell for fast offline loading. API calls always go to network.
  */
 
-const CACHE_NAME = 'cash-control-v18';
+const CACHE_NAME = 'cash-control-v25';
 const SHELL = [
   '/',
   '/index.html',
-  '/styles.css?v=18',
-  '/app.js?v=18',
-  '/api.js?v=18',
-  '/worker.js?v=18',
-  '/owner.js?v=18',
+  '/styles.css?v=25',
+  '/app.js?v=25',
+  '/api.js?v=25',
+  '/worker.js?v=25',
+  '/owner.js?v=25',
+  '/purchases.js?v=25',
+  '/accountant.js?v=25',
   '/manifest.json',
   '/icon-192.png',
   '/icon-512.png',

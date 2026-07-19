@@ -13,7 +13,3 @@ binding = "ASSETS"
 binding = "DB"
 database_name = "cash-control-db"
 database_id = "7d58e703-460b-4729-8058-21b10a9c2d77"
-
-[vars]
-OWNER_PIN = "1111"
-WORKER_PIN = "1111"

@@ -663,6 +663,20 @@
     ['ما الذي يجب تأكيده قبل الحجز؟', 'What must be confirmed before booking?'],
     ['اطلب سيارة مع سائق', 'Request a car with driver'],
     ['الساعات والمواقع', 'Hours and stops'],
+    ['مخطط توصيل دول الخليج | فندورا للنقل', 'GCC Transport Planner | Vendora Transport'],
+    ['فندورا للنقل', 'Vendora Transport'],
+    ['مرحباً فندورا، أحتاج طلب توصيل أو رحلة بين دول الخليج.', 'Hello Vendora, I need a GCC transport request.'],
+    ['النسخة الإنجليزية', 'English version'],
+    ['تبحث عن النسخة الإنجليزية؟', 'Looking for the English version?'],
+    ['افتح مخطط النقل الخليجي باللغة الإنجليزية', 'Open the GCC transport planner in English'],
+    ['روابط داخلية إلى صفحات فندورا الحالية، مع توجيه أقرب مسار عندما لا توجد صفحة عكسية مستقلة.', 'Internal links point to current Vendora pages, with the closest route used when no dedicated reverse page exists.'],
+    ['كل الروابط أدناه تقود إلى صفحات موجودة داخل موقع فندورا للنقل.', 'All links below point to existing Vendora Transport pages.'],
+    ['فندورا للنقل بين دول الخليج', 'Vendora GCC Transport'],
+    ['خطط رحلتك بين دول الخليج', 'Plan your trip between GCC countries'],
+    ['اختر نقطة الانطلاق والوجهة واعرض تقدير المدة والمسافة وملاحظات المطار والشنط قبل إرسال الطلب.', 'Choose pickup and destination to see estimated time, distance, airport, and luggage notes before sending the request.'],
+    ['افتح مخطط النقل الخليجي', 'Open the GCC transport planner'],
+    ['اكتشاف محتوى النقل الخليجي لفندورا', 'Vendora GCC transport content discovery'],
+    ['يعمل المخطط ببيانات ثابتة داخل الصفحة، بدون واجهة برمجة خارجية وبدون استخدام ذكاء اصطناعي للحسابات أو التصفية.', 'The planner uses fixed in-page data with no external API and no artificial intelligence for calculations or filtering.'],
   ].sort((a, b) => b[0].length - a[0].length);
   const exactTranslations = new Map(translations.map(([ar, en]) => [ar.trim(), en]));
 
@@ -1554,22 +1568,28 @@
     });
   }
 
+  function setStaticWhatsAppLink(link) {
+    if (!link || !link.hasAttribute('data-wa-message')) return;
+    if (isPassengerCareEnabled()) {
+      link.setAttribute('href', '#');
+      link.setAttribute('role', 'button');
+      link.removeAttribute('target');
+      link.removeAttribute('rel');
+      return;
+    }
+    const message = link.getAttribute('data-wa-message') || defaultArabicMessage;
+    link.href = toWhatsApp(message);
+    link.removeAttribute('role');
+    link.target = '_blank';
+    link.rel = 'noopener';
+  }
+
   function setStaticLinks() {
-    document.querySelectorAll('[data-wa-message]').forEach((link) => {
-      if (isPassengerCareEnabled()) {
-        link.setAttribute('href', '#');
-        link.setAttribute('role', 'button');
-        link.removeAttribute('target');
-        link.removeAttribute('rel');
-        return;
-      }
-      const message = link.getAttribute('data-wa-message') || defaultArabicMessage;
-      link.href = toWhatsApp(message);
-      link.target = '_blank';
-      link.rel = 'noopener';
-    });
+    document.querySelectorAll('[data-wa-message]').forEach(setStaticWhatsAppLink);
     neutralizeWhatsAppHrefs();
   }
+
+  window.vendoraRefreshWhatsAppLink = setStaticWhatsAppLink;
 
   function getCurrentDepth() {
     const path = window.location.pathname.replace(/\\/g, '/');
@@ -1585,17 +1605,26 @@
     const depth = getCurrentDepth();
     const prefix = depth === 0 ? './' : '../'.repeat(depth);
     let hash = '';
+    let query = '';
     let pathOnly = targetPath || '';
     const hashIndex = pathOnly.indexOf('#');
     if (hashIndex >= 0) {
       hash = pathOnly.slice(hashIndex);
       pathOnly = pathOnly.slice(0, hashIndex);
     }
-    pathOnly = pathOnly.replace(/\/+$/, '');
-    if (!pathOnly) {
-      return `${prefix}index.html${hash}`;
+    const queryIndex = pathOnly.indexOf('?');
+    if (queryIndex >= 0) {
+      query = pathOnly.slice(queryIndex);
+      pathOnly = pathOnly.slice(0, queryIndex);
     }
-    return `${prefix}${pathOnly}/index.html${hash}`;
+    pathOnly = pathOnly.replace(/^\/+|\/+$/g, '');
+    if (!pathOnly) {
+      return `${prefix}index.html${query}${hash}`;
+    }
+    if (/(?:^|\/)[^/]+\.[a-z0-9]{1,16}$/i.test(pathOnly)) {
+      return `${prefix}${pathOnly}${query}${hash}`;
+    }
+    return `${prefix}${pathOnly}/index.html${query}${hash}`;
   }
 
   function normalizeInternalLinks() {
@@ -1619,6 +1648,538 @@
         }
       }
     });
+  }
+
+  function vipRouteHref(relativePath = '') {
+    const clean = String(relativePath || '').replace(/^\/+|\/+$/g, '');
+    if (window.location.protocol === 'file:') return makeRelativeToRoot(clean);
+    return `${siteSegment}${clean ? `${clean}/` : ''}`;
+  }
+
+  function vipAssetHref(relativePath) {
+    const clean = String(relativePath || '').replace(/^\/+/, '');
+    if (window.location.protocol === 'file:') return makeRelativeToRoot(`assets/${clean}`);
+    return `${siteSegment}assets/${clean}`;
+  }
+
+  function normalizeVipPageHref(href) {
+    if (!href) return '';
+    let path = href;
+    try {
+      path = new URL(href, 'https://getvendora.net').pathname;
+    } catch {
+      path = href;
+    }
+    const marker = path.indexOf(siteSegment);
+    const tail = marker >= 0 ? path.slice(marker + siteSegment.length) : path.replace(/^\/+/, '');
+    return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${siteSegment}${tail}`;
+  }
+
+  function vipAlternateLanguageHref() {
+    const wanted = state.lang === 'en' ? 'ar' : 'en';
+    const alternates = [...document.querySelectorAll('link[rel="alternate"][hreflang]')];
+    const match = alternates.find((link) => {
+      const value = (link.getAttribute('hreflang') || '').toLowerCase();
+      return wanted === 'ar' ? value.startsWith('ar') : value.startsWith('en');
+    });
+    if (match?.href) return normalizeVipPageHref(match.getAttribute('href') || match.href);
+    return vipRouteHref(state.lang === 'en' ? '' : 'en');
+  }
+
+  function setupVipBranding() {
+    document.body.classList.add('vip-transport');
+    const iconHref = vipAssetHref('brand/vendora-transport-app-icon.svg');
+    const touchHref = vipAssetHref('brand/vendora-transport-app-icon-512.png');
+    const wordmarkHref = vipAssetHref('brand/vendora-transport-logo-light.svg');
+    const brandLabel = state.lang === 'en' ? 'Vendora Transport' : 'فندورا للنقل';
+
+    document.querySelectorAll('.brand-title').forEach((title) => { title.textContent = brandLabel; });
+
+    document.querySelectorAll('.brand .logo').forEach((logo) => {
+      if (logo.querySelector('.vip-app-icon')) return;
+      logo.textContent = '';
+      const image = document.createElement('img');
+      image.className = 'vip-app-icon';
+      image.src = iconHref;
+      image.alt = '';
+      image.width = 512;
+      image.height = 512;
+      image.decoding = 'async';
+      image.setAttribute('aria-hidden', 'true');
+      logo.appendChild(image);
+    });
+
+    const favicon = document.querySelector('link[rel="icon"]');
+    if (favicon) {
+      favicon.href = iconHref;
+      favicon.type = 'image/svg+xml';
+    }
+    const touchIcon = document.querySelector('link[rel="apple-touch-icon"]');
+    if (touchIcon) touchIcon.href = touchHref;
+
+    const footerCard = document.querySelector('.footer .footer-card');
+    if (footerCard && !footerCard.querySelector('.vip-footer-logo')) {
+      const footerLogo = document.createElement('img');
+      footerLogo.className = 'vip-footer-logo';
+      footerLogo.src = wordmarkHref;
+      footerLogo.alt = '';
+      footerLogo.width = 840;
+      footerLogo.height = 180;
+      footerLogo.loading = 'lazy';
+      footerLogo.decoding = 'async';
+      footerLogo.setAttribute('aria-hidden', 'true');
+      footerCard.prepend(footerLogo);
+    }
+
+    document.querySelectorAll('.brand').forEach((brand) => {
+      brand.removeAttribute('aria-label');
+    });
+    document.querySelectorAll('.floating-wa').forEach((link) => {
+      link.setAttribute('aria-label', state.lang === 'en' ? 'WA — Book on WhatsApp' : 'WA — الحجز عبر واتساب');
+    });
+
+    const footerHeading = document.querySelector('.footer .footer-card:first-child h3');
+    if (footerHeading) footerHeading.textContent = brandLabel;
+    document.querySelectorAll('.footer-links a').forEach((link) => {
+      if ((link.textContent || '').trim() === 'GetVendora Home' && state.lang !== 'en') {
+        link.textContent = 'الصفحة الرئيسية لفندورا';
+      }
+    });
+  }
+
+  function setupVipLanguageControl() {
+    const quickLinks = document.querySelector('.quick-links');
+    if (!quickLinks) return null;
+    let link = quickLinks.querySelector('.lang-toggle');
+    const existingHref = link?.getAttribute('href') || '';
+    if (!link) {
+      link = document.createElement('a');
+      link.className = 'lang-toggle';
+      quickLinks.prepend(link);
+    }
+    link.classList.add('vip-language-control');
+    link.setAttribute('data-vip-language', '');
+    link.href = existingHref ? normalizeVipPageHref(existingHref) : vipAlternateLanguageHref();
+    link.lang = state.lang === 'en' ? 'ar' : 'en';
+    link.dir = state.lang === 'en' ? 'rtl' : 'ltr';
+    link.setAttribute('aria-label', state.lang === 'en' ? 'Open Arabic version' : 'فتح النسخة الإنجليزية');
+    link.innerHTML = `<i data-lucide="languages" aria-hidden="true"></i><span>${state.lang === 'en' ? 'Arabic' : 'الإنجليزية'}</span>`;
+    return link;
+  }
+
+  function setupVipHomeHero() {
+    const slug = getRouteSlug();
+    if (!['home', 'english-home'].includes(slug)) return;
+    const heroSource = vipAssetHref('images/hero-vendora-vip-gmc-airport.webp');
+    const heroAlt = state.lang === 'en'
+      ? 'Executive private transport vehicle outside an airport at night in Bahrain'
+      : 'سيارة نقل خاصة فاخرة أمام مطار في البحرين ليلاً';
+    let image = document.querySelector('.hero-media-card img');
+    if (!image) {
+      const side = document.querySelector('.hero-grid .hero-side');
+      if (!side) return;
+      side.classList.add('vip-home-visual');
+      image = side.querySelector('.vip-home-hero-image');
+      if (!image) {
+        image = document.createElement('img');
+        image.className = 'vip-home-hero-image';
+        side.prepend(image);
+      }
+    }
+    image.classList.add('vip-home-hero-image');
+    image.src = heroSource;
+    image.srcset = `${vipAssetHref('images/hero-vendora-vip-gmc-airport-640.webp')} 640w, ${vipAssetHref('images/hero-vendora-vip-gmc-airport-960.webp')} 960w, ${heroSource} 1672w`;
+    image.sizes = '(max-width: 900px) calc(100vw - 48px), (max-width: 1280px) 46vw, 560px';
+    image.alt = heroAlt;
+    image.width = 1672;
+    image.height = 941;
+    image.loading = 'eager';
+    image.decoding = 'async';
+    image.setAttribute('fetchpriority', 'high');
+  }
+
+  function setupVipDrawer() {
+    const header = document.querySelector('.topbar');
+    const quickLinks = header?.querySelector('.quick-links');
+    if (!header || !quickLinks || document.getElementById('vendora-vip-drawer')) return;
+
+    const isEnglish = state.lang === 'en';
+    const prefix = isEnglish ? 'en/' : '';
+    const labels = isEnglish ? {
+      menu: 'Open menu', close: 'Close menu', navigation: 'Main navigation', home: 'Home', destinations: 'GCC destinations',
+      prices: 'Prices', calculator: 'Trip Calculator', airport: 'Airport Pickup Planner', passenger: 'Passenger transport',
+      parcel: 'Parcel delivery', about: 'About', contact: 'Contact', language: 'Arabic version', brand: 'Vendora Transport',
+    } : {
+      menu: 'فتح القائمة', close: 'إغلاق القائمة', navigation: 'التنقل الرئيسي', home: 'الرئيسية', destinations: 'وجهات الخليج',
+      prices: 'الأسعار العامة', calculator: 'حاسبة الرحلة', airport: 'مخطط المطار', passenger: 'نقل الركاب',
+      parcel: 'توصيل الطرود', about: 'من نحن', contact: 'تواصل معنا', language: 'النسخة الإنجليزية', brand: 'فندورا للنقل',
+    };
+    const items = [
+      [labels.home, vipRouteHref(prefix), 'house'],
+      [labels.destinations, vipRouteHref(`${prefix}gcc-destinations`), 'map-pinned'],
+      [labels.prices, vipRouteHref(`${prefix}prices`), 'badge-dollar-sign'],
+      [labels.calculator, vipRouteHref(`${prefix}gcc-transport-planner`), 'calculator'],
+      [labels.airport, vipRouteHref(`${prefix}airport-pickup-planner`), 'plane'],
+      [labels.passenger, vipRouteHref(`${prefix}passenger-transport`), 'users'],
+      [labels.parcel, vipRouteHref(`${prefix}parcel-delivery`), 'package'],
+      [labels.about, vipRouteHref(`${prefix}about`), 'circle-help'],
+      [labels.contact, vipRouteHref(`${prefix}contact`), 'message-square-text'],
+    ];
+
+    const toggle = document.createElement('button');
+    toggle.className = 'vip-menu-toggle';
+    toggle.type = 'button';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', 'vendora-vip-drawer');
+    toggle.setAttribute('aria-label', labels.menu);
+    toggle.innerHTML = '<i data-lucide="menu" aria-hidden="true"></i>';
+    quickLinks.appendChild(toggle);
+
+    const drawer = document.createElement('div');
+    drawer.id = 'vendora-vip-drawer';
+    drawer.className = 'vip-drawer';
+    drawer.hidden = true;
+    drawer.setAttribute('aria-hidden', 'true');
+    drawer.innerHTML = `
+      <button class="vip-drawer-backdrop" type="button" tabindex="-1" data-vip-drawer-close aria-label="${labels.close}"></button>
+      <aside class="vip-drawer-panel" role="dialog" aria-modal="true" aria-labelledby="vendora-vip-drawer-title">
+        <div class="vip-drawer-header">
+          <div class="vip-drawer-brand">
+            <img src="${vipAssetHref('brand/vendora-transport-app-icon.svg')}" alt="" width="512" height="512" aria-hidden="true">
+            <strong id="vendora-vip-drawer-title">${labels.brand}</strong>
+          </div>
+          <button class="vip-drawer-close" type="button" data-vip-drawer-close aria-label="${labels.close}">
+            <i data-lucide="x" aria-hidden="true"></i><span>${labels.close}</span>
+          </button>
+        </div>
+        <nav class="vip-drawer-nav" aria-label="${labels.navigation}">
+          ${items.map(([label, href, icon]) => `<a class="vip-drawer-link" href="${href}"><i data-lucide="${icon}" aria-hidden="true"></i><span>${label}</span></a>`).join('')}
+          <a class="vip-drawer-link vip-drawer-language" href="${document.querySelector('[data-vip-language]')?.getAttribute('href') || vipAlternateLanguageHref()}"><i data-lucide="languages" aria-hidden="true"></i><span>${labels.language}</span></a>
+        </nav>
+      </aside>`;
+    header.insertAdjacentElement('afterend', drawer);
+
+    let previousFocus = null;
+    const focusables = () => [...drawer.querySelectorAll('a[href], button:not([disabled])')].filter((node) => !node.hidden && node.tabIndex >= 0);
+    const closeDrawer = (restoreFocus = true) => {
+      if (drawer.hidden) return;
+      drawer.hidden = true;
+      drawer.setAttribute('aria-hidden', 'true');
+      drawer.removeAttribute('data-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('vip-drawer-open');
+      if (restoreFocus && previousFocus?.focus) previousFocus.focus();
+    };
+    const openDrawer = () => {
+      previousFocus = document.activeElement;
+      drawer.hidden = false;
+      drawer.setAttribute('aria-hidden', 'false');
+      drawer.setAttribute('data-open', 'true');
+      toggle.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('vip-drawer-open');
+      window.requestAnimationFrame(() => drawer.querySelector('.vip-drawer-close')?.focus());
+    };
+
+    toggle.addEventListener('click', () => (drawer.hidden ? openDrawer() : closeDrawer()));
+    drawer.querySelectorAll('[data-vip-drawer-close]').forEach((button) => button.addEventListener('click', () => closeDrawer()));
+    drawer.querySelectorAll('a[href]').forEach((link) => link.addEventListener('click', () => closeDrawer(false)));
+    document.addEventListener('keydown', (event) => {
+      if (drawer.hidden) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeDrawer();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const nodes = focusables();
+      if (!nodes.length) return;
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) closeDrawer(false);
+    }, { passive: true });
+  }
+
+  function setupVipBottomNavigation() {
+    if (document.querySelector('.vip-bottom-nav')) return;
+    const isEnglish = state.lang === 'en';
+    const prefix = isEnglish ? 'en/' : '';
+    const labels = isEnglish
+      ? { nav: 'Quick actions', home: 'Home', calculator: 'Trip Calculator', routes: 'Routes', whatsapp: 'WhatsApp' }
+      : { nav: 'إجراءات سريعة', home: 'الرئيسية', calculator: 'حاسبة الرحلة', routes: 'المسارات', whatsapp: 'واتساب' };
+    const source = document.querySelector('[data-planner-whatsapp][data-wa-message], .quick-links [data-wa-message], a[data-wa-message], a[data-wa-preserved-href], a[href*="wa.me"], a[href*="api.whatsapp.com"]');
+    const message = source ? (extractWhatsAppMessage(source) || defaultArabicMessage) : defaultArabicMessage;
+    const nav = document.createElement('nav');
+    nav.className = 'vip-bottom-nav';
+    nav.setAttribute('aria-label', labels.nav);
+    nav.innerHTML = `
+      <a class="vip-bottom-action" href="${vipRouteHref(prefix)}"><i data-lucide="house" aria-hidden="true"></i><span>${labels.home}</span></a>
+      <a class="vip-bottom-action" href="${vipRouteHref(`${prefix}gcc-transport-planner`)}"><i data-lucide="calculator" aria-hidden="true"></i><span>${labels.calculator}</span></a>
+      <a class="vip-bottom-action" href="${vipRouteHref(`${prefix}gcc-destinations`)}"><i data-lucide="route" aria-hidden="true"></i><span>${labels.routes}</span></a>
+      <a class="vip-bottom-action vip-bottom-whatsapp" data-vip-bottom-whatsapp data-track-wa data-route="${getRouteSlug()}-vip-bottom"><i data-lucide="message-circle" aria-hidden="true"></i><span>${labels.whatsapp}</span></a>`;
+    const whatsapp = nav.querySelector('[data-vip-bottom-whatsapp]');
+    whatsapp.setAttribute('data-wa-message', message);
+    setStaticWhatsAppLink(whatsapp);
+    document.body.appendChild(nav);
+  }
+
+  function vipPageImage(slug) {
+    if (/airport|pickup/.test(slug)) return 'images/bahrain-airport-private-transfer.webp';
+    if (/causeway/.test(slug)) return 'images/king-fahd-causeway-private-transfer.webp';
+    if (/parcel/.test(slug)) return 'images/gcc-parcel-delivery.webp';
+    if (/luggage|packing/.test(slug)) return 'images/gcc-airport-transfer-luggage.webp';
+    if (/family|pilgrim|ziyarat|karbala|najaf|iraq|arbaeen/.test(slug)) return 'images/family-gcc-private-transport.webp';
+    if (/passenger|business|full-day|about|contact/.test(slug)) return 'images/getvendora-journey-coordination.webp';
+    if (/planner|destinations/.test(slug)) return 'images/gcc-transport-planner-hero.webp';
+    if (/dammam|khobar|saudi|riyadh/.test(slug)) return 'images/king-fahd-causeway-private-transfer.webp';
+    if (/kuwait|qatar|oman|dubai|uae/.test(slug)) return 'images/gcc-road-travel.webp';
+    return 'images/gmc-xl-interior-comfort.webp';
+  }
+
+  function vipPageImageAlt(slug) {
+    const isEnglish = state.lang === 'en';
+    if (/airport|pickup/.test(slug)) return isEnglish ? 'Private airport transfer vehicle and luggage coordination' : 'مركبة نقل خاصة وتنسيق الأمتعة للمطار';
+    if (/causeway|dammam|khobar|saudi|riyadh/.test(slug)) return isEnglish ? 'Private transport on the King Fahd Causeway route' : 'نقل خاص على مسار جسر الملك فهد';
+    if (/parcel/.test(slug)) return isEnglish ? 'Private GCC parcel delivery vehicle' : 'مركبة خاصة لتوصيل الطرود الخليجية';
+    if (/family|pilgrim|ziyarat|karbala|najaf|iraq|arbaeen/.test(slug)) return isEnglish ? 'Private family vehicle prepared for a long GCC journey' : 'مركبة عائلية خاصة مجهزة لرحلة خليجية طويلة';
+    if (/planner|destinations/.test(slug)) return isEnglish ? 'Private GCC journey planning' : 'تخطيط رحلة نقل خاصة بين دول الخليج';
+    return isEnglish ? 'Comfortable private vehicle for GCC transport' : 'مركبة خاصة مريحة للنقل بين دول الخليج';
+  }
+
+  function addVipTrustStrip(anchor, home = false) {
+    if (!anchor || document.querySelector('.vip-trust-strip')) return;
+    const isEnglish = state.lang === 'en';
+    const items = isEnglish
+      ? [['clock-3', '24/7 coordination'], ['car-front', 'Private vehicle'], ['scan-line', 'Journey reference']]
+      : [['clock-3', 'تنسيق على مدار الساعة'], ['car-front', 'مركبة خاصة'], ['scan-line', 'مرجع للرحلة']];
+    const strip = document.createElement('section');
+    strip.className = `vip-trust-strip${home ? ' vip-home-trust' : ''}`;
+    strip.setAttribute('aria-label', isEnglish ? 'Service essentials' : 'مزايا الخدمة الأساسية');
+    strip.innerHTML = `<div class="container vip-trust-grid">${items.map(([icon, label]) => `<div class="vip-trust-item"><i data-lucide="${icon}" aria-hidden="true"></i><span>${label}</span></div>`).join('')}</div>`;
+    anchor.insertAdjacentElement('afterend', strip);
+    return strip;
+  }
+
+  function enhanceVipBooking(form, section) {
+    if (!form || form.dataset.vipEnhanced === 'true') return;
+    form.dataset.vipEnhanced = 'true';
+    section?.classList.add('vip-home-booking');
+    const groups = [...form.querySelectorAll('.field-group')];
+    groups.forEach((group) => group.classList.add('vip-booking-field'));
+    if (groups[0]) groups[0].classList.add('vip-booking-secondary');
+    if (groups[1]) groups[1].classList.add('vip-booking-secondary');
+    if (groups[2]) groups[2].classList.add('vip-booking-from');
+    if (groups[3]) groups[3].classList.add('vip-booking-secondary');
+    if (groups[4]) groups[4].classList.add('vip-booking-to');
+    groups.slice(5).forEach((group) => group.classList.add('vip-booking-secondary'));
+
+    const isEnglish = state.lang === 'en';
+    const switcher = document.createElement('fieldset');
+    switcher.className = 'vip-trip-switcher';
+    switcher.innerHTML = `<legend>${isEnglish ? 'Journey type' : 'نوع الرحلة'}</legend>
+      <label><input type="radio" name="vip-trip-type" value="one-way" checked><span>${isEnglish ? 'One Way' : 'اتجاه واحد'}</span></label>
+      <label><input type="radio" name="vip-trip-type" value="return"><span>${isEnglish ? 'Return' : 'ذهاب وعودة'}</span></label>`;
+    form.prepend(switcher);
+
+    const submit = form.querySelector('[data-booking-submit]');
+    let calculate = submit;
+    if (submit) {
+      calculate = submit.cloneNode(true);
+      submit.replaceWith(calculate);
+      calculate.removeAttribute('data-booking-submit');
+      calculate.classList.remove('wa-inline');
+      calculate.classList.add('vip-calculate-action');
+      calculate.href = vipRouteHref(`${isEnglish ? 'en/' : ''}gcc-transport-planner`);
+    }
+    const submitText = calculate?.querySelector('span');
+    if (submitText) submitText.textContent = isEnglish ? 'Calculate Trip' : 'احسب رحلتك';
+    const syncTripType = () => {
+      const selected = switcher.querySelector('input:checked')?.value || 'one-way';
+      form.dataset.vipTripType = selected;
+      const notes = form.querySelector('[data-booking="notes"]');
+      if (notes) notes.dataset.vipTripType = selected;
+      form.querySelector('[data-booking="to-city"]')?.dispatchEvent(new Event('change', { bubbles: true }));
+    };
+    switcher.addEventListener('change', syncTripType);
+    syncTripType();
+  }
+
+  function createVipHomeBooking() {
+    const isEnglish = state.lang === 'en';
+    const section = document.createElement('section');
+    section.className = 'section';
+    section.id = 'booking';
+    section.innerHTML = `<div class="container"><div class="booking-card glass">
+      <div class="section-head"><h2>${isEnglish ? 'Plan your private journey' : 'خطط لرحلتك الخاصة'}</h2><p>${isEnglish ? 'Choose your route to prepare a clear availability request.' : 'اختر مسارك لتجهيز طلب واضح للتحقق من التوفر.'}</p></div>
+      <form class="booking-form" data-booking-form data-default-service="نقل الركاب" data-default-from-country="البحرين" data-default-from-city="المنامة" data-default-to-country="المملكة العربية السعودية" data-default-to-city="الخبر">
+        <div class="field-grid">
+          <div class="field-group"><label>${isEnglish ? 'Service' : 'الخدمة'}</label><select data-booking="service"></select></div>
+          <div class="field-group"><label>${isEnglish ? 'From country' : 'بلد الانطلاق'}</label><select data-booking="from-country"></select></div>
+          <div class="field-group"><label>${isEnglish ? 'From' : 'من'}</label><select data-booking="from-city"></select></div>
+          <div class="field-group"><label>${isEnglish ? 'To country' : 'بلد الوجهة'}</label><select data-booking="to-country"></select></div>
+          <div class="field-group"><label>${isEnglish ? 'To' : 'إلى'}</label><select data-booking="to-city"></select></div>
+        </div>
+        <div class="field-group"><label>${isEnglish ? 'Journey notes' : 'ملاحظات الرحلة'}</label><textarea data-booking="notes"></textarea></div>
+        <p class="booking-summary" data-booking-summary></p>
+        <div class="booking-actions"><a class="wa-inline" data-booking-submit><i data-lucide="calendar-check" aria-hidden="true"></i><span>${isEnglish ? 'Check Availability' : 'تحقق من التوفر'}</span></a></div>
+      </form></div></div>`;
+    return section;
+  }
+
+  function addVipFeaturedRoute(anchor) {
+    if (!anchor || document.querySelector('.vip-featured-route')) return;
+    const isEnglish = state.lang === 'en';
+    const section = document.createElement('section');
+    section.className = 'section vip-featured-route';
+    section.innerHTML = `<div class="container"><article class="vip-featured-card">
+      <img src="${vipAssetHref('images/king-fahd-causeway-private-transfer.webp')}" width="1672" height="941" loading="lazy" decoding="async" alt="${isEnglish ? 'Private Bahrain to Khobar transfer across King Fahd Causeway' : 'نقل خاص من البحرين إلى الخبر عبر جسر الملك فهد'}">
+      <div class="vip-featured-content"><span class="vip-card-kicker">${isEnglish ? 'Featured route' : 'مسار مميز'}</span>
+        <h2>${isEnglish ? 'Bahrain to Khobar' : 'البحرين إلى الخبر'}</h2>
+        <div class="vip-featured-actions"><a class="ghost-btn" href="${vipRouteHref(`${isEnglish ? 'en/' : ''}bahrain-to-khobar`)}">${isEnglish ? 'Route details' : 'تفاصيل المسار'}</a>
+        <a class="wa-inline" data-wa-message="${isEnglish ? 'Hello, I would like to check availability for Bahrain to Khobar.' : 'مرحباً، أود التحقق من توفر خدمة البحرين إلى الخبر.'}"><i data-lucide="message-circle" aria-hidden="true"></i><span>${isEnglish ? 'WhatsApp' : 'واتساب'}</span></a></div>
+      </div></article></div>`;
+    anchor.insertAdjacentElement('afterend', section);
+    const whatsapp = section.querySelector('[data-wa-message]');
+    if (whatsapp) setStaticWhatsAppLink(whatsapp);
+
+    return section;
+  }
+
+  function setupVipResponsiveHomeCopy(hero, heroCopy, afterElement) {
+    if (!hero || !heroCopy || hero.dataset.vipResponsiveCopy === 'true') return;
+    hero.dataset.vipResponsiveCopy = 'true';
+    const keep = new Set(['H1']);
+    const movable = [...heroCopy.children].filter((node) => {
+      if (keep.has(node.tagName)) return false;
+      if (node.classList.contains('eyebrow') || node.classList.contains('vip-region-line')) return false;
+      return true;
+    });
+    if (!movable.length) return;
+    const details = document.createElement('section');
+    details.className = 'section vip-home-supporting-copy';
+    details.innerHTML = '<div class="container"><div class="section-shell vip-home-supporting-inner"></div></div>';
+    (afterElement || hero).insertAdjacentElement('afterend', details);
+    const mount = details.querySelector('.vip-home-supporting-inner');
+    const markers = movable.map((node) => {
+      const marker = document.createComment('vip-home-copy');
+      node.parentNode.insertBefore(marker, node);
+      return { node, marker };
+    });
+    const media = window.matchMedia('(max-width: 900px)');
+    const arrange = () => {
+      if (media.matches) markers.forEach(({ node }) => mount.appendChild(node));
+      else markers.forEach(({ node, marker }) => marker.parentNode?.insertBefore(node, marker.nextSibling));
+    };
+    arrange();
+    media.addEventListener?.('change', arrange);
+  }
+
+  function setupVipHomeApplication() {
+    const slug = getRouteSlug();
+    if (!['home', 'english-home'].includes(slug) || document.body.classList.contains('vip-home-app')) return;
+    document.body.classList.add('vip-home-app');
+    const hero = document.querySelector('main > .hero, main > .premium-hero');
+    if (!hero) return;
+    hero.classList.add('vip-app-hero');
+    const heroGrid = hero.querySelector('.hero-grid, .premium-hero-grid');
+    const heroCopy = hero.querySelector('.hero-copy, .premium-hero-copy');
+    const heroVisual = hero.querySelector('.hero-side, .hero-media-card');
+    heroGrid?.classList.add('vip-app-hero-grid');
+    heroCopy?.classList.add('vip-app-hero-copy');
+    heroVisual?.classList.add('vip-app-hero-visual');
+    if (heroCopy && !heroCopy.querySelector('.vip-region-line')) {
+      const line = document.createElement('p');
+      line.className = 'vip-region-line';
+      line.textContent = state.lang === 'en' ? 'Bahrain · Saudi Arabia · GCC' : 'البحرين · السعودية · الخليج';
+      heroCopy.querySelector('h1')?.insertAdjacentElement('afterend', line);
+    }
+
+    let bookingForm = document.querySelector('[data-booking-form]');
+    let bookingSection = bookingForm?.closest('.section');
+    if (!bookingForm) {
+      bookingSection = createVipHomeBooking();
+      hero.insertAdjacentElement('afterend', bookingSection);
+      setupForms();
+      bookingForm = bookingSection.querySelector('[data-booking-form]');
+    }
+    if (bookingSection) {
+      bookingSection.id = bookingSection.id || 'booking';
+      hero.insertAdjacentElement('afterend', bookingSection);
+      enhanceVipBooking(bookingForm, bookingSection);
+    }
+    const trust = addVipTrustStrip(bookingSection || hero, true);
+    const featured = addVipFeaturedRoute(trust || bookingSection || hero);
+    setupVipResponsiveHomeCopy(hero, heroCopy, featured || trust || bookingSection || hero);
+    const crosslink = document.querySelector('.lang-crosslink');
+    if (crosslink && crosslink.compareDocumentPosition(hero) & Node.DOCUMENT_POSITION_FOLLOWING) {
+      (document.querySelector('.vip-featured-route') || trust || bookingSection || hero).insertAdjacentElement('afterend', crosslink);
+    }
+  }
+
+  function setupVipPageOpening() {
+    const slug = getRouteSlug();
+    if (['home', 'english-home'].includes(slug)) return;
+    document.body.classList.add('vip-content-app');
+    const hero = document.querySelector('main > .hero, main > .premium-hero, main > .planner-hero');
+    if (!hero) return;
+    hero.classList.add('vip-content-hero');
+    const grid = hero.querySelector('.hero-grid, .premium-hero-grid, .planner-hero-grid');
+    const copy = hero.querySelector('.hero-copy, .premium-hero-copy, .planner-hero-copy');
+    let visual = hero.querySelector('.hero-side, .hero-media-card, .planner-media-frame');
+    grid?.classList.add('vip-content-hero-grid');
+    copy?.classList.add('vip-content-hero-copy');
+    if (!visual && grid) {
+      visual = document.createElement('aside');
+      visual.className = 'hero-side glass';
+      grid.appendChild(visual);
+    }
+    visual?.classList.add('vip-content-hero-visual');
+    if (visual && !visual.querySelector('.vip-page-hero-image')) {
+      const image = document.createElement('img');
+      image.className = 'vip-page-hero-image';
+      image.src = vipAssetHref(vipPageImage(slug));
+      image.alt = vipPageImageAlt(slug);
+      image.width = 1672;
+      image.height = 941;
+      image.loading = 'eager';
+      image.decoding = 'async';
+      image.setAttribute('fetchpriority', 'high');
+      visual.prepend(image);
+    } else if (visual?.querySelector('img')) {
+      visual.querySelector('img').classList.add('vip-page-hero-image');
+    }
+    addVipTrustStrip(hero);
+  }
+
+  function setupVipAccessibility() {
+    document.querySelectorAll('select, textarea, input:not([type="hidden"])').forEach((control) => {
+      if (control.hasAttribute('aria-label') || control.hasAttribute('aria-labelledby') || control.labels?.length) return;
+      const label = control.closest('.field-group, label')?.querySelector('label') || control.previousElementSibling;
+      const labelText = label?.matches?.('label') ? (label.textContent || '').trim() : '';
+      if (labelText) control.setAttribute('aria-label', labelText);
+    });
+  }
+
+  function setupVipShell() {
+    const path = window.location.pathname.replace(/\\/g, '/');
+    if (!path.includes('/bahrain-saudi-gcc-transport/') || /\/(admin|care|ai-chat-test|api)(\/|$)/.test(path)) return;
+    setupVipBranding();
+    setupVipLanguageControl();
+    setupVipHomeHero();
+    setupVipHomeApplication();
+    setupVipPageOpening();
+    setupVipDrawer();
+    setupVipBottomNavigation();
+    setupVipAccessibility();
+    renderIcons();
   }
 
   function injectFlagImages() {
@@ -1678,6 +2239,7 @@
       const lines = [
         'Hello, I would like to book through the website.',
         '',
+        data.tripType && `Journey: ${data.tripType === 'return' ? 'Return' : 'One Way'}`,
         `Service: ${translateString(data.service || 'Not selected')}`,
         `From: ${translateString(data.fromCountry || 'Not selected')}${data.fromCity ? ` - ${translateString(data.fromCity)}` : ''}`,
         `To: ${translateString(data.toCountry || 'Not selected')}${data.toCity ? ` - ${translateString(data.toCity)}` : ''}`,
@@ -1690,6 +2252,7 @@
     const lines = [
       'السلام عليكم، أريد الحجز عن طريق الموقع.',
       '',
+      data.tripType && `نوع الرحلة: ${data.tripType === 'return' ? 'ذهاب وعودة' : 'اتجاه واحد'}`,
       `نوع الخدمة: ${data.service || 'غير محدد'}`,
       `من: ${data.fromCountry || 'غير محدد'}${data.fromCity ? ` - ${data.fromCity}` : ''}`,
       `إلى: ${data.toCountry || 'غير محدد'}${data.toCity ? ` - ${data.toCity}` : ''}`,
@@ -1735,6 +2298,7 @@
           toCountry: toCountry.value,
           toCity: toCity.value,
           notes: notes.value.trim(),
+          tripType: form.dataset.vipTripType || '',
         };
         submit.href = isPassengerCareEnabled() ? '#' : toWhatsApp(buildWhatsAppMessage(data));
         if (isPassengerCareEnabled()) {
@@ -2016,6 +2580,7 @@
     setupForms();
     injectFlagImages();
     applyLanguage();
+    setupVipShell();
     renderIcons();
     trackPageView();
     setupOnlineHeartbeat();
@@ -2028,7 +2593,8 @@
     normalizeInternalLinks();
     setupAttributionTracking();
     setupEngagementTracking();
-    neutralizeWhatsAppHrefs();
+    setStaticLinks();
+    setupVipShell();
     trackPageView();
     setupOnlineHeartbeat();
   }

@@ -2,12 +2,12 @@
  * Worker screens — dashboard, received cash, expenses/removals, toys
  */
 
-import * as api from './api.js?v=18';
+import * as api from './api.js?v=25';
 import {
   formatBD, formatDate, todayLabel, showToast, showLoading, navigate,
   amountInput, noteInput, backHeader, screenLayout, EXPENSE_CATEGORIES,
   cashBreakdown, heroCashBlock, bindInstallButton, getState,
-} from './app.js?v=18';
+} from './app.js?v=25';
 
 let workerDashboardHtml = '';
 let workerToysHtml = '';
@@ -410,7 +410,7 @@ async function loadWorkerDashboard() {
       btn.addEventListener('click', () => navigate(btn.dataset.nav));
     });
     document.querySelector('[data-action="logout"]')?.addEventListener('click', () => {
-      import('./app.js?v=18').then(m => m.logout());
+      import('./app.js?v=25').then(m => m.logout());
     });
     bindInstallButton('install-app-btn');
   } catch (err) {

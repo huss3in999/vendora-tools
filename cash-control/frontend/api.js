@@ -263,3 +263,43 @@ export function cashAddedToWorker(amount, note) {
 export function addCorrection(amount, note) {
   return createTransaction({ type: 'correction', amount, note });
 }
+
+// ─── Owner purchases, master data and Accountant reads ──────────────────────
+
+export function getPurchaseData(includeHidden = false) { return request(`/api/purchase-data${includeHidden ? '?include_hidden=1' : ''}`); }
+export function getOwnerPurchases(params = {}) { return request(`/api/owner-purchases?${new URLSearchParams(params)}`); }
+export function getOwnerPurchase(id) { return request(`/api/owner-purchases/${id}`); }
+export function createOwnerPurchase(data) { return request('/api/owner-purchases', { method: 'POST', body: JSON.stringify(data) }); }
+export function updateOwnerPurchase(id, data) { return request(`/api/owner-purchases/${id}`, { method: 'PUT', body: JSON.stringify(data) }); }
+export function voidOwnerPurchase(id, void_reason) { return request(`/api/owner-purchases/${id}/void`, { method: 'POST', body: JSON.stringify({ void_reason }) }); }
+export function deleteOwnerPurchase(id) { return request(`/api/owner-purchases/${id}`, { method: 'DELETE' }); }
+
+export function listMasterData(resource, params = {}) { return request(`/api/${resource}?${new URLSearchParams(params)}`); }
+export function createMasterData(resource, data) { return request(`/api/${resource}`, { method: 'POST', body: JSON.stringify(data) }); }
+export function createProductsBulk(data) { return request('/api/products/bulk', { method: 'POST', body: JSON.stringify(data) }); }
+export function updateMasterData(resource, id, data) { return request(`/api/${resource}/${id}`, { method: 'PUT', body: JSON.stringify(data) }); }
+export function deleteMasterData(resource, id) { return request(`/api/${resource}/${id}`, { method: 'DELETE' }); }
+export function bulkDeleteMasterData(resource, ids) { return request(`/api/${resource}/bulk-delete`, { method: 'POST', body: JSON.stringify({ ids }) }); }
+
+export function getAccountantDashboard(params = {}) { return request(`/api/accountant/dashboard?${new URLSearchParams(params)}`); }
+export function getAccountantExpenses(params = {}) { return request(`/api/accountant/expenses?${new URLSearchParams(params)}`); }
+
+export async function uploadPurchaseReceipt(id, file) {
+  const form = new FormData(); form.append('receipt', file);
+  const controller = new AbortController(); const timeout = setTimeout(() => controller.abort(), 30000);
+  try {
+    const res = await fetch(`/api/owner-purchases/${id}/receipt`, { method: 'POST', headers: authToken ? { Authorization: `Bearer ${authToken}` } : {}, body: form, signal: controller.signal });
+    const data = await res.json(); if (!res.ok) throw new Error(data.error || 'Receipt upload failed'); return data;
+  } finally { clearTimeout(timeout); }
+}
+
+export async function openPurchaseReceipt(id) {
+  const res = await fetch(`/api/owner-purchases/${id}/receipt`, { headers: authToken ? { Authorization: `Bearer ${authToken}` } : {} });
+  if (!res.ok) { const data = await res.json().catch(() => ({})); throw new Error(data.error || 'Receipt unavailable'); }
+  const url = URL.createObjectURL(await res.blob()); window.open(url, '_blank', 'noopener'); setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+
+export async function exportAccountantCsv(params = {}) {
+  const res = await request(`/api/accountant/export.csv?${new URLSearchParams(params)}`); const blob = await res.blob();
+  const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `accountant-${params.kind || 'combined'}-${new Date().toISOString().slice(0, 10)}.csv`; a.click(); URL.revokeObjectURL(url);
+}

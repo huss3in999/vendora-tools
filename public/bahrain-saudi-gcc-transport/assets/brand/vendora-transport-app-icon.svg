@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Vendora Transport app icon</title>
+  <desc id="desc">Executive navy rounded-square icon with a champagne-gold route-inspired V.</desc>
+  <defs>
+    <linearGradient id="navy" x1="58" y1="30" x2="454" y2="482" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#102D49"/>
+      <stop offset="1" stop-color="#071A2E"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="108" y1="116" x2="404" y2="390" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E1C78E"/>
+      <stop offset="0.5" stop-color="#C8A96B"/>
+      <stop offset="1" stop-color="#A8864E"/>
+    </linearGradient>
+  </defs>
+  <rect x="10" y="10" width="492" height="492" rx="112" fill="url(#navy)"/>
+  <rect x="26" y="26" width="460" height="460" rx="96" fill="none" stroke="#C8A96B" stroke-width="5" opacity=".9"/>
+  <path d="M108 139 256 386 404 139" fill="none" stroke="url(#gold)" stroke-width="38" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="108" cy="139" r="17" fill="#F7F2E8"/>
+  <circle cx="404" cy="139" r="17" fill="#F7F2E8"/>
+  <path d="m235 378 21 21 21-21-21-21z" fill="#F7F2E8"/>
+</svg>

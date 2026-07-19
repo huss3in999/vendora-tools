@@ -21,17 +21,26 @@
     var depth = getCurrentDepth();
     var prefix = depth === 0 ? './' : new Array(depth + 1).join('../');
     var hash = '';
+    var query = '';
     var pathOnly = tail || '';
     var hi = pathOnly.indexOf('#');
     if (hi >= 0) {
       hash = pathOnly.slice(hi);
       pathOnly = pathOnly.slice(0, hi);
     }
+    var qi = pathOnly.indexOf('?');
+    if (qi >= 0) {
+      query = pathOnly.slice(qi);
+      pathOnly = pathOnly.slice(0, qi);
+    }
     pathOnly = pathOnly.replace(/^\/+|\/+$/g, '');
     if (!pathOnly) {
-      return prefix + 'index.html' + hash;
+      return prefix + 'index.html' + query + hash;
     }
-    return prefix + pathOnly + '/index.html' + hash;
+    if (/(?:^|\/)[^/]+\.[a-z0-9]{1,16}$/i.test(pathOnly)) {
+      return prefix + pathOnly + query + hash;
+    }
+    return prefix + pathOnly + '/index.html' + query + hash;
   }
 
   function stripHost(href) {

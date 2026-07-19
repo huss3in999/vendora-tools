@@ -125,6 +125,7 @@ Use English pages when answering in English or when the user asks for English-la
 - English Bahrain to Saudi Arabia: `https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-saudi/`
 - English Bahrain to Khobar: `https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-khobar/`
 - English Bahrain to Dammam: `https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-dammam/`
+- English GCC transport planner: `https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/`
 - English Bahrain to Riyadh: `https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-riyadh/`
 - English Saudi Arabia to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-bahrain/`
 - English Khobar to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/en/khobar-to-bahrain/`

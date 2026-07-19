@@ -2,12 +2,12 @@
  * Owner screens — dashboard, transactions, edit/void, settings, toys collection
  */
 
-import * as api from './api.js?v=18';
+import * as api from './api.js?v=25';
 import {
   formatBD, formatDateTime, todayLabel, showToast, showLoading, navigate,
   amountInput, noteInput, backHeader, screenLayout, EXPENSE_CATEGORIES,
   TYPE_LABELS, WALLET_LABELS, cashBreakdown, heroCashBlock, bindInstallButton, getState,
-} from './app.js?v=18';
+} from './app.js?v=25';
 
 let ownerDashboardHtml = '';
 let transactionsHtml = '';
@@ -199,6 +199,12 @@ async function renderOwnerDashboard(d) {
 
     <div class="section-title">Quick Actions</div>
     <div class="action-grid owner-actions">
+      <button class="action-btn purchase-primary" data-nav="new-purchase">
+        <span class="action-icon">🛒</span><span>New Purchase</span>
+      </button>
+      <button class="action-btn" data-nav="owner-purchases">
+        <span class="action-icon">📦</span><span>Owner Purchases</span>
+      </button>
       <button class="action-btn" data-action="owner-took-cash">
         <span class="action-icon">BD</span><span>Cash Taken From Worker</span>
       </button>
@@ -591,8 +597,22 @@ async function renderAdminSettings(d, expenseOptions = EXPENSE_CATEGORIES) {
             <label>New Worker PIN</label>
             <input type="password" id="new-worker-pin" inputmode="numeric" placeholder="Leave blank to keep current">
           </div>
+          <div class="form-group">
+            <label>New Accountant PIN</label>
+            <input type="password" id="new-accountant-pin" inputmode="numeric" placeholder="Leave blank to keep current">
+          </div>
           <button type="submit" class="btn btn-primary btn-full">Save PIN Changes</button>
         </form>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-head"><span class="admin-kicker">Accountant</span><h3>Accountant Access</h3><p class="setting-desc">Read-only access to Worker expenses and Owner purchases.</p></div>
+        <div class="setting-row"><div><strong>Allow Accountant Login</strong></div><label class="toggle"><input type="checkbox" id="accountant-access-toggle" ${d.accountant_access_enabled ? 'checked' : ''}><span class="toggle-slider"></span></label></div>
+      </section>
+
+      <section class="admin-card">
+        <div class="admin-card-head"><span class="admin-kicker">Purchases</span><h3>Purchase Setup</h3></div>
+        <div class="settings-shortcuts"><button class="btn btn-secondary" data-nav="manage-products">Product Management</button><button class="btn btn-secondary" data-nav="manage-purchase-categories">Product Categories</button><button class="btn btn-secondary" data-nav="manage-suppliers">Supplier Management</button><button class="btn btn-secondary" data-nav="owner-purchases">Owner Purchases</button></div>
       </section>
 
       <section class="admin-card">
@@ -855,7 +875,7 @@ function bindOwnerNav(active) {
     btn.addEventListener('click', () => navigate(btn.dataset.nav));
   });
   document.querySelector('[data-action="logout"]')?.addEventListener('click', () => {
-      import('./app.js?v=18').then(m => m.logout());
+      import('./app.js?v=25').then(m => m.logout());
   });
 }
 
@@ -1211,6 +1231,17 @@ async function loadSettings() {
       }
     });
 
+    document.getElementById('accountant-access-toggle')?.addEventListener('change', async (e) => {
+      try {
+        showLoading(true);
+        await api.updateSettings({ accountant_access_enabled: e.target.checked });
+        showToast(`Accountant access ${e.target.checked ? 'enabled' : 'disabled'}`, 'success');
+      } catch (err) {
+        showToast(err.message, 'error');
+        e.target.checked = !e.target.checked;
+      } finally { showLoading(false); }
+    });
+
     document.getElementById('notifications-toggle')?.addEventListener('change', async (e) => {
       try {
         showLoading(true);
@@ -1242,14 +1273,16 @@ async function loadSettings() {
       e.preventDefault();
       const new_worker_pin = document.getElementById('new-worker-pin').value.trim();
       const new_owner_pin = document.getElementById('new-owner-pin').value.trim();
+      const new_accountant_pin = document.getElementById('new-accountant-pin').value.trim();
       const current_owner_pin = document.getElementById('current-owner-pin').value.trim();
       const payload = {};
       if (new_worker_pin) payload.new_worker_pin = new_worker_pin;
+      if (new_accountant_pin) payload.new_accountant_pin = new_accountant_pin;
       if (new_owner_pin) {
         payload.new_owner_pin = new_owner_pin;
         payload.current_owner_pin = current_owner_pin;
       }
-      if (!payload.new_worker_pin && !payload.new_owner_pin) {
+      if (!payload.new_worker_pin && !payload.new_owner_pin && !payload.new_accountant_pin) {
         return showToast('Enter a new PIN to save', 'error');
       }
       try {
