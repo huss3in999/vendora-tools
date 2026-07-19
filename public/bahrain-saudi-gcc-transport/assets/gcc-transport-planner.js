@@ -45,7 +45,7 @@
     saudi: ['🇸🇦', 'المملكة العربية السعودية', 'Saudi Arabia', 'saudi'],
     khobar: ['🇸🇦', 'الخبر', 'Khobar', 'saudi'],
     dammam: ['🇸🇦', 'الدمام', 'Dammam', 'saudi'],
-    dmm: ['🇸🇦', 'مطار الملك فهد الدولي (رمز المطار DMM)', 'King Fahd International Airport (DMM)', 'saudi', true],
+    dmm: ['🇸🇦', 'مطار الملك فهد الدولي (رمز المطار DMM)', 'Dammam Airport DMM', 'saudi', true],
     riyadh: ['🇸🇦', 'الرياض', 'Riyadh', 'saudi'],
     kuwait: ['🇰🇼', 'الكويت', 'Kuwait', 'kuwait'],
     qatar: ['🇶🇦', 'قطر', 'Qatar', 'qatar'],
@@ -111,7 +111,7 @@
   function label(location) { return isArabic ? location.ar : location.en; }
   function byId(id) { return locations.find((item) => item.id === id) || locations[0]; }
   function fillLocations(select) {
-    select.innerHTML = locations.map((item) => `<option value="${item.id}">${item.flag} ${label(item)}</option>`).join('');
+    select.innerHTML = locations.map((item) => `<option value="${item.id}">${isArabic ? '' : `${item.flag} `}${label(item)}</option>`).join('');
   }
 
   function augmentInterface() {

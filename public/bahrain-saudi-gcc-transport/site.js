@@ -1535,9 +1535,11 @@
   }
 
   function syncStaticUi() {
-    document.querySelectorAll('.nav-link').forEach((link, index) => {
+    document.querySelectorAll('.nav-link').forEach((link) => {
       const href = link.getAttribute('href') || '';
-      const item = headerLabels[index] || headerLabels.find((entry) => href === entry.match);
+      let pathname = href;
+      try { pathname = new URL(href, window.location.href).pathname; } catch { /* keep the original path */ }
+      const item = headerLabels.find((entry) => pathname === entry.match);
       if (item) {
         link.setAttribute('href', item.match);
         link.textContent = state.lang === 'en' ? item.en : item.ar;
@@ -1796,6 +1798,27 @@
     image.loading = 'eager';
     image.decoding = 'async';
     image.setAttribute('fetchpriority', 'high');
+
+    const hero = image.closest('.hero, .premium-hero');
+    const copy = hero?.querySelector('.hero-copy, .premium-hero-copy');
+    const actions = copy?.querySelector('.hero-actions');
+    if (copy && actions && !actions.querySelector('.vip-hero-calculator')) {
+      const isEnglish = state.lang === 'en';
+      const calculator = document.createElement('a');
+      calculator.className = 'primary-btn vip-hero-calculator';
+      calculator.href = vipRouteHref(`${isEnglish ? 'en/' : ''}gcc-transport-planner`);
+      calculator.textContent = isEnglish ? 'Calculate Your Trip' : 'احسب رحلتك';
+      actions.prepend(calculator);
+      const route = actions.querySelector('a:not(.vip-hero-calculator):not(.wa-inline)');
+      if (route) {
+        route.href = vipRouteHref(`${isEnglish ? 'en/' : ''}bahrain-to-saudi`);
+        route.textContent = isEnglish ? 'Route Details' : 'تفاصيل المسار';
+      }
+      const whatsapp = actions.querySelector('.wa-inline');
+      const whatsappLabel = whatsapp?.querySelector('span') || whatsapp;
+      if (whatsappLabel) whatsappLabel.textContent = isEnglish ? 'Book on WhatsApp' : 'احجز عبر واتساب';
+      copy.querySelector('.lead')?.insertAdjacentElement('afterend', actions);
+    }
   }
 
   function setupVipDrawer() {
@@ -1990,17 +2013,16 @@
     form.prepend(switcher);
 
     const submit = form.querySelector('[data-booking-submit]');
-    let calculate = submit;
-    if (submit) {
-      calculate = submit.cloneNode(true);
-      submit.replaceWith(calculate);
-      calculate.removeAttribute('data-booking-submit');
-      calculate.classList.remove('wa-inline');
-      calculate.classList.add('vip-calculate-action');
+    if (submit && !form.querySelector('.vip-calculate-action')) {
+      const calculate = document.createElement('a');
+      calculate.className = 'vip-calculate-action';
       calculate.href = vipRouteHref(`${isEnglish ? 'en/' : ''}gcc-transport-planner`);
+      calculate.innerHTML = `<i data-lucide="calculator" aria-hidden="true"></i><span>${isEnglish ? 'Calculate Trip' : 'احسب رحلتك'}</span>`;
+      submit.insertAdjacentElement('beforebegin', calculate);
+      submit.classList.add('vip-booking-whatsapp');
+      const submitText = submit.querySelector('span');
+      if (submitText) submitText.textContent = isEnglish ? 'Book on WhatsApp' : 'احجز عبر واتساب';
     }
-    const submitText = calculate?.querySelector('span');
-    if (submitText) submitText.textContent = isEnglish ? 'Calculate Trip' : 'احسب رحلتك';
     const syncTripType = () => {
       const selected = switcher.querySelector('input:checked')?.value || 'one-way';
       form.dataset.vipTripType = selected;

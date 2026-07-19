@@ -2095,6 +2095,7 @@ body.vip-transport .public-price-card {
 }
 
 @media (max-width: 900px) {
+  body.vip-transport .lang-crosslink { display: none; }
   body.vip-transport {
     padding-bottom: calc(104px + env(safe-area-inset-bottom));
   }
@@ -2809,6 +2810,13 @@ body.vip-transport .footer { color: var(--vip-ivory); background: var(--vip-ink)
   .vip-home-booking .booking-summary { display: none; }
   .vip-home-booking .booking-actions { margin-top: 0; }
   .vip-home-booking .booking-actions .ghost-btn { display: none; }
+  .vip-home-booking .booking-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .vip-home-booking .vip-calculate-action,
+  .vip-home-booking .vip-booking-whatsapp { width: 100%; }
 
   .vip-home-trust { margin-top: 18px; }
   .vip-trust-strip .container { width: 100%; }
@@ -2953,6 +2961,11 @@ body.vip-transport .footer { color: var(--vip-ivory); background: var(--vip-ink)
   body.planner-page .lang-crosslink { display: none; }
   body.planner-page .topbar .nav { display: flex !important; grid-template-columns: none !important; }
   body.planner-page .brand-copy { display: none !important; }
+  body.planner-page .quick-links .lang-toggle {
+    width: auto !important;
+    min-width: 68px !important;
+    padding-inline: 9px !important;
+  }
   body.planner-page .vip-content-hero { padding-top: 0 !important; }
   body.planner-page .vip-content-hero-visual,
   body.planner-page .vip-content-hero .planner-media-frame {
@@ -3001,6 +3014,11 @@ body.vip-transport .footer { color: var(--vip-ivory); background: var(--vip-ink)
 }
 
 @media (max-width: 340px) {
+  body.vip-home-app .vip-app-hero-visual,
+  body.vip-home-app .vip-app-hero-visual .vip-home-hero-image {
+    min-height: 200px !important;
+    height: 200px !important;
+  }
   body.planner-page .vip-content-hero-visual,
   body.planner-page .vip-content-hero .planner-media-frame,
   body.planner-page .vip-content-hero-visual .vip-page-hero-image,
@@ -3009,4 +3027,28 @@ body.vip-transport .footer { color: var(--vip-ivory); background: var(--vip-ink)
     height: 112px !important;
   }
   body.planner-page .vip-content-hero-copy h1 { font-size: 1.45rem !important; }
+  body.planner-page .vip-trust-strip,
+  body.planner-page #planner .section-head { display: none; }
+}
+
+html[lang="ar"] body.planner-page .gcc-flag-chip .flag { display: none; }
+
+@media (min-width: 901px) {
+  body.planner-page .lang-crosslink { display: none; }
+  body.planner-page .planner-hero { padding-block: 46px 54px !important; }
+  body.planner-page .planner-hero-copy h1 {
+    max-width: 14ch;
+    font-size: clamp(3.25rem, 4.6vw, 4.6rem);
+    line-height: 1.04;
+  }
+  body.vip-home-app .vip-app-hero-copy .hero-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 9px;
+  }
+  body.vip-home-app .vip-app-hero-copy .hero-actions > a {
+    min-width: 0;
+    padding-inline: 10px;
+    font-size: 0.78rem;
+  }
 }
