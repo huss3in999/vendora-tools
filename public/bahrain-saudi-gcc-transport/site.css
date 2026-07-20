@@ -2097,7 +2097,12 @@ body.vip-transport .public-price-card {
 @media (max-width: 900px) {
   body.vip-transport .lang-crosslink { display: none; }
   body.vip-transport {
-    padding-bottom: calc(104px + env(safe-area-inset-bottom));
+    --vip-bottom-nav-reserve: 104px;
+    padding-bottom: calc(var(--vip-bottom-nav-reserve) + env(safe-area-inset-bottom));
+  }
+
+  html:has(body.vip-transport) {
+    scroll-padding-bottom: calc(var(--vip-bottom-nav-reserve) + env(safe-area-inset-bottom));
   }
 
   body.vip-transport .container {
@@ -2208,7 +2213,12 @@ body.vip-transport .public-price-card {
   }
 
   body.vip-transport footer {
-    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+    padding-bottom: calc(var(--vip-bottom-nav-reserve) + 20px + env(safe-area-inset-bottom));
+    scroll-margin-bottom: calc(var(--vip-bottom-nav-reserve) + env(safe-area-inset-bottom));
+  }
+
+  body.vip-transport :is(a, button, input, select, textarea, summary, [tabindex]):focus {
+    scroll-margin-bottom: calc(var(--vip-bottom-nav-reserve) + env(safe-area-inset-bottom));
   }
 
   body.vip-transport .hero,
@@ -2312,6 +2322,53 @@ body.vip-transport .public-price-card {
   body.vip-transport .hero-actions { grid-template-columns: minmax(0, 1fr); }
   .vip-bottom-nav { inset-inline: 5px; }
   .vip-bottom-action { font-size: 9px; }
+}
+
+/* Stable mobile header allocation, including the 305px degradation target. */
+@media (max-width: 900px) {
+  body.vip-transport .topbar .nav,
+  body.planner-page .topbar .nav {
+    display: grid !important;
+    grid-template-columns: minmax(42px, 1fr) auto !important;
+    grid-template-areas: "brand actions" !important;
+    align-items: center;
+    gap: 10px;
+  }
+
+  body.vip-transport .topbar .brand {
+    grid-area: brand;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  body.vip-transport .topbar .quick-links {
+    grid-area: actions;
+    display: flex;
+    width: auto;
+    min-width: 0;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  body.vip-transport .topbar .lang-toggle,
+  body.vip-transport .topbar .vip-menu-toggle {
+    flex: 0 0 auto;
+    min-width: 48px;
+    min-height: 48px;
+    height: 48px;
+    margin: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  body.vip-transport .topbar .container { padding-inline: 10px; }
+  body.vip-transport .topbar .brand-copy { display: none !important; }
+  body.vip-transport .topbar .quick-links { gap: 7px; }
+  body.vip-transport .topbar .lang-toggle {
+    width: auto !important;
+    min-width: 68px !important;
+    padding-inline: 8px !important;
+  }
 }
 
 @media (min-width: 901px) {
@@ -2731,7 +2788,7 @@ body.vip-transport .footer { color: var(--vip-ivory); background: var(--vip-ink)
   body.vip-transport .logo { width: 42px; height: 42px; flex-basis: 42px; border-radius: 11px; }
   body.vip-transport .brand-title { max-width: 16ch; color: var(--vip-ivory); font-size: 13px; }
   body.vip-transport .lang-toggle,
-  body.vip-transport .vip-menu-toggle { min-width: 44px; min-height: 44px; height: 44px; border-radius: 12px; }
+  body.vip-transport .vip-menu-toggle { min-width: 48px; min-height: 48px; height: 48px; border-radius: 12px; }
   body.vip-transport .lang-toggle { padding-inline: 10px; }
   body.vip-transport .lang-toggle svg { display: none; }
 
@@ -2959,7 +3016,11 @@ body.vip-transport .footer { color: var(--vip-ivory); background: var(--vip-ink)
 /* The Trip Calculator opens like an application tool, with the form visible early. */
 @media (max-width: 900px) {
   body.planner-page .lang-crosslink { display: none; }
-  body.planner-page .topbar .nav { display: flex !important; grid-template-columns: none !important; }
+  body.planner-page .topbar .nav {
+    display: grid !important;
+    grid-template-columns: minmax(42px, 1fr) auto !important;
+    grid-template-areas: "brand actions" !important;
+  }
   body.planner-page .brand-copy { display: none !important; }
   body.planner-page .quick-links .lang-toggle {
     width: auto !important;
@@ -3050,5 +3111,30 @@ html[lang="ar"] body.planner-page .gcc-flag-chip .flag { display: none; }
     min-width: 0;
     padding-inline: 10px;
     font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 360px) {
+  body.airport-page .vip-content-hero-copy {
+    padding-bottom: calc(24px + var(--vip-bottom-nav-reserve)) !important;
+  }
+
+  body.airport-page .vip-content-hero-copy .hero-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  html[lang="en"] body.airport-page .vip-content-hero-copy h1 {
+    margin: 0 0 10px !important;
+    font-size: 1.72rem !important;
+    line-height: 1.04 !important;
+  }
+
+  html[lang="en"] body.airport-page .vip-content-hero-copy .lead {
+    margin: 0 0 12px !important;
+    line-height: 1.5;
+  }
+
+  html[lang="en"] body.airport-page .vip-content-hero-copy .hero-actions {
+    margin-top: 0 !important;
   }
 }

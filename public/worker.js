@@ -299,8 +299,18 @@ async function rewriteTransportHtml(request, response, env) {
       }
     } })
     .transform(response);
-  transformed.headers.set('content-type', 'text/html; charset=utf-8');
-  return transformed;
+
+  // Responses returned by HTMLRewriter can retain an immutable header guard in
+  // the Workers runtime. Clone only at the output boundary, then pass the
+  // transformed stream through once; do not mutate ASSETS.fetch() or the
+  // HTMLRewriter response directly and do not read either body eagerly.
+  const headers = new Headers(transformed.headers);
+  headers.set('content-type', 'text/html; charset=utf-8');
+  return new Response(transformed.body, {
+    status: transformed.status,
+    statusText: transformed.statusText,
+    headers,
+  });
 }
 
 /** Match Worker routes to Pages-style URLs (optional prefix, no trailing slash). */

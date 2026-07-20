@@ -39,12 +39,13 @@ test.describe('GCC Private Transport Guide Telemetry & Tracking Integration', ()
     expect(consoleErrors).toEqual([]);
 
     // Assert first pageview events are dispatched
-    await expect.poll(() => trackRequests.length).toBeGreaterThan(0);
+    await expect.poll(() => trackRequests.some(r => r.event_name === 'gcc_guide_page_view' && r.language === 'ar')).toBeTruthy();
     const pvTrack = trackRequests.find(r => r.event_name === 'gcc_guide_page_view');
     expect(pvTrack).toBeDefined();
     expect(pvTrack.language).toBe('ar');
     expect(pvTrack.page).toBe('gcc_private_transport_guide');
 
+    await expect.poll(() => leadRequests.some(r => r.serviceType === 'pageview' && r.language === 'ar')).toBeTruthy();
     const pvLead = leadRequests.find(r => r.serviceType === 'pageview');
     expect(pvLead).toBeDefined();
     expect(pvLead.language).toBe('ar');
@@ -58,7 +59,7 @@ test.describe('GCC Private Transport Guide Telemetry & Tracking Integration', ()
     await expect(page.locator('script[src*="analytics-loader.js"]')).toHaveCount(1);
     expect(consoleErrors).toEqual([]);
 
-    await expect.poll(() => trackRequests.length).toBeGreaterThan(0);
+    await expect.poll(() => trackRequests.some(r => r.event_name === 'gcc_guide_page_view' && r.language === 'en')).toBeTruthy();
     const pvTrackEn = trackRequests.find(r => r.event_name === 'gcc_guide_page_view');
     expect(pvTrackEn).toBeDefined();
     expect(pvTrackEn.language).toBe('en');

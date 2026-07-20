@@ -3,7 +3,9 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const LIVE = 'https://getvendora.net';
+// Release candidates can be verified end-to-end against a real local Wrangler
+// Worker without weakening the default production readiness check.
+const LIVE = String(process.env.TRANSPORT_RELEASE_ORIGIN || 'https://getvendora.net').replace(/\/$/, '');
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const suspicious = /ÃƒÆ’|Ãƒâ€š|ÃƒËœ|Ãƒâ„¢|ÃƒÂ¢Ã¢â€šÂ¬|ÃƒÂ°Ã…Â¸|Ã¯Â¿Â½|\uFFFD/;
 const paths = [...new Set(['sitemap-gcc-transport.xml', 'sitemap-gcc-transport-en.xml'].flatMap((file) => (
