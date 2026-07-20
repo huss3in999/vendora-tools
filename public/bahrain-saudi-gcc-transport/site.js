@@ -678,6 +678,22 @@
     ['اكتشاف محتوى النقل الخليجي لفندورا', 'Vendora GCC transport content discovery'],
     ['يعمل المخطط ببيانات ثابتة داخل الصفحة، بدون واجهة برمجة خارجية وبدون استخدام ذكاء اصطناعي للحسابات أو التصفية.', 'The planner uses fixed in-page data with no external API and no artificial intelligence for calculations or filtering.'],
   ].sort((a, b) => b[0].length - a[0].length);
+  translations.push(
+    ['نقل خاص من البحرين داخل المملكة وإلى السعودية ودول الخليج', 'Private Transport Across Bahrain, Saudi Arabia and the GCC'],
+    ['خدمات نقل خاصة تناسب تفاصيل رحلتك', 'Private transport shaped around your journey'],
+    ['خيارات سيارات تناسب رحلتك', 'Vehicle Options for Every Journey'],
+    ['تنسيق عملي من أول رسالة إلى نهاية الرحلة', 'One clear coordination path'],
+    ['كيف يعمل الحجز؟', 'How booking works'],
+    ['جهّز رسالة الحجز عبر واتساب', 'Prepare your WhatsApp booking request'],
+    ['المسارات والخدمات الأكثر طلباً', 'Popular routes and services'],
+    ['أسئلة شائعة قبل الحجز', 'Frequently asked questions'],
+    ['توصيل خاص داخل البحرين بسيارة مع سائق', 'Private Transport Inside Bahrain with a Driver'],
+    ['توصيل خاص من وإلى الفنادق في البحرين', 'Private Hotel Transfers in Bahrain'],
+    ['سائق خاص لرجال الأعمال والضيوف في البحرين', 'Business Chauffeur and Private Driver in Bahrain'],
+    ['شروط الحجز والإلغاء والانتظار', 'Booking, Cancellation and Waiting Terms'],
+    ['نوع وموديل السيارة يعتمد على عدد الركاب والأمتعة والمسار والتوفر عند تأكيد الحجز.', 'Vehicle type and model depend on passenger count, luggage, route and availability at booking confirmation.']
+  );
+
   const exactTranslations = new Map(translations.map(([ar, en]) => [ar.trim(), en]));
 
   const textNodeMap = new WeakMap();
@@ -2266,6 +2282,16 @@
         `From: ${translateString(data.fromCountry || 'Not selected')}${data.fromCity ? ` - ${translateString(data.fromCity)}` : ''}`,
         `To: ${translateString(data.toCountry || 'Not selected')}${data.toCity ? ` - ${translateString(data.toCity)}` : ''}`,
       ];
+      if (data.pickupLocation) lines.push(`Pickup location: ${data.pickupLocation}`);
+      if (data.destinationLocation) lines.push(`Destination location: ${data.destinationLocation}`);
+      if (data.date) lines.push(`Date: ${data.date}`);
+      if (data.time) lines.push(`Pickup time: ${data.time}`);
+      if (data.tripType === 'return' && data.returnDate) lines.push(`Return: ${data.returnDate}${data.returnTime ? ` at ${data.returnTime}` : ''}`);
+      if (data.passengers) lines.push(`Passengers: ${data.passengers}`);
+      if (data.children) lines.push(`Children / ages: ${data.children}`);
+      if (data.luggage) lines.push(`Luggage: ${data.luggage}`);
+      if (data.vehicle) lines.push(`Preferred vehicle: ${data.vehicle}`);
+      if (data.flight) lines.push(`Flight number: ${data.flight}`);
       if (data.notes) lines.push(`Extra details: ${data.notes}`);
       lines.push(`Page URL: ${pageUrl}`);
       return lines.join('\n');
@@ -2279,6 +2305,16 @@
       `من: ${data.fromCountry || 'غير محدد'}${data.fromCity ? ` - ${data.fromCity}` : ''}`,
       `إلى: ${data.toCountry || 'غير محدد'}${data.toCity ? ` - ${data.toCity}` : ''}`,
     ];
+    if (data.pickupLocation) lines.push(`موقع الانطلاق: ${data.pickupLocation}`);
+    if (data.destinationLocation) lines.push(`موقع الوجهة: ${data.destinationLocation}`);
+    if (data.date) lines.push(`التاريخ: ${data.date}`);
+    if (data.time) lines.push(`وقت الانطلاق: ${data.time}`);
+    if (data.tripType === 'return' && data.returnDate) lines.push(`العودة: ${data.returnDate}${data.returnTime ? ` الساعة ${data.returnTime}` : ''}`);
+    if (data.passengers) lines.push(`عدد الركاب: ${data.passengers}`);
+    if (data.children) lines.push(`الأطفال وأعمارهم: ${data.children}`);
+    if (data.luggage) lines.push(`الأمتعة: ${data.luggage}`);
+    if (data.vehicle) lines.push(`المركبة المفضلة: ${data.vehicle}`);
+    if (data.flight) lines.push(`رقم الرحلة: ${data.flight}`);
     if (data.notes) lines.push(`تفاصيل إضافية: ${data.notes}`);
     lines.push(`رابط الصفحة: ${pageUrl}`);
     return lines.join('\n');
@@ -2292,6 +2328,7 @@
       const toCountry = form.querySelector('[data-booking="to-country"]');
       const toCity = form.querySelector('[data-booking="to-city"]');
       const notes = form.querySelector('[data-booking="notes"]');
+      const extraFields = [...form.querySelectorAll('[data-booking-extra]')];
       const submit = form.querySelector('[data-booking-submit]');
       const summary = form.querySelector('[data-booking-summary]');
 
@@ -2313,6 +2350,7 @@
         : 'أضف الوقت التقريبي أو أي ملاحظة تساعدنا في ترتيب الخدمة.';
 
       const update = () => {
+        const value = (name) => form.querySelector(`[data-booking-extra="${name}"]`)?.value.trim() || '';
         const data = {
           service: service.value,
           fromCountry: fromCountry.value,
@@ -2320,7 +2358,18 @@
           toCountry: toCountry.value,
           toCity: toCity.value,
           notes: notes.value.trim(),
-          tripType: form.dataset.vipTripType || '',
+          tripType: value('trip-type') || form.dataset.vipTripType || '',
+          pickupLocation: value('pickup-location'),
+          destinationLocation: value('destination-location'),
+          date: value('date'),
+          time: value('time'),
+          returnDate: value('return-date'),
+          returnTime: value('return-time'),
+          passengers: value('passengers'),
+          children: value('children'),
+          luggage: value('luggage'),
+          vehicle: value('vehicle'),
+          flight: value('flight'),
         };
         submit.href = isPassengerCareEnabled() ? '#' : toWhatsApp(buildWhatsAppMessage(data));
         if (isPassengerCareEnabled()) {
@@ -2345,14 +2394,30 @@
           update();
         });
 
-        [service, fromCity, toCity, notes].forEach((field) => {
+        [service, fromCity, toCity, notes, ...extraFields].forEach((field) => {
           field.addEventListener('change', update);
           field.addEventListener('input', update);
+        });
+
+        submit.addEventListener('click', (event) => {
+          const required = [...form.querySelectorAll('[required]')];
+          const invalid = required.find((field) => !field.value.trim());
+          if (!service.value || !fromCountry.value || !toCountry.value || invalid) {
+            event.preventDefault();
+            (invalid || (!service.value ? service : !fromCountry.value ? fromCountry : toCountry)).focus();
+            summary.textContent = state.lang === 'en'
+              ? 'Please complete the required service, route, date, time and passenger fields.'
+              : 'يرجى إكمال حقول الخدمة والمسار والتاريخ والوقت وعدد الركاب المطلوبة.';
+          }
         });
 
         form.addEventListener('submit', (event) => {
           event.preventDefault();
           submit.click();
+        });
+
+        form.addEventListener('reset', () => {
+          window.setTimeout(update, 0);
         });
 
         form.dataset.bookingReady = 'true';
@@ -2590,6 +2655,53 @@
     }
   }
 
+  function upgradeTransportChrome() {
+    const path = window.location.pathname.replace(/\\/g, '/');
+    if (!path.includes('/bahrain-saudi-gcc-transport/') || path.includes('/admin/') || path.includes('/care/')) return;
+    const isEn = state.lang === 'en';
+    const base = isEn ? '/bahrain-saudi-gcc-transport/en/' : '/bahrain-saudi-gcc-transport/';
+    const nav = document.querySelector('.topbar .nav-menu');
+    if (nav) {
+      const items = isEn
+        ? [['Home', ''], ['Airports', 'airport-transfer/'], ['Bahrain services', 'bahrain-private-transport/'], ['Full-day car', 'full-day-vip-driver/'], ['GCC routes', 'gcc-destinations/'], ['Prices', 'prices/'], ['About', 'about/']]
+        : [['الرئيسية', ''], ['المطار', 'airport-transfer/'], ['خدمات البحرين', 'bahrain-private-transport/'], ['سيارة ليوم كامل', 'full-day-vip-driver/'], ['وجهات الخليج', 'gcc-destinations/'], ['الأسعار', 'prices/'], ['عن فندورا', 'about/']];
+      nav.setAttribute('aria-label', isEn ? 'Primary navigation' : 'التنقل الرئيسي');
+      nav.innerHTML = items.map(([label, href]) => `<a class="nav-link" href="${base}${href}">${label}</a>`).join('');
+    }
+
+    const footer = document.querySelector('footer.footer');
+    if (footer && !footer.classList.contains('transport-footer')) {
+      footer.classList.add('transport-footer');
+      footer.innerHTML = isEn
+        ? `<div class="container footer-grid"><div class="footer-card"><h3>Vendora Transport</h3><p>Private transport coordinated from Bahrain through WhatsApp, subject to vehicle availability and booking confirmation.</p><a class="wa-inline" data-wa-message="Hello, I would like to book private transport.">Book on WhatsApp</a></div><div class="footer-card"><h3>Bahrain services</h3><div class="footer-links"><a href="${base}bahrain-private-transport/">Local Bahrain transport</a><a href="${base}airport-transfer/">Airport transfers</a><a href="${base}hotel-transfer-bahrain/">Hotel transfers</a><a href="${base}full-day-vip-driver/">Full-day car</a></div></div><div class="footer-card"><h3>Information</h3><div class="footer-links"><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}booking-terms/">Booking, cancellation and waiting terms</a></div></div></div>`
+        : `<div class="container footer-grid"><div class="footer-card"><h3>Vendora Transport</h3><p>تنسيق نقل خاص من البحرين عبر واتساب، حسب توفر المركبة وتأكيد الحجز.</p><a class="wa-inline" data-wa-message="مرحباً، أريد حجز خدمة نقل خاصة.">احجز عبر واتساب</a></div><div class="footer-card"><h3>خدمات البحرين</h3><div class="footer-links"><a href="${base}bahrain-private-transport/">النقل داخل البحرين</a><a href="${base}airport-transfer/">توصيل المطار</a><a href="${base}hotel-transfer-bahrain/">توصيل الفنادق</a><a href="${base}full-day-vip-driver/">سيارة ليوم كامل</a></div></div><div class="footer-card"><h3>المعلومات</h3><div class="footer-links"><a href="${base}about/">عن فندورا</a><a href="${base}contact/">التواصل</a><a href="${base}privacy/">الخصوصية</a><a href="${base}booking-terms/">شروط الحجز والإلغاء والانتظار</a></div></div></div>`;
+    }
+  }
+
+  async function hydrateEnglishRouteDirectory() {
+    if (state.lang !== 'en' || getRouteSlug() !== 'english-home') return;
+    const mount = document.getElementById('gcc-routes');
+    if (!mount || mount.querySelector('[data-complete-route-directory]')) return;
+    try {
+      const response = await fetch('/bahrain-saudi-gcc-transport/sitemap-gcc-transport-en.xml', { credentials: 'omit' });
+      if (!response.ok) return;
+      const xml = new DOMParser().parseFromString(await response.text(), 'application/xml');
+      const urls = [...xml.querySelectorAll('loc')].map((node) => node.textContent || '').filter(Boolean);
+      const directory = document.createElement('div');
+      directory.className = 'complete-route-directory';
+      directory.setAttribute('data-complete-route-directory', '');
+      directory.innerHTML = `<h3>Complete transport page directory</h3><div>${urls.map((url) => {
+        const path = new URL(url).pathname;
+        const slug = path.replace(/\/$/, '').split('/').pop() || 'home';
+        const label = slug.replace(/-/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
+        return `<a href="${path}">${escapeHtml(label)}</a>`;
+      }).join('')}</div>`;
+      mount.appendChild(directory);
+    } catch {
+      /* The curated links above remain available if the sitemap cannot be loaded. */
+    }
+  }
+
   function init() {
     setupErrorReporter();
     setupWhatsAppLeadInterceptor();
@@ -2607,6 +2719,7 @@
     trackPageView();
     setupOnlineHeartbeat();
     initRouteReviews();
+    hydrateEnglishRouteDirectory();
   }
 
   function initLeadOnly() {
@@ -2615,6 +2728,7 @@
     normalizeInternalLinks();
     setupAttributionTracking();
     setupEngagementTracking();
+    upgradeTransportChrome();
     setStaticLinks();
     setupVipShell();
     trackPageView();
