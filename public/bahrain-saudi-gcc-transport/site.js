@@ -836,8 +836,55 @@
   }
 
   function toWhatsApp(message) {
-    return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(identifyVendoraSource(message))}`;
   }
+
+  function identifyVendoraSource(message, language = getPageLanguage()) {
+    const isEnglish = language === 'en';
+    const website = isEnglish
+      ? 'https://getvendora.net/bahrain-saudi-gcc-transport/en/'
+      : 'https://getvendora.net/bahrain-saudi-gcc-transport/';
+    const sourceLine = isEnglish
+      ? 'Hello, I contacted you through the Vendora Transport website:'
+      : 'السلام عليكم، تواصلت معكم من خلال موقع فندورا للنقل:';
+    const enquiryLine = isEnglish
+      ? 'I would like to enquire about:'
+      : 'أرغب في الاستفسار عن:';
+    const fallback = isEnglish ? 'Private transport service' : 'خدمة نقل خاصة';
+    const originalMessage = String(message || '').trim();
+    let details = stripPassengerCareFromMessage(originalMessage).trim();
+    const detailsStart = originalMessage.indexOf(details);
+    const passengerCareSuffix = detailsStart >= 0
+      ? originalMessage.slice(detailsStart + details.length).trim()
+      : '';
+
+    if (details.startsWith(sourceLine) && details.includes(website)) return originalMessage;
+
+    details = details
+      .replace(/^\s*(?:Page URL|رابط الصفحة)\s*:[^\n]*(?:\n|$)/gim, '')
+      .replace(/https:\/\/getvendora\.net\/bahrain-saudi-gcc-transport\/(?:en\/)?/gi, '')
+      .trim();
+
+    if (isEnglish) {
+      details = details
+        .replace(/^Hello,?\s*I would like to book through the website\.?\s*/i, '')
+        .replace(/^Hello,?\s*/i, '')
+        .trim();
+    } else {
+      details = details
+        .replace(/^السلام عليكم[،,]?\s*أريد الحجز عن طريق الموقع\.?\s*/i, '')
+        .replace(/^السلام عليكم[،,]?\s*/i, '')
+        .replace(/^مرحباً[،,]?\s*/i, '')
+        .trim();
+    }
+
+    const identifiedMessage = `${sourceLine}\n${website}\n\n${enquiryLine}\n${details || fallback}`;
+    return passengerCareSuffix
+      ? `${identifiedMessage}\n\n${passengerCareSuffix}`
+      : identifiedMessage;
+  }
+
+  window.vendoraIdentifyWhatsAppSource = identifyVendoraSource;
 
   function getRouteSlug() {
     const path = window.location.pathname.replace(/\\/g, '/');
@@ -1571,13 +1618,20 @@
   }
 
   function neutralizeWhatsAppHrefs() {
-    if (!isPassengerCareEnabled()) return;
     document.querySelectorAll('a[href*="wa.me"], a[href*="api.whatsapp.com"]').forEach((link) => {
       if (!link.hasAttribute('data-wa-preserved-href')) {
         const currentHref = link.getAttribute('href') || '';
         if (currentHref && currentHref !== '#') {
           link.setAttribute('data-wa-preserved-href', currentHref);
         }
+      }
+      if (!isPassengerCareEnabled()) {
+        const message = extractWhatsAppMessage(link) || defaultArabicMessage;
+        link.href = toWhatsApp(message);
+        link.removeAttribute('role');
+        link.target = '_blank';
+        link.rel = 'noopener';
+        return;
       }
       link.setAttribute('href', '#');
       link.setAttribute('role', 'button');
@@ -2180,7 +2234,10 @@
       grid.appendChild(visual);
     }
     visual?.classList.add('vip-content-hero-visual');
-    if (visual && !visual.querySelector('.vip-page-hero-image')) {
+    const existingImage = visual?.querySelector('img');
+    if (existingImage) {
+      existingImage.classList.add('vip-page-hero-image');
+    } else if (visual) {
       const image = document.createElement('img');
       image.className = 'vip-page-hero-image';
       image.src = vipAssetHref(vipPageImage(slug));
@@ -2191,8 +2248,6 @@
       image.decoding = 'async';
       image.setAttribute('fetchpriority', 'high');
       visual.prepend(image);
-    } else if (visual?.querySelector('img')) {
-      visual.querySelector('img').classList.add('vip-page-hero-image');
     }
     addVipTrustStrip(hero);
   }

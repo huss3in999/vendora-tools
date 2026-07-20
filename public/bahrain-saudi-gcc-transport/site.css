@@ -2484,6 +2484,90 @@ body.vip-transport .public-price-card {
   }
 }
 
+/* Full-site readability: light executive panels must not inherit legacy dark-card text. */
+body.vip-transport .section-shell > p,
+body.vip-transport .section-shell > ul:not(.route-list) li,
+body.vip-transport .section-shell .check-list li,
+body.vip-transport .section-shell .steps-list span,
+body.vip-transport .section-shell .vehicle-grid span,
+body.vip-transport .section-shell .route-groups a,
+body.vip-transport .section-shell .complete-route-directory h3,
+body.vip-transport .section-shell .complete-route-directory a,
+body.vip-transport .section-shell .availability-note,
+body.vip-transport .section-shell .field-help,
+body.vip-transport .section-shell .booking-summary,
+body.vip-transport .section-shell .public-price-note,
+body.vip-transport .section-shell .price-rules,
+body.vip-transport .section-shell .trust-line,
+body.vip-transport .section-shell .footer-copy {
+  color: #34475a;
+  opacity: 1;
+}
+
+body.vip-transport .section-shell .section-kicker { color: #694d16; }
+
+body.vip-transport .section:not(.vip-home-booking) .booking-card .field-group label,
+body.vip-transport .section:not(.vip-home-booking) .booking-card .field-help,
+body.vip-transport .section:not(.vip-home-booking) .booking-card .section-head p {
+  color: #34475a;
+  opacity: 1;
+}
+
+body.vip-transport .section-shell .ghost-btn,
+body.vip-transport .section:not(.vip-featured-route):not(.vip-trust-strip):not(.vip-home-booking) .booking-card .ghost-btn {
+  color: #132a42;
+  border-color: #9a783a;
+  background: #fffaf0;
+}
+
+body.vip-transport .section-shell .ghost-btn:hover,
+body.vip-transport .section-shell .ghost-btn:focus-visible,
+body.vip-transport .section:not(.vip-featured-route):not(.vip-trust-strip):not(.vip-home-booking) .booking-card .ghost-btn:hover,
+body.vip-transport .section:not(.vip-featured-route):not(.vip-trust-strip):not(.vip-home-booking) .booking-card .ghost-btn:focus-visible {
+  color: #071a2e;
+  border-color: #694d16;
+  background: #f2e3bd;
+}
+
+body.vip-transport :is(input, textarea)::placeholder {
+  color: #5c6d7e;
+  opacity: 1;
+}
+
+html[lang="ar"] body.vip-transport {
+  font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+  line-height: 1.75;
+}
+
+html[lang="ar"] body.vip-transport :is(p, li, label, input, textarea, select, button, a, summary) {
+  font-weight: 500;
+}
+
+/* Service and route media use predictable landscape frames without stretching. */
+.service-card > img,
+.service-media img,
+.route-card > img,
+.split-feature > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.split-feature > img[src*="vendora-fleet-vehicle-options"] {
+  object-fit: contain;
+  object-position: center;
+  background: #071a2e;
+}
+
+.service-card > img[src*="service-airport-transfer"] { object-position: 52% 48%; }
+.service-card > img[src*="service-hotel-transfer"] { object-position: 48% 46%; }
+.service-card > img[src*="service-family-transport"] { object-position: 52% 48%; }
+.service-card > img[src*="service-business-chauffeur"] { object-position: 57% 48%; }
+.service-card > img[src*="service-bahrain-saudi-transfer"] { object-position: 58% 48%; }
+
 @media (min-width: 901px) {
   body.vip-transport .vip-menu-toggle,
   body.vip-transport .vip-bottom-nav,
@@ -3264,4 +3348,56 @@ html[lang="ar"] body.planner-page .gcc-flag-chip .flag { display: none; }
   body .transport-footer .footer-card h3 { margin-bottom: 8px; font-size: .95rem; }
   body .transport-footer .footer-links { gap: 4px !important; }
   body .transport-footer .footer-links a { min-height: 38px; padding-block: 6px; font-size: .78rem; }
+}
+
+/* Final mobile service-media sizing follows the image ratio; planner media keeps its compact tool layout. */
+@media (max-width: 900px) {
+  body.vip-content-app:not(.planner-page) .vip-content-hero-visual {
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  body.vip-content-app:not(.planner-page) .vip-content-hero-visual .vip-page-hero-image {
+    min-height: 0;
+    height: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  body.vip-content-app:not(.planner-page) .vip-content-hero-visual .vip-page-hero-image[src*="service-airport-transfer"] { object-position: 52% 48%; }
+  body.vip-content-app:not(.planner-page) .vip-content-hero-visual .vip-page-hero-image[src*="service-hotel-transfer"] { object-position: 48% 44%; }
+  body.vip-content-app:not(.planner-page) .vip-content-hero-visual .vip-page-hero-image[src*="service-family-transport"] { object-position: 52% 48%; }
+  body.vip-content-app:not(.planner-page) .vip-content-hero-visual .vip-page-hero-image[src*="service-business-chauffeur"] { object-position: 58% 47%; }
+  body.vip-content-app:not(.planner-page) .vip-content-hero-visual .vip-page-hero-image[src*="service-bahrain-saudi-transfer"] { object-position: 60% 48%; }
+}
+
+/* Airport and GCC planner panels intentionally remain dark inside the light page shell. */
+body.vip-transport .section-shell .planner-panel {
+  color: #f7f2e8;
+  background: linear-gradient(145deg, #102a42, #071a2e);
+  border-color: rgba(200, 169, 107, 0.34);
+}
+
+body.vip-transport .section-shell .planner-panel :is(p, li, label, .field-help, .booking-summary) {
+  color: #edf2f6;
+  opacity: 1;
+}
+
+body.vip-transport .section-shell .planner-panel :is(h2, h3, h4, strong, summary) { color: #fffaf0; }
+body.vip-transport .section-shell .planner-panel .metric span { color: #c4d0dc; }
+body.vip-transport .section-shell .planner-panel .metric strong { color: #f4d994; }
+body.vip-transport .section-shell .planner-panel .ghost-btn {
+  color: #fffaf0;
+  border-color: #c8a96b;
+  background: rgba(200, 169, 107, 0.12);
+}
+
+@media (min-width: 901px) {
+  body.vip-content-app .vip-content-hero-visual {
+    align-self: center;
+    height: min(620px, calc(100vh - 120px));
+    min-height: 480px;
+    max-height: 620px;
+  }
 }

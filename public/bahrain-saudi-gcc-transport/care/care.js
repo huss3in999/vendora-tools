@@ -284,7 +284,13 @@
         : '\u0627\u0646\u062a\u0647\u062a \u0635\u0644\u0627\u062d\u064a\u0629 \u0631\u0627\u0628\u0637 \u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0645\u0633\u0627\u0641\u0631 \u0627\u0644\u0642\u062f\u064a\u0645. \u0644\u062d\u0645\u0627\u064a\u0629 \u0627\u0644\u062e\u0635\u0648\u0635\u064a\u0629\u060c \u0627\u0637\u0644\u0628 \u0631\u0627\u0628\u0637\u0627\u064b \u0622\u0645\u0646\u0627\u064b \u062c\u062f\u064a\u062f\u0627\u064b \u0639\u0628\u0631 \u0648\u0627\u062a\u0633\u0627\u0628.';
       const link = document.createElement('a');
       link.textContent = lang === 'en' ? copy.requestLink : '\u0627\u0637\u0644\u0628 \u0631\u0627\u0628\u0637\u0627\u064b \u0622\u0645\u0646\u0627\u064b \u062c\u062f\u064a\u062f\u0627\u064b';
-      link.href = `https://wa.me/97333225954?text=${encodeURIComponent(lang === 'en' ? 'Hello, please send me a new secure Passenger Care link.' : '\u0645\u0631\u062d\u0628\u0627\u064b\u060c \u064a\u0631\u062c\u0649 \u0625\u0631\u0633\u0627\u0644 \u0631\u0627\u0628\u0637 \u0622\u0645\u0646 \u062c\u062f\u064a\u062f \u0644\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0645\u0633\u0627\u0641\u0631.')}`;
+      const website = lang === 'en'
+        ? 'https://getvendora.net/bahrain-saudi-gcc-transport/en/'
+        : 'https://getvendora.net/bahrain-saudi-gcc-transport/';
+      const message = lang === 'en'
+        ? `Hello, I contacted you through the Vendora Transport website:\n${website}\n\nI would like to enquire about:\nA new secure Passenger Care link`
+        : `\u0627\u0644\u0633\u0644\u0627\u0645 \u0639\u0644\u064a\u0643\u0645\u060c \u062a\u0648\u0627\u0635\u0644\u062a \u0645\u0639\u0643\u0645 \u0645\u0646 \u062e\u0644\u0627\u0644 \u0645\u0648\u0642\u0639 \u0641\u0646\u062f\u0648\u0631\u0627 \u0644\u0644\u0646\u0642\u0644:\n${website}\n\n\u0623\u0631\u063a\u0628 \u0641\u064a \u0627\u0644\u0627\u0633\u062a\u0641\u0633\u0627\u0631 \u0639\u0646:\n\u0631\u0627\u0628\u0637 \u0622\u0645\u0646 \u062c\u062f\u064a\u062f \u0644\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0645\u0633\u0627\u0641\u0631`;
+      link.href = `https://wa.me/97333225954?text=${encodeURIComponent(message)}`;
       link.className = 'care-support-link';
       els.errorBody.after(link);
       fetch('/bahrain-saudi-gcc-transport/api/transport/public-settings', { credentials: 'omit' }).then((response) => response.ok ? response.json() : null).then((data) => {

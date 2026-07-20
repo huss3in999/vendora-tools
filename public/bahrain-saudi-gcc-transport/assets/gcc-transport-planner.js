@@ -238,6 +238,17 @@
     return base;
   }
 
+  function identifyVendoraSource(details) {
+    const website = isArabic
+      ? 'https://getvendora.net/bahrain-saudi-gcc-transport/'
+      : 'https://getvendora.net/bahrain-saudi-gcc-transport/en/';
+    const source = isArabic
+      ? 'السلام عليكم، تواصلت معكم من خلال موقع فندورا للنقل:'
+      : 'Hello, I contacted you through the Vendora Transport website:';
+    const enquiry = isArabic ? 'أرغب في الاستفسار عن:' : 'I would like to enquire about:';
+    return `${source}\n${website}\n\n${enquiry}\n${String(details || '').trim()}`;
+  }
+
   function buildMessage(route, price) {
     const direction = form.querySelector('input[name="calculator-direction"]:checked')?.value || 'one_way';
     const fields = isArabic ? {
@@ -245,7 +256,7 @@
     } : { mode: 'Calculator mode', from: 'From', to: 'To', direction: 'Journey', service: 'Service', date: 'Date', time: 'Time', passengers: 'Passengers', luggage: 'Luggage', flight: 'Flight number', waiting: 'Waiting', notes: 'Notes', price: 'Pricing' };
     const modeLabel = t.modes.find(([value]) => value === mode)?.[1] || '';
     const service = mode === 'airport' ? $('[data-calculator-airport-service]')?.selectedOptions[0]?.textContent : typeSelect.selectedOptions[0]?.textContent;
-    return [t.messageIntro,
+    return identifyVendoraSource([
       `${fields.mode}: ${modeLabel}`,
       `${fields.from}: ${route.from.flag} ${label(route.from)}`,
       `${fields.to}: ${route.to.flag} ${label(route.to)}`,
@@ -258,7 +269,7 @@
       `${fields.flight}: ${$('[data-calculator-flight]')?.value || '-'}`,
       `${fields.waiting}: ${$('[data-calculator-waiting]')?.value || '-'}`,
       `${fields.notes}: ${notesInput.value || '-'}`,
-      `${fields.price}: ${price.configured ? `${price.text} — ${price.unit}` : t.quote}`].join('\n');
+      `${fields.price}: ${price.configured ? `${price.text} — ${price.unit}` : t.quote}`].join('\n'));
   }
 
   function refreshWhatsApp(message) {

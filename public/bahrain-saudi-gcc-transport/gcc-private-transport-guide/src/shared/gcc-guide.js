@@ -342,10 +342,22 @@
     return Array.from(new Set(notes));
   }
 
+  function identifyVendoraSource(lang, details) {
+    const website = lang === "ar"
+      ? "https://getvendora.net/bahrain-saudi-gcc-transport/"
+      : "https://getvendora.net/bahrain-saudi-gcc-transport/en/";
+    const source = lang === "ar"
+      ? "السلام عليكم، تواصلت معكم من خلال موقع فندورا للنقل:"
+      : "Hello, I contacted you through the Vendora Transport website:";
+    const enquiry = lang === "ar" ? "أرغب في الاستفسار عن:" : "I would like to enquire about:";
+    const text = String(details || "").trim();
+    if (text.startsWith(source) && text.includes(website)) return text;
+    return `${source}\n${website}\n\n${enquiry}\n${text || (lang === "ar" ? "خدمة النقل الخاص" : "Private transport service")}`;
+  }
+
   function buildMessage(lang, data) {
     const t = i18n[lang];
     const lines = [
-      t.messageIntro,
       `${t.tripType}: ${data.tripType || "-"}`,
       `${t.pickup}: ${data.pickupCountry || "-"} / ${data.pickupCity || "-"}`,
       `${t.destination}: ${data.destinationCountry || "-"} / ${data.destinationCity || "-"}`,
@@ -365,7 +377,7 @@
     );
     
     lines.push(t.requestQuote);
-    return lines.join("\n");
+    return identifyVendoraSource(lang, lines.join("\n"));
   }
 
   function updateConditionalFields(form) {
@@ -788,6 +800,7 @@
 
   document.querySelectorAll("[data-wa-static]").forEach((link) => {
     const text = link.getAttribute("data-wa-static") || "";
-    link.href = `https://wa.me/${PHONE}?text=${encodeURIComponent(text)}`;
+    const lang = document.documentElement.lang === "ar" ? "ar" : "en";
+    link.href = `https://wa.me/${PHONE}?text=${encodeURIComponent(identifyVendoraSource(lang, text))}`;
   });
 })();

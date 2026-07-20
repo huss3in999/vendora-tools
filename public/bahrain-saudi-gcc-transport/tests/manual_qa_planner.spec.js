@@ -156,7 +156,8 @@ test.describe('Manual-style QA: Upgraded GCC Route Planner', () => {
     console.log('Scenario 6 Decoded Link:', decodedHref);
     
     // Verify Arabic copy inside WhatsApp URL
-    expect(decodedHref).toContain('مرحباً');
+    expect(decodedHref).toContain('السلام عليكم، تواصلت معكم من خلال موقع فندورا للنقل:');
+    expect(decodedHref).toContain('https://getvendora.net/bahrain-saudi-gcc-transport/');
     expect(decodedHref).toContain('المنامة');
     expect(decodedHref).toContain('الخبر');
   });
