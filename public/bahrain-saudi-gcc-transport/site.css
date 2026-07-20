@@ -3401,3 +3401,196 @@ body.vip-transport .section-shell .planner-panel .ghost-btn {
     max-height: 620px;
   }
 }
+
+/* Final component contrast layer. Keep light and dark surface tokens explicit. */
+body.vip-transport {
+  --text-primary: #0b2138;
+  --text-secondary: #34475a;
+  --text-muted-readable: #506071;
+  --link-on-light: #243b63;
+  --surface-light: #fffdf8;
+  --surface-light-soft: #f4efe5;
+  --text-on-dark: #f7f2e8;
+  --text-secondary-on-dark: #dce5ed;
+}
+
+body.vip-transport .section-shell :is(p, li, label, .field-help, .footer-copy, .route-meta, .trust-line),
+body.vip-transport .vehicle-section :is(p, li, span),
+body.vip-transport .service-section :is(p, li) {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+
+body.vip-transport .section-shell :is(h2, h3, h4, strong),
+body.vip-transport .vehicle-section :is(h2, h3, strong) {
+  color: var(--text-primary);
+}
+
+body.vip-transport :is(p, li, a, label, summary, .field-help, .footer-copy, .route-meta, .trust-line) {
+  opacity: 1;
+}
+
+/* Homepage service cards: edge-to-edge media with a compact light content panel. */
+body.vip-transport.transport-hub .service-card {
+  padding: 0;
+  color: var(--text-primary);
+  background: var(--surface-light);
+  border: 1px solid rgba(7, 26, 46, 0.14);
+  border-radius: 22px;
+  box-shadow: 0 14px 34px rgba(7, 26, 46, 0.1);
+}
+
+body.vip-transport.transport-hub .service-card::before { content: none; }
+
+body.vip-transport.transport-hub .service-card > img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+body.vip-transport.transport-hub .service-card-body {
+  gap: 0;
+  padding: 20px;
+  color: var(--text-primary);
+}
+
+body.vip-transport.transport-hub .service-card h3 {
+  margin: 0 0 8px;
+  color: var(--text-primary);
+  font-size: 1.18rem;
+}
+
+body.vip-transport.transport-hub .service-card p {
+  margin: 0 0 10px;
+  color: var(--text-secondary);
+  font-size: 0.94rem;
+  line-height: 1.58;
+}
+
+body.vip-transport.transport-hub .service-card ul {
+  display: grid;
+  gap: 5px;
+  margin: 4px 0 16px;
+  padding-inline-start: 20px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+body.vip-transport.transport-hub .service-card li { margin: 0; color: inherit; }
+
+body.vip-transport.transport-hub .service-card .ghost-btn {
+  min-height: 44px;
+  color: var(--text-primary);
+  border-color: rgba(154, 120, 58, 0.65);
+  background: #f7f0df;
+}
+
+body.vip-transport.transport-hub .service-card .ghost-btn:hover,
+body.vip-transport.transport-hub .service-card .ghost-btn:focus-visible {
+  color: #071a2e;
+  border-color: #755819;
+  background: #ead9ad;
+}
+
+body.vip-transport.transport-hub .service-card .wa-text {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  color: #0b6b3b;
+  font-weight: 750;
+}
+
+body.vip-transport.transport-hub .service-icon {
+  min-height: 124px;
+  color: var(--vip-gold);
+  background: linear-gradient(145deg, #102a42, var(--vip-navy));
+}
+
+body.vip-transport.transport-hub .service-icon svg {
+  width: 48px;
+  height: 48px;
+  color: var(--vip-gold);
+}
+
+/* Vehicle descriptions are light cards, not dark-theme text on cream. */
+body.vip-transport .vehicle-grid article {
+  color: var(--text-primary);
+  background: var(--surface-light);
+  border: 1px solid rgba(7, 26, 46, 0.14);
+  box-shadow: 0 8px 20px rgba(7, 26, 46, 0.06);
+}
+
+body.vip-transport .vehicle-grid span {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+
+body.vip-transport .availability-note {
+  color: var(--text-secondary);
+  background: #f2ead9;
+  border-inline-start-color: #9a783a;
+}
+
+/* Popular and generated route links are visible tappable chips without hover. */
+body.vip-transport .route-groups > div {
+  color: var(--text-primary);
+  background: #faf6ed;
+  border: 1px solid rgba(7, 26, 46, 0.14);
+}
+
+body.vip-transport .route-groups h3 { color: var(--text-primary); }
+
+body.vip-transport .route-groups a,
+body.vip-transport .complete-route-directory a {
+  display: flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 9px 12px;
+  color: var(--link-on-light);
+  background: var(--surface-light-soft);
+  border: 1px solid rgba(36, 59, 99, 0.24);
+  border-radius: 12px;
+  font-weight: 650;
+  line-height: 1.35;
+  text-decoration: none;
+  opacity: 1;
+}
+
+body.vip-transport .route-groups a:hover,
+body.vip-transport .route-groups a:focus-visible,
+body.vip-transport .complete-route-directory a:hover,
+body.vip-transport .complete-route-directory a:focus-visible {
+  color: #0b2138;
+  background: #e9dfc9;
+  border-color: #8d6e30;
+  text-decoration: none;
+}
+
+body.vip-transport .complete-route-directory h3 { color: var(--text-primary); }
+
+/* Explicit dark-surface copy stays bright and readable. */
+body.vip-transport :is(.company-panel, .price-callout, .vip-featured-card, .vip-home-booking, .planner-panel)
+  :is(p, li, label, .field-help, .footer-copy, .booking-summary) {
+  color: var(--text-secondary-on-dark);
+  opacity: 1;
+}
+
+body.vip-transport :is(.company-panel, .price-callout, .vip-featured-card, .vip-home-booking, .planner-panel)
+  :is(h2, h3, h4, strong, summary) {
+  color: var(--text-on-dark);
+}
+
+body.vip-transport .transport-footer :is(p, li, a, .footer-copy, .footer-note) {
+  color: var(--text-secondary-on-dark);
+  opacity: 1;
+}
+
+@media (max-width: 680px) {
+  body.vip-transport.transport-hub .service-showcase { gap: 16px; }
+  body.vip-transport.transport-hub .service-card-body { padding: 17px; }
+  body.vip-transport.transport-hub .service-card p { line-height: 1.52; }
+  body.vip-transport.transport-hub .service-card ul { margin-bottom: 14px; }
+}

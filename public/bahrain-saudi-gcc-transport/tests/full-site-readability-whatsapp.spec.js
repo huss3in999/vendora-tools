@@ -122,6 +122,74 @@ for (const width of widths) {
   });
 }
 
+test('Arabic and English home service, vehicle and route components keep the approved light design', async ({ page }) => {
+  test.setTimeout(180_000);
+  const homePaths = [root, `${root}en/`];
+
+  for (const width of widths) {
+    await page.setViewportSize({ width, height: width < 700 ? 900 : 1000 });
+    for (const path of homePaths) {
+      await page.goto(path, { waitUntil: 'domcontentloaded' });
+      const result = await page.evaluate(() => {
+        const rgb = (value) => (value.match(/[\d.]+/g) || []).slice(0, 3).map(Number);
+        const luminance = (color) => {
+          const channels = rgb(color).map((value) => {
+            const normalized = value / 255;
+            return normalized <= 0.03928 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4;
+          });
+          return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+        };
+        const contrast = (foreground, background) => {
+          const a = luminance(foreground);
+          const b = luminance(background);
+          return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+        };
+        const serviceCards = [...document.querySelectorAll('.service-card')].map((card) => {
+          const style = getComputedStyle(card);
+          const text = [...card.querySelectorAll('h3,p,li')].map((element) => ({
+            text: element.textContent.trim().slice(0, 60),
+            ratio: contrast(getComputedStyle(element).color, style.backgroundColor),
+            opacity: Number(getComputedStyle(element).opacity),
+          }));
+          return { backgroundLuminance: luminance(style.backgroundColor), text };
+        });
+        const vehicleText = [...document.querySelectorAll('.vehicle-grid span')].map((element) => ({
+          text: element.textContent.trim().slice(0, 60),
+          ratio: contrast(getComputedStyle(element).color, getComputedStyle(element.closest('article')).backgroundColor),
+        }));
+        const routeLinks = [...document.querySelectorAll('.route-groups a,.complete-route-directory a')].map((element) => {
+          const rect = element.getBoundingClientRect();
+          const style = getComputedStyle(element);
+          return {
+            text: element.textContent.trim().slice(0, 60),
+            ratio: contrast(style.color, style.backgroundColor),
+            height: rect.height,
+            opacity: Number(style.opacity),
+          };
+        });
+        return { serviceCards, vehicleText, routeLinks };
+      });
+
+      expect(result.serviceCards.length, `missing service cards on ${path}`).toBeGreaterThan(0);
+      for (const card of result.serviceCards) {
+        expect(card.backgroundLuminance, `service card is not a light surface on ${path}`).toBeGreaterThan(0.85);
+        for (const item of card.text) {
+          expect(item.opacity, `faded service copy "${item.text}" on ${path}`).toBe(1);
+          expect(item.ratio, `low-contrast service copy "${item.text}" on ${path}`).toBeGreaterThanOrEqual(4.5);
+        }
+      }
+      for (const item of result.vehicleText) {
+        expect(item.ratio, `low-contrast vehicle copy "${item.text}" on ${path}`).toBeGreaterThanOrEqual(4.5);
+      }
+      for (const link of result.routeLinks) {
+        expect(link.opacity, `faded route link "${link.text}" on ${path}`).toBe(1);
+        expect(link.ratio, `low-contrast route link "${link.text}" on ${path}`).toBeGreaterThanOrEqual(4.5);
+        expect(link.height, `short route target "${link.text}" on ${path}`).toBeGreaterThanOrEqual(44);
+      }
+    }
+  }
+});
+
 test('shared WhatsApp source wrapper identifies Vendora once in both languages', async ({ page }) => {
   await page.goto(root);
   const Arabic = await page.evaluate(() => window.vendoraIdentifyWhatsAppSource('مرحباً، أريد حجز توصيل مطار البحرين.', 'ar'));
