@@ -388,12 +388,13 @@ export default {
         });
       }
 
-      if (path === '/tools' || path.startsWith('/tools/')
-        || path === '/calculators' || path.startsWith('/calculators/')
-        || path === '/calculator' || path.startsWith('/calculator/')
-        || path === '/restaurant-calculators' || path.startsWith('/restaurant-calculators/')
-        || path === '/guides' || path.startsWith('/guides/')
-        || path === '/all-tools' || path.startsWith('/all-tools/')) {
+      const lowerPath = path.toLowerCase().replace(/\/+$/, '') || '/';
+      if (lowerPath === '/tools' || lowerPath.startsWith('/tools/')
+        || lowerPath === '/calculators' || lowerPath.startsWith('/calculators/')
+        || lowerPath === '/calculator' || lowerPath.startsWith('/calculator/')
+        || lowerPath === '/restaurant-calculators' || lowerPath.startsWith('/restaurant-calculators/')
+        || lowerPath === '/guides' || lowerPath.startsWith('/guides/')
+        || lowerPath === '/all-tools' || lowerPath.startsWith('/all-tools/')) {
         return new Response('410 Gone - This tool has been decommissioned. Please visit Vendora Transport at https://getvendora.net/bahrain-saudi-gcc-transport/', {
           status: 410,
           headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=86400' },
