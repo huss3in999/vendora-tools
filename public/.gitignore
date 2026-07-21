@@ -3,3 +3,7 @@ test-results/
 playwright-report/
 blob-report/
 _site/
+.wrangler/
+tests/google-analytics-audit-report.json
+tests/google-analytics-audit-summary.md
+

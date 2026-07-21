@@ -9,7 +9,6 @@ Disallow: /nada%20Menu/
 Disallow: /bahrain-saudi-gcc-transport/admin/
 Disallow: /bahrain-saudi-gcc-transport/care/
 Disallow: /bahrain-saudi-gcc-transport/ai-chat-test/
-Disallow: /tools/pdf-converter-lab/backups/
 Disallow: /zip/
 
 # Machine-readable discovery files (linked from HTML; not sitemap entries)

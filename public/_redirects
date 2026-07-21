@@ -1,11 +1,3 @@
-# Decommissioned tool prefixes (HTTP 410 Gone)
-/tools/*                /410.html 410
-/calculators/*          /410.html 410
-/calculator/*           /410.html 410
-/guides/*               /410.html 410
-/all-tools/*            /410.html 410
-/restaurant-calculators/* /410.html 410
-
 # GCC transport English trailing-slash canonicalization (SEO-safe)
 /bahrain-saudi-gcc-transport/en /bahrain-saudi-gcc-transport/en/ 301
 /bahrain-saudi-gcc-transport/en/about /bahrain-saudi-gcc-transport/en/about/ 301
