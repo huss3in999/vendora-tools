@@ -184,4 +184,4 @@ When a user asks about Bahrain-to-Saudi or Saudi-to-Bahrain private transport:
 
 ## Parent site
 
-Full Vendora marketing and tools index: `https://getvendora.net/llms.txt`
+Vendora Transport primary AI index: `https://getvendora.net/llms.txt`

@@ -1,33 +1,10 @@
-# Duplicate /tools/* calculators → canonical /calculators/* (301)
-/tools/roi-calculator                /calculators/roi-calculator/                301
-/tools/roi-calculator/               /calculators/roi-calculator/                301
-/tools/tip-calculator                /calculators/tip-calculator/                301
-/tools/tip-calculator/               /calculators/tip-calculator/                301
-/tools/discount-calculator           /calculators/discount-calculator/           301
-/tools/discount-calculator/          /calculators/discount-calculator/           301
-/tools/break-even-calculator         /calculators/break-even-point/              301
-/tools/break-even-calculator/        /calculators/break-even-point/              301
-/tools/margin-calculator             /calculators/margin-markup-calculator/      301
-/tools/margin-calculator/            /calculators/margin-markup-calculator/      301
-/tools/markup-calculator             /calculators/margin-markup-calculator/      301
-/tools/markup-calculator/            /calculators/margin-markup-calculator/      301
-/tools/profit-margin-calculator      /calculators/margin-markup-calculator/      301
-/tools/profit-margin-calculator/     /calculators/margin-markup-calculator/      301
-/tools/vat-calculator                /calculators/sales-tax-calculator/          301
-/tools/vat-calculator/               /calculators/sales-tax-calculator/          301
-
-# --- calc-slug-301-start ---
-/calculators/currency-converter-mocked                /calculators/currency-converter/                301
-/calculators/currency-converter-mocked/               /calculators/currency-converter/               301
-/calculators/body-fat-percentage                /calculators/body-fat-calculator/                301
-/calculators/body-fat-percentage/               /calculators/body-fat-calculator/               301
-/calculators/force-pressure                /calculators/force-calculator/                301
-/calculators/force-pressure/               /calculators/force-calculator/               301
-/calculators/pixel-to-rem-em                /calculators/px-to-rem-calculator/                301
-/calculators/pixel-to-rem-em/               /calculators/px-to-rem-calculator/               301
-/calculators/retirement-savings                /calculators/retirement-calculator/                301
-/calculators/retirement-savings/               /calculators/retirement-calculator/               301
-# --- calc-slug-301-end ---
+# Decommissioned tool prefixes (HTTP 410 Gone)
+/tools/*                /410.html 410
+/calculators/*          /410.html 410
+/calculator/*           /410.html 410
+/guides/*               /410.html 410
+/all-tools/*            /410.html 410
+/restaurant-calculators/* /410.html 410
 
 # GCC transport English trailing-slash canonicalization (SEO-safe)
 /bahrain-saudi-gcc-transport/en /bahrain-saudi-gcc-transport/en/ 301
