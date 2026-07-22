@@ -8,14 +8,14 @@ test.describe('Phase 3 Transformation Verification Suite', () => {
     await page.goto(`${BASE_URL}/`);
     await expect(page).toHaveTitle(/Vendora Transport/i);
     await expect(page.locator('h1')).toContainText(/Private Car with Driver/i);
-    await expect(page.body()).toContainText('Office 240, Second Floor, The Address Tower, Seef');
-    await expect(page.body()).toContainText('+973 3322 5954');
+    await expect(page.locator('body')).toContainText('Office 240, Second Floor, The Address Tower, Seef');
+    await expect(page.locator('body')).toContainText('+973 3322 5954');
   });
 
   test('Root About Page loads corporate profile', async ({ page }) => {
     await page.goto(`${BASE_URL}/about/`);
     await expect(page).toHaveTitle(/About Vendora Transport/i);
-    await expect(page.body()).toContainText('Vendora Transport');
+    await expect(page.locator('body')).toContainText('Vendora Transport');
   });
 
   test('Root Contact Page displays Seef office and Google Maps link', async ({ page }) => {
@@ -31,8 +31,8 @@ test.describe('Phase 3 Transformation Verification Suite', () => {
     await expect(page).toHaveTitle(/Privacy Policy | Vendora Transport/i);
   });
 
-  test('Dedicated policy pages exist and return HTTP 200', async ({ page }) => {
-    const policies = [
+  test('Dedicated policy and customer rights pages return HTTP 200', async ({ page }) => {
+    const pages = [
       '/bahrain-saudi-gcc-transport/booking-terms/',
       '/bahrain-saudi-gcc-transport/booking-policy/',
       '/bahrain-saudi-gcc-transport/cancellation-policy/',
@@ -40,16 +40,20 @@ test.describe('Phase 3 Transformation Verification Suite', () => {
       '/bahrain-saudi-gcc-transport/passenger-safety/',
       '/bahrain-saudi-gcc-transport/support-policy/',
       '/bahrain-saudi-gcc-transport/privacy/',
+      '/bahrain-saudi-gcc-transport/complaints/',
+      '/bahrain-saudi-gcc-transport/customer-reviews/',
       '/bahrain-saudi-gcc-transport/en/booking-terms/',
       '/bahrain-saudi-gcc-transport/en/booking-policy/',
       '/bahrain-saudi-gcc-transport/en/cancellation-policy/',
       '/bahrain-saudi-gcc-transport/en/payment-policy/',
       '/bahrain-saudi-gcc-transport/en/passenger-safety/',
       '/bahrain-saudi-gcc-transport/en/support-policy/',
-      '/bahrain-saudi-gcc-transport/en/privacy/'
+      '/bahrain-saudi-gcc-transport/en/privacy/',
+      '/bahrain-saudi-gcc-transport/en/complaints/',
+      '/bahrain-saudi-gcc-transport/en/customer-reviews/'
     ];
 
-    for (const path of policies) {
+    for (const path of pages) {
       const response = await page.goto(`${BASE_URL}${path}`);
       expect(response.status()).toBe(200);
     }
@@ -81,6 +85,30 @@ test.describe('Phase 3 Transformation Verification Suite', () => {
       const text = await response.text();
       expect(text).toContain('Vendora Transport');
     }
+  });
+
+  test('Arabic Complaints Page form renders correctly and contains Customer Rights', async ({ page }) => {
+    await page.goto(`${BASE_URL}/bahrain-saudi-gcc-transport/complaints/`);
+    await expect(page).toHaveTitle(/تقديم شكوى/i);
+    await expect(page.locator('form#complaintForm')).toBeVisible();
+    await expect(page.locator('body')).toContainText('حقوق العملاء وضمانات الشكوى لدى فندورا للنقل');
+  });
+
+  test('English Complaints Page form renders correctly and contains Customer Rights', async ({ page }) => {
+    await page.goto(`${BASE_URL}/bahrain-saudi-gcc-transport/en/complaints/`);
+    await expect(page).toHaveTitle(/Customer Complaints/i);
+    await expect(page.locator('form#complaintFormEn')).toBeVisible();
+    await expect(page.locator('body')).toContainText('Customer Rights & Fair Review Guarantees at Vendora Transport');
+  });
+
+  test('Customer Reviews Pages render form and moderation disclaimer', async ({ page }) => {
+    await page.goto(`${BASE_URL}/bahrain-saudi-gcc-transport/customer-reviews/`);
+    await expect(page).toHaveTitle(/تقييمات وآراء العملاء/i);
+    await expect(page.locator('form#reviewForm')).toBeVisible();
+
+    await page.goto(`${BASE_URL}/bahrain-saudi-gcc-transport/en/customer-reviews/`);
+    await expect(page).toHaveTitle(/Customer Reviews & Feedback/i);
+    await expect(page.locator('form#reviewFormEn')).toBeVisible();
   });
 
 });

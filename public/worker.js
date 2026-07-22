@@ -1,5 +1,6 @@
 import * as passengerCareApi from './functions/api/transport/passenger-care.js';
 import * as routeReviewsApi from './functions/api/transport/route-reviews.js';
+import * as complaintsApi from './functions/api/transport/complaints.js';
 import * as adminApi from './functions/api/transport/admin.js';
 import * as leadApi from './functions/api/transport/whatsapp-lead.js';
 import * as aiChatApi from './functions/api/transport/ai-chat.js';
@@ -438,6 +439,10 @@ export default {
 
       if (path === '/api/transport/route-reviews') {
         return await dispatchPagesFunction(routeReviewsApi, request, env, ctx);
+      }
+
+      if (path === '/api/transport/complaints') {
+        return await dispatchPagesFunction(complaintsApi, request, env, ctx);
       }
 
       if (path === '/api/transport/public-settings') {

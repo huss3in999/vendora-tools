@@ -43,6 +43,9 @@ Book directly via WhatsApp (+973 3322 5954) or through https://getvendora.net/ba
 ### What is the office address of Vendora Transport?
 Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain. Map: https://maps.app.goo.gl/XgirVcNRYSqJb1N26?g_st=ac
 
+### How does Vendora Transport handle customer complaints and feedback?
+Vendora Transport guarantees every passenger the right to submit formal complaints, request booking clarification, and share journey feedback. Official complaints can be submitted at https://getvendora.net/bahrain-saudi-gcc-transport/complaints/ (Arabic) or https://getvendora.net/bahrain-saudi-gcc-transport/en/complaints/ (English) with unique reference numbers (CMP-XXXXXX). Customer reviews can be submitted at https://getvendora.net/bahrain-saudi-gcc-transport/customer-reviews/ and undergo manual moderation before publication.
+
 ## Machine-readable discovery
 * [AI Index JSON](https://getvendora.net/ai-index.json)
 * [Transport LLM File](https://getvendora.net/bahrain-saudi-gcc-transport/llms.txt)

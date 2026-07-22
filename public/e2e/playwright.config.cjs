@@ -15,7 +15,7 @@ module.exports = defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'npx --yes http-server . -p 4173 -c-1 --silent',
+    command: 'npx --yes http-server . -p 4173 -c-1 -i true --silent',
     cwd: publicRoot,
     url: 'http://127.0.0.1:4173/',
     reuseExistingServer: !process.env.CI,
