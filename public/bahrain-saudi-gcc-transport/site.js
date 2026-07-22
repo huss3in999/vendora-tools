@@ -2728,8 +2728,115 @@
     if (footer && !footer.classList.contains('transport-footer')) {
       footer.classList.add('transport-footer');
       footer.innerHTML = isEn
-        ? `<div class="container footer-grid"><div class="footer-card"><h3>Vendora Transport</h3><p>Private transport coordinated from Bahrain through WhatsApp, subject to vehicle availability and booking confirmation.</p><a class="wa-inline" data-wa-message="Hello, I would like to book private transport.">Book on WhatsApp</a></div><div class="footer-card"><h3>Bahrain services</h3><div class="footer-links"><a href="${base}bahrain-private-transport/">Local Bahrain transport</a><a href="${base}airport-transfer/">Airport transfers</a><a href="${base}hotel-transfer-bahrain/">Hotel transfers</a><a href="${base}full-day-vip-driver/">Full-day car</a></div></div><div class="footer-card"><h3>Information</h3><div class="footer-links"><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}booking-terms/">Booking, cancellation and waiting terms</a></div></div></div>`
-        : `<div class="container footer-grid"><div class="footer-card"><h3>Vendora Transport</h3><p>تنسيق نقل خاص من البحرين عبر واتساب، حسب توفر المركبة وتأكيد الحجز.</p><a class="wa-inline" data-wa-message="مرحباً، أريد حجز خدمة نقل خاصة.">احجز عبر واتساب</a></div><div class="footer-card"><h3>خدمات البحرين</h3><div class="footer-links"><a href="${base}bahrain-private-transport/">النقل داخل البحرين</a><a href="${base}airport-transfer/">توصيل المطار</a><a href="${base}hotel-transfer-bahrain/">توصيل الفنادق</a><a href="${base}full-day-vip-driver/">سيارة ليوم كامل</a></div></div><div class="footer-card"><h3>المعلومات</h3><div class="footer-links"><a href="${base}about/">عن فندورا</a><a href="${base}contact/">التواصل</a><a href="${base}privacy/">الخصوصية</a><a href="${base}booking-terms/">شروط الحجز والإلغاء والانتظار</a></div></div></div>`;
+        ? `<div class="container footer-grid"><div class="footer-card"><h3>Vendora Transport</h3><p>Private transport coordinated from Bahrain through WhatsApp, subject to vehicle availability and booking confirmation.</p><a class="wa-inline" data-wa-message="Hello, I would like to book private transport.">Book on WhatsApp</a></div><div class="footer-card"><h3>Bahrain services</h3><div class="footer-links"><a href="${base}bahrain-private-transport/">Local Bahrain transport</a><a href="${base}airport-transfer/">Airport transfers</a><a href="${base}hotel-transfer-bahrain/">Hotel transfers</a><a href="${base}full-day-vip-driver/">Full-day car</a></div></div><div class="footer-card"><h3>Information & Rights</h3><div class="footer-links"><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}booking-terms/">Booking terms</a><a href="${base}complaints/">Submit complaint</a><a href="${base}customer-reviews/">Customer reviews</a></div></div></div>`
+        : `<div class="container footer-grid"><div class="footer-card"><h3>Vendora Transport</h3><p>تنسيق نقل خاص من البحرين عبر واتساب، حسب توفر المركبة وتأكيد الحجز.</p><a class="wa-inline" data-wa-message="مرحباً، أريد حجز خدمة نقل خاصة.">احجز عبر واتساب</a></div><div class="footer-card"><h3>خدمات البحرين</h3><div class="footer-links"><a href="${base}bahrain-private-transport/">النقل داخل البحرين</a><a href="${base}airport-transfer/">توصيل المطار</a><a href="${base}hotel-transfer-bahrain/">توصيل الفنادق</a><a href="${base}full-day-vip-driver/">سيارة ليوم كامل</a></div></div><div class="footer-card"><h3>المعلومات وحقوق العملاء</h3><div class="footer-links"><a href="${base}about/">عن فندورا</a><a href="${base}contact/">التواصل</a><a href="${base}privacy/">الخصوصية</a><a href="${base}booking-terms/">شروط الحجز والإلغاء</a><a href="${base}complaints/">تقديم شكوى</a><a href="${base}customer-reviews/">تقييمات العملاء</a></div></div></div>`;
+    }
+  }
+
+  function setupFloatingFeedbackTab() {
+    const path = window.location.pathname.replace(/\\/g, '/');
+    if (path.includes('/admin/') || path.includes('/care/') || path.includes('/ai-chat-test/')) return;
+    if (document.getElementById('vendoraFloatingFeedbackTab')) return;
+
+    const isEn = state.lang === 'en';
+    const base = isEn ? '/bahrain-saudi-gcc-transport/en/' : '/bahrain-saudi-gcc-transport/';
+
+    const container = document.createElement('div');
+    container.id = 'vendoraFloatingFeedbackTab';
+    container.setAttribute('data-vendora-feedback-widget', '');
+    container.innerHTML = `
+      <style>
+        #vendoraFloatingFeedbackTab {
+          position: fixed;
+          bottom: 85px;
+          ${isEn ? 'left: 20px;' : 'right: 20px;'}
+          z-index: 9998;
+          font-family: inherit;
+        }
+        .v-feedback-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: rgba(15, 23, 42, 0.88);
+          backdrop-filter: blur(8px);
+          color: #fbbf24;
+          border: 1px solid rgba(251, 191, 36, 0.4);
+          padding: 0.5rem 0.85rem;
+          border-radius: 30px;
+          font-size: 0.85rem;
+          font-weight: 600;
+          cursor: pointer;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+          transition: all 0.2s ease;
+        }
+        .v-feedback-btn:hover {
+          background: rgba(30, 41, 59, 0.95);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        .v-feedback-menu {
+          display: none;
+          position: absolute;
+          bottom: 45px;
+          ${isEn ? 'left: 0;' : 'right: 0;'}
+          width: 220px;
+          background: #0f172a;
+          border: 1px solid rgba(255,255,255,0.15);
+          border-radius: 12px;
+          padding: 0.5rem;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+          flex-direction: column;
+          gap: 0.35rem;
+        }
+        .v-feedback-menu.active {
+          display: flex;
+        }
+        .v-feedback-menu a {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.6rem 0.75rem;
+          color: #e2e8f0;
+          text-decoration: none;
+          font-size: 0.85rem;
+          border-radius: 8px;
+          transition: background 0.15s ease;
+        }
+        .v-feedback-menu a:hover {
+          background: rgba(255,255,255,0.1);
+          color: #fff;
+        }
+      </style>
+      <div class="v-feedback-menu" id="vendoraFeedbackMenu">
+        <a href="${base}customer-reviews/">⭐ ${isEn ? 'Leave a Review' : 'تقييمات وآراء العملاء'}</a>
+        <a href="${base}complaints/">⚠️ ${isEn ? 'Submit a Complaint' : 'تقديم شكوى أو ملاحظة'}</a>
+        <a href="https://wa.me/97333225954" data-wa-message="${isEn ? 'Hello, I have a customer service question.' : 'مرحباً، لدي استفسار لخدمة العملاء.'}">💬 ${isEn ? 'Contact Support' : 'تواصل مع الدعم'}</a>
+      </div>
+      <button class="v-feedback-btn" id="vendoraFeedbackBtn" type="button" aria-expanded="false" aria-label="${isEn ? 'Feedback and Support' : 'الملاحظات والدعم'}">
+        <span>💬</span>
+        <span>${isEn ? 'Feedback & Support' : 'الملاحظات والدعم'}</span>
+      </button>
+    `;
+
+    document.body.appendChild(container);
+
+    const btn = document.getElementById('vendoraFeedbackBtn');
+    const menu = document.getElementById('vendoraFeedbackMenu');
+
+    if (btn && menu) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', !expanded);
+        menu.classList.toggle('active');
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!container.contains(e.target)) {
+          menu.classList.remove('active');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
     }
   }
 
@@ -2775,6 +2882,7 @@
     setupOnlineHeartbeat();
     initRouteReviews();
     hydrateEnglishRouteDirectory();
+    setupFloatingFeedbackTab();
   }
 
   function initLeadOnly() {
@@ -2788,6 +2896,7 @@
     setupVipShell();
     trackPageView();
     setupOnlineHeartbeat();
+    setupFloatingFeedbackTab();
   }
 
   if (window.pageConfig && window.pageConfig.leadOnly === true) {

@@ -1,5 +1,6 @@
 import * as passengerCareApi from './functions/api/transport/passenger-care.js';
 import * as routeReviewsApi from './functions/api/transport/route-reviews.js';
+import * as complaintsApi from './functions/api/transport/complaints.js';
 import * as adminApi from './functions/api/transport/admin.js';
 import * as leadApi from './functions/api/transport/whatsapp-lead.js';
 import * as aiChatApi from './functions/api/transport/ai-chat.js';
@@ -388,6 +389,19 @@ export default {
         });
       }
 
+      const lowerPath = path.toLowerCase().replace(/\/+$/, '') || '/';
+      if (lowerPath === '/tools' || lowerPath.startsWith('/tools/')
+        || lowerPath === '/calculators' || lowerPath.startsWith('/calculators/')
+        || lowerPath === '/calculator' || lowerPath.startsWith('/calculator/')
+        || lowerPath === '/restaurant-calculators' || lowerPath.startsWith('/restaurant-calculators/')
+        || lowerPath === '/guides' || lowerPath.startsWith('/guides/')
+        || lowerPath === '/all-tools' || lowerPath.startsWith('/all-tools/')) {
+        return new Response('410 Gone - This tool has been decommissioned. Please visit Vendora Transport at https://getvendora.net/bahrain-saudi-gcc-transport/', {
+          status: 410,
+          headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=86400' },
+        });
+      }
+
       if (path.startsWith('/demo/maroc-market/api/')) {
         return await dispatchPagesFunction(marocMarketApi, request, env, ctx);
       }
@@ -425,6 +439,10 @@ export default {
 
       if (path === '/api/transport/route-reviews') {
         return await dispatchPagesFunction(routeReviewsApi, request, env, ctx);
+      }
+
+      if (path === '/api/transport/complaints') {
+        return await dispatchPagesFunction(complaintsApi, request, env, ctx);
       }
 
       if (path === '/api/transport/public-settings') {

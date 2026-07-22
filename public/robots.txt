@@ -9,23 +9,19 @@ Disallow: /nada%20Menu/
 Disallow: /bahrain-saudi-gcc-transport/admin/
 Disallow: /bahrain-saudi-gcc-transport/care/
 Disallow: /bahrain-saudi-gcc-transport/ai-chat-test/
-Disallow: /tools/pdf-converter-lab/backups/
 Disallow: /zip/
 
 # Machine-readable discovery files (linked from HTML; not sitemap entries)
 # https://getvendora.net/llms.txt
 # https://getvendora.net/.well-known/llms.txt
-# https://getvendora.net/data/tools-catalog.json
 # https://getvendora.net/ai-index.json
 
 Sitemap: https://getvendora.net/sitemap.xml
-Sitemap: https://getvendora.net/sitemap-tools.xml
 Sitemap: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-index.xml
 Sitemap: https://getvendora.net/sitemap-gcc-transport-en.xml
 # AI discovery files (explicitly allowed for LLM/assistant crawlers)
 Allow: /llms.txt
 Allow: /.well-known/llms.txt
 Allow: /ai-index.json
-Allow: /data/tools-catalog.json
 Allow: /bahrain-saudi-gcc-transport/llms.txt
 

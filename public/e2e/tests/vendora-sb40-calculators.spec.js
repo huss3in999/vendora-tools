@@ -49,8 +49,8 @@ test.describe('Vendora batch-40 calculators', () => {
     }
   });
 
-  test('sitemap includes a batch-40 URL', async ({ request }) => {
+  test('sitemap does not include decommissioned batch-40 URL', async ({ request }) => {
     const text = await (await request.get('/sitemap.xml')).text();
-    expect(text).toContain('https://getvendora.net/calculator/finance/cagr-calculator/');
+    expect(text).not.toContain('https://getvendora.net/calculator/finance/cagr-calculator/');
   });
 });

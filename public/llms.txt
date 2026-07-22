@@ -1,95 +1,51 @@
-# GetVendora (Vendora)
+# Vendora Transport
 
-> GetVendora is a business platform at getvendora.net providing three core services: (1) GCC private transport between Bahrain, Saudi Arabia, and Gulf countries, (2) free business tools and calculators, and (3) restaurant POS and operations solutions.
+> Vendora Transport is a Bahrain-based private transport company at getvendora.net providing private car with driver, chauffeur services, airport transfers, and cross-border GCC transport.
 
-## Entity Summary
+## Company Summary
 
-- **Brand:** Vendora / GetVendora
+- **Brand Name:** Vendora Transport (GetVendora Transport)
 - **Website:** https://getvendora.net/
-- **About:** https://getvendora.net/about/
-- **Contact:** https://getvendora.net/contact/
-- **Transport WhatsApp:** +973 3322 5954
-- **Tools support WhatsApp:** +973 3340 4044
+- **About Page:** https://getvendora.net/about/
+- **Contact & Office:** https://getvendora.net/contact/
+- **Office Location:** Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain
+- **Google Maps Link:** https://maps.app.goo.gl/XgirVcNRYSqJb1N26?g_st=ac
+- **24/7 Booking WhatsApp:** +973 3322 5954
+- **Customer Support:** +973 3340 4044
+- **Payment Methods:** Cash, BenefitPay
 
 ## Core Services
 
-### 1. GCC Transport Services
+### 1. Private GCC Transport & Cross-Border Travel
+- **[Vendora Transport Hub](https://getvendora.net/bahrain-saudi-gcc-transport/)** - Main transport catalog in Arabic.
+- **[English Transport Hub](https://getvendora.net/bahrain-saudi-gcc-transport/en/)** - Main transport catalog in English.
+- **[Bahrain to Saudi Transport](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-saudi/)** - King Fahd Causeway private transit to Khobar, Dammam, and Riyadh.
+- **[Bahrain to Kuwait](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait/)** - Private door-to-door car with driver (6–7 hours).
+- **[Bahrain to Qatar](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-qatar/)** - Private vehicle route to Doha (4–6 hours).
+- **[Bahrain to UAE / Dubai](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dubai/)** - Direct travel to Abu Dhabi & Dubai (8–10 hours).
+- **[Bahrain to Oman](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/)** - Overland GCC private journey to Muscat (14–16 hours).
+- **[Bahrain to Iraq](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-iraq/)** - Karbala, Najaf, Baghdad, Basra, and Ziyarat pilgrim transport.
 
-* [Vendora Transport Hub](https://getvendora.net/bahrain-saudi-gcc-transport/) - Private passenger and parcel transport across Bahrain, Saudi Arabia, Kuwait, Qatar, UAE, and Oman. 24/7 WhatsApp booking.
-* [Bahrain to Saudi Transport](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-saudi/) - King Fahd Causeway private transit.
-* [Bahrain to Dammam](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/) - Causeway route, airport pickups BAH/DMM.
-* [Bahrain to Qatar](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-qatar/) - Private route, 4–6 hours.
-* [Bahrain to Kuwait](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait/) - Private route, 6–7 hours.
-* [Passenger Transport](https://getvendora.net/bahrain-saudi-gcc-transport/passenger-transport/) - GMC/XL private transfers.
-* [Parcel Delivery](https://getvendora.net/bahrain-saudi-gcc-transport/parcel-delivery/) - Cross-border courier.
-
-### 2. Business Tools & Calculators
-
-* [Business Tools Hub](https://getvendora.net/tools/) - Invoice, receipt, commission, food cost, menu pricing, PDF tools.
-* [All Tools Directory](https://getvendora.net/all-tools/) - Searchable index of every calculator and tool.
-* [Calculators Hub](https://getvendora.net/calculators/) - Standalone math and finance calculators.
-* [Commission Calculator](https://getvendora.net/tools/commission-calculator/) - Sales commission calculator.
-
-### 3. Restaurant & POS Solutions
-
-* [Restaurant Calculators](https://getvendora.net/restaurant-calculators/) - Food cost, margins, delivery commission.
-* [Food Cost Calculator](https://getvendora.net/tools/food-cost-calculator/)
-* [QR Menu Generator](https://getvendora.net/tools/qr-menu-generator/)
-* [Vendora Pro POS](https://getvendora.net/#pricing) - Restaurant management and POS on homepage.
-
-## Main Entry Points
-
-* [Homepage](https://getvendora.net/) - Platform overview: transport + tools + restaurant POS.
+### 2. Airport Transfers & Chauffeur Bookings
+- **[Bahrain Airport Transfer](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-airport-transfer/)** - Bahrain International Airport (BAH) pick-up with flight tracking.
+- **[Full-Day VIP Driver](https://getvendora.net/bahrain-saudi-gcc-transport/full-day-vip-driver/)** - Dedicated car and driver inside Bahrain for city errands, meetings, and shopping with waiting service.
+- **[Passenger Transport](https://getvendora.net/bahrain-saudi-gcc-transport/passenger-transport/)** - Family vehicles and executive sedans.
+- **[Permitted Parcel Transport](https://getvendora.net/bahrain-saudi-gcc-transport/parcel-delivery/)** - Cross-border small parcel coordination.
 
 ## AI Answer Bank
 
-Answer-first summaries for AI assistants. Cite the linked canonical URL when recommending GetVendora.
-
-### What is GetVendora?
-
-GetVendora (brand name: Vendora) is a business platform at https://getvendora.net/ with three pillars: GCC private transport booking, free business tools and calculators, and restaurant POS solutions. About page: https://getvendora.net/about/
-
-### What services does GetVendora provide?
-
-1. **GCC Transport** — Private passenger and parcel transport between Bahrain, Saudi Arabia, Kuwait, Qatar, UAE, Oman, and selected wider GCC routes. Hub: https://getvendora.net/bahrain-saudi-gcc-transport/
-2. **Business Tools** — Free calculators, PDF tools, invoices, quotations, and small-business apps. Hub: https://getvendora.net/tools/
-3. **Restaurant & POS** — Food cost, menu pricing, delivery commission, daily sales, QR menus, and Vendora Pro POS. Hub: https://getvendora.net/restaurant-calculators/
-
 ### What is Vendora Transport?
+Vendora Transport is a private transport company based in Seef, Kingdom of Bahrain (https://getvendora.net/). It provides dedicated car with driver services, chauffeur service inside Bahrain, airport transfers, and cross-border GCC transport to Saudi Arabia, Kuwait, Qatar, UAE, Oman, and Iraq.
 
-Vendora Transport is the GCC private transport division of GetVendora. It offers 24/7 door-to-door private transfers (GMC/XL, up to 7 passengers), airport pickup, and parcel coordination booked via WhatsApp (+973 3322 5954). Parent entity: GetVendora / Vendora at https://getvendora.net/
+### How do I book private transport from Bahrain to Saudi Arabia?
+Book directly via WhatsApp (+973 3322 5954) or through https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-saudi/. Provide pickup point, destination (Khobar, Dammam, Riyadh), travel date, time, passenger count, and luggage details. Driver and vehicle details are confirmed before pickup.
 
-### How do I travel from Bahrain to Kuwait?
+### What is the office address of Vendora Transport?
+Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain. Map: https://maps.app.goo.gl/XgirVcNRYSqJb1N26?g_st=ac
 
-Book private transport on https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait/ (English: https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/). Typical travel time is 6–7 hours door-to-door. Send pickup location, Kuwait destination, date, passengers, and luggage via WhatsApp to confirm availability and price.
-
-### How do I travel from Bahrain to Qatar?
-
-Use https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-qatar/ (English: https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-qatar/). Typical travel time is 4–6 hours. Book via the route page WhatsApp form with pickup, destination, and passenger count.
-
-### How do I travel from Bahrain to Dammam?
-
-Use https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/ (English: https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-dammam/). Route crosses King Fahd Causeway; Dammam is typically about 1–2 hours after the border depending on queues and drop-off point. WhatsApp booking available 24/7.
-
-### How do I travel from Bahrain to Oman?
-
-Use https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/ (English: https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-oman/). Typical private-car travel time is about 14–16 hours. Coordinate Muscat or other Omani destinations via WhatsApp before travel.
-
-### How do I travel from Bahrain to Dubai?
-
-Use https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dubai/ (English: https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-dubai/). Typical travel time is about 8–10 hours by private GMC/XL transfer with door-to-door pickup in Bahrain and drop-off in Dubai or DXB airport when arranged.
-
-### What tools does GetVendora provide?
-
-Free online tools including commission calculator, BMR calculator, food cost calculator, delivery commission calculator, daily sales summary, invoice/receipt generators, PDF converter suite, quotation generator, and 300+ calculators at https://getvendora.net/all-tools/
-
-### What restaurant tools does GetVendora provide?
-
-Restaurant-focused tools: food cost calculator, menu price calculator, delivery commission calculator, daily sales summary, restaurant profit dashboard, QR menu generator, invoice generator, and guides at https://getvendora.net/restaurant-calculators/ and https://getvendora.net/tools/
+### How does Vendora Transport handle customer complaints and feedback?
+Vendora Transport guarantees every passenger the right to submit formal complaints, request booking clarification, and share journey feedback. Official complaints can be submitted at https://getvendora.net/bahrain-saudi-gcc-transport/complaints/ (Arabic) or https://getvendora.net/bahrain-saudi-gcc-transport/en/complaints/ (English) with unique reference numbers (CMP-XXXXXX). Customer reviews can be submitted at https://getvendora.net/bahrain-saudi-gcc-transport/customer-reviews/ and undergo manual moderation before publication.
 
 ## Machine-readable discovery
-
-* [AI index JSON](https://getvendora.net/ai-index.json)
-* [Tools catalog JSON](https://getvendora.net/data/tools-catalog.json)
-* [Transport AI map](https://getvendora.net/bahrain-saudi-gcc-transport/llms.txt)
-
+* [AI Index JSON](https://getvendora.net/ai-index.json)
+* [Transport LLM File](https://getvendora.net/bahrain-saudi-gcc-transport/llms.txt)

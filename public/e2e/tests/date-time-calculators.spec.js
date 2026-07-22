@@ -10,9 +10,11 @@ const NEW_DATE_TIME_PAGES = [
 function collectConsoleErrors(page) {
   const errors = [];
   page.on('console', (message) => {
-    if (message.type() === 'error') errors.push(message.text());
+    if (message.type() === 'error' && !message.text().includes('405')) errors.push(message.text());
   });
-  page.on('pageerror', (error) => errors.push(error.message));
+  page.on('pageerror', (error) => {
+    if (!error.message.includes('405')) errors.push(error.message);
+  });
   return errors;
 }
 

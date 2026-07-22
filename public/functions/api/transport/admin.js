@@ -1,6 +1,7 @@
 import { ensureErrorSchema, recordError } from './error-log.js';
 import { buildNtfyHeaders, getNtfyToken, resolveNtfyPublishUrl } from './whatsapp-lead.js';
 import { getPassengerCareAdminRows, deletePassengerCareFeedback, updatePassengerCareReviewApproval, regeneratePassengerCareToken } from './passenger-care.js';
+import { getComplaintsAdminRows, updateComplaintStatus } from './complaints.js';
 import {
   ensurePublicSettingsSchema,
   getPublicConfig,
@@ -1316,6 +1317,8 @@ export async function onRequestGet(context) {
           ? await getEventRows(env, request, 'pageview')
         : resource === 'passenger-care'
           ? await getPassengerCareAdminRows(env, request)
+        : resource === 'complaints'
+          ? await getComplaintsAdminRows(env, request)
           : await getEventRows(env, request, 'lead');
     return json({ ok: true, ...data }, { headers });
   } catch (error) {
@@ -1408,6 +1411,10 @@ async function handleAdminWrite(context) {
     }
     if (resource === 'passenger-care-link') {
       const result = await regeneratePassengerCareToken(env, payload);
+      return json(result, { status: result.status || (result.ok ? 200 : 400), headers });
+    }
+    if (resource === 'complaint-status' || resource === 'complaint') {
+      const result = await updateComplaintStatus(env, payload);
       return json(result, { status: result.status || (result.ok ? 200 : 400), headers });
     }
 

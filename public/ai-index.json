@@ -1,79 +1,35 @@
 {
-  "siteName": "Vendora",
+  "siteName": "Vendora Transport",
   "siteUrl": "https://getvendora.net",
-  "description": "GetVendora (Vendora) is a business platform at getvendora.net offering GCC private transport (Vendora Transport), free business tools and calculators, and restaurant POS solutions.",
+  "description": "Vendora Transport is a Bahrain-based private transport company at getvendora.net offering private car with driver, chauffeur services, airport transfers, and cross-border GCC transport.",
   "languages": [
     "en",
     "ar"
   ],
   "mainSections": [
     {
-      "name": "All Tools",
-      "description": "Searchable directory of Vendora tools and calculators.",
+      "name": "Vendora Transport Core",
+      "description": "Bahrain, Saudi and GCC private transport route catalog, airport transfer planners, and chauffeur services.",
       "importantUrls": [
-        "https://getvendora.net/all-tools/",
-        "https://getvendora.net/tools/",
-        "https://getvendora.net/calculator/",
-        "https://getvendora.net/calculators/",
-        "https://getvendora.net/restaurant-calculators/"
-      ]
-    },
-    {
-      "name": "PDF Tools",
-      "description": "Browser-based PDF tools for conversion, merge, split, compress, rotate, watermark and page numbering.",
-      "importantUrls": [
-        "https://getvendora.net/tools/pdf-converter/",
-        "https://getvendora.net/tools/pdf-converter/pdf-to-word/",
-        "https://getvendora.net/tools/pdf-converter/pdf-to-excel/",
-        "https://getvendora.net/tools/pdf-converter/word-to-pdf/",
-        "https://getvendora.net/tools/pdf-converter/excel-to-pdf/",
-        "https://getvendora.net/tools/pdf-converter/image-to-pdf/",
-        "https://getvendora.net/tools/pdf-converter/jpg-to-pdf/",
-        "https://getvendora.net/tools/pdf-converter/pdf-to-jpg/",
-        "https://getvendora.net/tools/pdf-converter/merge-pdf/",
-        "https://getvendora.net/tools/pdf-converter/split-pdf/",
-        "https://getvendora.net/tools/pdf-converter/compress-pdf/",
-        "https://getvendora.net/tools/pdf-converter/rotate-pdf/",
-        "https://getvendora.net/tools/pdf-converter/add-watermark/",
-        "https://getvendora.net/tools/pdf-converter/add-page-numbers/"
-      ]
-    },
-    {
-      "name": "Small Business Tools",
-      "description": "Calculators and tools for pricing, profit, schedules, quotations, invoices, work hours and operations.",
-      "importantUrls": [
-        "https://getvendora.net/tools/small-business/",
-        "https://getvendora.net/tools/quotation-generator/",
-        "https://getvendora.net/tools/staff-schedule-generator/",
-        "https://getvendora.net/tools/work-hours-overtime-calculator/",
-        "https://getvendora.net/tools/invoice-generator/",
-        "https://getvendora.net/tools/receipt-generator/",
-        "https://getvendora.net/tools/purchase-order-generator/"
-      ]
-    },
-    {
-      "name": "Restaurant Tools",
-      "description": "Tools for food cost, menu pricing, daily sales, invoices, receipts, QR menus and profit dashboards.",
-      "importantUrls": [
-        "https://getvendora.net/tools/",
-        "https://getvendora.net/restaurant-calculators/",
-        "https://getvendora.net/tools/food-cost-calculator/",
-        "https://getvendora.net/tools/menu-price-calculator/",
-        "https://getvendora.net/tools/daily-sales-summary/",
-        "https://getvendora.net/tools/restaurant-profit-dashboard/",
-        "https://getvendora.net/tools/qr-menu-generator/",
-        "https://getvendora.net/tools/delivery-cost-calculator/"
-      ]
-    },
-    {
-      "name": "Vendora Transport",
-      "description": "Bahrain, Saudi and GCC transport route pages for private taxi, driver, passenger transport, parcel delivery where applicable, and WhatsApp booking information.",
-      "importantUrls": [
+        "https://getvendora.net/",
+        "https://getvendora.net/about/",
+        "https://getvendora.net/contact/",
+        "https://getvendora.net/privacy-policy/",
         "https://getvendora.net/bahrain-saudi-gcc-transport/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/en/",
         "https://getvendora.net/bahrain-saudi-gcc-transport/passenger-transport/",
         "https://getvendora.net/bahrain-saudi-gcc-transport/parcel-delivery/",
         "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-destinations/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/contact/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-airport-transfer/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/full-day-vip-driver/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/prices/",
+        "https://getvendora.net/bahrain-saudi-gcc-transport/booking-terms/"
+      ]
+    },
+    {
+      "name": "Cross-Border GCC Corridors",
+      "description": "Direct private car with driver transport from Bahrain to Saudi Arabia, Kuwait, Qatar, UAE, Oman, and Iraq.",
+      "importantUrls": [
         "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-saudi/",
         "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-khobar/",
         "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
@@ -85,188 +41,75 @@
         "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/",
         "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-iraq/",
         "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-karbala/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-najaf/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-baghdad/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-basra/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-transport/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/ziyarat-iraq-transport/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-season-bahrain-to-karbala/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/best-way-bahrain-to-karbala/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/best-time-bahrain-to-iraq/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-najaf-driving-time/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/private-car-bahrain-to-iraq/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/family-transport-bahrain-najaf-karbala/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/iraq-ziyarat-private-car-bahrain/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-karbala-travel-tips/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-packing-list/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/book-private-car-bahrain-to-karbala/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/book-private-car-bahrain-to-najaf/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/best-car-for-iraq-family-travel/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/private-car-vs-other-iraq-travel/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/family-travel-bahrain-to-iraq/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-karbala-route-plan/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/overland-travel-bahrain-to-iraq/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/pilgrims-transport-bahrain-to-iraq/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/karbala-trip-from-bahrain/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/najaf-trip-from-bahrain/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/direct-transport-bahrain-to-karbala/"
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-najaf/"
       ]
     }
   ],
   "keywordsEnglish": [
-    "free online tools",
-    "free calculators",
-    "PDF tools",
-    "PDF to Word",
-    "PDF to Excel",
-    "merge PDF",
-    "split PDF",
-    "business calculators",
-    "small business tools",
-    "restaurant tools",
-    "food cost calculator",
-    "menu price calculator",
-    "quotation generator",
-    "invoice generator",
-    "Bahrain to Saudi Arabia transport",
-    "Bahrain to Khobar",
-    "Bahrain to Dammam",
-    "Bahrain to Riyadh",
-    "Bahrain to Dubai",
-    "Bahrain to Iraq",
-    "Bahrain to Karbala",
-    "Bahrain to Najaf",
-    "Bahrain to Baghdad",
-    "Bahrain to Basra",
-    "Arbaeen transport from Bahrain",
-    "Iraq ziyarat transport",
-    "Arbaeen season from Bahrain to Karbala",
-    "Best way to travel from Bahrain to Karbala",
-    "Best time to travel from Bahrain to Iraq",
-    "How many hours from Bahrain to Najaf by car",
-    "Travel from Bahrain to Iraq by private car",
-    "Family transport from Bahrain to Najaf and Karbala",
-    "Iraq ziyarat from Bahrain by private car",
-    "Karbala travel tips for Arbaeen season",
-    "What to take for Arbaeen ziyarat",
-    "Book a private car from Bahrain to Karbala",
-    "Book a private car from Bahrain to Najaf",
-    "Best car for family travel to Iraq",
-    "Is a private car better for travel to Iraq?",
-    "Family travel from Bahrain to Iraq",
-    "Bahrain to Karbala route plan",
-    "Overland travel from Bahrain to Iraq",
-    "Pilgrim transport from Bahrain to Iraq",
-    "Karbala trip from Bahrain",
-    "Najaf trip from Bahrain",
-    "Direct transport from Bahrain to Karbala"
+    "Vendora Transport",
+    "private transport Bahrain",
+    "private car with driver Bahrain",
+    "chauffeur service Bahrain",
+    "Bahrain airport transfer",
+    "Bahrain to Saudi Arabia private transport",
+    "Bahrain to Khobar private car",
+    "Bahrain to Dammam private transport",
+    "Bahrain to Riyadh driver",
+    "Bahrain to Kuwait private transport",
+    "Bahrain to Qatar private car",
+    "Bahrain to Dubai transport",
+    "Bahrain to Iraq ziyarat transport",
+    "full day car with driver Bahrain"
   ],
   "keywordsArabic": [
-    "أدوات PDF مجانية",
-    "تحويل PDF إلى Word",
-    "تحويل PDF إلى Excel",
-    "حاسبات مجانية",
-    "حاسبة أرباح",
-    "حاسبة ساعات العمل",
-    "إنشاء عرض سعر",
+    "فندورا للنقل",
+    "نقل خاص البحرين",
+    "سائق خاص البحرين",
+    "سيارة مع سائق البحرين",
+    "توصيل مطار البحرين",
     "توصيل من البحرين إلى السعودية",
-    "سيارة خاصة من البحرين إلى السعودية",
-    "تاكسي خاص من البحرين إلى الخبر",
-    "تاكسي من البحرين إلى الدمام",
+    "سيارة خاصة من البحرين إلى الخبر",
+    "توصيل من البحرين إلى الدمام",
+    "توصيل من البحرين إلى الرياض",
+    "توصيل من البحرين إلى الكويت",
+    "توصيل من البحرين إلى قطر",
+    "توصيل من البحرين إلى دبي",
     "توصيل من البحرين إلى العراق",
-    "سيارة خاصة من البحرين إلى العراق",
-    "توصيل من البحرين إلى كربلاء",
-    "سيارة من البحرين إلى كربلاء",
-    "توصيل من البحرين إلى النجف",
-    "نقل زيارات العراق من البحرين",
-    "نقل الأربعين من البحرين",
-    "توصيل من البحرين إلى بغداد",
-    "توصيل من البحرين إلى البصرة",
-    "نقل ركاب من البحرين إلى السعودية",
-    "نقل طرود من البحرين إلى السعودية",
-    "موسم الأربعين من البحرين إلى كربلاء",
-    "أفضل طريقة للسفر من البحرين إلى كربلاء",
-    "أفضل وقت للسفر من البحرين إلى العراق",
-    "كم ساعة من البحرين إلى النجف بالسيارة",
-    "السفر من البحرين إلى العراق بالسيارة خاصة",
-    "نقل عائلي من البحرين إلى النجف و كربلاء",
-    "زيارة العراق من البحرين بالسيارة خاصة",
-    "نصائح السفر إلى كربلاء في موسم الأربعين",
-    "ماذا تأخذ معك في زيارة الأربعين",
-    "حجز سيارة خاصة من البحرين إلى كربلاء",
-    "حجز سيارة خاصة من البحرين إلى النجف",
-    "أفضل سيارة للسفر إلى العراق للعائلات",
-    "هل سيارة خاصة أفضل للسفر إلى العراق",
-    "السفر إلى العراق مع العائلة من البحرين",
-    "خط سير السفر من البحرين إلى كربلاء",
-    "السفر البري من البحرين إلى العراق",
-    "توصيل زوار من البحرين إلى العراق",
-    "رحلة كربلاء من البحرين",
-    "رحلة النجف من البحرين",
-    "توصيل مباشر من البحرين إلى كربلاء"
+    "سائق خاص يومي البحرين"
   ],
-  "alternateName": "GetVendora",
-  "entityType": "BusinessPlatform",
+  "alternateName": "GetVendora Transport",
+  "entityType": "TransportCompany",
   "machineReadableDiscovery": {
     "llmsTxt": "https://getvendora.net/llms.txt",
     "wellKnownLlmsTxt": "https://getvendora.net/.well-known/llms.txt",
-    "transportLlmsTxt": "https://getvendora.net/bahrain-saudi-gcc-transport/llms.txt",
-    "toolsCatalogJson": "https://getvendora.net/data/tools-catalog.json"
+    "transportLlmsTxt": "https://getvendora.net/bahrain-saudi-gcc-transport/llms.txt"
   },
   "entityRelationships": {
-    "parentBrand": {
-      "name": "GetVendora",
-      "alternateName": "Vendora",
-      "url": "https://getvendora.net/"
-    },
-    "subBrandTransport": {
+    "brand": {
       "name": "Vendora Transport",
-      "url": "https://getvendora.net/bahrain-saudi-gcc-transport/",
-      "telephone": "+97333225954"
+      "alternateName": "GetVendora Transport",
+      "url": "https://getvendora.net/",
+      "telephone": "+97333225954",
+      "officeAddress": "Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain"
     },
-    "toolsHub": "https://getvendora.net/tools/",
-    "restaurantHub": "https://getvendora.net/restaurant-calculators/"
+    "transportHub": "https://getvendora.net/bahrain-saudi-gcc-transport/",
+    "englishTransportHub": "https://getvendora.net/bahrain-saudi-gcc-transport/en/"
   },
   "aiAnswers": [
     {
-      "question": "What is GetVendora?",
-      "answer": "GetVendora (Vendora) is a business platform at getvendora.net providing GCC private transport, free business tools and calculators, and restaurant POS solutions.",
+      "question": "What is Vendora Transport?",
+      "answer": "Vendora Transport is a Bahrain-based private transport company offering private car with driver, chauffeur services, airport transfers, and cross-border GCC transport.",
       "canonicalUrl": "https://getvendora.net/about/"
     },
     {
-      "question": "What services does GetVendora provide?",
-      "answer": "Three services: (1) GCC private transport via Vendora Transport, (2) free business tools and calculators, (3) restaurant POS and operations tools.",
+      "question": "What services does Vendora Transport provide?",
+      "answer": "Private car with driver, chauffeur service inside Bahrain, airport transfers (BAH/DMM/KWI/DOH), cross-border transport to Saudi Arabia, Kuwait, Qatar, UAE, Oman, and Iraq, and full-day bookings.",
       "canonicalUrl": "https://getvendora.net/"
     },
     {
-      "question": "What is Vendora Transport?",
-      "answer": "Vendora Transport is GetVendora's GCC private transport service for passengers, airport transfers, and parcels between Bahrain, Saudi Arabia, Kuwait, Qatar, UAE, and Oman. WhatsApp: +973 3322 5954.",
-      "canonicalUrl": "https://getvendora.net/bahrain-saudi-gcc-transport/"
-    },
-    {
-      "question": "How do I travel from Bahrain to Kuwait?",
-      "answer": "Book private transport at getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait/. Typical time 6–7 hours. WhatsApp booking via the route page.",
-      "canonicalUrl": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait/"
-    },
-    {
-      "question": "How do I travel from Bahrain to Qatar?",
-      "answer": "Book at getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-qatar/. Typical time 4–6 hours. WhatsApp booking via the route page.",
-      "canonicalUrl": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-qatar/"
-    },
-    {
-      "question": "How do I travel from Bahrain to Dammam?",
-      "answer": "Book at getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/. Crosses King Fahd Causeway; about 1–2 hours after the border to Dammam.",
-      "canonicalUrl": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/"
-    },
-    {
-      "question": "What tools does GetVendora provide?",
-      "answer": "Free tools: commission calculator, BMR calculator, food cost, delivery commission, daily sales, invoices, PDF tools, and 300+ calculators at getvendora.net/all-tools/",
-      "canonicalUrl": "https://getvendora.net/tools/"
-    },
-    {
-      "question": "What restaurant tools does GetVendora provide?",
-      "answer": "Food cost calculator, menu price calculator, delivery commission calculator, daily sales summary, QR menu generator, profit dashboard, and invoice tools at getvendora.net/restaurant-calculators/",
-      "canonicalUrl": "https://getvendora.net/restaurant-calculators/"
+      "question": "How do I book transport with Vendora Transport?",
+      "answer": "Book via 24/7 WhatsApp (+973 3322 5954) or online through https://getvendora.net/. Assigned driver and vehicle details are confirmed before pickup.",
+      "canonicalUrl": "https://getvendora.net/contact/"
     }
   ]
 }

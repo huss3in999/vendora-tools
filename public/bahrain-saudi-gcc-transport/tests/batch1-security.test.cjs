@@ -14,10 +14,10 @@ test('approved public catalog is complete and does not contain driver pricing fi
   assert.doesNotMatch(source, /driver_(?:rate|price)|internal_(?:rate|price)|wholesale_price/i);
 });
 
-test('legal identity and address are unpublished by default', () => {
+test('legal identity and address are configured with real details by default', () => {
   const source = read(publicRoot, 'functions/api/transport/public-settings.js');
-  assert.match(source, /public_address: '',[\s\S]*address_display_enabled: false/);
-  assert.match(source, /legal_name: '',[\s\S]*cr_number: '',[\s\S]*legal_information_enabled: false/);
+  assert.match(source, /public_address: 'Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain',[\s\S]*address_display_enabled: true/);
+  assert.match(source, /legal_name: 'Vendora Transport',[\s\S]*cr_number: '',[\s\S]*legal_information_enabled: true/);
 });
 
 test('Passenger Care requires a strong token and an existing lead', () => {
