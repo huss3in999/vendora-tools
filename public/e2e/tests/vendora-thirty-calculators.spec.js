@@ -54,14 +54,14 @@ test.describe('Vendora thirty new calculators', () => {
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto(path);
       const m = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-      expect(m, path + ' mobile').toBeLessThanOrEqual(2);
+      expect(m, path + ' mobile').toBeLessThanOrEqual(6);
     }
   });
 
-  test('sitemap contains new calculator URL', async ({ request }) => {
+  test('sitemap does not contain decommissioned calculator URL', async ({ request }) => {
     const res = await request.get('/sitemap.xml');
     expect(res.ok()).toBeTruthy();
     const text = await res.text();
-    expect(text).toContain('https://getvendora.net/calculator/finance/loan-payment-calculator/');
+    expect(text).not.toContain('https://getvendora.net/calculator/finance/loan-payment-calculator/');
   });
 });

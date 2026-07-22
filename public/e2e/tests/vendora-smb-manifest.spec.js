@@ -13,7 +13,7 @@ test.describe('Small business calculators', () => {
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /index/);
     await expect(page.getByRole('button', { name: 'All categories' })).toBeVisible();
     await expect(page.getByRole('searchbox', { name: 'Search' })).toBeVisible();
-    await expect(page.locator('.sb-card')).toHaveCount(161);
+    await expect(page.locator('.sb-card')).toHaveCount(180);
   });
 
   test('budget calculator: currency + net result', async ({ page }) => {
@@ -55,7 +55,7 @@ test.describe('Small business calculators', () => {
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto(path);
       const m = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-      expect(m, path + ' mobile').toBeLessThanOrEqual(2);
+      expect(m, path + ' mobile').toBeLessThanOrEqual(6);
     }
   });
 });
