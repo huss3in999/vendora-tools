@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --bg: #f4f6f9;
   --bg-soft: #eef2f7;
   --surface: rgba(255, 255, 255, 0.94);
@@ -3592,5 +3592,238 @@ body.vip-transport .transport-footer :is(p, li, a, .footer-copy, .footer-note) {
   body.vip-transport.transport-hub .service-showcase { gap: 16px; }
   body.vip-transport.transport-hub .service-card-body { padding: 17px; }
   body.vip-transport.transport-hub .service-card p { line-height: 1.52; }
-  body.vip-transport.transport-hub .service-card ul { margin-bottom: 14px; }
+body.vip-transport.transport-hub .service-card ul { margin-bottom: 14px; }
 }
+
+/* ==========================================================================
+   HIGH CONTRAST & ACCESSIBLE READABILITY FOR DARK SURFACES & HERO CARDS
+   ========================================================================== */
+
+body.home-premium {
+  --text: #f8fafc;
+  --muted: #cbd5e1;
+  --accent: #f59e0b;
+  --accent-strong: #fef08a;
+}
+
+body.home-premium :is(.hero-copy, .glass, .hero-side, .panel, .cta-box, .booking-card, .footer-card, .rights-card, .rights-box, .legal-content) {
+  color: #f8fafc;
+}
+
+body.home-premium :is(.hero-copy, .glass, .hero-side, .panel, .cta-box, .booking-card, .footer-card, .rights-card, .rights-box, .legal-content) :is(p, span:not(.logo):not(.eyebrow), li, div, small, label) {
+  color: #e2e8f0;
+  opacity: 1;
+}
+
+body.home-premium :is(.hero-copy, .glass, .hero-side, .panel, .cta-box, .booking-card, .footer-card, .rights-card, .rights-box, .legal-content) .lead {
+  color: #cbd5e1;
+  font-size: clamp(1rem, 2vw, 1.12rem);
+  line-height: 1.65;
+}
+
+body.home-premium :is(.hero-copy, .glass, .hero-side, .panel, .cta-box, .booking-card, .footer-card, .rights-card, .rights-box, .legal-content) :is(h1, h2, h3, h4, strong) {
+  color: #fef08a;
+}
+
+body.home-premium :is(.hero-copy, .glass, .hero-side, .panel, .cta-box, .booking-card, .footer-card, .rights-card, .rights-box, .legal-content) a:not(.primary-btn):not(.wa-inline):not(.nav-link):not(.ghost-btn) {
+  color: #fbbf24;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+body.home-premium :is(.hero-copy, .glass, .hero-side, .panel, .cta-box, .booking-card, .footer-card, .rights-card, .rights-box, .legal-content) a:not(.primary-btn):not(.wa-inline):not(.nav-link):not(.ghost-btn):hover {
+  color: #fef08a;
+}
+
+/* Bullet list readability in dark hero & dark cards */
+.hero-points,
+.rights-card ul,
+.rights-box ul,
+.legal-content ul {
+  margin: 16px 0;
+  padding-inline-start: 22px;
+  list-style: disc;
+}
+
+body.home-premium .hero-points li,
+body.home-premium .rights-card li,
+body.home-premium .rights-box li,
+body.home-premium .legal-content li {
+  color: #f1f5f9;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  margin-bottom: 10px;
+}
+
+/* Customer Rights Card explicit contrast styling */
+.rights-card,
+.rights-box {
+  background: rgba(15, 23, 42, 0.94) !important;
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+  border-inline-start: 5px solid #f59e0b !important;
+  border-radius: 18px !important;
+  padding: 1.75rem !important;
+  margin-bottom: 2rem !important;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45) !important;
+  color: #f8fafc !important;
+}
+
+.rights-card h2,
+.rights-card h3,
+.rights-box h2,
+.rights-box h3 {
+  color: #fef08a !important;
+  font-size: clamp(1.2rem, 2.5vw, 1.45rem) !important;
+  font-weight: 800 !important;
+  margin-top: 0 !important;
+  margin-bottom: 12px !important;
+}
+
+.rights-card p,
+.rights-box p {
+  color: #e2e8f0 !important;
+  font-size: 1rem !important;
+  line-height: 1.7 !important;
+  margin-bottom: 14px !important;
+}
+
+.rights-card li,
+.rights-box li {
+  color: #f8fafc !important;
+  font-size: 0.98rem !important;
+  line-height: 1.65 !important;
+  margin-bottom: 10px !important;
+}
+
+.rights-card a,
+.rights-box a {
+  color: #fbbf24 !important;
+  text-decoration: underline !important;
+  font-weight: 700 !important;
+}
+
+/* Header & Hero Spacing & Non-Clipped Responsive Layout */
+.hero {
+  padding: 36px 0 24px;
+}
+
+.home-premium .hero {
+  padding-top: 42px;
+  padding-bottom: 32px;
+}
+
+.hero-copy {
+  padding: 30px;
+  overflow: visible !important;
+  min-height: auto;
+}
+
+@media (max-width: 820px) {
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+  }
+
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 12px;
+    padding: 8px 0;
+  }
+
+  .brand {
+    flex: 1 1 auto;
+  }
+
+  .quick-links {
+    flex: 0 0 auto;
+  }
+
+  .nav-menu {
+    width: 100%;
+    flex: 0 0 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    gap: 6px;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-menu::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-menu .nav-link {
+    padding: 6px 12px;
+    font-size: 12px;
+    min-height: 34px;
+    flex-shrink: 0;
+  }
+
+  .hero {
+    padding-top: 24px;
+  }
+
+  .hero-copy {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    line-height: 1.25;
+  }
+}
+
+@media (max-width: 400px) {
+  .hero-copy {
+    padding: 16px;
+  }
+
+  h1 {
+    font-size: 1.45rem;
+  }
+
+  .lead {
+    font-size: 0.9rem;
+  }
+}
+
+/* Ultra-small viewport (305px) layout & form overflow prevention */
+@media (max-width: 360px) {
+  .container {
+    width: calc(100% - 12px) !important;
+    margin-inline: auto !important;
+  }
+
+  form,
+  .rights-card,
+  .rights-box,
+  .panel,
+  .glass,
+  .hero-copy,
+  .section-shell {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .rights-card,
+  .rights-box {
+    padding: 1rem !important;
+  }
+}
+
+
