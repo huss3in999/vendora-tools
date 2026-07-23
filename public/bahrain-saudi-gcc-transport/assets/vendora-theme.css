@@ -88,6 +88,43 @@ body.vip-transport :is(.section-shell, .legal-content, .page-shell)
   text-decoration-thickness: 2px;
 }
 
+/* Service cards are dark surfaces even when they sit inside a light section shell. */
+body.vip-transport.transport-hub .section-shell .service-card {
+  color: var(--vendora-text-on-dark);
+  background-color: var(--vendora-surface-dark);
+  background-image: linear-gradient(145deg, var(--vendora-navy-soft), var(--vendora-surface-dark));
+  border-color: var(--vendora-border);
+  box-shadow: var(--vendora-shadow-dark);
+}
+
+body.vip-transport.transport-hub .section-shell .service-card
+  :is(p, li, dt, dd, small, .lead, .field-help, .route-meta, .trust-line) {
+  color: var(--vendora-muted-on-dark);
+  opacity: 1;
+}
+
+body.vip-transport.transport-hub .section-shell .service-card
+  :is(h1, h2, h3, h4, h5, h6, summary, strong) {
+  color: var(--vendora-gold-bright);
+}
+
+body.vip-transport.transport-hub .section-shell .service-card li::marker {
+  color: var(--vendora-gold-bright);
+}
+
+body.vip-transport.transport-hub .section-shell .service-card
+  a:not(.primary-btn):not(.wa-inline):not(.ghost-btn),
+body.vip-transport.transport-hub .section-shell .service-card
+  a:not(.primary-btn):not(.wa-inline):not(.ghost-btn):visited {
+  color: var(--vendora-link-on-dark);
+}
+
+body.vip-transport.transport-hub .section-shell .service-card
+  a:not(.primary-btn):not(.wa-inline):not(.ghost-btn):is(:hover, :focus-visible) {
+  color: var(--vendora-text-on-dark);
+  text-decoration-thickness: 2px;
+}
+
 body.vip-transport :is(
   .hero-copy, .hero-side, .vip-app-hero-copy, .vip-content-hero-copy,
   .vip-app-hero-visual, .vip-content-hero-visual, .company-panel,
