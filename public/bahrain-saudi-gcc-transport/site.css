@@ -108,6 +108,14 @@ img, svg { max-width: 100%; }
   box-shadow: var(--shadow-soft);
 }
 
+.logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
 .brand-copy {
   display: grid;
   gap: 3px;
