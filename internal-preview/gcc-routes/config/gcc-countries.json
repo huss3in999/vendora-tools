@@ -1,0 +1,112 @@
+{
+  "config_version": 1,
+  "last_updated": "2026-07-24",
+  "countries": [
+    {
+      "code": "BH",
+      "slug": "bahrain",
+      "name_ar": "البحرين",
+      "name_en": "Bahrain",
+      "hub_slug": "transport-from-bahrain",
+      "pickup_areas": [
+        {"ar": "المنامة", "en": "Manama"},
+        {"ar": "السيف", "en": "Seef"},
+        {"ar": "الجفير", "en": "Juffair"},
+        {"ar": "المحرق", "en": "Muharraq"},
+        {"ar": "سار", "en": "Saar"},
+        {"ar": "فنادق ومنازل البحرين", "en": "Bahrain hotels and residential addresses"}
+      ],
+      "airports": [{"code": "BAH", "name_ar": "مطار البحرين الدولي", "name_en": "Bahrain International Airport"}]
+    },
+    {
+      "code": "SA",
+      "slug": "saudi",
+      "name_ar": "السعودية",
+      "name_en": "Saudi Arabia",
+      "hub_slug": "transport-from-saudi",
+      "pickup_areas": [
+        {"ar": "الخبر", "en": "Khobar"},
+        {"ar": "الدمام", "en": "Dammam"},
+        {"ar": "الرياض", "en": "Riyadh"},
+        {"ar": "الجبيل", "en": "Jubail"},
+        {"ar": "الأحساء", "en": "Al Ahsa"}
+      ],
+      "airports": [
+        {"code": "DMM", "name_ar": "مطار الملك فهد الدولي", "name_en": "King Fahd International Airport"},
+        {"code": "RUH", "name_ar": "مطار الملك خالد الدولي", "name_en": "King Khalid International Airport"}
+      ]
+    },
+    {
+      "code": "QA",
+      "slug": "qatar",
+      "name_ar": "قطر",
+      "name_en": "Qatar",
+      "hub_slug": "transport-from-qatar",
+      "pickup_areas": [
+        {"ar": "الدوحة", "en": "Doha"},
+        {"ar": "فنادق ومنازل قطر", "en": "Qatar hotels and residential addresses"}
+      ],
+      "airports": [{"code": "DOH", "name_ar": "مطار حمد الدولي", "name_en": "Hamad International Airport"}]
+    },
+    {
+      "code": "KW",
+      "slug": "kuwait",
+      "name_ar": "الكويت",
+      "name_en": "Kuwait",
+      "hub_slug": "transport-from-kuwait",
+      "pickup_areas": [
+        {"ar": "مدينة الكويت", "en": "Kuwait City"},
+        {"ar": "العبدلي", "en": "Abdali"},
+        {"ar": "فنادق ومنازل الكويت", "en": "Kuwait hotels and residential addresses"}
+      ],
+      "airports": [{"code": "KWI", "name_ar": "مطار الكويت الدولي", "name_en": "Kuwait International Airport"}]
+    },
+    {
+      "code": "AE",
+      "slug": "uae",
+      "name_ar": "الإمارات",
+      "name_en": "UAE",
+      "hub_slug": "transport-from-uae",
+      "pickup_areas": [
+        {"ar": "دبي", "en": "Dubai"},
+        {"ar": "أبوظبي", "en": "Abu Dhabi"},
+        {"ar": "فنادق ومنازل الإمارات", "en": "UAE hotels and residential addresses"}
+      ],
+      "airports": [
+        {"code": "DXB", "name_ar": "مطار دبي الدولي", "name_en": "Dubai International Airport"},
+        {"code": "AUH", "name_ar": "مطار زايد الدولي", "name_en": "Zayed International Airport"}
+      ]
+    },
+    {
+      "code": "OM",
+      "slug": "oman",
+      "name_ar": "عُمان",
+      "name_en": "Oman",
+      "hub_slug": "transport-from-oman",
+      "pickup_areas": [
+        {"ar": "مسقط", "en": "Muscat"},
+        {"ar": "فنادق ومنازل عُمان", "en": "Oman hotels and residential addresses"}
+      ],
+      "airports": [{"code": "MCT", "name_ar": "مطار مسقط الدولي", "name_en": "Muscat International Airport"}]
+    },
+    {
+      "code": "IQ",
+      "slug": "iraq",
+      "name_ar": "العراق",
+      "name_en": "Iraq",
+      "hub_slug": "transport-from-iraq",
+      "pickup_areas": [
+        {"ar": "البصرة", "en": "Basra"},
+        {"ar": "بغداد", "en": "Baghdad"},
+        {"ar": "كربلاء", "en": "Karbala"},
+        {"ar": "النجف", "en": "Najaf"},
+        {"ar": "سفوان", "en": "Safwan"}
+      ],
+      "airports": [
+        {"code": "BSR", "name_ar": "مطار البصرة الدولي", "name_en": "Basra International Airport"},
+        {"code": "BGW", "name_ar": "مطار بغداد الدولي", "name_en": "Baghdad International Airport"},
+        {"code": "NJF", "name_ar": "مطار النجف الدولي", "name_en": "Al Najaf International Airport"}
+      ]
+    }
+  ]
+}
