@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "sync": "node scripts/sync-transport-site.mjs",
+    "validate:central-config": "node scripts/validate-central-config.mjs",
     "test": "playwright test",
     "test:ui": "playwright test --ui"
   },

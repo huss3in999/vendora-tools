@@ -321,6 +321,9 @@
 }
 </script>
   <script type="application/ld+json" id="tripCalculatorSchema">{"@context":"https://schema.org","@type":"WebApplication","@id":"https://getvendora.net/bahrain-saudi-gcc-transport/gcc-transport-planner/#application","name":"حاسبة الرحلة من فندورا","applicationCategory":"TravelApplication","operatingSystem":"Any","url":"https://getvendora.net/bahrain-saudi-gcc-transport/gcc-transport-planner/","inLanguage":"ar-BH","isAccessibleForFree":true,"description":"حاسبة لتقدير الأسعار العامة المعدة والمدة التقريبية ومراحل الرحلة وطلبات المطار وتجهيز طلب عرض السعر عبر واتساب."}</script>
+  <!-- Vendora global sources: edit config/*.json and assets/vendora-theme.css, then run npm run sync. -->
+  <link rel="stylesheet" href="../assets/vendora-theme.css" data-vendora-global-theme />
+  <script src="../assets/vendora-config.js" data-vendora-global-config></script>
 </head>
 <body class="home-premium planner-page vip-transport">
   <header class="topbar">
@@ -341,7 +344,7 @@
         <a class="nav-link" href="/bahrain-saudi-gcc-transport/contact/">تواصل معنا</a>
       </nav>
       <div class="quick-links">
-        <a class="wa-inline" data-wa-message="مرحباً فندورا، أحتاج طلب توصيل أو رحلة بين دول الخليج.">
+        <a href="https://wa.me/97333225954" class="wa-inline" data-wa-message="مرحباً فندورا، أحتاج طلب توصيل أو رحلة بين دول الخليج." data-vendora-config="whatsapp-link">
           <i data-lucide="message-circle"></i>
           <span>واتساب</span>
         </a>
@@ -369,7 +372,7 @@
               <i data-lucide="route"></i>
               <span>جرب مخطط الرحلة</span>
             </a>
-            <a class="wa-inline" data-wa-message="مرحباً فندورا، أحتاج طلب توصيل أو رحلة بين دول الخليج.">
+            <a href="https://wa.me/97333225954" class="wa-inline" data-wa-message="مرحباً فندورا، أحتاج طلب توصيل أو رحلة بين دول الخليج." data-vendora-config="whatsapp-link">
               <i data-lucide="message-circle"></i>
               <span>احجز عبر واتساب</span>
             </a>
@@ -522,13 +525,13 @@
           <article class="route-card planner-route-card"><h3>البحرين إلى الرياض</h3><p>مسار طويل يحتاج وقتاً وتنسيقاً أوضح.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/bahrain-to-riyadh/">افتح الصفحة</a></article>
           <article class="route-card planner-route-card"><h3>الرياض إلى البحرين</h3><p>رحلة عودة طويلة حسب وقت الانطلاق والتوقفات.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/riyadh-to-bahrain/">افتح الصفحة</a></article>
           <article class="route-card planner-route-card"><h3>البحرين إلى الكويت</h3><p>تقدير أطول مع مراعاة الحدود والتوقفات.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/bahrain-to-kuwait/">افتح الصفحة</a></article>
-          <article class="route-card planner-route-card"><h3>الكويت إلى البحرين</h3><p>يرجى إرسال التفاصيل للتأكد من التوفر.</p><a class="ghost-btn" data-wa-message="مرحباً فندورا، أحتاج رحلة من الكويت إلى البحرين.">استفسر عبر واتساب</a></article>
+          <article class="route-card planner-route-card"><h3>الكويت إلى البحرين</h3><p>يرجى إرسال التفاصيل للتأكد من التوفر.</p><a href="https://wa.me/97333225954" class="ghost-btn" data-wa-message="مرحباً فندورا، أحتاج رحلة من الكويت إلى البحرين." data-vendora-config="whatsapp-link">استفسر عبر واتساب</a></article>
           <article class="route-card planner-route-card"><h3>البحرين إلى قطر</h3><p>مسار إلى قطر أو الدوحة حسب التوفر.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/bahrain-to-qatar/">افتح الصفحة</a></article>
-          <article class="route-card planner-route-card"><h3>قطر إلى البحرين</h3><p>طلبات عكسية يتم تأكيدها عبر واتساب.</p><a class="ghost-btn" data-wa-message="مرحباً فندورا، أحتاج رحلة من قطر أو الدوحة إلى البحرين.">استفسر عبر واتساب</a></article>
+          <article class="route-card planner-route-card"><h3>قطر إلى البحرين</h3><p>طلبات عكسية يتم تأكيدها عبر واتساب.</p><a href="https://wa.me/97333225954" class="ghost-btn" data-wa-message="مرحباً فندورا، أحتاج رحلة من قطر أو الدوحة إلى البحرين." data-vendora-config="whatsapp-link">استفسر عبر واتساب</a></article>
           <article class="route-card planner-route-card"><h3>البحرين إلى الإمارات</h3><p>يشمل دبي أو أبوظبي حسب تفاصيل الطلب.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/bahrain-to-uae/">افتح الصفحة</a></article>
-          <article class="route-card planner-route-card"><h3>الإمارات إلى البحرين</h3><p>يرسل الطلب للتأكيد حسب المدينة والتوفر.</p><a class="ghost-btn" data-wa-message="مرحباً فندورا، أحتاج رحلة من الإمارات إلى البحرين.">استفسر عبر واتساب</a></article>
+          <article class="route-card planner-route-card"><h3>الإمارات إلى البحرين</h3><p>يرسل الطلب للتأكيد حسب المدينة والتوفر.</p><a href="https://wa.me/97333225954" class="ghost-btn" data-wa-message="مرحباً فندورا، أحتاج رحلة من الإمارات إلى البحرين." data-vendora-config="whatsapp-link">استفسر عبر واتساب</a></article>
           <article class="route-card planner-route-card"><h3>البحرين إلى عمان</h3><p>مسار طويل يحتاج تخطيطاً مسبقاً.</p><a class="ghost-btn" href="/bahrain-saudi-gcc-transport/bahrain-to-oman/">افتح الصفحة</a></article>
-          <article class="route-card planner-route-card"><h3>عمان إلى البحرين</h3><p>يمكن التحقق من بعض الطلبات حسب المسار.</p><a class="ghost-btn" data-wa-message="مرحباً فندورا، أحتاج رحلة من عمان أو مسقط إلى البحرين.">استفسر عبر واتساب</a></article>
+          <article class="route-card planner-route-card"><h3>عمان إلى البحرين</h3><p>يمكن التحقق من بعض الطلبات حسب المسار.</p><a href="https://wa.me/97333225954" class="ghost-btn" data-wa-message="مرحباً فندورا، أحتاج رحلة من عمان أو مسقط إلى البحرين." data-vendora-config="whatsapp-link">استفسر عبر واتساب</a></article>
         </div>
       </div>
     </section>
@@ -577,12 +580,12 @@
           </div>
         </div>
         <div class="planner-country-grid">
-          <article class="route-card country-card"><img src="../assets/images/gcc-country-bahrain-transport.webp" alt="نقل خاص داخل البحرين ومن البحرين إلى الخليج" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇧🇭 البحرين</h3><p>نقطة انطلاق شائعة للرحلات إلى السعودية والكويت وقطر والإمارات وعمان.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/">الرئيسية</a><a href="/bahrain-saudi-gcc-transport/contact/">تواصل</a></div><a class="wa-inline" data-wa-message="مرحباً Vendora، أحتاج توصيل من البحرين إلى وجهة خليجية.">واتساب</a></div></article>
-          <article class="route-card country-card"><img src="../assets/images/gcc-country-saudi-transport.webp" alt="توصيل من البحرين إلى السعودية والخبر والدمام والرياض" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇸🇦 السعودية</h3><p>أكثر الطلبات تكون إلى الخبر والدمام والرياض أو من هذه المدن إلى البحرين.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/bahrain-to-saudi/">البحرين إلى السعودية</a><a href="/bahrain-saudi-gcc-transport/saudi-to-bahrain/">السعودية إلى البحرين</a></div><a class="wa-inline" data-wa-message="مرحباً Vendora، أحتاج رحلة بين البحرين والسعودية.">واتساب</a></div></article>
-          <article class="route-card country-card"><img src="../assets/images/gcc-country-kuwait-transport.webp" alt="توصيل من البحرين إلى الكويت أو من الكويت إلى البحرين" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇰🇼 الكويت</h3><p>رحلات طويلة تحتاج تحديد موعد الانطلاق والتوقفات وحالة الحدود.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/bahrain-to-kuwait/">البحرين إلى الكويت</a></div><a class="wa-inline" data-wa-message="مرحباً Vendora، أحتاج رحلة بين البحرين والكويت.">واتساب</a></div></article>
-          <article class="route-card country-card"><img src="../assets/images/gcc-country-qatar-transport.webp" alt="توصيل من البحرين إلى قطر والدوحة أو من قطر إلى البحرين" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇶🇦 قطر</h3><p>طلبات قطر والدوحة تعتمد على المسار والتوقيت والتوفر.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/bahrain-to-qatar/">البحرين إلى قطر</a></div><a class="wa-inline" data-wa-message="مرحباً Vendora، أحتاج رحلة بين البحرين وقطر أو الدوحة.">واتساب</a></div></article>
-          <article class="route-card country-card"><img src="../assets/images/gcc-country-uae-transport.webp" alt="توصيل من البحرين إلى الإمارات ودبي وأبوظبي" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇦🇪 الإمارات</h3><p>يمكن طلب دبي أو أبوظبي أو وجهات أخرى داخل الإمارات حسب التفاصيل.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/bahrain-to-uae/">البحرين إلى الإمارات</a><a href="/bahrain-saudi-gcc-transport/bahrain-to-dubai/">البحرين إلى دبي</a></div><a class="wa-inline" data-wa-message="مرحباً Vendora، أحتاج رحلة بين البحرين والإمارات.">واتساب</a></div></article>
-          <article class="route-card country-card"><img src="../assets/images/gcc-country-oman-transport.webp" alt="توصيل من البحرين إلى عمان ومسقط أو من عمان إلى البحرين" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇴🇲 عمان</h3><p>مسار طويل إلى عمان أو مسقط يتطلب تنسيقاً واضحاً للوقت والتوقفات.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/bahrain-to-oman/">البحرين إلى عمان</a></div><a class="wa-inline" data-wa-message="مرحباً Vendora، أحتاج رحلة بين البحرين وعمان أو مسقط.">واتساب</a></div></article>
+          <article class="route-card country-card"><img src="../assets/images/gcc-country-bahrain-transport.webp" alt="نقل خاص داخل البحرين ومن البحرين إلى الخليج" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇧🇭 البحرين</h3><p>نقطة انطلاق شائعة للرحلات إلى السعودية والكويت وقطر والإمارات وعمان.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/">الرئيسية</a><a href="/bahrain-saudi-gcc-transport/contact/">تواصل</a></div><a href="https://wa.me/97333225954" class="wa-inline" data-wa-message="مرحباً Vendora، أحتاج توصيل من البحرين إلى وجهة خليجية." data-vendora-config="whatsapp-link">واتساب</a></div></article>
+          <article class="route-card country-card"><img src="../assets/images/gcc-country-saudi-transport.webp" alt="توصيل من البحرين إلى السعودية والخبر والدمام والرياض" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇸🇦 السعودية</h3><p>أكثر الطلبات تكون إلى الخبر والدمام والرياض أو من هذه المدن إلى البحرين.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/bahrain-to-saudi/">البحرين إلى السعودية</a><a href="/bahrain-saudi-gcc-transport/saudi-to-bahrain/">السعودية إلى البحرين</a></div><a href="https://wa.me/97333225954" class="wa-inline" data-wa-message="مرحباً Vendora، أحتاج رحلة بين البحرين والسعودية." data-vendora-config="whatsapp-link">واتساب</a></div></article>
+          <article class="route-card country-card"><img src="../assets/images/gcc-country-kuwait-transport.webp" alt="توصيل من البحرين إلى الكويت أو من الكويت إلى البحرين" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇰🇼 الكويت</h3><p>رحلات طويلة تحتاج تحديد موعد الانطلاق والتوقفات وحالة الحدود.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/bahrain-to-kuwait/">البحرين إلى الكويت</a></div><a href="https://wa.me/97333225954" class="wa-inline" data-wa-message="مرحباً Vendora، أحتاج رحلة بين البحرين والكويت." data-vendora-config="whatsapp-link">واتساب</a></div></article>
+          <article class="route-card country-card"><img src="../assets/images/gcc-country-qatar-transport.webp" alt="توصيل من البحرين إلى قطر والدوحة أو من قطر إلى البحرين" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇶🇦 قطر</h3><p>طلبات قطر والدوحة تعتمد على المسار والتوقيت والتوفر.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/bahrain-to-qatar/">البحرين إلى قطر</a></div><a href="https://wa.me/97333225954" class="wa-inline" data-wa-message="مرحباً Vendora، أحتاج رحلة بين البحرين وقطر أو الدوحة." data-vendora-config="whatsapp-link">واتساب</a></div></article>
+          <article class="route-card country-card"><img src="../assets/images/gcc-country-uae-transport.webp" alt="توصيل من البحرين إلى الإمارات ودبي وأبوظبي" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇦🇪 الإمارات</h3><p>يمكن طلب دبي أو أبوظبي أو وجهات أخرى داخل الإمارات حسب التفاصيل.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/bahrain-to-uae/">البحرين إلى الإمارات</a><a href="/bahrain-saudi-gcc-transport/bahrain-to-dubai/">البحرين إلى دبي</a></div><a href="https://wa.me/97333225954" class="wa-inline" data-wa-message="مرحباً Vendora، أحتاج رحلة بين البحرين والإمارات." data-vendora-config="whatsapp-link">واتساب</a></div></article>
+          <article class="route-card country-card"><img src="../assets/images/gcc-country-oman-transport.webp" alt="توصيل من البحرين إلى عمان ومسقط أو من عمان إلى البحرين" width="1448" height="1086" loading="lazy" /><div class="country-card-body"><h3>🇴🇲 عمان</h3><p>مسار طويل إلى عمان أو مسقط يتطلب تنسيقاً واضحاً للوقت والتوقفات.</p><div class="country-links"><a href="/bahrain-saudi-gcc-transport/bahrain-to-oman/">البحرين إلى عمان</a></div><a href="https://wa.me/97333225954" class="wa-inline" data-wa-message="مرحباً Vendora، أحتاج رحلة بين البحرين وعمان أو مسقط." data-vendora-config="whatsapp-link">واتساب</a></div></article>
         </div>
       </div>
     </section>
@@ -649,7 +652,7 @@
       <div class="footer-card glass">
         <h3>الحجز</h3>
         <p class="footer-copy">أرسل نقطة الاستلام والوجهة وعدد الركاب والشنط والتاريخ والوقت لتأكيد التوفر والتفاصيل.</p>
-        <a class="wa-inline" data-wa-message="مرحباً فندورا، أحتاج طلب توصيل أو رحلة بين دول الخليج.">
+        <a href="https://wa.me/97333225954" class="wa-inline" data-wa-message="مرحباً فندورا، أحتاج طلب توصيل أو رحلة بين دول الخليج." data-vendora-config="whatsapp-link">
           <i data-lucide="message-circle"></i>
           <span>الحجز على الواتساب</span>
         </a>
@@ -657,7 +660,7 @@
     </div>
   </footer>
 
-  <a class="floating-wa" data-wa-message="مرحباً فندورا، أحتاج طلب توصيل أو رحلة بين دول الخليج." aria-label="واتساب">
+  <a href="https://wa.me/97333225954" class="floating-wa" data-wa-message="مرحباً فندورا، أحتاج طلب توصيل أو رحلة بين دول الخليج." aria-label="واتساب" data-vendora-config="whatsapp-link">
     <i data-lucide="message-circle"></i>
   </a>
   <script>

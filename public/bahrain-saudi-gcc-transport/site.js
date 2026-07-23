@@ -8,12 +8,13 @@
     }
   }
   const publicConfig = readPublicConfig();
-  const config = { ...(window.pageConfig || {}), ...(publicConfig.settings || {}) };
+  const centralBusinessConfig = window.VENDORA_BUSINESS_CONFIG || {};
+  const config = { ...centralBusinessConfig, ...(window.pageConfig || {}), ...(publicConfig.settings || {}) };
   const phoneNumber = config.booking_whatsapp_enabled === false
     ? ''
-    : (config.booking_whatsapp || config.phoneNumber || '97333225954');
+    : (config.booking_whatsapp || config.phoneNumber || '');
   const siteSegment = '/bahrain-saudi-gcc-transport/';
-  const defaultArabicMessage = config.defaultWhatsAppMessage || 'مرحباً، أود معرفة تفاصيل الحجز والخدمة.';
+  const defaultArabicMessage = config.defaultWhatsAppMessage || config.default_whatsapp_message_ar || 'مرحباً، أود معرفة تفاصيل الحجز والخدمة.';
   const leadEndpoint = config.leadEndpoint || (`${siteSegment.replace(/\/$/, '')}/api/transport/event`);
   const pageUrl = window.location.href;
   const pageLoadedAt = new Date().toISOString();
@@ -2810,7 +2811,7 @@
       <div class="v-feedback-menu" id="vendoraFeedbackMenu">
         <a href="${base}customer-reviews/">⭐ ${isEn ? 'Leave a Review' : 'تقييمات وآراء العملاء'}</a>
         <a href="${base}complaints/">⚠️ ${isEn ? 'Submit a Complaint' : 'تقديم شكوى أو ملاحظة'}</a>
-        <a href="https://wa.me/97333225954" data-wa-message="${isEn ? 'Hello, I have a customer service question.' : 'مرحباً، لدي استفسار لخدمة العملاء.'}">💬 ${isEn ? 'Contact Support' : 'تواصل مع الدعم'}</a>
+        <a href="${phoneNumber ? `https://wa.me/${phoneNumber}` : '#'}" data-wa-message="${isEn ? 'Hello, I have a customer service question.' : 'مرحباً، لدي استفسار لخدمة العملاء.'}">💬 ${isEn ? 'Contact Support' : 'تواصل مع الدعم'}</a>
       </div>
       <button class="v-feedback-btn" id="vendoraFeedbackBtn" type="button" aria-expanded="false" aria-label="${isEn ? 'Feedback and Support' : 'الملاحظات والدعم'}">
         <span>💬</span>

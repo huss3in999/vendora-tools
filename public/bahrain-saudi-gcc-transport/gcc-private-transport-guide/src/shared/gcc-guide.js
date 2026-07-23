@@ -1,5 +1,5 @@
 (function () {
-  const PHONE = "97333225954";
+  const PHONE = window.VENDORA_BUSINESS_CONFIG?.booking_whatsapp || "";
 
   const locationsData = {
     ar: {

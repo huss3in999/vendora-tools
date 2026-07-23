@@ -1,0 +1,50 @@
+{
+  "config_version": 1,
+  "last_updated": "2026-07-23",
+  "brand_display_name": "Vendora Transport",
+  "booking_whatsapp_display": "+973 3322 5954",
+  "booking_whatsapp": "97333225954",
+  "booking_whatsapp_enabled": true,
+  "support_phone_display": "+973 3340 4044",
+  "support_phone": "97333404044",
+  "support_phone_enabled": true,
+  "public_address": "Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain",
+  "address_display_enabled": true,
+  "google_maps_url": "https://maps.app.goo.gl/XgirVcNRYSqJb1N26?g_st=ac",
+  "operating_hours_ar": "تنسيق الحجوزات متاح على مدار الساعة، وتأكيد السائق والمركبة المناسبة يتم لكل طلب.",
+  "operating_hours_en": "Booking coordination is available 24/7. The suitable driver and vehicle are confirmed for each request.",
+  "supported_payments": [
+    "Cash",
+    "BenefitPay"
+  ],
+  "cash_enabled": true,
+  "benefitpay_enabled": true,
+  "service_description_ar": "فندورا للنقل: خدمة نقل خاص ونقل ركاب وسائق خاص ورحلات عبر جسر الملك فهد ودول الخليج من البحرين.",
+  "service_description_en": "Vendora Transport: Private car with driver, chauffeur service, airport transfers and cross-border GCC transport from Bahrain.",
+  "default_whatsapp_message_ar": "مرحباً، أود معرفة تفاصيل الحجز والخدمة.",
+  "default_whatsapp_message_en": "Hello, I would like to ask about booking and service details.",
+  "complaints": {
+    "path_ar": "/bahrain-saudi-gcc-transport/complaints/",
+    "path_en": "/bahrain-saudi-gcc-transport/en/complaints/",
+    "support_phone": "97333404044",
+    "wording_ar": "يمكن إرسال الشكاوى وطلبات الدعم من خلال صفحة الشكاوى أو رقم الدعم.",
+    "wording_en": "Complaints and support requests can be submitted through the complaints page or support telephone."
+  },
+  "public_email": "",
+  "public_email_enabled": false,
+  "social_links": {
+    "instagram_url": "",
+    "tiktok_url": "",
+    "other_social_url": ""
+  },
+  "passenger_capacity_ar": "حتى 7 ركاب حسب المركبة المؤكدة وعدد الحقائب.",
+  "passenger_capacity_en": "Up to 7 passengers, subject to the confirmed vehicle and luggage capacity.",
+  "vehicle_wording_ar": "مركبات عائلية وسيدان مريحة وسيدان أعمال يتم تأكيدها قبل الاستلام.",
+  "vehicle_wording_en": "Comfortable sedans, executive sedans, and spacious family vehicles confirmed before pickup.",
+  "insurance_wording_ar": "مركبات مؤمّنة مع سائقين خبيرين.",
+  "insurance_wording_en": "Insured vehicles driven by experienced drivers.",
+  "legal_name": "Vendora Transport",
+  "cr_number": "",
+  "legal_information_enabled": true,
+  "sar_per_bhd": 10
+}

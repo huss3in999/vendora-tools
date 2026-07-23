@@ -112,6 +112,9 @@
   ]
 }
 </script>
+  <!-- Vendora global sources: edit config/*.json and assets/vendora-theme.css, then run npm run sync. -->
+  <link rel="stylesheet" href="../../assets/vendora-theme.css" data-vendora-global-theme />
+  <script src="../../assets/vendora-config.js" data-vendora-global-config></script>
 </head>
 <body class="home-premium lang-en vip-transport">
   <header class="topbar">
@@ -133,7 +136,7 @@
         <a class="nav-link" href="/bahrain-saudi-gcc-transport/en/saudi-to-bahrain/">Saudi to Bahrain</a>
       </nav>
       <div class="quick-links">
-        <a class="wa-inline" href="https://wa.me/97333225954?text=Hello%2C%20I%20would%20like%20to%20book%20a%20private%20taxi%20from%20Bahrain%20to%20Riyadh." target="_blank" rel="noopener" data-track-wa data-route="bahrain-to-riyadh-en">WhatsApp</a>
+        <a class="wa-inline" href="https://wa.me/97333225954?text=Hello%2C%20I%20would%20like%20to%20book%20a%20private%20taxi%20from%20Bahrain%20to%20Riyadh." target="_blank" rel="noopener" data-track-wa data-route="bahrain-to-riyadh-en" data-vendora-config="whatsapp-link">WhatsApp</a>
       </div>
     </div>
   </header>
@@ -168,7 +171,7 @@
             </div>
           </div>
           <div class="hero-actions">
-            <a class="wa-inline" href="https://wa.me/97333225954?text=Hello%2C%20I%20would%20like%20to%20book%20a%20private%20taxi%20from%20Bahrain%20to%20Riyadh.%20Pickup%3A%20%20Drop-off%20in%20Riyadh%3A%20%20Date%20and%20time%3A%20%20Passengers%3A" target="_blank" rel="noopener" data-track-wa data-route="bahrain-to-riyadh-en">Book on WhatsApp</a>
+            <a class="wa-inline" href="https://wa.me/97333225954?text=Hello%2C%20I%20would%20like%20to%20book%20a%20private%20taxi%20from%20Bahrain%20to%20Riyadh.%20Pickup%3A%20%20Drop-off%20in%20Riyadh%3A%20%20Date%20and%20time%3A%20%20Passengers%3A" target="_blank" rel="noopener" data-track-wa data-route="bahrain-to-riyadh-en" data-vendora-config="whatsapp-link">Book on WhatsApp</a>
             <a class="ghost-btn" href="#faq">Read FAQ</a>
           </div>
           <div class="hero-proof">
@@ -413,7 +416,7 @@
     </div>
   </footer>
 
-  <a class="floating-wa" href="https://wa.me/97333225954?text=Hello%2C%20I%20would%20like%20to%20book%20a%20private%20taxi%20from%20Bahrain%20to%20Riyadh." target="_blank" rel="noopener" aria-label="Book on WhatsApp" data-track-wa data-route="bahrain-to-riyadh-en">WA</a>
+  <a class="floating-wa" href="https://wa.me/97333225954?text=Hello%2C%20I%20would%20like%20to%20book%20a%20private%20taxi%20from%20Bahrain%20to%20Riyadh." target="_blank" rel="noopener" aria-label="Book on WhatsApp" data-track-wa data-route="bahrain-to-riyadh-en" data-vendora-config="whatsapp-link">WA</a>
   <script>window.pageConfig = Object.assign(window.pageConfig || {}, { leadOnly: true });</script>
   <script defer src="../../site.js?v=20260605-care5"></script>
   <script defer src="../../file-protocol-links.js"></script>

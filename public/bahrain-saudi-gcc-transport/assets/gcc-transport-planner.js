@@ -106,7 +106,7 @@
   const copyButton = $('[data-planner-copy]');
   const resetButton = $('[data-planner-reset]');
   let mode = 'price';
-  let publicConfig = { settings: {}, routes: [] };
+  let publicConfig = window.VENDORA_PUBLIC_CONFIG || { settings: {}, routes: [] };
 
   function label(location) { return isArabic ? location.ar : location.en; }
   function byId(id) { return locations.find((item) => item.id === id) || locations[0]; }

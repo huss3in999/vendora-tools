@@ -290,7 +290,8 @@
       const message = lang === 'en'
         ? `Hello, I contacted you through the Vendora Transport website:\n${website}\n\nI would like to enquire about:\nA new secure Passenger Care link`
         : `\u0627\u0644\u0633\u0644\u0627\u0645 \u0639\u0644\u064a\u0643\u0645\u060c \u062a\u0648\u0627\u0635\u0644\u062a \u0645\u0639\u0643\u0645 \u0645\u0646 \u062e\u0644\u0627\u0644 \u0645\u0648\u0642\u0639 \u0641\u0646\u062f\u0648\u0631\u0627 \u0644\u0644\u0646\u0642\u0644:\n${website}\n\n\u0623\u0631\u063a\u0628 \u0641\u064a \u0627\u0644\u0627\u0633\u062a\u0641\u0633\u0627\u0631 \u0639\u0646:\n\u0631\u0627\u0628\u0637 \u0622\u0645\u0646 \u062c\u062f\u064a\u062f \u0644\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0645\u0633\u0627\u0641\u0631`;
-      link.href = `https://wa.me/97333225954?text=${encodeURIComponent(message)}`;
+      const bookingNumber = window.VENDORA_BUSINESS_CONFIG?.booking_whatsapp || '';
+      link.href = bookingNumber ? `https://wa.me/${bookingNumber}?text=${encodeURIComponent(message)}` : '#';
       link.className = 'care-support-link';
       els.errorBody.after(link);
       fetch('/bahrain-saudi-gcc-transport/api/transport/public-settings', { credentials: 'omit' }).then((response) => response.ok ? response.json() : null).then((data) => {
