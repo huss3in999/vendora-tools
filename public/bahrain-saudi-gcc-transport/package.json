@@ -6,6 +6,7 @@
     "sync": "node scripts/sync-transport-site.mjs",
     "validate:central-config": "node scripts/validate-central-config.mjs",
     "preview:gcc": "node scripts/generate-gcc-private-preview.mjs",
+    "capture:gcc-preview": "node scripts/capture-gcc-preview-contact-sheet.mjs",
     "validate:gcc": "node scripts/validate-gcc-architecture.mjs",
     "check:gcc-preview": "npm run preview:gcc && npm run validate:gcc",
     "test": "playwright test",

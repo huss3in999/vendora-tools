@@ -4,18 +4,26 @@ import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const outputRoot = join(root, 'gcc-private-transport-guide', 'planning', 'private-preview');
-const expectedOutputSuffix = join('gcc-private-transport-guide', 'planning', 'private-preview');
-if (!outputRoot.startsWith(root) || !outputRoot.endsWith(expectedOutputSuffix)) {
+const repositoryRoot = resolve(root, '..', '..');
+const publicRoot = join(repositoryRoot, 'public');
+const internalConfigRoot = join(repositoryRoot, 'internal-preview', 'gcc-routes', 'config');
+const outputRoot = join(repositoryRoot, 'planning-output', 'gcc-preview');
+const expectedOutputSuffix = join('planning-output', 'gcc-preview');
+if (
+  !outputRoot.startsWith(repositoryRoot) ||
+  outputRoot.startsWith(publicRoot) ||
+  !outputRoot.endsWith(expectedOutputSuffix)
+) {
   throw new Error(`Unsafe preview output path: ${outputRoot}`);
 }
 
-const loadJson = (path) => JSON.parse(readFileSync(join(root, path), 'utf8'));
-const routesConfig = loadJson('config/gcc-routes.json');
-const countriesConfig = loadJson('config/gcc-countries.json');
-const chauffeurConfig = loadJson('config/chauffeur-services.json');
-const business = loadJson('config/business-config.json');
-const pricing = loadJson('config/route-prices.json');
+const loadSiteJson = (path) => JSON.parse(readFileSync(join(root, path), 'utf8'));
+const loadInternalJson = (filename) => JSON.parse(readFileSync(join(internalConfigRoot, filename), 'utf8'));
+const routesConfig = loadInternalJson('gcc-routes.json');
+const countriesConfig = loadInternalJson('gcc-countries.json');
+const chauffeurConfig = loadInternalJson('chauffeur-services.json');
+const business = loadSiteJson('config/business-config.json');
+const pricing = loadSiteJson('config/route-prices.json');
 const routeTemplate = readFileSync(join(root, 'templates', 'gcc-route-preview.html'), 'utf8');
 const hubTemplate = readFileSync(join(root, 'templates', 'gcc-country-hub-preview.html'), 'utf8');
 const chauffeurTemplate = readFileSync(join(root, 'templates', 'gcc-chauffeur-hub-preview.html'), 'utf8');
@@ -462,7 +470,7 @@ const manifest = {
 write(join(outputRoot, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
 
 console.log(JSON.stringify({
-  output: posix(relative(root, outputRoot)),
+  output: posix(relative(repositoryRoot, outputRoot)),
   route_matrix_records: routesConfig.routes.length,
   active_routes: manifest.active_routes.length,
   inactive_routes: manifest.inactive_routes.length,

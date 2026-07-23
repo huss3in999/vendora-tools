@@ -4,11 +4,16 @@ import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const previewRoot = join(root, 'gcc-private-transport-guide', 'planning', 'private-preview');
+const repositoryRoot = resolve(root, '..', '..');
+const publicRoot = join(repositoryRoot, 'public');
+const internalConfigRoot = join(repositoryRoot, 'internal-preview', 'gcc-routes', 'config');
+const previewRoot = join(repositoryRoot, 'planning-output', 'gcc-preview');
+const oldPreviewRoot = join(root, 'gcc-private-transport-guide', 'planning', 'private-preview');
 const readJson = (path) => JSON.parse(readFileSync(join(root, path), 'utf8'));
-const routesConfig = readJson('config/gcc-routes.json');
-const countriesConfig = readJson('config/gcc-countries.json');
-const chauffeurConfig = readJson('config/chauffeur-services.json');
+const readInternalJson = (filename) => JSON.parse(readFileSync(join(internalConfigRoot, filename), 'utf8'));
+const routesConfig = readInternalJson('gcc-routes.json');
+const countriesConfig = readInternalJson('gcc-countries.json');
+const chauffeurConfig = readInternalJson('chauffeur-services.json');
 const pricingConfig = readJson('config/route-prices.json');
 const manifest = JSON.parse(readFileSync(join(previewRoot, 'manifest.json'), 'utf8'));
 const routes = new Map(routesConfig.routes.map((route) => [route.route_id, route]));
@@ -43,6 +48,11 @@ const visibleText = (html) => html
   .replace(/<[^>]+>/g, ' ')
   .replace(/&[a-z0-9#]+;/gi, ' ');
 
+check(previewRoot.startsWith(repositoryRoot), 'Private preview is inside the repository');
+check(!previewRoot.startsWith(publicRoot), 'Private preview is outside the deployed public directory');
+check(internalConfigRoot.startsWith(repositoryRoot), 'GCC configuration is inside the repository');
+check(!internalConfigRoot.startsWith(publicRoot), 'GCC configuration is outside the deployed public directory');
+check(!existsSync(oldPreviewRoot), 'Old preview path under public has been removed');
 check(countriesConfig.countries.length === 7, 'Country configuration contains exactly seven countries');
 check(new Set(countriesConfig.countries.map((country) => country.code)).size === 7, 'Country codes are unique');
 check(routesConfig.routes.length === 42, 'Route matrix contains exactly 42 directional records');
@@ -146,7 +156,8 @@ const publicSitemaps = ['sitemap.xml', 'sitemap-gcc-transport.xml', 'sitemap-gcc
 for (const sitemap of publicSitemaps) {
   const file = join(root, sitemap);
   const xml = readFileSync(file, 'utf8');
-  check(!xml.includes('/private-preview/'), `${sitemap}: private preview is absent`);
+  check(!xml.includes('/private-preview/'), `${sitemap}: old private preview path is absent`);
+  check(!xml.includes('/planning-output/gcc-preview/'), `${sitemap}: repository-only preview path is absent`);
   check(
     sha256(file) === manifest.public_sitemap_sha256[sitemap],
     `${sitemap}: hash matches the pre-generation manifest`
@@ -198,6 +209,14 @@ for (const route of routesConfig.routes.filter((candidate) =>
     const html = readFileSync(file, 'utf8');
     check(!html.includes('wa.me/'), `${route.route_id} ${lang}: inactive preview has no WhatsApp booking link`);
     check(!html.includes('data-private-preview-booking'), `${route.route_id} ${lang}: inactive preview has no booking action`);
+    check(!html.includes('data-booking-submit'), `${route.route_id} ${lang}: inactive preview has no booking submit control`);
+    check(!html.includes('data-booking-form'), `${route.route_id} ${lang}: inactive preview has no booking form`);
+    check(!/\bhreflang\s*=/i.test(html), `${route.route_id} ${lang}: inactive preview has no hreflang URL`);
+    check(
+      !html.includes(`https://getvendora.net/bahrain-saudi-gcc-transport/${route.slug}/`) &&
+      !html.includes(`https://getvendora.net/bahrain-saudi-gcc-transport/en/${route.slug}/`),
+      `${route.route_id} ${lang}: inactive schema and markup contain no future public route URL`
+    );
     check(html.includes('data-inactive-no-booking="true"'), `${route.route_id} ${lang}: inactive preview shows a no-booking state`);
   }
 }
