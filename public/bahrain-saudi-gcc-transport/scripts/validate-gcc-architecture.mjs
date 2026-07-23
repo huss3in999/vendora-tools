@@ -141,7 +141,7 @@ for (const route of routesConfig.routes) {
   }
 }
 
-const requiredBatch = new Set(['SA-QA', 'QA-SA', 'SA-AE', 'AE-SA', 'AE-QA', 'QA-AE', 'KW-BH', 'AE-BH', 'OM-BH', 'IQ-BH']);
+const requiredBatch = new Set(['SA-QA', 'QA-SA', 'SA-AE', 'AE-SA', 'AE-BH', 'BH-AE', 'QA-AE', 'AE-QA', 'KW-BH', 'OM-BH']);
 check(
   routesConfig.first_operational_approval_batch.length === requiredBatch.size &&
   routesConfig.first_operational_approval_batch.every((routeId) => requiredBatch.has(routeId)),
@@ -149,8 +149,8 @@ check(
 );
 
 const activeRouteIds = routesConfig.routes.filter((route) => route.active).map((route) => route.route_id);
-check(activeRouteIds.length === 10, 'Exactly ten preserved existing country directions are active');
-check(routesConfig.routes.filter((route) => !route.active).length === 32, 'Exactly 32 unconfirmed directions remain inactive');
+check(activeRouteIds.length === 17, 'Exactly 17 approved country directions are active after publication batch 1');
+check(routesConfig.routes.filter((route) => !route.active).length === 25, 'Exactly 25 unconfirmed directions remain inactive');
 
 const publicSitemaps = ['sitemap.xml', 'sitemap-gcc-transport.xml', 'sitemap-gcc-transport-en.xml'];
 for (const sitemap of publicSitemaps) {

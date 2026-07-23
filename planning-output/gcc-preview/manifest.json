@@ -12,19 +12,22 @@
     "BH-OM",
     "BH-IQ",
     "SA-BH",
+    "SA-QA",
+    "SA-AE",
     "QA-BH",
+    "QA-SA",
+    "QA-AE",
     "KW-BH",
+    "AE-BH",
+    "AE-SA",
+    "AE-QA",
     "OM-BH"
   ],
   "inactive_routes": [
-    "SA-QA",
     "SA-KW",
-    "SA-AE",
     "SA-OM",
     "SA-IQ",
-    "QA-SA",
     "QA-KW",
-    "QA-AE",
     "QA-OM",
     "QA-IQ",
     "KW-SA",
@@ -32,9 +35,6 @@
     "KW-AE",
     "KW-OM",
     "KW-IQ",
-    "AE-BH",
-    "AE-SA",
-    "AE-QA",
     "AE-KW",
     "AE-OM",
     "AE-IQ",
@@ -113,7 +113,7 @@
   ],
   "public_sitemap_sha256": {
     "sitemap.xml": "a572d753043d8568b4e0b8ccc951719f9eb935aacb61d09a18acf4be126179c0",
-    "sitemap-gcc-transport.xml": "b9fd4b9084be4efe80f5980f903df82efac12c046feb2d2726d39c40d0b0a592",
-    "sitemap-gcc-transport-en.xml": "bd4388982d1080d571235ddd52d463760363a29065e850eebc058f3deb9a9fd1"
+    "sitemap-gcc-transport.xml": "37c34f7cff2b224451201369449e1788eba960a26d2106409953a1c06b8cdf1b",
+    "sitemap-gcc-transport-en.xml": "514d47457cd338a952544346e465e8fe11d10bda397fdfb4d392214a93027e3c"
   }
 }
