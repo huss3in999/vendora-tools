@@ -30,6 +30,9 @@
   --vendora-space-section: clamp(32px, 6vw, 72px);
   --vendora-heading-1: clamp(1.85rem, 4.8vw, 4.4rem);
   --vendora-heading-2: clamp(1.45rem, 3vw, 2.5rem);
+  --vendora-container-tablet: 920px;
+  --vendora-container-desktop: 1240px;
+  --vendora-container-wide: 1360px;
 
   /* Compatibility aliases used by the established transport layouts. */
   --vip-navy: var(--vendora-navy);
@@ -240,6 +243,88 @@ body.vip-transport :is(.review-card, .policy-card, .price-card, .route-card, .se
 body.vip-transport h1 { font-size: var(--vendora-heading-1); }
 body.vip-transport h2 { font-size: var(--vendora-heading-2); }
 body.vip-transport .section { padding-block: var(--vendora-space-section); }
+
+/* Root Vendora pages share one responsive desktop container system.
+   Mobile remains governed by the established app-style rules below 768px. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  body.vendora-root-page .container {
+    width: min(calc(100% - 32px), var(--vendora-container-tablet));
+  }
+
+  body.vendora-root-page .service-showcase {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.vendora-root-page .service-card.featured {
+    grid-column: span 1;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+  body.vendora-root-page .container,
+  body.vendora-root-page .topbar .container {
+    width: min(calc(100% - 48px), var(--vendora-container-desktop));
+  }
+
+  body.vendora-root-page .nav-link {
+    min-height: 44px;
+    font-size: 0.875rem;
+  }
+
+  body.vendora-root-page .service-showcase {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  body.vendora-root-page .service-card.featured {
+    grid-column: span 1;
+  }
+}
+
+@media (min-width: 1440px) {
+  body.vendora-root-page .container,
+  body.vendora-root-page .topbar .container {
+    width: min(calc(100% - 64px), var(--vendora-container-wide));
+  }
+
+  body.vendora-root-page .nav {
+    gap: 20px;
+  }
+
+  body.vendora-root-page .nav-link {
+    min-height: 44px;
+    font-size: 0.875rem;
+  }
+
+  body.vendora-root-page .service-showcase {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 28px;
+  }
+
+  body.vendora-root-page .service-card.featured {
+    grid-column: span 1;
+  }
+}
+
+@media (min-width: 1024px) {
+  body.vendora-root-page .service-card {
+    height: 100%;
+    padding: 0;
+  }
+
+  body.vendora-root-page .service-card > img {
+    width: 100%;
+    max-width: none;
+    border-radius: var(--vendora-radius) var(--vendora-radius) 0 0;
+  }
+
+  body.vendora-root-page .service-card-body {
+    width: 100%;
+    padding: 24px;
+  }
+}
 
 @media (max-width: 820px) {
   body.vip-transport .review-grid-wrap {
