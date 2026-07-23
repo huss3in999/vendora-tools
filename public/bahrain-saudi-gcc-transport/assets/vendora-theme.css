@@ -1,0 +1,221 @@
+/* Vendora Transport global theme — edit shared colors and component standards here. */
+:root {
+  --vendora-navy: #071a2e;
+  --vendora-navy-soft: #102b47;
+  --vendora-surface-dark: #081725;
+  --vendora-surface-dark-glass: rgba(7, 26, 46, 0.96);
+  --vendora-surface-light: #fffaf0;
+  --vendora-surface-ivory: #f6f0e5;
+  --vendora-gold: #c8a96b;
+  --vendora-gold-bright: #f4d994;
+  --vendora-text-on-dark: #fffaf0;
+  --vendora-muted-on-dark: #edf2f6;
+  --vendora-text-on-light: #071a2e;
+  --vendora-muted-on-light: #34475a;
+  --vendora-link-on-dark: #ffe2a3;
+  --vendora-link-on-light: #243b63;
+  --vendora-link-visited-light: #4c356f;
+  --vendora-border: rgba(200, 169, 107, 0.34);
+  --vendora-border-light: rgba(7, 26, 46, 0.16);
+  --vendora-error-on-dark: #ffd6d6;
+  --vendora-error-on-light: #8b1e2d;
+  --vendora-whatsapp: #38e887;
+  --vendora-whatsapp-deep: #20bd67;
+  --vendora-radius: 18px;
+  --vendora-radius-large: 26px;
+  --vendora-shadow: 0 16px 42px rgba(5, 18, 32, 0.18);
+  --vendora-shadow-dark: 0 18px 44px rgba(0, 0, 0, 0.36);
+  --vendora-font-ar: "Noto Sans Arabic", Tahoma, Arial, sans-serif;
+  --vendora-font-en: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --vendora-space-section: clamp(32px, 6vw, 72px);
+  --vendora-heading-1: clamp(1.85rem, 4.8vw, 4.4rem);
+  --vendora-heading-2: clamp(1.45rem, 3vw, 2.5rem);
+
+  /* Compatibility aliases used by the established transport layouts. */
+  --vip-navy: var(--vendora-navy);
+  --vip-ink: var(--vendora-surface-dark);
+  --vip-ivory: var(--vendora-surface-light);
+  --vip-gold: var(--vendora-gold);
+  --readable-navy: var(--vendora-text-on-light);
+  --readable-body: var(--vendora-muted-on-light);
+  --readable-gold: var(--vendora-gold-bright);
+  --readable-gold-link: var(--vendora-link-on-dark);
+  --readable-ivory: var(--vendora-text-on-dark);
+  --readable-light-body: var(--vendora-muted-on-dark);
+}
+
+html[lang="ar"] body { font-family: var(--vendora-font-ar); }
+html[lang="en"] body { font-family: var(--vendora-font-en); }
+
+body.vip-transport {
+  color: var(--vendora-text-on-light);
+  background: var(--vendora-surface-ivory);
+}
+
+body.vip-transport :is(.section-shell, .legal-content, .page-shell),
+body.vip-transport main > .section:not(.vip-featured-route):not(.vip-trust-strip):not(.vip-home-booking) .booking-card,
+body.vip-transport.transport-hub .service-card,
+body.vip-transport .vehicle-grid article,
+body.vip-transport .route-groups > div {
+  color: var(--vendora-text-on-light);
+}
+
+body.vip-transport :is(.section-shell, .legal-content, .page-shell)
+  :is(p, li, dt, dd, label, small, .lead, .field-help, .footer-copy, .footer-note, .route-meta, .trust-line, .booking-summary) {
+  color: var(--vendora-muted-on-light);
+  opacity: 1;
+}
+
+body.vip-transport :is(.section-shell, .legal-content, .page-shell)
+  :is(h1, h2, h3, h4, h5, h6, summary, strong) {
+  color: var(--vendora-text-on-light);
+}
+
+body.vip-transport :is(.section-shell, .legal-content, .page-shell)
+  a:not(.primary-btn):not(.wa-inline):not(.ghost-btn):not(.wa-text) {
+  color: var(--vendora-link-on-light);
+  text-decoration-color: currentColor;
+}
+
+body.vip-transport :is(.section-shell, .legal-content, .page-shell)
+  a:not(.primary-btn):not(.wa-inline):not(.ghost-btn):not(.wa-text):visited {
+  color: var(--vendora-link-visited-light);
+}
+
+body.vip-transport :is(.section-shell, .legal-content, .page-shell)
+  a:not(.primary-btn):not(.wa-inline):not(.ghost-btn):not(.wa-text):is(:hover, :focus-visible) {
+  color: var(--vendora-navy);
+  text-decoration-thickness: 2px;
+}
+
+body.vip-transport :is(
+  .hero-copy, .hero-side, .vip-app-hero-copy, .vip-content-hero-copy,
+  .vip-app-hero-visual, .vip-content-hero-visual, .company-panel,
+  .price-callout, .vip-featured-card, .vip-home-booking .booking-card,
+  .planner-panel, .calculator-tabs, .calculator-timeline,
+  .calculator-crosslink, .review-grid-wrap .glass, .rights-card,
+  .rights-box, .transport-footer, .footer, .vip-drawer-panel, .vip-bottom-nav
+) {
+  color: var(--vendora-text-on-dark);
+}
+
+body.vip-transport :is(
+  .hero-copy, .hero-side, .vip-app-hero-copy, .vip-content-hero-copy,
+  .vip-app-hero-visual, .vip-content-hero-visual, .company-panel,
+  .price-callout, .vip-featured-card, .vip-home-booking .booking-card,
+  .planner-panel, .calculator-tabs, .calculator-timeline,
+  .calculator-crosslink, .review-grid-wrap .glass, .rights-card,
+  .rights-box, .transport-footer, .footer, .vip-drawer-panel, .vip-bottom-nav
+) :is(p, li, dt, dd, label, small, span:not(.logo), .lead, .field-help, .footer-copy, .footer-note, .route-meta, .trust-line) {
+  color: var(--vendora-muted-on-dark);
+  opacity: 1;
+}
+
+body.vip-transport :is(
+  .hero-copy, .hero-side, .vip-app-hero-copy, .vip-content-hero-copy,
+  .company-panel, .price-callout, .vip-featured-card,
+  .vip-home-booking .booking-card, .planner-panel,
+  .review-grid-wrap .glass, .rights-card, .rights-box,
+  .transport-footer, .footer, .vip-drawer-panel
+) :is(h1, h2, h3, h4, h5, h6, summary, strong) {
+  color: var(--vendora-gold-bright);
+}
+
+body.vip-transport :is(
+  .hero-copy, .hero-side, .vip-app-hero-copy, .vip-content-hero-copy,
+  .company-panel, .price-callout, .vip-featured-card,
+  .vip-home-booking .booking-card, .planner-panel,
+  .review-grid-wrap .glass, .rights-card, .rights-box,
+  .transport-footer, .footer, .vip-drawer-panel
+) a:not(.primary-btn):not(.wa-inline):not(.ghost-btn):not(.vip-bottom-action) {
+  color: var(--vendora-link-on-dark);
+}
+
+body.vip-transport :is(.rights-card, .rights-box) {
+  color: var(--vendora-text-on-dark);
+  background: var(--vendora-surface-dark-glass);
+  border: 1px solid var(--vendora-border);
+  border-inline-start: 5px solid var(--vendora-gold);
+  border-radius: var(--vendora-radius);
+  box-shadow: var(--vendora-shadow-dark);
+}
+
+body.vip-transport :is(.primary-btn, .vip-calculate-action, .calculator-submit),
+body.vip-transport :is(.wa-inline, .floating-wa, .price-card a, .btn.whatsapp) {
+  color: var(--vendora-navy);
+}
+
+body.vip-transport :is(.wa-inline, .floating-wa, .price-card a, .btn.whatsapp) {
+  background: linear-gradient(135deg, var(--vendora-whatsapp), var(--vendora-whatsapp-deep));
+}
+
+body.vip-transport :is(input, textarea, select) {
+  color: #172232;
+  background-color: #fffdf8;
+  border-color: var(--vendora-border-light);
+}
+
+body.vip-transport :is(input, textarea)::placeholder {
+  color: #536579;
+  opacity: 1;
+}
+
+body.vip-transport form.glass :is(input, textarea)::placeholder { color: #d5dee6; }
+
+body.vip-transport :is(input, textarea, select):focus-visible,
+body.vip-transport :is(a, button, summary):focus-visible {
+  outline: 3px solid rgba(200, 169, 107, 0.45);
+  outline-offset: 2px;
+}
+
+body.vip-transport :is(.validation-message, .error-message, [role="alert"]) {
+  color: var(--vendora-error-on-light);
+  font-weight: 700;
+}
+
+body.vip-transport :is(.hero-copy, .vip-app-hero-copy, .vip-content-hero-copy, .planner-panel, .rights-card, .rights-box)
+  :is(.validation-message, .error-message, [role="alert"]) {
+  color: var(--vendora-error-on-dark);
+}
+
+body.vip-transport .topbar,
+body.vip-transport .transport-footer,
+body.vip-transport .footer,
+body.vip-transport .vip-bottom-nav {
+  background-color: var(--vendora-surface-dark);
+  border-color: var(--vendora-border);
+}
+
+body.vip-transport .topbar a:not(.primary-btn):not(.wa-inline),
+body.vip-transport .topbar a:not(.primary-btn):not(.wa-inline):visited {
+  color: var(--vendora-text-on-dark);
+}
+
+body.vip-transport .topbar a:not(.primary-btn):not(.wa-inline):is(:hover, :focus-visible) {
+  color: var(--vendora-link-on-dark);
+}
+
+body.vip-transport :is(.review-card, .policy-card, .price-card, .route-card, .service-card, .booking-card) {
+  border-radius: var(--vendora-radius);
+  box-shadow: var(--vendora-shadow);
+}
+
+body.vip-transport h1 { font-size: var(--vendora-heading-1); }
+body.vip-transport h2 { font-size: var(--vendora-heading-2); }
+body.vip-transport .section { padding-block: var(--vendora-space-section); }
+
+@media (max-width: 820px) {
+  body.vip-transport .review-grid-wrap {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 1rem !important;
+  }
+}
+
+@media (max-width: 360px) {
+  body.vip-transport :is(form, .rights-card, .rights-box, .panel, .glass, .hero-copy, .section-shell) {
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+  body.vip-transport :is(input, select, textarea, button) { max-width: 100%; }
+}

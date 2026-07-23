@@ -1,68 +1,56 @@
-const DEFAULT_BOOKING_NUMBER = '97333225954';
+/* BEGIN GENERATED CENTRAL TRANSPORT DEFAULTS */
+import businessConfig from '../../../bahrain-saudi-gcc-transport/config/business-config.json';
+import routePriceConfig from '../../../bahrain-saudi-gcc-transport/config/route-prices.json';
+
+const DEFAULT_BOOKING_NUMBER = businessConfig.booking_whatsapp;
 const CACHE_TTL_MS = 60_000;
 let cached = null;
 
 export const DEFAULT_PUBLIC_SETTINGS = Object.freeze({
-  brand_display_name: 'Vendora Transport',
-  service_description_ar: 'فندورا للنقل: خدمة نقل خاص ونقل ركاب وسائق خاص ورحلات عبر جسر الملك فهد ودول الخليج من البحرين.',
-  service_description_en: 'Vendora Transport: Private car with driver, chauffeur service, airport transfers and cross-border GCC transport from Bahrain.',
-  booking_whatsapp: DEFAULT_BOOKING_NUMBER,
-  booking_whatsapp_enabled: true,
-  support_phone: '97333404044',
-  support_phone_enabled: true,
-  public_email: '',
-  public_email_enabled: false,
-  instagram_url: '',
-  tiktok_url: '',
-  other_social_url: '',
-  operating_hours_ar: 'تنسيق الحجوزات متاح على مدار الساعة، وتأكيد السائق والمركبة المناسبة يتم لكل طلب.',
-  operating_hours_en: 'Booking coordination is available 24/7. The suitable driver and vehicle are confirmed for each request.',
-  cash_enabled: true,
-  benefitpay_enabled: true,
-  passenger_capacity_ar: 'حتى 7 ركاب حسب المركبة المؤكدة وعدد الحقائب.',
-  passenger_capacity_en: 'Up to 7 passengers, subject to the confirmed vehicle and luggage capacity.',
-  vehicle_wording_ar: 'مركبات عائلية وسيدان مريحة وسيدان أعمال يتم تأكيدها قبل Pickup.',
-  vehicle_wording_en: 'Comfortable sedans, executive sedans, and spacious family vehicles confirmed before pickup.',
-  insurance_wording_ar: 'مركبات مؤمّنة مع سائقين خبيرين.',
-  insurance_wording_en: 'Insured vehicles driven by experienced drivers.',
-  public_address: 'Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain',
-  address_display_enabled: true,
-  legal_name: 'Vendora Transport',
-  cr_number: '',
-  legal_information_enabled: true,
-  sar_per_bhd: 10,
-  customer_name_enabled: false,
-  customer_name_required: false,
-  customer_phone_enabled: false,
-  customer_phone_required: false,
-  follow_up_consent_enabled: false,
+  "brand_display_name": "Vendora Transport",
+  "service_description_ar": "فندورا للنقل: خدمة نقل خاص ونقل ركاب وسائق خاص ورحلات عبر جسر الملك فهد ودول الخليج من البحرين.",
+  "service_description_en": "Vendora Transport: Private car with driver, chauffeur service, airport transfers and cross-border GCC transport from Bahrain.",
+  "booking_whatsapp": "97333225954",
+  "booking_whatsapp_enabled": true,
+  "support_phone": "97333404044",
+  "support_phone_enabled": true,
+  "public_email": "",
+  "public_email_enabled": false,
+  "instagram_url": "",
+  "tiktok_url": "",
+  "other_social_url": "",
+  "operating_hours_ar": "تنسيق الحجوزات متاح على مدار الساعة، وتأكيد السائق والمركبة المناسبة يتم لكل طلب.",
+  "operating_hours_en": "Booking coordination is available 24/7. The suitable driver and vehicle are confirmed for each request.",
+  "cash_enabled": true,
+  "benefitpay_enabled": true,
+  "passenger_capacity_ar": "حتى 7 ركاب حسب المركبة المؤكدة وعدد الحقائب.",
+  "passenger_capacity_en": "Up to 7 passengers, subject to the confirmed vehicle and luggage capacity.",
+  "vehicle_wording_ar": "مركبات عائلية وسيدان مريحة وسيدان أعمال يتم تأكيدها قبل الاستلام.",
+  "vehicle_wording_en": "Comfortable sedans, executive sedans, and spacious family vehicles confirmed before pickup.",
+  "insurance_wording_ar": "مركبات مؤمّنة مع سائقين خبيرين.",
+  "insurance_wording_en": "Insured vehicles driven by experienced drivers.",
+  "public_address": "Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain",
+  "address_display_enabled": true,
+  "legal_name": "Vendora Transport",
+  "cr_number": "",
+  "legal_information_enabled": true,
+  "sar_per_bhd": 10,
+  "customer_name_enabled": false,
+  "customer_name_required": false,
+  "customer_phone_enabled": false,
+  "customer_phone_required": false,
+  "follow_up_consent_enabled": false
 });
 
-export const DEFAULT_PUBLIC_ROUTES = Object.freeze([
-  ['king-fahd-causeway', 'جسر الملك فهد', 'King Fahd Causeway', 25, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-khobar', 'البحرين إلى الخبر', 'Bahrain to Khobar', 30, 'standard', 'one_way_vehicle'],
-  ['first-stop-after-causeway', 'أول محطة بعد الجسر', 'First stop after the Causeway', 30, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-dammam-airport', 'البحرين إلى مطار الدمام', 'Bahrain to Dammam Airport', 40, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-al-ahsa', 'البحرين إلى الأحساء', 'Bahrain to Al Ahsa', 70, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-jubail', 'البحرين إلى الجبيل', 'Bahrain to Jubail', 70, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-riyadh', 'البحرين إلى الرياض', 'Bahrain to Riyadh', 120, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-madinah', 'البحرين إلى المدينة المنورة', 'Bahrain to Madinah', 300, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-makkah', 'البحرين إلى مكة', 'Bahrain to Makkah', 300, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-khafji', 'البحرين إلى الخفجي', 'Bahrain to Khafji', 90, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-kuwait', 'البحرين إلى الكويت', 'Bahrain to Kuwait', 120, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-abdali', 'البحرين إلى العبدلي', 'Bahrain to Abdali', 120, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-safwan', 'البحرين إلى سفوان', 'Bahrain to Safwan', 220, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-iraq', 'مسارات العراق', 'Iraq routes', 300, 'from', 'one_way_vehicle'],
-  ['bahrain-to-qatar', 'البحرين إلى قطر', 'Bahrain to Qatar', 120, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-dubai', 'البحرين إلى دبي', 'Bahrain to Dubai', 250, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-abu-dhabi', 'البحرين إلى أبوظبي', 'Bahrain to Abu Dhabi', 225, 'standard', 'one_way_vehicle'],
-  ['bahrain-to-oman', 'البحرين إلى عُمان', 'Bahrain to Oman', 350, 'standard', 'one_way_vehicle'],
-  ['bahrain-sightseeing-full-day', 'جولة البحرين من الصباح إلى الليل', 'Bahrain sightseeing, morning to night', 70, 'standard', 'package'],
-  ['bahrain-sightseeing-afternoon', 'جولة البحرين من العصر إلى الليل', 'Bahrain sightseeing, afternoon to night', 60, 'standard', 'package'],
-  ['dammam-shopping-full-day', 'تسوق الدمام من الصباح إلى الليل', 'Dammam shopping, morning to night', 70, 'standard', 'package'],
-  ['dammam-shopping-afternoon', 'تسوق الدمام من العصر إلى الليل', 'Dammam shopping, afternoon to night', 60, 'standard', 'package'],
-  ['additional-gcc-vehicle-day', 'يوم مركبة إضافي لرحلات العودة الخليجية المؤهلة', 'Additional vehicle day for qualifying GCC return journeys', 60, 'standard', 'per_day'],
-]);
+export const DEFAULT_PUBLIC_ROUTES = Object.freeze(routePriceConfig.routes.map((route) => [
+  route.route_id,
+  route.name_ar,
+  route.name_en,
+  route.visibility === 'public' && !['quotation', 'range'].includes(route.price_type) ? route.one_way_price : null,
+  ({ fixed: 'standard', from: 'from', range: 'request_quote', quotation: 'request_quote' })[route.price_type] || 'request_quote',
+  ({ vehicle: 'one_way_vehicle', trip: 'package', hour: 'package', day: 'per_day' })[route.unit] || 'one_way_vehicle'
+]));
+/* END GENERATED CENTRAL TRANSPORT DEFAULTS */
 
 const ALLOWED_SETTING_KEYS = new Set(Object.keys(DEFAULT_PUBLIC_SETTINGS));
 
