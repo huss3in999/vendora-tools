@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="{{LANG}}" dir="{{DIR}}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+  <meta name="googlebot" content="noindex,nofollow,noarchive,nosnippet">
+  <title>{{TITLE}}</title>
+  <meta name="description" content="{{DESCRIPTION}}">
+  <link rel="stylesheet" href="{{ASSET_PREFIX}}site.css">
+  <link rel="stylesheet" href="{{ASSET_PREFIX}}assets/vendora-theme.css">
+  <script type="application/ld+json">{{SCHEMA_JSON}}</script>
+</head>
+<body class="home-premium vip-transport" data-private-preview="true" data-route-id="{{ROUTE_ID}}" data-route-active="{{ACTIVE}}">
+  <header class="topbar">
+    <div class="container nav">
+      <span class="brand"><span class="brand-copy"><span class="brand-title">Vendora Transport</span><span class="brand-sub">{{BRAND_SUBTITLE}}</span></span></span>
+      <span class="keyword-chip">{{PREVIEW_LABEL}}</span>
+    </div>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy glass">
+          <span class="eyebrow"><strong>{{STATUS_LABEL}}</strong></span>
+          <h1>{{HEADING}}</h1>
+          <p class="lead">{{INTRO}}</p>
+          {{BOOKING_ACTION}}
+        </div>
+        <aside class="hero-side glass">
+          <h2>{{ASSIGNMENT_HEADING}}</h2>
+          <p>{{ASSIGNMENT_COPY}}</p>
+          <p><strong>{{ROUTE_ID_LABEL}}:</strong> {{ROUTE_ID}}</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container section-shell">
+        <div class="section-head"><h2>{{JOURNEY_HEADING}}</h2><p>{{JOURNEY_COPY}}</p></div>
+        <div class="route-grid">
+          <article class="route-card"><h3>{{PICKUP_HEADING}}</h3><ul>{{PICKUP_ITEMS}}</ul></article>
+          <article class="route-card"><h3>{{DESTINATION_HEADING}}</h3><ul>{{DESTINATION_ITEMS}}</ul></article>
+          <article class="route-card"><h3>{{AIRPORT_HEADING}}</h3><ul>{{AIRPORT_ITEMS}}</ul></article>
+          <article class="route-card"><h3>{{VEHICLE_HEADING}}</h3><p>{{VEHICLE_COPY}}</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container section-shell">
+        <div class="section-head"><h2>{{KEYWORD_HEADING}}</h2><p>{{KEYWORD_STATUS}}</p></div>
+        <div class="route-grid">
+          <article class="route-card"><h3>{{COMMERCIAL_HEADING}}</h3><p>{{COMMERCIAL_KEYWORD}}</p></article>
+          <article class="route-card"><h3>{{SECONDARY_HEADING}}</h3><ul>{{SECONDARY_ITEMS}}</ul></article>
+          <article class="route-card"><h3>{{INFORMATIONAL_HEADING}}</h3><ul>{{INFORMATIONAL_ITEMS}}</ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container section-shell">
+        <div class="section-head"><h2>{{TERMS_HEADING}}</h2></div>
+        <ul>
+          <li>{{DOCUMENTS_COPY}}</li>
+          <li>{{TIME_COPY}}</li>
+          <li>{{LUGGAGE_COPY}}</li>
+          <li>{{CHILD_SEAT_COPY}}</li>
+          <li>{{WAITING_COPY}}</li>
+          <li>{{PRICING_COPY}}</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container section-shell">
+        <div class="section-head"><h2>{{FAQ_HEADING}}</h2></div>
+        <div class="route-grid">{{FAQ_CARDS}}</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container section-shell">
+        <div class="section-head"><h2>{{RELATED_HEADING}}</h2></div>
+        <div class="route-grid">
+          <a class="route-card" href="{{ORIGIN_HUB_HREF}}"><h3>{{ORIGIN_HUB_LABEL}}</h3></a>
+          <a class="route-card" href="{{DESTINATION_HUB_HREF}}"><h3>{{DESTINATION_HUB_LABEL}}</h3></a>
+          <a class="route-card" href="{{REVERSE_HREF}}"><h3>{{REVERSE_LABEL}}</h3></a>
+          <a class="route-card" href="{{ASSET_PREFIX}}{{SUPPORT_PATH}}"><h3>{{SUPPORT_LABEL}}</h3></a>
+          <a class="route-card" href="{{ASSET_PREFIX}}{{REVIEWS_PATH}}"><h3>{{REVIEWS_LABEL}}</h3></a>
+          <a class="route-card" href="{{ASSET_PREFIX}}{{POLICY_PATH}}"><h3>{{POLICY_LABEL}}</h3></a>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

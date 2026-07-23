@@ -1,0 +1,102 @@
+{
+  "config_version": 1,
+  "last_updated": "2026-07-24",
+  "hub": {
+    "slug": "chauffeur-services",
+    "name_ar": "خدمات السيارة مع سائق",
+    "name_en": "Chauffeur and private car services",
+    "active": true
+  },
+  "services": [
+    {
+      "service_id": "full-day-car-with-driver",
+      "slug": "full-day-vip-driver",
+      "name_ar": "سيارة مع سائق ليوم كامل",
+      "name_en": "Full-day car with driver",
+      "active": true,
+      "existing_public_page": true,
+      "quotation_only": false,
+      "intents": ["shopping trips", "city tours", "multi-stop itineraries"]
+    },
+    {
+      "service_id": "half-day-chauffeur",
+      "slug": "half-day-chauffeur",
+      "name_ar": "سيارة مع سائق لنصف يوم",
+      "name_en": "Half-day chauffeur",
+      "active": false,
+      "existing_public_page": false,
+      "quotation_only": true,
+      "intents": ["shopping trips", "meetings", "short itineraries"]
+    },
+    {
+      "service_id": "hourly-chauffeur",
+      "slug": "hourly-chauffeur",
+      "name_ar": "سيارة مع سائق بالساعة",
+      "name_en": "Hourly chauffeur",
+      "active": false,
+      "existing_public_page": false,
+      "quotation_only": true,
+      "intents": ["waiting service", "multi-stop itineraries", "business meetings"]
+    },
+    {
+      "service_id": "weekly-chauffeur",
+      "slug": "weekly-chauffeur",
+      "name_ar": "سيارة مع سائق أسبوعياً",
+      "name_en": "Weekly chauffeur",
+      "active": false,
+      "existing_public_page": false,
+      "quotation_only": true,
+      "intents": ["business travel", "family travel"]
+    },
+    {
+      "service_id": "monthly-chauffeur",
+      "slug": "monthly-chauffeur",
+      "name_ar": "سيارة مع سائق شهرياً",
+      "name_en": "Monthly chauffeur",
+      "active": false,
+      "existing_public_page": false,
+      "quotation_only": true,
+      "intents": ["corporate travel", "regular private transport"]
+    },
+    {
+      "service_id": "executive-corporate-transport",
+      "slug": "business-chauffeur-bahrain",
+      "name_ar": "نقل تنفيذي وخدمة اجتماعات الأعمال",
+      "name_en": "Executive and corporate transport",
+      "active": true,
+      "existing_public_page": true,
+      "quotation_only": true,
+      "intents": ["business meetings", "executive transport", "corporate travel"]
+    },
+    {
+      "service_id": "airport-hotel-transfer",
+      "slug": "hotel-transfer-bahrain",
+      "name_ar": "توصيل بين المطار والفندق",
+      "name_en": "Airport and hotel transfer",
+      "active": true,
+      "existing_public_page": true,
+      "quotation_only": true,
+      "intents": ["airport-to-hotel transfer", "hotel-to-airport transfer"]
+    },
+    {
+      "service_id": "family-group-transport",
+      "slug": "passenger-transport",
+      "name_ar": "نقل العائلات والمجموعات",
+      "name_en": "Family and group transport",
+      "active": true,
+      "existing_public_page": true,
+      "quotation_only": true,
+      "intents": ["family travel", "group travel", "child-seat requests"]
+    },
+    {
+      "service_id": "luxury-private-transport",
+      "slug": "luxury-private-transport",
+      "name_ar": "نقل خاص فاخر",
+      "name_en": "Luxury private transport",
+      "active": false,
+      "existing_public_page": false,
+      "quotation_only": true,
+      "intents": ["luxury private transport", "guest transport"]
+    }
+  ]
+}
