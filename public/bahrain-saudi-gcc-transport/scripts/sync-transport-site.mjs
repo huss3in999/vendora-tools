@@ -153,6 +153,83 @@ function relativeAsset(file, asset) {
   return value.startsWith('.') ? value : `./${value}`;
 }
 
+function generatedRootContactHtml() {
+  const template = readFileSync(join(root, 'templates', 'root-contact.html'), 'utf8');
+  const whatsappUrl = `https://wa.me/${business.booking_whatsapp}?text=${encodeURIComponent(business.default_whatsapp_message_en)}`;
+  const schema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'ContactPage',
+        '@id': 'https://getvendora.net/contact/#webpage',
+        url: 'https://getvendora.net/contact/',
+        name: `Contact & Office | ${business.brand_display_name}`,
+        description: `Contact ${business.brand_display_name} for 24/7 private transport, chauffeur booking and dispatch enquiries.`,
+        inLanguage: 'en',
+        mainEntity: { '@id': 'https://getvendora.net/#organization' }
+      },
+      {
+        '@type': 'LocalBusiness',
+        '@id': 'https://getvendora.net/#organization',
+        name: business.brand_display_name,
+        legalName: business.legal_name,
+        url: 'https://getvendora.net/',
+        logo: 'https://getvendora.net/bahrain-saudi-gcc-transport/assets/brand/vendora-transport-app-icon-512.png',
+        image: 'https://getvendora.net/bahrain-saudi-gcc-transport/assets/brand/vendora-transport-app-icon-512.png',
+        description: business.service_description_en,
+        telephone: `+${business.booking_whatsapp}`,
+        contactPoint: [
+          {
+            '@type': 'ContactPoint',
+            contactType: 'reservations',
+            telephone: `+${business.booking_whatsapp}`,
+            availableLanguage: ['English', 'Arabic'],
+            hoursAvailable: {
+              '@type': 'OpeningHoursSpecification',
+              dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+              opens: '00:00',
+              closes: '23:59'
+            }
+          },
+          {
+            '@type': 'ContactPoint',
+            contactType: 'customer support',
+            telephone: `+${business.support_phone}`,
+            availableLanguage: ['English', 'Arabic']
+          }
+        ],
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: 'Office 240, Second Floor, The Address Tower',
+          addressLocality: 'Seef',
+          addressCountry: 'BH'
+        },
+        hasMap: business.google_maps_url,
+        paymentAccepted: business.supported_payments.join(', '),
+        openingHours: 'Mo-Su 00:00-23:59'
+      }
+    ]
+  };
+  const tokens = {
+    BRAND_NAME: business.brand_display_name,
+    SERVICE_DESCRIPTION: business.service_description_en,
+    BOOKING_PHONE_DISPLAY: business.booking_whatsapp_display,
+    SUPPORT_PHONE_DISPLAY: business.support_phone_display,
+    SUPPORT_PHONE: business.support_phone,
+    ADDRESS: business.public_address,
+    MAP_URL: business.google_maps_url,
+    PAYMENT_METHODS: business.supported_payments.join(' and '),
+    OPERATING_HOURS: business.operating_hours_en,
+    WHATSAPP_URL: whatsappUrl,
+    COMPLAINTS_URL: business.complaints.path_en,
+    SCHEMA_JSON: JSON.stringify(schema, null, 2)
+  };
+  return template.replace(/\{\{([A-Z_]+)\}\}/g, (match, key) => {
+    if (!(key in tokens)) throw new Error(`Unknown root contact template token: ${key}`);
+    return key === 'SCHEMA_JSON' ? tokens[key] : escapeHtml(tokens[key]);
+  });
+}
+
 function synchronizeHtml(file, original) {
   const rel = toPosix(relative(root, file));
   const lang = rel.startsWith('en/') || rel === 'care/en/index.html' || /<html\b[^>]*\blang=["']en/i.test(original) ? 'en' : 'ar';
@@ -230,6 +307,14 @@ const generatedCurrent = (() => { try { return readFileSync(generatedPath, 'utf8
 if (generatedCurrent !== generatedExpected) {
   changes.push(toPosix(relative(root, generatedPath)));
   if (!checkOnly) writeFileSync(generatedPath, generatedExpected, 'utf8');
+}
+
+const rootContactPath = resolve(root, '..', 'contact', 'index.html');
+const rootContactExpected = generatedRootContactHtml();
+const rootContactCurrent = readFileSync(rootContactPath, 'utf8');
+if (rootContactCurrent !== rootContactExpected) {
+  changes.push(toPosix(relative(root, rootContactPath)));
+  if (!checkOnly) writeFileSync(rootContactPath, rootContactExpected, 'utf8');
 }
 
 for (const file of publicHtmlFiles()) {
