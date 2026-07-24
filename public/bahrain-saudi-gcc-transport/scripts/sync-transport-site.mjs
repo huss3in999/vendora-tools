@@ -55,6 +55,12 @@ function legacySettings() {
     passenger_capacity_en: business.passenger_capacity_en,
     vehicle_wording_ar: business.vehicle_wording_ar,
     vehicle_wording_en: business.vehicle_wording_en,
+    vehicle_assignment_wording_ar: business.vehicle_assignment_wording_ar,
+    vehicle_assignment_wording_en: business.vehicle_assignment_wording_en,
+    luggage_policy_heading_ar: business.luggage_policy_heading_ar,
+    luggage_policy_heading_en: business.luggage_policy_heading_en,
+    luggage_policy_wording_ar: business.luggage_policy_wording_ar,
+    luggage_policy_wording_en: business.luggage_policy_wording_en,
     insurance_wording_ar: business.insurance_wording_ar,
     insurance_wording_en: business.insurance_wording_en,
     public_address: business.public_address,
@@ -306,6 +312,36 @@ function synchronizeHtml(file, original) {
     .replaceAll('Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain', business.public_address)
     .replaceAll('https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-transparent.png', publicBrandIcon)
     .replaceAll('https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png', publicBrandIcon);
+
+  const luggageHeading = lang === 'en' ? business.luggage_policy_heading_en : business.luggage_policy_heading_ar;
+  const luggageWording = lang === 'en' ? business.luggage_policy_wording_en : business.luggage_policy_wording_ar;
+  const assignmentWording = lang === 'en' ? business.vehicle_assignment_wording_en : business.vehicle_assignment_wording_ar;
+  const vehicleNotice = `<section class="section vehicle-confirmation" data-vendora-vehicle-luggage-notice><div class="container section-shell"><div class="section-head"><h2>${escapeHtml(luggageHeading)}</h2><p>${escapeHtml(luggageWording)}</p><p>${escapeHtml(assignmentWording)}</p></div></div></section>`;
+  html = html.replace(/<section\b[^>]*class=["'][^"']*\bvehicle-confirmation\b[^"']*["'][^>]*>[\s\S]*?<\/section>/gi, vehicleNotice);
+
+  const legacyCapabilityReplacements = lang === 'en'
+    ? [
+        [/GMC \/ XL vehicles seat up to 6 or 7 passengers, with rear space and a rack for luggage and bags\./g, business.passenger_capacity_en],
+        [/Seating for 6 to 7 passengers(?: in a family SUV layout)? with luggage space and a rear rack(?: suited to bags and small parcels)?\./g, business.passenger_capacity_en],
+        [/Daily round-the-clock operation, seating for up to 6 or 7 passengers per vehicle,/g, 'Round-the-clock booking requests, with passenger and luggage capacity confirmed for the assigned vehicle,'],
+        [/A private driver, GMC\/XL vehicles, seating for 6 or 7 passengers,/g, 'A private driver and vehicle category confirmed for the booking,'],
+        [/Rear space plus a luggage rack depending on passenger count\./g, business.luggage_policy_wording_en],
+        [/Yes, there is luggage space and a rear rack available depending on load size\./g, business.luggage_policy_wording_en],
+        [/Items that can be loaded inside the vehicle or on the rear rack only\./g, 'Items accepted only after their size and the assigned vehicle configuration are confirmed.'],
+        [/\(up to 7 passengers\)/g, '(capacity confirmed for the assigned vehicle)']
+      ]
+    : [
+        [/مركبات GMC \/ XL تسع حتى 6 أو 7 ركاب، مع مساحة خلفية وحامل للأمتعة والحقائب\./g, business.passenger_capacity_ar],
+        [/سعة 6 إلى 7 ركاب(?: في تكوين SUV عائلية)? مع مساحة أمتعة وحامل خلفي(?: مناسب للأمتعة والطرود الصغيرة)?\./g, business.passenger_capacity_ar],
+        [/تشغيل يومي على مدار الساعة، سعة حتى 6 أو 7 ركاب لكل مركبة،/g, 'يمكن إرسال طلبات الحجز على مدار الساعة، وتُؤكد سعة الركاب والأمتعة للمركبة المعيّنة،'],
+        [/سائق خاص، مركبات GMC\/XL، سعة 6 أو 7 ركاب،/g, 'سائق خاص وفئة مركبة مؤكدة للحجز،'],
+        [/مساحة خلفية \+ حامل للأمتعة بما يتناسب مع عدد الركاب\./g, business.luggage_policy_wording_ar],
+        [/نعم، توجد مساحة أمتعة وحامل خلفي متاح حسب حجم الحمولة\./g, business.luggage_policy_wording_ar],
+        [/الأغراض التي يمكن تحميلها داخل السيارة أو الحامل الخلفي فقط\./g, 'تُقبل الأغراض فقط بعد تأكيد حجمها وتجهيز المركبة المعيّنة.'],
+        [/\(حتى 7 ركاب\)/g, '(تُؤكد السعة حسب المركبة المعيّنة)'],
+        [/GMC\/XL مناسبة للعائلات حتى 7 ركاب مع حقائب\./g, 'تُراجع فئة المركبة وسعة الركاب والأمتعة وتُؤكد للحجز قبل الرحلة.']
+      ];
+  for (const [pattern, replacement] of legacyCapabilityReplacements) html = html.replace(pattern, replacement);
 
   html = html
     .replace(/\s*<link\b[^>]*\brel=["'](?:shortcut )?icon["'][^>]*>\s*/gi, '\n')
