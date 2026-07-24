@@ -12,6 +12,9 @@
     "publish:gcc-batch-1": "node scripts/generate-gcc-route-batch-1.mjs && node scripts/sync-transport-site.mjs",
     "validate:gcc-batch-1": "node scripts/validate-gcc-route-batch-1.mjs",
     "test:gcc-batch-1": "playwright test tests/gcc-route-batch-1.spec.js",
+    "validate:analytics": "node scripts/validate-sitewide-analytics.mjs",
+    "test:analytics-api": "node tests/analytics-api.test.mjs",
+    "test:analytics": "playwright test tests/sitewide-analytics.spec.js",
     "test": "playwright test",
     "test:ui": "playwright test --ui"
   },

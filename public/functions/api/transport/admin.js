@@ -980,6 +980,8 @@ async function getTrackingSummary(env, request) {
   const totals = await env.TRANSPORT_DB.prepare(`
     SELECT
       COUNT(DISTINCT visitor_id) AS visitors,
+      COUNT(DISTINCT CASE WHEN COALESCE(CAST(json_extract(raw_payload, '$.visitCount') AS INTEGER), 1) <= 1 THEN visitor_id END) AS new_visitors,
+      COUNT(DISTINCT CASE WHEN COALESCE(CAST(json_extract(raw_payload, '$.visitCount') AS INTEGER), 1) > 1 THEN visitor_id END) AS returning_visitors,
       SUM(CASE WHEN event_name = 'page_view' THEN 1 ELSE 0 END) AS page_views,
       SUM(CASE WHEN event_name = 'whatsapp_click' THEN 1 ELSE 0 END) AS whatsapp_clicks,
       SUM(CASE WHEN event_name = 'phone_click' THEN 1 ELSE 0 END) AS phone_clicks,
@@ -1073,17 +1075,190 @@ async function getTrackingSummary(env, request) {
   `).all();
 
   const { results: recentEvents } = await env.TRANSPORT_DB.prepare(`
-    SELECT event_id, visitor_id, session_id, created_at, page_path, event_name, event_label, button_text, ip_city, ip_country
+    SELECT event_id, visitor_id, session_id, created_at, page_path, event_name,
+      event_label, button_text, ip_city, ip_country, device_type, language,
+      route_name, COALESCE(NULLIF(utm_source, ''), NULLIF(referrer, ''), 'direct') AS traffic_source
     FROM analytics_events
     ORDER BY created_at DESC
     LIMIT 50
   `).all();
+
+  const [
+    eventTotals,
+    sessionMetrics,
+    { results: onlineVisitors },
+    { results: routePerformance },
+    { results: hubPerformance },
+    { results: pagePerformance },
+    { results: pagesWithoutConversion },
+    { results: byCountry },
+    { results: byCity },
+    { results: byDevice },
+    { results: byLanguage },
+    { results: bySource }
+  ] = await Promise.all([
+    env.TRANSPORT_DB.prepare(`
+      SELECT
+        SUM(event_name = 'route_view') AS route_views,
+        SUM(event_name = 'country_hub_view') AS country_hub_views,
+        SUM(event_name = 'chauffeur_service_view') AS chauffeur_views,
+        SUM(event_name = 'whatsapp_click') AS whatsapp_clicks,
+        SUM(event_name = 'phone_click') AS phone_clicks,
+        SUM(event_name = 'map_click') AS map_clicks,
+        SUM(event_name = 'booking_start') AS booking_starts,
+        SUM(event_name = 'booking_submit') AS booking_submissions,
+        SUM(event_name = 'quote_request') AS quote_requests,
+        SUM(event_name = 'complaint_open') AS complaint_opens,
+        SUM(event_name = 'complaint_submit') AS complaint_submissions,
+        SUM(event_name = 'review_open') AS review_opens,
+        SUM(event_name = 'review_submit') AS review_submissions,
+        SUM(event_name = 'planner_start') AS planner_starts,
+        SUM(event_name = 'planner_complete') AS planner_completions
+      FROM analytics_events
+      WHERE created_at >= ${since}
+    `).first(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT
+        COUNT(*) AS sessions,
+        ROUND(AVG(page_count), 2) AS pages_per_session,
+        ROUND(AVG(duration_seconds), 1) AS average_session_seconds,
+        SUM(CASE WHEN page_count <= 1 AND engagement_events = 0 THEN 1 ELSE 0 END) AS bounced_sessions
+      FROM (
+        SELECT session_id,
+          SUM(event_name = 'page_view') AS page_count,
+          SUM(event_name NOT IN ('page_view', 'landing_page_view', 'session_heartbeat')) AS engagement_events,
+          MAX(0, CAST((julianday(MAX(created_at)) - julianday(MIN(created_at))) * 86400 AS INTEGER)) AS duration_seconds
+        FROM analytics_events
+        WHERE created_at >= ${since} AND session_id IS NOT NULL
+        GROUP BY session_id
+      )
+    `).first(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT visitor_id, session_id, page_path, route_name, ip_country AS country,
+        ip_city AS city, device_type, language,
+        COALESCE(NULLIF(utm_source, ''), NULLIF(referrer, ''), 'direct') AS traffic_source,
+        session_first AS first_seen,
+        created_at AS last_seen,
+        CAST((julianday(created_at) - julianday(session_first)) * 86400 AS INTEGER) AS session_seconds,
+        event_name AS last_action
+      FROM (
+        SELECT *,
+          ROW_NUMBER() OVER (PARTITION BY session_id ORDER BY created_at DESC) AS row_number,
+          MIN(created_at) OVER (PARTITION BY session_id) AS session_first
+        FROM analytics_events
+        WHERE created_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-5 minutes')
+          AND page_path LIKE '/bahrain-saudi-gcc-transport/%'
+          AND page_path NOT LIKE '%/admin/%' AND page_path NOT LIKE '%/care/%'
+      )
+      WHERE row_number = 1
+      ORDER BY last_seen DESC
+      LIMIT 100
+    `).all(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT route_name AS route_id,
+        COALESCE(json_extract(raw_payload, '$.origin_country'), '') AS origin_country,
+        COALESCE(json_extract(raw_payload, '$.destination_country'), '') AS destination_country,
+        language,
+        SUM(event_name = 'route_view') AS views,
+        SUM(event_name = 'whatsapp_click') AS whatsapp_clicks,
+        SUM(event_name = 'quote_request') AS quote_requests,
+        SUM(event_name = 'booking_submit') AS booking_submissions,
+        ROUND(100.0 * SUM(event_name IN ('quote_request', 'booking_submit')) /
+          NULLIF(SUM(event_name = 'route_view'), 0), 2) AS conversion_rate
+      FROM analytics_events
+      WHERE created_at >= ${since} AND route_name IS NOT NULL AND route_name <> ''
+      GROUP BY route_name, origin_country, destination_country, language
+      HAVING views > 0 OR whatsapp_clicks > 0 OR quote_requests > 0
+      ORDER BY views DESC, whatsapp_clicks DESC
+      LIMIT 100
+    `).all(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT route_name AS hub, language,
+        SUM(event_name = 'country_hub_view') AS views,
+        SUM(event_name = 'navigation_click') AS onward_clicks
+      FROM analytics_events
+      WHERE created_at >= ${since}
+      GROUP BY route_name, language
+      HAVING views > 0
+      ORDER BY views DESC
+      LIMIT 50
+    `).all(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT page_path,
+        SUM(event_name = 'page_view') AS views,
+        SUM(event_name IN ('whatsapp_click', 'quote_request', 'booking_submit')) AS conversions,
+        ROUND(100.0 * SUM(event_name IN ('whatsapp_click', 'quote_request', 'booking_submit')) /
+          NULLIF(SUM(event_name = 'page_view'), 0), 2) AS conversion_rate
+      FROM analytics_events
+      WHERE created_at >= ${since} AND page_path IS NOT NULL
+      GROUP BY page_path
+      HAVING views > 0
+      ORDER BY conversions DESC, views DESC
+      LIMIT 50
+    `).all(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT page_path, COUNT(*) AS views
+      FROM analytics_events
+      WHERE created_at >= ${since} AND event_name = 'page_view'
+      GROUP BY page_path
+      HAVING NOT EXISTS (
+        SELECT 1 FROM analytics_events conversion
+        WHERE conversion.page_path = analytics_events.page_path
+          AND conversion.created_at >= ${since}
+          AND conversion.event_name IN ('whatsapp_click', 'quote_request', 'booking_submit')
+      )
+      ORDER BY views DESC
+      LIMIT 50
+    `).all(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT COALESCE(ip_country, 'unknown') AS label, COUNT(DISTINCT session_id) AS sessions,
+        SUM(event_name IN ('whatsapp_click', 'quote_request', 'booking_submit')) AS conversions
+      FROM analytics_events WHERE created_at >= ${since} GROUP BY label ORDER BY sessions DESC LIMIT 50
+    `).all(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT COALESCE(ip_city, 'unknown') AS label, COALESCE(ip_country, 'unknown') AS country,
+        COUNT(DISTINCT session_id) AS sessions
+      FROM analytics_events WHERE created_at >= ${since} GROUP BY label, country ORDER BY sessions DESC LIMIT 50
+    `).all(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT COALESCE(device_type, 'unknown') AS label, COUNT(DISTINCT session_id) AS sessions
+      FROM analytics_events WHERE created_at >= ${since} GROUP BY label ORDER BY sessions DESC
+    `).all(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT COALESCE(language, 'unknown') AS label, COUNT(DISTINCT session_id) AS sessions
+      FROM analytics_events WHERE created_at >= ${since} GROUP BY label ORDER BY sessions DESC
+    `).all(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT COALESCE(NULLIF(utm_source, ''), NULLIF(referrer, ''), 'direct') AS label,
+        COUNT(DISTINCT session_id) AS sessions
+      FROM analytics_events WHERE created_at >= ${since} GROUP BY label ORDER BY sessions DESC LIMIT 50
+    `).all()
+  ]);
 
   return {
     totals: totals || { visitors: 0, page_views: 0, whatsapp_clicks: 0, phone_clicks: 0, ai_chat_opens: 0, ai_chat_confirmations: 0 },
     top_pages: topPages || [],
     top_referrers: topReferrers || [],
     recent_events: recentEvents || [],
+    event_totals: eventTotals || {},
+    session_metrics: {
+      ...(sessionMetrics || {}),
+      bounce_rate: sessionMetrics?.sessions
+        ? Math.round((Number(sessionMetrics.bounced_sessions || 0) / Number(sessionMetrics.sessions)) * 10000) / 100
+        : 0
+    },
+    online_now: onlineVisitors || [],
+    route_performance: routePerformance || [],
+    country_hub_performance: hubPerformance || [],
+    page_performance: pagePerformance || [],
+    pages_without_conversion: pagesWithoutConversion || [],
+    dimensions: {
+      country: byCountry || [],
+      city: byCity || [],
+      device: byDevice || [],
+      language: byLanguage || [],
+      source: bySource || []
+    },
     gcc_summary: {
       ar_views: totals?.gcc_ar_views || 0,
       en_views: totals?.gcc_en_views || 0,

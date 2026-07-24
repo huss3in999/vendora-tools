@@ -1622,6 +1622,7 @@
   }
 
   function trackWhatsAppClick(payload) {
+    if (window.vendoraTransportAnalytics) return;
     if (typeof window.vendoraTrackLocal === 'function') {
       window.vendoraTrackLocal('whatsapp_click', {
         event_category: 'transport_funnel',
@@ -1676,6 +1677,7 @@
 
   function trackPageView() {
     try {
+      if (window.vendoraTransportAnalytics) return;
       if (window.__VENDORA_PAGEVIEW_TRACKED__) return;
       window.__VENDORA_PAGEVIEW_TRACKED__ = true;
       const payload = buildLeadPayload(null, null);
@@ -1688,8 +1690,14 @@
   function setupOnlineHeartbeat() {
     const sendHeartbeat = () => {
       try {
-        const payload = buildLeadPayload(null, null);
-        sendLeadPayload(payload, { preferBeacon: true });
+        if (window.vendoraTransportAnalytics) return;
+        if (typeof window.vendoraTrackLocal === 'function') {
+          window.vendoraTrackLocal('session_heartbeat', {
+            event_category: 'transport_presence',
+            timeOnPageMs: Date.now() - pageStartedAt,
+            route_name: getRouteSlug(),
+          });
+        }
       } catch (e) {
         // ignore heartbeat failures
       }
