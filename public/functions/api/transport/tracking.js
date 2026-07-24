@@ -14,6 +14,16 @@ const ALLOWED_ORIGINS = new Set([
 ]);
 
 const MAX_BODY_BYTES = 8192;
+const SAFE_RAW_FIELDS = new Set([
+  'page_path', 'page_title', 'event_name', 'event_category', 'event_label',
+  'route_name', 'route_id', 'origin_country', 'destination_country',
+  'service_type', 'service_id', 'cta_location', 'traffic_source',
+  'device_category', 'language', 'utm_source', 'utm_medium', 'utm_campaign',
+  'navigation_type', 'target_path', 'policy_type', 'method',
+  'session_duration_ms', 'last_action', 'lead_status', 'visitCount',
+  'sessionPageViews', 'timeOnPageMs', 'scrollDepthPercent',
+  'screen_width', 'screen_height', 'timestamp'
+]);
 
 function json(data, init = {}) {
   return new Response(JSON.stringify(data), {
@@ -56,6 +66,19 @@ function cleanUrl(value) {
   }
 }
 
+function cleanTargetUrl(value) {
+  const text = cleanText(value, 1200);
+  if (!text) return null;
+  try {
+    const url = new URL(text);
+    if (!['http:', 'https:'].includes(url.protocol)) return null;
+    if (/^(?:wa\.me|api\.whatsapp\.com)$/i.test(url.hostname)) return `${url.protocol}//${url.hostname}/`;
+    return `${url.protocol}//${url.hostname}${url.pathname}`.slice(0, 1200);
+  } catch {
+    return null;
+  }
+}
+
 function cleanInteger(value) {
   const number = Number(value);
   if (!Number.isFinite(number)) return null;
@@ -79,6 +102,15 @@ function getRequestGeo(request) {
   };
 }
 
+function browserCategory(userAgent) {
+  const ua = String(userAgent || '');
+  if (/Edg\//.test(ua)) return 'Edge';
+  if (/Firefox\//.test(ua)) return 'Firefox';
+  if (/Chrome\//.test(ua)) return 'Chrome';
+  if (/Safari\//.test(ua) && !/Chrome\//.test(ua)) return 'Safari';
+  return 'Other';
+}
+
 async function parseJsonBody(request) {
   const contentLength = Number(request.headers.get('content-length') || 0);
   if (contentLength > MAX_BODY_BYTES) throw new Error('Payload too large');
@@ -89,15 +121,14 @@ async function parseJsonBody(request) {
   return JSON.parse(body);
 }
 
-// Strictly privacy-safe payload sanitizer (redacts AI chat details)
 function safePayloadJson(payload) {
-  const compact = { ...payload };
-  
-  // Explicitly delete any potential chat messages, text areas, or input lists
-  delete compact.chatMessage;
-  delete compact.chatHistory;
-  delete compact.inputData;
-  
+  const compact = {};
+  for (const key of SAFE_RAW_FIELDS) {
+    if (!Object.hasOwn(payload, key)) continue;
+    const value = payload[key];
+    if (typeof value === 'string') compact[key] = cleanText(value, 500);
+    else if (typeof value === 'number' || typeof value === 'boolean') compact[key] = value;
+  }
   return JSON.stringify(compact).slice(0, 4000);
 }
 
@@ -139,7 +170,7 @@ async function writeEventToDb(request, env, payload, eventId) {
     eventId,
     cleanText(payload.visitor_id, 80) || 'unknown_visitor',
     cleanText(payload.session_id, 120) || 'unknown_session',
-    cleanText(payload.created_at, 80) || new Date().toISOString(),
+    new Date().toISOString(),
     cleanUrl(payload.page_url),
     cleanText(payload.page_path, 300),
     cleanUrl(payload.referrer),
@@ -151,10 +182,10 @@ async function writeEventToDb(request, env, payload, eventId) {
     cleanText(payload.event_label, 120),
     cleanText(payload.route_name, 120),
     cleanText(payload.button_text, 160),
-    cleanUrl(payload.target_url),
+    cleanTargetUrl(payload.target_url),
     cleanText(payload.language, 20),
     cleanText(payload.device_type, 40),
-    cleanText(request.headers.get('user-agent'), 600),
+    browserCategory(request.headers.get('user-agent')),
     cleanInteger(payload.screen_width),
     cleanInteger(payload.screen_height),
     cleanText(payload.lead_status, 40),
@@ -174,6 +205,10 @@ export async function onRequestOptions(context) {
 export async function onRequestPost(context) {
   const { request, env } = context;
   const headers = corsHeaders(request);
+  const origin = request.headers.get('origin') || '';
+  if (origin && !ALLOWED_ORIGINS.has(origin)) {
+    return json({ ok: false, error: 'Origin not allowed' }, { status: 403, headers });
+  }
   const rate = checkRateLimit(request, 'transport-tracking', { limit: 60, windowMs: 60_000 });
   if (!rate.ok) return rateLimitResponse(rate, headers);
 
@@ -187,6 +222,12 @@ export async function onRequestPost(context) {
   } catch {
     return json({ ok: false, error: 'Invalid JSON payload' }, { status: 400, headers });
   }
+
+  const eventName = cleanText(payload.event_name, 80);
+  if (!eventName || !/^[a-z][a-z0-9_]{1,63}$/.test(eventName)) {
+    return json({ ok: false, error: 'Invalid event name' }, { status: 400, headers });
+  }
+  payload.event_name = eventName;
 
   const eventId = cleanText(payload.event_id, 80) || crypto.randomUUID();
   const dbTask = writeEventToDb(request, env, payload, eventId).catch((error) => {

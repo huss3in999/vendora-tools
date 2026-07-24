@@ -1,6 +1,6 @@
 /* BEGIN GENERATED CENTRAL TRANSPORT DEFAULTS */
-import businessConfig from '../../../bahrain-saudi-gcc-transport/config/business-config.json';
-import routePriceConfig from '../../../bahrain-saudi-gcc-transport/config/route-prices.json';
+import businessConfig from '../../../bahrain-saudi-gcc-transport/config/business-config.json' with { type: 'json' };
+import routePriceConfig from '../../../bahrain-saudi-gcc-transport/config/route-prices.json' with { type: 'json' };
 
 const DEFAULT_BOOKING_NUMBER = businessConfig.booking_whatsapp;
 const CACHE_TTL_MS = 60_000;

@@ -5,6 +5,15 @@
  */
 (function () {
   if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  if (window.__VENDORA_UNIFIED_ANALYTICS_READY__) return;
+  window.__VENDORA_UNIFIED_ANALYTICS_READY__ = true;
+
+  var initialPath = String(window.location.pathname || '/').toLowerCase();
+  var dnt = String(navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack || '').toLowerCase();
+  if (/(^|\/)(admin|api|private|test|tests|test-results|care|ai-chat-test)(\/|$)/.test(initialPath) || dnt === '1' || dnt === 'yes') {
+    window.__VENDORA_TRACKING_DISABLED__ = true;
+    return;
+  }
 
   var DEFAULT_GA4_ID = 'G-DFY197R2MS';
 
@@ -82,6 +91,15 @@
     return last;
   }
 
+  function getTransportMetadata() {
+    var slug = getTransportRoute();
+    var map = window.VENDORA_TRANSPORT_ANALYTICS_MAP || {};
+    return (map.routes && map.routes[slug])
+      || (map.hubs && map.hubs[slug])
+      || (map.services && map.services[slug])
+      || {};
+  }
+
   function getTransportCluster() {
     var path = normalizePath(window.location.pathname || '/');
     if (path.indexOf('arbaeen') !== -1) return 'arbaeen';
@@ -127,6 +145,13 @@
     return match ? decodeURIComponent(match[1].replace(/\+/g, ' ')) : '';
   }
 
+  function getTrafficSource() {
+    var utm = getUtmParam('utm_source');
+    if (utm) return utm.slice(0, 80);
+    if (!document.referrer) return 'direct';
+    try { return new URL(document.referrer).hostname.replace(/^www\./, '').slice(0, 120); } catch (e) { return 'referral'; }
+  }
+
   function getDeviceType() {
     var ua = navigator.userAgent || '';
     if (/tablet|ipad|playbook|silk/i.test(ua)) return 'tablet';
@@ -170,9 +195,16 @@
       timeOnPageMs: true, scrollDepthPercent: true, transport_cluster: true,
       content_group: true, page_category: true, method: true,
       page: true, airport: true, is_airport_route: true, click_location: true,
-      custom_location_used: true, pickup_country: true, destination_country: true
+      custom_location_used: true, pickup_country: true, destination_country: true,
+      page_path: true, page_title: true, language: true, route_id: true,
+      origin_country: true, destination_country: true, service_type: true,
+      service_id: true, cta_location: true, traffic_source: true,
+      device_category: true, timestamp: true, booking_reference: true,
+      navigation_type: true, target_path: true, policy_type: true,
+      session_duration_ms: true, last_action: true
     };
     var category = getPageCategory();
+    var transportMetadata = category === 'transport' ? getTransportMetadata() : {};
     
     // Core payload
     var payload = {
@@ -193,6 +225,15 @@
       button_text: safeParams.button_text || safeParams.click_text || '',
       target_url: safeParams.target_url || safeParams.link_url || '',
       language: (document.documentElement.getAttribute('lang') || 'en').toLowerCase(),
+      page_title: document.title || '',
+      route_id: safeParams.route_id || transportMetadata.route_id || '',
+      origin_country: safeParams.origin_country || transportMetadata.origin_country || '',
+      destination_country: safeParams.destination_country || transportMetadata.destination_country || '',
+      service_type: safeParams.service_type || transportMetadata.service_type || '',
+      cta_location: safeParams.cta_location || '',
+      traffic_source: safeParams.traffic_source || getTrafficSource(),
+      device_category: safeParams.device_category || getDeviceType(),
+      timestamp: safeParams.timestamp || new Date().toISOString(),
       screen_width: window.innerWidth || document.documentElement.clientWidth || 0,
       screen_height: window.innerHeight || document.documentElement.clientHeight || 0,
       device_type: getDeviceType(),
@@ -220,7 +261,18 @@
         }, {}), {
           content_group: category,
           page_category: category,
-          language: payload.language
+          page_path: payload.page_path,
+          page_title: payload.page_title,
+          page_location: payload.page_url,
+          language: payload.language,
+          route_id: payload.route_id,
+          origin_country: payload.origin_country,
+          destination_country: payload.destination_country,
+          service_type: payload.service_type,
+          cta_location: payload.cta_location,
+          traffic_source: payload.traffic_source,
+          device_category: payload.device_category,
+          timestamp: payload.timestamp
         });
 
         // 1. Recommended GA4 events mappings
@@ -289,16 +341,25 @@
   // Standard context builder (GA4 compatible)
   function analyticsContext(extra) {
     var category = getPageCategory();
+    var transportMetadata = category === 'transport' ? getTransportMetadata() : {};
     var params = {
       content_group: category,
       page_category: category,
       page_path: (window.location.pathname || '/').replace(/\/index\.html$/, '/'),
       page_url: window.location.href.split('#')[0],
       language: (document.documentElement.getAttribute('lang') || 'en').toLowerCase(),
+      page_title: document.title || '',
+      traffic_source: getTrafficSource(),
+      device_category: getDeviceType(),
+      timestamp: new Date().toISOString()
     };
     if (category === 'transport') {
       params.route_name = getTransportRoute();
       params.transport_cluster = getTransportCluster();
+      params.route_id = transportMetadata.route_id || '';
+      params.origin_country = transportMetadata.origin_country || '';
+      params.destination_country = transportMetadata.destination_country || '';
+      params.service_type = transportMetadata.service_type || '';
     }
     if (extra) {
       Object.keys(extra).forEach(function (key) {
@@ -323,7 +384,7 @@
   }
 
   function loadAnalyticsRouter() {
-    if (getPageCategory() === 'private') return;
+    if (getPageCategory() === 'private' || getPageCategory() === 'transport') return;
     appendScript('/js/analytics-router.js', { defer: 'defer' });
   }
 
@@ -388,17 +449,17 @@
   window.vendoraTrack = window.vendoraTrackLocal;
   window.vendoraAnalyticsContext = analyticsContext;
 
+  (window.__VENDORA_PENDING_TRANSPORT_EVENTS__ || []).splice(0).forEach(function (event) {
+    window.vendoraTrackLocal(event[0], event[1]);
+  });
+
   // Track initial page_view to custom DB
   function trackInitialPage() {
     if (window.__VENDORA_INITIAL_ANALYTICS_TRACKED__) return;
     window.__VENDORA_INITIAL_ANALYTICS_TRACKED__ = true;
-    window.vendoraTrackLocal('page_view', {});
+    window.vendoraTrackLocal('page_view', analyticsContext());
     if (getPageCategory() === 'transport') {
       window.vendoraTrackLocal('landing_page_view', { event_category: 'transport_funnel' });
-      window.vendoraTrackLocal('route_view', { event_category: 'transport_funnel', route_name: getTransportRoute() });
-      if (normalizePath(window.location.pathname).indexOf('/prices/') !== -1) {
-        window.vendoraTrackLocal('pricing_view', { event_category: 'transport_funnel' });
-      }
     }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', trackInitialPage, { once: true });
