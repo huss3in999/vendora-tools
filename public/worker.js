@@ -323,6 +323,25 @@ function logicalPathname(url) {
   return p;
 }
 
+function secureAssetResponse(request, response) {
+  const pathname = new URL(request.url).pathname;
+  const privatePath = /\/(?:admin|care|ai-chat-test|api|scratch|tests|test-results)(?:\/|$)/i.test(pathname);
+  const headers = new Headers(response.headers);
+  headers.set('x-content-type-options', 'nosniff');
+  headers.set('referrer-policy', 'strict-origin-when-cross-origin');
+  headers.set('permissions-policy', 'camera=(), microphone=(), geolocation=()');
+  headers.set('x-frame-options', privatePath ? 'DENY' : 'SAMEORIGIN');
+  if (privatePath) {
+    headers.set('x-robots-tag', 'noindex, nofollow, noarchive');
+    headers.set('cache-control', 'no-store');
+  }
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 function createContext(request, env, ctx) {
   return {
     request,
@@ -462,7 +481,8 @@ export default {
         return await dispatchPagesFunction(nadaMenuApi, request, env, ctx);
       }
 
-      return await rewriteTransportHtml(request, await env.ASSETS.fetch(request), env);
+      const assetResponse = await rewriteTransportHtml(request, await env.ASSETS.fetch(request), env);
+      return secureAssetResponse(request, assetResponse);
     } catch (error) {
       // Capture any unhandled Worker-level failure so it shows up in the admin error log.
       ctx.waitUntil(recordError(env, {

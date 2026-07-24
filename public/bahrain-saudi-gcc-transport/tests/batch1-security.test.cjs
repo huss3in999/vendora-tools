@@ -9,15 +9,22 @@ const read = (...parts) => fs.readFileSync(path.join(...parts), 'utf8');
 
 test('approved public catalog is complete and does not contain driver pricing fields', () => {
   const source = read(publicRoot, 'functions/api/transport/public-settings.js');
+  const routeConfig = JSON.parse(read(transport, 'config/route-prices.json'));
   assert.match(source, /DEFAULT_PUBLIC_ROUTES/);
-  assert.equal((source.match(/^  \['bahrain-|^  \['king-|^  \['first-|^  \['dammam-|^  \['additional-/gm) || []).length, 23);
-  assert.doesNotMatch(source, /driver_(?:rate|price)|internal_(?:rate|price)|wholesale_price/i);
+  assert.match(source, /routePriceConfig\.routes\.map/);
+  assert.equal(routeConfig.routes.length, 23);
+  assert.doesNotMatch(`${source}\n${JSON.stringify(routeConfig)}`, /driver_(?:rate|price)|internal_(?:rate|price)|wholesale_price/i);
 });
 
 test('legal identity and address are configured with real details by default', () => {
   const source = read(publicRoot, 'functions/api/transport/public-settings.js');
-  assert.match(source, /public_address: 'Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain',[\s\S]*address_display_enabled: true/);
-  assert.match(source, /legal_name: 'Vendora Transport',[\s\S]*cr_number: '',[\s\S]*legal_information_enabled: true/);
+  const business = JSON.parse(read(transport, 'config/business-config.json'));
+  assert.equal(business.public_address, 'Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain');
+  assert.equal(business.address_display_enabled, true);
+  assert.equal(business.legal_name, 'Vendora Transport');
+  assert.equal(business.cr_number, '');
+  assert.equal(business.legal_information_enabled, true);
+  assert.match(source, /businessConfig/);
 });
 
 test('Passenger Care requires a strong token and an existing lead', () => {

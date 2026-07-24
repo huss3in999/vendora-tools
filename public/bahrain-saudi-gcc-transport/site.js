@@ -3000,6 +3000,7 @@
     `;
 
     document.body.appendChild(container);
+    container.querySelectorAll('[data-wa-message]').forEach(setStaticWhatsAppLink);
 
     const btn = document.getElementById('vendoraFeedbackBtn');
     const menu = document.getElementById('vendoraFeedbackMenu');

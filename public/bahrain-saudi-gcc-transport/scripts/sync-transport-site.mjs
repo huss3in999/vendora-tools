@@ -122,6 +122,26 @@ function generatedAnalyticsMapSource() {
       service_type: 'private_passenger_transport'
     };
   }
+  const discoveryRoutes = [
+    ['airport-transfer', 'AIRPORT-TRANSFER', 'BH', 'BH', 'airport_transfer'],
+    ['bahrain-airport-transfer', 'BH-AIRPORT', 'BH', 'BH', 'airport_transfer'],
+    ['bahrain-to-dammam-airport', 'BH-DMM', 'BH', 'SA', 'airport_transfer'],
+    ['dammam-airport-to-bahrain', 'DMM-BH', 'SA', 'BH', 'airport_transfer'],
+    ['bahrain-to-hamad-airport', 'BH-DOH', 'BH', 'QA', 'airport_transfer'],
+    ['hamad-airport-to-bahrain', 'DOH-BH', 'QA', 'BH', 'airport_transfer'],
+    ['bahrain-to-kuwait-airport', 'BH-KWI', 'BH', 'KW', 'airport_transfer'],
+    ['kuwait-airport-to-bahrain', 'KWI-BH', 'KW', 'BH', 'airport_transfer'],
+    ['dubai-to-bahrain', 'DXB-BH', 'AE', 'BH', 'private_passenger_transport']
+  ];
+  for (const [slug, routeId, originCountry, destinationCountry, serviceType] of discoveryRoutes) {
+    routes[slug] = {
+      page_type: 'route',
+      route_id: routeId,
+      origin_country: originCountry,
+      destination_country: destinationCountry,
+      service_type: serviceType
+    };
+  }
   const hubs = {};
   for (const country of countryArchitecture.countries) {
     const slug = country.code === 'BH' ? 'gcc-destinations' : country.hub_slug;
@@ -361,8 +381,11 @@ function synchronizeHtml(file, original) {
 
   html = html.replace(/<a\b([^>]*href=["']https:\/\/wa\.me\/[^"']+["'][^>]*)>/gi, (match, attrs) => /data-vendora-config=/.test(attrs) ? match : `<a${attrs} data-vendora-config="whatsapp-link">`);
   html = html.replace(/<a\b([^>]*(?:data-wa-message|data-booking-submit)[^>]*)>/gi, (match, attrs) => {
-    let next = attrs;
-    if (!/\bhref\s*=/i.test(next)) next = ` href="https://wa.me/${business.booking_whatsapp}"${next}`;
+    const isPlannerPage = rel === 'gcc-transport-planner/index.html' || rel === 'en/gcc-transport-planner/index.html';
+    let next = isPlannerPage
+      ? attrs.replace(/\s+href=["']https:\/\/wa\.me\/[^"']*["']/i, '')
+      : attrs;
+    if (!isPlannerPage && !/\bhref\s*=/i.test(next)) next = ` href="https://wa.me/${business.booking_whatsapp}"${next}`;
     if (!/data-vendora-config\s*=/i.test(next)) next += ' data-vendora-config="whatsapp-link"';
     return `<a${next}>`;
   });

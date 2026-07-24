@@ -55,9 +55,9 @@ const mappedSitemapPaths = sitemapPaths();
 test('repository and transport sitemaps expose the same indexable page inventory', async () => {
   expect(new Set(inventoryPaths).size).toBe(inventoryPaths.length);
   expect(new Set(mappedSitemapPaths).size).toBe(mappedSitemapPaths.length);
-  expect(mappedSitemapPaths.every((path) => inventoryPaths.includes(path))).toBeTruthy();
-  expect(publicPages.filter(({ language }) => language === 'ar')).toHaveLength(77);
-  expect(publicPages.filter(({ language }) => language === 'en')).toHaveLength(77);
+  expect(mappedSitemapPaths).toEqual([...inventoryPaths].sort());
+  expect(publicPages.filter(({ language }) => language === 'ar')).toHaveLength(89);
+  expect(publicPages.filter(({ language }) => language === 'en')).toHaveLength(89);
 });
 
 test('every public transport page passes sitewide readability and layout audit', async ({ page }) => {

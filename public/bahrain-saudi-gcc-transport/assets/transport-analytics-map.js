@@ -119,6 +119,69 @@ window.VENDORA_TRANSPORT_ANALYTICS_MAP = Object.freeze({
       "origin_country": "OM",
       "destination_country": "BH",
       "service_type": "private_passenger_transport"
+    },
+    "airport-transfer": {
+      "page_type": "route",
+      "route_id": "AIRPORT-TRANSFER",
+      "origin_country": "BH",
+      "destination_country": "BH",
+      "service_type": "airport_transfer"
+    },
+    "bahrain-airport-transfer": {
+      "page_type": "route",
+      "route_id": "BH-AIRPORT",
+      "origin_country": "BH",
+      "destination_country": "BH",
+      "service_type": "airport_transfer"
+    },
+    "bahrain-to-dammam-airport": {
+      "page_type": "route",
+      "route_id": "BH-DMM",
+      "origin_country": "BH",
+      "destination_country": "SA",
+      "service_type": "airport_transfer"
+    },
+    "dammam-airport-to-bahrain": {
+      "page_type": "route",
+      "route_id": "DMM-BH",
+      "origin_country": "SA",
+      "destination_country": "BH",
+      "service_type": "airport_transfer"
+    },
+    "bahrain-to-hamad-airport": {
+      "page_type": "route",
+      "route_id": "BH-DOH",
+      "origin_country": "BH",
+      "destination_country": "QA",
+      "service_type": "airport_transfer"
+    },
+    "hamad-airport-to-bahrain": {
+      "page_type": "route",
+      "route_id": "DOH-BH",
+      "origin_country": "QA",
+      "destination_country": "BH",
+      "service_type": "airport_transfer"
+    },
+    "bahrain-to-kuwait-airport": {
+      "page_type": "route",
+      "route_id": "BH-KWI",
+      "origin_country": "BH",
+      "destination_country": "KW",
+      "service_type": "airport_transfer"
+    },
+    "kuwait-airport-to-bahrain": {
+      "page_type": "route",
+      "route_id": "KWI-BH",
+      "origin_country": "KW",
+      "destination_country": "BH",
+      "service_type": "airport_transfer"
+    },
+    "dubai-to-bahrain": {
+      "page_type": "route",
+      "route_id": "DXB-BH",
+      "origin_country": "AE",
+      "destination_country": "BH",
+      "service_type": "private_passenger_transport"
     }
   },
   "hubs": {

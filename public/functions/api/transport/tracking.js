@@ -18,6 +18,7 @@ const SAFE_RAW_FIELDS = new Set([
   'page_path', 'page_title', 'event_name', 'event_category', 'event_label',
   'route_name', 'route_id', 'origin_country', 'destination_country',
   'service_type', 'service_id', 'cta_location', 'traffic_source',
+  'discovery_channel', 'ai_referral_source',
   'device_category', 'language', 'utm_source', 'utm_medium', 'utm_campaign',
   'navigation_type', 'target_path', 'policy_type', 'method',
   'session_duration_ms', 'last_action', 'lead_status', 'visitCount',
