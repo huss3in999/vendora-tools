@@ -1,6 +1,6 @@
 # GCC Route Architecture and Activation
 
-Status: private implementation architecture. This document does not authorize publishing or sitemap changes.
+Status: internal implementation architecture. Publication batch 1 is controlled by the approved route list and deterministic generator described below.
 
 ## Sources of truth
 
@@ -23,9 +23,9 @@ Do not create a second manually maintained route matrix.
 
 ## What active means
 
-For this architecture, setting `active: true` makes a route eligible to appear in generated **private previews** and active-route preview hubs. It does not create a public route page, add a sitemap URL or deploy anything.
+Setting `active: true` makes a route eligible for private previews. A route becomes public only when it also has approved Arabic and English public paths and is included in a reviewed publication batch.
 
-Public promotion is a separate gated step that is intentionally not automated in this implementation.
+Public promotion is performed by a batch-specific deterministic generator after every operational and content gate passes. The generator does not deploy the site.
 
 ## Exact steps to activate one route
 
@@ -58,7 +58,7 @@ Example: activate `SA-QA` after its Saudi Arabia pickup operation has been appro
 
 For direct fulfilment, use `confirmed_direct` and set `approved_partner_required` to `false`.
 
-7. Leave both public paths `null`. Activation is still preview-only.
+7. Leave both public paths `null` during preview review.
 8. Run:
 
 ```powershell
@@ -98,7 +98,24 @@ All items must pass before a route receives public paths:
 - Titles and descriptions are unique.
 - The route is absent from the sitemap until every preceding gate passes.
 
-Only after these checks should public paths be assigned, public HTML generated, and the route added to a controlled sitemap batch. Those actions require a separate approved implementation.
+Only after these checks should public paths be assigned, public HTML generated, and the route added to a controlled sitemap batch.
+
+## Publication batch 1
+
+The approved publication command is:
+
+```powershell
+npm run publish:gcc-batch-1
+npm run validate:gcc-batch-1
+npm run test:gcc-batch-1
+```
+
+The generator publishes only the ten route IDs declared in
+`scripts/generate-gcc-route-batch-1.mjs`, writes their Arabic and English
+pages, writes the six approved bilingual country hubs, and updates only
+`sitemap-gcc-transport.xml`, `sitemap-gcc-transport-en.xml`, and their
+index last-modified dates. Adding a route to the 42-record matrix does not
+publish it automatically.
 
 ## Private preview output
 
@@ -111,8 +128,8 @@ planning-output/gcc-preview/
 The generator:
 
 - writes outside the deployed `public/` directory;
-- includes all ten preserved existing country routes;
-- includes inactive routes from the first operational-approval batch for private review;
+- includes all active country routes;
+- keeps all inactive route records internal;
 - creates seven Arabic and seven English country hubs;
 - shows active routes only on country hubs;
 - creates Arabic and English chauffeur-service hubs;
@@ -148,7 +165,7 @@ The GCC validator fails when:
 
 ## Existing active routes
 
-These ten directions remain active solely because their bilingual URLs already exist and the implementation decision requires preserving current active routes and URLs:
+These ten directions remain active because their bilingual URLs existed before publication batch 1:
 
 - `BH-SA`
 - `BH-QA`
@@ -161,4 +178,8 @@ These ten directions remain active solely because their bilingual URLs already e
 - `KW-BH`
 - `OM-BH`
 
-They are not reclassified as `confirmed_direct` or `confirmed_partner` without operational evidence.
+Publication batch 1 additionally approved and published `SA-QA`, `QA-SA`,
+`SA-AE`, `AE-SA`, `AE-BH`, `QA-AE`, and `AE-QA`. The three existing
+batch routes `BH-AE`, `KW-BH`, and `OM-BH` were upgraded in place. All ten
+batch routes record `confirmed_partner` because fulfilment may require an
+approved operating partner; this does not promise guaranteed availability.
