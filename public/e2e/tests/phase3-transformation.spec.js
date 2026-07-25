@@ -21,7 +21,7 @@ test.describe('Phase 3 Transformation Verification Suite', () => {
   test('Root Contact Page displays Seef office and Google Maps link', async ({ page }) => {
     await page.goto(`${BASE_URL}/contact/`);
     await expect(page).toHaveTitle(/Contact & Office Location/i);
-    const mapsLink = page.locator('a[href*="maps.app.goo.gl"]');
+    const mapsLink = page.locator('a[href*="maps.app.goo.gl"]').first();
     await expect(mapsLink).toBeVisible();
     await expect(mapsLink).toHaveAttribute('href', 'https://maps.app.goo.gl/XgirVcNRYSqJb1N26?g_st=ac');
   });

@@ -1148,7 +1148,7 @@ async function getTrackingSummary(env, request) {
           MIN(created_at) OVER (PARTITION BY session_id) AS session_first
         FROM analytics_events
         WHERE created_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-5 minutes')
-          AND page_path LIKE '/bahrain-saudi-gcc-transport/%'
+          AND (page_path = '/bahrain-saudi-gcc-transport' OR page_path LIKE '/bahrain-saudi-gcc-transport/%')
           AND page_path NOT LIKE '%/admin/%' AND page_path NOT LIKE '%/care/%'
       )
       WHERE row_number = 1
@@ -1472,6 +1472,52 @@ async function deleteErrors(env, request) {
   return json({ ok: true, deleted: result.meta?.changes || 0 });
 }
 
+async function getDiagnostics(env) {
+  const dbOk = Boolean(env && env.TRANSPORT_DB);
+  let tableExists = false;
+  let total24h = 0;
+  let active5m = 0;
+  let lastEventTime = null;
+
+  if (dbOk) {
+    try {
+      const tableCheck = await env.TRANSPORT_DB.prepare(
+        "SELECT count(*) as cnt FROM sqlite_master WHERE type='table' AND name='analytics_events'"
+      ).first();
+      tableExists = Boolean(tableCheck && tableCheck.cnt > 0);
+
+      if (tableExists) {
+        const stats24h = await env.TRANSPORT_DB.prepare(
+          "SELECT count(*) as cnt, max(created_at) as last_at FROM analytics_events WHERE created_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-24 hours')"
+        ).first();
+        total24h = stats24h ? stats24h.cnt || 0 : 0;
+        lastEventTime = stats24h ? stats24h.last_at || null : null;
+
+        const stats5m = await env.TRANSPORT_DB.prepare(
+          "SELECT count(DISTINCT session_id) as cnt FROM analytics_events WHERE created_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-5 minutes')"
+        ).first();
+        active5m = stats5m ? stats5m.cnt || 0 : 0;
+      }
+    } catch {
+      tableExists = false;
+    }
+  }
+
+  return {
+    diagnostics: {
+      database_bound: dbOk,
+      analytics_table_exists: tableExists,
+      migration_0005_status: tableExists ? 'applied' : 'missing',
+      events_24h: total24h,
+      active_sessions_5m: active5m,
+      last_event_at: lastEventTime,
+      tracking_endpoint: '/api/track',
+      admin_endpoint: '/api/transport/admin',
+      timestamp: new Date().toISOString()
+    }
+  };
+}
+
 export async function onRequestOptions(context) {
   return new Response(null, { status: 204, headers: corsHeaders(context.request) });
 }
@@ -1501,6 +1547,8 @@ export async function onRequestGet(context) {
           ? { notification_settings: await getNotificationSettings(env) }
         : resource === 'errors'
           ? await getErrors(env, request)
+        : resource === 'diagnostics'
+          ? await getDiagnostics(env)
         : resource === 'tracking'
           ? await getTrackingSummary(env, request)
         : resource === 'pageviews'

@@ -6,7 +6,8 @@ import { fileURLToPath } from 'node:url';
 const here = dirname(fileURLToPath(import.meta.url));
 const publicDir = resolve(here, '..');
 const wranglerPath = resolve(publicDir, 'wrangler.jsonc');
-const wrangler = JSON.parse(readFileSync(wranglerPath, 'utf8'));
+const rawWrangler = readFileSync(wranglerPath, 'utf8').replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, '');
+const wrangler = JSON.parse(rawWrangler);
 const assetsDir = resolve(publicDir, wrangler.assets?.directory || '.');
 
 const required = [
