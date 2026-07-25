@@ -82,7 +82,7 @@ for (const entry of pages) {
       const style = getComputedStyle(body);
       return [style.getPropertyValue('--vip-navy').trim(), style.getPropertyValue('--vip-ink').trim(), style.getPropertyValue('--vip-ivory').trim(), style.getPropertyValue('--vip-gold').trim()];
     });
-    expect(palette).toEqual(['#071a2e', '#0b1118', '#f7f2e8', '#c8a96b']);
+    expect(palette).toEqual(['#071a2e', '#081725', '#fffaf0', '#c8a96b']);
   });
 }
 

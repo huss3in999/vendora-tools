@@ -111,41 +111,58 @@ body.vip-transport :is(.section-shell, .legal-content, .page-shell)
   text-decoration-thickness: 2px;
 }
 
-/* Service cards are dark surfaces even when they sit inside a light section shell. */
+/* Home service cards use the approved light surface and retain dark readable copy. */
 body.vip-transport.home-premium .section-shell .service-card {
-  color: var(--vendora-text-on-dark);
-  background-color: var(--vendora-surface-dark);
-  background-image: linear-gradient(145deg, var(--vendora-navy-soft), var(--vendora-surface-dark));
-  border-color: var(--vendora-border);
-  box-shadow: var(--vendora-shadow-dark);
+  color: var(--vendora-text-on-light);
+  background-color: #fffdf8;
+  background-image: linear-gradient(145deg, #fffdf8, var(--vendora-surface-light));
+  border-color: var(--vendora-border-light);
+  box-shadow: var(--vendora-shadow);
 }
 
 body.vip-transport.home-premium .section-shell .service-card
   :is(p, li, dt, dd, small, .lead, .field-help, .route-meta, .trust-line) {
-  color: var(--vendora-muted-on-dark);
+  color: var(--vendora-muted-on-light);
   opacity: 1;
 }
 
 body.vip-transport.home-premium .section-shell .service-card
   :is(h1, h2, h3, h4, h5, h6, summary, strong) {
-  color: var(--vendora-gold-bright);
+  color: var(--vendora-text-on-light);
 }
 
 body.vip-transport.home-premium .section-shell .service-card li::marker {
-  color: var(--vendora-gold-bright);
+  color: var(--vendora-gold);
 }
 
 body.vip-transport.home-premium .section-shell .service-card
   a:not(.primary-btn):not(.wa-inline):not(.ghost-btn),
 body.vip-transport.home-premium .section-shell .service-card
   a:not(.primary-btn):not(.wa-inline):not(.ghost-btn):visited {
-  color: var(--vendora-link-on-dark);
+  color: var(--vendora-link-on-light);
 }
 
 body.vip-transport.home-premium .section-shell .service-card
   a:not(.primary-btn):not(.wa-inline):not(.ghost-btn):is(:hover, :focus-visible) {
-  color: var(--vendora-text-on-dark);
+  color: var(--vendora-navy);
   text-decoration-thickness: 2px;
+}
+
+/* Complaint forms sit in legacy .glass containers but are rendered as light cards. */
+body.vip-transport #complaintForm.glass {
+  color: var(--vendora-text-on-light);
+  background: #fffdf8;
+  border-color: var(--vendora-border-light);
+  box-shadow: var(--vendora-shadow);
+}
+
+body.vip-transport #complaintForm.glass :is(p, li, label, small, span) {
+  color: var(--vendora-muted-on-light);
+  opacity: 1;
+}
+
+body.vip-transport #complaintForm.glass :is(h1, h2, h3, h4, strong) {
+  color: var(--vendora-text-on-light);
 }
 
 body.vip-transport :is(
@@ -198,6 +215,44 @@ body.vip-transport :is(.rights-card, .rights-box) {
   border-inline-start: 5px solid var(--vendora-gold);
   border-radius: var(--vendora-radius);
   box-shadow: var(--vendora-shadow-dark);
+}
+
+body.vip-transport .section-shell > .glass,
+body.vip-transport .section-shell .review-grid-wrap .glass {
+  color: var(--vendora-text-on-light);
+  background: #fffdf8;
+  border-color: var(--vendora-border-light);
+  box-shadow: var(--vendora-shadow);
+}
+
+body.vip-transport .section-shell > .glass
+  :is(p, li, dt, dd, label, small, span:not(.logo), .field-help),
+body.vip-transport .section-shell .review-grid-wrap .glass
+  :is(p, li, dt, dd, label, small, span:not(.logo), .field-help) {
+  color: var(--vendora-muted-on-light) !important;
+}
+
+body.vip-transport .section-shell > .glass
+  :is(h1, h2, h3, h4, strong),
+body.vip-transport .section-shell .review-grid-wrap .glass
+  :is(h1, h2, h3, h4, strong) {
+  color: var(--vendora-text-on-light) !important;
+}
+
+body.vip-transport .section-shell form.glass :is(input, textarea, select) {
+  color: var(--vendora-text-on-light) !important;
+  background: #fffdf8 !important;
+  border-color: var(--vendora-border-light) !important;
+}
+
+body.vip-transport .section-shell form.glass :is(input, textarea)::placeholder {
+  color: #536579 !important;
+  opacity: 1;
+}
+
+body.vip-transport .section-shell form.glass a,
+body.vip-transport .section-shell form.glass a:visited {
+  color: var(--vendora-link-on-light) !important;
 }
 
 body.vip-transport :is(.primary-btn, .vip-calculate-action, .calculator-submit),

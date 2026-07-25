@@ -1,0 +1,12 @@
+{
+  "site_origin": "https://getvendora.net",
+  "site_path": "/bahrain-saudi-gcc-transport/",
+  "brand_name": "Vendora Transport",
+  "last_reviewed": "2026-07-25",
+  "default_social_image": "https://getvendora.net/bahrain-saudi-gcc-transport/assets/images/hero-vendora-vip-gmc-airport.webp",
+  "indexnow": {
+    "endpoint": "https://api.indexnow.org/indexnow",
+    "key": "a917c4e86b134f12b79a63d208ea45c7",
+    "key_location": "https://getvendora.net/bahrain-saudi-gcc-transport/a917c4e86b134f12b79a63d208ea45c7.txt"
+  }
+}

@@ -307,7 +307,7 @@
       const injected = JSON.parse(document.getElementById('transport-public-config')?.textContent || '{}');
       if (Array.isArray(injected.routes) && injected.routes.length) publicConfig = injected;
     } catch { /* request the public endpoint below */ }
-    if (!publicConfig.routes.length && location.protocol !== 'file:') {
+    if (location.protocol !== 'file:') {
       try {
         const response = await fetch(`${rootPath}api/transport/public-settings`, { credentials: 'omit' });
         const data = response.ok ? await response.json() : null;

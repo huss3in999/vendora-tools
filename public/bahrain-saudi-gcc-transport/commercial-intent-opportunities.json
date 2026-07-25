@@ -1,0 +1,38 @@
+{
+  "reviewed": "2026-07-25",
+  "principle": "Create a page only for a confirmed service with original route-specific guidance; do not create thin variants.",
+  "existing_priority_coverage": [
+    "Bahrain to Saudi Arabia",
+    "Bahrain to Khobar",
+    "Bahrain to Dammam",
+    "Bahrain to Dammam Airport",
+    "Bahrain to Riyadh",
+    "Bahrain Airport transfers",
+    "reverse Saudi routes",
+    "major GCC directions"
+  ],
+  "conditional_opportunities": [
+    {
+      "topic": "Bahrain to Dhahran",
+      "condition": "Confirm the service and provide original pickup, causeway and destination guidance."
+    },
+    {
+      "topic": "Bahrain to Jubail",
+      "condition": "Confirm the service and provide original long-route, stop and luggage guidance."
+    },
+    {
+      "topic": "Riyadh Airport to Bahrain",
+      "condition": "Confirm airport pickup operations and publish verified meeting-point and timing guidance."
+    },
+    {
+      "topic": "Bahrain Airport to Khobar and Dammam",
+      "condition": "Prefer strengthening existing airport and city pages with contextual links unless distinct operational content is available."
+    }
+  ],
+  "excluded_metrics": [
+    "keyword volume",
+    "ranking",
+    "traffic forecast",
+    "visibility score"
+  ]
+}

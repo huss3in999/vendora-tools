@@ -25,3 +25,23 @@ Allow: /.well-known/llms.txt
 Allow: /ai-index.json
 Allow: /bahrain-saudi-gcc-transport/llms.txt
 
+# Search and answer-engine crawlers may access the same public content.
+# Private and test surfaces remain unavailable in every explicit group.
+User-agent: Googlebot
+Allow: /
+Disallow: /bahrain-saudi-gcc-transport/admin/
+Disallow: /bahrain-saudi-gcc-transport/care/
+Disallow: /bahrain-saudi-gcc-transport/ai-chat-test/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /bahrain-saudi-gcc-transport/admin/
+Disallow: /bahrain-saudi-gcc-transport/care/
+Disallow: /bahrain-saudi-gcc-transport/ai-chat-test/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /bahrain-saudi-gcc-transport/admin/
+Disallow: /bahrain-saudi-gcc-transport/care/
+Disallow: /bahrain-saudi-gcc-transport/ai-chat-test/
+

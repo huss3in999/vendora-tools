@@ -62,7 +62,7 @@
     ['Bahrain to Dammam Private Driver & Chauffeur — King Fahd Causeway | توصيل خاص من البحرين للدمام GMC XL | Vendora', 'Bahrain to Dammam private driver and chauffeur via King Fahd Causeway | GMC XL private transport | Vendora'],
     ['نوفّر رحلات يومية للركاب والطرود من وإلى البحرين مع استلام من المنزل أو الفندق أو المطار أو مقر العمل، وسيارات GMC/XL مناسبة للأفراد والعائلات والمجموعات.', 'We provide daily passenger and parcel trips to and from Bahrain with pickup from home, hotel, airport, or office, using GMC/XL vehicles suitable for individuals, families, and groups.'],
     ['ماذا يميز الخدمة؟', 'What makes the service different?'],
-    ['تشغيل يومي على مدار الساعة، سعة حتى 6 أو 7 ركاب لكل مركبة، خيارات عودة، وإمكانية ترتيب أكثر من سيارة للرحلات الجماعية داخل الخليج.', 'Daily round-the-clock operation, seating for up to 6 or 7 passengers per vehicle, return trip options, and the ability to arrange more than one vehicle for group GCC trips.'],
+    ['يمكن إرسال طلبات الحجز على مدار الساعة، وتُؤكد سعة الركاب والأمتعة للمركبة المعيّنة، مع خيارات عودة وإمكانية ترتيب أكثر من سيارة للمجموعات.', 'Booking requests can be sent around the clock. Passenger and luggage capacity is confirmed for the assigned vehicle, with return options and more than one vehicle available for groups when arranged.'],
     ['الوجهات الأكثر طلباً من البحرين', 'Most requested destinations from Bahrain'],
     ['صفحات مستقلة لكل مسار مع مدة تقديرية للرحلة ومعلومات حجز واضحة.', 'Dedicated pages for each route with estimated trip duration and clear booking information.'],
     ['مدة تقريبية من 1 إلى 2 ساعة مع خيارات توصيل باب لباب.', 'Approximate duration of 1 to 2 hours with door-to-door delivery options.'],
@@ -100,7 +100,7 @@
     ['الاستلام والتوصيل', 'Pickup and drop-off'],
     ['نستلم من المنزل أو الفندق أو المطار أو مكان العمل، ونوصل مباشرة إلى العنوان المطلوب.', 'We pick up from home, hotel, airport, or workplace and deliver directly to the requested address.'],
     ['الركاب والأمتعة', 'Passengers and luggage'],
-    ['مركبات GMC / XL تسع حتى 6 أو 7 ركاب، مع مساحة خلفية وحامل للأمتعة والحقائب.', 'GMC / XL vehicles seat up to 6 or 7 passengers, with rear space and a rack for luggage and bags.'],
+    ['تُؤكد سعة الركاب والأمتعة فقط بعد تحديد فئة المركبة وتجهيزها الفعلي للحجز.', 'Passenger and luggage capacity is confirmed only after the assigned vehicle category and actual booking configuration are known.'],
     ['الدفع نقداً أو BenefitPay، ويمكن ترتيب رحلة ذهاب وعودة أو أكثر من سيارة للمجموعات.', 'Payment is available by cash or BenefitPay, and round trips or multiple vehicles for groups can be arranged.'],
     ['مدة الطريق والروابط المفيدة', 'Road duration and useful links'],
     ['المدة المتوقعة من 8 إلى 10 ساعات.', 'Expected duration is 8 to 10 hours.'],
@@ -131,7 +131,7 @@
     ['المدة المتوقعة من البحرين إلى الخبر: 45 إلى 60 دقيقة.', 'Expected duration from Bahrain to Khobar is 45 to 60 minutes.'],
     ['يتوفر استقبال وتوصيل من وإلى جميع مطارات دول الخليج حسب الطلب.', 'Pickup and drop-off are available to and from all GCC airports on request.'],
     ['نقل خاص للركاب وتوصيل الطرود الصغيرة والمتوسطة التي تتسع داخل المركبة.', 'Private passenger transport and small to medium parcel delivery for items that fit inside the vehicle.'],
-    ['سعة 6 إلى 7 ركاب مع مساحة أمتعة وحامل خلفي.', 'Seating for 6 to 7 passengers with luggage space and a rear rack.'],
+    ['تُراجع فئة المركبة وسعة الركاب والأمتعة وتُؤكد للحجز قبل الرحلة.', 'The vehicle category and passenger and luggage capacity are reviewed and confirmed for the booking before travel.'],
     ['فتح الصفحة', 'Open page'],
     ['أهم الأسئلة قبل الحجز إلى الخبر.', 'Key questions before booking to Khobar.'],
     ['رحلة خاصة طويلة إلى الرياض مع خدمة يومية مستمرة للركاب والطرود، وتنسيق سريع للانطلاق من أي موقع داخل البحرين.', 'A long private trip to Riyadh with daily passenger and parcel service, plus fast coordination from any location inside Bahrain.'],
@@ -155,7 +155,7 @@
     ['ضوابط وخيارات التوصيل', 'Delivery rules and options'],
     ['توضيح نوع الطرود المناسبة وآلية الحجز لتجنب أي تأخير.', 'Clear guidance on suitable parcels and the booking process to avoid delays.'],
     ['نوع الطرود', 'Parcel type'],
-    ['الأغراض التي يمكن تحميلها داخل السيارة أو الحامل الخلفي فقط.', 'Items that can be loaded inside the vehicle or on the rear rack only.'],
+    ['تُقبل الأغراض فقط بعد تأكيد حجمها وتجهيز المركبة المعيّنة.', 'Items are accepted only after their size and the assigned vehicle configuration are confirmed.'],
     ['مواعيد العمل', 'Operating hours'],
     ['التشغيل 24 ساعة يومياً مع أفضلية الحجز قبل 1 إلى 3 ساعات.', 'Operation is 24 hours a day, with booking preferred 1 to 3 hours in advance.'],
     ['الاستلام والتسليم', 'Pickup and delivery'],
@@ -164,14 +164,14 @@
     ['نقداً أو BenefitPay مع إرسال تفاصيل الطرد عبر واتساب قبل الانطلاق.', 'Cash or BenefitPay, with parcel details sent through WhatsApp before departure.'],
     ['خدمة مخصصة للأفراد والعائلات ورجال الأعمال مع مركبات خاصة غير مشتركة، وانطلاق يومي من المنزل أو الفندق أو المطار أو مقر العمل.', 'A dedicated service for individuals, families, and business travelers with private non-shared vehicles and daily departures from home, hotel, airport, or workplace.'],
     ['ما الذي يشمله نقل الركاب؟', 'What does passenger transport include?'],
-    ['سائق خاص، مركبات GMC/XL، سعة 6 أو 7 ركاب، خيارات ذهاب وعودة، وإمكانية ترتيب أكثر من سيارة للمجموعات.', 'A private driver, GMC/XL vehicles, seating for 6 or 7 passengers, round-trip options, and the ability to arrange more than one vehicle for groups.'],
+    ['سائق خاص وفئة مركبة مؤكدة للحجز، مع خيارات ذهاب وعودة وإمكانية ترتيب أكثر من سيارة للمجموعات.', 'A private driver and vehicle category confirmed for the booking, with round-trip options and the ability to arrange more than one vehicle for groups.'],
     ['كل ما يحتاجه العميل قبل الحجز في صفحة واحدة واضحة.', 'Everything the customer needs before booking in one clear page.'],
     ['تغطية مستمرة', 'Continuous coverage'],
     ['خدمة 24 ساعة يومياً داخل البحرين وإلى السعودية وبقية دول الخليج.', '24-hour service inside Bahrain and to Saudi Arabia and the rest of the GCC.'],
     ['باب إلى باب', 'Door to door'],
     ['نقطة الاستلام من المنزل أو الفندق أو المطار أو مكان العمل.', 'Pickup point from home, hotel, airport, or workplace.'],
     ['الأمتعة والحمولة', 'Luggage and load'],
-    ['مساحة خلفية + حامل للأمتعة بما يتناسب مع عدد الركاب.', 'Rear space plus a luggage rack depending on passenger count.'],
+    ['تعتمد ترتيبات الأمتعة على المركبة المعيّنة وتجهيزها المؤكد.', 'Luggage arrangements depend on the assigned vehicle and its confirmed configuration.'],
     ['الحجز والدفع', 'Booking and payment'],
     ['يفضل الحجز قبل 1-3 ساعات، والدفع نقداً أو BenefitPay.', 'Booking is preferred 1 to 3 hours ahead, with cash or BenefitPay payment.'],
     ['مسار الرياض إلى البحرين مناسب للرحلات العملية والعائلية الطويلة، مع تنظيم واضح لموعد الانطلاق والوصول طوال الأسبوع.', 'The Riyadh to Bahrain route is suitable for long business and family trips, with clear scheduling for departure and arrival throughout the week.'],
@@ -611,12 +611,12 @@
     ['حجز نقل خاص من السعودية إلى البحرين', 'Book private transport from Saudi Arabia to Bahrain'],
     ['مدة الطريق إلى الدمام عبر جسر الملك فهد', 'Road time to Dammam via the King Fahd Causeway'],
     ['مدة الرحلة من البحرين إلى الدمام', 'Trip duration from Bahrain to Dammam'],
-    ['رحلات VIP يومية من البحرين إلى الدمام عبر جسر الملك فهد بسيارة GMC XL عائلية (حتى 7 ركاب) وSUV واسعة للركاب والنقل المؤسسي وتشغيل المطار (BAH / DMM) ونقل طرود خليجي، مع توصيل مباشر من الجفير أو السيف أو الفنادق وخيارات ذهاب وعودة مناسبة لتجديد التأشيرة.', 'Daily VIP trips from Bahrain to Dammam via the King Fahd Causeway in a GMC XL family vehicle (up to 7 passengers) and a spacious SUV for passengers, corporate transport, and airport runs (BAH / DMM), plus GCC parcel handoffs, with direct pickup from Juffair, Seef, or hotels and same-day return options suitable for visa renewals.'],
+    ['رحلات VIP يومية من البحرين إلى الدمام عبر جسر الملك فهد بفئة مركبة عائلية تُؤكد سعتها وتجهيزها للحجز، مع خيارات للنقل المؤسسي وتشغيل المطار (BAH / DMM) ونقل الطرود الخليجية حسب السعة الآمنة، وتوصيل مباشر من الجفير أو السيف أو الفنادق وخيارات ذهاب وعودة مناسبة لتجديد التأشيرة.', 'Daily VIP trips from Bahrain to Dammam via the King Fahd Causeway with a family vehicle category whose capacity and configuration are confirmed for the booking, including corporate transport, airport runs (BAH / DMM), and GCC parcel handoffs subject to safe capacity, with direct pickup from Juffair, Seef, or hotels and same-day return options suitable for visa renewals.'],
     ['الوقت المعتاد من 1 إلى 2 ساعة تقريباً بعد عبور جسر الملك فهد، لذلك يمكن ترتيب مشاوير نفس اليوم ذهاباً وعودة حسب جدولك أو رحلات مطار DMM.', 'The usual travel time is about 1 to 2 hours after crossing the King Fahd Causeway, so same-day return trips can be arranged to suit your schedule or DMM airport runs.'],
     ['المدة المتوقعة من البحرين إلى الدمام بعد جسر الملك فهد: 1 إلى 2 ساعة، مناسبة لتشغيل المطار أو النقل المؤسسي بنفس اليوم.', 'The expected duration from Bahrain to Dammam after the King Fahd Causeway is 1 to 2 hours, suitable for airport runs or corporate transport on the same day.'],
     ['يتوفر استقبال وتوصيل من وإلى مطار البحرين (BAH) ومطار الدمام (DMM) وبقية مطارات الخليج حسب الطلب.', 'Pickup and drop-off are available to and from Bahrain Airport (BAH), Dammam Airport (DMM), and other GCC airports on request.'],
     ['نقل خاص للركاب وتوصيل الطرود الصغيرة والمتوسطة التي تتسع داخل سيارة GMC XL أو SUV عائلية، بما يشمل نقل طرود خليجي داخل حدود السعة الآمنة.', 'Private passenger transport and small to medium parcels that fit inside a GMC XL or family SUV, including GCC parcel handoffs within safe capacity limits.'],
-    ['سعة 6 إلى 7 ركاب في تكوين SUV عائلية مع مساحة أمتعة وحامل خلفي مناسب للأمتعة والطرود الصغيرة.', 'Seating for 6 to 7 passengers in a family SUV layout with luggage space and a rear rack suited to bags and small parcels.'],
+    ['تُؤكد سعة فئة المركبة العائلية ومساحة الأمتعة وتجهيزها الفعلي للحجز قبل الرحلة.', 'The family vehicle category, luggage space, and actual configuration are confirmed for the booking before travel.'],
     ['تفاصيل النقل الخاص من البحرين إلى الخبر', 'Private transport details from Bahrain to Khobar'],
     ['مراجعة مسار البحرين إلى الدمام', 'Review the Bahrain to Dammam route'],
     ['تفاصيل النقل الخاص من البحرين إلى الرياض', 'Private transport details from Bahrain to Riyadh'],
@@ -630,7 +630,7 @@
     ['كم تستغرق الرحلة؟', 'How long does the trip take?'],
     ['المدة المتوقعة من البحرين إلى الدمام: 1 إلى 2 ساعة.', 'Expected travel time from Bahrain to Dammam is 1 to 2 hours.'],
     ['هل يمكن نقل الأمتعة؟', 'Can luggage be transported?'],
-    ['نعم، توجد مساحة أمتعة وحامل خلفي متاح حسب حجم الحمولة.', 'Yes, there is luggage space and a rear rack available depending on load size.'],
+    ['تتوفر عادة مساحة خلفية عادية للأمتعة، وقد يمكن ترتيب سعة إضافية مناسبة بعد تأكيد عدد الحقائب وحجمها وتجهيز المركبة.', 'Normal rear luggage space is usually available, and suitable additional capacity may be arranged after the bag count, size, and vehicle configuration are confirmed.'],
     ['هل يمكن الحجز في نفس اليوم؟', 'Can I book on the same day?'],
     ['نعم، ويمكن الحجز قبل 1 إلى 3 ساعات حسب وقت الرحلة.', 'Yes, and you can book 1 to 3 hours before the trip time.'],
     ['هل توجد خدمة توصيل من المطار؟', 'Is airport pickup available?'],
@@ -692,7 +692,10 @@
     ['توصيل خاص من وإلى الفنادق في البحرين', 'Private Hotel Transfers in Bahrain'],
     ['سائق خاص لرجال الأعمال والضيوف في البحرين', 'Business Chauffeur and Private Driver in Bahrain'],
     ['شروط الحجز والإلغاء والانتظار', 'Booking, Cancellation and Waiting Terms'],
-    ['نوع وموديل السيارة يعتمد على عدد الركاب والأمتعة والمسار والتوفر عند تأكيد الحجز.', 'Vehicle type and model depend on passenger count, luggage, route and availability at booking confirmation.']
+    ['نوع وموديل السيارة يعتمد على عدد الركاب والأمتعة والمسار والتوفر عند تأكيد الحجز.', 'Vehicle type and model depend on passenger count, luggage, route and availability at booking confirmation.'],
+    ['ترتيبات المركبة والأمتعة', 'Vehicle and luggage arrangements'],
+    ['تعتمد ترتيبات الأمتعة على المركبة المعيّنة وتجهيزها المؤكد. تتوفر عادة مساحة خلفية عادية للأمتعة، وقد يمكن ترتيب سعة إضافية مناسبة مثل حامل خلفي للأمتعة أو حامل شحن على وصلة السحب أو صندوق أمتعة على السقف أو مقطورة أمتعة، حسب التجهيز المتاح فعلياً. يجب الإفصاح مسبقاً عن عدد الحقائب وحجمها التقريبي، وتحتاج الأمتعة كبيرة الحجم أو غير المعتادة إلى تأكيد مسبق. لا تُضمن فئة مركبة أو سعة أو تجهيز أو ملحق محدد حتى تؤكده فندورا.', 'Luggage arrangements depend on the assigned vehicle and its confirmed configuration. Normal rear luggage space is usually available, and suitable additional capacity may be arranged through a rear luggage carrier, tow-hitch cargo carrier, roof luggage box, or luggage trailer, depending on the setup actually available. Passengers must disclose the number and approximate size of bags, and oversized or unusually large luggage requires advance confirmation. No vehicle category, capacity, setup, or accessory is guaranteed until Vendora confirms it.'],
+    ['تُعرض فئات المركبات وخيارات الحجز فقط. قد تُرتب المركبة بواسطة فندورا أو شريك تشغيل معتمد، ولا ترتبط الخدمة بشكل دائم بمركبة محددة.', 'Only vehicle categories and booking options are presented. The vehicle may be arranged by Vendora or an approved operating partner, and no specific vehicle is permanently tied to the service.']
   );
   /* BEGIN GENERATED GCC BATCH 1 TRANSLATIONS */
   translations.push(
@@ -2997,6 +3000,7 @@
     `;
 
     document.body.appendChild(container);
+    container.querySelectorAll('[data-wa-message]').forEach(setStaticWhatsAppLink);
 
     const btn = document.getElementById('vendoraFeedbackBtn');
     const menu = document.getElementById('vendoraFeedbackMenu');

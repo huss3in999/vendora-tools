@@ -152,6 +152,23 @@
     try { return new URL(document.referrer).hostname.replace(/^www\./, '').slice(0, 120); } catch (e) { return 'referral'; }
   }
 
+  function getAiReferralSource() {
+    var candidate = (getUtmParam('utm_source') || document.referrer || '').toLowerCase();
+    var sources = [
+      ['chatgpt', /chatgpt\.com|chat\.openai\.com|(^|[^a-z])chatgpt([^a-z]|$)/],
+      ['openai', /openai\.com/],
+      ['perplexity', /perplexity\.ai/],
+      ['microsoft_copilot', /copilot\.microsoft\.com|(^|[^a-z])copilot([^a-z]|$)/],
+      ['google_gemini', /gemini\.google\.com|(^|[^a-z])gemini([^a-z]|$)/],
+      ['anthropic_claude', /claude\.ai|(^|[^a-z])claude([^a-z]|$)/],
+      ['you_com', /you\.com/]
+    ];
+    for (var i = 0; i < sources.length; i += 1) {
+      if (sources[i][1].test(candidate)) return sources[i][0];
+    }
+    return '';
+  }
+
   function getDeviceType() {
     var ua = navigator.userAgent || '';
     if (/tablet|ipad|playbook|silk/i.test(ua)) return 'tablet';
@@ -199,6 +216,7 @@
       page_path: true, page_title: true, language: true, route_id: true,
       origin_country: true, destination_country: true, service_type: true,
       service_id: true, cta_location: true, traffic_source: true,
+      discovery_channel: true, ai_referral_source: true,
       device_category: true, timestamp: true, booking_reference: true,
       navigation_type: true, target_path: true, policy_type: true,
       session_duration_ms: true, last_action: true
@@ -232,6 +250,8 @@
       service_type: safeParams.service_type || transportMetadata.service_type || '',
       cta_location: safeParams.cta_location || '',
       traffic_source: safeParams.traffic_source || getTrafficSource(),
+      discovery_channel: getAiReferralSource() ? 'ai_assistant_referral' : 'standard_referral_or_direct',
+      ai_referral_source: getAiReferralSource(),
       device_category: safeParams.device_category || getDeviceType(),
       timestamp: safeParams.timestamp || new Date().toISOString(),
       screen_width: window.innerWidth || document.documentElement.clientWidth || 0,
@@ -271,6 +291,8 @@
           service_type: payload.service_type,
           cta_location: payload.cta_location,
           traffic_source: payload.traffic_source,
+          discovery_channel: payload.discovery_channel,
+          ai_referral_source: payload.ai_referral_source,
           device_category: payload.device_category,
           timestamp: payload.timestamp
         });
@@ -350,6 +372,8 @@
       language: (document.documentElement.getAttribute('lang') || 'en').toLowerCase(),
       page_title: document.title || '',
       traffic_source: getTrafficSource(),
+      discovery_channel: getAiReferralSource() ? 'ai_assistant_referral' : 'standard_referral_or_direct',
+      ai_referral_source: getAiReferralSource(),
       device_category: getDeviceType(),
       timestamp: new Date().toISOString()
     };

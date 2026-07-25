@@ -1,0 +1,36 @@
+{
+  "run_date": "2026-07-25",
+  "method": "Neutral web-search sample",
+  "query_count": 12,
+  "languages": {
+    "english": 6,
+    "arabic": 6
+  },
+  "queries": [
+    "Bahrain to Saudi Arabia private transport",
+    "Bahrain to Khobar private car",
+    "Bahrain to Dammam airport transfer",
+    "Bahrain to Riyadh private transport",
+    "Bahrain airport private transfer",
+    "GCC private transport from Bahrain",
+    "نقل خاص من البحرين إلى السعودية",
+    "توصيل من البحرين إلى الخبر",
+    "توصيل من البحرين إلى مطار الدمام",
+    "نقل من البحرين إلى الرياض",
+    "توصيل مطار البحرين بسيارة خاصة",
+    "نقل خاص من البحرين إلى دول الخليج"
+  ],
+  "baseline": {
+    "result_batches": 3,
+    "batches_with_getvendora_result": 3,
+    "distinct_getvendora_urls_observed": [
+      "https://getvendora.net/bahrain-saudi-gcc-transport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/prices/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-khobar/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-private-transport-guide/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam-airport/"
+    ]
+  },
+  "caveat": "The search tool returned aggregated results for each four-query batch. This records discoverability only; it is not a Google or Bing rank check, keyword-volume study, visibility score or guarantee."
+}

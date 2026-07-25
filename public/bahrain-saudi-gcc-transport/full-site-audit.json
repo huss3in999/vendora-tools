@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-20T22:31:08.362Z",
+  "generatedAt": "2026-07-24T22:55:42.042Z",
   "root": "E:\\Users\\Hussain Alyaqoob\\Documents\\GitHub\\public\\bahrain-saudi-gcc-transport",
   "scope": {
     "excludedRoots": [
@@ -23,10 +23,10 @@
     ]
   },
   "counts": {
-    "total": 140,
-    "arabic": 70,
-    "english": 70,
-    "indexable": 138,
+    "total": 178,
+    "arabic": 89,
+    "english": 89,
+    "indexable": 176,
     "noindex": 2,
     "missingArabicPairs": [],
     "missingEnglishPairs": [],
@@ -37,150 +37,188 @@
       "low": 0
     },
     "pagesWithIssues": 0,
-    "pagesWithoutIssues": 140
+    "pagesWithoutIssues": 178
   },
   "sitemapFiles": {
     "sitemap-gcc-transport.xml": [
-      "https://getvendora.net/bahrain-saudi-gcc-transport/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-destinations/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/passenger-transport/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/parcel-delivery/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/about/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/contact/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-transport-planner/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/airport-pickup-planner/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/airport-transfer/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-airport-transfer/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam-airport/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/king-fahd-causeway-guide/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/dammam-airport-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-hamad-airport/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/hamad-airport-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait-airport/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/kuwait-airport-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-saudi/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-khobar/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-riyadh/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-uae/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dubai/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-qatar/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-iraq/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-karbala/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-najaf/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-baghdad/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-basra/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-transport/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/ziyarat-iraq-transport/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/qatar-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/kuwait-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/dubai-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/oman-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/khobar-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/dammam-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/riyadh-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-season-bahrain-to-karbala/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/best-way-bahrain-to-karbala/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/best-time-bahrain-to-iraq/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-najaf-driving-time/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/private-car-bahrain-to-iraq/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/family-transport-bahrain-najaf-karbala/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/iraq-ziyarat-private-car-bahrain/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-karbala-travel-tips/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-packing-list/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-season-bahrain-to-karbala/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-transport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-airport-transfer/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-private-transport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-baghdad/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-basra/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam-airport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dubai/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-hamad-airport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-iraq/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-karbala-route-plan/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-karbala/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-khobar/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait-airport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-kuwait/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-najaf-driving-time/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-najaf/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-qatar/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-riyadh/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-saudi/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-uae/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/best-car-for-iraq-family-travel/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/best-time-bahrain-to-iraq/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/best-way-bahrain-to-karbala/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/book-private-car-bahrain-to-karbala/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/book-private-car-bahrain-to-najaf/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/best-car-for-iraq-family-travel/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/private-car-vs-other-iraq-travel/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/family-travel-bahrain-to-iraq/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-karbala-route-plan/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/overland-travel-bahrain-to-iraq/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/pilgrims-transport-bahrain-to-iraq/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/karbala-trip-from-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/najaf-trip-from-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/booking-policy/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/booking-terms/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/business-chauffeur-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/cancellation-policy/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/complaints/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/contact/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/customer-reviews/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/dammam-airport-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/dammam-to-bahrain/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/direct-transport-bahrain-to-karbala/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/dubai-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/family-transport-bahrain-najaf-karbala/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/family-travel-bahrain-to-iraq/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/full-day-vip-driver/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-destinations/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-private-transport-guide/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-transport-planner/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/hamad-airport-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/hotel-transfer-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/iraq-ziyarat-private-car-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/karbala-trip-from-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/khobar-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/king-fahd-causeway-guide/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/kuwait-airport-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/kuwait-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/najaf-trip-from-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/oman-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/overland-travel-bahrain-to-iraq/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/parcel-delivery/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/passenger-safety/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/passenger-transport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/payment-policy/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/pilgrims-transport-bahrain-to-iraq/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/prices/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/privacy/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/full-day-vip-driver/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-private-transport/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/hotel-transfer-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/business-chauffeur-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/booking-terms/"
+      "https://getvendora.net/bahrain-saudi-gcc-transport/private-car-bahrain-to-iraq/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/private-car-vs-other-iraq-travel/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/qatar-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/qatar-to-saudi/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/qatar-to-uae/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/riyadh-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-qatar/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-uae/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/support-policy/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-kuwait/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-oman/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-qatar/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-saudi/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-uae/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-qatar/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-saudi/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/ziyarat-iraq-transport/"
     ],
     "sitemap-gcc-transport-en.xml": [
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/en/about/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/contact/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-destinations/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/passenger-transport/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/parcel-delivery/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/en/airport-pickup-planner/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-saudi/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-khobar/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-dammam/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-riyadh/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-qatar/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-oman/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-uae/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-dubai/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-iraq/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-karbala/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-najaf/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-baghdad/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-basra/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/arbaeen-transport/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/ziyarat-iraq-transport/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/khobar-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/dammam-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/riyadh-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/arbaeen-season-bahrain-to-karbala/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/best-way-bahrain-to-karbala/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/best-time-bahrain-to-iraq/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-najaf-driving-time/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/private-car-bahrain-to-iraq/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/family-transport-bahrain-najaf-karbala/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/iraq-ziyarat-private-car-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/airport-transfer/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/en/arbaeen-karbala-travel-tips/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/en/arbaeen-packing-list/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/arbaeen-season-bahrain-to-karbala/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/arbaeen-transport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-airport-transfer/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-private-transport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-baghdad/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-basra/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-dammam-airport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-dammam/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-dubai/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-hamad-airport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-iraq/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-karbala-route-plan/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-karbala/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-khobar/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait-airport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-najaf-driving-time/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-najaf/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-oman/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-qatar/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-riyadh/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-saudi/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-uae/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/best-car-for-iraq-family-travel/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/best-time-bahrain-to-iraq/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/best-way-bahrain-to-karbala/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/en/book-private-car-bahrain-to-karbala/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/en/book-private-car-bahrain-to-najaf/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/best-car-for-iraq-family-travel/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/private-car-vs-other-iraq-travel/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/family-travel-bahrain-to-iraq/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-karbala-route-plan/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/overland-travel-bahrain-to-iraq/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/pilgrims-transport-bahrain-to-iraq/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/karbala-trip-from-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/najaf-trip-from-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/direct-transport-bahrain-to-karbala/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-private-transport-guide/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/prices/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/privacy/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-dammam-airport/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/dammam-airport-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/full-day-vip-driver/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/airport-transfer/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-private-transport/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/hotel-transfer-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/business-chauffeur-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/booking-policy/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/en/booking-terms/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/king-fahd-causeway-guide/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-airport-transfer/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-hamad-airport/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait-airport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/business-chauffeur-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/cancellation-policy/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/complaints/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/contact/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/customer-reviews/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/dammam-airport-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/dammam-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/direct-transport-bahrain-to-karbala/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/en/dubai-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/family-transport-bahrain-najaf-karbala/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/family-travel-bahrain-to-iraq/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/full-day-vip-driver/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-destinations/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-private-transport-guide/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/en/hamad-airport-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/hotel-transfer-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/iraq-ziyarat-private-car-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/karbala-trip-from-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/khobar-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/king-fahd-causeway-guide/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/en/kuwait-airport-to-bahrain/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/en/kuwait-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/najaf-trip-from-bahrain/",
       "https://getvendora.net/bahrain-saudi-gcc-transport/en/oman-to-bahrain/",
-      "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-bahrain/"
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/overland-travel-bahrain-to-iraq/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/parcel-delivery/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/passenger-safety/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/passenger-transport/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/payment-policy/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/pilgrims-transport-bahrain-to-iraq/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/prices/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/privacy/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/private-car-bahrain-to-iraq/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/private-car-vs-other-iraq-travel/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-saudi/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-uae/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/riyadh-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-qatar/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-uae/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/support-policy/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-kuwait/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-oman/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-qatar/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-saudi/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-uae/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-bahrain/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-qatar/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-saudi/",
+      "https://getvendora.net/bahrain-saudi-gcc-transport/en/ziyarat-iraq-transport/"
     ]
   },
   "pages": [
@@ -208,12 +246,12 @@
       "sitemapCount": 1,
       "brokenLinks": [],
       "brokenAssets": [],
-      "schemaBlocks": 0,
+      "schemaBlocks": 1,
       "invalidSchema": [],
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1681,
+      "visibleCharacters": 2220,
       "issues": []
     },
     {
@@ -245,7 +283,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 4202,
+      "visibleCharacters": 4278,
       "issues": []
     },
     {
@@ -277,7 +315,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 4172,
+      "visibleCharacters": 4734,
       "issues": []
     },
     {
@@ -308,7 +346,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1218,
+      "visibleCharacters": 1780,
       "issues": []
     },
     {
@@ -339,7 +377,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1194,
+      "visibleCharacters": 1756,
       "issues": []
     },
     {
@@ -370,7 +408,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1206,
+      "visibleCharacters": 1768,
       "issues": []
     },
     {
@@ -402,7 +440,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2427,
+      "visibleCharacters": 2989,
       "issues": []
     },
     {
@@ -434,7 +472,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2535,
+      "visibleCharacters": 3097,
       "issues": []
     },
     {
@@ -466,7 +504,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1325,
+      "visibleCharacters": 1401,
       "issues": []
     },
     {
@@ -498,7 +536,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1901,
+      "visibleCharacters": 2463,
       "issues": []
     },
     {
@@ -530,7 +568,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1869,
+      "visibleCharacters": 2431,
       "issues": []
     },
     {
@@ -562,7 +600,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2640,
+      "visibleCharacters": 2716,
       "issues": []
     },
     {
@@ -594,7 +632,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3945,
+      "visibleCharacters": 4857,
       "issues": []
     },
     {
@@ -626,7 +664,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3045,
+      "visibleCharacters": 3585,
       "issues": []
     },
     {
@@ -658,7 +696,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2469,
+      "visibleCharacters": 2545,
       "issues": []
     },
     {
@@ -690,7 +728,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2747,
+      "visibleCharacters": 3288,
       "issues": []
     },
     {
@@ -721,7 +759,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1203,
+      "visibleCharacters": 1765,
       "issues": []
     },
     {
@@ -753,7 +791,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2375,
+      "visibleCharacters": 2925,
       "issues": []
     },
     {
@@ -785,7 +823,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3371,
+      "visibleCharacters": 4311,
       "issues": []
     },
     {
@@ -817,7 +855,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2471,
+      "visibleCharacters": 2547,
       "issues": []
     },
     {
@@ -849,7 +887,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3074,
+      "visibleCharacters": 3613,
       "issues": []
     },
     {
@@ -880,7 +918,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1211,
+      "visibleCharacters": 1773,
       "issues": []
     },
     {
@@ -912,7 +950,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2010,
+      "visibleCharacters": 2572,
       "issues": []
     },
     {
@@ -944,7 +982,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3126,
+      "visibleCharacters": 3667,
       "issues": []
     },
     {
@@ -976,7 +1014,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3437,
+      "visibleCharacters": 4378,
       "issues": []
     },
     {
@@ -1008,7 +1046,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3093,
+      "visibleCharacters": 4033,
       "issues": []
     },
     {
@@ -1040,7 +1078,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3218,
+      "visibleCharacters": 4152,
       "issues": []
     },
     {
@@ -1051,19 +1089,19 @@
       "indexable": true,
       "pair": "en/bahrain-to-uae/index.html",
       "pairExists": true,
-      "title": "من البحرين إلى الإمارات بسيارة خاصة | أبوظبي ودبي | Vendora",
-      "description": "خدمة نقل خاص من البحرين إلى الإمارات حسب الموعد والتوفر. تشمل دبي وأبوظبي ومدن أخرى حسب الطلب، مع سعة تؤكد حسب عدد الركاب والأمتعة والتوفر وخيارات دفع مرنة.",
+      "title": "توصيل من البحرين إلى الإمارات بسيارة مع سائق | فندورا",
+      "description": "اطلب عرض سعر لنقل خاص من البحرين إلى الإمارات مع تنسيق الاستلام والحدود والسائق والمركبة قبل الرحلة.",
       "h1s": [
-        "حجز من البحرين إلى الإمارات (دبي وأبوظبي وغيرها)"
+        "توصيل من البحرين إلى الإمارات بسيارة مع سائق"
       ],
       "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-uae/",
       "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-uae/",
       "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-uae/",
         "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-uae/",
-        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-uae/",
-        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/"
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-uae/"
       },
-      "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+      "robots": "index,follow,max-image-preview:large",
       "sitemapCount": 1,
       "brokenLinks": [],
       "brokenAssets": [],
@@ -1072,7 +1110,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2737,
+      "visibleCharacters": 2619,
       "issues": []
     },
     {
@@ -1103,7 +1141,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1209,
+      "visibleCharacters": 1771,
       "issues": []
     },
     {
@@ -1134,7 +1172,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1209,
+      "visibleCharacters": 1771,
       "issues": []
     },
     {
@@ -1165,7 +1203,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1215,
+      "visibleCharacters": 1777,
       "issues": []
     },
     {
@@ -1196,7 +1234,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1209,
+      "visibleCharacters": 1771,
       "issues": []
     },
     {
@@ -1227,7 +1265,37 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1205,
+      "visibleCharacters": 1767,
+      "issues": []
+    },
+    {
+      "file": "booking-policy/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/booking-policy/index.html",
+      "pairExists": true,
+      "title": "سياسة وقواعد الحجز | Vendora Transport",
+      "description": "سياسة وقواعد حجز السيارات الخاصة مع سائق والرحلات عبر الحدود لدى فندورا للنقل.",
+      "h1s": [
+        "سياسة حجز وتأكيد الرحلات"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/booking-policy/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/booking-policy/",
+      "alternates": {
+        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/booking-policy/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/booking-policy/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/booking-policy/"
+      },
+      "robots": "index,follow",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [],
+      "visibleCharacters": 1108,
       "issues": []
     },
     {
@@ -1257,7 +1325,7 @@
       "schemaBlocks": 1,
       "invalidSchema": [],
       "waNumbers": [],
-      "visibleCharacters": 1859,
+      "visibleCharacters": 1935,
       "issues": []
     },
     {
@@ -1289,7 +1357,37 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1231,
+      "visibleCharacters": 1307,
+      "issues": []
+    },
+    {
+      "file": "cancellation-policy/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/cancellation-policy/index.html",
+      "pairExists": true,
+      "title": "سياسة الإلغاء والاسترداد | Vendora Transport",
+      "description": "سياسة الإلغاء والاسترداد والشروط المتبعة لدى فندورا للنقل للرحلات الخاصة وعبر الحدود.",
+      "h1s": [
+        "سياسة الإلغاء والاسترداد"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/cancellation-policy/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/cancellation-policy/",
+      "alternates": {
+        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/cancellation-policy/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/cancellation-policy/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/cancellation-policy/"
+      },
+      "robots": "index,follow",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [],
+      "visibleCharacters": 1450,
       "issues": []
     },
     {
@@ -1312,10 +1410,10 @@
       "sitemapCount": 0,
       "brokenLinks": [],
       "brokenAssets": [],
-      "schemaBlocks": 0,
+      "schemaBlocks": 1,
       "invalidSchema": [],
       "waNumbers": [],
-      "visibleCharacters": 221,
+      "visibleCharacters": 219,
       "issues": []
     },
     {
@@ -1338,10 +1436,40 @@
       "sitemapCount": 0,
       "brokenLinks": [],
       "brokenAssets": [],
-      "schemaBlocks": 0,
+      "schemaBlocks": 1,
       "invalidSchema": [],
       "waNumbers": [],
-      "visibleCharacters": 211,
+      "visibleCharacters": 209,
+      "issues": []
+    },
+    {
+      "file": "complaints/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/complaints/index.html",
+      "pairExists": true,
+      "title": "تقديم شكوى أو ملاحظة | Vendora Transport",
+      "description": "نموذج تقديم الشكاوى والملاحظات الرسمية لعملاء فندورا للنقل الخاص بين البحرين والسعودية ودول الخليج.",
+      "h1s": [
+        "تقديم شكوى أو ملاحظة"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/complaints/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/complaints/",
+      "alternates": {
+        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/complaints/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/complaints/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/complaints/"
+      },
+      "robots": "index,follow",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [],
+      "visibleCharacters": 1784,
       "issues": []
     },
     {
@@ -1368,12 +1496,42 @@
       "sitemapCount": 1,
       "brokenLinks": [],
       "brokenAssets": [],
-      "schemaBlocks": 0,
+      "schemaBlocks": 1,
       "invalidSchema": [],
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1532,
+      "visibleCharacters": 1588,
+      "issues": []
+    },
+    {
+      "file": "customer-reviews/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/customer-reviews/index.html",
+      "pairExists": true,
+      "title": "تقييمات وآراء العملاء | Vendora Transport",
+      "description": "اقرأ تقييمات العملاء الحقيقية وشارك تجربتك في الرحلات والتوصيل الخاص مع فندورا للنقل بين البحرين ودول الخليج.",
+      "h1s": [
+        "تقييمات وآراء العملاء"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/customer-reviews/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/customer-reviews/",
+      "alternates": {
+        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/customer-reviews/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/customer-reviews/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/customer-reviews/"
+      },
+      "robots": "index,follow",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [],
+      "visibleCharacters": 1492,
       "issues": []
     },
     {
@@ -1405,7 +1563,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2653,
+      "visibleCharacters": 2729,
       "issues": []
     },
     {
@@ -1437,7 +1595,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2138,
+      "visibleCharacters": 2676,
       "issues": []
     },
     {
@@ -1468,7 +1626,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1200,
+      "visibleCharacters": 1762,
       "issues": []
     },
     {
@@ -1500,7 +1658,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2091,
+      "visibleCharacters": 2167,
       "issues": []
     },
     {
@@ -1532,7 +1690,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2002,
+      "visibleCharacters": 2092,
       "issues": []
     },
     {
@@ -1564,7 +1722,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 4536,
+      "visibleCharacters": 4642,
       "issues": []
     },
     {
@@ -1591,10 +1749,12 @@
       "sitemapCount": 1,
       "brokenLinks": [],
       "brokenAssets": [],
-      "schemaBlocks": 0,
+      "schemaBlocks": 1,
       "invalidSchema": [],
-      "waNumbers": [],
-      "visibleCharacters": 1756,
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 2492,
       "issues": []
     },
     {
@@ -1625,7 +1785,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2566,
+      "visibleCharacters": 3305,
       "issues": []
     },
     {
@@ -1656,7 +1816,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2549,
+      "visibleCharacters": 3288,
       "issues": []
     },
     {
@@ -1687,7 +1847,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2569,
+      "visibleCharacters": 3308,
       "issues": []
     },
     {
@@ -1718,7 +1878,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1092,
+      "visibleCharacters": 1831,
       "issues": []
     },
     {
@@ -1750,7 +1910,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2624,
+      "visibleCharacters": 2726,
       "issues": []
     },
     {
@@ -1782,7 +1942,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1615,
+      "visibleCharacters": 1717,
       "issues": []
     },
     {
@@ -1813,7 +1973,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1111,
+      "visibleCharacters": 1850,
       "issues": []
     },
     {
@@ -1844,7 +2004,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1092,
+      "visibleCharacters": 1831,
       "issues": []
     },
     {
@@ -1871,10 +2031,12 @@
       "sitemapCount": 1,
       "brokenLinks": [],
       "brokenAssets": [],
-      "schemaBlocks": 0,
+      "schemaBlocks": 1,
       "invalidSchema": [],
-      "waNumbers": [],
-      "visibleCharacters": 2496,
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 3239,
       "issues": []
     },
     {
@@ -1906,7 +2068,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 7069,
+      "visibleCharacters": 7171,
       "issues": []
     },
     {
@@ -1938,7 +2100,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3154,
+      "visibleCharacters": 3256,
       "issues": []
     },
     {
@@ -1970,7 +2132,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2604,
+      "visibleCharacters": 2706,
       "issues": []
     },
     {
@@ -2002,7 +2164,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3247,
+      "visibleCharacters": 3349,
       "issues": []
     },
     {
@@ -2033,7 +2195,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2538,
+      "visibleCharacters": 3277,
       "issues": []
     },
     {
@@ -2064,7 +2226,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1256,
+      "visibleCharacters": 1995,
       "issues": []
     },
     {
@@ -2096,7 +2258,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 6989,
+      "visibleCharacters": 7091,
       "issues": []
     },
     {
@@ -2128,7 +2290,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2466,
+      "visibleCharacters": 2568,
       "issues": []
     },
     {
@@ -2160,7 +2322,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3232,
+      "visibleCharacters": 3334,
       "issues": []
     },
     {
@@ -2191,7 +2353,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2584,
+      "visibleCharacters": 3323,
       "issues": []
     },
     {
@@ -2222,7 +2384,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1063,
+      "visibleCharacters": 1802,
       "issues": []
     },
     {
@@ -2254,7 +2416,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3089,
+      "visibleCharacters": 3191,
       "issues": []
     },
     {
@@ -2286,7 +2448,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3495,
+      "visibleCharacters": 4234,
       "issues": []
     },
     {
@@ -2318,7 +2480,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 6980,
+      "visibleCharacters": 7082,
       "issues": []
     },
     {
@@ -2350,7 +2512,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 4529,
+      "visibleCharacters": 4631,
       "issues": []
     },
     {
@@ -2361,19 +2523,19 @@
       "indexable": true,
       "pair": "bahrain-to-uae/index.html",
       "pairExists": true,
-      "title": "Private Transport from Bahrain to UAE | Vendora Transport",
-      "description": "Private transport from Bahrain to the UAE for passengers, families, business trips, and parcels with direct WhatsApp coordination.",
+      "title": "Bahrain to UAE Private Transport &amp; Driver | Vendora",
+      "description": "Request a private transport quotation from Bahrain to UAE, with pickup, border process, driver and vehicle coordinated before travel.",
       "h1s": [
-        "Private transport from Bahrain to the UAE"
+        "Bahrain to UAE Private Transport &amp; Driver"
       ],
       "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-uae/",
       "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-uae/",
       "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-uae/",
         "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-uae/",
-        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-uae/",
-        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/"
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-uae/"
       },
-      "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+      "robots": "index,follow,max-image-preview:large",
       "sitemapCount": 1,
       "brokenLinks": [],
       "brokenAssets": [],
@@ -2382,7 +2544,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3206,
+      "visibleCharacters": 3346,
       "issues": []
     },
     {
@@ -2413,7 +2575,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2561,
+      "visibleCharacters": 3300,
       "issues": []
     },
     {
@@ -2444,7 +2606,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2576,
+      "visibleCharacters": 3315,
       "issues": []
     },
     {
@@ -2475,7 +2637,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2585,
+      "visibleCharacters": 3324,
       "issues": []
     },
     {
@@ -2506,7 +2668,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2586,
+      "visibleCharacters": 3325,
       "issues": []
     },
     {
@@ -2537,7 +2699,37 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2578,
+      "visibleCharacters": 3317,
+      "issues": []
+    },
+    {
+      "file": "en/booking-policy/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "booking-policy/index.html",
+      "pairExists": true,
+      "title": "Booking Policy | Vendora Transport",
+      "description": "Official booking and reservation policies for Vendora Transport private car and GCC cross-border services.",
+      "h1s": [
+        "Booking Policy &amp; Confirmation Procedures"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/booking-policy/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/booking-policy/",
+      "alternates": {
+        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/booking-policy/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/booking-policy/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/booking-policy/"
+      },
+      "robots": "index,follow",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [],
+      "visibleCharacters": 1360,
       "issues": []
     },
     {
@@ -2567,7 +2759,7 @@
       "schemaBlocks": 1,
       "invalidSchema": [],
       "waNumbers": [],
-      "visibleCharacters": 2459,
+      "visibleCharacters": 2561,
       "issues": []
     },
     {
@@ -2599,7 +2791,67 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1584,
+      "visibleCharacters": 1686,
+      "issues": []
+    },
+    {
+      "file": "en/cancellation-policy/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "cancellation-policy/index.html",
+      "pairExists": true,
+      "title": "Cancellation &amp; Refund Policy | Vendora Transport",
+      "description": "Official cancellation and refund policy for Vendora Transport private transfers and cross-border GCC journeys.",
+      "h1s": [
+        "Cancellation &amp; Refund Policy"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/cancellation-policy/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/cancellation-policy/",
+      "alternates": {
+        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/cancellation-policy/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/cancellation-policy/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/cancellation-policy/"
+      },
+      "robots": "index,follow",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [],
+      "visibleCharacters": 1663,
+      "issues": []
+    },
+    {
+      "file": "en/complaints/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "complaints/index.html",
+      "pairExists": true,
+      "title": "Customer Complaints & Feedback Submission | Vendora Transport",
+      "description": "Official customer complaint and constructive feedback submission page for Vendora Transport private GCC chauffeur services.",
+      "h1s": [
+        "Submit a Complaint or Feedback"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/complaints/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/complaints/",
+      "alternates": {
+        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/complaints/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/complaints/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/complaints/"
+      },
+      "robots": "index,follow",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [],
+      "visibleCharacters": 2286,
       "issues": []
     },
     {
@@ -2631,7 +2883,37 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1594,
+      "visibleCharacters": 1684,
+      "issues": []
+    },
+    {
+      "file": "en/customer-reviews/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "customer-reviews/index.html",
+      "pairExists": true,
+      "title": "Customer Reviews & Feedback | Vendora Transport",
+      "description": "Read verified customer reviews and share your private transport experience with Vendora Transport between Bahrain and GCC destinations.",
+      "h1s": [
+        "Customer Reviews & Ratings"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/customer-reviews/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/customer-reviews/",
+      "alternates": {
+        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/customer-reviews/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/customer-reviews/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/customer-reviews/"
+      },
+      "robots": "index,follow",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [],
+      "visibleCharacters": 1721,
       "issues": []
     },
     {
@@ -2658,10 +2940,12 @@
       "sitemapCount": 1,
       "brokenLinks": [],
       "brokenAssets": [],
-      "schemaBlocks": 0,
+      "schemaBlocks": 1,
       "invalidSchema": [],
-      "waNumbers": [],
-      "visibleCharacters": 1875,
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 1974,
       "issues": []
     },
     {
@@ -2693,7 +2977,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3127,
+      "visibleCharacters": 3229,
       "issues": []
     },
     {
@@ -2724,7 +3008,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2577,
+      "visibleCharacters": 3316,
       "issues": []
     },
     {
@@ -2756,7 +3040,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2505,
+      "visibleCharacters": 2607,
       "issues": []
     },
     {
@@ -2787,7 +3071,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2617,
+      "visibleCharacters": 3356,
       "issues": []
     },
     {
@@ -2818,7 +3102,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2553,
+      "visibleCharacters": 3292,
       "issues": []
     },
     {
@@ -2829,7 +3113,7 @@
       "indexable": true,
       "pair": "full-day-vip-driver/index.html",
       "pairExists": true,
-      "title": "Bahrain Full-Day Car with Driver & VIP Transport | GetVendora",
+      "title": "Bahrain Full-Day Car with Driver & VIP Transport | Vendora Transport",
       "description": "Request a full-day car with driver in Bahrain for shopping, sightseeing, meetings and multiple stops, with VIP vehicle requests subject to availability.",
       "h1s": [
         "Full-day car with driver and VIP transport in Bahrain"
@@ -2845,10 +3129,12 @@
       "sitemapCount": 1,
       "brokenLinks": [],
       "brokenAssets": [],
-      "schemaBlocks": 0,
+      "schemaBlocks": 1,
       "invalidSchema": [],
-      "waNumbers": [],
-      "visibleCharacters": 1880,
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 2623,
       "issues": []
     },
     {
@@ -2859,28 +3145,28 @@
       "indexable": true,
       "pair": "gcc-destinations/index.html",
       "pairExists": true,
-      "title": "GCC Destinations from Bahrain | Saudi, Kuwait, UAE, Qatar, Oman | Vendora",
-      "description": "GCC transport coverage hub from Bahrain. Browse routes to Saudi Arabia, Kuwait, UAE (Dubai, Abu Dhabi), Qatar (Doha), and Oman (Muscat). Other GCC-to-GCC route requests can be checked on WhatsApp depending on availability.",
+      "title": "Private transport from Bahrain across the GCC | Vendora Transport",
+      "description": "Only active routes from Bahrain are shown. Every request remains subject to availability, operational review, border and document requirements, and a final quotation.",
       "h1s": [
-        "GCC destinations from Bahrain"
+        "Private transport from Bahrain across the GCC"
       ],
       "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-destinations/",
       "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-destinations/",
       "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-destinations/",
         "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-destinations/",
-        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-destinations/",
-        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/"
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-destinations/"
       },
-      "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+      "robots": "index,follow,max-image-preview:large",
       "sitemapCount": 1,
       "brokenLinks": [],
       "brokenAssets": [],
-      "schemaBlocks": 2,
+      "schemaBlocks": 1,
       "invalidSchema": [],
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3479,
+      "visibleCharacters": 2424,
       "issues": []
     },
     {
@@ -2892,9 +3178,9 @@
       "pair": "gcc-private-transport-guide/index.html",
       "pairExists": true,
       "title": "GCC Private Transport Guide | Bahrain, Saudi Arabia, Qatar, Kuwait, UAE, Oman & Iraq",
-      "description": "Plan private transport across Bahrain, Saudi Arabia, Qatar, Kuwait, UAE, Oman and Iraq with GetVendora. Airport transfers, Causeway travel, family trips, business travel and WhatsApp quote requests.",
+      "description": "Plan private transport across Bahrain, Saudi Arabia, Qatar, Kuwait, UAE, Oman and Iraq with Vendora Transport. Airport transfers, Causeway travel, family trips, business travel and WhatsApp quote requests.",
       "h1s": [
-        "GCC Private Transport Guide by GetVendora"
+        "GCC Private Transport Guide by Vendora Transport"
       ],
       "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-private-transport-guide/",
       "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-private-transport-guide/",
@@ -2910,7 +3196,7 @@
       "schemaBlocks": 1,
       "invalidSchema": [],
       "waNumbers": [],
-      "visibleCharacters": 13700,
+      "visibleCharacters": 14513,
       "issues": []
     },
     {
@@ -2940,7 +3226,7 @@
       "schemaBlocks": 2,
       "invalidSchema": [],
       "waNumbers": [],
-      "visibleCharacters": 8694,
+      "visibleCharacters": 8784,
       "issues": []
     },
     {
@@ -2972,7 +3258,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2493,
+      "visibleCharacters": 2595,
       "issues": []
     },
     {
@@ -3004,7 +3290,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1423,
+      "visibleCharacters": 1525,
       "issues": []
     },
     {
@@ -3036,7 +3322,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 8209,
+      "visibleCharacters": 9043,
       "issues": []
     },
     {
@@ -3067,7 +3353,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2570,
+      "visibleCharacters": 3309,
       "issues": []
     },
     {
@@ -3098,7 +3384,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2528,
+      "visibleCharacters": 3267,
       "issues": []
     },
     {
@@ -3130,7 +3416,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2979,
+      "visibleCharacters": 3081,
       "issues": []
     },
     {
@@ -3141,7 +3427,7 @@
       "indexable": true,
       "pair": "king-fahd-causeway-guide/index.html",
       "pairExists": true,
-      "title": "King Fahd Causeway transport guide | GetVendora",
+      "title": "King Fahd Causeway transport guide | Vendora Transport",
       "description": "A practical guide to private transport across King Fahd Causeway between Bahrain and Saudi Arabia, including border timing and booking details.",
       "h1s": [
         "King Fahd Causeway transport guide"
@@ -3160,8 +3446,10 @@
       "brokenAssets": [],
       "schemaBlocks": 1,
       "invalidSchema": [],
-      "waNumbers": [],
-      "visibleCharacters": 745,
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 863,
       "issues": []
     },
     {
@@ -3193,7 +3481,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2499,
+      "visibleCharacters": 2601,
       "issues": []
     },
     {
@@ -3204,17 +3492,17 @@
       "indexable": true,
       "pair": "kuwait-to-bahrain/index.html",
       "pairExists": true,
-      "title": "Kuwait to Bahrain Private Transport | Door-to-Door Transfer | Vendora",
-      "description": "Request private transport from Kuwait City or another Kuwait pickup point to Bahrain, with border, passenger, luggage and return details confirmed on WhatsApp.",
+      "title": "Kuwait to Bahrain Private Transport &amp; Driver | Vendora",
+      "description": "Request a private transport quotation from Kuwait to Bahrain, with pickup, border process, driver and vehicle coordinated before travel.",
       "h1s": [
-        "Private Transport from Kuwait to Bahrain"
+        "Kuwait to Bahrain Private Transport &amp; Driver"
       ],
       "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/kuwait-to-bahrain/",
       "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/kuwait-to-bahrain/",
       "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/kuwait-to-bahrain/",
         "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/kuwait-to-bahrain/",
-        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/kuwait-to-bahrain/",
-        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/kuwait-to-bahrain/"
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/kuwait-to-bahrain/"
       },
       "robots": "index,follow,max-image-preview:large",
       "sitemapCount": 1,
@@ -3225,7 +3513,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2451,
+      "visibleCharacters": 3314,
       "issues": []
     },
     {
@@ -3256,7 +3544,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2518,
+      "visibleCharacters": 3257,
       "issues": []
     },
     {
@@ -3267,17 +3555,17 @@
       "indexable": true,
       "pair": "oman-to-bahrain/index.html",
       "pairExists": true,
-      "title": "Oman to Bahrain Private Transport | Long-Distance GCC Transfer | Vendora",
-      "description": "Request long-distance private transport from Oman to Bahrain, with pickup city, borders, rest stops, passengers and luggage confirmed through WhatsApp.",
+      "title": "Oman to Bahrain Private Transport &amp; Driver | Vendora",
+      "description": "Request a private transport quotation from Oman to Bahrain, with pickup, border process, driver and vehicle coordinated before travel.",
       "h1s": [
-        "Private Transport from Oman to Bahrain"
+        "Oman to Bahrain Private Transport &amp; Driver"
       ],
       "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/oman-to-bahrain/",
       "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/oman-to-bahrain/",
       "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/oman-to-bahrain/",
         "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/oman-to-bahrain/",
-        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/oman-to-bahrain/",
-        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/oman-to-bahrain/"
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/oman-to-bahrain/"
       },
       "robots": "index,follow,max-image-preview:large",
       "sitemapCount": 1,
@@ -3288,7 +3576,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2520,
+      "visibleCharacters": 3327,
       "issues": []
     },
     {
@@ -3319,7 +3607,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2561,
+      "visibleCharacters": 3300,
       "issues": []
     },
     {
@@ -3351,7 +3639,37 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 4107,
+      "visibleCharacters": 4209,
+      "issues": []
+    },
+    {
+      "file": "en/passenger-safety/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "passenger-safety/index.html",
+      "pairExists": true,
+      "title": "Passenger Safety | Vendora Transport",
+      "description": "Passenger safety standards, vehicle insurance, and driver safety policies at Vendora Transport.",
+      "h1s": [
+        "Passenger Safety &amp; Vehicle Standards"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/passenger-safety/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/passenger-safety/",
+      "alternates": {
+        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/passenger-safety/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/passenger-safety/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/passenger-safety/"
+      },
+      "robots": "index,follow",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [],
+      "visibleCharacters": 1023,
       "issues": []
     },
     {
@@ -3383,7 +3701,37 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 4201,
+      "visibleCharacters": 4940,
+      "issues": []
+    },
+    {
+      "file": "en/payment-policy/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "payment-policy/index.html",
+      "pairExists": true,
+      "title": "Payment Policy | Vendora Transport",
+      "description": "Official payment methods and pricing policy for Vendora Transport private car services.",
+      "h1s": [
+        "Payment Policy &amp; Accepted Methods"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/payment-policy/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/payment-policy/",
+      "alternates": {
+        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/payment-policy/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/payment-policy/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/payment-policy/"
+      },
+      "robots": "index,follow",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [],
+      "visibleCharacters": 1132,
       "issues": []
     },
     {
@@ -3414,7 +3762,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2569,
+      "visibleCharacters": 3308,
       "issues": []
     },
     {
@@ -3425,7 +3773,7 @@
       "indexable": true,
       "pair": "prices/index.html",
       "pairExists": true,
-      "title": "Bahrain to Saudi Arabia and GCC transport prices | GetVendora",
+      "title": "Bahrain to Saudi Arabia and GCC transport prices | Vendora Transport",
       "description": "Public private-transport prices from Bahrain to Saudi Arabia and GCC destinations, shown per complete vehicle.",
       "h1s": [
         "Private transport prices from Bahrain"
@@ -3442,8 +3790,10 @@
       "brokenAssets": [],
       "schemaBlocks": 1,
       "invalidSchema": [],
-      "waNumbers": [],
-      "visibleCharacters": 1290,
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 3748,
       "issues": []
     },
     {
@@ -3454,8 +3804,8 @@
       "indexable": true,
       "pair": "privacy/index.html",
       "pairExists": true,
-      "title": "Transport privacy | GetVendora",
-      "description": "A clear explanation of the data used when preparing a GetVendora transport request.",
+      "title": "Transport privacy | Vendora Transport",
+      "description": "A clear explanation of the data used when preparing a Vendora Transport transport request.",
       "h1s": [
         "Privacy and transport request data"
       ],
@@ -3474,7 +3824,7 @@
       "schemaBlocks": 1,
       "invalidSchema": [],
       "waNumbers": [],
-      "visibleCharacters": 1036,
+      "visibleCharacters": 1147,
       "issues": []
     },
     {
@@ -3505,7 +3855,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2582,
+      "visibleCharacters": 3321,
       "issues": []
     },
     {
@@ -3536,7 +3886,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2589,
+      "visibleCharacters": 3328,
       "issues": []
     },
     {
@@ -3568,7 +3918,71 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2475,
+      "visibleCharacters": 2577,
+      "issues": []
+    },
+    {
+      "file": "en/qatar-to-saudi/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "qatar-to-saudi/index.html",
+      "pairExists": true,
+      "title": "Qatar to Saudi Arabia Private Transport &amp; Driver | Vendora",
+      "description": "Request a private transport quotation from Qatar to Saudi Arabia, with pickup, border process, driver and vehicle coordinated before travel.",
+      "h1s": [
+        "Qatar to Saudi Arabia Private Transport &amp; Driver"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-saudi/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-saudi/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/qatar-to-saudi/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-saudi/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-saudi/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 3392,
+      "issues": []
+    },
+    {
+      "file": "en/qatar-to-uae/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "qatar-to-uae/index.html",
+      "pairExists": true,
+      "title": "Qatar to UAE Private Transport &amp; Driver | Vendora",
+      "description": "Request a private transport quotation from Qatar to UAE, with pickup, border process, driver and vehicle coordinated before travel.",
+      "h1s": [
+        "Qatar to UAE Private Transport &amp; Driver"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-uae/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-uae/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/qatar-to-uae/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-uae/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-uae/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 3291,
       "issues": []
     },
     {
@@ -3600,7 +4014,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 3179,
+      "visibleCharacters": 3281,
       "issues": []
     },
     {
@@ -3632,7 +4046,357 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 6041,
+      "visibleCharacters": 6143,
+      "issues": []
+    },
+    {
+      "file": "en/saudi-to-qatar/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "saudi-to-qatar/index.html",
+      "pairExists": true,
+      "title": "Saudi Arabia to Qatar Private Transport &amp; Driver | Vendora",
+      "description": "Request a private transport quotation from Saudi Arabia to Qatar, with pickup, border process, driver and vehicle coordinated before travel.",
+      "h1s": [
+        "Saudi Arabia to Qatar Private Transport &amp; Driver"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-qatar/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-qatar/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-qatar/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-qatar/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-qatar/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 3389,
+      "issues": []
+    },
+    {
+      "file": "en/saudi-to-uae/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "saudi-to-uae/index.html",
+      "pairExists": true,
+      "title": "Saudi Arabia to UAE Private Transport &amp; Driver | Vendora",
+      "description": "Request a private transport quotation from Saudi Arabia to UAE, with pickup, border process, driver and vehicle coordinated before travel.",
+      "h1s": [
+        "Saudi Arabia to UAE Private Transport &amp; Driver"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-uae/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-uae/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-uae/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-uae/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-uae/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 3400,
+      "issues": []
+    },
+    {
+      "file": "en/support-policy/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "support-policy/index.html",
+      "pairExists": true,
+      "title": "Customer Support &amp; Complaints Policy | Vendora Transport",
+      "description": "Official customer support contacts, feedback procedures, and complaints policy at Vendora Transport.",
+      "h1s": [
+        "Customer Support &amp; Complaints Policy"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/support-policy/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/support-policy/",
+      "alternates": {
+        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/support-policy/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/support-policy/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/support-policy/"
+      },
+      "robots": "index,follow",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [],
+      "visibleCharacters": 909,
+      "issues": []
+    },
+    {
+      "file": "en/transport-from-kuwait/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "transport-from-kuwait/index.html",
+      "pairExists": true,
+      "title": "Private transport from Kuwait across the GCC | Vendora Transport",
+      "description": "Only active routes from Kuwait are shown. Every request remains subject to availability, operational review, border and document requirements, and a final quotation.",
+      "h1s": [
+        "Private transport from Kuwait across the GCC"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-kuwait/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-kuwait/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-kuwait/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-kuwait/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-kuwait/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 1357,
+      "issues": []
+    },
+    {
+      "file": "en/transport-from-oman/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "transport-from-oman/index.html",
+      "pairExists": true,
+      "title": "Private transport from Oman across the GCC | Vendora Transport",
+      "description": "Only active routes from Oman are shown. Every request remains subject to availability, operational review, border and document requirements, and a final quotation.",
+      "h1s": [
+        "Private transport from Oman across the GCC"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-oman/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-oman/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-oman/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-oman/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-oman/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 1378,
+      "issues": []
+    },
+    {
+      "file": "en/transport-from-qatar/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "transport-from-qatar/index.html",
+      "pairExists": true,
+      "title": "Private transport from Qatar across the GCC | Vendora Transport",
+      "description": "Only active routes from Qatar are shown. Every request remains subject to availability, operational review, border and document requirements, and a final quotation.",
+      "h1s": [
+        "Private transport from Qatar across the GCC"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-qatar/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-qatar/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-qatar/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-qatar/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-qatar/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 1822,
+      "issues": []
+    },
+    {
+      "file": "en/transport-from-saudi/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "transport-from-saudi/index.html",
+      "pairExists": true,
+      "title": "Private transport from Saudi Arabia across the GCC | Vendora Transport",
+      "description": "Only active routes from Saudi Arabia are shown. Every request remains subject to availability, operational review, border and document requirements, and a final quotation.",
+      "h1s": [
+        "Private transport from Saudi Arabia across the GCC"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-saudi/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-saudi/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-saudi/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-saudi/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-saudi/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 1857,
+      "issues": []
+    },
+    {
+      "file": "en/transport-from-uae/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "transport-from-uae/index.html",
+      "pairExists": true,
+      "title": "Private transport from UAE across the GCC | Vendora Transport",
+      "description": "Only active routes from UAE are shown. Every request remains subject to availability, operational review, border and document requirements, and a final quotation.",
+      "h1s": [
+        "Private transport from UAE across the GCC"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-uae/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-uae/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-uae/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-uae/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-uae/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 1785,
+      "issues": []
+    },
+    {
+      "file": "en/uae-to-bahrain/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "uae-to-bahrain/index.html",
+      "pairExists": true,
+      "title": "UAE to Bahrain Private Transport &amp; Driver | Vendora",
+      "description": "Request a private transport quotation from UAE to Bahrain, with pickup, border process, driver and vehicle coordinated before travel.",
+      "h1s": [
+        "UAE to Bahrain Private Transport &amp; Driver"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-bahrain/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-bahrain/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-bahrain/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-bahrain/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-bahrain/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 3315,
+      "issues": []
+    },
+    {
+      "file": "en/uae-to-qatar/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "uae-to-qatar/index.html",
+      "pairExists": true,
+      "title": "UAE to Qatar Private Transport &amp; Driver | Vendora",
+      "description": "Request a private transport quotation from UAE to Qatar, with pickup, border process, driver and vehicle coordinated before travel.",
+      "h1s": [
+        "UAE to Qatar Private Transport &amp; Driver"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-qatar/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-qatar/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-qatar/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-qatar/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-qatar/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 3274,
+      "issues": []
+    },
+    {
+      "file": "en/uae-to-saudi/index.html",
+      "intendedLanguage": "en",
+      "lang": "en",
+      "dir": "ltr",
+      "indexable": true,
+      "pair": "uae-to-saudi/index.html",
+      "pairExists": true,
+      "title": "UAE to Saudi Arabia Private Transport &amp; Driver | Vendora",
+      "description": "Request a private transport quotation from UAE to Saudi Arabia, with pickup, border process, driver and vehicle coordinated before travel.",
+      "h1s": [
+        "UAE to Saudi Arabia Private Transport &amp; Driver"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-saudi/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-saudi/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-saudi/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-saudi/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-saudi/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 3390,
       "issues": []
     },
     {
@@ -3663,7 +4427,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1124,
+      "visibleCharacters": 1863,
       "issues": []
     },
     {
@@ -3694,7 +4458,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1217,
+      "visibleCharacters": 1779,
       "issues": []
     },
     {
@@ -3725,7 +4489,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1215,
+      "visibleCharacters": 1777,
       "issues": []
     },
     {
@@ -3736,7 +4500,7 @@
       "indexable": true,
       "pair": "en/full-day-vip-driver/index.html",
       "pairExists": true,
-      "title": "سيارة مع سائق يوم كامل وVIP في البحرين | GetVendora",
+      "title": "سيارة مع سائق يوم كامل وVIP في البحرين | Vendora Transport",
       "description": "اطلب سيارة مع سائق ليوم كامل في البحرين للتسوق والجولات والاجتماعات والتنقل بين عدة مواقع، مع خيارات VIP حسب التوفر.",
       "h1s": [
         "سيارة مع سائق ليوم كامل وخدمة VIP في البحرين"
@@ -3752,10 +4516,12 @@
       "sitemapCount": 1,
       "brokenLinks": [],
       "brokenAssets": [],
-      "schemaBlocks": 0,
+      "schemaBlocks": 1,
       "invalidSchema": [],
-      "waNumbers": [],
-      "visibleCharacters": 1534,
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 2100,
       "issues": []
     },
     {
@@ -3766,19 +4532,19 @@
       "indexable": true,
       "pair": "en/gcc-destinations/index.html",
       "pairExists": true,
-      "title": "وجهات الخليج من البحرين | السعودية، قطر، الكويت، الإمارات، عمان | Vendora",
-      "description": "دليل وجهات النقل الخاصة من البحرين إلى دول الخليج مع صفحات مستقلة لكل مسار ومدة طريق تقريبية وروابط مباشرة للحجز عبر واتساب.",
+      "title": "نقل خاص من البحرين إلى دول الخليج | فندورا للنقل",
+      "description": "المسارات النشطة فقط من البحرين. كل طلب يخضع للتوفر والمراجعة التشغيلية ومتطلبات الحدود والوثائق وعرض السعر النهائي.",
       "h1s": [
-        "دليل وجهات الخليج للحجز من البحرين"
+        "نقل خاص من البحرين إلى دول الخليج"
       ],
       "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-destinations/",
       "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-destinations/",
       "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-destinations/",
         "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-destinations/",
-        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-destinations/",
-        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/"
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-destinations/"
       },
-      "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+      "robots": "index,follow,max-image-preview:large",
       "sitemapCount": 1,
       "brokenLinks": [],
       "brokenAssets": [],
@@ -3787,7 +4553,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2879,
+      "visibleCharacters": 1862,
       "issues": []
     },
     {
@@ -3801,7 +4567,7 @@
       "title": "خدمة توصيل خاصة بين دول الخليج | البحرين السعودية قطر الكويت الإمارات عمان العراق",
       "description": "احجز خدمة توصيل خاصة بين البحرين والسعودية وقطر والكويت والإمارات وعمان والعراق. دليل رحلات الخليج، توصيل مطارات، جسر الملك فهد، عائلات، رجال أعمال وطلب سعر عبر واتساب.",
       "h1s": [
-        "خدمة توصيل خاصة بين دول الخليج من GetVendora"
+        "خدمة توصيل خاصة بين دول الخليج من Vendora Transport"
       ],
       "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-private-transport-guide/",
       "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/gcc-private-transport-guide/",
@@ -3817,7 +4583,7 @@
       "schemaBlocks": 1,
       "invalidSchema": [],
       "waNumbers": [],
-      "visibleCharacters": 10983,
+      "visibleCharacters": 11119,
       "issues": []
     },
     {
@@ -3847,7 +4613,7 @@
       "schemaBlocks": 2,
       "invalidSchema": [],
       "waNumbers": [],
-      "visibleCharacters": 7898,
+      "visibleCharacters": 7974,
       "issues": []
     },
     {
@@ -3879,7 +4645,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2446,
+      "visibleCharacters": 2522,
       "issues": []
     },
     {
@@ -3911,7 +4677,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1192,
+      "visibleCharacters": 1268,
       "issues": []
     },
     {
@@ -3943,7 +4709,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 6511,
+      "visibleCharacters": 7157,
       "issues": []
     },
     {
@@ -3974,7 +4740,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1212,
+      "visibleCharacters": 1774,
       "issues": []
     },
     {
@@ -4005,7 +4771,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1167,
+      "visibleCharacters": 1729,
       "issues": []
     },
     {
@@ -4037,7 +4803,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2206,
+      "visibleCharacters": 2738,
       "issues": []
     },
     {
@@ -4069,7 +4835,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 4609,
+      "visibleCharacters": 5167,
       "issues": []
     },
     {
@@ -4101,7 +4867,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2509,
+      "visibleCharacters": 2585,
       "issues": []
     },
     {
@@ -4112,19 +4878,19 @@
       "indexable": true,
       "pair": "en/kuwait-to-bahrain/index.html",
       "pairExists": true,
-      "title": "توصيل من الكويت إلى البحرين | حجز واتساب مباشر | Vendora",
-      "description": "توصيل من الكويت إلى البحرين بسيارة خاصة للركاب والعائلة وسفر العمل والشنط والطرود الصغيرة، مع حجز واتساب مباشر وتخطيط للرحلة الطويلة.",
+      "title": "توصيل من الكويت إلى البحرين بسيارة مع سائق | فندورا",
+      "description": "اطلب عرض سعر لنقل خاص من الكويت إلى البحرين مع تنسيق الاستلام والحدود والسائق والمركبة قبل الرحلة.",
       "h1s": [
-        "توصيل من الكويت إلى البحرين"
+        "توصيل من الكويت إلى البحرين بسيارة مع سائق"
       ],
       "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/kuwait-to-bahrain/",
       "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/kuwait-to-bahrain/",
       "alternates": {
-        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/kuwait-to-bahrain/",
-        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/",
-        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/kuwait-to-bahrain/"
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/kuwait-to-bahrain/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/kuwait-to-bahrain/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/kuwait-to-bahrain/"
       },
-      "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+      "robots": "index,follow,max-image-preview:large",
       "sitemapCount": 1,
       "brokenLinks": [],
       "brokenAssets": [],
@@ -4133,7 +4899,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2066,
+      "visibleCharacters": 2597,
       "issues": []
     },
     {
@@ -4164,7 +4930,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1163,
+      "visibleCharacters": 1725,
       "issues": []
     },
     {
@@ -4175,19 +4941,19 @@
       "indexable": true,
       "pair": "en/oman-to-bahrain/index.html",
       "pairExists": true,
-      "title": "توصيل من عمان إلى البحرين | حجز واتساب مباشر | Vendora",
-      "description": "توصيل من عمان إلى البحرين بسيارة خاصة من مسقط أو مطار مسقط، مع تخطيط مبكر للرحلة الخليجية الطويلة والشنط والعائلة عبر واتساب.",
+      "title": "توصيل من عُمان إلى البحرين بسيارة مع سائق | فندورا",
+      "description": "اطلب عرض سعر لنقل خاص من عُمان إلى البحرين مع تنسيق الاستلام والحدود والسائق والمركبة قبل الرحلة.",
       "h1s": [
-        "توصيل من عمان إلى البحرين"
+        "توصيل من عُمان إلى البحرين بسيارة مع سائق"
       ],
       "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/oman-to-bahrain/",
       "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/oman-to-bahrain/",
       "alternates": {
-        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/oman-to-bahrain/",
-        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/",
-        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/oman-to-bahrain/"
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/oman-to-bahrain/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/oman-to-bahrain/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/oman-to-bahrain/"
       },
-      "robots": "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1",
+      "robots": "index,follow,max-image-preview:large",
       "sitemapCount": 1,
       "brokenLinks": [],
       "brokenAssets": [],
@@ -4196,7 +4962,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2014,
+      "visibleCharacters": 2593,
       "issues": []
     },
     {
@@ -4227,7 +4993,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1200,
+      "visibleCharacters": 1762,
       "issues": []
     },
     {
@@ -4259,7 +5025,37 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1992,
+      "visibleCharacters": 2045,
+      "issues": []
+    },
+    {
+      "file": "passenger-safety/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/passenger-safety/index.html",
+      "pairExists": true,
+      "title": "سلامة الركاب والمركبات | Vendora Transport",
+      "description": "إرشادات سلامة الركاب والجودة والسلامة المتبعة في رحلات فندورا للنقل عبر الخليج.",
+      "h1s": [
+        "سلامة الركاب والمركبات"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/passenger-safety/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/passenger-safety/",
+      "alternates": {
+        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/passenger-safety/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/passenger-safety/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/passenger-safety/"
+      },
+      "robots": "index,follow",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [],
+      "visibleCharacters": 995,
       "issues": []
     },
     {
@@ -4291,7 +5087,37 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2131,
+      "visibleCharacters": 3040,
+      "issues": []
+    },
+    {
+      "file": "payment-policy/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/payment-policy/index.html",
+      "pairExists": true,
+      "title": "سياسة وطرق الدفع | Vendora Transport",
+      "description": "سياسة وطرق الدفع المعتمة لدى فندورا للنقل للرحلات الخاصة وتوصيل المطار.",
+      "h1s": [
+        "سياسة وطرق الدفع"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/payment-policy/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/payment-policy/",
+      "alternates": {
+        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/payment-policy/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/payment-policy/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/payment-policy/"
+      },
+      "robots": "index,follow",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [],
+      "visibleCharacters": 1047,
       "issues": []
     },
     {
@@ -4322,7 +5148,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1197,
+      "visibleCharacters": 1759,
       "issues": []
     },
     {
@@ -4333,7 +5159,7 @@
       "indexable": true,
       "pair": "en/prices/index.html",
       "pairExists": true,
-      "title": "أسعار النقل من البحرين إلى السعودية والخليج | GetVendora",
+      "title": "أسعار النقل من البحرين إلى السعودية والخليج | Vendora Transport",
       "description": "أسعار النقل الخاص من البحرين إلى السعودية ودول الخليج للمركبة كاملة، مع الحجز والتأكيد عبر واتساب.",
       "h1s": [
         "أسعار النقل الخاص من البحرين"
@@ -4350,8 +5176,10 @@
       "brokenAssets": [],
       "schemaBlocks": 1,
       "invalidSchema": [],
-      "waNumbers": [],
-      "visibleCharacters": 1031,
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 3150,
       "issues": []
     },
     {
@@ -4362,7 +5190,7 @@
       "indexable": true,
       "pair": "en/privacy/index.html",
       "pairExists": true,
-      "title": "الخصوصية في خدمة النقل | GetVendora",
+      "title": "الخصوصية في خدمة النقل | Vendora Transport",
       "description": "شرح واضح لبيانات طلب النقل التي تستخدمها فندورا للتنسيق والمتابعة والخصوصية عند التواصل عبر الموقع وواتساب.",
       "h1s": [
         "الخصوصية وبيانات طلب النقل"
@@ -4381,7 +5209,7 @@
       "schemaBlocks": 1,
       "invalidSchema": [],
       "waNumbers": [],
-      "visibleCharacters": 846,
+      "visibleCharacters": 931,
       "issues": []
     },
     {
@@ -4412,7 +5240,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1224,
+      "visibleCharacters": 1786,
       "issues": []
     },
     {
@@ -4443,7 +5271,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1206,
+      "visibleCharacters": 1768,
       "issues": []
     },
     {
@@ -4475,7 +5303,71 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2333,
+      "visibleCharacters": 2409,
+      "issues": []
+    },
+    {
+      "file": "qatar-to-saudi/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/qatar-to-saudi/index.html",
+      "pairExists": true,
+      "title": "توصيل من قطر إلى السعودية بسيارة مع سائق | فندورا",
+      "description": "اطلب عرض سعر لنقل خاص من قطر إلى السعودية مع تنسيق الاستلام والحدود والسائق والمركبة قبل الرحلة.",
+      "h1s": [
+        "توصيل من قطر إلى السعودية بسيارة مع سائق"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/qatar-to-saudi/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/qatar-to-saudi/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/qatar-to-saudi/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-saudi/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-saudi/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 2610,
+      "issues": []
+    },
+    {
+      "file": "qatar-to-uae/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/qatar-to-uae/index.html",
+      "pairExists": true,
+      "title": "توصيل من قطر إلى الإمارات بسيارة مع سائق | فندورا",
+      "description": "اطلب عرض سعر لنقل خاص من قطر إلى الإمارات مع تنسيق الاستلام والحدود والسائق والمركبة قبل الرحلة.",
+      "h1s": [
+        "توصيل من قطر إلى الإمارات بسيارة مع سائق"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/qatar-to-uae/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/qatar-to-uae/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/qatar-to-uae/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-uae/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/qatar-to-uae/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 2573,
       "issues": []
     },
     {
@@ -4507,7 +5399,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 1714,
+      "visibleCharacters": 2265,
       "issues": []
     },
     {
@@ -4539,7 +5431,357 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2501,
+      "visibleCharacters": 2985,
+      "issues": []
+    },
+    {
+      "file": "saudi-to-qatar/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/saudi-to-qatar/index.html",
+      "pairExists": true,
+      "title": "توصيل من السعودية إلى قطر بسيارة مع سائق | فندورا",
+      "description": "اطلب عرض سعر لنقل خاص من السعودية إلى قطر مع تنسيق الاستلام والحدود والسائق والمركبة قبل الرحلة.",
+      "h1s": [
+        "توصيل من السعودية إلى قطر بسيارة مع سائق"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-qatar/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-qatar/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-qatar/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-qatar/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-qatar/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 2631,
+      "issues": []
+    },
+    {
+      "file": "saudi-to-uae/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/saudi-to-uae/index.html",
+      "pairExists": true,
+      "title": "توصيل من السعودية إلى الإمارات بسيارة مع سائق | فندورا",
+      "description": "اطلب عرض سعر لنقل خاص من السعودية إلى الإمارات مع تنسيق الاستلام والحدود والسائق والمركبة قبل الرحلة.",
+      "h1s": [
+        "توصيل من السعودية إلى الإمارات بسيارة مع سائق"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-uae/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-uae/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-uae/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-uae/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-uae/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 2654,
+      "issues": []
+    },
+    {
+      "file": "support-policy/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/support-policy/index.html",
+      "pairExists": true,
+      "title": "خدمة العملاء والشكاوى | Vendora Transport",
+      "description": "إرشادات وقنوات خدمة العملاء ومتابعة الشكاوى والاقتراحات لدى فندورا للنقل.",
+      "h1s": [
+        "خدمة العملاء والشكاوى"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/support-policy/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/support-policy/",
+      "alternates": {
+        "ar-BH": "https://getvendora.net/bahrain-saudi-gcc-transport/support-policy/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/support-policy/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/support-policy/"
+      },
+      "robots": "index,follow",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [],
+      "visibleCharacters": 832,
+      "issues": []
+    },
+    {
+      "file": "transport-from-kuwait/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/transport-from-kuwait/index.html",
+      "pairExists": true,
+      "title": "نقل خاص من الكويت إلى دول الخليج | فندورا للنقل",
+      "description": "المسارات النشطة فقط من الكويت. كل طلب يخضع للتوفر والمراجعة التشغيلية ومتطلبات الحدود والوثائق وعرض السعر النهائي.",
+      "h1s": [
+        "نقل خاص من الكويت إلى دول الخليج"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-kuwait/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-kuwait/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-kuwait/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-kuwait/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-kuwait/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 1051,
+      "issues": []
+    },
+    {
+      "file": "transport-from-oman/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/transport-from-oman/index.html",
+      "pairExists": true,
+      "title": "نقل خاص من عُمان إلى دول الخليج | فندورا للنقل",
+      "description": "المسارات النشطة فقط من عُمان. كل طلب يخضع للتوفر والمراجعة التشغيلية ومتطلبات الحدود والوثائق وعرض السعر النهائي.",
+      "h1s": [
+        "نقل خاص من عُمان إلى دول الخليج"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-oman/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-oman/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-oman/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-oman/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-oman/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 1054,
+      "issues": []
+    },
+    {
+      "file": "transport-from-qatar/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/transport-from-qatar/index.html",
+      "pairExists": true,
+      "title": "نقل خاص من قطر إلى دول الخليج | فندورا للنقل",
+      "description": "المسارات النشطة فقط من قطر. كل طلب يخضع للتوفر والمراجعة التشغيلية ومتطلبات الحدود والوثائق وعرض السعر النهائي.",
+      "h1s": [
+        "نقل خاص من قطر إلى دول الخليج"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-qatar/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-qatar/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-qatar/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-qatar/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-qatar/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 1412,
+      "issues": []
+    },
+    {
+      "file": "transport-from-saudi/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/transport-from-saudi/index.html",
+      "pairExists": true,
+      "title": "نقل خاص من السعودية إلى دول الخليج | فندورا للنقل",
+      "description": "المسارات النشطة فقط من السعودية. كل طلب يخضع للتوفر والمراجعة التشغيلية ومتطلبات الحدود والوثائق وعرض السعر النهائي.",
+      "h1s": [
+        "نقل خاص من السعودية إلى دول الخليج"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-saudi/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-saudi/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-saudi/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-saudi/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-saudi/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 1439,
+      "issues": []
+    },
+    {
+      "file": "transport-from-uae/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/transport-from-uae/index.html",
+      "pairExists": true,
+      "title": "نقل خاص من الإمارات إلى دول الخليج | فندورا للنقل",
+      "description": "المسارات النشطة فقط من الإمارات. كل طلب يخضع للتوفر والمراجعة التشغيلية ومتطلبات الحدود والوثائق وعرض السعر النهائي.",
+      "h1s": [
+        "نقل خاص من الإمارات إلى دول الخليج"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-uae/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-uae/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/transport-from-uae/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-uae/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/transport-from-uae/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 1478,
+      "issues": []
+    },
+    {
+      "file": "uae-to-bahrain/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/uae-to-bahrain/index.html",
+      "pairExists": true,
+      "title": "توصيل من الإمارات إلى البحرين بسيارة مع سائق | فندورا",
+      "description": "اطلب عرض سعر لنقل خاص من الإمارات إلى البحرين مع تنسيق الاستلام والحدود والسائق والمركبة قبل الرحلة.",
+      "h1s": [
+        "توصيل من الإمارات إلى البحرين بسيارة مع سائق"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-bahrain/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-bahrain/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-bahrain/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-bahrain/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-bahrain/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 2600,
+      "issues": []
+    },
+    {
+      "file": "uae-to-qatar/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/uae-to-qatar/index.html",
+      "pairExists": true,
+      "title": "توصيل من الإمارات إلى قطر بسيارة مع سائق | فندورا",
+      "description": "اطلب عرض سعر لنقل خاص من الإمارات إلى قطر مع تنسيق الاستلام والحدود والسائق والمركبة قبل الرحلة.",
+      "h1s": [
+        "توصيل من الإمارات إلى قطر بسيارة مع سائق"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-qatar/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-qatar/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-qatar/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-qatar/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-qatar/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 2588,
+      "issues": []
+    },
+    {
+      "file": "uae-to-saudi/index.html",
+      "intendedLanguage": "ar",
+      "lang": "ar",
+      "dir": "rtl",
+      "indexable": true,
+      "pair": "en/uae-to-saudi/index.html",
+      "pairExists": true,
+      "title": "توصيل من الإمارات إلى السعودية بسيارة مع سائق | فندورا",
+      "description": "اطلب عرض سعر لنقل خاص من الإمارات إلى السعودية مع تنسيق الاستلام والحدود والسائق والمركبة قبل الرحلة.",
+      "h1s": [
+        "توصيل من الإمارات إلى السعودية بسيارة مع سائق"
+      ],
+      "canonical": "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-saudi/",
+      "expectedCanonical": "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-saudi/",
+      "alternates": {
+        "ar": "https://getvendora.net/bahrain-saudi-gcc-transport/uae-to-saudi/",
+        "en": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-saudi/",
+        "x-default": "https://getvendora.net/bahrain-saudi-gcc-transport/en/uae-to-saudi/"
+      },
+      "robots": "index,follow,max-image-preview:large",
+      "sitemapCount": 1,
+      "brokenLinks": [],
+      "brokenAssets": [],
+      "schemaBlocks": 1,
+      "invalidSchema": [],
+      "waNumbers": [
+        "97333225954"
+      ],
+      "visibleCharacters": 2652,
       "issues": []
     },
     {
@@ -4571,7 +5813,7 @@
       "waNumbers": [
         "97333225954"
       ],
-      "visibleCharacters": 2574,
+      "visibleCharacters": 3136,
       "issues": []
     }
   ]

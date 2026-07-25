@@ -550,6 +550,11 @@
           <h3 class="font-bold text-white">Viewed pages without conversion</h3>
           <div id="analyticsNoConversion" class="mt-3 grid gap-2 sm:grid-cols-2"></div>
         </div>
+        <div class="rounded-3xl glass-panel p-5">
+          <h3 class="font-bold text-white">AI search referrals</h3>
+          <p class="mt-1 text-xs text-slate-400">Anonymous sessions referred by supported AI assistants; no query text is collected.</p>
+          <div id="analyticsAiReferrals" class="mt-3 grid gap-2 sm:grid-cols-2"></div>
+        </div>
       </section>
 
       <!-- TAB 5: CUSTOMER COHORTS & RETENTION -->
@@ -2825,6 +2830,10 @@
       document.getElementById('analyticsNoConversion').innerHTML = noConversion.length ? noConversion.map((page) =>
         `<p class="flex justify-between gap-3 rounded-xl border border-slate-800 bg-slate-950/40 p-3 text-xs"><span class="truncate text-slate-300">${escapeHtml(page.page_path)}</span><strong class="text-white">${escapeHtml(page.views || 0)}</strong></p>`
       ).join('') : '<p class="text-xs text-slate-500">No unconverted page views in this period.</p>';
+      const aiReferrals = data.ai_referrals || [];
+      document.getElementById('analyticsAiReferrals').innerHTML = aiReferrals.length ? aiReferrals.map((row) =>
+        `<p class="flex justify-between gap-3 rounded-xl border border-slate-800 bg-slate-950/40 p-3 text-xs"><span class="truncate text-slate-300">${escapeHtml(row.source || 'unknown')}</span><strong class="text-white">${escapeHtml(row.sessions || 0)} sessions / ${escapeHtml(row.conversions || 0)} conv.</strong></p>`
+      ).join('') : '<p class="text-xs text-slate-500">No AI-assistant referrals in this period.</p>';
       document.getElementById('analyticsUpdatedAt').textContent = `Updated ${new Date().toLocaleTimeString()}`;
     }
 

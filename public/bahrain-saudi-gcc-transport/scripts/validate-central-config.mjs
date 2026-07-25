@@ -34,6 +34,11 @@ requireValue(/^973\d{8}$/.test(business.support_phone), 'Invalid normalized supp
 requireValue(business.public_address && business.google_maps_url.startsWith('https://'), 'Address or Maps URL is blank');
 requireValue(business.operating_hours_ar && business.operating_hours_en, 'Bilingual operating hours are required');
 requireValue(business.default_whatsapp_message_ar && business.default_whatsapp_message_en, 'Bilingual WhatsApp messages are required');
+requireValue(business.vehicle_assignment_wording_ar && business.vehicle_assignment_wording_en, 'Bilingual vehicle assignment wording is required');
+requireValue(business.luggage_policy_heading_ar && business.luggage_policy_heading_en, 'Bilingual luggage policy headings are required');
+requireValue(business.luggage_policy_wording_ar && business.luggage_policy_wording_en, 'Bilingual luggage policy wording is required');
+requireValue(!/\b(?:up to|seats?|seating for)\s+\d+\b/i.test(business.passenger_capacity_en), 'Central passenger wording must not publish an unverified exact capacity');
+requireValue(!/(?:حتى|سعة|تسع)\s*\d+\s*(?:ركاب|راكب)/.test(business.passenger_capacity_ar), 'Central passenger wording must not publish an unverified exact capacity');
 requireValue(Array.isArray(business.supported_payments) && business.supported_payments.includes('Cash') && business.supported_payments.includes('BenefitPay'), 'Supported payments are incomplete');
 
 const active = pricing.routes.filter((route) => route.active);
@@ -57,6 +62,10 @@ for (const file of pages) {
   const html = readFileSync(file, 'utf8');
   const isEnglish = rel.startsWith('en/') || rel === 'care/en/index.html' || /<html\b[^>]*lang=["']en/i.test(html);
   if (isEnglish) englishPages += 1; else arabicPages += 1;
+  requireValue(!/\b(?:registration plate|plate number|chassis number|VIN|driver identity document|internal fleet identifier|vehicle registration\/category)\b/i.test(html), `Private vehicle or driver identifier wording: ${rel}`);
+  requireValue(!/(?:رقم لوحة|لوحة تسجيل|رقم الهيكل|هوية السائق|معرّف الأسطول الداخلي)/.test(html), `Private vehicle or driver identifier wording: ${rel}`);
+  requireValue(!/\b(?:up to|seats?|seating for)\s+(?:6|7)\b/i.test(html), `Unverified exact passenger capacity: ${rel}`);
+  requireValue(!/(?:حتى|سعة|تسع)\s*(?:6|7)\s*(?:ركاب|راكب)/.test(html), `Unverified exact passenger capacity: ${rel}`);
   const theme = html.match(/<link\b[^>]*href=["']([^"']*vendora-theme\.css)["'][^>]*data-vendora-global-theme[^>]*>/i);
   const config = html.match(/<script\b[^>]*src=["']([^"']*vendora-config\.js)["'][^>]*data-vendora-global-config[^>]*><\/script>/i);
   requireValue(theme, `Missing global theme: ${rel}`);

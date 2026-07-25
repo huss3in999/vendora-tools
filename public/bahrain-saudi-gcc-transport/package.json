@@ -4,7 +4,10 @@
   "type": "module",
   "scripts": {
     "sync": "node scripts/sync-transport-site.mjs",
+    "sync:search": "node scripts/sync-search-discovery.mjs",
     "validate:central-config": "node scripts/validate-central-config.mjs",
+    "validate:search": "node scripts/validate-search-discovery.mjs",
+    "validate:indexnow": "node scripts/submit-indexnow.mjs",
     "preview:gcc": "node scripts/generate-gcc-private-preview.mjs",
     "capture:gcc-preview": "node scripts/capture-gcc-preview-contact-sheet.mjs",
     "validate:gcc": "node scripts/validate-gcc-architecture.mjs",
@@ -15,7 +18,8 @@
     "validate:analytics": "node scripts/validate-sitewide-analytics.mjs",
     "test:analytics-api": "node tests/analytics-api.test.mjs",
     "test:analytics": "playwright test tests/sitewide-analytics.spec.js",
-    "test": "playwright test",
+    "test:node": "node tests/analytics-api.test.mjs && node --test tests/batch1-security.test.cjs",
+    "test": "npm run test:node && playwright test",
     "test:ui": "playwright test --ui"
   },
   "devDependencies": {

@@ -1095,7 +1095,8 @@ async function getTrackingSummary(env, request) {
     { results: byCity },
     { results: byDevice },
     { results: byLanguage },
-    { results: bySource }
+    { results: bySource },
+    { results: aiReferrals }
   ] = await Promise.all([
     env.TRANSPORT_DB.prepare(`
       SELECT
@@ -1232,6 +1233,19 @@ async function getTrackingSummary(env, request) {
       SELECT COALESCE(NULLIF(utm_source, ''), NULLIF(referrer, ''), 'direct') AS label,
         COUNT(DISTINCT session_id) AS sessions
       FROM analytics_events WHERE created_at >= ${since} GROUP BY label ORDER BY sessions DESC LIMIT 50
+    `).all(),
+    env.TRANSPORT_DB.prepare(`
+      SELECT json_extract(raw_payload, '$.ai_referral_source') AS source,
+        COUNT(DISTINCT session_id) AS sessions,
+        SUM(event_name IN ('whatsapp_click', 'quote_request', 'booking_submit')) AS conversions
+      FROM analytics_events
+      WHERE created_at >= ${since}
+        AND json_valid(raw_payload)
+        AND json_extract(raw_payload, '$.discovery_channel') = 'ai_assistant_referral'
+        AND json_extract(raw_payload, '$.ai_referral_source') IS NOT NULL
+        AND json_extract(raw_payload, '$.ai_referral_source') <> ''
+      GROUP BY source
+      ORDER BY sessions DESC
     `).all()
   ]);
 
@@ -1252,6 +1266,7 @@ async function getTrackingSummary(env, request) {
     country_hub_performance: hubPerformance || [],
     page_performance: pagePerformance || [],
     pages_without_conversion: pagesWithoutConversion || [],
+    ai_referrals: aiReferrals || [],
     dimensions: {
       country: byCountry || [],
       city: byCity || [],

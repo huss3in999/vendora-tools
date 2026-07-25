@@ -8,7 +8,7 @@ const root = dirname(dirname(fileURLToPath(import.meta.url)));
 
 function collectFiles(dir, predicate, files = []) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
-    if (entry.name === '.git' || entry.name === 'node_modules' || entry.name === 'test-results') continue;
+    if (entry.name === '.git' || entry.name === 'node_modules' || entry.name === 'test-results' || entry.name === 'templates') continue;
     const full = join(dir, entry.name);
     if (entry.isDirectory()) collectFiles(full, predicate, files);
     else if (entry.isFile() && predicate(entry.name)) files.push(full);
