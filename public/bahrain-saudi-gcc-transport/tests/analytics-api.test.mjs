@@ -85,6 +85,20 @@ assert.equal(summary.event_totals.quote_requests, 1);
 assert.equal(summary.route_performance[0].route_id, 'SA-QA');
 assert.equal(summary.online_now.length, 1);
 
+const diagResponse = await adminGet({
+  request: new Request('http://localhost:8787/api/transport/admin?resource=diagnostics', {
+    headers: { authorization: 'Bearer synthetic-admin-token', origin: 'http://127.0.0.1:4173' },
+  }),
+  env,
+  waitUntil: () => {},
+});
+assert.equal(diagResponse.status, 200);
+const diagData = await diagResponse.json();
+assert.equal(diagData.ok, true);
+assert.equal(diagData.diagnostics.database_bound, true);
+assert.equal(diagData.diagnostics.analytics_table_exists, true);
+assert.equal(diagData.diagnostics.migration_0005_status, 'applied');
+
 console.log(JSON.stringify({
   ok: true,
   stored_events: stored.length,
