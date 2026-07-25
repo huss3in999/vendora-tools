@@ -2623,7 +2623,7 @@
       const live = Number(route.is_visible) === 1;
       return `
         <article class="route-card rounded-2xl glass-panel p-5 transition duration-200 hover:border-brand/20" data-route="${escapeHtml(route.route_slug)}">
-          <div class="mb-4 flex flex-wrap gap-2"><span class="rounded-full border border-emerald-500/30 bg-emerald-950/30 px-2 py-1 text-[9px] font-bold text-emerald-300">PUBLIC â€” visible to customers and Google</span><span class="rounded-full border border-purple-500/30 bg-purple-950/30 px-2 py-1 text-[9px] font-bold text-purple-300">PRIVATE â€” admin only; never published</span></div>
+          <div class="mb-4 flex flex-wrap gap-2"><span class="rounded-full border border-emerald-500/30 bg-emerald-950/30 px-2 py-1 text-[9px] font-bold text-emerald-300">PUBLIC — visible to customers and Google</span><span class="rounded-full border border-purple-500/30 bg-purple-950/30 px-2 py-1 text-[9px] font-bold text-purple-300">PRIVATE — admin only; never published</span></div>
           <div class="grid gap-4 lg:grid-cols-4 lg:items-end">
             <div>
               <h3 class="font-extrabold text-sm text-white">${escapeHtml(route.route_name_en || route.route_slug)}</h3>
@@ -3696,7 +3696,7 @@ Note: This report is automatically compiled by the Control Room operations track
       if (!document.getElementById('auditCustomerPaid').value || !document.getElementById('auditDriverPayout').value) {
         output.textContent = 'Enter paid amount and driver payout';
       } else if (paid < payout) {
-        output.textContent = '0.000 BHD â€” payout exceeds paid amount';
+        output.textContent = '0.000 BHD — payout exceeds paid amount';
       } else {
         output.textContent = `${(paid - payout).toFixed(3)} BHD`;
       }
@@ -3764,7 +3764,7 @@ Note: This report is automatically compiled by the Control Room operations track
         return;
       }
       const minimum = Number(minimumInput.value);
-      output.textContent = publicValue < minimum ? '0.000 BHD â€” check prices' : `${(publicValue - minimum).toFixed(3)} BHD`;
+      output.textContent = publicValue < minimum ? '0.000 BHD — check prices' : `${(publicValue - minimum).toFixed(3)} BHD`;
     });
 
     document.getElementById('seedRoutesBtn').addEventListener('click', async () => {
