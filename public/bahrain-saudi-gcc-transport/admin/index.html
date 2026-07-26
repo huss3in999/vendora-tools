@@ -82,6 +82,9 @@
       #dashboardView > header h1 { font-size: 1.25rem; }
       #dashboardView > header p { display: none; }
       #mobileDock { display: grid !important; }
+      #dashboardView.app-home #periodControls { display: none; }
+      #dashboardView.app-home #ownerSnapshot { margin-top: 0; }
+      #dashboardView.app-home #secondaryKpis, #dashboardView.app-home #insightsPanel { display: none; }
     }
     #mobileDock { display: none; }
   </style>
@@ -186,6 +189,9 @@
         <i id="mobileMenuIcon" data-lucide="chevron-down" class="h-4 w-4 text-slate-400"></i>
       </button>
       <nav id="appNav" class="hidden grid-cols-2 gap-1 rounded-2xl glass-panel p-1.5 shadow-md sm:grid-cols-3 xl:grid-cols-10">
+        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="home" type="button">
+          <i data-lucide="house" class="h-4 w-4 text-brand"></i> Home
+        </button>
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="leads" type="button">
           <i data-lucide="message-circle" class="h-4 w-4"></i> Clicks
         </button>
@@ -219,7 +225,7 @@
       </nav>
 
       <!-- TOP CONTROL BAR: quick period (always visible) + collapsible filters -->
-      <section class="rounded-3xl glass-panel p-4 shadow-lg">
+      <section id="periodControls" class="rounded-3xl glass-panel p-4 shadow-lg">
         <div class="flex flex-wrap items-center gap-2">
           <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mr-1">Period</span>
           <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="today">Today</button>
@@ -320,7 +326,7 @@
       </section>
 
       <!-- OWNER SNAPSHOT: the only section an owner needs to scan first -->
-      <section class="rounded-3xl border border-brand/25 bg-gradient-to-br from-emerald-950/35 via-slate-950/70 to-slate-900/70 p-5 shadow-xl">
+      <section id="ownerSnapshot" class="rounded-3xl border border-brand/25 bg-gradient-to-br from-emerald-950/35 via-slate-950/70 to-slate-900/70 p-5 shadow-xl">
         <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-brand">Owner snapshot</p>
@@ -354,7 +360,7 @@
       </section>
 
       <!-- WHO IS ONLINE RIGHT NOW (always visible at top, on every tab) -->
-      <section class="glass-panel rounded-3xl overflow-hidden shadow-xl">
+      <section id="onlineNowPanel" class="glass-panel rounded-3xl overflow-hidden shadow-xl">
         <button id="toggleOnlineBtn" type="button" class="flex w-full items-center justify-between gap-2 border-b border-slate-800/80 p-4 text-left bg-slate-900/30">
           <span class="flex items-center gap-2 text-base font-bold text-white">
             <span class="relative flex h-2.5 w-2.5">
@@ -375,7 +381,7 @@
 
       <!-- KPI METRIC CARDS GRID -->
       <p class="text-[10px] text-slate-500 -mb-1">Tip: tap any card below to jump straight to its full report.</p>
-      <section class="grid gap-4 grid-cols-2 md:grid-cols-3 xl:grid-cols-7">
+      <section id="secondaryKpis" class="grid gap-4 grid-cols-2 md:grid-cols-3 xl:grid-cols-7">
 
         <!-- UNIQUE VISITORS (real people, not page hits) -->
         <div data-jump="cohorts" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-cyan-500 transition hover:border-cyan-300 hover:bg-cyan-950/10">
@@ -476,7 +482,9 @@
       </section>
 
       <!-- TAB 1: WHATSAPP CLICKS (CRM LOG) -->
-      <section id="leadsPanel" class="tab-panel space-y-4">
+      <section id="homePanel" class="tab-panel"></section>
+
+      <section id="leadsPanel" class="tab-panel space-y-4 hidden">
         <div class="glass-panel rounded-3xl overflow-hidden shadow-xl">
           <div class="flex flex-col gap-2 border-b border-slate-800/80 p-5 sm:flex-row sm:items-center sm:justify-between bg-slate-900/30">
             <div>
@@ -1281,7 +1289,7 @@
 
     const state = {
       token: sessionStorage.getItem(TOKEN_KEY) || '',
-      tab: 'leads',
+      tab: 'home',
       leads: [],
       pageviews: [],
       routes: [],
@@ -1857,6 +1865,7 @@
 
     function setTab(tab) {
       state.tab = tab;
+      dashboardView.classList.toggle('app-home', tab === 'home');
       document.getElementById('appNav').classList.add('hidden');
       document.getElementById('mobileMenuIcon').setAttribute('data-lucide', 'chevron-down');
       document.querySelectorAll('.tab-btn').forEach((button) => {
@@ -3511,8 +3520,8 @@ Note: This report is automatically compiled by the Control Room operations track
     });
     document.querySelectorAll('[data-app-jump]').forEach((button) => button.addEventListener('click', () => {
       const target = button.dataset.appJump;
-      if (target === 'home') window.scrollTo({ top: 0, behavior: 'smooth' });
-      else if (target === 'live') document.getElementById('toggleOnlineBtn').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (target === 'home') { setTab('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      else if (target === 'live') { setTab('home'); document.getElementById('onlineNowPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
       else if (target === 'reports') { setTab('reports'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
       else document.getElementById('mobileMenuToggle').click();
     }));
