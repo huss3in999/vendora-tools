@@ -2435,6 +2435,7 @@
       const visits = Number(summary.total_pageviews || 0);
       const completed = Number(summary.completed_count || 0);
       const revenue = Number(summary.total_revenue || 0);
+      const feedback = state.passengerCare || [];
 
       const lines = [
         'Vendora Transport Business Report',
@@ -2449,6 +2450,10 @@
         `Tracked revenue: ${formatMoney(revenue)}`,
         `Average completed value: ${formatMoney(summary.avg_completed_revenue || 0)}`,
         `Follow-ups due: ${summary.followups_due || 0}`,
+        '',
+        'Customer feedback and complaints',
+        `Feedback received: ${feedback.length}`,
+        ...(feedback.length ? feedback.slice(0, 5).map((item) => `${formatDate(item.feedback_submitted_at || item.created_at)}: ${item.feedback_text || item.feedback || item.comment || 'Feedback recorded'}`) : ['No feedback recorded in this view']),
         '',
         'Pipeline',
         `New: ${summary.new_count || 0}`,
@@ -2522,11 +2527,13 @@
 
     function renderReportCards() {
       const summary = state.summary || {};
+      const feedback = state.passengerCare || [];
       const cards = [
         ['Revenue', formatMoney(summary.total_revenue || 0), `${summary.completed_count || 0} completed jobs`, 'banknote', 'text-emerald-400'],
         ['Visit -> Click', percent(summary.total || 0, summary.total_pageviews || 0), `${summary.total || 0} clicks from ${summary.total_pageviews || 0} visits`, 'mouse-pointer-click', 'text-yellow-400'],
         ['Click -> Job', percent(summary.completed_count || 0, summary.total || 0), `${summary.contacted_count || 0} contacted leads`, 'check-circle-2', 'text-brand-light'],
         ['Follow-ups', summary.followups_due || 0, `${summary.cancelled_count || 0} cancelled, ${summary.spam_count || 0} spam/test`, 'bell-ring', 'text-purple-400'],
+        ['Feedback', feedback.length, 'Open Care to review customer feedback and complaints', 'heart-handshake', 'text-rose-400'],
       ];
 
       document.getElementById('reportCards').innerHTML = cards.map(([label, value, detail, icon, color]) => `
