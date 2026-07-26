@@ -3240,8 +3240,8 @@ body.vip-transport .footer { color: var(--vip-ivory); background: var(--vip-ink)
   body.vendora-root-page .hero-points { gap: 7px; margin: 14px 0; }
   body.vendora-root-page .hero-points li { font-size: .76rem; line-height: 1.35; }
   body.vendora-root-page .hero-points li:nth-child(n + 3) { display: none; }
-  body.vendora-root-page .hero-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 0; }
-  body.vendora-root-page .hero-actions > a { min-width: 0; min-height: 48px; padding: 10px 8px; font-size: .76rem; justify-content: center; text-align: center; }
+  body.vendora-root-page .hero-actions { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 0; }
+  body.vendora-root-page .hero-actions > a { min-width: 0; min-height: 44px; padding: 8px 12px; font-size: .78rem; justify-content: center; text-align: center; white-space: nowrap; }
   body.vendora-root-page .hero-actions .ghost-btn { display: none; }
   body.vendora-root-page .vip-home-visual { display: none; }
 }
