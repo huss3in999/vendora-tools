@@ -2980,6 +2980,14 @@
 
     async function unlock(token) {
       state.token = token;
+      if (!state.activePeriod) {
+        const form = document.getElementById('filtersForm');
+        const { from, to } = periodToDates('today');
+        form.elements.from.value = from;
+        form.elements.to.value = to;
+        state.filters = Object.fromEntries(new FormData(form).entries());
+        highlightActivePeriod('today');
+      }
       await loadDashboard();
       sessionStorage.setItem(TOKEN_KEY, token);
       loginView.classList.add('hidden');
@@ -3342,7 +3350,13 @@ Note: This report is automatically compiled by the Control Room operations track
       state.analyticsRefreshTimer = setInterval(async () => {
         if (document.hidden || !state.token) return;
         try {
-          state.tracking = await api('?resource=tracking&period=7_days');
+          const [summaryData, trackingData] = await Promise.all([
+            api(queryFromFilters({ resource: 'summary' })),
+            api('?resource=tracking&period=today'),
+          ]);
+          state.summary = summaryData.summary || {};
+          state.tracking = trackingData || {};
+          renderStats();
           renderUnifiedAnalytics();
           renderOnlineNow();
         } catch (error) {
