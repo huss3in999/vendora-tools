@@ -1656,7 +1656,8 @@
       if (state.hideLikelyBots) {
         recent = recent.filter((v) => !isLikelyBot(onlineVisitorAsEvent(v)));
       }
-      const transportCount = recent.length || Number(summary.online_transport ?? summary.online_now ?? 0);
+      // The headline must always match the cards the owner can actually see.
+      const transportCount = recent.length;
       const careCount = Number(summary.online_care || 0);
 
       if (pill) pill.textContent = `${transportCount} transport online`;
