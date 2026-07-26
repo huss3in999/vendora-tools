@@ -100,6 +100,13 @@
       #ownerSnapshot { border-radius: 20px; }
       #ownerSnapshot .grid { gap: 10px; }
       #reportsPanel { gap: 14px; }
+      #dashboardView.app-reports #periodControls { padding: 10px; border-radius: 18px; }
+      #dashboardView.app-reports #periodControls > div { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
+      #dashboardView.app-reports #periodControls > div > span { position: sticky; left: 0; z-index: 1; padding: 7px 8px 7px 2px; background: #0b0f19; }
+      #dashboardView.app-reports .period-btn { flex: 0 0 auto; padding: 8px 11px; font-size: .7rem; }
+      #dashboardView.app-reports .period-btn[data-period="21"],
+      #dashboardView.app-reports .period-btn[data-period="90"],
+      #dashboardView.app-reports .period-btn[data-period="180"] { display: none; }
       #reportsPanel > .glass-panel { padding: 16px; border-radius: 20px; }
       #reportsPanel .glass-panel > .mb-5 { margin-bottom: 14px; }
       #reportsPanel #businessReportText { display: none; }
@@ -1884,7 +1891,7 @@
 
     function setTab(tab) {
       state.tab = tab;
-      dashboardView.classList.toggle('app-home', tab === 'home');
+      ['home', 'leads', 'passengerCare', 'pageviews', 'analytics', 'cohorts', 'reports', 'pricing', 'settings', 'alerts', 'errors'].forEach((name) => dashboardView.classList.toggle(`app-${name}`, tab === name));
       document.getElementById('appNav').classList.add('hidden');
       document.getElementById('mobileMenuIcon').setAttribute('data-lucide', 'chevron-down');
       document.querySelectorAll('.tab-btn').forEach((button) => {
