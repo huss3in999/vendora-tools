@@ -310,6 +310,21 @@ body.vip-transport .topbar a:not(.primary-btn):not(.wa-inline):is(:hover, :focus
   color: var(--vendora-link-on-dark);
 }
 
+/* Final contrast guard for every dark public hero. Legacy page styles may use
+   different surface backgrounds, but the readable text treatment is universal. */
+body.home-premium.vip-transport :is(.hero-copy, .hero-side) {
+  color: var(--vendora-text-on-dark);
+}
+
+body.home-premium.vip-transport :is(.hero-copy, .hero-side) :is(h1, h2, h3, strong) {
+  color: var(--vendora-gold-bright);
+}
+
+body.home-premium.vip-transport :is(.hero-copy, .hero-side) :is(p, li, .lead, span:not(.logo)) {
+  color: var(--vendora-muted-on-dark);
+  opacity: 1;
+}
+
 body.vip-transport :is(.review-card, .policy-card, .price-card, .route-card, .service-card, .booking-card) {
   border-radius: var(--vendora-radius);
   box-shadow: var(--vendora-shadow);
