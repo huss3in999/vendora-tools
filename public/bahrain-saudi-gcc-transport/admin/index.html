@@ -91,11 +91,11 @@
       #onlineCareText { display: none; }
       #mobileDock { display: grid !important; }
       #mobileMenuToggle { display: none; }
-      #appNav { position: fixed; inset: 0; z-index: 60; grid-template-columns: 1fr; align-content: start; overflow-y: auto; padding: 18px 16px 96px; border: 0; border-radius: 0; background: #070b14; box-shadow: none; }
-      #appNav .app-menu-header { display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 18px; }
-      #appNav .app-menu-section { margin: 12px 4px 6px; font-size: .65rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #64748b; }
-      #appNav .tab-btn { justify-content: flex-start; min-height: 58px; margin-bottom: 6px; padding: 12px 14px; font-size: .88rem; border: 1px solid rgba(51, 65, 85, .72); background: rgba(15, 23, 42, .66); box-shadow: 0 8px 22px rgba(0,0,0,.14); }
-      #appNav .tab-btn i { width: 20px; height: 20px; padding: 8px; box-sizing: content-box; border-radius: 14px; background: rgba(16,185,129,.10); color: #6ee7b7; }
+      #appNav { position: fixed; inset: 0; z-index: 60; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: start; overflow-y: auto; padding: 18px 16px 96px; border: 0; border-radius: 0; background: #070b14; box-shadow: none; gap: 10px; }
+      #appNav .app-menu-header { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 10px; }
+      #appNav .app-menu-section { grid-column: 1 / -1; margin: 8px 4px -2px; font-size: .65rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #64748b; }
+      #appNav .tab-btn { flex-direction: column; justify-content: center; min-height: 104px; margin: 0; padding: 12px 8px; font-size: .78rem; border: 1px solid rgba(51, 65, 85, .72); background: rgba(15, 23, 42, .66); box-shadow: 0 8px 22px rgba(0,0,0,.14); }
+      #appNav .tab-btn i { width: 20px; height: 20px; padding: 9px; box-sizing: content-box; border-radius: 14px; background: rgba(16,185,129,.10); color: #6ee7b7; }
       #appNav .tab-btn.bg-brand i { background: rgba(3,7,18,.14); color: #071a2e; }
       #dashboardView.app-home #periodControls { display: none; }
       #dashboardView.app-home #ownerSnapshot { margin-top: 0; }
@@ -261,7 +261,7 @@
           <i data-lucide="message-circle" class="h-4 w-4"></i> Clicks
         </button>
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="passengerCare" type="button">
-          <i data-lucide="heart-handshake" class="h-4 w-4 text-emerald-400"></i> Care
+          <i data-lucide="heart-handshake" class="h-4 w-4 text-emerald-400"></i> Feedback
         </button>
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="pageviews" type="button">
           <i data-lucide="eye" class="h-4 w-4"></i> Visits
@@ -1001,9 +1001,9 @@
           <div class="flex flex-col gap-2 border-b border-slate-800/80 p-5 sm:flex-row sm:items-center sm:justify-between bg-slate-900/30">
             <div>
               <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                <i data-lucide="heart-handshake" class="text-emerald-400"></i> Passenger Care Feedback
+                <i data-lucide="heart-handshake" class="text-emerald-400"></i> Feedback &amp; Reviews
               </h2>
-              <p class="text-xs text-slate-400 mt-0.5">Search by Booking Ref (GCC-XXXXXXXX) using the filter above, then open this tab.</p>
+              <p class="text-xs text-slate-400 mt-0.5">Customer feedback is private by default. Open any card to approve or hide an eligible public review.</p>
             </div>
           </div>
           <div class="hidden overflow-x-auto md:block">
@@ -2289,13 +2289,15 @@
 
       document.getElementById('passengerCareMobile').innerHTML = rows.map((row, index) => `
         <article class="rounded-2xl border border-slate-850 bg-slate-900/25 p-4 space-y-2 cursor-pointer" data-care-index="${index}">
-          <div class="font-bold text-emerald-300">${escapeHtml(row.booking_ref || '-')}</div>
+          <div class="flex items-center justify-between gap-2"><div class="font-bold text-emerald-300">${escapeHtml(row.booking_ref || '-')}</div>${reviewStatusBadge(row)}</div>
           <div class="text-xs text-slate-400">Click: ${escapeHtml(formatDate(row.clicked_at))}</div>
           <div class="text-sm text-white">${escapeHtml(row.route_label || row.route_slug || 'Unknown')}</div>
           <div class="text-xs text-slate-400">${escapeHtml(outcomeLabels[row.outcome] || row.outcome || '-')}</div>
+          ${row.rating ? `<div class="text-sm font-bold text-amber-300">${escapeHtml(row.rating)}/5 rating</div>` : ''}
+          ${row.comment ? `<p class="line-clamp-2 text-xs leading-relaxed text-slate-300">${escapeHtml(row.comment)}</p>` : ''}
           <div class="text-xs text-slate-400">Click country: ${escapeHtml(countryLabel(row.lead_country) || 'Unknown')}</div>
           <div class="text-xs text-slate-400">Feedback country: ${escapeHtml(countryLabel(row.feedback_country) || 'Unknown')}</div>
-          <button class="mt-2 rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-3 py-1.5 text-[10px] font-bold text-emerald-300" data-view-care="${index}" type="button">View Details</button>
+          <button class="mt-2 w-full rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-3 py-2 text-[10px] font-bold text-emerald-300" data-view-care="${index}" type="button">Review feedback</button>
         </article>
       `).join('') || '<p class="text-center text-slate-500 text-sm p-4">No passenger care feedback found.</p>';
     }
