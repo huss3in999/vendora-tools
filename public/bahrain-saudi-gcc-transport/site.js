@@ -8,8 +8,9 @@
     }
   }
   const publicConfig = readPublicConfig();
+  const pageBusinessConfig = window.pageConfig || {};
   const centralBusinessConfig = window.VENDORA_BUSINESS_CONFIG || {};
-  const config = { ...centralBusinessConfig, ...(window.pageConfig || {}), ...(publicConfig.settings || {}) };
+  const config = { ...pageBusinessConfig, ...centralBusinessConfig, ...(publicConfig.settings || {}) };
   const phoneNumber = config.booking_whatsapp_enabled === false
     ? ''
     : (config.booking_whatsapp || config.phoneNumber || '');

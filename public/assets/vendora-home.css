@@ -1,0 +1,47 @@
+/* Homepage-only design layer. Loaded after shared styles so it cannot alter route,
+   pricing, guide, or admin pages. */
+body.vendora-root-page {
+  --bg: #071a2e;
+  --bg-soft: #102b47;
+  --surface: rgba(7, 26, 46, 0.90);
+  --surface-strong: #081725;
+  --line: rgba(200, 169, 107, 0.24);
+  --line-strong: rgba(200, 169, 107, 0.42);
+  --text: #fffaf0;
+  --muted: #edf2f6;
+  --accent: #c8a96b;
+  --accent-strong: #f4d994;
+  --accent-soft: rgba(200, 169, 107, 0.12);
+  --accent-soft-strong: rgba(200, 169, 107, 0.22);
+  background:
+    radial-gradient(circle at 78% 4%, rgba(200, 169, 107, 0.12), transparent 30%),
+    radial-gradient(circle at 10% 28%, rgba(16, 43, 71, 0.28), transparent 34%),
+    linear-gradient(180deg, #071a2e 0%, #081725 48%, #102b47 100%);
+}
+
+.home-hero-mobile-summary { display: none; }
+
+@media (max-width: 640px) {
+  body.vendora-root-page .hero { padding-top: 16px; }
+  body.vendora-root-page .hero-copy { padding: 20px !important; border-radius: 22px; }
+  body.vendora-root-page .hero-copy .eyebrow { margin-bottom: 10px; padding: 8px 12px; font-size: .72rem; line-height: 1.25; }
+  body.vendora-root-page .hero-copy h1 { margin-bottom: 10px; font-size: clamp(1.75rem, 8vw, 2.2rem); line-height: 1.04; }
+  body.vendora-root-page .hero-copy .lead {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    font-size: .88rem;
+    line-height: 1.5;
+  }
+  body.vendora-root-page .home-hero-mobile-summary { display: block; margin: 10px 0 0; color: var(--muted); font-size: .8rem; line-height: 1.45; }
+  body.vendora-root-page .hero-points { gap: 7px; margin: 14px 0; }
+  body.vendora-root-page .hero-points li { font-size: .76rem; line-height: 1.35; }
+  body.vendora-root-page .hero-points li:nth-child(n + 3) { display: none; }
+  body.vendora-root-page .hero-actions { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 0; }
+  body.vendora-root-page .hero-actions > a { min-width: 0; min-height: 44px; padding: 8px 12px; font-size: .78rem; justify-content: center; text-align: center; white-space: nowrap; }
+  body.vendora-root-page .hero-actions .ghost-btn { display: none; }
+  body.vendora-root-page .vip-home-visual { display: none; }
+}
