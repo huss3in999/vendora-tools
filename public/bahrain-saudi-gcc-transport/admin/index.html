@@ -1812,7 +1812,7 @@
               <span class="rounded bg-slate-800/80 px-1.5 py-0.5 text-purple-300">Session ${escapeHtml(sShort)}</span>
             </div>
             <p class="mt-1 truncate text-[11px] text-white"><span class="text-slate-500">Current page:</span> ${escapeHtml(v.page_path || '/')}</p>
-            <p class="mt-1 text-[11px] text-slate-300"><span class="text-slate-500">Country / city:</span> ${flag ? flag + ' ' : ''}${escapeHtml(loc)} <span class="text-[9px] text-amber-300/80 px-1 py-0.2 rounded border border-amber-500/20 bg-amber-500/10">Approximate</span></p>
+            <p class="mt-1 text-[11px] text-slate-300"><span class="text-slate-500">Country / Approx. City:</span> ${flag ? flag + ' ' : ''}${escapeHtml(loc)} <span class="text-[9px] text-amber-300/80 px-1 py-0.2 rounded border border-amber-500/20 bg-amber-500/10">Approximate</span></p>
             <div class="mt-2 flex flex-wrap items-center gap-1.5 text-[10px] text-slate-400">
               <span class="rounded border border-cyan-500/30 bg-cyan-950/20 px-1.5 py-0.5 font-bold uppercase text-cyan-200">Device: ${escapeHtml(v.device_type || 'desktop')}</span>
               <span class="rounded border border-slate-700 px-1.5 py-0.5 uppercase">Language: ${escapeHtml(String(v.language || 'ar'))}</span>

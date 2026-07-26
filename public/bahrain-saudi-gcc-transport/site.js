@@ -1016,6 +1016,15 @@
     return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(identifyVendoraSource(message))}`;
   }
 
+  function applyCentralBusinessLinks() {
+    if (!phoneNumber) return;
+    document.querySelectorAll('a[href*="wa.me/"], a[data-wa-message], a[data-track-wa], a[data-booking-submit]').forEach((link) => {
+      const message = extractWhatsAppMessage(link) || link.dataset.waMessage || defaultArabicMessage;
+      link.href = toWhatsApp(message);
+      link.dataset.vendoraCentralWhatsApp = 'true';
+    });
+  }
+
   function identifyVendoraSource(message, language = getPageLanguage()) {
     const isEnglish = language === 'en';
     const website = isEnglish
@@ -3076,6 +3085,7 @@
 
   function init() {
     setupErrorReporter();
+    applyCentralBusinessLinks();
     setupWhatsAppLeadInterceptor();
     normalizeInternalLinks();
     injectStructuredData();
@@ -3097,6 +3107,7 @@
 
   function initLeadOnly() {
     setupErrorReporter();
+    applyCentralBusinessLinks();
     setupWhatsAppLeadInterceptor();
     normalizeInternalLinks();
     setupAttributionTracking();
