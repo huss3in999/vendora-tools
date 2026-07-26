@@ -1705,14 +1705,14 @@
               <span class="shrink-0 text-[10px] text-emerald-300 font-semibold">${escapeHtml(agoText(v.last_seen))}</span>
             </div>
             <div class="mt-1 flex items-center gap-2 text-[10px] text-slate-400 font-mono">
-              <span class="rounded bg-slate-800/80 px-1.5 py-0.5 text-cyan-300">${escapeHtml(vShort)}</span>
-              <span class="rounded bg-slate-800/80 px-1.5 py-0.5 text-purple-300">${escapeHtml(sShort)}</span>
+              <span class="rounded bg-slate-800/80 px-1.5 py-0.5 text-cyan-300">Visitor ${escapeHtml(vShort)}</span>
+              <span class="rounded bg-slate-800/80 px-1.5 py-0.5 text-purple-300">Session ${escapeHtml(sShort)}</span>
             </div>
-            <p class="mt-1 truncate text-[10px] text-slate-500">${escapeHtml(v.page_path || '')}</p>
-            <p class="mt-1 text-[11px] text-slate-300">${flag ? flag + ' ' : ''}${escapeHtml(loc)} <span class="text-[9px] text-amber-300/80 px-1 py-0.2 rounded border border-amber-500/20 bg-amber-500/10">Approx. City</span></p>
+            <p class="mt-1 truncate text-[11px] text-white"><span class="text-slate-500">Current page:</span> ${escapeHtml(v.page_path || '/')}</p>
+            <p class="mt-1 text-[11px] text-slate-300"><span class="text-slate-500">Country / city:</span> ${flag ? flag + ' ' : ''}${escapeHtml(loc)} <span class="text-[9px] text-amber-300/80 px-1 py-0.2 rounded border border-amber-500/20 bg-amber-500/10">Approximate</span></p>
             <div class="mt-2 flex flex-wrap items-center gap-1.5 text-[10px] text-slate-400">
-              <span class="rounded border border-slate-700 px-1.5 py-0.5 uppercase">${escapeHtml(v.device_type || 'desktop')}</span>
-              <span class="rounded border border-slate-700 px-1.5 py-0.5 uppercase">${escapeHtml(String(v.language || 'ar'))}</span>
+              <span class="rounded border border-cyan-500/30 bg-cyan-950/20 px-1.5 py-0.5 font-bold uppercase text-cyan-200">Device: ${escapeHtml(v.device_type || 'desktop')}</span>
+              <span class="rounded border border-slate-700 px-1.5 py-0.5 uppercase">Language: ${escapeHtml(String(v.language || 'ar'))}</span>
               <span>${pagesViewed} page${pagesViewed === 1 ? '' : 's'}</span>
               <span>${durText} active</span>
               ${clicked ? '<span class="ml-auto rounded-full bg-brand/20 px-2 py-0.5 font-bold text-brand-light">WhatsApp ✓</span>' : ''}
