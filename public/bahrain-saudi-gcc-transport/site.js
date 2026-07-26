@@ -43,6 +43,9 @@
     interactionCount: 0,
     sessionPageViews: 1,
     previousPagePath: '',
+    activeStartTime: Date.now(),
+    accumulatedActiveMs: 0,
+    isTabVisible: typeof document !== 'undefined' ? !document.hidden : true,
   };
   let whatsAppClickLockUntil = 0;
 
@@ -1259,6 +1262,24 @@
         leadState.interactionCount += 1;
       }, { passive: true });
     });
+
+    const handleVisibility = () => {
+      if (document.hidden) {
+        if (leadState.isTabVisible) {
+          leadState.accumulatedActiveMs += Math.max(0, Date.now() - leadState.activeStartTime);
+          leadState.isTabVisible = false;
+        }
+      } else {
+        if (!leadState.isTabVisible) {
+          leadState.activeStartTime = Date.now();
+          leadState.isTabVisible = true;
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility, { passive: true });
+    window.addEventListener('blur', () => handleVisibility(), { passive: true });
+    window.addEventListener('focus', () => handleVisibility(), { passive: true });
     window.addEventListener('scroll', updateScrollDepth, { passive: true });
     window.addEventListener('resize', updateScrollDepth, { passive: true });
     updateScrollDepth();
@@ -1285,6 +1306,12 @@
     const firstTouch = getFirstTouch();
     const publicRoute = (publicConfig.routes || []).find((item) => item.route_slug === routeSlug);
     const referrer = document.referrer || '';
+    let currentActiveMs = leadState.accumulatedActiveMs || 0;
+    if (leadState.isTabVisible) {
+      currentActiveMs += Math.max(0, Date.now() - (leadState.activeStartTime || Date.now()));
+    }
+    const activeSeconds = Math.round(currentActiveMs / 1000);
+
     return {
       timestamp: new Date().toISOString(),
       routeSlug,
@@ -1299,6 +1326,7 @@
       sessionId: getSessionId(),
       pageLoadedAt,
       timeOnPageMs: Date.now() - pageStartedAt,
+      activeSeconds,
       scrollDepthPercent: Math.max(leadState.maxScrollDepth, getScrollDepthPercent()),
       clickX: Number.isFinite(event?.clientX) ? Math.round(event.clientX) : (rect ? Math.round((rect.left || 0) + (rect.width || 0) / 2) : 0),
       clickY: Number.isFinite(event?.clientY) ? Math.round(event.clientY) : (rect ? Math.round((rect.top || 0) + (rect.height || 0) / 2) : 0),

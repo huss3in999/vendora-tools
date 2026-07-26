@@ -1597,6 +1597,18 @@
 
     function renderOnlineNow() {
       const summary = state.summary || {};
+      const list = document.getElementById('onlineNowList');
+      const timeSpan = document.getElementById('onlineLastUpdated');
+      const nowTs = new Date().toLocaleTimeString('en-US', { hour12: false });
+      if (timeSpan) timeSpan.textContent = `Data last updated: ${nowTs}`;
+
+      const pill = document.getElementById('onlineNowText');
+      if (state.lastFetchError) {
+        if (pill) pill.textContent = 'API Error';
+        if (list) list.innerHTML = `<div class="col-span-full rounded-2xl border border-red-500/20 bg-red-950/20 p-4 text-center text-xs text-red-300"><strong>System Alert:</strong> Failed to fetch Online Now status (${escapeHtml(state.lastFetchError)}).</div>`;
+        return;
+      }
+
       let recent = summary.online_recent || [];
       if (state.hideLikelyBots) {
         recent = recent.filter((v) => !isLikelyBot(onlineVisitorAsEvent(v)));
@@ -1605,7 +1617,6 @@
       const transportCount = unifiedOnline.length || Number(summary.online_transport ?? summary.online_now ?? recent.length);
       const careCount = Number(summary.online_care || 0);
 
-      const pill = document.getElementById('onlineNowText');
       if (pill) pill.textContent = `${transportCount} transport online`;
       const carePill = document.getElementById('onlineCareText');
       if (carePill) carePill.textContent = careCount > 0 ? ` · ${careCount} on care pages` : '';
@@ -1622,10 +1633,9 @@
         }
       }
 
-      const list = document.getElementById('onlineNowList');
       if (!list) return;
       if (!recent.length) {
-        list.innerHTML = '<p class="col-span-full py-6 text-center text-xs text-slate-500">No transport visitors active in the last 5 minutes. Counts use whatsapp_leads with a 5-minute window; admin and care pages are excluded.</p>';
+        list.innerHTML = `<p class="col-span-full py-6 text-center text-xs text-slate-500">No transport visitors active in the last 5 minutes. Data last updated: ${nowTs}.</p>`;
         return;
       }
 
@@ -1644,22 +1654,28 @@
         const flag = v.country ? countryFlag(v.country) : '';
         const pagesViewed = Number(v.pages_viewed || 0);
         const personKey = v.person_key || v.visitor_id || v.session_id || '';
+        const vShort = formattedVisitorShortId(v.visitor_id);
+        const sShort = formattedSessionShortId(v.session_id);
         return `
-          <article role="button" tabindex="0" data-online-visitor="${escapeHtml(String(personKey))}" class="cursor-pointer rounded-2xl border ${clicked ? 'border-brand/40 bg-brand-soft/10' : 'border-slate-800 bg-slate-950/40'} p-3 transition hover:border-emerald-500/40 hover:bg-emerald-950/10">
+          <article role="button" tabindex="0" data-online-visitor="${escapeHtml(String(personKey))}" class="cursor-pointer rounded-2xl border ${clicked ? 'border-brand/40 bg-brand-soft/10' : 'border-slate-800 bg-slate-950/40'} p-3.5 transition hover:border-emerald-500/40 hover:bg-emerald-950/10 shadow-sm">
             <div class="flex items-center justify-between gap-2">
               <span class="truncate text-xs font-bold text-white">${escapeHtml(prettyRouteName(v))}</span>
               <span class="shrink-0 text-[10px] text-emerald-300 font-semibold">${escapeHtml(agoText(v.last_seen))}</span>
             </div>
-            <p class="mt-0.5 truncate text-[10px] text-slate-500">${escapeHtml(v.page_path || '')}</p>
-            <p class="mt-1 text-[11px] text-slate-400">${flag ? flag + ' ' : ''}${escapeHtml(loc)}</p>
-            <div class="mt-2 flex flex-wrap items-center gap-2 text-[10px] text-slate-400">
+            <div class="mt-1 flex items-center gap-2 text-[10px] text-slate-400 font-mono">
+              <span class="rounded bg-slate-800/80 px-1.5 py-0.5 text-cyan-300">${escapeHtml(vShort)}</span>
+              <span class="rounded bg-slate-800/80 px-1.5 py-0.5 text-purple-300">${escapeHtml(sShort)}</span>
+            </div>
+            <p class="mt-1 truncate text-[10px] text-slate-500">${escapeHtml(v.page_path || '')}</p>
+            <p class="mt-1 text-[11px] text-slate-300">${flag ? flag + ' ' : ''}${escapeHtml(loc)} <span class="text-[9px] text-amber-300/80 px-1 py-0.2 rounded border border-amber-500/20 bg-amber-500/10">Approx. City</span></p>
+            <div class="mt-2 flex flex-wrap items-center gap-1.5 text-[10px] text-slate-400">
               <span class="rounded border border-slate-700 px-1.5 py-0.5 uppercase">${escapeHtml(v.device_type || 'desktop')}</span>
               <span class="rounded border border-slate-700 px-1.5 py-0.5 uppercase">${escapeHtml(String(v.language || 'ar'))}</span>
-              <span>${pagesViewed} page${pagesViewed === 1 ? '' : 's'} viewed</span>
-              <span>${durText} on page</span>
+              <span>${pagesViewed} page${pagesViewed === 1 ? '' : 's'}</span>
+              <span>${durText} active</span>
               ${clicked ? '<span class="ml-auto rounded-full bg-brand/20 px-2 py-0.5 font-bold text-brand-light">WhatsApp ✓</span>' : ''}
             </div>
-            <p class="mt-2 text-[10px] font-semibold text-emerald-400/80">Tap to see every page they visited →</p>
+            <p class="mt-2 text-[10px] font-semibold text-emerald-400/80">Tap for full event timeline →</p>
           </article>`;
       }).join('');
     }
