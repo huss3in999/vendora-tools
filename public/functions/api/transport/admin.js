@@ -31,7 +31,7 @@ const EXCLUDE_CARE_PATH_SQL = "COALESCE(page_path, '') NOT LIKE '%/care/%'";
 const TRANSPORT_PRESENCE_SQL = `${EXCLUDE_ADMIN_SQL} AND ((${EXCLUDE_CARE_PATH_SQL} AND COALESCE(service_type, '') IN ('pageview', 'presence_heartbeat')) OR (${NON_CLICK_SERVICE_SQL} AND ${NON_CLICK_ROUTE_SQL}))`;
 const CARE_PRESENCE_SQL = `${EXCLUDE_ADMIN_SQL} AND (COALESCE(service_type, '') = 'passenger-care-pageview' OR COALESCE(page_path, '') LIKE '%/care/%')`;
 const CUSTOMER_PRESENCE_SQL = EXCLUDE_ADMIN_SQL;
-const ONLINE_WINDOW_SQL = "clicked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-5 minutes')";
+const ONLINE_WINDOW_SQL = "clicked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-90 seconds')";
 
 const ADMIN_COLUMNS = [
   ['status', "ALTER TABLE whatsapp_leads ADD COLUMN status TEXT DEFAULT 'new'"],
@@ -1147,7 +1147,7 @@ async function getTrackingSummary(env, request) {
           ROW_NUMBER() OVER (PARTITION BY session_id ORDER BY created_at DESC) AS row_number,
           MIN(created_at) OVER (PARTITION BY session_id) AS session_first
         FROM analytics_events
-        WHERE created_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-5 minutes')
+        WHERE created_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-90 seconds')
           AND (page_path = '/bahrain-saudi-gcc-transport' OR page_path LIKE '/bahrain-saudi-gcc-transport/%')
           AND page_path NOT LIKE '%/admin/%' AND page_path NOT LIKE '%/care/%'
       )
