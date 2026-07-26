@@ -97,6 +97,29 @@
       #dashboardView.app-home #periodControls { display: none; }
       #dashboardView.app-home #ownerSnapshot { margin-top: 0; }
       #dashboardView.app-home #secondaryKpis, #dashboardView.app-home #insightsPanel { display: none; }
+      #dashboardView:not(.app-home) #ownerSnapshot,
+      #dashboardView:not(.app-home) #onlineNowPanel,
+      #dashboardView:not(.app-home) #secondaryKpis,
+      #dashboardView:not(.app-home) #insightsPanel { display: none; }
+      #dashboardView:not(.app-reports) #periodControls { display: none; }
+      #leadsPanel > .glass-panel,
+      #pageviewsPanel > .glass-panel,
+      #passengerCarePanel > .glass-panel,
+      #settingsPanel > .glass-panel,
+      #settingsPanel > form { border-radius: 20px; }
+      #leadsPanel .glass-panel > div:first-child,
+      #pageviewsPanel .glass-panel > div:first-child,
+      #passengerCarePanel .glass-panel > div:first-child { padding: 16px; }
+      #leadsPanel h2, #pageviewsPanel h2, #passengerCarePanel h2 { font-size: 1rem; }
+      #leadsPanel .glass-panel > div:first-child p,
+      #pageviewsPanel .glass-panel > div:first-child p,
+      #passengerCarePanel .glass-panel > div:first-child p { line-height: 1.45; }
+      #leadsMobile, #pvMobile, #passengerCareMobile { gap: 10px; padding: 12px; }
+      #leadsMobile > *, #pvMobile > *, #passengerCareMobile > * { border-radius: 16px; }
+      #deleteVisitsBtn { display: none; }
+      #settingsPanel form { padding: 16px; gap: 18px; }
+      #settingsPanel .grid { gap: 12px; }
+      #settingsPanel input, #settingsPanel textarea { padding: 10px 12px; font-size: .78rem; }
       #ownerSnapshot { border-radius: 20px; }
       #ownerSnapshot .grid { gap: 10px; }
       #reportsPanel { gap: 14px; }
