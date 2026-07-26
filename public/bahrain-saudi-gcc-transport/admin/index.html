@@ -353,7 +353,7 @@
             <span id="onlineNowCount" class="rounded-full border border-emerald-500/20 bg-emerald-950/20 px-2 py-0.5 text-[11px] font-bold text-emerald-300">0</span>
           </span>
           <span class="flex items-center gap-2 text-[10px] text-slate-500">
-            Transport pages active in the last 5 minutes (admin &amp; care excluded)
+            Live updates every 15 seconds · active in the last 5 minutes
             <i id="toggleOnlineIcon" data-lucide="chevron-up" class="h-4 w-4 text-slate-400"></i>
           </span>
         </button>
@@ -551,11 +551,11 @@
             </div>
             <div class="flex flex-wrap items-center gap-2 text-xs">
               <label class="flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900/50 px-3 py-2">
-                <input id="analyticsAutoRefresh" type="checkbox" class="accent-cyan-400"> Auto refresh
+                <input id="analyticsAutoRefresh" type="checkbox" class="accent-cyan-400" checked> Live refresh
               </label>
               <select id="analyticsRefreshSeconds" class="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-slate-200">
+                <option value="15" selected>15 seconds</option>
                 <option value="30">30 seconds</option>
-                <option value="60" selected>60 seconds</option>
               </select>
               <span id="analyticsUpdatedAt" class="text-slate-500">Not loaded</span>
             </div>
@@ -1643,7 +1643,9 @@
         return;
       }
 
-      let recent = summary.online_recent || [];
+      // The tracking endpoint is the source of truth for current sessions. The
+      // summary feed is retained only as a compatibility fallback.
+      let recent = (state.tracking?.online_now?.length ? state.tracking.online_now : (summary.online_recent || []));
       if (state.hideLikelyBots) {
         recent = recent.filter((v) => !isLikelyBot(onlineVisitorAsEvent(v)));
       }
@@ -2983,6 +2985,7 @@
       loginView.classList.add('hidden');
       dashboardView.classList.remove('hidden');
       setTab(state.tab);
+      configureAnalyticsAutoRefresh();
     }
 
     function visitorEventsForLead(lead) {
