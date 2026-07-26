@@ -1643,14 +1643,20 @@
         return;
       }
 
-      // The tracking endpoint is the source of truth for current sessions. The
-      // summary feed is retained only as a compatibility fallback.
-      let recent = (state.tracking?.online_now?.length ? state.tracking.online_now : (summary.online_recent || []));
+      // Merge both live feeds. The main Cloudflare lead feed records every
+      // website visit; the unified analytics feed adds richer event detail.
+      const liveByVisitor = new Map();
+      [...(summary.online_recent || []), ...(state.tracking?.online_now || [])].forEach((visitor) => {
+        const key = visitor.person_key || visitor.visitor_id || visitor.session_id;
+        if (!key) return;
+        const prior = liveByVisitor.get(key) || {};
+        liveByVisitor.set(key, { ...prior, ...visitor, person_key: key });
+      });
+      let recent = [...liveByVisitor.values()].sort((a, b) => String(b.last_seen || '').localeCompare(String(a.last_seen || '')));
       if (state.hideLikelyBots) {
         recent = recent.filter((v) => !isLikelyBot(onlineVisitorAsEvent(v)));
       }
-      const unifiedOnline = state.tracking?.online_now || [];
-      const transportCount = unifiedOnline.length || Number(summary.online_transport ?? summary.online_now ?? recent.length);
+      const transportCount = recent.length || Number(summary.online_transport ?? summary.online_now ?? 0);
       const careCount = Number(summary.online_care || 0);
 
       if (pill) pill.textContent = `${transportCount} transport online`;
