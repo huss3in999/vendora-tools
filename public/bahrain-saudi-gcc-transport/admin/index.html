@@ -173,11 +173,11 @@
       <p id="statusLine" class="hidden rounded-2xl border px-5 py-4 text-sm"></p>
 
       <!-- APP-STYLE NAVIGATION -->
-      <button id="mobileMenuToggle" type="button" class="flex items-center justify-between rounded-2xl glass-panel px-4 py-3 text-sm font-bold text-white shadow-md sm:hidden">
+      <button id="mobileMenuToggle" type="button" class="flex items-center justify-between rounded-2xl glass-panel px-4 py-3 text-sm font-bold text-white shadow-md">
         <span class="flex items-center gap-2"><i data-lucide="menu" class="h-5 w-5 text-brand"></i> Menu &amp; details</span>
         <i id="mobileMenuIcon" data-lucide="chevron-down" class="h-4 w-4 text-slate-400"></i>
       </button>
-      <nav id="appNav" class="hidden grid-cols-2 gap-1 rounded-2xl glass-panel p-1.5 shadow-md sm:grid sm:grid-cols-3 xl:grid-cols-10">
+      <nav id="appNav" class="hidden grid-cols-2 gap-1 rounded-2xl glass-panel p-1.5 shadow-md sm:grid-cols-3 xl:grid-cols-10">
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="leads" type="button">
           <i data-lucide="message-circle" class="h-4 w-4"></i> Clicks
         </button>
@@ -1843,10 +1843,8 @@
 
     function setTab(tab) {
       state.tab = tab;
-      if (window.matchMedia('(max-width: 639px)').matches) {
-        document.getElementById('appNav').classList.add('hidden');
-        document.getElementById('mobileMenuIcon').setAttribute('data-lucide', 'chevron-down');
-      }
+      document.getElementById('appNav').classList.add('hidden');
+      document.getElementById('mobileMenuIcon').setAttribute('data-lucide', 'chevron-down');
       document.querySelectorAll('.tab-btn').forEach((button) => {
         const active = button.dataset.tab === tab;
         button.classList.toggle('bg-brand', active);
