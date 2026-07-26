@@ -273,6 +273,7 @@ function buildNotificationText(payload, geo) {
 }
 
 async function sendPhoneNotification(request, env, payload) {
+  if (cleanText(payload && payload.serviceType, 120) === 'presence_heartbeat') return;
   const webhookUrl = cleanText(env.TRANSPORT_NOTIFY_WEBHOOK_URL, 1200);
   if (!webhookUrl) return;
 
@@ -351,7 +352,7 @@ export async function sendDailySummary(env) {
     SELECT
       COUNT(DISTINCT COALESCE(json_extract(raw_payload, '$.visitorId'), session_id)) AS visitors,
       SUM(CASE WHEN COALESCE(service_type, '') = 'pageview' THEN 1 ELSE 0 END) AS pageviews,
-      SUM(CASE WHEN COALESCE(service_type, '') <> 'pageview' THEN 1 ELSE 0 END) AS clicks
+      SUM(CASE WHEN COALESCE(service_type, '') NOT IN ('pageview', 'presence_heartbeat') THEN 1 ELSE 0 END) AS clicks
     FROM whatsapp_leads
     WHERE clicked_at >= ${since}
   `).first();

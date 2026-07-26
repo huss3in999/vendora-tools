@@ -24,11 +24,11 @@ const VISIT_COUNT_EXPR = "CASE WHEN json_valid(raw_payload) THEN CAST(COALESCE(j
 const SESSION_PAGE_VIEWS_EXPR = "CASE WHEN json_valid(raw_payload) THEN CAST(COALESCE(json_extract(raw_payload, '$.sessionPageViews'), 1) AS INTEGER) ELSE 1 END";
 const TRAFFIC_SOURCE_EXPR = "COALESCE(NULLIF(utm_source, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.firstTrafficSource'), '') END, CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.trafficSource'), '') END, 'direct/unknown')";
 const CAMPAIGN_EXPR = "COALESCE(NULLIF(utm_campaign, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.utmCampaign'), '') END, 'no campaign')";
-const NON_CLICK_SERVICE_SQL = "COALESCE(service_type, '') NOT IN ('pageview', 'passenger-care-pageview', 'passenger-care-stub')";
+const NON_CLICK_SERVICE_SQL = "COALESCE(service_type, '') NOT IN ('pageview', 'presence_heartbeat', 'passenger-care-pageview', 'passenger-care-stub')";
 const NON_CLICK_ROUTE_SQL = "COALESCE(route_slug, '') NOT IN ('passenger-care', 'passenger-care-stub')";
 const EXCLUDE_ADMIN_SQL = "COALESCE(page_path, '') NOT LIKE '%/admin/%'";
 const EXCLUDE_CARE_PATH_SQL = "COALESCE(page_path, '') NOT LIKE '%/care/%'";
-const TRANSPORT_PRESENCE_SQL = `${EXCLUDE_ADMIN_SQL} AND ((${EXCLUDE_CARE_PATH_SQL} AND COALESCE(service_type, '') = 'pageview') OR (${NON_CLICK_SERVICE_SQL} AND ${NON_CLICK_ROUTE_SQL}))`;
+const TRANSPORT_PRESENCE_SQL = `${EXCLUDE_ADMIN_SQL} AND ((${EXCLUDE_CARE_PATH_SQL} AND COALESCE(service_type, '') IN ('pageview', 'presence_heartbeat')) OR (${NON_CLICK_SERVICE_SQL} AND ${NON_CLICK_ROUTE_SQL}))`;
 const CARE_PRESENCE_SQL = `${EXCLUDE_ADMIN_SQL} AND (COALESCE(service_type, '') = 'passenger-care-pageview' OR COALESCE(page_path, '') LIKE '%/care/%')`;
 const CUSTOMER_PRESENCE_SQL = EXCLUDE_ADMIN_SQL;
 const ONLINE_WINDOW_SQL = "clicked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-5 minutes')";

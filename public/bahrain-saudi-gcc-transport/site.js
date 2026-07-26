@@ -1719,21 +1719,20 @@
   }
 
   function setupOnlineHeartbeat() {
+    if (window.__VENDORA_ONLINE_HEARTBEAT_READY__) return;
+    window.__VENDORA_ONLINE_HEARTBEAT_READY__ = true;
     const sendHeartbeat = () => {
       try {
-        if (window.vendoraTransportAnalytics) return;
-        if (typeof window.vendoraTrackLocal === 'function') {
-          window.vendoraTrackLocal('session_heartbeat', {
-            event_category: 'transport_presence',
-            timeOnPageMs: Date.now() - pageStartedAt,
-            route_name: getRouteSlug(),
-          });
-        }
+        const payload = buildLeadPayload(null, null);
+        payload.serviceType = 'presence_heartbeat';
+        payload.clickText = '';
+        sendLeadPayload(payload);
       } catch (e) {
         // ignore heartbeat failures
       }
     };
-    setInterval(sendHeartbeat, 120000);
+    sendHeartbeat();
+    setInterval(sendHeartbeat, 30000);
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') sendHeartbeat();
     });
