@@ -78,9 +78,15 @@
     }
     @media (max-width: 639px) {
       #dashboardView { padding-bottom: 76px; }
-      #dashboardView > header { position: sticky; top: 8px; z-index: 20; padding: 16px; border-radius: 20px; }
-      #dashboardView > header h1 { font-size: 1.25rem; }
+      #dashboardView > header { position: sticky; top: 6px; z-index: 20; padding: 12px; border-radius: 18px; gap: 10px; }
+      #dashboardView > header h1 { font-size: 1.05rem; }
       #dashboardView > header p { display: none; }
+      #dashboardView > header .h-12 { height: 2.5rem; width: 2.5rem; border-radius: .85rem; }
+      #dashboardView > header .h-6 { height: 1.25rem; width: 1.25rem; }
+      #dashboardView > header #exportBtn, #dashboardView > header #logoutBtn { display: none; }
+      #dashboardView > header #refreshBtn { padding: .55rem .7rem; font-size: 0; }
+      #dashboardView > header #refreshBtn i { height: 1rem; width: 1rem; }
+      #dashboardView > header #onlineNowPill { padding: .55rem .7rem; font-size: .68rem; border-radius: .8rem; }
       #mobileDock { display: grid !important; }
       #dashboardView.app-home #periodControls { display: none; }
       #dashboardView.app-home #ownerSnapshot { margin-top: 0; }
