@@ -76,6 +76,14 @@
       background-color: #0b0f19 !important;
       color: #f3f4f6 !important;
     }
+    @media (max-width: 639px) {
+      #dashboardView { padding-bottom: 76px; }
+      #dashboardView > header { position: sticky; top: 8px; z-index: 20; padding: 16px; border-radius: 20px; }
+      #dashboardView > header h1 { font-size: 1.25rem; }
+      #dashboardView > header p { display: none; }
+      #mobileDock { display: grid; }
+    }
+    #mobileDock { display: none; }
   </style>
   <script>
     (function () {
@@ -959,6 +967,12 @@
         </div>
       </section>
 
+      <nav id="mobileDock" class="fixed inset-x-3 bottom-3 z-40 grid-cols-4 rounded-2xl border border-slate-700/80 bg-slate-900/95 p-1.5 shadow-2xl backdrop-blur">
+        <button type="button" data-app-jump="home" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-brand-light"><i data-lucide="house" class="h-4 w-4"></i>Home</button>
+        <button type="button" data-app-jump="live" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="radio" class="h-4 w-4"></i>Live</button>
+        <button type="button" data-app-jump="reports" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="chart-no-axes-combined" class="h-4 w-4"></i>Reports</button>
+        <button type="button" data-app-jump="menu" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="menu" class="h-4 w-4"></i>Menu</button>
+      </nav>
     </section>
   </main>
 
@@ -3495,6 +3509,13 @@ Note: This report is automatically compiled by the Control Room operations track
       icon.setAttribute('data-lucide', isHidden ? 'chevron-down' : 'chevron-up');
       renderIcons();
     });
+    document.querySelectorAll('[data-app-jump]').forEach((button) => button.addEventListener('click', () => {
+      const target = button.dataset.appJump;
+      if (target === 'home') window.scrollTo({ top: 0, behavior: 'smooth' });
+      else if (target === 'live') document.getElementById('toggleOnlineBtn').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      else if (target === 'reports') { setTab('reports'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      else document.getElementById('mobileMenuToggle').click();
+    }));
 
     // KPI cards jump straight to their detailed report (tap or Enter/Space)
     document.querySelectorAll('[data-jump]').forEach((card) => {
