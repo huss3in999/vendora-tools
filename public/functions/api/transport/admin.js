@@ -377,14 +377,14 @@ function buildLeadFilters(url, options = {}) {
 
   const from = cleanDate(url.searchParams.get('from'));
   if (from) {
-    clauses.push('clicked_at >= ?');
-    bindings.push(`${from}T00:00:00.000Z`);
+    clauses.push("date(clicked_at, '+3 hours') >= ?");
+    bindings.push(from);
   }
 
   const to = cleanDate(url.searchParams.get('to'));
   if (to) {
-    clauses.push('clicked_at <= ?');
-    bindings.push(`${to}T23:59:59.999Z`);
+    clauses.push("date(clicked_at, '+3 hours') <= ?");
+    bindings.push(to);
   }
 
   const search = cleanText(url.searchParams.get('search'), 120);
@@ -594,6 +594,9 @@ async function getSummary(env, request) {
       SUM(CASE WHEN COALESCE(status, 'new') = 'completed' THEN 1 ELSE 0 END) AS completed_count,
       SUM(CASE WHEN COALESCE(status, 'new') = 'cancelled' THEN 1 ELSE 0 END) AS cancelled_count,
       SUM(CASE WHEN COALESCE(status, 'new') = 'spam' THEN 1 ELSE 0 END) AS spam_count,
+      SUM(CASE WHEN COALESCE(service_type, '') IN ('whatsapp_intent', 'whatsapp_click', 'whatsapp_cancel') OR COALESCE(click_text, '') <> '' THEN 1 ELSE 0 END) AS whatsapp_intents_count,
+      SUM(CASE WHEN COALESCE(service_type, '') = 'whatsapp_cancel' OR COALESCE(status, 'new') = 'cancelled' THEN 1 ELSE 0 END) AS whatsapp_cancelled_count,
+      SUM(CASE WHEN (COALESCE(service_type, '') = 'whatsapp_click' AND COALESCE(CAST(json_extract(raw_payload, '$.confirmed_departure') AS INTEGER), 0) = 1) OR COALESCE(whatsapp_confirmed_at, '') <> '' OR COALESCE(status, 'new') IN ('completed', 'contacted') THEN 1 ELSE 0 END) AS whatsapp_departed_count,
       ROUND(SUM(COALESCE(revenue, 0)), 3) AS total_revenue,
       ROUND(AVG(NULLIF(COALESCE(revenue, 0), 0)), 3) AS avg_completed_revenue,
       SUM(CASE WHEN follow_up_at IS NOT NULL AND follow_up_at <> '' AND follow_up_at <= strftime('%Y-%m-%dT%H:%M:%SZ', 'now') THEN 1 ELSE 0 END) AS followups_due

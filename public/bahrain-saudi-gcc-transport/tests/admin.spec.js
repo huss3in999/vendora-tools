@@ -33,9 +33,9 @@ test.describe('Admin dashboard', () => {
 
     await expect(page.locator('#dashboardView')).toBeVisible();
     expect(apiRequests).toEqual(expect.arrayContaining([
-      expect.stringContaining('/bahrain-saudi-gcc-transport/api/transport/admin?resource=leads'),
+      expect.stringMatching(/\/bahrain-saudi-gcc-transport\/api\/transport\/admin\?.*resource=leads/),
       '/bahrain-saudi-gcc-transport/api/transport/admin?resource=routes',
-      '/bahrain-saudi-gcc-transport/api/transport/admin?resource=summary',
+      expect.stringMatching(/\/bahrain-saudi-gcc-transport\/api\/transport\/admin\?.*resource=summary/),
     ]));
   });
 
@@ -89,10 +89,10 @@ test.describe('Admin dashboard', () => {
 
     expect(apiUrl).toBe('https://getvendora.net/api/transport/admin');
     expect(apiRequests).toEqual(expect.arrayContaining([
-      expect.stringContaining('/bahrain-saudi-gcc-transport/api/transport/admin?resource=leads'),
-      expect.stringContaining('/api/transport/admin?resource=leads'),
+      '/bahrain-saudi-gcc-transport/api/transport/admin?resource=routes',
       '/api/transport/admin?resource=routes',
-      '/api/transport/admin?resource=summary',
+      expect.stringMatching(/\/api\/transport\/admin\?.*resource=leads/),
+      expect.stringMatching(/\/api\/transport\/admin\?.*resource=summary/),
     ]));
   });
 });

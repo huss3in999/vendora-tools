@@ -1,4 +1,8 @@
 (function () {
+  // This guide owns its WhatsApp click/lead handler. Tell the shared site layer
+  // not to intercept the same click and create a duplicate lead record.
+  window.__VENDORA_PAGE_OWNS_WA_TRACKING__ = true;
+
   const PHONE = window.VENDORA_BUSINESS_CONFIG?.booking_whatsapp || "";
 
   const locationsData = {

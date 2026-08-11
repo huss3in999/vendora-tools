@@ -216,6 +216,7 @@
       page_path: true, page_title: true, language: true, route_id: true,
       origin_country: true, destination_country: true, service_type: true,
       service_id: true, cta_location: true, traffic_source: true,
+      confirmed_departure: true, cancellation_method: true,
       discovery_channel: true, ai_referral_source: true,
       device_category: true, timestamp: true, booking_reference: true,
       navigation_type: true, target_path: true, policy_type: true,
@@ -270,6 +271,9 @@
       if (safeParams.hasOwnProperty(key) && allowedExtraKeys[key] && !payload.hasOwnProperty(key)) {
         payload[key] = safeParams[key];
       }
+    }
+    if (eventName === 'whatsapp_cancel' && !payload.cancellation_method) {
+      payload.cancellation_method = safeParams.cancellation_method || safeParams.method || 'back_button';
     }
 
     // Forward to GA4 (Gtag mapping)

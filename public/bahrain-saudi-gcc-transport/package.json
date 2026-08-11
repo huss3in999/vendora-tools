@@ -18,7 +18,7 @@
     "validate:analytics": "node scripts/validate-sitewide-analytics.mjs",
     "test:analytics-api": "node tests/analytics-api.test.mjs",
     "test:analytics": "playwright test tests/sitewide-analytics.spec.js",
-    "test:node": "node tests/analytics-api.test.mjs && node --test tests/batch1-security.test.cjs",
+    "test:node": "node tests/analytics-api.test.mjs && node tests/whatsapp-confirmation-api.test.mjs && node --test tests/batch1-security.test.cjs",
     "test": "npm run test:node && playwright test",
     "test:ui": "playwright test --ui"
   },

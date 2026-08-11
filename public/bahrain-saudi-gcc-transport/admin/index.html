@@ -44,9 +44,11 @@
   </script>
 
   <style>
-    body {
+    html, body {
       background-color: #050811;
       font-family: 'Plus Jakarta Sans', sans-serif;
+      max-width: 100vw;
+      overflow-x: hidden;
     }
     .glass-panel {
       background: rgba(11, 15, 25, 0.8);
@@ -61,6 +63,11 @@
     .glass-input:focus {
       border-color: #10b981;
       box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    }
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
     /* Hide scrollbar for Chrome, Safari and Opera */
     .no-scrollbar::-webkit-scrollbar {
@@ -96,15 +103,12 @@
       #appNav .app-menu-section { grid-column: 1 / -1; margin: 8px 4px -2px; font-size: .65rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #64748b; }
       #appNav .tab-btn { flex-direction: column; justify-content: center; min-height: 104px; margin: 0; padding: 12px 8px; font-size: .78rem; border: 1px solid rgba(51, 65, 85, .72); background: rgba(15, 23, 42, .66); box-shadow: 0 8px 22px rgba(0,0,0,.14); }
       #appNav .tab-btn i { width: 20px; height: 20px; padding: 9px; box-sizing: content-box; border-radius: 14px; background: rgba(16,185,129,.10); color: #6ee7b7; }
-      #appNav .tab-btn.bg-brand i { background: rgba(3,7,18,.14); color: #071a2e; }
-      #dashboardView.app-home #periodControls { display: none; }
       #dashboardView.app-home #ownerSnapshot { margin-top: 0; }
       #dashboardView.app-home #secondaryKpis, #dashboardView.app-home #insightsPanel { display: none; }
       #dashboardView:not(.app-home) #ownerSnapshot,
       #dashboardView:not(.app-home) #onlineNowPanel,
       #dashboardView:not(.app-home) #secondaryKpis,
       #dashboardView:not(.app-home) #insightsPanel { display: none; }
-      #dashboardView:not(.app-reports) #periodControls { display: none; }
       #leadsPanel > .glass-panel,
       #pageviewsPanel > .glass-panel,
       #passengerCarePanel > .glass-panel,
@@ -135,7 +139,7 @@
       #dashboardView.app-reports .period-btn[data-period="180"],
       #dashboardView.app-reports .period-btn[data-period="14"],
       #dashboardView.app-reports .period-btn[data-period="all"],
-      #dashboardView.app-reports #hideBotsControl { display: none; }
+      #dashboardView.app-reports #botTrafficControl { display: none; }
       #dashboardView.app-reports #botsFilterNote,
       #dashboardView.app-reports #toggleFiltersBtn { display: none; }
       #customPeriodPicker { margin-top: 10px; }
@@ -143,8 +147,6 @@
       #reportsPanel > .glass-panel { padding: 16px; border-radius: 20px; }
       #reportsPanel .glass-panel > .mb-5 { margin-bottom: 14px; }
       #reportsPanel #businessReportText { display: none; }
-      #reportsPanel #reportCards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-      #reportsPanel #reportCards > * { padding: 12px; border-radius: 16px; }
       #reportsPanel .relative.h-80 { height: 230px; }
     }
     #mobileDock { display: none; }
@@ -199,7 +201,7 @@
               <input id="tokenInput" type="password" autocomplete="current-password" class="glass-input w-full rounded-2xl py-3.5 pl-10 pr-4 text-base outline-none transition duration-200" placeholder="••••••••••••" required />
             </div>
           </label>
-          <button class="w-full rounded-2xl bg-brand py-3.5 text-sm font-bold text-slate-950 shadow-lg shadow-brand/10 transition duration-300 hover:bg-brand-light active:scale-95" type="submit">
+          <button id="loginSubmitBtn" class="w-full rounded-2xl bg-brand py-3.5 text-sm font-bold text-slate-950 shadow-lg shadow-brand/10 transition duration-300 hover:bg-brand-light active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed" type="submit">
             Unlock Control Room
           </button>
           <p id="loginError" class="hidden rounded-xl bg-red-500/10 border border-red-500/20 px-4 py-3 text-sm text-red-400"></p>
@@ -293,25 +295,37 @@
 
       <!-- TOP CONTROL BAR: quick period (always visible) + collapsible filters -->
       <section id="periodControls" class="rounded-3xl glass-panel p-4 shadow-lg">
-        <div class="flex flex-wrap items-center gap-2">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mr-1">Period</span>
-          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="today">Today</button>
-          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="yesterday">Yesterday</button>
-          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="7">7 days</button>
-          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="14">2 weeks</button>
-          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="21">3 weeks</button>
-          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="30">1 month</button>
-          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="90">3 months</button>
-          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="180">6 months</button>
-          <button type="button" class="period-btn rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="all">All time</button>
-          <button id="customPeriodToggle" type="button" class="flex shrink-0 items-center gap-1.5 rounded-lg border border-brand/30 bg-brand/10 px-3 py-1.5 text-[11px] font-bold text-brand-light transition hover:bg-brand/20"><i data-lucide="calendar-days" class="h-3.5 w-3.5"></i> Choose dates</button>
-          <span id="periodLabel" class="text-[11px] font-semibold text-brand-light"></span>
-          <label id="hideBotsControl" class="ml-2 flex cursor-pointer items-center gap-2 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300">
-            <input id="hideBotsToggle" type="checkbox" class="h-3.5 w-3.5 accent-brand" checked />
-            Hide likely bots
+        <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 shrink-0 mr-1">Period</span>
+          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="today">Today</button>
+          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="yesterday">Yesterday</button>
+          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="7">7 days</button>
+          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="14">2 weeks</button>
+          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="21">3 weeks</button>
+          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="30">1 month</button>
+          <button type="button" class="period-btn shrink-0 rounded-lg border border-brand/40 bg-brand/10 px-3 py-1.5 text-[11px] font-bold text-brand-light transition hover:bg-brand/20" data-period="90">3 months</button>
+          <button type="button" class="period-btn shrink-0 rounded-lg border border-brand/40 bg-brand/10 px-3 py-1.5 text-[11px] font-bold text-brand-light transition hover:bg-brand/20" data-period="180">6 months</button>
+          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="all">All time</button>
+          <div class="flex shrink-0 items-center gap-1.5 rounded-lg border border-slate-700/80 bg-slate-900/60 px-2 py-1">
+            <span class="text-[10px] text-slate-400 font-bold uppercase">From:</span>
+            <input id="quickFromDate" type="date" class="bg-transparent text-xs text-white outline-none" />
+            <span class="text-[10px] text-slate-400 font-bold uppercase">To:</span>
+            <input id="quickToDate" type="date" class="bg-transparent text-xs text-white outline-none" />
+            <button id="applyQuickDatesBtn" type="button" class="rounded bg-brand px-2 py-0.5 text-[10px] font-bold text-slate-950">Apply</button>
+          </div>
+          <span id="periodLabel" class="text-[11px] font-semibold text-brand-light shrink-0"></span>
+          <label id="botTrafficControl" class="ml-2 flex shrink-0 items-center gap-2 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300">
+            <i data-lucide="bot" class="h-3.5 w-3.5 text-slate-400"></i>
+            <span class="sr-only">Traffic Filter</span>
+            <select id="botTrafficFilter" class="bg-transparent text-white outline-none font-bold appearance-none cursor-pointer">
+              <option value="real">Real Visitors</option>
+              <option value="all">All Traffic</option>
+              <option value="bots">Bots / Crawlers</option>
+            </select>
+            <i data-lucide="chevron-down" class="h-3 w-3 text-slate-400 pointer-events-none"></i>
           </label>
-          <span id="botsFilterNote" class="text-[10px] text-orange-300/90"></span>
-          <button id="toggleFiltersBtn" type="button" class="ml-auto flex items-center gap-1 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white">
+          <span id="botsFilterNote" class="text-[10px] text-orange-300/90 shrink-0"></span>
+          <button id="toggleFiltersBtn" type="button" class="ml-auto shrink-0 flex items-center gap-1 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white">
             <i data-lucide="sliders" class="h-3.5 w-3.5"></i> <span id="toggleFiltersLabel">Filters</span>
           </button>
         </div>
@@ -452,83 +466,116 @@
           </span>
         </button>
         <p id="onlineCareSummary" class="hidden border-b border-slate-800/60 px-4 py-2 text-[11px] text-slate-400"></p>
+        <div id="onlineFiltersBar" class="border-b border-slate-800/60 p-3 bg-slate-900/50 flex flex-wrap items-center justify-between gap-3">
+          <span class="text-xs font-bold text-slate-400">Live Status Filter:</span>
+          <select id="onlineFilterStatus" class="bg-slate-950/80 border border-slate-700/60 rounded-xl px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-brand transition">
+            <option value="all">All Live Visitors</option>
+            <option value="no_wa">No WhatsApp</option>
+            <option value="intent">WA Intent (Started)</option>
+            <option value="cancelled">WA Cancelled</option>
+            <option value="departed">WA Departed (Sent)</option>
+          </select>
+        </div>
         <div id="onlineNowList" class="grid gap-3 p-4 sm:grid-cols-2 xl:grid-cols-3"></div>
       </section>
 
       <!-- KPI METRIC CARDS GRID -->
       <p class="text-[10px] text-slate-500 -mb-1">Tip: tap any card below to jump straight to its full report.</p>
-      <section id="secondaryKpis" class="grid gap-4 grid-cols-2 md:grid-cols-3 xl:grid-cols-7">
+      <section id="secondaryKpis" class="grid gap-3 grid-cols-2 md:grid-cols-4 xl:grid-cols-8">
 
-        <!-- UNIQUE VISITORS (real people, not page hits) -->
-        <div data-jump="cohorts" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-cyan-500 transition hover:border-cyan-300 hover:bg-cyan-950/10">
+        <!-- UNIQUE VISITORS -->
+        <div data-jump="cohorts" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-cyan-500 transition hover:border-cyan-300 hover:bg-cyan-950/10">
           <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Unique Visitors</span>
+            <span class="text-xs font-medium">Visitors</span>
             <i data-lucide="users" class="h-4 w-4 text-cyan-400"></i>
           </div>
-          <p id="statVisitors" class="mt-2 text-2xl font-extrabold text-white">0</p>
-          <div class="mt-1 text-[10px] text-slate-400 flex flex-wrap items-center gap-x-2">
-            <span><strong id="statNewVisitors" class="text-cyan-300">0</strong> new</span>
-            <span><strong id="statReturningVisitors" class="text-amber-300">0</strong> returning</span>
+          <p id="statVisitors" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
+          <div class="mt-1 text-[10px] text-slate-400">
+            <strong id="statNewVisitors" class="text-cyan-300">0</strong> new · <strong id="statReturningVisitors" class="text-amber-300">0</strong> ret.
           </div>
         </div>
 
-        <!-- FUNNEL TOP: PAGEVIEWS -->
-        <div data-jump="pageviews" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-blue-500 transition hover:border-blue-300 hover:bg-blue-950/10">
+        <!-- SESSIONS -->
+        <div data-jump="cohorts" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-indigo-500 transition hover:border-indigo-300 hover:bg-indigo-950/10">
+          <div class="flex justify-between items-start text-slate-400">
+            <span class="text-xs font-medium">Sessions</span>
+            <i data-lucide="laptop" class="h-4 w-4 text-indigo-400"></i>
+          </div>
+          <p id="statSessions" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
+          <div class="mt-1 text-[10px] text-slate-400">
+            Distinct site sessions
+          </div>
+        </div>
+
+        <!-- PAGE VIEWS -->
+        <div data-jump="pageviews" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-blue-500 transition hover:border-blue-300 hover:bg-blue-950/10">
           <div class="flex justify-between items-start text-slate-400">
             <span class="text-xs font-medium">Page Views</span>
             <i data-lucide="eye" class="h-4 w-4 text-blue-400"></i>
           </div>
-          <p id="statPageviews" class="mt-2 text-2xl font-extrabold text-white">0</p>
-          <div class="mt-1 text-[10px] text-slate-400 flex items-center gap-1">
+          <p id="statPageviews" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
+          <div class="mt-1 text-[10px] text-slate-400">
             <span id="statPvToday" class="font-bold text-blue-400">0</span> today
           </div>
         </div>
 
-        <!-- FUNNEL CONVERSION: WHATSAPP CLICKS -->
-        <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-brand transition hover:border-emerald-300 hover:bg-emerald-950/10">
+        <!-- WHATSAPP INTENTS -->
+        <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-amber-500 transition hover:border-amber-300 hover:bg-amber-950/10">
           <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">WhatsApp Clicks</span>
-            <i data-lucide="message-circle" class="h-4 w-4 text-brand"></i>
+            <span class="text-xs font-medium">WA Intents</span>
+            <i data-lucide="message-circle" class="h-4 w-4 text-amber-400"></i>
           </div>
-          <p id="statClicks" class="mt-2 text-2xl font-extrabold text-white">0</p>
-          <div class="mt-1 text-[10px] text-slate-400 flex items-center gap-1">
-            <span id="statClicksToday" class="font-bold text-brand">0</span> today
+          <p id="statIntents" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
+          <div class="mt-1 text-[10px] text-slate-400">
+            Opened WhatsApp modal
+          </div>
+        </div>
+
+        <!-- WHATSAPP CANCELLED -->
+        <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-red-500 transition hover:border-red-300 hover:bg-red-950/10">
+          <div class="flex justify-between items-start text-slate-400">
+            <span class="text-xs font-medium">WA Cancelled</span>
+            <i data-lucide="x-circle" class="h-4 w-4 text-red-400"></i>
+          </div>
+          <p id="statCancelled" class="mt-1.5 text-2xl font-extrabold text-red-300">0</p>
+          <div class="mt-1 text-[10px] text-slate-400">
+            Closed before sending
+          </div>
+        </div>
+
+        <!-- WHATSAPP DEPARTED -->
+        <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-emerald-500 transition hover:border-emerald-300 hover:bg-emerald-950/10">
+          <div class="flex justify-between items-start text-slate-400">
+            <span class="text-xs font-medium">WA Departed</span>
+            <i data-lucide="send" class="h-4 w-4 text-emerald-400"></i>
+          </div>
+          <p id="statDeparted" class="mt-1.5 text-2xl font-extrabold text-emerald-300">0</p>
+          <div class="mt-1 text-[10px] text-slate-400">
+            Continued to WhatsApp
           </div>
         </div>
 
         <!-- CONVERSION RATE -->
-        <div data-jump="reports" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-yellow-500 transition hover:border-yellow-300 hover:bg-yellow-950/10">
+        <div data-jump="reports" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-yellow-500 transition hover:border-yellow-300 hover:bg-yellow-950/10">
           <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Visits → Clicks</span>
+            <span class="text-xs font-medium">Visit → WA %</span>
             <i data-lucide="percent" class="h-4 w-4 text-yellow-400"></i>
           </div>
-          <p id="statConvRate" class="mt-2 text-2xl font-extrabold text-white">0.0%</p>
+          <p id="statConvRate" class="mt-1.5 text-2xl font-extrabold text-white">0.0%</p>
           <div class="mt-1 text-[10px] text-slate-400">
-            Top-of-funnel conversion rate
-          </div>
-        </div>
-
-        <!-- CRM CONVERTED JOBS -->
-        <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-indigo-500 transition hover:border-indigo-300 hover:bg-indigo-950/10">
-          <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Jobs Completed</span>
-            <i data-lucide="check-square" class="h-4 w-4 text-indigo-400"></i>
-          </div>
-          <p id="statJobsCompleted" class="mt-2 text-2xl font-extrabold text-white">0</p>
-          <div class="mt-1 text-[10px] text-slate-400 flex items-center gap-1">
-            Conv. Rate: <span id="statJobConvRate" class="font-bold text-indigo-400">0.0%</span>
+            Funnel conversion
           </div>
         </div>
 
         <!-- REVENUE LOGGED -->
-        <div data-jump="reports" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-emerald-500 transition hover:border-emerald-300 hover:bg-emerald-950/10">
+        <div data-jump="reports" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-emerald-500 transition hover:border-emerald-300 hover:bg-emerald-950/10">
           <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Total Revenue</span>
+            <span class="text-xs font-medium">Revenue</span>
             <i data-lucide="banknote" class="h-4 w-4 text-emerald-400"></i>
           </div>
-          <p id="statRevenue" class="mt-2 text-2xl font-extrabold text-emerald-400">0.00 BHD</p>
+          <p id="statRevenue" class="mt-1.5 text-xl font-extrabold text-emerald-400">0.00 BHD</p>
           <div class="mt-1 text-[10px] text-slate-400">
-            From verified completed rides
+            <span id="statJobsCompleted" class="font-bold text-white">0</span> jobs done
           </div>
         </div>
 
@@ -729,16 +776,16 @@
       </section>
 
       <!-- TAB 3: ANALYTICS & CHARTS -->
-      <section id="reportsPanel" class="tab-panel hidden space-y-6">
-        <div class="rounded-3xl glass-panel p-6 shadow-lg">
-          <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <div>
+      <section id="reportsPanel" class="tab-panel hidden space-y-6 w-full min-w-0">
+        <div class="rounded-3xl glass-panel p-4 sm:p-6 shadow-lg w-full min-w-0">
+          <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between w-full min-w-0">
+            <div class="min-w-0">
               <h2 class="text-lg font-bold text-white flex items-center gap-2">
                 <i data-lucide="clipboard-list" class="text-brand"></i> Business Report Snapshot
               </h2>
-              <p class="mt-1 text-xs text-slate-400">A clean operating report for traffic, leads, revenue, routes, campaigns, follow-ups, and lost bookings.</p>
+              <p class="mt-1 text-xs text-slate-400 break-words">A clean operating report for traffic, leads, revenue, routes, campaigns, follow-ups, and lost bookings.</p>
             </div>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-2 shrink-0">
               <button id="copyBusinessReportBtn" class="flex items-center gap-2 rounded-2xl bg-slate-800/80 border border-slate-700/50 px-4 py-2 text-xs font-bold text-slate-200 transition hover:bg-slate-700 hover:text-white" type="button">
                 <i data-lucide="copy" class="h-3.5 w-3.5"></i> Copy Report
               </button>
@@ -747,34 +794,34 @@
               </button>
             </div>
           </div>
-          <div id="reportCards" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"></div>
-          <pre id="businessReportText" class="mt-5 max-h-72 overflow-auto whitespace-pre-wrap rounded-2xl border border-slate-800 bg-slate-950/50 p-4 text-xs leading-relaxed text-slate-300"></pre>
-          <div class="mt-5 grid gap-4 lg:grid-cols-2">
-            <div class="rounded-2xl border border-slate-800 bg-slate-950/30 p-4">
+          <div id="reportCards" class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 w-full min-w-0"></div>
+          <pre id="businessReportText" class="mt-5 max-h-72 w-full min-w-0 overflow-x-auto whitespace-pre-wrap break-words rounded-2xl border border-slate-800 bg-slate-950/50 p-4 text-[11px] sm:text-xs leading-relaxed text-slate-300"></pre>
+          <div class="mt-5 grid gap-4 lg:grid-cols-2 w-full min-w-0">
+            <div class="rounded-2xl border border-slate-800 bg-slate-950/30 p-4 min-w-0">
               <h3 class="mb-3 text-xs font-bold uppercase tracking-wider text-slate-400">Lead Pipeline</h3>
-              <div id="pipelineSummary" class="space-y-3"></div>
+              <div id="pipelineSummary" class="space-y-3 min-w-0"></div>
             </div>
-            <div class="rounded-2xl border border-slate-800 bg-slate-950/30 p-4">
+            <div class="rounded-2xl border border-slate-800 bg-slate-950/30 p-4 min-w-0">
               <h3 class="mb-3 text-xs font-bold uppercase tracking-wider text-slate-400">Recent Activity</h3>
-              <div id="activityFeed" class="space-y-3"></div>
+              <div id="activityFeed" class="space-y-3 min-w-0 break-words"></div>
             </div>
           </div>
         </div>
 
-        <div class="grid gap-6 lg:grid-cols-2">
-          
+        <div class="grid w-full min-w-0 max-w-full grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-2">
           <!-- Funnel Area Chart -->
-          <div class="rounded-3xl glass-panel p-6 shadow-lg lg:col-span-2">
-            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
-              <i data-lucide="trending-up" class="text-brand"></i> Traffic vs Click Funnel Conversion Trend (Last 14 Days)
+          <div class="rounded-3xl glass-panel p-4 sm:p-6 shadow-lg min-w-0 w-full lg:col-span-2">
+            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 flex-wrap">
+              <i data-lucide="trending-up" class="text-brand shrink-0"></i> 
+              <span class="break-words">Traffic vs Click Funnel Conversion Trend (Last 14 Days)</span>
             </h3>
-            <div class="relative w-full h-80">
+            <div class="relative w-full h-80 min-w-0">
               <canvas id="chartFunnel"></canvas>
             </div>
           </div>
 
           <!-- Route Performance -->
-          <div class="rounded-3xl glass-panel p-6 shadow-lg">
+          <div class="rounded-3xl glass-panel p-4 sm:p-6 shadow-lg min-w-0 w-full overflow-hidden">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
               <i data-lucide="map" class="text-emerald-400"></i> Top Route Clicks
             </h3>
@@ -782,7 +829,7 @@
           </div>
 
           <!-- Ad Campaign breakdown -->
-          <div class="rounded-3xl glass-panel p-6 shadow-lg">
+          <div class="rounded-3xl glass-panel p-4 sm:p-6 shadow-lg min-w-0 w-full overflow-hidden">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
               <i data-lucide="megaphone" class="text-indigo-400"></i> Top Marketing Campaigns
             </h3>
@@ -790,7 +837,7 @@
           </div>
 
           <!-- Countries -->
-          <div class="rounded-3xl glass-panel p-6 shadow-lg">
+          <div class="rounded-3xl glass-panel p-4 sm:p-6 shadow-lg min-w-0 w-full overflow-hidden">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
               <i data-lucide="globe" class="text-blue-400"></i> Customer Origin Countries
             </h3>
@@ -798,7 +845,7 @@
           </div>
 
           <!-- Ad channels / Sources -->
-          <div class="rounded-3xl glass-panel p-6 shadow-lg">
+          <div class="rounded-3xl glass-panel p-4 sm:p-6 shadow-lg min-w-0 w-full overflow-hidden">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
               <i data-lucide="share-2" class="text-yellow-400"></i> Acquisition Channels (Sources)
             </h3>
@@ -806,7 +853,7 @@
           </div>
 
           <!-- Busiest Click Hours -->
-          <div class="rounded-3xl glass-panel p-6 shadow-lg lg:col-span-2">
+          <div class="rounded-3xl glass-panel p-4 sm:p-6 shadow-lg min-w-0 w-full lg:col-span-2 overflow-hidden">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
               <i data-lucide="clock" class="text-purple-400"></i> Best Lead Hours of the Day (Bahrain Time)
             </h3>
@@ -816,7 +863,7 @@
           </div>
 
           <!-- Devices Breakdown -->
-          <div class="rounded-3xl glass-panel p-6 shadow-lg lg:col-span-2">
+          <div class="rounded-3xl glass-panel p-6 shadow-lg min-w-0 w-full lg:col-span-2 overflow-hidden">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
               <i data-lucide="laptop" class="text-pink-400"></i> Device & Viewport Analytics
             </h3>
@@ -1381,7 +1428,7 @@
       },
       filters: {},
       activePeriod: '',
-      hideLikelyBots: sessionStorage.getItem('vendora_hide_bots') !== '0',
+      trafficFilter: sessionStorage.getItem('vendora_traffic_filter') || 'real',
       charts: {},
       passengerCare: [],
       activeCareFeedback: null,
@@ -1457,8 +1504,16 @@
       const suspicion = Number(item.suspicion_score || 0);
       const scroll = Number(item.scroll_depth_percent || 0);
       const timeMs = Number(item.time_on_page_ms || 0);
+      const ua = String(item.user_agent || '').toLowerCase();
 
-      // GCC mobile traffic and WhatsApp clicks in GCC — treat as real customers
+      if (/bot|crawler|spider|headless|puppeteer|selenium|playwright|googlebot|bingbot|yandex|ahrefs|semrush|bytespider|gptbot|claudebot|perplexitybot/i.test(ua)) {
+        return true;
+      }
+      if (item.verified_bot === 1 || item.verified_bot === '1' || item.verified_bot === true) {
+        return true;
+      }
+
+      // GCC mobile traffic and WhatsApp clicks in GCC — treat as real human customers
       if (GCC_COUNTRY_CODES.has(country) && (isClick || device === 'mobile')) return false;
 
       if (suspicion >= 60) return true;
@@ -1471,15 +1526,19 @@
     }
 
     function filteredLeads() {
-      return state.hideLikelyBots ? state.leads.filter((item) => !isLikelyBot(item)) : state.leads;
+      if (state.trafficFilter === 'bots') return state.leads.filter(isLikelyBot);
+      if (state.trafficFilter === 'all') return state.leads;
+      return state.leads.filter((item) => !isLikelyBot(item));
     }
 
     function filteredPageviews() {
-      return state.hideLikelyBots ? state.pageviews.filter((item) => !isLikelyBot(item)) : state.pageviews;
+      if (state.trafficFilter === 'bots') return state.pageviews.filter(isLikelyBot);
+      if (state.trafficFilter === 'all') return state.pageviews;
+      return state.pageviews.filter((item) => !isLikelyBot(item));
     }
 
     function hiddenBotCount() {
-      if (!state.hideLikelyBots) return 0;
+      if (state.trafficFilter !== 'real') return 0;
       return state.leads.filter(isLikelyBot).length + state.pageviews.filter(isLikelyBot).length;
     }
 
@@ -1488,10 +1547,23 @@
       const pvs = filteredPageviews();
       const groups = groupVisitors([...pvs, ...leads]);
       const all = [...pvs, ...leads];
+      const sessions = new Set(all.map((e) => e.session_id).filter(Boolean)).size || groups.length;
+      
+      const intents = leads.length;
+      const cancelled = leads.filter((l) => String(l.service_type || '') === 'whatsapp_cancel' || String(l.status || '') === 'cancelled').length;
+      const departed = leads.filter((l) => {
+        const payload = leadPayload(l);
+        return (String(l.service_type || '') === 'whatsapp_click' && payload.confirmed_departure === 1) || ['completed', 'contacted'].includes(String(l.status || ''));
+      }).length;
+
       return {
         total: leads.length,
         total_pageviews: pvs.length,
         total_visitors: groups.length,
+        total_sessions: sessions,
+        intents_count: intents,
+        cancelled_count: cancelled,
+        departed_count: departed,
         returning_visitors: groups.filter((g) => g.returning).length,
         avg_time_on_page_ms: all.length ? all.reduce((sum, e) => sum + Number(e.time_on_page_ms || 0), 0) / all.length : 0,
         avg_scroll_depth_percent: all.length ? all.reduce((sum, e) => sum + Number(e.scroll_depth_percent || 0), 0) / all.length : 0,
@@ -1503,9 +1575,13 @@
       const note = document.getElementById('botsFilterNote');
       if (!note) return;
       const hidden = hiddenBotCount();
-      note.textContent = state.hideLikelyBots && hidden > 0
-        ? `${hidden} likely bot${hidden === 1 ? '' : 's'} hidden`
-        : '';
+      if (state.trafficFilter === 'real' && hidden > 0) {
+        note.textContent = `${hidden} likely bot${hidden === 1 ? '' : 's'} hidden`;
+      } else if (state.trafficFilter === 'bots') {
+        note.textContent = 'Viewing bots only';
+      } else {
+        note.textContent = '';
+      }
     }
 
     function locationHtml(item) {
@@ -1522,7 +1598,7 @@
     }
 
     function botBadge(item) {
-      if (state.hideLikelyBots || !isLikelyBot(item)) return '';
+      if (!isLikelyBot(item) || state.trafficFilter === 'bots') return '';
       return '<span class="mt-1 inline-flex rounded-full bg-orange-500/15 px-2 py-0.5 text-[10px] font-bold text-orange-300">Likely bot</span>';
     }
 
@@ -1605,7 +1681,16 @@
           continue;
         }
 
-        const data = await response.json().catch(() => ({}));
+        const contentType = response.headers.get('content-type') || '';
+        let data = null;
+        if (contentType.includes('application/json')) {
+          try {
+            data = await response.json();
+          } catch {
+            data = null;
+          }
+        }
+
         if (response.status === 404) {
           sawRoute404 = true;
           continue;
@@ -1614,11 +1699,27 @@
         activeApiUrl = apiUrl;
         window.__VENDORA_TRANSPORT_ADMIN_RESOLVED_API__ = apiUrl;
         if (response.status === 401) {
+          if (state.token && !state.isLoggingIn) {
+            sessionStorage.removeItem(TOKEN_KEY);
+            state.token = '';
+            const dbView = document.getElementById('dashboardView');
+            const lgView = document.getElementById('loginView');
+            if (dbView) dbView.classList.add('hidden');
+            if (lgView) lgView.classList.remove('hidden');
+            const errEl = document.getElementById('loginError');
+            if (errEl) {
+              errEl.textContent = 'Session expired. Please enter admin password again.';
+              errEl.classList.remove('hidden');
+            }
+          }
           throw new Error('Wrong admin password. Reset TRANSPORT_ADMIN_TOKEN from Cloudflare, then use the same new password here.');
         }
-        if (!response.ok || data.ok === false) {
-          const authHint = data.auth_mode ? ` Auth mode: ${data.auth_mode}.` : '';
-          throw new Error((data.error || data.message || `Request failed (${response.status})`) + authHint);
+        if (!response.ok || !data || data.ok === false) {
+          if (!data && contentType.includes('text/html')) {
+            throw new Error(`Endpoint returned HTML instead of JSON (${response.status})`);
+          }
+          const authHint = data && data.auth_mode ? ` Auth mode: ${data.auth_mode}.` : '';
+          throw new Error((data && (data.error || data.message) || `Request failed (${response.status})`) + authHint);
         }
         return data;
       }
@@ -1755,8 +1856,30 @@
         liveByVisitor.set(key, { ...prior, ...visitor, person_key: key });
       });
       let recent = [...liveByVisitor.values()].sort((a, b) => String(b.last_seen || '').localeCompare(String(a.last_seen || '')));
-      if (state.hideLikelyBots) {
+      if (state.trafficFilter === 'real') {
         recent = recent.filter((v) => !isLikelyBot(onlineVisitorAsEvent(v)));
+      } else if (state.trafficFilter === 'bots') {
+        recent = recent.filter((v) => isLikelyBot(onlineVisitorAsEvent(v)));
+      }
+      const statusFilter = document.getElementById('onlineFilterStatus')?.value || 'all';
+      if (statusFilter !== 'all') {
+        recent = recent.filter((v) => {
+          let payload = {};
+          try { payload = typeof v.lead_data === 'string' ? JSON.parse(v.lead_data) : v.lead_data || {}; } catch(e){}
+          const leadStatus = v.lead_status || payload.intent_status || payload.status || '';
+          
+          const isCancelled = leadStatus === 'cancelled' || leadStatus === 'whatsapp_cancelled';
+          const isDeparted = leadStatus === 'whatsapp_departed' || leadStatus === 'departed' || leadStatus === 'contacted' || leadStatus === 'completed';
+          const clicked = Number(v.clicked_whatsapp) === 1;
+          const isIntent = clicked && !isCancelled && !isDeparted;
+          const hasNoWA = !clicked && !leadStatus;
+          
+          if (statusFilter === 'no_wa') return hasNoWA;
+          if (statusFilter === 'intent') return isIntent;
+          if (statusFilter === 'cancelled') return isCancelled;
+          if (statusFilter === 'departed') return isDeparted;
+          return true;
+        });
       }
       // The headline must always match the cards the owner can actually see.
       const transportCount = recent.length;
@@ -1780,9 +1903,28 @@
 
       if (!list) return;
       if (!recent.length) {
-        list.innerHTML = `<p class="col-span-full py-6 text-center text-xs text-slate-500">No transport visitors active in the last 5 minutes. Data last updated: ${nowTs}.</p>`;
+        list.innerHTML = `<p class="col-span-full py-8 text-center text-xs font-semibold text-slate-400">No live visitors online right now. Data last updated: ${nowTs}.</p>`;
         return;
       }
+
+      // Group live online visitors by country
+      const countryMap = new Map();
+      recent.forEach((v) => {
+        const cCode = normalizeCountryCode(v.country) || 'UNKNOWN';
+        const cName = countryLabel(cCode);
+        const flag = cCode ? countryFlag(cCode) : '🌐';
+        if (!countryMap.has(cCode)) {
+          countryMap.set(cCode, { code: cCode, name: cName, flag, count: 0 });
+        }
+        countryMap.get(cCode).count += 1;
+      });
+
+      const countryPills = [...countryMap.values()].map((g) => `
+        <span class="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-950/40 px-3 py-1 text-xs font-bold text-emerald-300">
+          <span>${g.flag}</span>
+          <span>Online ${g.count} from ${escapeHtml(g.name)}</span>
+        </span>
+      `).join('');
 
       const agoText = (iso) => {
         if (!iso) return 'just now';
@@ -1791,7 +1933,7 @@
         return `${Math.round(secs / 60)}m ago`;
       };
 
-      list.innerHTML = recent.map((v) => {
+      const visitorCards = recent.map((v) => {
         const loc = [v.city, v.region, v.country ? countryLabel(v.country) : ''].filter(Boolean).join(', ') || 'Unknown location';
         const dur = Number(v.seconds_on_page || 0);
         const durText = dur >= 60 ? `${Math.floor(dur / 60)}m ${dur % 60}s` : `${dur}s`;
@@ -1801,6 +1943,19 @@
         const personKey = v.person_key || v.visitor_id || v.session_id || '';
         const vShort = formattedVisitorShortId(v.visitor_id);
         const sShort = formattedSessionShortId(v.session_id);
+        
+        let payload = {};
+        try { payload = typeof v.lead_data === 'string' ? JSON.parse(v.lead_data) : v.lead_data || {}; } catch(e){}
+        const leadStatus = v.lead_status || payload.intent_status || payload.status || '';
+        const isCancelled = leadStatus === 'cancelled' || leadStatus === 'whatsapp_cancelled';
+        const isDeparted = leadStatus === 'whatsapp_departed' || leadStatus === 'departed' || leadStatus === 'contacted' || leadStatus === 'completed';
+        const isIntent = clicked && !isCancelled && !isDeparted;
+        
+        let waBadge = '';
+        if (isCancelled) waBadge = '<span class="ml-auto rounded-full bg-red-900/40 border border-red-500/30 px-2 py-0.5 font-bold text-red-300">WA Cancelled ❌</span>';
+        else if (isDeparted) waBadge = '<span class="ml-auto rounded-full bg-emerald-900/40 border border-emerald-500/30 px-2 py-0.5 font-bold text-emerald-300">WA Departed ✔️</span>';
+        else if (isIntent) waBadge = '<span class="ml-auto rounded-full bg-brand/20 border border-brand/30 px-2 py-0.5 font-bold text-brand-light">WA Intent 💬</span>';
+
         return `
           <article role="button" tabindex="0" data-online-visitor="${escapeHtml(String(personKey))}" class="cursor-pointer rounded-2xl border ${clicked ? 'border-brand/40 bg-brand-soft/10' : 'border-slate-800 bg-slate-950/40'} p-3.5 transition hover:border-emerald-500/40 hover:bg-emerald-950/10 shadow-sm">
             <div class="flex items-center justify-between gap-2">
@@ -1812,17 +1967,25 @@
               <span class="rounded bg-slate-800/80 px-1.5 py-0.5 text-purple-300">Session ${escapeHtml(sShort)}</span>
             </div>
             <p class="mt-1 truncate text-[11px] text-white"><span class="text-slate-500">Current page:</span> ${escapeHtml(v.page_path || '/')}</p>
-            <p class="mt-1 text-[11px] text-slate-300"><span class="text-slate-500">Country / Approx. City:</span> ${flag ? flag + ' ' : ''}${escapeHtml(loc)} <span class="text-[9px] text-amber-300/80 px-1 py-0.2 rounded border border-amber-500/20 bg-amber-500/10">Approximate</span></p>
+            <p class="mt-1 text-[11px] text-slate-300"><span class="text-slate-500">Country / Approx. City:</span> ${flag ? flag + ' ' : ''}${escapeHtml(loc)}</p>
             <div class="mt-2 flex flex-wrap items-center gap-1.5 text-[10px] text-slate-400">
               <span class="rounded border border-cyan-500/30 bg-cyan-950/20 px-1.5 py-0.5 font-bold uppercase text-cyan-200">Device: ${escapeHtml(v.device_type || 'desktop')}</span>
-              <span class="rounded border border-slate-700 px-1.5 py-0.5 uppercase">Language: ${escapeHtml(String(v.language || 'ar'))}</span>
+              <span class="rounded border border-slate-700 px-1.5 py-0.5 uppercase">Lang: ${escapeHtml(String(v.language || 'ar'))}</span>
               <span>${pagesViewed} page${pagesViewed === 1 ? '' : 's'}</span>
               <span>${durText} active</span>
-              ${clicked ? '<span class="ml-auto rounded-full bg-brand/20 px-2 py-0.5 font-bold text-brand-light">WhatsApp ✓</span>' : ''}
+              ${waBadge}
             </div>
             <p class="mt-2 text-[10px] font-semibold text-emerald-400/80">Tap for full event timeline →</p>
           </article>`;
       }).join('');
+
+      list.innerHTML = `
+        <div class="col-span-full mb-2 flex flex-wrap gap-2 items-center">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Live Breakdown:</span>
+          ${countryPills}
+        </div>
+        ${visitorCards}
+      `;
     }
 
     function showOnlineVisitor(personKey) {
@@ -1984,46 +2147,65 @@
 
     function renderStats() {
       const summary = state.summary || {};
-      const client = state.hideLikelyBots ? computeClientStats() : null;
+      const client = computeClientStats();
       const views = client ? client.total_pageviews : Number(summary.total_pageviews || 0);
       const clicks = client ? client.total : Number(summary.total || 0);
       
       // Pageviews (funnel top)
-      document.getElementById('statPageviews').textContent = views;
-      document.getElementById('statPvToday').textContent = summary.pageviews_today || 0;
+      const statPv = document.getElementById('statPageviews');
+      if (statPv) statPv.textContent = views;
+      const statPvTod = document.getElementById('statPvToday');
+      if (statPvTod) statPvTod.textContent = summary.pageviews_today || 0;
 
-      // WhatsApp clicks (leads conversion)
-      document.getElementById('statClicks').textContent = clicks;
-      document.getElementById('statClicksToday').textContent = summary.today || 0;
+      // Sessions
+      const sessions = client ? client.total_sessions : Number(summary.sessions || summary.pageview_sessions || 0);
+      const statSess = document.getElementById('statSessions');
+      if (statSess) statSess.textContent = sessions;
+
+      // 3-Stage WhatsApp metrics
+      const intents = client ? client.intents_count : Number(summary.whatsapp_intents_count || clicks);
+      const cancelled = client ? client.cancelled_count : Number(summary.whatsapp_cancelled_count || summary.cancelled_count || 0);
+      const departed = client ? client.whatsapp_departed_count : Number(summary.whatsapp_departed_count || summary.completed_count || 0);
+
+      const statInt = document.getElementById('statIntents');
+      if (statInt) statInt.textContent = intents;
+      const statCanc = document.getElementById('statCancelled');
+      if (statCanc) statCanc.textContent = cancelled;
+      const statDep = document.getElementById('statDeparted');
+      if (statDep) statDep.textContent = departed;
 
       // Funnel Conversion rate (Clicks / Visits)
       const convRate = views > 0 ? (clicks / views) * 100 : 0.0;
-      document.getElementById('statConvRate').textContent = `${convRate.toFixed(1)}%`;
+      const statCR = document.getElementById('statConvRate');
+      if (statCR) statCR.textContent = `${convRate.toFixed(1)}%`;
 
       // CRM Sales stats
-      document.getElementById('statJobsCompleted').textContent = summary.completed_count || 0;
-      document.getElementById('statRevenue').textContent = `${Number(summary.total_revenue || 0).toFixed(2)} BHD`;
-
-      // Clicks to completed jobs conversion rate
-      const jobsCompleted = Number(summary.completed_count || 0);
-      const jobConvRate = clicks > 0 ? (jobsCompleted / clicks) * 100 : 0.0;
-      document.getElementById('statJobConvRate').textContent = `${jobConvRate.toFixed(1)}%`;
+      const statJobComp = document.getElementById('statJobsCompleted');
+      if (statJobComp) statJobComp.textContent = summary.completed_count || 0;
+      const statRev = document.getElementById('statRevenue');
+      if (statRev) statRev.textContent = `${Number(summary.total_revenue || 0).toFixed(2)} BHD`;
 
       // Unique visitors (real people, not page hits)
       const totalVisitors = client ? client.total_visitors : Number(summary.total_visitors || 0);
       const returningVisitors = client ? client.returning_visitors : Number(summary.returning_visitors || 0);
       const newVisitors = Math.max(0, totalVisitors - returningVisitors);
-      document.getElementById('statVisitors').textContent = totalVisitors;
-      document.getElementById('statNewVisitors').textContent = newVisitors;
-      document.getElementById('statReturningVisitors').textContent = returningVisitors;
+      const statVis = document.getElementById('statVisitors');
+      if (statVis) statVis.textContent = totalVisitors;
+      const statNewVis = document.getElementById('statNewVisitors');
+      if (statNewVis) statNewVis.textContent = newVisitors;
+      const statRetVis = document.getElementById('statReturningVisitors');
+      if (statRetVis) statRetVis.textContent = returningVisitors;
 
       // Engagement
       const avgTime = client ? client.avg_time_on_page_ms : summary.avg_time_on_page_ms || 0;
       const avgScroll = client ? client.avg_scroll_depth_percent : summary.avg_scroll_depth_percent || 0;
       const pvSessions = client ? client.pageview_sessions : summary.pageview_sessions;
-      document.getElementById('statAvgTime').textContent = formatDuration(avgTime);
-      document.getElementById('statAvgScroll').textContent = `${Math.round(avgScroll)}%`;
-      document.getElementById('statPageviewsSession').textContent = pvSessions > 0 ? Math.round(Number(views || 0) / Number(pvSessions)) : 1;
+      const statAvgT = document.getElementById('statAvgTime');
+      if (statAvgT) statAvgT.textContent = formatDuration(avgTime);
+      const statAvgS = document.getElementById('statAvgScroll');
+      if (statAvgS) statAvgS.textContent = `${Math.round(avgScroll)}%`;
+      const statPvS = document.getElementById('statPageviewsSession');
+      if (statPvS) statPvS.textContent = pvSessions > 0 ? Math.round(Number(views || 0) / Number(pvSessions)) : 1;
 
       const effectiveSummary = client
         ? { ...summary, total: clicks, total_pageviews: views, total_visitors: totalVisitors, returning_visitors: returningVisitors }
@@ -2099,8 +2281,8 @@
         items.push(['smartphone', 'text-indigo-400', `Most visitors are on <strong>${escapeHtml(topDevice.label)}</strong>.`]);
       }
       const hiddenBots = hiddenBotCount();
-      if (state.hideLikelyBots && hiddenBots > 0) {
-        items.push(['shield-alert', 'text-orange-400', `<strong>${hiddenBots}</strong> likely bot event${hiddenBots === 1 ? '' : 's'} hidden (US datacenters, CN/RU scrapers, zero-engagement desktop). Uncheck the filter to review.`]);
+      if (state.trafficFilter === 'real' && hiddenBots > 0) {
+        items.push(['shield-alert', 'text-orange-400', `<strong>${hiddenBots}</strong> likely bot event${hiddenBots === 1 ? '' : 's'} hidden (US datacenters, CN/RU scrapers, zero-engagement desktop). Change traffic filter to review.`]);
       }
 
       list.innerHTML = items.length
@@ -2224,8 +2406,14 @@
       if (current === 'completed') {
         return `<span class="${base} bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-sm shadow-emerald-500/5">Completed (BHD)</span>`;
       }
-      if (current === 'cancelled') {
-        return `<span class="${base} bg-slate-500/10 text-slate-400 border-slate-700">Cancelled / Lost</span>`;
+      if (current === 'cancelled' || current === 'whatsapp_cancelled') {
+        return `<span class="${base} bg-red-900/40 text-red-300 border-red-500/30">WhatsApp Cancelled ❌</span>`;
+      }
+      if (current === 'whatsapp_departed' || current === 'departed') {
+        return `<span class="${base} bg-emerald-900/40 text-emerald-300 border-emerald-500/30">WhatsApp Departed ✔️</span>`;
+      }
+      if (current === 'whatsapp_intent' || current === 'intent') {
+        return `<span class="${base} bg-amber-900/40 text-amber-300 border-amber-500/30">WhatsApp Intent 💬</span>`;
       }
       if (current === 'contacted') {
         return `<span class="${base} bg-amber-500/10 text-amber-400 border-amber-500/20">Contacted</span>`;
@@ -2233,7 +2421,13 @@
       if (current === 'spam') {
         return `<span class="${base} bg-red-500/10 text-red-400 border-red-500/20">Spam / Test</span>`;
       }
-      return `<span class="${base} bg-blue-500/10 text-blue-400 border-blue-500/20">New Click</span>`;
+      if (current === 'legacy_confirmed') {
+        return `<span class="${base} bg-blue-500/10 text-blue-300 border-blue-500/20">Legacy / Confirmed Click</span>`;
+      }
+      if (current === 'legacy' || current === 'legacy_previous') {
+        return `<span class="${base} bg-slate-500/10 text-slate-400 border-slate-600">Legacy / Previous Tracking</span>`;
+      }
+      return `<span class="${base} bg-brand/10 text-brand-light border-brand/20">New Click</span>`;
     }
 
     function renderPassengerCare() {
@@ -2486,25 +2680,47 @@
         </tr>
       `).join('') || pvEmpty;
 
-      document.getElementById('pvMobile').innerHTML = visitorGroups.map((g) => `
-        <article role="button" tabindex="0" data-visitor-key="${escapeHtml(g.key)}" class="cursor-pointer rounded-2xl border border-slate-850 bg-slate-900/10 p-4 space-y-2 transition hover:border-blue-500/40 hover:bg-blue-950/10">
-          <div class="flex justify-between items-start gap-2">
-            <div class="flex items-center gap-2">${kindBadge(g)}<span class="font-mono text-[10px] text-slate-400">${escapeHtml(compactId(g.key))}</span></div>
-            <span class="text-[9px] uppercase font-semibold text-slate-400 bg-slate-800 px-2 py-0.5 rounded">${escapeHtml(g.lastEvent.device_type || 'desktop')}</span>
-          </div>
-          <div>
-            <p class="text-[11px] text-slate-300"><span class="text-slate-500">First visit:</span> <span class="font-semibold text-slate-200">${escapeHtml(prettyRouteName(g.firstEvent))}</span></p>
-            <p class="text-[10px] text-slate-500">${escapeHtml(formatDate(g.firstSeen))}</p>
-          </div>
-          <dl class="grid gap-1 text-[11px] pt-1 border-t border-slate-850">
-            <div class="flex justify-between"><dt class="text-slate-500">Pages viewed</dt><dd class="text-slate-200 font-bold">${g.pages}</dd></div>
-            <div class="flex justify-between"><dt class="text-slate-500">WhatsApp clicks</dt><dd class="${g.clicks > 0 ? 'text-brand-light font-bold' : 'text-slate-300'}">${g.clicks}</dd></div>
-            <div class="flex justify-between"><dt class="text-slate-500">Last seen</dt><dd class="text-slate-300">${escapeHtml(relTime(g.lastSeen))}</dd></div>
-            <div class="flex justify-between gap-3"><dt class="text-slate-500 shrink-0">City / Country</dt><dd class="text-slate-300 text-right">${locationHtml(g.lastEvent)}${botBadge(g.lastEvent)}</dd></div>
-          </dl>
-          <p class="text-[10px] font-semibold text-blue-400/80">Tap to see every page they visited →</p>
-        </article>
-      `).join('') || '<p class="py-8 text-center text-xs text-slate-500">No visitors recorded.</p>';
+      document.getElementById('pvMobile').innerHTML = visitorGroups.map((g) => {
+        const lastEv = g.lastEvent || {};
+        const firstEv = g.firstEvent || {};
+        const payload = leadPayload(lastEv);
+        const referrerHost = payload.firstReferrerHost || payload.referrerHost || payload.referrer || lastEv.referrer || '';
+        const pagePath = lastEv.page_path || payload.pagePath || payload.landingPath || firstEv.page_path || '/';
+        const sourceText = discoveryText(lastEv) !== 'direct/unknown' ? discoveryText(lastEv) : discoveryText(firstEv);
+        const flag = lastEv.cf_country ? countryFlag(lastEv.cf_country) : (firstEv.cf_country ? countryFlag(firstEv.cf_country) : '🌐');
+        const cLabel = countryLabel(lastEv.cf_country || firstEv.cf_country);
+        const city = lastEv.cf_city || firstEv.cf_city || '';
+
+        return `
+          <article role="button" tabindex="0" data-visitor-key="${escapeHtml(g.key)}" class="cursor-pointer rounded-2xl border ${g.clicks > 0 ? 'border-brand/40 bg-brand-soft/10' : 'border-slate-800 bg-slate-900/30'} p-4 space-y-2.5 transition hover:border-blue-500/40 hover:bg-blue-950/20 shadow-sm">
+            <div class="flex justify-between items-start gap-2">
+              <div class="flex items-center gap-2">${kindBadge(g)} <span class="font-bold text-xs text-white">${flag} ${escapeHtml(cLabel)}</span></div>
+              <span class="text-[10px] uppercase font-bold text-cyan-300 bg-cyan-950/40 border border-cyan-500/30 px-2 py-0.5 rounded-full">${escapeHtml(lastEv.device_type || 'mobile')}</span>
+            </div>
+
+            <div class="rounded-xl border border-slate-800/80 bg-slate-950/50 p-2.5 space-y-1">
+              <p class="text-xs text-white font-bold flex items-center justify-between">
+                <span>Page Visited:</span>
+                <span class="font-mono text-cyan-300">${escapeHtml(pagePath)}</span>
+              </p>
+              <p class="text-[11px] text-slate-300">
+                <span class="text-slate-500 font-semibold">How they found us:</span> <strong class="text-emerald-300">${escapeHtml(sourceText)}</strong>${referrerHost ? ` <span class="text-slate-400">(${escapeHtml(referrerHost)})</span>` : ''}
+              </p>
+              <p class="text-[10px] text-slate-400">
+                <span class="text-slate-500">Location:</span> ${flag} ${escapeHtml(city ? city + ', ' + cLabel : cLabel)}
+              </p>
+            </div>
+
+            <div class="grid grid-cols-3 gap-1.5 text-center text-[10px] pt-1 border-t border-slate-800/60">
+              <div class="rounded-lg bg-slate-800/60 p-1.5"><span class="block text-slate-500">Pages</span><strong class="text-slate-200 text-xs">${g.pages}</strong></div>
+              <div class="rounded-lg bg-slate-800/60 p-1.5"><span class="block text-slate-500">Clicks</span><strong class="${g.clicks > 0 ? 'text-brand-light text-xs font-extrabold' : 'text-slate-400 text-xs'}">${g.clicks > 0 ? `${g.clicks} ✓` : '0'}</strong></div>
+              <div class="rounded-lg bg-slate-800/60 p-1.5"><span class="block text-slate-500">Last Seen</span><strong class="text-slate-300 text-xs">${escapeHtml(relTime(g.lastSeen))}</strong></div>
+            </div>
+
+            <p class="text-[10px] font-semibold text-blue-400/90 text-right">Tap to see full visitor journey →</p>
+          </article>
+        `;
+      }).join('') || '<p class="py-8 text-center text-xs text-slate-500">No visitors recorded.</p>';
 
       updateBotsFilterNote();
       renderIcons();
@@ -2532,8 +2748,9 @@
       const clicks = Number(row.clicks || row.count || 0);
       const pageviews = Number(row.pageviews || 0);
       const completed = Number(row.completed || 0);
+      const cancelled = Number(row.cancelled || 0);
       const revenue = Number(row.revenue || 0);
-      return `${row.label}: ${pageviews} visits, ${clicks} clicks, ${completed} completed, ${formatMoney(revenue)}, ${percent(clicks, pageviews)} visit-to-click`;
+      return `${row.label}: ${pageviews} visits, ${clicks} clicks, ${cancelled} cancelled, ${completed} completed, ${formatMoney(revenue)}, ${percent(clicks, pageviews)} visit-to-click`;
     }
 
     function buildBusinessReportText() {
@@ -2606,7 +2823,7 @@
       const total = Math.max(Number(summary.total || 0), 1);
       document.getElementById('pipelineSummary').innerHTML = rows.map(([status, count]) => `
         <div>
-          <div class="mb-1 flex items-center justify-between text-xs">
+          <div class="mb-1 flex items-center justify-between gap-2 text-xs">
             <span>${getStatusBadge(status)}</span>
             <span class="font-bold text-slate-300">${count}</span>
           </div>
@@ -2626,37 +2843,60 @@
 
     function renderActivityFeed() {
       const items = recentActivity();
-      document.getElementById('activityFeed').innerHTML = items.map((item) => `
-        <div class="rounded-xl border border-slate-800 bg-slate-900/30 p-3">
-          <div class="flex items-center justify-between gap-3">
-            <span class="text-xs font-bold ${item.activity_type === 'WhatsApp click' ? 'text-brand-light' : 'text-blue-300'}">${escapeHtml(item.activity_type)}</span>
-            <span class="text-[10px] text-slate-500">${escapeHtml(formatDate(item.clicked_at))}</span>
+      document.getElementById('activityFeed').innerHTML = items.map((item) => {
+        const payload = leadPayload(item);
+        const referrerHost = payload.firstReferrerHost || payload.referrerHost || payload.referrer || item.referrer || '';
+        const pagePath = item.page_path || payload.pagePath || payload.landingPath || '/';
+        return `
+          <div class="rounded-xl border border-slate-800 bg-slate-900/30 p-3">
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-xs font-bold ${item.activity_type === 'WhatsApp click' ? 'text-brand-light' : 'text-blue-300'}">${escapeHtml(item.activity_type)}</span>
+              <span class="text-[10px] text-slate-500">${escapeHtml(formatDate(item.clicked_at))}</span>
+            </div>
+            <p class="mt-1 truncate text-xs font-semibold text-slate-200">${escapeHtml(item.route_label || pagePath)}</p>
+            <p class="mt-1 text-[11px] text-slate-300">
+              <span class="text-slate-500 font-medium shrink-0">Page URL:</span> <span class="font-mono text-cyan-300 break-all">${escapeHtml(pagePath)}</span>
+            </p>
+            <p class="mt-0.5 text-[10px] text-slate-400 break-words">
+              <span class="text-slate-500 font-semibold shrink-0">Source:</span> ${escapeHtml(discoveryText(item))}${referrerHost ? ` (${escapeHtml(referrerHost)})` : ''} | ${escapeHtml(locationText(item))}
+            </p>
           </div>
-          <p class="mt-1 truncate text-xs font-semibold text-slate-200">${escapeHtml(item.route_label || item.page_path || item.route_slug || '-')}</p>
-          <p class="mt-1 text-[10px] text-slate-500">${escapeHtml(discoveryText(item))} | ${escapeHtml(locationText(item))}</p>
-        </div>
-      `).join('') || '<p class="text-xs text-slate-500">No activity yet.</p>';
+        `;
+      }).join('') || '<p class="text-xs text-slate-500">No activity yet.</p>';
     }
 
     function renderReportCards() {
       const summary = state.summary || {};
-      const feedback = state.passengerCare || [];
+      const client = state.client || null;
+      
+      const totalVisitors = client ? client.total_visitors : Number(summary.total_visitors || 0);
+      const sessions = client ? client.pageview_sessions : Number(summary.pageview_sessions || 0);
+      const views = client ? client.pageview_sessions : Number(summary.total_pageviews || 0);
+      const clicks = Number(summary.total || 0);
+      
+      const intents = client ? client.intents_count : Number(summary.whatsapp_intents_count || 0);
+      const cancelled = client ? client.cancelled_count : Number(summary.whatsapp_cancelled_count || 0);
+      const departed = client ? client.departed_count : Number(summary.whatsapp_departed_count || 0);
+      
+      const conversion = views > 0 ? ((clicks / views) * 100).toFixed(1) + '%' : '0%';
+
       const cards = [
-        ['Revenue', formatMoney(summary.total_revenue || 0), `${summary.completed_count || 0} completed jobs`, 'banknote', 'text-emerald-400'],
-        ['Visit -> Click', percent(summary.total || 0, summary.total_pageviews || 0), `${summary.total || 0} clicks from ${summary.total_pageviews || 0} visits`, 'mouse-pointer-click', 'text-yellow-400'],
-        ['Click -> Job', percent(summary.completed_count || 0, summary.total || 0), `${summary.contacted_count || 0} contacted leads`, 'check-circle-2', 'text-brand-light'],
-        ['Follow-ups', summary.followups_due || 0, `${summary.cancelled_count || 0} cancelled, ${summary.spam_count || 0} spam/test`, 'bell-ring', 'text-purple-400'],
-        ['Feedback', feedback.length, 'Open Care to review customer feedback and complaints', 'heart-handshake', 'text-rose-400'],
+        ['Visitors', totalVisitors, 'Unique people', 'users', 'text-cyan-400'],
+        ['Sessions', sessions, 'Total visits', 'eye', 'text-blue-400'],
+        ['WA Intents', intents, 'Click started', 'message-circle', 'text-amber-400'],
+        ['WA Cancelled', cancelled, 'Did not send', 'x-circle', 'text-red-400'],
+        ['WA Departed', departed, 'Sent message', 'check-circle-2', 'text-emerald-400'],
+        ['Conversion', conversion, 'Clicks per view', 'trending-up', 'text-brand-light']
       ];
 
       document.getElementById('reportCards').innerHTML = cards.map(([label, value, detail, icon, color]) => `
-        <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
+        <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4 min-w-[100px]">
           <div class="flex items-center justify-between text-slate-400">
-            <span class="text-xs font-bold">${escapeHtml(label)}</span>
-            <i data-lucide="${icon}" class="h-4 w-4 ${color}"></i>
+            <span class="text-[11px] font-bold uppercase tracking-wider truncate mr-1">${escapeHtml(label)}</span>
+            <i data-lucide="${icon}" class="h-4 w-4 shrink-0 ${color}"></i>
           </div>
           <p class="mt-2 text-xl font-extrabold text-white">${escapeHtml(value)}</p>
-          <p class="mt-1 text-[10px] text-slate-500">${escapeHtml(detail)}</p>
+          <p class="mt-1 text-[10px] text-slate-500 truncate" title="${escapeHtml(detail)}">${escapeHtml(detail)}</p>
         </div>
       `).join('');
     }
@@ -3107,19 +3347,29 @@
 
     async function unlock(token) {
       state.token = token;
-      if (!state.activePeriod) {
-        const form = document.getElementById('filtersForm');
-        const { from, to } = periodToDates('today');
-        form.elements.from.value = from;
-        form.elements.to.value = to;
-        state.filters = Object.fromEntries(new FormData(form).entries());
-        highlightActivePeriod('today');
-      }
-      await loadDashboard();
       sessionStorage.setItem(TOKEN_KEY, token);
+
+      // Instant UI transition after successful login authentication
       loginView.classList.add('hidden');
       dashboardView.classList.remove('hidden');
       setTab(state.tab);
+
+      if (!state.activePeriod) {
+        const form = document.getElementById('filtersForm');
+        const { from, to } = periodToDates('today');
+        if (form.elements.from) form.elements.from.value = from;
+        if (form.elements.to) form.elements.to.value = to;
+        state.filters = Object.fromEntries(new FormData(form).entries());
+        highlightActivePeriod('today');
+      }
+
+      showStatus('Loading dashboard metrics...', 'info');
+      try {
+        await loadDashboard();
+        showStatus('Dashboard updated for Today.', 'success');
+      } catch (err) {
+        showStatus(err.message, 'error');
+      }
       configureAnalyticsAutoRefresh();
     }
 
@@ -3225,6 +3475,8 @@
         ['Public price shown', lead.public_price_shown != null ? formatMoney(lead.public_price_shown) : '-'],
         ['Customer contact', [lead.customer_name, lead.customer_phone].filter(Boolean).join(' / ') || 'Not provided'],
         ['Follow-up consent', Number(lead.follow_up_consent) === 1 ? 'Yes' : 'No'],
+        ['Age (individual)', 'Not available individually'],
+        ['Gender (individual)', 'Not available individually'],
         ['Suspicion Score', `${lead.suspicion_score || 0}% (${lead.suspicion_score > 60 ? 'HIGH RISK' : lead.suspicion_score > 30 ? 'MEDIUM' : 'LOW'})`],
         ['Customer Loyalty Profile', visitorIdFor(lead) ? `Returning Customer (Visit #${lead.visit_count || payload.visitCount || 1} | viewed ${sessionViewsFor(lead)} pages this session | Visitor ID: ${compactId(visitorIdFor(lead))})` : 'New / Session-only Visitor'],
         ['Route slug', lead.route_slug],
@@ -3441,12 +3693,49 @@ Note: This report is automatically compiled by the Control Room operations track
     document.getElementById('loginForm').addEventListener('submit', async (event) => {
       event.preventDefault();
       const error = document.getElementById('loginError');
-      error.classList.add('hidden');
-      try {
-        await unlock(document.getElementById('tokenInput').value.trim());
-      } catch (err) {
-        error.textContent = err.message || 'Unlock failed. Incorrect password.';
+      const submitBtn = document.getElementById('loginSubmitBtn');
+      const tokenInput = document.getElementById('tokenInput');
+      const tokenVal = tokenInput ? tokenInput.value.trim() : '';
+
+      if (!tokenVal) {
+        error.textContent = 'Please enter the admin password.';
         error.classList.remove('hidden');
+        return;
+      }
+
+      error.classList.add('hidden');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Logging in...';
+      }
+
+      try {
+        state.isLoggingIn = true;
+        state.token = tokenVal;
+        // Lightweight pre-flight auth verification
+        const check = await api('?resource=routes');
+        if (!check || check.ok === false) {
+          throw new Error('Wrong admin password.');
+        }
+        await unlock(tokenVal);
+        showStatus('Successful login', 'success');
+      } catch (err) {
+        state.token = '';
+        const msg = String(err && err.message ? err.message : err);
+        if (msg.includes('401') || msg.toLowerCase().includes('wrong admin password') || msg.toLowerCase().includes('incorrect') || msg.toLowerCase().includes('unauthorized')) {
+          error.textContent = 'Incorrect password.';
+        } else if (msg.includes('Failed to fetch') || msg.includes('NetworkError') || msg.includes('Unable to reach')) {
+          error.textContent = 'Connection/server error. Check network connection or API status.';
+        } else {
+          error.textContent = msg || 'Unlock failed. Incorrect password.';
+        }
+        error.classList.remove('hidden');
+      } finally {
+        state.isLoggingIn = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Unlock Control Room';
+        }
       }
     });
 
@@ -3741,37 +4030,41 @@ Note: This report is automatically compiled by the Control Room operations track
       document.getElementById('customToDate').value = form.elements.to.value || '';
       picker.classList.toggle('hidden');
     });
-    document.getElementById('applyCustomPeriodBtn').addEventListener('click', async () => {
-      const from = document.getElementById('customFromDate').value;
-      const to = document.getElementById('customToDate').value;
-      if (!from || !to) return showStatus('Choose both a start and end date.', 'error');
-      if (from > to) return showStatus('The start date must be before the end date.', 'error');
-      const form = document.getElementById('filtersForm');
-      form.elements.from.value = from;
-      form.elements.to.value = to;
-      state.filters = Object.fromEntries(new FormData(form).entries());
-      highlightActivePeriod('');
-      document.getElementById('periodLabel').textContent = `${from} to ${to}`;
-      document.getElementById('customPeriodPicker').classList.add('hidden');
-      try {
-        await loadDashboard();
-        showStatus('Showing the selected dates.', 'success');
-      } catch (err) {
-        showStatus(err.message, 'error');
-      }
-    });
+    const applyQuickDatesBtn = document.getElementById('applyQuickDatesBtn');
+    if (applyQuickDatesBtn) {
+      applyQuickDatesBtn.addEventListener('click', async () => {
+        const from = document.getElementById('quickFromDate').value;
+        const to = document.getElementById('quickToDate').value;
+        if (!from || !to) return showStatus('Choose both a From and To date.', 'error');
+        if (from > to) return showStatus('The start date must be before the end date.', 'error');
+        const form = document.getElementById('filtersForm');
+        if (form.elements.from) form.elements.from.value = from;
+        if (form.elements.to) form.elements.to.value = to;
+        state.filters = Object.fromEntries(new FormData(form).entries());
+        highlightActivePeriod('');
+        document.getElementById('periodLabel').textContent = `${from} to ${to}`;
+        try {
+          await loadDashboard();
+          showStatus(`Showing dates from ${from} to ${to}.`, 'success');
+        } catch (err) {
+          showStatus(err.message, 'error');
+        }
+      });
+    }
 
-    const hideBotsToggle = document.getElementById('hideBotsToggle');
-    if (hideBotsToggle) {
-      hideBotsToggle.checked = state.hideLikelyBots;
-      hideBotsToggle.addEventListener('change', (event) => {
-        state.hideLikelyBots = event.target.checked;
-        sessionStorage.setItem('vendora_hide_bots', state.hideLikelyBots ? '1' : '0');
+    const trafficFilterSelect = document.getElementById('botTrafficFilter');
+    if (trafficFilterSelect) {
+      trafficFilterSelect.value = state.trafficFilter;
+      trafficFilterSelect.addEventListener('change', (event) => {
+        state.trafficFilter = event.target.value;
+        sessionStorage.setItem('vendora_traffic_filter', state.trafficFilter);
         renderStats();
         renderOnlineNow();
         renderLeads();
       });
     }
+
+    document.getElementById('onlineFilterStatus')?.addEventListener('change', renderOnlineNow);
 
     // COLLAPSIBLE ADVANCED FILTERS (hidden by default)
     document.getElementById('toggleFiltersBtn').addEventListener('click', () => {

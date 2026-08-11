@@ -43,24 +43,43 @@ async function send(eventName, extra = {}) {
       ...extra,
     }),
   });
-  Object.defineProperty(request, 'cf', { value: { city: 'Manama', country: 'BH', timezone: 'Asia/Bahrain' } });
+  Object.defineProperty(request, 'cf', { value: { city: 'Manama', region: 'Capital', country: 'BH', timezone: 'Asia/Bahrain', httpProtocol: 'HTTP/2', asn: 64500, asOrganization: 'Example Network' } });
   const pending = [];
   const response = await track({ request, env, waitUntil: (promise) => pending.push(promise) });
   await Promise.all(pending);
   assert.equal(response.status, 202);
 }
 
-await send('page_view');
+await send('page_view', { first_visit_at: '2026-08-10T10:00:00.000Z', session_started_at: '2026-08-10T10:00:00.000Z', landing_path: '/bahrain-saudi-gcc-transport/en/saudi-to-qatar/', browser_name: 'Chrome', browser_version: '124', operating_system: 'Windows', operating_system_version: '10', viewport_width: 390, viewport_height: 844, device_pixel_ratio: 3, touch_support: true });
 await send('route_view');
-await send('whatsapp_click', { target_url: 'https://wa.me/97312345678?text=private-message', button_text: 'Book' });
+await send('whatsapp_intent', { event_id: 'intent-one', target_url: 'https://wa.me/97312345678?text=private-message', button_text: 'Book', cta_location: 'hero' });
+await send('whatsapp_confirmation_view', { event_id: 'confirmation-one', button_text: 'Book' });
+await send('whatsapp_cancel', { event_id: 'cancel-one', button_text: 'Book', cancellation_method: 'back_button' });
+await send('whatsapp_intent', { event_id: 'intent-two', target_url: 'https://wa.me/97312345678', button_text: 'Book again', cta_location: 'floating' });
+await send('whatsapp_confirmation_view', { event_id: 'confirmation-two', button_text: 'Book again' });
+await send('whatsapp_click', { event_id: 'confirmed-exit', confirmed_departure: true, target_url: 'https://wa.me/97312345678?text=private-message', button_text: 'Book' });
+await send('whatsapp_click', { event_id: 'second-confirmed-exit', confirmed_departure: true, target_url: 'https://wa.me/97312345678', button_text: 'Book again' });
+await send('whatsapp_intent', { event_id: 'undecided-intent', visitor_id: 'visitor_undecided', session_id: 'session_undecided', button_text: 'Ask on WhatsApp', cta_location: 'body' });
 await send('quote_request');
 await send('session_heartbeat');
+await send('page_view', { page_url: 'https://getvendora.net/', page_path: '/', route_name: '' });
+await send('navigation_click', { event_id: 'retry-safe-event', target_path: '/bahrain-saudi-gcc-transport/en/' });
+await send('navigation_click', { event_id: 'retry-safe-event', target_path: '/bahrain-saudi-gcc-transport/en/' });
 
 const stored = sqlite.prepare('SELECT event_name, target_url, user_agent, raw_payload FROM analytics_events ORDER BY id').all();
-assert.equal(stored.length, 5);
+assert.equal(stored.length, 14);
 assert.equal(stored.find((row) => row.event_name === 'whatsapp_click').target_url, 'https://wa.me/');
+assert.equal(JSON.parse(stored.find((row) => row.event_name === 'whatsapp_click').raw_payload).confirmed_departure, true);
+assert.equal(JSON.parse(stored.find((row) => row.event_name === 'whatsapp_cancel').raw_payload).cancellation_method, 'back_button');
 assert.equal(stored[0].user_agent, 'Chrome');
 assert.ok(!stored.some((row) => row.raw_payload.includes('12345678') || row.raw_payload.includes('private-message')));
+const storedSession = sqlite.prepare('SELECT * FROM analytics_sessions WHERE session_id = ?').get('session_test');
+assert.equal(storedSession.browser_name, 'Chrome');
+assert.equal(storedSession.operating_system, 'Windows');
+assert.equal(storedSession.cf_country, 'BH');
+assert.equal(storedSession.http_protocol, 'HTTP/2');
+assert.equal(storedSession.asn, 64500);
+assert.equal(storedSession.landing_url.includes('?'), false);
 
 const unauthorized = await adminGet({
   request: new Request('http://localhost:8787/api/transport/admin?resource=tracking'),
@@ -79,11 +98,12 @@ const authorized = await adminGet({
 assert.equal(authorized.status, 200);
 const summary = await authorized.json();
 assert.equal(summary.ok, true);
-assert.equal(summary.totals.page_views, 1);
-assert.equal(summary.event_totals.whatsapp_clicks, 1);
+assert.equal(summary.totals.page_views, 2);
+assert.equal(summary.event_totals.whatsapp_clicks, 2);
 assert.equal(summary.event_totals.quote_requests, 1);
 assert.equal(summary.route_performance[0].route_id, 'SA-QA');
-assert.equal(summary.online_now.length, 1);
+assert.equal(summary.online_now.length, 2);
+assert.equal(summary.recent_events.some((event) => event.page_path === '/'), true);
 
 const diagResponse = await adminGet({
   request: new Request('http://localhost:8787/api/transport/admin?resource=diagnostics', {
@@ -105,6 +125,7 @@ console.log(JSON.stringify({
   admin_authorization: '401 unauthorized / 200 authorized',
   page_views: summary.totals.page_views,
   whatsapp_clicks: summary.event_totals.whatsapp_clicks,
+  unique_whatsapp_visitors: summary.totals.whatsapp_visitors,
   quote_requests: summary.event_totals.quote_requests,
   online_sessions: summary.online_now.length,
 }, null, 2));

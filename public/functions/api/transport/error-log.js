@@ -154,9 +154,9 @@ export async function onRequestPost(context) {
     pageUrl: payload.pageUrl,
     pagePath: payload.pagePath,
     userAgent: clip(request.headers.get('user-agent'), 600),
-    ipAddress: request.headers.get('cf-connecting-ip')
-      || request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-      || null,
+    // Raw IP is not retained in diagnostic logs. The country code is enough
+    // for operational triage and rate limiting remains request-local.
+    ipAddress: null,
     country: cf.country || request.headers.get('cf-ipcountry') || null,
     context: typeof payload.context === 'string' ? payload.context : JSON.stringify(payload.context || {}),
   };

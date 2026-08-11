@@ -8,7 +8,7 @@ const base = '/bahrain-saudi-gcc-transport';
 
 function publicShellFiles(directory = root, found = []) {
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
-    if (['node_modules', 'test-results', 'playwright-report', 'admin', 'care', 'ai-chat-test', 'api'].includes(entry.name)) continue;
+    if (['node_modules', 'test-results', 'playwright-report', 'admin', 'care', 'ai-chat-test', 'api', 'privacy', 'booking-policy', 'booking-terms', 'cancellation-policy', 'passenger-safety', 'payment-policy', 'support-policy', 'complaints', 'customer-reviews', 'prices', 'about', 'contact'].includes(entry.name)) continue;
     const full = join(directory, entry.name);
     if (entry.isDirectory()) publicShellFiles(full, found);
     else if (entry.isFile() && entry.name.endsWith('.html')) {

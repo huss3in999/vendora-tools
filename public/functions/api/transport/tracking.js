@@ -1,5 +1,6 @@
 import { recordError } from './error-log.js';
 import { checkRateLimit, rateLimitResponse } from './rate-limit.js';
+import { upsertAnalyticsSession } from './analytics-enrichment.js';
 
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
@@ -20,7 +21,16 @@ const SAFE_RAW_FIELDS = new Set([
   'service_type', 'service_id', 'cta_location', 'traffic_source',
   'discovery_channel', 'ai_referral_source',
   'device_category', 'language', 'utm_source', 'utm_medium', 'utm_campaign',
+  'utm_term', 'utm_content', 'gclid', 'fbclid', 'ttclid', 'msclkid', 'dclid',
+  'source_category', 'referrer_host', 'referrer_path', 'landing_url', 'landing_path', 'landing_title',
+  'first_visit_at', 'session_started_at', 'visitor_local_time', 'browser_languages', 'browser_timezone',
+  'browser_name', 'browser_version', 'operating_system', 'operating_system_version',
+  'device_vendor', 'device_model', 'viewport_width', 'viewport_height', 'device_pixel_ratio',
+  'touch_support', 'color_scheme', 'connection_type', 'effective_connection_type',
+  'downlink_mbps', 'round_trip_ms', 'save_data', 'whatsapp_target',
+  'origin', 'destination', 'route_selected', 'travel_date', 'travel_time', 'passengers', 'displayed_price',
   'navigation_type', 'target_path', 'policy_type', 'method',
+  'confirmed_departure', 'cancellation_method',
   'session_duration_ms', 'last_action', 'lead_status', 'visitCount',
   'sessionPageViews', 'timeOnPageMs', 'scrollDepthPercent',
   'screen_width', 'screen_height', 'timestamp'
@@ -136,7 +146,7 @@ function safePayloadJson(payload) {
 async function writeEventToDb(request, env, payload, eventId) {
   const geo = getRequestGeo(request);
   const stmt = env.TRANSPORT_DB.prepare(`
-    INSERT INTO analytics_events (
+    INSERT OR IGNORE INTO analytics_events (
       event_id,
       visitor_id,
       session_id,
@@ -231,7 +241,10 @@ export async function onRequestPost(context) {
   payload.event_name = eventName;
 
   const eventId = cleanText(payload.event_id, 80) || crypto.randomUUID();
-  const dbTask = writeEventToDb(request, env, payload, eventId).catch((error) => {
+  const dbTask = Promise.all([
+    writeEventToDb(request, env, payload, eventId),
+    upsertAnalyticsSession(request, env, payload),
+  ]).catch((error) => {
     console.error(JSON.stringify({
       event: 'tracking_event_insert_failed',
       eventId,

@@ -175,6 +175,7 @@ export async function ensurePassengerCareSchema(env) {
     ['customer_name', 'TEXT'],
     ['customer_phone', 'TEXT'],
     ['follow_up_consent', 'INTEGER DEFAULT 0'],
+    ['whatsapp_confirmed_at', 'TEXT'],
   ];
   for (const [name, type] of leadColumns) {
     if (!existing.has(name)) {

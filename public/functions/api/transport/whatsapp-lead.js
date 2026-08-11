@@ -1,6 +1,7 @@
 import { recordError } from './error-log.js';
 import { ensurePassengerCareSchema, makeBookingRef, makeCareToken } from './passenger-care.js';
 import { checkRateLimit, rateLimitResponse } from './rate-limit.js';
+import { ensureAnalyticsEnrichmentSchema, freezeAnalyticsSession, upsertAnalyticsSession } from './analytics-enrichment.js';
 
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
@@ -472,12 +473,6 @@ function cleanBoundedInteger(value, min, max) {
   return Math.max(min, Math.min(max, Math.round(number)));
 }
 
-function getClientIp(request) {
-  return request.headers.get('cf-connecting-ip')
-    || request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-    || null;
-}
-
 function getHeaderValue(request, names, maxLength = 120) {
   for (const name of names) {
     const value = cleanText(request.headers.get(name), maxLength);
@@ -582,6 +577,8 @@ async function parseJsonBody(request) {
 async function storeLead(request, env, payload, leadUuid, bookingRef, careToken) {
   const geo = getRequestGeo(request);
   await ensurePassengerCareSchema(env);
+  await ensureAnalyticsEnrichmentSchema(env);
+  await upsertAnalyticsSession(request, env, payload);
   const stmt = env.TRANSPORT_DB.prepare(`
     INSERT INTO whatsapp_leads (
       lead_uuid,
@@ -632,8 +629,11 @@ async function storeLead(request, env, payload, leadUuid, bookingRef, careToken)
       screen_height,
       timezone_offset_minutes,
       interaction_count,
+      visitor_id,
+      visit_count,
+      session_page_views,
       raw_payload
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   await stmt.bind(
@@ -666,7 +666,7 @@ async function storeLead(request, env, payload, leadUuid, bookingRef, careToken)
     getPayloadValue(payload, 'utmCampaign', 160),
     getPayloadValue(payload, 'utmTerm', 160),
     getPayloadValue(payload, 'utmContent', 160),
-    getClientIp(request),
+    null,
     geo.city,
     geo.region,
     geo.country,
@@ -685,6 +685,9 @@ async function storeLead(request, env, payload, leadUuid, bookingRef, careToken)
     cleanInteger(payload.screenHeight),
     cleanBoundedInteger(payload.timezoneOffsetMinutes, -1440, 1440),
     cleanBoundedInteger(payload.interactionCount, 0, 10000),
+    getPayloadValue(payload, 'visitorId', 80),
+    cleanBoundedInteger(payload.visitCount, 1, 10000) || 1,
+    cleanBoundedInteger(payload.sessionPageViews, 1, 10000) || 1,
     safePayloadJson(payload),
   ).run();
 }
@@ -711,6 +714,100 @@ export async function onRequestPost(context) {
     return json({ ok: false, error: 'Invalid JSON payload' }, { status: 400, headers });
   }
 
+  if (cleanText(payload.action, 80) === 'confirm_whatsapp_handoff') {
+    const leadId = cleanText(payload.leadId, 80);
+    const careToken = cleanText(payload.careToken, 160);
+    if (!leadId || !careToken) {
+      return json({ ok: false, error: 'Invalid confirmation' }, { status: 400, headers });
+    }
+    try {
+      await ensurePassengerCareSchema(env);
+      const lead = await env.TRANSPORT_DB.prepare(`
+        SELECT lead_uuid, care_token, service_type, route_slug, route_label,
+          page_url, page_path, target_url, language, device_type, session_id, visitor_id,
+          booking_phone_used, public_price_shown, cf_city, cf_region, cf_country, cf_timezone,
+          raw_payload, whatsapp_confirmed_at
+        FROM whatsapp_leads
+        WHERE lead_uuid = ? AND care_token = ?
+        LIMIT 1
+      `).bind(leadId, careToken).first();
+      if (!lead) return json({ ok: false, error: 'Booking request not found' }, { status: 404, headers });
+      if (lead.whatsapp_confirmed_at) {
+        return json({ ok: true, already_confirmed: true, leadId }, { status: 200, headers });
+      }
+
+      const confirmedAt = new Date().toISOString();
+      let sessionSnapshot = await freezeAnalyticsSession(env, lead.session_id, confirmedAt);
+      let originalPayload = {};
+      try { originalPayload = JSON.parse(lead.raw_payload || '{}'); } catch { originalPayload = {}; }
+      try {
+        const snapshot = JSON.parse(sessionSnapshot || '{}');
+        snapshot.lead = {
+          lead_id: lead.lead_uuid,
+          visitor_id: lead.visitor_id || originalPayload.visitorId || null,
+          session_id: lead.session_id,
+          server_timestamp: confirmedAt,
+          visitor_local_timestamp: originalPayload.visitorLocalTime || originalPayload.browserLocalTime || null,
+          country: lead.cf_country, region: lead.cf_region, city: lead.cf_city, timezone: lead.cf_timezone,
+          device_type: lead.device_type, browser: originalPayload.browserName || null,
+          browser_version: originalPayload.browserVersion || null, operating_system: originalPayload.operatingSystem || null,
+          operating_system_version: originalPayload.operatingSystemVersion || null, language: lead.language,
+          traffic_source: originalPayload.trafficSource || null, source_category: originalPayload.sourceCategory || null,
+          original_referrer: originalPayload.firstReferrer || originalPayload.referrer || null,
+          landing_page: originalPayload.firstLandingPage || originalPayload.firstLandingPath || null,
+          current_page: lead.page_url || lead.page_path,
+          utm: {
+            source: originalPayload.utmSource || null, medium: originalPayload.utmMedium || null,
+            campaign: originalPayload.utmCampaign || null, term: originalPayload.utmTerm || null,
+            content: originalPayload.utmContent || null,
+          },
+          route: lead.route_label || lead.route_slug, origin: originalPayload.origin || originalPayload.fromCity || originalPayload.fromCountry || null,
+          destination: originalPayload.destination || originalPayload.toCity || originalPayload.toCountry || null,
+          displayed_price: lead.public_price_shown, whatsapp_target: lead.booking_phone_used,
+          pages_viewed_before_click: originalPayload.sessionPageViews || null,
+          session_duration_before_click_ms: originalPayload.timeOnPageMs || null,
+        };
+        sessionSnapshot = JSON.stringify(snapshot);
+      } catch { /* session snapshot remains usable without the lead envelope */ }
+      const update = await env.TRANSPORT_DB.prepare(`
+        UPDATE whatsapp_leads
+        SET whatsapp_confirmed_at = ?, session_snapshot_json = ?, lead_snapshot_at = ?
+        WHERE lead_uuid = ? AND care_token = ? AND whatsapp_confirmed_at IS NULL
+      `).bind(confirmedAt, sessionSnapshot, confirmedAt, leadId, careToken).run();
+      if (!Number(update.meta?.changes || 0)) {
+        return json({ ok: true, already_confirmed: true, leadId }, { status: 200, headers });
+      }
+
+      const confirmedPayload = {
+        ...originalPayload,
+        serviceType: lead.service_type || originalPayload.serviceType || 'whatsapp_click',
+        routeSlug: lead.route_slug || originalPayload.routeSlug,
+        routeLabel: lead.route_label || originalPayload.routeLabel,
+        pageUrl: lead.page_url || originalPayload.pageUrl,
+        pagePath: lead.page_path || originalPayload.pagePath,
+        language: lead.language || originalPayload.language,
+        sessionId: lead.session_id || originalPayload.sessionId,
+        timestamp: confirmedAt,
+        whatsappConfirmed: true,
+      };
+      context.waitUntil(sendPhoneNotification(request, env, confirmedPayload).catch((error) => {
+        console.error(JSON.stringify({
+          event: 'transport_confirmed_notify_failed',
+          leadUuid: leadId,
+          message: error && error.message ? error.message : String(error),
+        }));
+      }));
+      return json({ ok: true, already_confirmed: false, leadId, confirmed_at: confirmedAt }, { status: 200, headers });
+    } catch (error) {
+      console.error(JSON.stringify({
+        event: 'transport_handoff_confirmation_failed',
+        leadUuid: leadId,
+        message: error && error.message ? error.message : String(error),
+      }));
+      return json({ ok: false, error: 'Unable to confirm WhatsApp handoff' }, { status: 503, headers });
+    }
+  }
+
   const leadUuid = crypto.randomUUID();
   const bookingRef = makeBookingRef(leadUuid);
   const careToken = makeCareToken();
@@ -733,13 +830,15 @@ export async function onRequestPost(context) {
     });
     return json({ ok: false, error: 'Unable to prepare booking request' }, { status: 503, headers });
   }
-  const notify = sendPhoneNotification(request, env, payload).catch((error) => {
+  const notify = payload.notificationMode === 'after_confirmation'
+    ? Promise.resolve()
+    : sendPhoneNotification(request, env, payload).catch((error) => {
     console.error(JSON.stringify({
       event: 'transport_notify_failed',
       leadUuid,
       message: error && error.message ? error.message : String(error),
     }));
-  });
+      });
 
   context.waitUntil(notify);
 

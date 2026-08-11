@@ -30,9 +30,21 @@
 
   function sourceName() {
     var params = new URLSearchParams(window.location.search || '');
-    if (params.get('utm_source')) return String(params.get('utm_source')).slice(0, 80);
-    if (!document.referrer) return 'direct';
-    try { return new URL(document.referrer).hostname.replace(/^www\./, '').slice(0, 120); } catch (_) { return 'referral'; }
+    var key = '__vendora_session_traffic_source';
+    var stored = '';
+    try { stored = sessionStorage.getItem(key) || ''; } catch (_) { /* restricted storage */ }
+    var source = '';
+    if (params.get('utm_source')) source = String(params.get('utm_source')).slice(0, 80);
+    else if (document.referrer) {
+      try {
+        var referrerHost = new URL(document.referrer).hostname.replace(/^www\./, '');
+        var currentHost = String(window.location.hostname || '').replace(/^www\./, '');
+        if (referrerHost && referrerHost !== currentHost) source = referrerHost.slice(0, 120);
+      } catch (_) { source = 'referral'; }
+    }
+    source = source || stored || 'direct';
+    try { if (!stored || stored === 'direct') sessionStorage.setItem(key, source); } catch (_) { /* restricted storage */ }
+    return source;
   }
 
   function deviceCategory() {
@@ -111,7 +123,12 @@
     var buttonText = String(link.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 120);
 
     if (type === 'whatsapp' || link.hasAttribute('data-wa-message') || link.hasAttribute('data-booking-submit')) {
-      emit('whatsapp_click', { cta_location: location, button_text: buttonText, method: 'whatsapp' });
+      emit('whatsapp_click', {
+        cta_location: location,
+        button_text: buttonText,
+        target_url: href,
+        method: 'whatsapp'
+      });
       if (link.hasAttribute('data-booking-submit') || /quote|quotation|عرض سعر|السعر/.test(buttonText.toLowerCase())) {
         emit('booking_submit', { cta_location: location });
         emit('quote_request', { cta_location: location });
@@ -139,6 +156,7 @@
       });
       if (/\/complaints\//.test(href)) emit('complaint_open', { cta_location: location });
       if (/\/customer-reviews\//.test(href)) emit('review_open', { cta_location: location });
+      if (link.closest('[data-route-card], .route-card, .destination-card')) emit('route_card_click', { cta_location: location, target_path: href.split('?')[0].slice(0, 300) });
     }
   }
 
@@ -150,6 +168,19 @@
         started = true;
         emit('booking_start', { cta_location: 'booking' });
       }, { passive: true });
+      form.addEventListener('change', function (event) {
+        var field = event.target && event.target.getAttribute ? event.target.getAttribute('data-booking') : '';
+        var allowed = {
+          'from-country': ['origin_selected', 'origin'], 'from-city': ['origin_selected', 'origin'],
+          'to-country': ['destination_selected', 'destination'], 'to-city': ['destination_selected', 'destination'],
+          route: ['route_selected', 'route_selected'], date: ['travel_date_selected', 'travel_date'],
+          time: ['travel_time_selected', 'travel_time'], passengers: ['passengers_selected', 'passengers']
+        };
+        if (!allowed[field]) return;
+        var detail = { cta_location: 'booking' };
+        detail[allowed[field][1]] = String(event.target.value || '').slice(0, 120);
+        emit(allowed[field][0], detail);
+      });
     });
     var complaint = document.getElementById('complaintForm');
     if (complaint) complaint.addEventListener('submit', function () { emit('complaint_submit', { cta_location: 'form' }); });
@@ -157,6 +188,7 @@
     if (review) review.addEventListener('submit', function () { emit('review_submit', { cta_location: 'form' }); });
 
     if (/planner|calculator/.test(slug)) {
+      emit('calculator_open', { service_type: 'route_planner' });
       var planner = document.querySelector('form, [data-planner], [data-gcc-planner]');
       var plannerStarted = false;
       if (planner) planner.addEventListener('input', function () {
@@ -171,6 +203,19 @@
     }
   }
 
+  function bindFaqs() {
+    document.querySelectorAll('details').forEach(function (details) {
+      details.addEventListener('toggle', function () {
+        if (!details.open) return;
+        var summary = details.querySelector('summary');
+        var text = String(summary ? summary.textContent : '').replace(/\s+/g, ' ').trim().slice(0, 120);
+        if (details.matches('[data-faq], .faq-item') || details.closest('[data-faq], .faq, #faq') || /\?|؟/.test(text)) {
+          emit('faq_open', { event_label: text, cta_location: 'faq' });
+        }
+      });
+    });
+  }
+
   function initialEvents() {
     if (metadata.page_type === 'route') emit('route_view');
     if (metadata.page_type === 'country_hub') emit('country_hub_view');
@@ -181,6 +226,28 @@
     if (slug === 'customer-reviews') emit('review_open', { cta_location: 'page' });
   }
 
+  var maxScrollDepth = 0;
+  var engagementSent = false;
+
+  function updateScrollDepth() {
+    var doc = document.documentElement;
+    var scrollTop = window.scrollY || doc.scrollTop || 0;
+    var scrollable = Math.max(1, (doc.scrollHeight || 0) - (window.innerHeight || doc.clientHeight || 0));
+    maxScrollDepth = Math.max(maxScrollDepth, Math.min(100, Math.round((scrollTop / scrollable) * 100)));
+  }
+
+  function sendPageEngagement() {
+    if (engagementSent) return;
+    engagementSent = true;
+    updateScrollDepth();
+    emit('page_engagement', {
+      timeOnPageMs: Math.max(0, Date.now() - startedAt),
+      scrollDepthPercent: maxScrollDepth,
+      session_duration_ms: Math.max(0, Date.now() - startedAt),
+      last_action: document.activeElement && document.activeElement.tagName ? document.activeElement.tagName.toLowerCase() : 'viewing'
+    });
+  }
+
   function heartbeat() {
     if (document.visibilityState === 'hidden') return;
     emit('session_heartbeat', { session_duration_ms: Date.now() - startedAt, last_action: document.activeElement && document.activeElement.tagName ? document.activeElement.tagName.toLowerCase() : 'viewing' });
@@ -188,8 +255,14 @@
 
   window.vendoraTransportAnalytics = { emit: emit, context: context, metadata: metadata };
   document.addEventListener('click', handleClick, { capture: true });
+  window.addEventListener('scroll', updateScrollDepth, { passive: true });
+  window.addEventListener('pagehide', sendPageEngagement, { capture: true });
   bindForms();
+  bindFaqs();
   initialEvents();
   window.setInterval(heartbeat, 60 * 1000);
-  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') heartbeat(); });
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') heartbeat();
+    else sendPageEngagement();
+  });
 })();
