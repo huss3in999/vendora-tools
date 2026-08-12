@@ -484,9 +484,9 @@
           <select id="onlineFilterStatus" class="bg-slate-950/80 border border-slate-700/60 rounded-xl px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-brand transition">
             <option value="all">All Live Visitors</option>
             <option value="no_wa">No WhatsApp</option>
-            <option value="intent">WA Intent (Started)</option>
-            <option value="cancelled">WA Cancelled</option>
-            <option value="departed">WA Departed (Sent)</option>
+            <option value="intent">WhatsApp Interested</option>
+            <option value="cancelled">WhatsApp Cancelled</option>
+            <option value="departed">WhatsApp Clicked</option>
           </select>
         </div>
         <div id="onlineNowList" class="grid gap-3 p-4 sm:grid-cols-2 xl:grid-cols-3"></div>
@@ -535,7 +535,7 @@
         <!-- WHATSAPP INTENTS -->
         <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-amber-500 transition hover:border-amber-300 hover:bg-amber-950/10">
           <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">WA Intents</span>
+            <span class="text-xs font-medium">WhatsApp Interested</span>
             <i data-lucide="message-circle" class="h-4 w-4 text-amber-400"></i>
           </div>
           <p id="statIntents" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
@@ -547,7 +547,7 @@
         <!-- WHATSAPP CANCELLED -->
         <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-red-500 transition hover:border-red-300 hover:bg-red-950/10">
           <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">WA Cancelled</span>
+            <span class="text-xs font-medium">WhatsApp Cancelled</span>
             <i data-lucide="x-circle" class="h-4 w-4 text-red-400"></i>
           </div>
           <p id="statCancelled" class="mt-1.5 text-2xl font-extrabold text-red-300">0</p>
@@ -559,7 +559,7 @@
         <!-- WHATSAPP DEPARTED -->
         <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-emerald-500 transition hover:border-emerald-300 hover:bg-emerald-950/10">
           <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">WA Departed</span>
+            <span class="text-xs font-medium">WhatsApp Clicked</span>
             <i data-lucide="send" class="h-4 w-4 text-emerald-400"></i>
           </div>
           <p id="statDeparted" class="mt-1.5 text-2xl font-extrabold text-emerald-300">0</p>
@@ -2177,9 +2177,9 @@
         const isIntent = clicked && !isCancelled && !isDeparted;
         
         let waBadge = '';
-        if (isCancelled) waBadge = '<span class="ml-auto rounded-full bg-red-900/40 border border-red-500/30 px-2 py-0.5 font-bold text-red-300">WA Cancelled ❌</span>';
-        else if (isDeparted) waBadge = '<span class="ml-auto rounded-full bg-emerald-900/40 border border-emerald-500/30 px-2 py-0.5 font-bold text-emerald-300">WA Departed ✔️</span>';
-        else if (isIntent) waBadge = '<span class="ml-auto rounded-full bg-brand/20 border border-brand/30 px-2 py-0.5 font-bold text-brand-light">WA Intent 💬</span>';
+        if (isCancelled) waBadge = '<span class="ml-auto rounded-full bg-red-900/40 border border-red-500/30 px-2 py-0.5 font-bold text-red-300">WhatsApp Cancelled ❌</span>';
+        else if (isDeparted) waBadge = '<span class="ml-auto rounded-full bg-emerald-900/40 border border-emerald-500/30 px-2 py-0.5 font-bold text-emerald-300">WhatsApp Clicked ✔️</span>';
+        else if (isIntent) waBadge = '<span class="ml-auto rounded-full bg-brand/20 border border-brand/30 px-2 py-0.5 font-bold text-brand-light">WhatsApp Interested 💬</span>';
 
         return `
           <article role="button" tabindex="0" data-online-visitor="${escapeHtml(String(personKey))}" class="cursor-pointer rounded-2xl border ${clicked ? 'border-brand/40 bg-brand-soft/10' : 'border-slate-800 bg-slate-950/40'} p-3.5 transition hover:border-emerald-500/40 hover:bg-emerald-950/10 shadow-sm">
@@ -2270,13 +2270,13 @@
       let finalOutcome = 'Left without WhatsApp';
       let outcomeBadgeClass = 'border-slate-700 bg-slate-800 text-slate-300';
       if (hasDepart) {
-        finalOutcome = 'Departed to WhatsApp';
+        finalOutcome = 'WhatsApp Clicked';
         outcomeBadgeClass = 'border-emerald-500/40 bg-emerald-950/40 text-emerald-300';
       } else if (hasCancel) {
-        finalOutcome = 'WA Cancelled';
+        finalOutcome = 'WhatsApp Cancelled';
         outcomeBadgeClass = 'border-red-500/40 bg-red-950/40 text-red-300';
       } else if (hasIntent) {
-        finalOutcome = 'WA Intent / Did Not Continue';
+        finalOutcome = 'WhatsApp Interested';
         outcomeBadgeClass = 'border-amber-500/40 bg-amber-950/40 text-amber-300';
       }
 
@@ -2360,7 +2360,7 @@
 
         let label = 'Viewed Page';
         let badgeColor = 'bg-blue-500';
-        if (isDep) { label = 'WhatsApp Handoff Confirmed (Departed)'; badgeColor = 'bg-emerald-500'; }
+        if (isDep) { label = 'WhatsApp Clicked'; badgeColor = 'bg-emerald-500'; }
         else if (isCanc) { label = 'WhatsApp Confirmation Cancelled'; badgeColor = 'bg-red-500'; }
         else if (isClick) { label = 'WhatsApp Intent Triggered'; badgeColor = 'bg-amber-500'; }
 
@@ -2805,10 +2805,10 @@
         return `<span class="${base} bg-red-900/40 text-red-300 border-red-500/30">WhatsApp Cancelled ❌</span>`;
       }
       if (current === 'whatsapp_departed' || current === 'departed') {
-        return `<span class="${base} bg-emerald-900/40 text-emerald-300 border-emerald-500/30">WhatsApp Departed ✔️</span>`;
+        return `<span class="${base} bg-emerald-900/40 text-emerald-300 border-emerald-500/30">WhatsApp Clicked ✔️</span>`;
       }
       if (current === 'whatsapp_intent' || current === 'intent') {
-        return `<span class="${base} bg-amber-900/40 text-amber-300 border-amber-500/30">WhatsApp Intent 💬</span>`;
+        return `<span class="${base} bg-amber-900/40 text-amber-300 border-amber-500/30">WhatsApp Interested 💬</span>`;
       }
       if (current === 'contacted') {
         return `<span class="${base} bg-amber-500/10 text-amber-400 border-amber-500/20">Contacted</span>`;
@@ -3272,18 +3272,23 @@
     }
 
     function recentActivityWhatsappStatus(events) {
-      let status = 'No WhatsApp';
+      let hasClicked = false;
+      let hasCancelled = false;
+      let hasInterested = false;
       for (const event of events) {
         const payload = leadPayload(event);
         const service = String(event.service_type || '').toLowerCase();
         const leadStatus = String(event.status || '').toLowerCase();
         const departed = (service === 'whatsapp_click' || service === 'whatsapp_continue')
           && (Number(payload.confirmed_departure) === 1 || Boolean(event.whatsapp_confirmed_at));
-        if (departed || ['completed', 'contacted'].includes(leadStatus)) status = 'WA Departed';
-        else if (service === 'whatsapp_cancel' || leadStatus === 'cancelled') status = 'WA Cancelled';
-        else if (service === 'whatsapp_intent' || service === 'whatsapp_click') status = 'WA Interested';
+        if (departed || ['completed', 'contacted'].includes(leadStatus)) hasClicked = true;
+        if (service === 'whatsapp_cancel' || leadStatus === 'cancelled') hasCancelled = true;
+        if (service === 'whatsapp_intent' || service === 'whatsapp_click' || service === 'whatsapp_continue') hasInterested = true;
       }
-      return status;
+      if (hasClicked) return 'WhatsApp Clicked';
+      if (hasCancelled) return 'WhatsApp Cancelled';
+      if (hasInterested) return 'WhatsApp Interested';
+      return 'No WhatsApp';
     }
 
     function recentActivityDuration(group) {
@@ -3328,7 +3333,8 @@
         group.whatsappStatus = recentActivityWhatsappStatus(group.events);
         group.durationMs = recentActivityDuration(group);
         return group;
-      }).sort((a, b) => new Date(recentActivityTimestamp(b.lastEvent) || 0) - new Date(recentActivityTimestamp(a.lastEvent) || 0)).slice(0, 8);
+      }).filter((group) => group.pageCount > 0)
+        .sort((a, b) => new Date(recentActivityTimestamp(b.lastEvent) || 0) - new Date(recentActivityTimestamp(a.lastEvent) || 0)).slice(0, 8);
     }
 
     function renderActivityFeed() {
@@ -3341,7 +3347,7 @@
         const shortId = group.visitorId ? formattedVisitorShortId(group.visitorId) : formattedSessionShortId(group.key);
         const badge = group.returning ? 'Returning' : 'New';
         const badgeClass = group.returning ? 'border-amber-500/30 bg-amber-950/30 text-amber-300' : 'border-cyan-500/30 bg-cyan-950/30 text-cyan-300';
-        const statusClass = group.whatsappStatus === 'WA Departed' ? 'text-emerald-300' : group.whatsappStatus === 'WA Cancelled' ? 'text-red-300' : group.whatsappStatus === 'WA Interested' ? 'text-amber-300' : 'text-slate-400';
+        const statusClass = group.whatsappStatus === 'WhatsApp Clicked' ? 'text-emerald-300' : group.whatsappStatus === 'WhatsApp Cancelled' ? 'text-red-300' : group.whatsappStatus === 'WhatsApp Interested' ? 'text-amber-300' : 'text-slate-400';
         return `
           <article role="button" tabindex="0" data-activity-visitor="${escapeHtml(group.key)}" class="cursor-pointer rounded-2xl border border-slate-800 bg-slate-900/30 p-3.5 transition hover:border-blue-500/40 hover:bg-blue-950/15">
             <div class="flex min-w-0 items-start justify-between gap-3">
@@ -3378,9 +3384,9 @@
       const cards = [
         ['Visitors', totalVisitors, 'Unique people', 'users', 'text-cyan-400'],
         ['Sessions', sessions, 'Total visits', 'eye', 'text-blue-400'],
-        ['WA Intents', intents, 'Click started', 'message-circle', 'text-amber-400'],
-        ['WA Cancelled', cancelled, 'Did not send', 'x-circle', 'text-red-400'],
-        ['WA Departed', departed, 'Sent message', 'check-circle-2', 'text-emerald-400'],
+        ['WhatsApp Interested', intents, 'Click started', 'message-circle', 'text-amber-400'],
+        ['WhatsApp Cancelled', cancelled, 'Did not continue', 'x-circle', 'text-red-400'],
+        ['WhatsApp Clicked', departed, 'Confirmed WhatsApp handoff', 'check-circle-2', 'text-emerald-400'],
         ['Conversion', conversion, 'Clicks per view', 'trending-up', 'text-brand-light']
       ];
 

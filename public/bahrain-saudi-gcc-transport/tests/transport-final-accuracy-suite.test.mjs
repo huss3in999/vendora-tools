@@ -98,6 +98,12 @@ async function createTestEnv() {
 
 function callAdmin(env, req) {
   env.TRANSPORT_DB.db.exec(`
+    UPDATE whatsapp_leads
+    SET
+      page_path = COALESCE(NULLIF(page_path, ''), '/bahrain-saudi-gcc-transport/' || COALESCE(NULLIF(route_slug, ''), '')),
+      page_url = COALESCE(NULLIF(page_url, ''), 'https://getvendora.net' || COALESCE(NULLIF(page_path, ''), '/bahrain-saudi-gcc-transport/' || COALESCE(NULLIF(route_slug, ''), '')))
+  `);
+  env.TRANSPORT_DB.db.exec(`
     INSERT OR IGNORE INTO analytics_events (
       event_id, visitor_id, session_id, created_at, page_path, referrer,
       utm_source, utm_campaign, event_name, route_name, button_text,
@@ -108,7 +114,7 @@ function callAdmin(env, req) {
       COALESCE(NULLIF(visitor_id, ''), NULLIF(json_extract(raw_payload, '$.visitorId'), ''), session_id),
       session_id,
       clicked_at,
-      page_path,
+      COALESCE(NULLIF(page_path, ''), '/bahrain-saudi-gcc-transport/' || COALESCE(NULLIF(route_slug, ''), '')),
       referrer,
       utm_source,
       utm_campaign,
@@ -124,6 +130,11 @@ function callAdmin(env, req) {
       raw_payload
     FROM whatsapp_leads
     WHERE lead_uuid IS NOT NULL
+  `);
+  env.TRANSPORT_DB.db.exec(`
+    UPDATE analytics_events
+    SET page_url = 'https://getvendora.net' || page_path
+    WHERE COALESCE(page_url, '') = ''
   `);
   return handleAdmin({
     request: req,
@@ -254,6 +265,7 @@ test('26-29: Legacy Rows, ID Fallbacks, and Confirmation Idempotency', async () 
     INSERT INTO whatsapp_leads (
       lead_uuid, visitor_id, session_id, service_type, route_slug, clicked_at, cf_country
     ) VALUES 
+    ('legacy-page', NULL, 'session_legacy_100', 'pageview', 'bahrain-to-khobar', strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-1 minute'), 'BH'),
     ('legacy1', NULL, 'session_legacy_100', 'whatsapp_click', 'bahrain-to-khobar', strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), 'BH');
   `);
 
@@ -294,4 +306,51 @@ test('37-40: Data Quality, Reconciliation, & Historical Preservation', async () 
 
   const afterCount = sqlite.prepare('SELECT COUNT(*) AS count FROM whatsapp_leads').get().count;
   assert.equal(beforeCount, afterCount, 'Scenario 40: Zero historical rows deleted or modified during audits');
+});
+
+test('41-46: Business KPIs require a legitimate public pageview and exclude HeadlessChrome tests', async () => {
+  const { sqlite, env } = await createTestEnv();
+  sqlite.exec(`
+    INSERT INTO analytics_sessions (
+      session_id, visitor_id, first_seen_at, last_activity_at, bot_score, verified_bot, client_hints
+    ) VALUES
+      ('s_valid', 'v_valid', datetime('now'), datetime('now'), 99, 0, '{"brands":["Google Chrome"]}'),
+      ('s_test', 'v_test', datetime('now'), datetime('now'), 99, 0, '{"brands":["HeadlessChrome"]}'),
+      ('s_private', 'v_private', datetime('now'), datetime('now'), 99, 0, '{}'),
+      ('s_heartbeat', 'v_heartbeat', datetime('now'), datetime('now'), 99, 0, '{}');
+
+    INSERT INTO analytics_events (
+      event_id, visitor_id, session_id, created_at, page_url, page_path, event_name, raw_payload
+    ) VALUES
+      ('e_valid_p1', 'v_valid', 's_valid', datetime('now'), 'https://getvendora.net/bahrain-saudi-gcc-transport/a/', '/bahrain-saudi-gcc-transport/a/', 'page_view', '{}'),
+      ('e_valid_p2', 'v_valid', 's_valid', datetime('now'), 'https://getvendora.net/bahrain-saudi-gcc-transport/b/', '/bahrain-saudi-gcc-transport/b/', 'page_view', '{}'),
+      ('e_valid_intent', 'v_valid', 's_valid', datetime('now'), 'https://getvendora.net/bahrain-saudi-gcc-transport/b/', '/bahrain-saudi-gcc-transport/b/', 'whatsapp_intent', '{}'),
+      ('e_private', 'v_private', 's_private', datetime('now'), 'https://getvendora.net/admin/', '/admin/', 'page_view', '{}'),
+      ('e_test', 'v_test', 's_test', datetime('now'), 'https://getvendora.net/bahrain-saudi-gcc-transport/prices/', '/bahrain-saudi-gcc-transport/prices/', 'page_view', '{}'),
+      ('e_heartbeat', 'v_heartbeat', 's_heartbeat', datetime('now'), 'https://getvendora.net/bahrain-saudi-gcc-transport/', '/bahrain-saudi-gcc-transport/', 'presence_heartbeat', '{}');
+  `);
+
+  const res = await callAdmin(env, makeRequest('http://127.0.0.1:8787/api/transport/admin?resource=summary&bot_filter=real'));
+  const { summary } = await res.json();
+  assert.equal(summary.total_visitors, 1, 'Only the legitimate public visitor is counted');
+  assert.equal(summary.total_sessions, 1, 'Test, private, and heartbeat-only sessions are excluded');
+  assert.equal(summary.total_pageviews, 2, 'Only legitimate public transport pageviews are counted');
+  assert.equal(summary.whatsapp_intents_count, 1, 'The valid visitor retains their WhatsApp intent');
+  assert.equal(summary.left_without_whatsapp, 0, 'The valid visitor did not leave without WhatsApp');
+});
+
+test('47: pageviews resource returns pageviews rather than duplicate WhatsApp leads', async () => {
+  const { sqlite, env } = await createTestEnv();
+  sqlite.exec(`
+    INSERT INTO whatsapp_leads (
+      lead_uuid, visitor_id, session_id, service_type, route_slug, page_url, page_path, clicked_at, raw_payload
+    ) VALUES
+      ('pv-resource', 'v_resource', 's_resource', 'pageview', 'bahrain-to-riyadh', 'https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-riyadh/', '/bahrain-saudi-gcc-transport/bahrain-to-riyadh/', datetime('now'), '{}'),
+      ('wa-resource', 'v_resource', 's_resource', 'whatsapp_intent', 'bahrain-to-riyadh', 'https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-riyadh/', '/bahrain-saudi-gcc-transport/bahrain-to-riyadh/', datetime('now'), '{}');
+  `);
+
+  const res = await callAdmin(env, makeRequest('http://127.0.0.1:8787/api/transport/admin?resource=pageviews'));
+  const data = await res.json();
+  assert.equal(data.leads.length, 1);
+  assert.equal(data.leads[0].service_type, 'pageview');
 });

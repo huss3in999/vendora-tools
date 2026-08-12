@@ -32,6 +32,30 @@ const TRANSPORT_PRESENCE_SQL = `${EXCLUDE_ADMIN_SQL} AND ((${EXCLUDE_CARE_PATH_S
 const CARE_PRESENCE_SQL = `${EXCLUDE_ADMIN_SQL} AND (COALESCE(service_type, '') = 'passenger-care-pageview' OR COALESCE(page_path, '') LIKE '%/care/%')`;
 const CUSTOMER_PRESENCE_SQL = EXCLUDE_ADMIN_SQL;
 const ONLINE_WINDOW_SQL = "clicked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-90 seconds')";
+const PUBLIC_TRANSPORT_ANALYTICS_SQL = `(
+  (e.page_url LIKE 'https://getvendora.net/%' OR e.page_url LIKE 'https://www.getvendora.net/%')
+  AND (e.page_path = '/bahrain-saudi-gcc-transport' OR e.page_path LIKE '/bahrain-saudi-gcc-transport/%')
+  AND e.page_path NOT LIKE '%/admin/%'
+  AND e.page_path NOT LIKE '%/care/%'
+)`;
+const NON_AUTOMATED_ANALYTICS_SQL = "COALESCE(s.client_hints, '') NOT LIKE '%HeadlessChrome%'";
+const PUBLIC_TRANSPORT_LEAD_SQL = `(
+  (page_url LIKE 'https://getvendora.net/%' OR page_url LIKE 'https://www.getvendora.net/%')
+  AND (page_path = '/bahrain-saudi-gcc-transport' OR page_path LIKE '/bahrain-saudi-gcc-transport/%')
+  AND page_path NOT LIKE '%/admin/%'
+  AND page_path NOT LIKE '%/care/%'
+)`;
+const LEAD_HAS_PUBLIC_PAGEVIEW_SQL = `whatsapp_leads.session_id IN (
+  SELECT public_pv.session_id
+  FROM analytics_events public_pv
+  LEFT JOIN analytics_sessions public_session ON public_session.session_id = public_pv.session_id
+  WHERE public_pv.event_name = 'page_view'
+    AND (public_pv.page_url LIKE 'https://getvendora.net/%' OR public_pv.page_url LIKE 'https://www.getvendora.net/%')
+    AND (public_pv.page_path = '/bahrain-saudi-gcc-transport' OR public_pv.page_path LIKE '/bahrain-saudi-gcc-transport/%')
+    AND public_pv.page_path NOT LIKE '%/admin/%'
+    AND public_pv.page_path NOT LIKE '%/care/%'
+    AND COALESCE(public_session.client_hints, '') NOT LIKE '%HeadlessChrome%'
+)`;
 
 const ADMIN_COLUMNS = [
   ['status', "ALTER TABLE whatsapp_leads ADD COLUMN status TEXT DEFAULT 'new'"],
@@ -342,7 +366,7 @@ function eventClause(eventType) {
 }
 
 function buildLeadFilters(url, options = {}) {
-  const clauses = [];
+  const clauses = [PUBLIC_TRANSPORT_LEAD_SQL, LEAD_HAS_PUBLIC_PAGEVIEW_SQL];
   const bindings = [];
   const eventSql = eventClause(options.eventType);
   if (eventSql) clauses.push(eventSql);
@@ -431,7 +455,7 @@ function buildLeadFilters(url, options = {}) {
 }
 
 function buildAnalyticsFilters(url) {
-  const clauses = [];
+  const clauses = [PUBLIC_TRANSPORT_ANALYTICS_SQL, NON_AUTOMATED_ANALYTICS_SQL];
   const bindings = [];
   const filters = [
     ['e.route_name', cleanText(url.searchParams.get('route'), 160)],
@@ -702,13 +726,18 @@ async function getSummary(env, request) {
       FROM filtered
       WHERE visitor_id IS NOT NULL AND visitor_id <> ''
       GROUP BY visitor_id
+    ), valid_events AS (
+      SELECT filtered.*
+      FROM filtered
+      INNER JOIN visitor_rollup USING (visitor_id)
+      WHERE visitor_rollup.has_pageview = 1
     )
     SELECT
-      (SELECT COUNT(*) FROM visitor_rollup WHERE has_pageview = 1 OR has_intent = 1 OR has_cancel = 1 OR has_depart = 1) AS total_visitors,
-      (SELECT COUNT(*) FROM visitor_rollup WHERE (has_pageview = 1 OR has_intent = 1 OR has_cancel = 1 OR has_depart = 1) AND (stored_returning = 1 OR pageview_sessions > 1)) AS returning_visitors,
-      (SELECT COUNT(*) FROM visitor_rollup WHERE has_intent = 1) AS whatsapp_intents_count,
-      (SELECT COUNT(*) FROM visitor_rollup WHERE has_cancel = 1) AS whatsapp_cancelled_count,
-      (SELECT COUNT(*) FROM visitor_rollup WHERE has_depart = 1) AS whatsapp_departed_count,
+      (SELECT COUNT(*) FROM visitor_rollup WHERE has_pageview = 1) AS total_visitors,
+      (SELECT COUNT(*) FROM visitor_rollup WHERE has_pageview = 1 AND (stored_returning = 1 OR pageview_sessions > 1)) AS returning_visitors,
+      (SELECT COUNT(*) FROM visitor_rollup WHERE has_pageview = 1 AND has_intent = 1) AS whatsapp_intents_count,
+      (SELECT COUNT(*) FROM visitor_rollup WHERE has_pageview = 1 AND has_cancel = 1) AS whatsapp_cancelled_count,
+      (SELECT COUNT(*) FROM visitor_rollup WHERE has_pageview = 1 AND has_depart = 1) AS whatsapp_departed_count,
       (SELECT COUNT(*) FROM visitor_rollup WHERE has_pageview = 1 AND has_intent = 0) AS left_without_whatsapp,
       COUNT(DISTINCT CASE WHEN event_name = 'page_view' THEN session_id END) AS total_sessions,
       SUM(CASE WHEN event_name = 'page_view' THEN 1 ELSE 0 END) AS total_pageviews,
@@ -719,7 +748,7 @@ async function getSummary(env, request) {
       SUM(CASE WHEN (event_name = 'whatsapp_click' AND COALESCE(CAST(json_extract(raw_payload, '$.confirmed_departure') AS INTEGER), 0) = 1)
         OR (event_name = 'whatsapp_continue' AND COALESCE(CAST(json_extract(raw_payload, '$.confirmed_departure') AS INTEGER), 0) = 1)
         THEN 1 ELSE 0 END) AS raw_departures
-    FROM filtered
+    FROM valid_events
   `);
 
   // "Online now" = activity in the last 5 minutes from whatsapp_leads.
@@ -1842,6 +1871,8 @@ export async function onRequestGet(context) {
           ? await getPassengerCareAdminRows(env, request)
         : resource === 'complaints'
           ? await getComplaintsAdminRows(env, request)
+        : resource === 'pageviews'
+          ? await getEventRows(env, request, 'pageview')
           : await getEventRows(env, request, 'lead');
     return json({ ok: true, ...data }, { headers });
   } catch (error) {

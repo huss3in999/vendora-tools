@@ -109,7 +109,8 @@ test('Recent Activity renders one updating card per visitor and opens full histo
   await expect(visitorCard).toContainText('Google');
   await expect(visitorCard).toContainText('Landing: Bahrain → Kuwait');
   await expect(visitorCard).toContainText('3 pages');
-  await expect(visitorCard).toContainText('Final: WA Departed');
+  await expect(visitorCard).toContainText('45s');
+  await expect(visitorCard).toContainText('Final: WhatsApp Clicked');
   await expect(cards.filter({ hasText: 'V-B882' })).toContainText('Direct / Unknown');
 
   await visitorCard.click();
@@ -117,7 +118,7 @@ test('Recent Activity renders one updating card per visitor and opens full histo
   await expect(page.locator('#visitorDialogBody')).toContainText('Chronological Visitor Journey');
   await expect(page.locator('#visitorDialogBody')).toContainText('WhatsApp Intent Triggered');
   await expect(page.locator('#visitorDialogBody')).toContainText('WhatsApp Confirmation Cancelled');
-  await expect(page.locator('#visitorDialogBody')).toContainText('WhatsApp Handoff Confirmed');
+  await expect(page.locator('#visitorDialogBody')).toContainText('WhatsApp Clicked');
 });
 
 test('Recent Activity source labels include Google, ChatGPT and Direct / Unknown', async ({ page }) => {

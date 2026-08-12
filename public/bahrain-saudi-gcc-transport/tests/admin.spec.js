@@ -51,9 +51,9 @@ test.describe('Admin dashboard', () => {
     await page.evaluate(() => setTab('reports'));
     await expect(page.locator('#reportCards > div').filter({ hasText: 'Visitors' }).locator('p').first()).toHaveText('12');
     await expect(page.locator('#reportCards > div').filter({ hasText: 'Sessions' }).locator('p').first()).toHaveText('13');
-    await expect(page.locator('#reportCards > div').filter({ hasText: 'WA Intents' }).locator('p').first()).toHaveText('2');
-    await expect(page.locator('#reportCards > div').filter({ hasText: 'WA Cancelled' }).locator('p').first()).toHaveText('1');
-    await expect(page.locator('#reportCards > div').filter({ hasText: 'WA Departed' }).locator('p').first()).toHaveText('1');
+    await expect(page.locator('#reportCards > div').filter({ hasText: 'WhatsApp Interested' }).locator('p').first()).toHaveText('2');
+    await expect(page.locator('#reportCards > div').filter({ hasText: 'WhatsApp Cancelled' }).locator('p').first()).toHaveText('1');
+    await expect(page.locator('#reportCards > div').filter({ hasText: 'WhatsApp Clicked' }).locator('p').first()).toHaveText('1');
     await page.evaluate(() => setTab('pageviews'));
     await expect(page.locator('#deleteVisitsBtn')).toBeVisible();
     let deleteConfirmations = 0;
