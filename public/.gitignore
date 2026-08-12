@@ -6,4 +6,7 @@ _site/
 .wrangler/
 tests/google-analytics-audit-report.json
 tests/google-analytics-audit-summary.md
+vanilla-catalog-9172917516f2.json
+vanilla-catalog-917291751f62.json
+API/*.json
 

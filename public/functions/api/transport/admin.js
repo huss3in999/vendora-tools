@@ -19,10 +19,10 @@ const ALLOWED_ORIGINS = new Set([
 
 const MAX_BODY_BYTES = 8192;
 const MAX_LEADS_LIMIT = 1000;
-const VISITOR_ID_EXPR = "CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.visitorId'), '') ELSE NULL END";
+const VISITOR_ID_EXPR = "COALESCE(NULLIF(visitor_id, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.visitorId'), '') END)";
 const VISIT_COUNT_EXPR = "CASE WHEN json_valid(raw_payload) THEN CAST(COALESCE(json_extract(raw_payload, '$.visitCount'), 1) AS INTEGER) ELSE 1 END";
 const SESSION_PAGE_VIEWS_EXPR = "CASE WHEN json_valid(raw_payload) THEN CAST(COALESCE(json_extract(raw_payload, '$.sessionPageViews'), 1) AS INTEGER) ELSE 1 END";
-const TRAFFIC_SOURCE_EXPR = "COALESCE(NULLIF(utm_source, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.firstTrafficSource'), '') END, CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.trafficSource'), '') END, 'direct/unknown')";
+const TRAFFIC_SOURCE_EXPR = "COALESCE(NULLIF(utm_source, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.firstTrafficSource'), '') END, CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.trafficSource'), '') END, CASE WHEN referrer LIKE '%google.%' THEN 'Google Search' WHEN referrer LIKE '%chatgpt.%' THEN 'ChatGPT AI' WHEN referrer <> '' THEN referrer ELSE 'direct/unknown' END)";
 const CAMPAIGN_EXPR = "COALESCE(NULLIF(utm_campaign, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.utmCampaign'), '') END, 'no campaign')";
 const NON_CLICK_SERVICE_SQL = "COALESCE(service_type, '') NOT IN ('pageview', 'presence_heartbeat', 'passenger-care-pageview', 'passenger-care-stub')";
 const NON_CLICK_ROUTE_SQL = "COALESCE(route_slug, '') NOT IN ('passenger-care', 'passenger-care-stub')";
@@ -52,6 +52,8 @@ const ADMIN_COLUMNS = [
   ['customer_paid_amount', 'ALTER TABLE whatsapp_leads ADD COLUMN customer_paid_amount REAL'],
   ['driver_payout_amount', 'ALTER TABLE whatsapp_leads ADD COLUMN driver_payout_amount REAL'],
   ['actual_commission', 'ALTER TABLE whatsapp_leads ADD COLUMN actual_commission REAL'],
+  ['customer_email', 'ALTER TABLE whatsapp_leads ADD COLUMN customer_email TEXT'],
+  ['whatsapp_confirmed_at', 'ALTER TABLE whatsapp_leads ADD COLUMN whatsapp_confirmed_at TEXT'],
 ];
 
 let schemaReady = false;
@@ -174,33 +176,33 @@ function requireDb(env, headers = {}) {
 }
 
 async function ensureAdminSchema(env) {
-  if (schemaReady) return;
+  try {
+    const table = await env.TRANSPORT_DB.prepare('PRAGMA table_info(whatsapp_leads)').all();
+    const existing = new Set((table.results || []).map((row) => row.name));
 
-  const table = await env.TRANSPORT_DB.prepare('PRAGMA table_info(whatsapp_leads)').all();
-  const existing = new Set((table.results || []).map((row) => row.name));
-
-  for (const [name, sql] of ADMIN_COLUMNS) {
-    if (existing.has(name)) continue;
-    try {
-      await env.TRANSPORT_DB.prepare(sql).run();
-    } catch (error) {
-      if (!String(error.message || error).toLowerCase().includes('duplicate column')) {
-        throw error;
+    for (const [name, sql] of ADMIN_COLUMNS) {
+      if (existing.has(name)) continue;
+      try {
+        await env.TRANSPORT_DB.prepare(sql).run();
+      } catch (error) {
+        if (!String(error.message || error).toLowerCase().includes('duplicate column')) {
+          /* ignore duplicate column */
+        }
       }
     }
+
+    await env.TRANSPORT_DB.prepare(`
+      CREATE TABLE IF NOT EXISTS transport_private_route_pricing (
+        route_slug TEXT PRIMARY KEY,
+        private_minimum_bhd REAL,
+        currency TEXT NOT NULL DEFAULT 'BHD',
+        updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+        CHECK (private_minimum_bhd IS NULL OR private_minimum_bhd >= 0)
+      )
+    `).run();
+  } catch (e) {
+    /* ignore schema setup errors */
   }
-
-  await env.TRANSPORT_DB.prepare(`
-    CREATE TABLE IF NOT EXISTS transport_private_route_pricing (
-      route_slug TEXT PRIMARY KEY,
-      private_minimum_bhd REAL,
-      currency TEXT NOT NULL DEFAULT 'BHD',
-      updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
-      CHECK (private_minimum_bhd IS NULL OR private_minimum_bhd >= 0)
-    )
-  `).run();
-
-  schemaReady = true;
 }
 
 async function ensureSettingsSchema(env) {
@@ -428,6 +430,63 @@ function buildLeadFilters(url, options = {}) {
   };
 }
 
+function buildAnalyticsFilters(url) {
+  const clauses = [];
+  const bindings = [];
+  const filters = [
+    ['e.route_name', cleanText(url.searchParams.get('route'), 160)],
+    ['e.device_type', cleanText(url.searchParams.get('device'), 40)],
+    ['e.ip_country', cleanText(url.searchParams.get('country'), 8)],
+    ['e.utm_campaign', cleanText(url.searchParams.get('campaign'), 160)],
+  ];
+
+  filters.forEach(([column, value]) => {
+    if (!value) return;
+    clauses.push(`${column} = ?`);
+    bindings.push(value);
+  });
+
+  const source = cleanText(url.searchParams.get('source'), 120);
+  if (source) {
+    clauses.push("COALESCE(NULLIF(e.utm_source, ''), NULLIF(e.referrer, ''), 'direct') = ?");
+    bindings.push(source);
+  }
+
+  const from = cleanDate(url.searchParams.get('from'));
+  if (from) {
+    clauses.push("date(e.created_at, '+3 hours') >= ?");
+    bindings.push(from);
+  }
+
+  const to = cleanDate(url.searchParams.get('to'));
+  if (to) {
+    clauses.push("date(e.created_at, '+3 hours') <= ?");
+    bindings.push(to);
+  }
+
+  const search = cleanText(url.searchParams.get('search'), 120);
+  if (search) {
+    clauses.push(`(
+      e.route_name LIKE ? OR e.page_path LIKE ? OR e.event_label LIKE ?
+      OR e.button_text LIKE ? OR e.visitor_id LIKE ? OR e.session_id LIKE ?
+    )`);
+    const like = `%${search}%`;
+    bindings.push(like, like, like, like, like, like);
+  }
+
+  const botFilter = cleanText(url.searchParams.get('bot_filter'), 20);
+  if (botFilter === 'real') {
+    clauses.push('COALESCE(s.verified_bot, 0) = 0 AND COALESCE(s.bot_score, 99) >= 30');
+  } else if (botFilter === 'bots') {
+    clauses.push('(COALESCE(s.verified_bot, 0) = 1 OR COALESCE(s.bot_score, 99) < 30)');
+  }
+
+  return {
+    whereSql: clauses.length ? `WHERE ${clauses.join(' AND ')}` : '',
+    bindings,
+  };
+}
+
 function leadSelectSql() {
   const suspicionSql = `min(100,
     (CASE WHEN COALESCE(time_on_page_ms, 0) >= 60000 THEN 20 ELSE 0 END) +
@@ -577,6 +636,7 @@ async function getSummary(env, request) {
   const leadFilters = buildLeadFilters(url, { eventType: 'lead' });
   const pageviewFilters = buildLeadFilters(url, { eventType: 'pageview' });
   const allFilters = buildLeadFilters(url, { eventType: 'all' });
+  const analyticsFilters = buildAnalyticsFilters(url);
   const bindAll = (filter, sql) => env.TRANSPORT_DB.prepare(sql).bind(...filter.bindings).all();
   const bindFirst = (filter, sql) => env.TRANSPORT_DB.prepare(sql).bind(...filter.bindings).first();
 
@@ -614,22 +674,52 @@ async function getSummary(env, request) {
     ${pageviewFilters.whereSql}
   `);
 
-  const visitorTotals = await bindFirst(allFilters, `
-    SELECT
-      COUNT(DISTINCT visitor_id) AS total_visitors,
-      COUNT(DISTINCT CASE WHEN sessions > 1 OR max_visit_count > 1 THEN visitor_id END) AS returning_visitors,
-      SUM(CASE WHEN sessions > 1 OR max_visit_count > 1 THEN whatsapp_clicks ELSE 0 END) AS returning_clicks
-    FROM (
+  const visitorFunnel = await bindFirst(analyticsFilters, `
+    WITH filtered AS (
       SELECT
-        ${VISITOR_ID_EXPR} AS visitor_id,
-        COUNT(DISTINCT session_id) AS sessions,
-        MAX(COALESCE(${VISIT_COUNT_EXPR}, 1)) AS max_visit_count,
-        SUM(CASE WHEN COALESCE(service_type, '') <> 'pageview' THEN 1 ELSE 0 END) AS whatsapp_clicks
-      FROM whatsapp_leads
-      ${allFilters.whereSql}
-      GROUP BY ${VISITOR_ID_EXPR}
+        e.event_id,
+        e.event_name,
+        e.visitor_id,
+        e.session_id,
+        e.raw_payload,
+        COALESCE(s.is_returning, 0) AS is_returning
+      FROM analytics_events e
+      LEFT JOIN analytics_sessions s ON s.session_id = e.session_id
+      ${analyticsFilters.whereSql}
+    ), visitor_rollup AS (
+      SELECT
+        visitor_id,
+        MAX(CASE WHEN event_name = 'page_view' THEN 1 ELSE 0 END) AS has_pageview,
+        MAX(CASE WHEN event_name IN ('whatsapp_intent', 'whatsapp_cancel')
+          OR (event_name = 'whatsapp_click' AND COALESCE(CAST(json_extract(raw_payload, '$.confirmed_departure') AS INTEGER), 0) = 0)
+          THEN 1 ELSE 0 END) AS has_intent,
+        MAX(CASE WHEN event_name = 'whatsapp_cancel' THEN 1 ELSE 0 END) AS has_cancel,
+        MAX(CASE WHEN (event_name = 'whatsapp_click' AND COALESCE(CAST(json_extract(raw_payload, '$.confirmed_departure') AS INTEGER), 0) = 1)
+          OR (event_name = 'whatsapp_continue' AND COALESCE(CAST(json_extract(raw_payload, '$.confirmed_departure') AS INTEGER), 0) = 1)
+          THEN 1 ELSE 0 END) AS has_depart,
+        MAX(is_returning) AS stored_returning,
+        COUNT(DISTINCT CASE WHEN event_name = 'page_view' THEN session_id END) AS pageview_sessions
+      FROM filtered
+      WHERE visitor_id IS NOT NULL AND visitor_id <> ''
+      GROUP BY visitor_id
     )
-    WHERE visitor_id IS NOT NULL
+    SELECT
+      (SELECT COUNT(*) FROM visitor_rollup WHERE has_pageview = 1 OR has_intent = 1 OR has_cancel = 1 OR has_depart = 1) AS total_visitors,
+      (SELECT COUNT(*) FROM visitor_rollup WHERE (has_pageview = 1 OR has_intent = 1 OR has_cancel = 1 OR has_depart = 1) AND (stored_returning = 1 OR pageview_sessions > 1)) AS returning_visitors,
+      (SELECT COUNT(*) FROM visitor_rollup WHERE has_intent = 1) AS whatsapp_intents_count,
+      (SELECT COUNT(*) FROM visitor_rollup WHERE has_cancel = 1) AS whatsapp_cancelled_count,
+      (SELECT COUNT(*) FROM visitor_rollup WHERE has_depart = 1) AS whatsapp_departed_count,
+      (SELECT COUNT(*) FROM visitor_rollup WHERE has_pageview = 1 AND has_intent = 0) AS left_without_whatsapp,
+      COUNT(DISTINCT CASE WHEN event_name = 'page_view' THEN session_id END) AS total_sessions,
+      SUM(CASE WHEN event_name = 'page_view' THEN 1 ELSE 0 END) AS total_pageviews,
+      SUM(CASE WHEN event_name IN ('whatsapp_intent', 'whatsapp_cancel')
+        OR (event_name = 'whatsapp_click' AND COALESCE(CAST(json_extract(raw_payload, '$.confirmed_departure') AS INTEGER), 0) = 0)
+        THEN 1 ELSE 0 END) AS raw_intents,
+      SUM(CASE WHEN event_name = 'whatsapp_cancel' THEN 1 ELSE 0 END) AS raw_cancels,
+      SUM(CASE WHEN (event_name = 'whatsapp_click' AND COALESCE(CAST(json_extract(raw_payload, '$.confirmed_departure') AS INTEGER), 0) = 1)
+        OR (event_name = 'whatsapp_continue' AND COALESCE(CAST(json_extract(raw_payload, '$.confirmed_departure') AS INTEGER), 0) = 1)
+        THEN 1 ELSE 0 END) AS raw_departures
+    FROM filtered
   `);
 
   // "Online now" = activity in the last 5 minutes from whatsapp_leads.
@@ -922,10 +1012,14 @@ async function getSummary(env, request) {
     summary: {
       ...(leadTotals || {}),
       ...(pageviewTotals || {}),
-      ...(visitorTotals || {}),
-      total: leadTotals?.total || 0,
+      ...(visitorFunnel || {}),
+      lead_records_total: leadTotals?.total || 0,
+      total: visitorFunnel?.whatsapp_intents_count || 0,
       today: leadTotals?.today || 0,
-      total_pageviews: pageviewTotals?.total_pageviews || 0,
+      sessions: visitorFunnel?.total_sessions || 0,
+      pageview_sessions: visitorFunnel?.total_sessions || 0,
+      total_sessions: visitorFunnel?.total_sessions || 0,
+      total_pageviews: visitorFunnel?.total_pageviews || 0,
       pageviews_today: pageviewTotals?.pageviews_today || 0,
       online_now: onlineTotals?.online_transport || 0,
       online_transport: onlineTotals?.online_transport || 0,

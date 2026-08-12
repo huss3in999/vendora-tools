@@ -123,7 +123,7 @@
     var buttonText = String(link.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 120);
 
     if (type === 'whatsapp' || link.hasAttribute('data-wa-message') || link.hasAttribute('data-booking-submit')) {
-      emit('whatsapp_click', {
+      emit('whatsapp_intent', {
         cta_location: location,
         button_text: buttonText,
         target_url: href,

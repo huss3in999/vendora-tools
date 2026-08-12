@@ -1606,6 +1606,14 @@
           cancellation_method: 'back_button'
         });
       }
+      if (bookingRef && leadId && careToken) {
+        postLeadPayloadToEndpoint('/api/transport/event', {
+          action: 'cancel_whatsapp_handoff',
+          booking_ref: bookingRef,
+          leadId,
+          careToken
+        });
+      }
       close();
     };
     const onKeydown = (event) => {
@@ -1614,7 +1622,7 @@
     modal.querySelectorAll('[data-booking-cancel]').forEach((node) => node.addEventListener('click', cancel));
     continueButton.addEventListener('click', () => {
       if (typeof window.vendoraTrackLocal === 'function') {
-        window.vendoraTrackLocal('whatsapp_continue', {
+        window.vendoraTrackLocal('whatsapp_click', {
           event_category: 'transport_funnel',
           method: 'prepared_dialog',
           confirmed_departure: 1

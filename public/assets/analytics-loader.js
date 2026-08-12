@@ -419,6 +419,14 @@
   function loadSecondaryTools() {
     appendScript('https://www.clarity.ms/tag/w28z01fb1p');
 
+    if (typeof window.clarity === 'function') {
+      try {
+        window.clarity("set", "visitor_id", getVisitorId());
+        window.clarity("set", "session_id", getSessionId());
+        window.clarity("set", "route", getTransportRoute());
+      } catch (e) { /* ignore */ }
+    }
+
     if (isLocalPreview) return;
 
     appendScript(

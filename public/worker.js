@@ -2,6 +2,7 @@ import * as passengerCareApi from './functions/api/transport/passenger-care.js';
 import * as routeReviewsApi from './functions/api/transport/route-reviews.js';
 import * as complaintsApi from './functions/api/transport/complaints.js';
 import * as adminApi from './functions/api/transport/admin.js';
+import * as googleAudienceApi from './functions/api/transport/google-audience.js';
 import * as leadApi from './functions/api/transport/whatsapp-lead.js';
 import * as aiChatApi from './functions/api/transport/ai-chat.js';
 import * as errorApi from './functions/api/transport/error-log.js';
@@ -373,6 +374,7 @@ function transportHealthResponse() {
     service: 'vendora-transport-api',
     routes: [
       '/api/transport/admin',
+      '/api/transport/google-audience',
       '/api/transport/event',
       '/api/transport/ai-chat',
       '/api/transport/whatsapp-lead',
@@ -434,6 +436,10 @@ export default {
 
       if (path === '/api/transport/admin') {
         return await dispatchPagesFunction(adminApi, request, env, ctx);
+      }
+
+      if (path === '/api/transport/google-audience') {
+        return await dispatchPagesFunction(googleAudienceApi, request, env, ctx);
       }
 
       if (path === '/api/transport/event' || path === '/api/transport/whatsapp-lead') {

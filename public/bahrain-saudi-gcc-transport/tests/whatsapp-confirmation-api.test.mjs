@@ -79,7 +79,27 @@ try {
   assert.equal((await repeated.json()).already_confirmed, true);
   assert.equal(notificationRequests, 1, 'repeating the confirmation request must not duplicate the alert');
 
-  console.log(JSON.stringify({ ok: true, prepared_alerts: 0, confirmed_alerts: 1, repeated_alerts: 0 }, null, 2));
+  const preparedCancel = await post({
+    notificationMode: 'after_confirmation',
+    serviceType: 'passenger_transport',
+    visitorId: 'visitor-cancel-test',
+    sessionId: 'session-cancel-test',
+    routeSlug: 'bahrain-to-khobar',
+    routeLabel: 'Bahrain to Khobar',
+    pageUrl: 'https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-khobar/',
+    pagePath: '/bahrain-saudi-gcc-transport/en/bahrain-to-khobar/',
+    language: 'en',
+    clickText: 'Book on WhatsApp',
+  });
+  const cancelLead = await preparedCancel.json();
+  const cancelled = await post({ action: 'cancel_whatsapp_handoff', leadId: cancelLead.leadId, careToken: cancelLead.care_token });
+  assert.equal(cancelled.status, 200);
+  assert.equal(sqlite.prepare('SELECT status FROM whatsapp_leads WHERE lead_uuid = ?').get(cancelLead.leadId).status, 'cancelled');
+  const repeatedCancel = await post({ action: 'cancel_whatsapp_handoff', leadId: cancelLead.leadId, careToken: cancelLead.care_token });
+  assert.equal((await repeatedCancel.json()).already_cancelled, true);
+  assert.equal(notificationRequests, 1, 'cancelling must not send a departure alert');
+
+  console.log(JSON.stringify({ ok: true, prepared_alerts: 0, confirmed_alerts: 1, repeated_alerts: 0, cancel_recorded: true }, null, 2));
 } finally {
   globalThis.fetch = originalFetch;
 }

@@ -714,7 +714,8 @@ export async function onRequestPost(context) {
     return json({ ok: false, error: 'Invalid JSON payload' }, { status: 400, headers });
   }
 
-  if (cleanText(payload.action, 80) === 'confirm_whatsapp_handoff') {
+  const handoffAction = cleanText(payload.action, 80);
+  if (handoffAction === 'confirm_whatsapp_handoff' || handoffAction === 'cancel_whatsapp_handoff') {
     const leadId = cleanText(payload.leadId, 80);
     const careToken = cleanText(payload.careToken, 160);
     if (!leadId || !careToken) {
@@ -723,7 +724,7 @@ export async function onRequestPost(context) {
     try {
       await ensurePassengerCareSchema(env);
       const lead = await env.TRANSPORT_DB.prepare(`
-        SELECT lead_uuid, care_token, service_type, route_slug, route_label,
+        SELECT lead_uuid, care_token, service_type, route_slug, route_label, status,
           page_url, page_path, target_url, language, device_type, session_id, visitor_id,
           booking_phone_used, public_price_shown, cf_city, cf_region, cf_country, cf_timezone,
           raw_payload, whatsapp_confirmed_at
@@ -732,6 +733,26 @@ export async function onRequestPost(context) {
         LIMIT 1
       `).bind(leadId, careToken).first();
       if (!lead) return json({ ok: false, error: 'Booking request not found' }, { status: 404, headers });
+
+      if (handoffAction === 'cancel_whatsapp_handoff') {
+        if (lead.whatsapp_confirmed_at) {
+          return json({ ok: false, error: 'WhatsApp handoff was already confirmed' }, { status: 409, headers });
+        }
+        if (lead.status === 'cancelled') {
+          return json({ ok: true, already_cancelled: true, leadId }, { status: 200, headers });
+        }
+        const update = await env.TRANSPORT_DB.prepare(`
+          UPDATE whatsapp_leads
+          SET status = 'cancelled'
+          WHERE lead_uuid = ? AND care_token = ? AND whatsapp_confirmed_at IS NULL
+        `).bind(leadId, careToken).run();
+        return json({
+          ok: true,
+          already_cancelled: !Number(update.meta?.changes || 0),
+          leadId,
+        }, { status: 200, headers });
+      }
+
       if (lead.whatsapp_confirmed_at) {
         return json({ ok: true, already_confirmed: true, leadId }, { status: 200, headers });
       }

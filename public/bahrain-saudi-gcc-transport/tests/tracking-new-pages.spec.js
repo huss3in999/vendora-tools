@@ -85,9 +85,10 @@ test.describe('New GCC transport page tracking', () => {
 
       const gtagCalls = await page.evaluate(() => window.__gtagCalls || []);
       expect(gtagCalls.some((call) => call[0] === 'config' && call[1] === 'G-DFY197R2MS')).toBeTruthy();
-      for (const eventName of ['landing_page_view', 'route_view', 'whatsapp_click', 'lead_created', 'prepared_dialog_view', 'whatsapp_continue']) {
+      for (const eventName of ['landing_page_view', 'route_view', 'whatsapp_intent', 'lead_created', 'prepared_dialog_view', 'whatsapp_click']) {
         expect(gtagCalls.some((call) => call[0] === 'event' && call[1] === eventName), `${slug}: ${eventName}`).toBeTruthy();
       }
+      expect(gtagCalls.some((call) => call[0] === 'event' && call[1] === 'whatsapp_click' && call[2]?.confirmed_departure === 1), `${slug}: confirmed WhatsApp departure`).toBeTruthy();
 
       expect(consoleErrors.filter((message) => !/Failed to load resource/.test(message))).toEqual([]);
     });

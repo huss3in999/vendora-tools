@@ -17,6 +17,8 @@
 **/.git/**
 **/.codex-remote-attachments
 **/.codex-remote-attachments/**
+API
+API/**
 **/zip
 **/zip/**
 package-lock.json
@@ -26,6 +28,8 @@ worker.js
 AGENTS.md
 .gitignore
 .assetsignore
+*.zip
+**/*.zip
 
 # Transport production containment: deploy public pages/assets, not operational
 # logs, repair helpers, research workspaces, source drafts, or raw/private media.

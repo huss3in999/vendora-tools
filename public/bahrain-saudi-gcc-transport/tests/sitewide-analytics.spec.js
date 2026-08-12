@@ -24,7 +24,7 @@ test('route page emits one GA page view, route metadata, and one WhatsApp event'
   const whatsapp = page.locator('a[data-wa-message]', { hasText: 'Request a route quotation' }).first();
   await expect(whatsapp).toBeAttached();
   await whatsapp.dispatchEvent('click');
-  await expect.poll(() => internal.filter((item) => item.event_name === 'whatsapp_click').length).toBe(1);
+  await expect.poll(() => internal.filter((item) => item.event_name === 'whatsapp_intent').length).toBe(1);
   await expect.poll(() => internal.filter((item) => item.event_name === 'quote_request').length).toBe(1);
 
   const reverse = page.locator('[data-reverse-route]').first();
@@ -49,6 +49,51 @@ test('route page emits one GA page view, route metadata, and one WhatsApp event'
   });
   await expect.poll(() => internal.filter((item) => item.event_name === 'phone_click').length).toBe(1);
   await expect.poll(() => internal.filter((item) => item.event_name === 'map_click').length).toBe(1);
+});
+
+test('WhatsApp funnel emits one intent, one cancel, and one confirmed departure', async ({ page }) => {
+  const rawEvents = [];
+  const leadActions = [];
+  let leadNumber = 0;
+
+  await page.route('**/api/track', async (route) => {
+    const payload = JSON.parse(route.request().postData() || '{}');
+    if (String(payload.event_name || '').startsWith('whatsapp_')) rawEvents.push(payload);
+    await route.fulfill({ status: 202, contentType: 'application/json', body: '{"ok":true}' });
+  });
+  await page.route('**/api/transport/event', async (route) => {
+    const payload = JSON.parse(route.request().postData() || '{}');
+    if (payload.action) {
+      leadActions.push(payload.action);
+      await route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' });
+      return;
+    }
+    if (['pageview', 'presence_heartbeat'].includes(payload.serviceType)) {
+      await route.fulfill({ status: 201, contentType: 'application/json', body: '{"ok":true}' });
+      return;
+    }
+    leadNumber += 1;
+    leadActions.push('create_lead');
+    await route.fulfill({
+      status: 201,
+      contentType: 'application/json',
+      body: JSON.stringify({ ok: true, leadId: `lead-${leadNumber}`, booking_ref: `REF-${leadNumber}`, care_token: `token-${leadNumber}` }),
+    });
+  });
+
+  await page.goto('/bahrain-saudi-gcc-transport/en/bahrain-to-khobar/');
+  const cta = page.locator('a[data-booking-submit], a[data-wa-message]').first();
+  await cta.click();
+  await page.locator('#vendora-booking-ready [data-booking-cancel]').last().click();
+  await page.waitForTimeout(1300);
+  await cta.click();
+  await page.locator('#vendora-booking-ready [data-booking-continue]').click();
+
+  await expect.poll(() => rawEvents.filter((event) => event.event_name === 'whatsapp_intent').length).toBe(2);
+  expect(rawEvents.filter((event) => event.event_name === 'whatsapp_cancel')).toHaveLength(1);
+  const departures = rawEvents.filter((event) => event.event_name === 'whatsapp_click' && event.confirmed_departure === 1);
+  expect(departures).toHaveLength(1);
+  expect(leadActions).toEqual(['create_lead', 'cancel_whatsapp_handoff', 'create_lead', 'confirm_whatsapp_handoff']);
 });
 
 test('policy page is tracked and DNT disables all tracking', async ({ browser }) => {

@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Transport Control Room & CRM | Vendora</title>
-  
+
   <!-- Fonts and Icon libraries -->
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -83,6 +83,16 @@
       background-color: #0b0f19 !important;
       color: #f3f4f6 !important;
     }
+    #appNav .tab-btn {
+      min-width: 0;
+      min-height: 48px;
+      padding: 9px 10px;
+      border: 1px solid transparent;
+    }
+    #appNav .tab-btn:hover {
+      border-color: rgba(71, 85, 105, .7);
+      background: rgba(15, 23, 42, .72);
+    }
     @media (max-width: 639px) {
       main { padding: 10px 12px 86px; }
       #dashboardView { padding-bottom: 72px; }
@@ -101,8 +111,9 @@
       #appNav { position: fixed; inset: 0; z-index: 60; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: start; overflow-y: auto; padding: 18px 16px 96px; border: 0; border-radius: 0; background: #070b14; box-shadow: none; gap: 10px; }
       #appNav .app-menu-header { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 10px; }
       #appNav .app-menu-section { grid-column: 1 / -1; margin: 8px 4px -2px; font-size: .65rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #64748b; }
-      #appNav .tab-btn { flex-direction: column; justify-content: center; min-height: 104px; margin: 0; padding: 12px 8px; font-size: .78rem; border: 1px solid rgba(51, 65, 85, .72); background: rgba(15, 23, 42, .66); box-shadow: 0 8px 22px rgba(0,0,0,.14); }
-      #appNav .tab-btn i { width: 20px; height: 20px; padding: 9px; box-sizing: content-box; border-radius: 14px; background: rgba(16,185,129,.10); color: #6ee7b7; }
+      #appNav .tab-btn { flex-direction: row; justify-content: flex-start; min-height: 58px; margin: 0; padding: 9px 10px; font-size: .72rem; text-align: left; border: 1px solid rgba(51, 65, 85, .72); background: rgba(15, 23, 42, .66); box-shadow: 0 6px 18px rgba(0,0,0,.12); }
+      #appNav .tab-btn i { width: 17px; height: 17px; padding: 7px; box-sizing: content-box; flex: 0 0 auto; border-radius: 11px; background: rgba(16,185,129,.10); color: #6ee7b7; }
+      #appNav .tab-btn span { min-width: 0; line-height: 1.25; text-align: left; }
       #dashboardView.app-home #ownerSnapshot { margin-top: 0; }
       #dashboardView.app-home #secondaryKpis, #dashboardView.app-home #insightsPanel { display: none; }
       #dashboardView:not(.app-home) #ownerSnapshot,
@@ -123,7 +134,6 @@
       #passengerCarePanel .glass-panel > div:first-child p { line-height: 1.45; }
       #leadsMobile, #pvMobile, #passengerCareMobile { gap: 10px; padding: 12px; }
       #leadsMobile > *, #pvMobile > *, #passengerCareMobile > * { border-radius: 16px; }
-      #deleteVisitsBtn { display: none; }
       #settingsPanel form { padding: 16px; gap: 18px; }
       #settingsPanel .grid { gap: 12px; }
       #settingsPanel input, #settingsPanel textarea { padding: 10px 12px; font-size: .78rem; }
@@ -277,6 +287,9 @@
         </button>
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="reports" type="button">
           <i data-lucide="bar-chart-3" class="h-4 w-4"></i> Charts
+        </button>
+        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="googleAudience" type="button">
+          <i data-lucide="users-round" class="h-4 w-4 text-blue-400"></i> Google Audience
         </button>
         <p class="app-menu-section">Manage</p>
         <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="pricing" type="button">
@@ -878,6 +891,51 @@
         </div>
       </section>
 
+      <!-- ISOLATED GOOGLE ANALYTICS AUDIENCE REPORT -->
+      <section id="googleAudiencePanel" class="tab-panel hidden space-y-5 min-w-0">
+        <div class="rounded-3xl glass-panel p-4 sm:p-6 shadow-xl min-w-0 overflow-hidden">
+          <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div class="min-w-0">
+              <p class="text-[10px] font-bold uppercase tracking-[.18em] text-blue-400">Aggregate Google Analytics data</p>
+              <h2 class="mt-1 flex items-center gap-2 text-lg font-bold text-white"><i data-lucide="users-round" class="h-5 w-5 text-blue-400"></i> Google Audience</h2>
+              <p class="mt-1 max-w-2xl text-xs leading-relaxed text-slate-400">Bonus aggregate reporting only. This panel never changes GetVendora visitors, sessions, WhatsApp metrics, conversion, or individual visitor identity.</p>
+            </div>
+            <div class="flex shrink-0 flex-wrap gap-2" aria-label="Google Audience period">
+              <button type="button" data-audience-days="7" class="audience-period rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-bold text-slate-300">7 days</button>
+              <button type="button" data-audience-days="30" class="audience-period rounded-xl border border-blue-500/40 bg-blue-950/30 px-3 py-2 text-xs font-bold text-blue-300">30 days</button>
+              <button type="button" data-audience-days="90" class="audience-period rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-xs font-bold text-slate-300">90 days</button>
+            </div>
+          </div>
+
+          <div id="googleAudienceStatus" class="mt-5 rounded-2xl border border-slate-800 bg-slate-950/40 p-4 text-xs leading-relaxed text-slate-400">
+            Open this report to load aggregate Google audience data.
+          </div>
+
+          <div class="mt-5 grid min-w-0 gap-4 lg:grid-cols-2">
+            <section class="min-w-0 rounded-2xl border border-slate-800 bg-slate-950/35 p-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">Age groups</h3>
+              <div id="googleAudienceAge" class="mt-4 space-y-3"></div>
+            </section>
+            <section class="min-w-0 rounded-2xl border border-slate-800 bg-slate-950/35 p-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">Gender</h3>
+              <div id="googleAudienceGender" class="mt-4 space-y-3"></div>
+            </section>
+            <section class="min-w-0 rounded-2xl border border-slate-800 bg-slate-950/35 p-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">Countries</h3>
+              <div id="googleAudienceCountries" class="mt-4 space-y-3"></div>
+            </section>
+            <section class="min-w-0 rounded-2xl border border-slate-800 bg-slate-950/35 p-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">Acquisition sources</h3>
+              <div id="googleAudienceSources" class="mt-4 space-y-3"></div>
+            </section>
+          </div>
+
+          <div class="mt-5 rounded-2xl border border-amber-500/20 bg-amber-950/10 p-4 text-xs leading-relaxed text-amber-100/80">
+            <strong class="text-amber-200">Privacy:</strong> age and gender are aggregate only. Individual visitor investigations continue to show “Not available individually.”
+          </div>
+        </div>
+      </section>
+
       <!-- TAB 4: PRICING ENGINE -->
       <section id="pricingPanel" class="tab-panel hidden space-y-6">
         <div class="rounded-3xl glass-panel p-6 shadow-xl">
@@ -1098,9 +1156,10 @@
         </div>
       </section>
 
-      <nav id="mobileDock" class="fixed inset-x-3 bottom-3 z-40 grid-cols-4 rounded-2xl border border-slate-700/80 bg-slate-900/95 p-1.5 shadow-2xl backdrop-blur">
+      <nav id="mobileDock" class="fixed inset-x-3 bottom-3 z-40 grid-cols-5 rounded-2xl border border-slate-700/80 bg-slate-900/95 p-1.5 shadow-2xl backdrop-blur">
         <button type="button" data-app-jump="home" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-brand-light"><i data-lucide="house" class="h-4 w-4"></i>Home</button>
         <button type="button" data-app-jump="live" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="radio" class="h-4 w-4"></i>Live</button>
+        <button type="button" data-app-jump="visitors" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="users" class="h-4 w-4"></i>Visitors</button>
         <button type="button" data-app-jump="reports" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="chart-no-axes-combined" class="h-4 w-4"></i>Reports</button>
         <button type="button" data-app-jump="menu" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="menu" class="h-4 w-4"></i>Menu</button>
       </nav>
@@ -1434,6 +1493,7 @@
       activeCareFeedback: null,
       tracking: {},
       analyticsRefreshTimer: null,
+      googleAudience: { days: 30, loadedFor: null, loading: false, data: null },
     };
 
     const loginView = document.getElementById('loginView');
@@ -1452,6 +1512,16 @@
       return String(value ?? '').replace(/[&<>"']/g, (char) => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
       }[char]));
+    }
+
+    function urlPart(value, part) {
+      if (!value) return '';
+      try {
+        const parsed = new URL(value, window.location.origin);
+        return part === 'host' ? parsed.hostname : parsed[part] || '';
+      } catch {
+        return '';
+      }
     }
 
     function normalizeCountryCode(value) {
@@ -1495,34 +1565,47 @@
     const GCC_COUNTRY_CODES = new Set(['BH', 'SA', 'AE', 'KW', 'QA', 'OM', 'IQ']);
     const LIKELY_BOT_CITIES = ['the dalles', 'altoona', 'ashburn', 'boardman', 'council bluffs', 'clifton', 'dublin', 'mesquite', 'san jose'];
 
-    function isLikelyBot(item) {
-      if (!item) return false;
-      const country = normalizeCountryCode(item.cf_country);
-      const city = String(item.cf_city || '').toLowerCase().trim();
-      const device = String(item.device_type || 'desktop').toLowerCase();
-      const isClick = String(item.service_type || '') !== 'pageview';
-      const suspicion = Number(item.suspicion_score || 0);
-      const scroll = Number(item.scroll_depth_percent || 0);
-      const timeMs = Number(item.time_on_page_ms || 0);
+    const CRAWLER_UA_REGEX = /bot|crawler|spider|headless|puppeteer|selenium|playwright|googlebot|bingbot|yandex|ahrefs|semrush|bytespider|gptbot|claudebot|perplexitybot|facebookexternalhit|twitterbot/i;
+
+    function classifyVisitor(item) {
+      if (!item) return { category: 'LIKELY_HUMAN', reason: 'No data' };
       const ua = String(item.user_agent || '').toLowerCase();
+      const isVerified = item.verified_bot === 1 || item.verified_bot === '1' || item.verified_bot === true;
 
-      if (/bot|crawler|spider|headless|puppeteer|selenium|playwright|googlebot|bingbot|yandex|ahrefs|semrush|bytespider|gptbot|claudebot|perplexitybot/i.test(ua)) {
-        return true;
-      }
-      if (item.verified_bot === 1 || item.verified_bot === '1' || item.verified_bot === true) {
-        return true;
+      if (CRAWLER_UA_REGEX.test(ua) || isVerified) {
+        return { category: 'VERIFIED_BOT', reason: isVerified ? 'Verified crawler signal' : 'Known bot User-Agent' };
       }
 
-      // GCC mobile traffic and WhatsApp clicks in GCC — treat as real human customers
-      if (GCC_COUNTRY_CODES.has(country) && (isClick || device === 'mobile')) return false;
+      const serviceType = String(item.service_type || '');
+      const hasWaActivity = Boolean(item.click_text)
+        || ['whatsapp_intent', 'whatsapp_click', 'whatsapp_cancel'].includes(serviceType)
+        || Boolean(item.whatsapp_confirmed_at)
+        || ['completed', 'contacted', 'cancelled'].includes(String(item.status || ''));
 
-      if (suspicion >= 60) return true;
-      if (LIKELY_BOT_CITIES.some((needle) => city.includes(needle))) return true;
-      if (['CN', 'RU', 'KP'].includes(country)) return true;
-      if (country === 'IN' && device === 'desktop' && !isClick && scroll < 10 && timeMs < 12000) return true;
-      if (country === 'US' && device === 'desktop' && !isClick && timeMs < 8000 && scroll < 15) return true;
-      if (!GCC_COUNTRY_CODES.has(country) && device === 'desktop' && !isClick && timeMs < 5000 && scroll < 5) return true;
-      return false;
+      if (hasWaActivity) {
+        return { category: 'LIKELY_HUMAN', reason: 'WhatsApp interaction' };
+      }
+
+      const city = String(item.cf_city || '').toLowerCase().trim();
+      const timeMs = Number(item.time_on_page_ms || 0);
+      const scroll = Number(item.scroll_depth_percent || 0);
+      const suspicion = Number(item.suspicion_score || 0);
+
+      const LIKELY_BOT_CITIES = ['the dalles', 'altoona', 'boardman', 'council bluffs', 'mesquite'];
+      if (LIKELY_BOT_CITIES.some((needle) => city.includes(needle)) && timeMs < 2000 && scroll === 0) {
+        return { category: 'LIKELY_AUTOMATED', reason: 'Datacenter location with zero engagement' };
+      }
+
+      if (suspicion >= 85 && timeMs < 1000 && scroll === 0) {
+        return { category: 'LIKELY_AUTOMATED', reason: 'High suspicion score with zero engagement' };
+      }
+
+      return { category: 'LIKELY_HUMAN', reason: 'Normal visitor' };
+    }
+
+    function isLikelyBot(item) {
+      const cls = classifyVisitor(item);
+      return cls.category === 'VERIFIED_BOT' || cls.category === 'LIKELY_AUTOMATED';
     }
 
     function filteredLeads() {
@@ -1545,29 +1628,68 @@
     function computeClientStats() {
       const leads = filteredLeads();
       const pvs = filteredPageviews();
-      const groups = groupVisitors([...pvs, ...leads]);
-      const all = [...pvs, ...leads];
-      const sessions = new Set(all.map((e) => e.session_id).filter(Boolean)).size || groups.length;
-      
-      const intents = leads.length;
-      const cancelled = leads.filter((l) => String(l.service_type || '') === 'whatsapp_cancel' || String(l.status || '') === 'cancelled').length;
-      const departed = leads.filter((l) => {
-        const payload = leadPayload(l);
-        return (String(l.service_type || '') === 'whatsapp_click' && payload.confirmed_departure === 1) || ['completed', 'contacted'].includes(String(l.status || ''));
-      }).length;
+      const allEvents = [...pvs, ...leads];
+      const groups = groupVisitors(allEvents);
+
+      const totalVisitors = groups.length;
+      const sessions = new Set(allEvents.map((e) => e.session_id).filter(Boolean)).size || groups.length;
+      const pageviews = pvs.length;
+
+      let intentsUnique = 0;
+      let cancelledUnique = 0;
+      let departedUnique = 0;
+      let leftWithoutWA = 0;
+      let rawIntents = 0;
+      let rawCancels = 0;
+      let rawDepartures = 0;
+
+      for (const g of groups) {
+        let hasIntent = false;
+        let hasCancel = false;
+        let hasDepart = false;
+
+        for (const e of g.events) {
+          const payload = leadPayload(e);
+          const isClick = (e.service_type || '') !== 'pageview';
+          const isCancel = String(e.service_type || '') === 'whatsapp_cancel' || String(e.status || '') === 'cancelled';
+          const isDepart = (String(e.service_type || '') === 'whatsapp_click' && payload.confirmed_departure === 1) || Boolean(e.whatsapp_confirmed_at) || ['completed', 'contacted'].includes(String(e.status || ''));
+
+          if (isClick || isCancel || isDepart) {
+            hasIntent = true;
+            rawIntents += 1;
+          }
+          if (isCancel) {
+            hasCancel = true;
+            rawCancels += 1;
+          }
+          if (isDepart) {
+            hasDepart = true;
+            rawDepartures += 1;
+          }
+        }
+
+        if (hasDepart) departedUnique += 1;
+        if (hasCancel) cancelledUnique += 1;
+        if (hasIntent) intentsUnique += 1;
+        else leftWithoutWA += 1;
+      }
 
       return {
-        total: leads.length,
-        total_pageviews: pvs.length,
-        total_visitors: groups.length,
+        total: rawIntents,
+        total_pageviews: pageviews,
+        total_visitors: totalVisitors,
         total_sessions: sessions,
-        intents_count: intents,
-        cancelled_count: cancelled,
-        departed_count: departed,
+        left_without_whatsapp: leftWithoutWA,
+        intents_count: intentsUnique,
+        cancelled_count: cancelledUnique,
+        departed_count: departedUnique,
+        raw_intents: rawIntents,
+        raw_cancels: rawCancels,
+        raw_departures: rawDepartures,
         returning_visitors: groups.filter((g) => g.returning).length,
-        avg_time_on_page_ms: all.length ? all.reduce((sum, e) => sum + Number(e.time_on_page_ms || 0), 0) / all.length : 0,
-        avg_scroll_depth_percent: all.length ? all.reduce((sum, e) => sum + Number(e.scroll_depth_percent || 0), 0) / all.length : 0,
-        pageview_sessions: new Set(pvs.map((e) => e.session_id).filter(Boolean)).size || 1,
+        avg_time_on_page_ms: allEvents.length ? allEvents.reduce((sum, e) => sum + Number(e.time_on_page_ms || 0), 0) / allEvents.length : 0,
+        avg_scroll_depth_percent: allEvents.length ? allEvents.reduce((sum, e) => sum + Number(e.scroll_depth_percent || 0), 0) / allEvents.length : 0,
+        pageview_sessions: new Set(pvs.map((e) => e.session_id).filter(Boolean)).size || 0,
       };
     }
 
@@ -1732,6 +1854,109 @@
         ? ' Local file previews can be blocked by browser CORS. Use admin/open-admin-local.bat or open the live admin URL instead of opening index.html directly.'
         : '';
       throw new Error(`Unable to reach the transport admin API. Tried: ${tried.join(', ')}${networkError ? ` (${networkError.message})` : ''}.${localFileHint}`);
+    }
+
+    async function googleAudienceApi(days) {
+      const candidates = uniqueApiCandidates(API_URLS.map((url) => url.replace(/\/admin$/, '/google-audience')));
+      let lastMessage = 'Google Audience is unavailable.';
+      for (const endpoint of candidates) {
+        try {
+          const response = await fetch(`${endpoint}?days=${encodeURIComponent(days)}`, {
+            headers: { authorization: `Bearer ${state.token}`, 'content-type': 'application/json' },
+          });
+          const data = await response.json().catch(() => null);
+          if (response.status === 404) continue;
+          if (data) return data;
+          lastMessage = `Google Audience returned an unreadable response (${response.status}).`;
+        } catch (error) {
+          lastMessage = error.message || lastMessage;
+        }
+      }
+      return { ok: false, connected: false, reason: 'unavailable', message: lastMessage };
+    }
+
+    function googleAudienceBars(rows, emptyMessage = 'No aggregate data available yet.') {
+      if (!Array.isArray(rows) || !rows.length) return `<p class="text-xs leading-relaxed text-slate-500">${escapeHtml(emptyMessage)}</p>`;
+      const max = Math.max(...rows.map((row) => Number(row.active_users || 0)), 1);
+      return rows.map((row) => `
+        <div>
+          <div class="mb-1 flex items-center justify-between gap-3 text-xs">
+            <span class="min-w-0 truncate font-semibold text-slate-300">${escapeHtml(row.label || 'Unknown')}</span>
+            <strong class="shrink-0 text-white">${Number(row.active_users || 0)}</strong>
+          </div>
+          <div class="h-2 overflow-hidden rounded-full bg-slate-800"><div class="h-full rounded-full bg-blue-500" style="width:${Math.max(4, Number(row.active_users || 0) / max * 100)}%"></div></div>
+        </div>
+      `).join('');
+    }
+
+    function demographicUnavailableHtml() {
+      return '<div class="rounded-xl border border-slate-800 bg-slate-900/40 p-3 text-xs leading-relaxed text-slate-400"><strong class="text-slate-200">Demographic data not available yet.</strong><br>Google may require more eligible traffic or a wider date range.</div>';
+    }
+
+    function renderGoogleAudience(data) {
+      const status = document.getElementById('googleAudienceStatus');
+      const age = document.getElementById('googleAudienceAge');
+      const gender = document.getElementById('googleAudienceGender');
+      const countries = document.getElementById('googleAudienceCountries');
+      const sources = document.getElementById('googleAudienceSources');
+      if (!status || !age || !gender || !countries || !sources) return;
+
+      if (!data?.ok || !data.connected) {
+        const missing = data?.reason === 'missing_secret';
+        status.className = 'mt-5 rounded-2xl border border-amber-500/25 bg-amber-950/15 p-4 text-xs leading-relaxed text-amber-100/80';
+        status.innerHTML = `<strong class="text-amber-200">${missing ? 'Google Audience is not connected.' : 'Google Audience is temporarily unavailable.'}</strong><br>${escapeHtml(data?.message || 'The core admin remains fully operational.')}`;
+        age.innerHTML = demographicUnavailableHtml();
+        gender.innerHTML = demographicUnavailableHtml();
+        countries.innerHTML = '<p class="text-xs text-slate-500">Google aggregate country data is not connected.</p>';
+        sources.innerHTML = '<p class="text-xs text-slate-500">Google aggregate acquisition data is not connected.</p>';
+        return;
+      }
+
+      const audience = data.audience || {};
+      const effectiveDays = Number(data.effective_days || data.requested_days || state.googleAudience.days);
+      status.className = 'mt-5 rounded-2xl border border-emerald-500/25 bg-emerald-950/15 p-4 text-xs leading-relaxed text-emerald-100/80';
+      status.innerHTML = `<strong class="text-emerald-300">Connected to GA4 property ${escapeHtml(data.property_id || '')}.</strong> Showing aggregate data for ${effectiveDays} days.${data.fallback_used ? ' The selected 7-day range had no eligible demographics, so Google’s 90-day data is shown.' : ''}${data.cached ? ' Cached response.' : ''}`;
+      age.innerHTML = audience.age?.available
+        ? googleAudienceBars(audience.age.rows) + `<p class="mt-3 text-[10px] text-slate-500">Known: ${Number(audience.age.known_users || 0)} · Unknown: ${Number(audience.age.unknown_users || 0)}</p>`
+        : demographicUnavailableHtml();
+      gender.innerHTML = audience.gender?.available
+        ? googleAudienceBars(audience.gender.rows) + `<p class="mt-3 text-[10px] text-slate-500">Known: ${Number(audience.gender.known_users || 0)} · Unknown: ${Number(audience.gender.unknown_users || 0)}</p>`
+        : demographicUnavailableHtml();
+      countries.innerHTML = googleAudienceBars(audience.countries, 'No aggregate country data available for this period.');
+      sources.innerHTML = googleAudienceBars(audience.sources, 'No aggregate acquisition data available for this period.');
+    }
+
+    async function loadGoogleAudience(days = state.googleAudience.days) {
+      if (state.googleAudience.loading) return;
+      state.googleAudience.days = Number(days) || 30;
+      state.googleAudience.loading = true;
+      document.querySelectorAll('.audience-period').forEach((button) => {
+        const active = Number(button.dataset.audienceDays) === state.googleAudience.days;
+        button.classList.toggle('border-blue-500/40', active);
+        button.classList.toggle('bg-blue-950/30', active);
+        button.classList.toggle('text-blue-300', active);
+        button.classList.toggle('border-slate-700', !active);
+        button.classList.toggle('bg-slate-900', !active);
+        button.classList.toggle('text-slate-300', !active);
+      });
+      const status = document.getElementById('googleAudienceStatus');
+      if (status) {
+        status.className = 'mt-5 rounded-2xl border border-slate-800 bg-slate-950/40 p-4 text-xs leading-relaxed text-slate-400';
+        status.textContent = 'Loading aggregate Google Audience data…';
+      }
+      try {
+        const data = await googleAudienceApi(state.googleAudience.days);
+        state.googleAudience.data = data;
+        state.googleAudience.loadedFor = state.googleAudience.days;
+        renderGoogleAudience(data);
+      } catch (error) {
+        const data = { ok: false, connected: false, reason: 'unavailable', message: 'Google Audience is temporarily unavailable. The core admin is unaffected.' };
+        state.googleAudience.data = data;
+        state.googleAudience.loadedFor = state.googleAudience.days;
+        renderGoogleAudience(data);
+      } finally {
+        state.googleAudience.loading = false;
+      }
     }
 
     function queryFromFilters(extra = {}) {
@@ -2008,11 +2233,58 @@
       const last = events[events.length - 1];
       const first = events[0];
       const pv = leadPayload(last);
+      const firstPv = leadPayload(first);
       const clicks = events.filter((e) => (e.service_type || '') !== 'pageview');
       const pages = events.filter((e) => (e.service_type || '') === 'pageview');
+      const sessionIds = [...new Set(events.map((e) => e.session_id).filter(Boolean))];
+      const isReturning = sessionIds.length > 1 || Math.max(...events.map((e) => Number(e.visit_count || 1))) > 1;
+
+      let hasDepart = false;
+      let hasCancel = false;
+      let hasIntent = false;
+
+      let rawAttempts = 0;
+      let rawCancels = 0;
+      let rawDepartures = 0;
+
+      for (const e of events) {
+        const payload = leadPayload(e);
+        const isClick = (e.service_type || '') !== 'pageview';
+        const isCanc = String(e.service_type || '') === 'whatsapp_cancel' || String(e.status || '') === 'cancelled';
+        const isDep = (String(e.service_type || '') === 'whatsapp_click' && payload.confirmed_departure === 1) || Boolean(e.whatsapp_confirmed_at) || ['completed', 'contacted'].includes(String(e.status || ''));
+
+        if (isClick || isCanc || isDep) {
+          hasIntent = true;
+          rawAttempts += 1;
+        }
+        if (isCanc) {
+          hasCancel = true;
+          rawCancels += 1;
+        }
+        if (isDep) {
+          hasDepart = true;
+          rawDepartures += 1;
+        }
+      }
+
+      let finalOutcome = 'Left without WhatsApp';
+      let outcomeBadgeClass = 'border-slate-700 bg-slate-800 text-slate-300';
+      if (hasDepart) {
+        finalOutcome = 'Departed to WhatsApp';
+        outcomeBadgeClass = 'border-emerald-500/40 bg-emerald-950/40 text-emerald-300';
+      } else if (hasCancel) {
+        finalOutcome = 'WA Cancelled';
+        outcomeBadgeClass = 'border-red-500/40 bg-red-950/40 text-red-300';
+      } else if (hasIntent) {
+        finalOutcome = 'WA Intent / Did Not Continue';
+        outcomeBadgeClass = 'border-amber-500/40 bg-amber-950/40 text-amber-300';
+      }
+
+      const vId = first.visitor_id || pv.visitorId || last.visitor_id || key;
+      const vShort = formattedVisitorShortId(vId);
+
       const loc = [last.cf_city, last.cf_region, last.cf_country ? countryLabel(last.cf_country) : ''].filter(Boolean).join(', ') || 'Unknown location';
       const flag = last.cf_country ? countryFlag(last.cf_country) : '';
-      const totalSeconds = Math.round(events.reduce((sum, e) => Math.max(sum, Number(e.time_on_page_ms || 0)), 0) / 1000);
 
       const infoRow = (label, value) => `
         <div class="flex justify-between gap-3 border-b border-slate-800/60 py-2 text-xs">
@@ -2020,42 +2292,164 @@
           <dd class="text-right font-semibold text-slate-200 max-w-[60%] break-words">${value}</dd>
         </div>`;
 
-      const timeline = events.map((e) => {
+      // 1. SUMMARY
+      const summaryHtml = `
+        <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4 space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-brand">1. Visitor Investigation</span>
+            <span class="rounded-full border ${outcomeBadgeClass} px-3 py-1 text-xs font-bold">${escapeHtml(finalOutcome)}</span>
+          </div>
+          <div class="grid gap-2 sm:grid-cols-2 text-xs">
+            <div><span class="text-slate-400">Visitor Short ID:</span> <strong class="font-mono text-cyan-300">${escapeHtml(vShort)}</strong></div>
+            <div><span class="text-slate-400">Type:</span> <strong class="${isReturning ? 'text-amber-300' : 'text-cyan-300'}">${isReturning ? 'Returning Visitor' : 'New Visitor'}</strong></div>
+            <div><span class="text-slate-400">First Seen:</span> <strong class="text-slate-200">${escapeHtml(formatDate(first.clicked_at))} (${relTime(first.clicked_at)})</strong></div>
+            <div><span class="text-slate-400">Last Seen:</span> <strong class="text-slate-200">${escapeHtml(formatDate(last.clicked_at))} (${relTime(last.clicked_at)})</strong></div>
+            <div><span class="text-slate-400">Sessions Count:</span> <strong class="text-slate-200">${sessionIds.length}</strong></div>
+            <div><span class="text-slate-400">Pages Count:</span> <strong class="text-slate-200">${pages.length}</strong></div>
+          </div>
+        </div>`;
+
+      // 2. ACQUISITION
+      const searchQueryText = 'Search query not provided';
+      const trafficSrc = pv.trafficSource || firstPv.trafficSource || last.utm_source || first.utm_source || 'direct/unknown';
+      const acqHtml = `
+        <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4 space-y-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-cyan-400">2. Acquisition &amp; Search Context</h4>
+          <dl>
+            ${infoRow('Traffic Source', escapeHtml(trafficSrc))}
+            ${infoRow('First Referrer Host', escapeHtml(pv.firstReferrerHost || pv.referrerHost || urlPart(first.referrer, 'host') || 'direct/bookmark'))}
+            ${infoRow('First Landing Path', escapeHtml(pv.firstLandingPath || first.page_path || '/'))}
+            ${infoRow('First Landing Title', escapeHtml(pv.firstLandingTitle || prettyRouteName(first)))}
+            ${infoRow('UTM Source', escapeHtml(last.utm_source || pv.utmSource || '-'))}
+            ${infoRow('UTM Medium', escapeHtml(last.utm_medium || pv.utmMedium || '-'))}
+            ${infoRow('UTM Campaign', escapeHtml(last.utm_campaign || pv.utmCampaign || '-'))}
+            ${infoRow('Search Query', `<span class="italic text-slate-500">${searchQueryText}</span>`)}
+          </dl>
+        </div>`;
+
+      // 3. LOCATION
+      const locHtml = `
+        <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4 space-y-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400">3. Location (Server-Derived)</h4>
+          <dl>
+            ${infoRow('Cloudflare Country', `${flag ? flag + ' ' : ''}${escapeHtml(countryLabel(last.cf_country))}`)}
+            ${infoRow('Approx. Region', escapeHtml(last.cf_region || 'Approximate (unverified)'))}
+            ${infoRow('Approx. City', escapeHtml(last.cf_city || 'Approximate (unverified)'))}
+            ${infoRow('Timezone', escapeHtml(last.cf_timezone || '-'))}
+          </dl>
+        </div>`;
+
+      // 4. DEVICE
+      const devHtml = `
+        <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4 space-y-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-400">4. Device &amp; Browser Metadata</h4>
+          <dl>
+            ${infoRow('Device Category', escapeHtml(last.device_type || 'desktop'))}
+            ${infoRow('Browser & OS', [pv.browserName, pv.browserVersion, pv.operatingSystem].filter(Boolean).join(' ') || escapeHtml(last.user_agent || '-'))}
+            ${infoRow('Language', escapeHtml(String(last.language || 'ar')))}
+            ${infoRow('Screen Resolution', last.screen_width ? `${last.screen_width}x${last.screen_height}` : '-')}
+            ${infoRow('Viewport Size', pv.viewportWidth ? `${pv.viewportWidth}x${pv.viewportHeight}` : '-')}
+          </dl>
+        </div>`;
+
+      // 5. JOURNEY TIMELINE
+      const timelineLines = events.map((e, idx) => {
         const isClick = (e.service_type || '') !== 'pageview';
+        const isCanc = String(e.service_type || '') === 'whatsapp_cancel' || String(e.status || '') === 'cancelled';
+        const isDep = (String(e.service_type || '') === 'whatsapp_click' && leadPayload(e).confirmed_departure === 1) || Boolean(e.whatsapp_confirmed_at) || ['completed', 'contacted'].includes(String(e.status || ''));
+
+        let label = 'Viewed Page';
+        let badgeColor = 'bg-blue-500';
+        if (isDep) { label = 'WhatsApp Handoff Confirmed (Departed)'; badgeColor = 'bg-emerald-500'; }
+        else if (isCanc) { label = 'WhatsApp Confirmation Cancelled'; badgeColor = 'bg-red-500'; }
+        else if (isClick) { label = 'WhatsApp Intent Triggered'; badgeColor = 'bg-amber-500'; }
+
         const dur = Math.round(Number(e.time_on_page_ms || 0) / 1000);
         return `
-          <li class="relative pl-5">
-            <span class="absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full ${isClick ? 'bg-brand' : 'bg-emerald-500'}"></span>
+          <li class="relative pl-5 pb-3">
+            <span class="absolute left-0 top-1.5 h-3 w-3 rounded-full ${badgeColor}"></span>
             <div class="flex items-center justify-between gap-2">
-              <span class="text-xs font-bold ${isClick ? 'text-brand-light' : 'text-white'}">${isClick ? 'WhatsApp click' : 'Viewed'}: ${escapeHtml(prettyRouteName(e))}</span>
-              <span class="shrink-0 text-[10px] text-slate-500">${escapeHtml(formatDate(e.clicked_at))}</span>
+              <span class="text-xs font-bold text-white">${idx + 1}. ${escapeHtml(label)}: ${escapeHtml(prettyRouteName(e))}</span>
+              <span class="shrink-0 font-mono text-[10px] text-slate-400">${escapeHtml(formatDate(e.clicked_at))}</span>
             </div>
-            <p class="text-[10px] text-slate-500">${escapeHtml(e.page_path || '')}${dur ? ` &middot; ${dur}s on page` : ''}</p>
+            <p class="text-[10px] text-slate-400">${escapeHtml(e.page_path || '')}${dur ? ` &middot; ${dur}s engagement &middot; ${e.scroll_depth_percent ?? 0}% scroll` : ''}</p>
           </li>`;
       }).join('');
 
+      const journeyHtml = `
+        <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4 space-y-2 col-span-full">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-amber-400">5. Chronological Visitor Journey</h4>
+          <ul class="space-y-1 border-l-2 border-slate-800 pl-3 pt-2">${timelineLines}</ul>
+        </div>`;
+
+      // 6. ROUTE INTENT
+      const routesVisited = [...new Set(events.map((e) => prettyRouteName(e)).filter(Boolean))].join(', ');
+      const routeIntentHtml = `
+        <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4 space-y-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-purple-400">6. Route Intent &amp; Interest</h4>
+          <dl>
+            ${infoRow('First Landing Route', escapeHtml(prettyRouteName(first)))}
+            ${infoRow('All Routes Visited', escapeHtml(routesVisited || '-'))}
+            ${infoRow('Last Route before CTA', escapeHtml(prettyRouteName(last)))}
+            ${infoRow('Displayed Price', last.public_price_shown ? `${last.public_price_shown} BHD` : '-')}
+          </dl>
+        </div>`;
+
+      // 7. WHATSAPP & DISCLAIMER
+      const waHtml = `
+        <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4 space-y-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-brand-light">7. WhatsApp Funnel Summary</h4>
+          <dl>
+            ${infoRow('Funnel Stage Outcome', `<strong class="${outcomeBadgeClass} px-2 py-0.5 rounded-full text-[10px]">${escapeHtml(finalOutcome)}</strong>`)}
+            ${infoRow('Raw Intent Attempts', String(rawAttempts))}
+            ${infoRow('Raw Cancel Events', String(rawCancels))}
+            ${infoRow('Raw Departures', String(rawDepartures))}
+            ${infoRow('Target Driver Number', escapeHtml(last.booking_phone_used || pv.bookingPhoneUsed || 'Default driver'))}
+          </dl>
+          <div class="mt-3 rounded-xl border border-amber-500/20 bg-amber-950/20 p-3 text-[11px] leading-relaxed text-amber-200">
+            <i data-lucide="info" class="inline h-3.5 w-3.5 mr-1 align-text-bottom text-amber-400"></i>
+            <strong>Notice:</strong> Website cannot verify whether the WhatsApp message was actually sent/read.
+          </div>
+        </div>`;
+
+      // 8. EVIDENCE CONFIDENCE TIERING
+      const confidenceHtml = `
+        <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4 space-y-2 col-span-full">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-blue-400">8. Evidence Confidence Classification</h4>
+          <div class="grid gap-2 sm:grid-cols-2 md:grid-cols-3 text-[11px]">
+            <div class="rounded-xl border border-emerald-500/20 bg-emerald-950/20 p-2.5">
+              <span class="font-bold text-emerald-300 block mb-1">OBSERVED (Client-side)</span>
+              <p class="text-slate-300">Pages visited, buttons clicked, price shown, timestamps, scroll depth, session duration.</p>
+            </div>
+            <div class="rounded-xl border border-cyan-500/20 bg-cyan-950/20 p-2.5">
+              <span class="font-bold text-cyan-300 block mb-1">SERVER-DERIVED (Cloudflare)</span>
+              <p class="text-slate-300">Country code, approximate city/region, network ASN, Cloudflare Ray ID.</p>
+            </div>
+            <div class="rounded-xl border border-purple-500/20 bg-purple-950/20 p-2.5">
+              <span class="font-bold text-purple-300 block mb-1">REFERRER-PROVIDED</span>
+              <p class="text-slate-300">HTTP referrer host, campaign parameters (UTM source/medium/campaign).</p>
+            </div>
+            <div class="rounded-xl border border-slate-700 bg-slate-900/40 p-2.5">
+              <span class="font-bold text-slate-400 block mb-1">AGGREGATE ONLY</span>
+              <p class="text-slate-400">Age: Not available individually<br>Gender: Not available individually</p>
+            </div>
+            <div class="rounded-xl border border-amber-500/20 bg-amber-950/20 p-2.5 sm:col-span-2">
+              <span class="font-bold text-amber-300 block mb-1">NOT VERIFIABLE FROM WEBSITE</span>
+              <p class="text-amber-200/90">Whether WhatsApp message was delivered, read, driver replied, or trip completed (must be recorded in CRM).</p>
+            </div>
+          </div>
+        </div>`;
+
       body.innerHTML = `
         <div class="grid gap-4 md:grid-cols-2">
-          <div>
-            <h4 class="mb-2 text-xs font-bold uppercase tracking-wider text-emerald-400">Visitor</h4>
-            <dl>
-              ${infoRow('Location', `${flag ? flag + ' ' : ''}${escapeHtml(loc)}`)}
-              ${infoRow('Device', escapeHtml(last.device_type || 'desktop'))}
-              ${infoRow('Language', escapeHtml(String(last.language || 'ar')))}
-              ${infoRow('Currently on', escapeHtml(prettyRouteName(last)))}
-              ${infoRow('Pages viewed', String(pages.length))}
-              ${infoRow('WhatsApp clicks', String(clicks.length))}
-              ${infoRow('Time on site', `${totalSeconds}s`)}
-              ${infoRow('First seen', escapeHtml(formatDate(first.clicked_at)))}
-              ${infoRow('Last seen', escapeHtml(formatDate(last.clicked_at)))}
-              ${infoRow('Traffic source', escapeHtml(pv.trafficSource || last.utm_source || 'direct/unknown'))}
-              ${infoRow('Referrer', escapeHtml(pv.referrerHost || 'direct/bookmark'))}
-            </dl>
-          </div>
-          <div>
-            <h4 class="mb-2 text-xs font-bold uppercase tracking-wider text-emerald-400">Journey (what they are doing)</h4>
-            <ul class="space-y-3 border-l border-slate-800 pl-2">${timeline}</ul>
-          </div>
+          ${summaryHtml}
+          ${acqHtml}
+          ${locHtml}
+          ${devHtml}
+          ${routeIntentHtml}
+          ${waHtml}
+          ${journeyHtml}
+          ${confidenceHtml}
         </div>`;
       dialog.showModal();
       renderIcons();
@@ -2104,7 +2498,7 @@
 
     function setTab(tab) {
       state.tab = tab;
-      ['home', 'leads', 'passengerCare', 'pageviews', 'analytics', 'cohorts', 'reports', 'pricing', 'settings', 'alerts', 'errors'].forEach((name) => dashboardView.classList.toggle(`app-${name}`, tab === name));
+      ['home', 'leads', 'passengerCare', 'pageviews', 'analytics', 'cohorts', 'reports', 'googleAudience', 'pricing', 'settings', 'alerts', 'errors'].forEach((name) => dashboardView.classList.toggle(`app-${name}`, tab === name));
       document.getElementById('appNav').classList.add('hidden');
       document.getElementById('mobileMenuIcon').setAttribute('data-lucide', 'chevron-down');
       document.querySelectorAll('.tab-btn').forEach((button) => {
@@ -2117,11 +2511,16 @@
       document.querySelectorAll('.tab-panel').forEach((panel) => panel.classList.add('hidden'));
       document.getElementById(`${tab}Panel`).classList.remove('hidden');
       document.querySelectorAll('[data-app-jump]').forEach((button) => {
-        const active = (tab === 'home' && button.dataset.appJump === 'home') || (tab === 'reports' && button.dataset.appJump === 'reports');
+        const active = (tab === 'home' && button.dataset.appJump === 'home')
+          || (tab === 'pageviews' && button.dataset.appJump === 'visitors')
+          || (tab === 'reports' && button.dataset.appJump === 'reports');
         button.classList.toggle('text-brand-light', active);
         button.classList.toggle('text-slate-300', !active);
         button.classList.toggle('bg-brand/10', active);
       });
+      if (tab === 'googleAudience' && state.googleAudience.loadedFor !== state.googleAudience.days) {
+        loadGoogleAudience(state.googleAudience.days);
+      }
     }
 
     function fillSelect(name, values, label, formatter = (value) => value) {
@@ -2147,9 +2546,8 @@
 
     function renderStats() {
       const summary = state.summary || {};
-      const client = computeClientStats();
-      const views = client ? client.total_pageviews : Number(summary.total_pageviews || 0);
-      const clicks = client ? client.total : Number(summary.total || 0);
+      const views = Number(summary.total_pageviews || 0);
+      const clicks = Number(summary.whatsapp_intents_count || summary.total || 0);
       
       // Pageviews (funnel top)
       const statPv = document.getElementById('statPageviews');
@@ -2158,14 +2556,14 @@
       if (statPvTod) statPvTod.textContent = summary.pageviews_today || 0;
 
       // Sessions
-      const sessions = client ? client.total_sessions : Number(summary.sessions || summary.pageview_sessions || 0);
+      const sessions = Number(summary.total_sessions || summary.pageview_sessions || 0);
       const statSess = document.getElementById('statSessions');
       if (statSess) statSess.textContent = sessions;
 
       // 3-Stage WhatsApp metrics
-      const intents = client ? client.intents_count : Number(summary.whatsapp_intents_count || clicks);
-      const cancelled = client ? client.cancelled_count : Number(summary.whatsapp_cancelled_count || summary.cancelled_count || 0);
-      const departed = client ? client.whatsapp_departed_count : Number(summary.whatsapp_departed_count || summary.completed_count || 0);
+      const intents = Number(summary.whatsapp_intents_count || 0);
+      const cancelled = Number(summary.whatsapp_cancelled_count || 0);
+      const departed = Number(summary.whatsapp_departed_count || 0);
 
       const statInt = document.getElementById('statIntents');
       if (statInt) statInt.textContent = intents;
@@ -2186,8 +2584,8 @@
       if (statRev) statRev.textContent = `${Number(summary.total_revenue || 0).toFixed(2)} BHD`;
 
       // Unique visitors (real people, not page hits)
-      const totalVisitors = client ? client.total_visitors : Number(summary.total_visitors || 0);
-      const returningVisitors = client ? client.returning_visitors : Number(summary.returning_visitors || 0);
+      const totalVisitors = Number(summary.total_visitors || 0);
+      const returningVisitors = Number(summary.returning_visitors || 0);
       const newVisitors = Math.max(0, totalVisitors - returningVisitors);
       const statVis = document.getElementById('statVisitors');
       if (statVis) statVis.textContent = totalVisitors;
@@ -2197,9 +2595,9 @@
       if (statRetVis) statRetVis.textContent = returningVisitors;
 
       // Engagement
-      const avgTime = client ? client.avg_time_on_page_ms : summary.avg_time_on_page_ms || 0;
-      const avgScroll = client ? client.avg_scroll_depth_percent : summary.avg_scroll_depth_percent || 0;
-      const pvSessions = client ? client.pageview_sessions : summary.pageview_sessions;
+      const avgTime = summary.avg_time_on_page_ms || 0;
+      const avgScroll = summary.avg_scroll_depth_percent || 0;
+      const pvSessions = summary.total_sessions || summary.pageview_sessions || 0;
       const statAvgT = document.getElementById('statAvgTime');
       if (statAvgT) statAvgT.textContent = formatDuration(avgTime);
       const statAvgS = document.getElementById('statAvgScroll');
@@ -2207,11 +2605,8 @@
       const statPvS = document.getElementById('statPageviewsSession');
       if (statPvS) statPvS.textContent = pvSessions > 0 ? Math.round(Number(views || 0) / Number(pvSessions)) : 1;
 
-      const effectiveSummary = client
-        ? { ...summary, total: clicks, total_pageviews: views, total_visitors: totalVisitors, returning_visitors: returningVisitors }
-        : summary;
-      renderOwnerSnapshot(effectiveSummary);
-      renderInsights(effectiveSummary);
+      renderOwnerSnapshot(summary);
+      renderInsights(summary);
       updateBotsFilterNote();
     }
 
@@ -2820,7 +3215,7 @@
         ['cancelled', summary.cancelled_count || 0],
         ['spam', summary.spam_count || 0],
       ];
-      const total = Math.max(Number(summary.total || 0), 1);
+      const total = Math.max(Number(summary.lead_records_total || summary.total || 0), 1);
       document.getElementById('pipelineSummary').innerHTML = rows.map(([status, count]) => `
         <div>
           <div class="mb-1 flex items-center justify-between gap-2 text-xs">
@@ -2832,51 +3227,151 @@
       `).join('');
     }
 
+    function recentActivityTimestamp(item) {
+      return item.clicked_at || item.created_at || '';
+    }
+
+    function recentActivitySource(events) {
+      for (const event of events) {
+        const payload = leadPayload(event);
+        const source = String(payload.firstTrafficSource || payload.trafficSource || event.utm_source || '').trim();
+        const referrer = String(payload.firstReferrerHost || payload.referrerHost || event.referrer || '').trim();
+        const value = `${source} ${referrer}`.toLowerCase();
+        if (/google/.test(value)) return 'Google';
+        if (/chatgpt|openai/.test(value)) return 'ChatGPT';
+        if (/gemini|bard/.test(value)) return 'Gemini';
+        if (/perplexity/.test(value)) return 'Perplexity';
+        if (/copilot/.test(value)) return 'Copilot';
+        if (/bing/.test(value)) return 'Bing';
+        if (/instagram/.test(value)) return 'Instagram';
+        if (/facebook|fb\./.test(value)) return 'Facebook';
+        if (/tiktok/.test(value)) return 'TikTok';
+        if (/snapchat/.test(value)) return 'Snapchat';
+        if (/youtube|youtu\.be/.test(value)) return 'YouTube';
+        if (source && !/^(direct|direct\/unknown|unknown|none|\(not set\))$/i.test(source)) return 'Other referral';
+        if (referrer && !/(^|\/\/)(www\.)?getvendora\.net/i.test(referrer)) return 'Other referral';
+      }
+      return 'Direct / Unknown';
+    }
+
+    function recentActivityLanding(group) {
+      const first = group.firstEvent || {};
+      const firstTouch = group.events.find((event) => {
+        const payload = leadPayload(event);
+        return payload.firstLandingPath || payload.landingPath;
+      }) || first;
+      const payload = leadPayload(firstTouch);
+      const path = String(payload.firstLandingPath || payload.landingPath || first.page_path || '').trim();
+      const segments = path.split('/').filter(Boolean);
+      const siteIndex = segments.indexOf('bahrain-saudi-gcc-transport');
+      let slug = siteIndex >= 0 ? segments[siteIndex + 1] : '';
+      if (slug === 'en') slug = segments[siteIndex + 2] || '';
+      const mapped = ROUTE_NAME_MAP[String(slug || first.route_slug || '').replace(/-en$/i, '')];
+      const label = mapped?.en || String(first.route_label || '').trim() || prettifySlug(slug || first.route_slug) || path || 'Unknown landing page';
+      return label.replace(/\s+to\s+/gi, ' → ');
+    }
+
+    function recentActivityWhatsappStatus(events) {
+      let status = 'No WhatsApp';
+      for (const event of events) {
+        const payload = leadPayload(event);
+        const service = String(event.service_type || '').toLowerCase();
+        const leadStatus = String(event.status || '').toLowerCase();
+        const departed = (service === 'whatsapp_click' || service === 'whatsapp_continue')
+          && (Number(payload.confirmed_departure) === 1 || Boolean(event.whatsapp_confirmed_at));
+        if (departed || ['completed', 'contacted'].includes(leadStatus)) status = 'WA Departed';
+        else if (service === 'whatsapp_cancel' || leadStatus === 'cancelled') status = 'WA Cancelled';
+        else if (service === 'whatsapp_intent' || service === 'whatsapp_click') status = 'WA Interested';
+      }
+      return status;
+    }
+
+    function recentActivityDuration(group) {
+      const latestSession = group.lastEvent?.session_id || '';
+      const sessionEvents = latestSession
+        ? group.events.filter((event) => String(event.session_id || '') === String(latestSession))
+        : group.events;
+      let reportedDuration = 0;
+      let summedPageTime = 0;
+      for (const event of sessionEvents) {
+        const payload = leadPayload(event);
+        reportedDuration = Math.max(reportedDuration, Number(payload.session_duration_ms || 0));
+        if (String(event.service_type || '') === 'pageview') summedPageTime += Number(event.time_on_page_ms || 0);
+      }
+      return Math.max(reportedDuration, summedPageTime);
+    }
+
     function recentActivity() {
-      return [
-        ...state.leads.map((lead) => ({ ...lead, activity_type: 'WhatsApp click' })),
+      const groups = new Map();
+      const events = [
         ...state.pageviews.map((visit) => ({ ...visit, activity_type: 'Page visit' })),
-      ]
-        .sort((a, b) => new Date(b.clicked_at || 0) - new Date(a.clicked_at || 0))
-        .slice(0, 8);
+        ...state.leads.map((lead) => ({ ...lead, activity_type: 'WhatsApp activity' })),
+      ];
+      for (const event of events) {
+        const visitorId = visitorIdFor(event);
+        const key = String(visitorId || event.session_id || '');
+        if (!key) continue;
+        if (!groups.has(key)) groups.set(key, { key, visitorId, events: [], sessions: new Set(), maxVisitCount: 1 });
+        const group = groups.get(key);
+        group.events.push(event);
+        if (event.session_id) group.sessions.add(String(event.session_id));
+        group.maxVisitCount = Math.max(group.maxVisitCount, Number(event.visit_count || leadPayload(event).visitCount || 1));
+      }
+      return [...groups.values()].map((group) => {
+        group.events.sort((a, b) => new Date(recentActivityTimestamp(a) || 0) - new Date(recentActivityTimestamp(b) || 0));
+        group.firstEvent = group.events[0] || {};
+        group.lastEvent = group.events[group.events.length - 1] || {};
+        group.pageCount = group.events.filter((event) => String(event.service_type || '') === 'pageview').length;
+        group.returning = group.sessions.size > 1 || group.maxVisitCount > 1;
+        group.source = recentActivitySource(group.events);
+        group.landing = recentActivityLanding(group);
+        group.whatsappStatus = recentActivityWhatsappStatus(group.events);
+        group.durationMs = recentActivityDuration(group);
+        return group;
+      }).sort((a, b) => new Date(recentActivityTimestamp(b.lastEvent) || 0) - new Date(recentActivityTimestamp(a.lastEvent) || 0)).slice(0, 8);
     }
 
     function renderActivityFeed() {
-      const items = recentActivity();
-      document.getElementById('activityFeed').innerHTML = items.map((item) => {
-        const payload = leadPayload(item);
-        const referrerHost = payload.firstReferrerHost || payload.referrerHost || payload.referrer || item.referrer || '';
-        const pagePath = item.page_path || payload.pagePath || payload.landingPath || '/';
+      const groups = recentActivity();
+      document.getElementById('activityFeed').innerHTML = groups.map((group) => {
+        const locationEvent = [...group.events].reverse().find((event) => event.cf_country || event.cf_city) || group.lastEvent;
+        const countryCode = normalizeCountryCode(locationEvent.cf_country);
+        const country = countryCode && countryNameFormatter ? countryNameFormatter.of(countryCode) : (countryCode || 'Unknown location');
+        const location = [locationEvent.cf_city, country].filter(Boolean).join(' · ');
+        const shortId = group.visitorId ? formattedVisitorShortId(group.visitorId) : formattedSessionShortId(group.key);
+        const badge = group.returning ? 'Returning' : 'New';
+        const badgeClass = group.returning ? 'border-amber-500/30 bg-amber-950/30 text-amber-300' : 'border-cyan-500/30 bg-cyan-950/30 text-cyan-300';
+        const statusClass = group.whatsappStatus === 'WA Departed' ? 'text-emerald-300' : group.whatsappStatus === 'WA Cancelled' ? 'text-red-300' : group.whatsappStatus === 'WA Interested' ? 'text-amber-300' : 'text-slate-400';
         return `
-          <div class="rounded-xl border border-slate-800 bg-slate-900/30 p-3">
-            <div class="flex items-center justify-between gap-3">
-              <span class="text-xs font-bold ${item.activity_type === 'WhatsApp click' ? 'text-brand-light' : 'text-blue-300'}">${escapeHtml(item.activity_type)}</span>
-              <span class="text-[10px] text-slate-500">${escapeHtml(formatDate(item.clicked_at))}</span>
+          <article role="button" tabindex="0" data-activity-visitor="${escapeHtml(group.key)}" class="cursor-pointer rounded-2xl border border-slate-800 bg-slate-900/30 p-3.5 transition hover:border-blue-500/40 hover:bg-blue-950/15">
+            <div class="flex min-w-0 items-start justify-between gap-3">
+              <div class="flex min-w-0 flex-wrap items-center gap-2">
+                <span class="font-mono text-xs font-extrabold text-white">${escapeHtml(shortId)}</span>
+                <span class="rounded-full border px-2 py-0.5 text-[10px] font-bold ${badgeClass}">${badge}</span>
+              </div>
+              <span class="shrink-0 text-[10px] text-slate-500">${escapeHtml(relTime(recentActivityTimestamp(group.lastEvent)))}</span>
             </div>
-            <p class="mt-1 truncate text-xs font-semibold text-slate-200">${escapeHtml(item.route_label || pagePath)}</p>
-            <p class="mt-1 text-[11px] text-slate-300">
-              <span class="text-slate-500 font-medium shrink-0">Page URL:</span> <span class="font-mono text-cyan-300 break-all">${escapeHtml(pagePath)}</span>
-            </p>
-            <p class="mt-0.5 text-[10px] text-slate-400 break-words">
-              <span class="text-slate-500 font-semibold shrink-0">Source:</span> ${escapeHtml(discoveryText(item))}${referrerHost ? ` (${escapeHtml(referrerHost)})` : ''} | ${escapeHtml(locationText(item))}
-            </p>
-          </div>
+            <p class="mt-2 text-xs text-slate-300"><span class="font-semibold text-white">${escapeHtml(location)}</span> <span class="text-slate-600">·</span> <strong class="text-emerald-300">${escapeHtml(group.source)}</strong></p>
+            <p class="mt-1 truncate text-xs text-slate-300"><span class="text-slate-500">Landing:</span> ${escapeHtml(group.landing)}</p>
+            <div class="mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-slate-800/70 pt-2 text-[11px]">
+              <span class="text-slate-400">${group.pageCount} page${group.pageCount === 1 ? '' : 's'} · ${escapeHtml(formatDuration(group.durationMs))}</span>
+              <strong class="${statusClass}">Final: ${escapeHtml(group.whatsappStatus)}</strong>
+            </div>
+            <p class="mt-2 text-right text-[10px] font-semibold text-blue-400">Tap for full visitor journey →</p>
+          </article>
         `;
       }).join('') || '<p class="text-xs text-slate-500">No activity yet.</p>';
     }
 
     function renderReportCards() {
       const summary = state.summary || {};
-      const client = state.client || null;
-      
-      const totalVisitors = client ? client.total_visitors : Number(summary.total_visitors || 0);
-      const sessions = client ? client.pageview_sessions : Number(summary.pageview_sessions || 0);
-      const views = client ? client.pageview_sessions : Number(summary.total_pageviews || 0);
-      const clicks = Number(summary.total || 0);
-      
-      const intents = client ? client.intents_count : Number(summary.whatsapp_intents_count || 0);
-      const cancelled = client ? client.cancelled_count : Number(summary.whatsapp_cancelled_count || 0);
-      const departed = client ? client.departed_count : Number(summary.whatsapp_departed_count || 0);
+      const totalVisitors = Number(summary.total_visitors || 0);
+      const sessions = Number(summary.total_sessions || summary.pageview_sessions || 0);
+      const views = Number(summary.total_pageviews || 0);
+      const intents = Number(summary.whatsapp_intents_count || 0);
+      const cancelled = Number(summary.whatsapp_cancelled_count || 0);
+      const departed = Number(summary.whatsapp_departed_count || 0);
+      const clicks = intents;
       
       const conversion = views > 0 ? ((clicks / views) * 100).toFixed(1) + '%' : '0%';
 
@@ -3314,7 +3809,7 @@
         api(queryFromFilters({ resource: 'leads', limit: 800 })),
         api(queryFromFilters({ resource: 'pageviews', limit: 800 })),
         api('?resource=routes'),
-        api(queryFromFilters({ resource: 'summary' })),
+        api(queryFromFilters({ resource: 'summary', bot_filter: state.trafficFilter })),
         api('?resource=notification-settings'),
         api('?resource=errors&limit=200').catch(() => ({ errors: state.errors })),
         api(search ? `?resource=passenger-care&search=${encodeURIComponent(search)}&limit=200` : '?resource=passenger-care&limit=200'),
@@ -3883,6 +4378,22 @@ Note: This report is automatically compiled by the Control Room operations track
         showStatus(error.message, 'error');
       }
     });
+    const activityFeed = document.getElementById('activityFeed');
+    const openRecentVisitor = (event) => {
+      const card = event.target.closest('[data-activity-visitor]');
+      if (!card) return;
+      showOnlineVisitor(card.dataset.activityVisitor);
+    };
+    activityFeed.addEventListener('click', openRecentVisitor);
+    activityFeed.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      if (!event.target.closest('[data-activity-visitor]')) return;
+      event.preventDefault();
+      openRecentVisitor(event);
+    });
+    document.querySelectorAll('.audience-period').forEach((button) => button.addEventListener('click', () => {
+      loadGoogleAudience(Number(button.dataset.audienceDays));
+    }));
     document.querySelectorAll('.tab-btn').forEach((button) => button.addEventListener('click', () => setTab(button.dataset.tab)));
     document.getElementById('mobileMenuToggle').addEventListener('click', () => {
       const nav = document.getElementById('appNav');
@@ -3901,6 +4412,7 @@ Note: This report is automatically compiled by the Control Room operations track
       const target = button.dataset.appJump;
       if (target === 'home') { setTab('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
       else if (target === 'live') { setTab('home'); document.getElementById('onlineNowPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      else if (target === 'visitors') { setTab('pageviews'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
       else if (target === 'reports') { setTab('reports'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
       else {
         const nav = document.getElementById('appNav');
@@ -4023,7 +4535,7 @@ Note: This report is automatically compiled by the Control Room operations track
       button.addEventListener('click', () => applyPeriod(button.dataset.period));
     });
 
-    document.getElementById('customPeriodToggle').addEventListener('click', () => {
+    document.getElementById('customPeriodToggle')?.addEventListener('click', () => {
       const picker = document.getElementById('customPeriodPicker');
       const form = document.getElementById('filtersForm');
       document.getElementById('customFromDate').value = form.elements.from.value || '';
@@ -4055,12 +4567,15 @@ Note: This report is automatically compiled by the Control Room operations track
     const trafficFilterSelect = document.getElementById('botTrafficFilter');
     if (trafficFilterSelect) {
       trafficFilterSelect.value = state.trafficFilter;
-      trafficFilterSelect.addEventListener('change', (event) => {
+      trafficFilterSelect.addEventListener('change', async (event) => {
         state.trafficFilter = event.target.value;
         sessionStorage.setItem('vendora_traffic_filter', state.trafficFilter);
-        renderStats();
-        renderOnlineNow();
-        renderLeads();
+        try {
+          await loadDashboard();
+          showStatus('Traffic filter updated.', 'success');
+        } catch (err) {
+          showStatus(err.message, 'error');
+        }
       });
     }
 
