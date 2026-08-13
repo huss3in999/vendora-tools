@@ -428,11 +428,14 @@
             <h2 class="mt-1 text-xl font-extrabold text-white">What is happening in your business?</h2>
             <p class="mt-1 text-xs text-slate-400">Start here. Tap any card only when you want the detail.</p>
           </div>
-          <span id="ownerSnapshotPeriod" class="text-xs font-semibold text-brand-light">Selected period</span>
+          <div class="flex flex-wrap items-center gap-2">
+            <span id="ownerSnapshotPeriod" class="text-xs font-semibold text-brand-light">Selected period</span>
+            <span id="trafficMetricsSourceBadge" class="rounded-full border border-slate-700 bg-slate-900 px-2 py-1 text-[10px] font-bold text-slate-300">Checking source…</span>
+          </div>
         </div>
         <div class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <button type="button" data-jump="pageviews" class="rounded-2xl border border-cyan-500/20 bg-slate-950/45 p-4 text-left transition hover:border-cyan-400/60">
-            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">People interested</p>
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Website visitors</p>
             <p id="ownerVisitors" class="mt-2 text-3xl font-extrabold text-cyan-300">0</p>
             <p id="ownerVisitorsDetail" class="mt-1 text-xs text-slate-400">No visitor data yet</p>
           </button>
@@ -2586,13 +2589,29 @@
       // Unique visitors (real people, not page hits)
       const totalVisitors = Number(summary.total_visitors || 0);
       const returningVisitors = Number(summary.returning_visitors || 0);
-      const newVisitors = Math.max(0, totalVisitors - returningVisitors);
+      const newVisitors = Number.isFinite(Number(summary.new_visitors))
+        ? Math.max(0, Number(summary.new_visitors))
+        : Math.max(0, totalVisitors - returningVisitors);
       const statVis = document.getElementById('statVisitors');
       if (statVis) statVis.textContent = totalVisitors;
       const statNewVis = document.getElementById('statNewVisitors');
       if (statNewVis) statNewVis.textContent = newVisitors;
       const statRetVis = document.getElementById('statReturningVisitors');
       if (statRetVis) statRetVis.textContent = returningVisitors;
+      const sourceBadge = document.getElementById('trafficMetricsSourceBadge');
+      if (sourceBadge) {
+        const isGa4 = summary.traffic_metrics_source === 'ga4';
+        const isFallback = summary.traffic_metrics_source === 'd1_fallback';
+        sourceBadge.textContent = isGa4 ? 'GA4 verified' : isFallback ? 'D1 fallback ⚠' : 'D1 filtered';
+        sourceBadge.className = `rounded-full border px-2 py-1 text-[10px] font-bold ${isGa4
+          ? 'border-emerald-500/30 bg-emerald-950/40 text-emerald-300'
+          : isFallback
+            ? 'border-amber-500/30 bg-amber-950/40 text-amber-300'
+            : 'border-slate-700 bg-slate-900 text-slate-300'}`;
+        sourceBadge.title = summary.traffic_metrics_warning || (isGa4
+          ? 'Visitors, sessions and page views come from GA4 property 528414332.'
+          : 'Traffic metrics come from D1 server activity for this filter.');
+      }
 
       // Engagement
       const avgTime = summary.avg_time_on_page_ms || 0;
@@ -2622,7 +2641,12 @@
 
       document.getElementById('ownerSnapshotPeriod').textContent = period;
       document.getElementById('ownerVisitors').textContent = visitors;
-      document.getElementById('ownerVisitorsDetail').textContent = `${Math.max(0, visitors - Number(summary.returning_visitors || 0))} new visitors`;
+      const newVisitors = Number.isFinite(Number(summary.new_visitors))
+        ? Math.max(0, Number(summary.new_visitors))
+        : Math.max(0, visitors - Number(summary.returning_visitors || 0));
+      document.getElementById('ownerVisitorsDetail').textContent = summary.traffic_metrics_source === 'ga4'
+        ? `${newVisitors} new · GA4 processed traffic`
+        : `${newVisitors} new · ${summary.traffic_metrics_source === 'd1_fallback' ? 'temporary D1 fallback' : 'D1 filtered activity'}`;
       document.getElementById('ownerWhatsApp').textContent = clicks;
       document.getElementById('ownerWhatsAppDetail').textContent = `${conversion}% of page views clicked WhatsApp`;
       document.getElementById('ownerMarket').textContent = topCountry ? countryLabel(topCountry.label) : 'No data yet';
@@ -3380,10 +3404,11 @@
       const clicks = intents;
       
       const conversion = views > 0 ? ((clicks / views) * 100).toFixed(1) + '%' : '0%';
+      const trafficDetail = summary.traffic_metrics_source === 'ga4' ? 'GA4 verified' : 'D1 fallback';
 
       const cards = [
-        ['Visitors', totalVisitors, 'Unique people', 'users', 'text-cyan-400'],
-        ['Sessions', sessions, 'Total visits', 'eye', 'text-blue-400'],
+        ['Visitors', totalVisitors, `${trafficDetail} users`, 'users', 'text-cyan-400'],
+        ['Sessions', sessions, `${trafficDetail} visits`, 'eye', 'text-blue-400'],
         ['WhatsApp Interested', intents, 'Click started', 'message-circle', 'text-amber-400'],
         ['WhatsApp Cancelled', cancelled, 'Did not continue', 'x-circle', 'text-red-400'],
         ['WhatsApp Clicked', departed, 'Confirmed WhatsApp handoff', 'check-circle-2', 'text-emerald-400'],
@@ -3815,7 +3840,7 @@
         api(queryFromFilters({ resource: 'leads', limit: 800 })),
         api(queryFromFilters({ resource: 'pageviews', limit: 800 })),
         api('?resource=routes'),
-        api(queryFromFilters({ resource: 'summary', bot_filter: state.trafficFilter })),
+        api(queryFromFilters({ resource: 'summary', bot_filter: state.trafficFilter, period: state.activePeriod })),
         api('?resource=notification-settings'),
         api('?resource=errors&limit=200').catch(() => ({ errors: state.errors })),
         api(search ? `?resource=passenger-care&search=${encodeURIComponent(search)}&limit=200` : '?resource=passenger-care&limit=200'),
@@ -4268,7 +4293,7 @@ Note: This report is automatically compiled by the Control Room operations track
         if (document.hidden || !state.token) return;
         try {
           const [summaryData, trackingData] = await Promise.all([
-            api(queryFromFilters({ resource: 'summary' })),
+            api(queryFromFilters({ resource: 'summary', bot_filter: state.trafficFilter, period: state.activePeriod })),
             api('?resource=tracking&period=today'),
           ]);
           state.summary = summaryData.summary || {};

@@ -1,7 +1,11 @@
 import test, { before, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { webcrypto } from 'node:crypto';
-import { onRequestGet, clearGoogleAudienceCacheForTests } from '../../functions/api/transport/google-audience.js';
+import {
+  onRequestGet,
+  clearGoogleAudienceCacheForTests,
+  getGa4TrafficMetrics,
+} from '../../functions/api/transport/google-audience.js';
 
 if (!globalThis.crypto) globalThis.crypto = webcrypto;
 
@@ -150,4 +154,52 @@ test('7-day empty demographics automatically fall back to available 90-day data'
   assert.equal(body.effective_days, 90);
   assert.equal(body.fallback_used, true);
   assert.equal(body.audience.age.available, true);
+});
+
+test('core traffic metrics use the exact public transport scope and selected dates', async () => {
+  let requestBody = null;
+  globalThis.fetch = async (url, init = {}) => {
+    if (String(url).includes('oauth2.googleapis.com/token')) {
+      return Response.json({ access_token: 'mock-access-token' });
+    }
+    if (String(url).includes('analyticsdata.googleapis.com')) {
+      requestBody = JSON.parse(init.body);
+      return Response.json({
+        reports: [
+          {
+            rows: [{ metricValues: [
+              { value: '150' },
+              { value: '149' },
+              { value: '188' },
+              { value: '268' },
+            ] }],
+          },
+          {
+            rows: [
+              { dimensionValues: [{ value: 'new' }], metricValues: [{ value: '140' }] },
+              { dimensionValues: [{ value: 'returning' }], metricValues: [{ value: '18' }] },
+            ],
+          },
+        ],
+      });
+    }
+    throw new Error(`Unexpected request: ${url}`);
+  };
+
+  const metrics = await getGa4TrafficMetrics(env(), {
+    startDate: '2026-07-15',
+    endDate: '2026-08-13',
+  });
+
+  assert.equal(metrics.total_users, 150);
+  assert.equal(metrics.active_users, 149);
+  assert.equal(metrics.sessions, 188);
+  assert.equal(metrics.page_views, 268);
+  assert.equal(metrics.returning_users, 18);
+  assert.equal(metrics.new_users, 132);
+  assert.equal(metrics.start_date, '2026-07-15');
+  assert.equal(metrics.end_date, '2026-08-13');
+  assert.equal(requestBody.requests[0].dateRanges[0].startDate, '2026-07-15');
+  assert.match(JSON.stringify(requestBody.requests[0].dimensionFilter), /hostName/);
+  assert.match(JSON.stringify(requestBody.requests[0].dimensionFilter), /bahrain-saudi-gcc-transport/);
 });

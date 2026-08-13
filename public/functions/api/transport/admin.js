@@ -8,6 +8,7 @@ import {
   savePublicRoute,
   savePublicSettings,
 } from './public-settings.js';
+import { getGa4TrafficMetrics } from './google-audience.js';
 
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
@@ -142,6 +143,17 @@ function cleanDate(value) {
   const text = cleanText(value, 32);
   if (!text || !/^\d{4}-\d{2}-\d{2}$/.test(text)) return null;
   return text;
+}
+
+function bahrainToday() {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Bahrain',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date());
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return `${values.year}-${values.month}-${values.day}`;
 }
 
 function cleanDateTime(value) {
@@ -454,6 +466,65 @@ function buildLeadFilters(url, options = {}) {
   };
 }
 
+function ga4TrafficRequest(url) {
+  const botFilter = cleanText(url.searchParams.get('bot_filter'), 20);
+  const unsupportedFilters = ['search', 'status', 'min_seconds', 'max_seconds']
+    .some((key) => Boolean(cleanText(url.searchParams.get(key), 120)));
+  if (unsupportedFilters || (botFilter && botFilter !== 'real')) return null;
+
+  const from = cleanDate(url.searchParams.get('from'));
+  const to = cleanDate(url.searchParams.get('to'));
+  const period = cleanText(url.searchParams.get('period'), 20);
+  let startDate = from || to || 'today';
+  let endDate = to || from || 'today';
+  if (!from && !to && period === 'all') {
+    startDate = '2020-01-01';
+    endDate = 'today';
+  }
+  return {
+    startDate,
+    endDate,
+    filters: {
+      route: cleanText(url.searchParams.get('route'), 160) || '',
+      device: cleanText(url.searchParams.get('device'), 40) || '',
+      country: cleanText(url.searchParams.get('country'), 8) || '',
+      source: cleanText(url.searchParams.get('source'), 120) || '',
+      campaign: cleanText(url.searchParams.get('campaign'), 160) || '',
+    },
+  };
+}
+
+export function mergeCanonicalTrafficMetrics(d1Metrics = {}, ga4Metrics = null) {
+  if (!ga4Metrics) return {
+    ...d1Metrics,
+    traffic_metrics_source: 'd1_fallback',
+    traffic_metrics_warning: 'GA4 traffic metrics are temporarily unavailable; D1 server activity is shown as a fallback.',
+  };
+  const totalVisitors = Math.max(0, Number(ga4Metrics.total_users || 0));
+  const returningVisitors = Math.min(totalVisitors, Math.max(0, Number(ga4Metrics.returning_users || 0)));
+  const interestedVisitors = Math.max(0, Number(d1Metrics.whatsapp_intents_count || 0));
+  return {
+    ...d1Metrics,
+    d1_total_visitors: Number(d1Metrics.total_visitors || 0),
+    d1_total_sessions: Number(d1Metrics.total_sessions || 0),
+    d1_total_pageviews: Number(d1Metrics.total_pageviews || 0),
+    total_visitors: totalVisitors,
+    active_visitors: Math.max(0, Number(ga4Metrics.active_users || 0)),
+    new_visitors: Math.max(0, totalVisitors - returningVisitors),
+    returning_visitors: returningVisitors,
+    total_sessions: Math.max(0, Number(ga4Metrics.sessions || 0)),
+    total_pageviews: Math.max(0, Number(ga4Metrics.page_views || 0)),
+    left_without_whatsapp: Math.max(0, totalVisitors - Math.min(totalVisitors, interestedVisitors)),
+    traffic_metrics_source: 'ga4',
+    traffic_metrics_property_id: ga4Metrics.property_id || '528414332',
+    traffic_metrics_start_date: ga4Metrics.start_date || null,
+    traffic_metrics_end_date: ga4Metrics.end_date || null,
+    traffic_metrics_generated_at: ga4Metrics.generated_at || null,
+    traffic_metrics_cached: Boolean(ga4Metrics.cached),
+    traffic_metrics_warning: null,
+  };
+}
+
 function buildAnalyticsFilters(url) {
   const clauses = [PUBLIC_TRANSPORT_ANALYTICS_SQL, NON_AUTOMATED_ANALYTICS_SQL];
   const bindings = [];
@@ -657,6 +728,10 @@ function mergePerformanceRows(clickRows = [], pageviewRows = []) {
 
 async function getSummary(env, request) {
   const url = new URL(request.url);
+  const ga4Request = ga4TrafficRequest(url);
+  const ga4TrafficPromise = ga4Request && env.GA4_SERVICE_ACCOUNT_JSON
+    ? getGa4TrafficMetrics(env, ga4Request).catch((error) => ({ __error: String(error?.message || error).slice(0, 240) }))
+    : Promise.resolve(null);
   const leadFilters = buildLeadFilters(url, { eventType: 'lead' });
   const pageviewFilters = buildLeadFilters(url, { eventType: 'pageview' });
   const allFilters = buildLeadFilters(url, { eventType: 'all' });
@@ -1036,20 +1111,34 @@ async function getSummary(env, request) {
   const byRoute = mergePerformanceRows(byRouteClicks || [], byRoutePageviews || []).slice(0, 10);
   const byCampaignMerged = mergePerformanceRows(byCampaign || [], byCampaignPageviews || []).slice(0, 10);
   const bySourceMerged = mergePerformanceRows(bySource || [], bySourcePageviews || []).slice(0, 10);
+  const ga4TrafficResult = await ga4TrafficPromise;
+  const canonicalFunnel = ga4TrafficResult && !ga4TrafficResult.__error
+    ? mergeCanonicalTrafficMetrics(visitorFunnel || {}, ga4TrafficResult)
+    : {
+      ...mergeCanonicalTrafficMetrics(visitorFunnel || {}, null),
+      traffic_metrics_source: ga4Request ? 'd1_fallback' : 'd1_filtered',
+      traffic_metrics_warning: ga4TrafficResult?.__error
+        ? 'GA4 traffic metrics are temporarily unavailable; D1 server activity is shown as a fallback.'
+        : 'Advanced filters are using D1 server activity because they cannot be matched exactly in GA4.',
+    };
+  const today = bahrainToday();
+  const isTodayRange = canonicalFunnel.traffic_metrics_source === 'ga4'
+    && ['today', today].includes(canonicalFunnel.traffic_metrics_start_date)
+    && ['today', today].includes(canonicalFunnel.traffic_metrics_end_date);
 
   return {
     summary: {
       ...(leadTotals || {}),
       ...(pageviewTotals || {}),
-      ...(visitorFunnel || {}),
+      ...canonicalFunnel,
       lead_records_total: leadTotals?.total || 0,
-      total: visitorFunnel?.whatsapp_intents_count || 0,
+      total: canonicalFunnel.whatsapp_intents_count || 0,
       today: leadTotals?.today || 0,
-      sessions: visitorFunnel?.total_sessions || 0,
-      pageview_sessions: visitorFunnel?.total_sessions || 0,
-      total_sessions: visitorFunnel?.total_sessions || 0,
-      total_pageviews: visitorFunnel?.total_pageviews || 0,
-      pageviews_today: pageviewTotals?.pageviews_today || 0,
+      sessions: canonicalFunnel.total_sessions || 0,
+      pageview_sessions: canonicalFunnel.total_sessions || 0,
+      total_sessions: canonicalFunnel.total_sessions || 0,
+      total_pageviews: canonicalFunnel.total_pageviews || 0,
+      pageviews_today: isTodayRange ? canonicalFunnel.total_pageviews || 0 : pageviewTotals?.pageviews_today || 0,
       online_now: onlineTotals?.online_transport || 0,
       online_transport: onlineTotals?.online_transport || 0,
       online_care: onlineTotals?.online_care || 0,

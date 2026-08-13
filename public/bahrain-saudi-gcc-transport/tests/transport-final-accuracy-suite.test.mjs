@@ -2,7 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { DatabaseSync } from 'node:sqlite';
-import { onRequestGet as handleAdmin } from '../../functions/api/transport/admin.js';
+import {
+  onRequestGet as handleAdmin,
+  mergeCanonicalTrafficMetrics,
+} from '../../functions/api/transport/admin.js';
 import { onRequestPost as handleLead } from '../../functions/api/transport/whatsapp-lead.js';
 import { onRequestPost as handleTrack } from '../../functions/api/transport/tracking.js';
 
@@ -353,4 +356,39 @@ test('47: pageviews resource returns pageviews rather than duplicate WhatsApp le
   const data = await res.json();
   assert.equal(data.leads.length, 1);
   assert.equal(data.leads[0].service_type, 'pageview');
+});
+
+test('48-52: GA4 replaces only aggregate traffic KPIs while D1 keeps WhatsApp truth', () => {
+  const merged = mergeCanonicalTrafficMetrics({
+    total_visitors: 1164,
+    total_sessions: 1211,
+    total_pageviews: 1282,
+    returning_visitors: 400,
+    whatsapp_intents_count: 3,
+    whatsapp_cancelled_count: 2,
+    whatsapp_departed_count: 1,
+    left_without_whatsapp: 1161,
+  }, {
+    total_users: 150,
+    active_users: 149,
+    new_users: 132,
+    returning_users: 18,
+    sessions: 188,
+    page_views: 268,
+    start_date: '2026-07-15',
+    end_date: '2026-08-13',
+    generated_at: '2026-08-13T12:00:00.000Z',
+  });
+
+  assert.equal(merged.total_visitors, 150);
+  assert.equal(merged.total_sessions, 188);
+  assert.equal(merged.total_pageviews, 268);
+  assert.equal(merged.returning_visitors, 18);
+  assert.equal(merged.new_visitors, 132);
+  assert.equal(merged.whatsapp_intents_count, 3);
+  assert.equal(merged.whatsapp_cancelled_count, 2);
+  assert.equal(merged.whatsapp_departed_count, 1);
+  assert.equal(merged.left_without_whatsapp, 147);
+  assert.equal(merged.d1_total_visitors, 1164);
+  assert.equal(merged.traffic_metrics_source, 'ga4');
 });
