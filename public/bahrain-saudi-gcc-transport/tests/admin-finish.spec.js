@@ -69,7 +69,7 @@ async function mockAdmin(page, googleResponse = null) {
     if (resource === 'routes') body.routes = [];
     else if (resource === 'leads') body.leads = leads;
     else if (resource === 'pageviews') body.leads = pageviews;
-    else if (resource === 'summary') body.summary = { total_visitors: 2, new_visitors: 1, returning_visitors: 1, total_sessions: 3, total_pageviews: 4, whatsapp_intents_count: 1, whatsapp_cancelled_count: 1, whatsapp_departed_count: 1, left_without_whatsapp: 1, traffic_metrics_source: 'ga4' };
+    else if (resource === 'summary') body.summary = { total_visitors: 2, new_visitors: 1, returning_visitors: 1, total_sessions: 3, total_pageviews: 4, whatsapp_intents_count: 0, whatsapp_cancelled_count: 0, whatsapp_departed_count: 1, left_without_whatsapp: 1, traffic_metrics_source: 'ga4' };
     else if (resource === 'notification-settings') body.notification_settings = {};
     else if (resource === 'errors') body.errors = [];
     else if (resource === 'passenger-care') body.feedback = [];
@@ -94,6 +94,8 @@ async function login(page) {
   await page.locator('#loginForm').evaluate((form) => form.requestSubmit());
   await expect(page.locator('#dashboardView')).toBeVisible();
   await expect(page.locator('#ownerVisitors')).toHaveText('2');
+  await expect(page.locator('#ownerWhatsApp')).toHaveText('1');
+  await expect(page.locator('#ownerWhatsAppDetail')).toContainText('completed the WhatsApp handoff');
   await expect(page.locator('#trafficMetricsSourceBadge')).toContainText('GA4 verified');
 }
 

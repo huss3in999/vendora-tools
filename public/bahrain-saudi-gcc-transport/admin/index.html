@@ -2631,7 +2631,7 @@
 
     function renderOwnerSnapshot(summary) {
       const visitors = Number(summary.total_visitors || 0);
-      const clicks = Number(summary.total || 0);
+      const clicks = Number(summary.whatsapp_departed_count || 0);
       const views = Number(summary.total_pageviews || 0);
       const conversion = views > 0 ? ((clicks / views) * 100).toFixed(1) : '0.0';
       const topCountry = (summary.by_country || []).find((row) => row.label && row.label !== 'unknown');
@@ -2648,7 +2648,7 @@
         ? `${newVisitors} new · GA4 processed traffic`
         : `${newVisitors} new · ${summary.traffic_metrics_source === 'd1_fallback' ? 'temporary D1 fallback' : 'D1 filtered activity'}`;
       document.getElementById('ownerWhatsApp').textContent = clicks;
-      document.getElementById('ownerWhatsAppDetail').textContent = `${conversion}% of page views clicked WhatsApp`;
+      document.getElementById('ownerWhatsAppDetail').textContent = `${conversion}% of page views completed the WhatsApp handoff`;
       document.getElementById('ownerMarket').textContent = topCountry ? countryLabel(topCountry.label) : 'No data yet';
       document.getElementById('ownerMarketDetail').textContent = [
         topSource?.label ? `Top source: ${topSource.label}` : '',
