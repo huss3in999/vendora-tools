@@ -36,6 +36,19 @@ function visibleText(html) {
   return html.replace(/<script\b[\s\S]*?<\/script>/gi, ' ').replace(/<style\b[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
+function pageUrl(rel) {
+  return new URL(rel.replace(/index\.html$/i, ''), `${config.site_origin}${config.site_path}`).href;
+}
+
+function pairedRel(rel) {
+  if (rel === 'index.html') return 'en/index.html';
+  return rel.startsWith('en/') ? rel.slice(3) : `en/${rel}`;
+}
+
+function tags(html, pattern) {
+  return [...html.matchAll(pattern)].map((match) => match[0]);
+}
+
 discover();
 const expected = new Set();
 const titles = new Map();
@@ -48,8 +61,9 @@ for (const page of pages) {
   const indexable = !/\bnoindex\b/i.test(robots);
   const title = (page.html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || '').replace(/\s+/g, ' ').trim();
   const description = attr(page.html, /<meta\b[^>]*name=["']description["'][^>]*>/i, 'content');
-  const canonical = attr(page.html, /<link\b[^>]*rel=["']canonical["'][^>]*>/i, 'href');
-  const url = new URL(page.rel.replace(/index\.html$/i, ''), `${config.site_origin}${config.site_path}`).href;
+  const canonicalTags = tags(page.html, /<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/gi);
+  const canonical = attr(canonicalTags[0] || '', /<link\b[^>]*>/i, 'href');
+  const url = pageUrl(page.rel);
   const visible = visibleText(page.html);
   requireValue(direction === (isEnglish ? 'ltr' : 'rtl'), `Direction mismatch: ${page.rel}`);
   if (isEnglish) requireValue(!/[\u0600-\u06ff]/.test(visible), `Visible Arabic on English page: ${page.rel}`);
@@ -61,7 +75,26 @@ for (const page of pages) {
     requireValue(/data-vendora-transport-analytics/.test(page.html) && /data-vendora-analytics-loader/.test(page.html), `Missing analytics coverage: ${page.rel}`);
     requireValue(/class=["'][^"']*\bdiscovery-trust-links\b/.test(page.html), `Missing trust internal links: ${page.rel}`);
     expected.add(url);
+    requireValue(canonicalTags.length === 1, `Expected one canonical tag: ${page.rel}`);
     requireValue(canonical === url, `Canonical mismatch: ${page.rel}`);
+    const pair = pairedRel(page.rel);
+    const pairPage = pages.find((candidate) => candidate.rel === pair);
+    if (pairPage) {
+      const arUrl = pageUrl(isEnglish ? pair : page.rel);
+      const enUrl = pageUrl(isEnglish ? page.rel : pair);
+      const alternateTags = tags(page.html, /<link\b(?=[^>]*\brel=["']alternate["'])(?=[^>]*\bhreflang=["'])[^>]*>/gi);
+      const alternates = new Map();
+      for (const tag of alternateTags) {
+        const hreflang = attr(tag, /<link\b[^>]*>/i, 'hreflang');
+        const href = attr(tag, /<link\b[^>]*>/i, 'href');
+        requireValue(!alternates.has(hreflang), `Duplicate hreflang ${hreflang}: ${page.rel}`);
+        alternates.set(hreflang, href);
+      }
+      requireValue(alternateTags.length === 3, `Expected three hreflang tags: ${page.rel}`);
+      requireValue(alternates.get('ar-BH') === arUrl, `Arabic hreflang mismatch: ${page.rel}`);
+      requireValue(alternates.get('en') === enUrl, `English hreflang mismatch: ${page.rel}`);
+      requireValue(alternates.get('x-default') === arUrl, `x-default hreflang mismatch: ${page.rel}`);
+    }
     requireValue(/property=["']og:title["']/i.test(page.html) && /property=["']og:description["']/i.test(page.html) && /property=["']og:url["']/i.test(page.html), `Incomplete Open Graph metadata: ${page.rel}`);
     requireValue(/name=["']twitter:card["']/i.test(page.html), `Missing Twitter card: ${page.rel}`);
     const titleKey = title.toLowerCase();

@@ -5,6 +5,7 @@ import routePriceConfig from '../../../bahrain-saudi-gcc-transport/config/route-
 const DEFAULT_BOOKING_NUMBER = businessConfig.booking_whatsapp;
 const CACHE_TTL_MS = 60_000;
 let cached = null;
+let pending = null;
 
 export const DEFAULT_PUBLIC_SETTINGS = Object.freeze({
   "brand_display_name": "Vendora Transport",
@@ -158,12 +159,10 @@ export async function ensurePublicSettingsSchema(env) {
 
 export function invalidatePublicSettingsCache() {
   cached = null;
+  pending = null;
 }
 
-export async function getPublicConfig(env, options = {}) {
-  const now = Date.now();
-  if (!options.fresh && cached && cached.expiresAt > now) return cached.value;
-  await ensurePublicSettingsSchema(env);
+async function readPublicConfig(env) {
   const [settingsRow, routeResult] = await Promise.all([
     env.TRANSPORT_DB.prepare('SELECT settings_json, version, updated_at FROM transport_public_settings WHERE id = 1').first(),
     env.TRANSPORT_DB.prepare('SELECT * FROM transport_public_routes WHERE is_active = 1 ORDER BY sort_order, route_slug').all(),
@@ -180,8 +179,38 @@ export async function getPublicConfig(env, options = {}) {
     version: Number(settingsRow?.version || 1),
     updated_at: settingsRow?.updated_at || '',
   };
-  cached = { value, expiresAt: now + CACHE_TTL_MS };
   return value;
+}
+
+function isMissingSchemaError(error) {
+  return /no such (?:table|column)/i.test(String(error?.message || error));
+}
+
+export async function getPublicConfig(env, options = {}) {
+  const now = Date.now();
+  if (!options.fresh && cached && cached.expiresAt > now) return cached.value;
+  if (!options.fresh && pending) return pending;
+
+  const load = async () => {
+    let value;
+    try {
+      value = await readPublicConfig(env);
+    } catch (error) {
+      if (!isMissingSchemaError(error)) throw error;
+      await ensurePublicSettingsSchema(env);
+      value = await readPublicConfig(env);
+    }
+    cached = { value, expiresAt: Date.now() + CACHE_TTL_MS };
+    return value;
+  };
+
+  if (options.fresh) return load();
+  pending = load();
+  try {
+    return await pending;
+  } finally {
+    pending = null;
+  }
 }
 
 export async function savePublicSettings(env, input) {

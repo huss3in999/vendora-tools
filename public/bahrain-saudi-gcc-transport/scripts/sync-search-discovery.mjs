@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const config = JSON.parse(readFileSync(join(root, 'config', 'search-discovery.json'), 'utf8'));
 const checkOnly = process.argv.includes('--check');
+const seoLinksOnly = process.argv.includes('--seo-links-only');
 const excludedRoots = new Set(['admin', 'ai-chat-test', 'functions', 'node_modules', 'scratch', 'test-results', 'tests', 'templates']);
 const excludedGuideSegments = new Set(['src', 'content', 'data', 'planning', 'qa', 'references', 'research', 'seo']);
 const toPosix = (value) => value.split(sep).join('/');
@@ -49,6 +50,29 @@ function pairedRel(rel) {
 function replaceOrInsertHead(html, matcher, markup) {
   if (matcher.test(html)) return html;
   return html.replace(/\s*<\/head>/i, `\n  ${markup}\n</head>`);
+}
+
+function normalizeSeoLinks(rel, html, indexable) {
+  if (!indexable) return html;
+  const pair = pairedRel(rel);
+  const pairFile = join(root, ...pair.split('/'));
+  const language = rel.startsWith('en/') ? 'en' : 'ar';
+  const currentUrl = pageUrl(rel);
+  const arUrl = pageUrl(language === 'ar' ? rel : pair);
+  const enUrl = pageUrl(language === 'en' ? rel : pair);
+  const newline = html.includes('\r\n') ? '\r\n' : '\n';
+  const links = [
+    `<link rel="canonical" href="${currentUrl}">`,
+    ...(existsSync(pairFile) ? [
+      `<link rel="alternate" hreflang="ar-BH" href="${arUrl}">`,
+      `<link rel="alternate" hreflang="en" href="${enUrl}">`,
+      `<link rel="alternate" hreflang="x-default" href="${arUrl}">`
+    ] : [])
+  ].join(`${newline}  `);
+  return html
+    .replace(/\s*<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/gi, '')
+    .replace(/\s*<link\b(?=[^>]*\brel=["']alternate["'])(?=[^>]*\bhreflang=["'])[^>]*>/gi, '')
+    .replace(/\s*<\/head>/i, `${newline}  ${links}${newline}</head>`);
 }
 
 function schemaFor({ url, title, description, language }) {
@@ -104,7 +128,7 @@ function synchronizePage(file, original) {
   const url = pageUrl(rel);
   const title = text(original, /<title[^>]*>([\s\S]*?)<\/title>/i);
   const description = attribute(original, /<meta\b[^>]*name=["']description["'][^>]*>/i, 'content');
-  let html = original;
+  let html = normalizeSeoLinks(rel, original, indexable);
 
   for (const [before, after] of genericReplacements) html = html.replaceAll(before, after);
   if (language === 'en') {
@@ -160,7 +184,11 @@ const changes = [];
 const files = discover().sort();
 for (const file of files) {
   const current = readFileSync(file, 'utf8');
-  const expected = synchronizePage(file, current);
+  const rel = toPosix(relative(root, file));
+  const robots = attribute(current, /<meta\b[^>]*name=["']robots["'][^>]*>/i, 'content');
+  const expected = seoLinksOnly
+    ? normalizeSeoLinks(rel, current, !/\bnoindex\b/i.test(robots))
+    : synchronizePage(file, current);
   if (current !== expected) {
     changes.push(toPosix(relative(root, file)));
     if (!checkOnly) writeFileSync(file, expected, 'utf8');
@@ -190,17 +218,19 @@ const generated = new Map([
   ['sitemap-gcc-transport-en.xml', sitemap('en')],
   ['sitemap-index.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <sitemap><loc>${config.site_origin}${config.site_path}sitemap-gcc-transport.xml</loc><lastmod>${config.last_reviewed}</lastmod></sitemap>\n  <sitemap><loc>${config.site_origin}${config.site_path}sitemap-gcc-transport-en.xml</loc><lastmod>${config.last_reviewed}</lastmod></sitemap>\n</sitemapindex>\n`]
 ]);
-for (const [name, expected] of generated) {
-  const path = join(root, name);
-  const current = existsSync(path) ? readFileSync(path, 'utf8') : '';
-  if (current !== expected) {
-    changes.push(name);
-    if (!checkOnly) writeFileSync(path, expected, 'utf8');
+if (!seoLinksOnly) {
+  for (const [name, expected] of generated) {
+    const path = join(root, name);
+    const current = existsSync(path) ? readFileSync(path, 'utf8') : '';
+    if (current !== expected) {
+      changes.push(name);
+      if (!checkOnly) writeFileSync(path, expected, 'utf8');
+    }
   }
 }
 
 console.log(JSON.stringify({
-  mode: checkOnly ? 'check' : 'write',
+  mode: `${checkOnly ? 'check' : 'write'}${seoLinksOnly ? '-seo-links-only' : ''}`,
   public_pages: files.length,
   indexable_pages: indexable.length,
   arabic_indexable: indexable.filter((page) => page.language === 'ar').length,

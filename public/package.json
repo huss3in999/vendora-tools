@@ -6,7 +6,7 @@
     "wrangler": "^4.103.0"
   },
   "scripts": {
-    "test": "node --test tests/business-visitor-intelligence.test.js tests/admin-short-id-regression.test.js",
+    "test": "node --test tests/business-visitor-intelligence.test.js tests/admin-short-id-regression.test.js tests/public-settings-cache.test.mjs",
     "test:e2e": "playwright test -c e2e/playwright.config.cjs"
   }
 }

@@ -62,7 +62,7 @@ test('pricing pages have canonical, hreflang, same-source schema and mobile grid
   const en = read(transport, 'en/prices/index.html');
   for (const source of [ar, en]) {
     assert.match(source, /rel="canonical"/);
-    assert.match(source, /hreflang="ar"/);
+    assert.match(source, /hreflang="ar-BH"/);
     assert.match(source, /hreflang="en"/);
     assert.match(source, /id="pricesSchema"/);
     assert.match(source, /class="price-grid route-grid"/);
