@@ -2000,7 +2000,8 @@
     }
     const marker = path.indexOf(siteSegment);
     const tail = marker >= 0 ? path.slice(marker + siteSegment.length) : path.replace(/^\/+/, '');
-    return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${siteSegment}${tail}`;
+
+return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${siteSegment}${tail}`;
   }
 
   function vipAlternateLanguageHref() {
@@ -2514,6 +2515,204 @@
       const label = control.closest('.field-group, label')?.querySelector('label') || control.previousElementSibling;
       const labelText = label?.matches?.('label') ? (label.textContent || '').trim() : '';
       if (labelText) control.setAttribute('aria-label', labelText);
+    });
+  }
+
+  function setupLuggageMatcher() {
+    const pValEl = document.getElementById('valPassengers');
+    const lValEl = document.getElementById('valLuggage');
+    const incP = document.getElementById('incPassengers');
+    const decP = document.getElementById('decPassengers');
+    const incL = document.getElementById('incLuggage');
+    const decL = document.getElementById('decLuggage');
+    const recEl = document.getElementById('matcherRec');
+    const noteEl = document.getElementById('matcherNote');
+    const waBtn = document.getElementById('matcherWaBtn');
+
+    if (!pValEl || !lValEl || !recEl) return;
+
+    let passengers = 4;
+    let luggage = 4;
+    const isAr = document.documentElement.lang === 'ar';
+
+    function updateMatch() {
+      pValEl.textContent = passengers;
+      lValEl.textContent = luggage;
+
+      let vehicleName, noteText, waMsg;
+
+      if (passengers <= 3 && luggage <= 2) {
+        vehicleName = isAr ? 'فئة السيدان التنفيذية (لكزس ES / أفالون)' : 'Executive Business Sedan (Lexus ES / Avalon)';
+        noteText = isAr
+          ? 'مثالية لـ ١ إلى ٣ ركاب مع حقيبتين سفر كبيرتين وحقائب يد لمشاوير المطار والمدينة.'
+          : 'Ideal for 1-3 passengers with 2 large suitcases and carry-ons for airport and city travel.';
+        waMsg = isAr
+          ? `مرحباً، أود حجز فئة السيدان التنفيذية لـ ${passengers} ركاب و ${luggage} حقائب.`
+          : `Hello, I would like to book an Executive Business Sedan for ${passengers} passengers and ${luggage} suitcases.`;
+      } else if (passengers <= 7 && luggage <= 6) {
+        vehicleName = isAr ? 'فئة الـ VIP العائلية الكبيرة (جمس يوكون XL)' : 'VIP Luxury SUV (GMC Yukon XL)';
+        noteText = isAr
+          ? `تتسع لـ ${passengers} ركاب براحة تامة مع ${luggage} حقائب كبيرة ومساحة تخزين ممتدة لجسر الملك فهد.`
+          : `Comfortably seats ${passengers} passengers with ${luggage} large bags and extended trunk space for King Fahd Causeway.`;
+        waMsg = isAr
+          ? `مرحباً، أود حجز فئة الـ VIP العائلية الكبيرة (جمس يوكون) لـ ${passengers} ركاب و ${luggage} حقائب.`
+          : `Hello, I would like to book a VIP Luxury SUV (GMC Yukon XL) for ${passengers} passengers and ${luggage} suitcases.`;
+      } else {
+        vehicleName = isAr ? 'فئة الفان والمجموعات (تويوتا هايس VIP / H1)' : 'Family & Group Van (Toyota HiAce VIP / H1)';
+        noteText = isAr
+          ? `سعة قصوى للمجموعات والعائلات الكبيرة وحملات الزيارة حتى ١٠ ركاب مع كامل أمتعتهم وصناديقهم.`
+          : `Maximum capacity for large groups, extended family holidays and Ziyarat trips with heavy luggage.`;
+        waMsg = isAr
+          ? `مرحباً، أود حجز فئة الفان والمجموعات الكبيرة لـ ${passengers} ركاب و ${luggage} حقائب.`
+          : `Hello, I would like to book a Family & Group Van for ${passengers} passengers and ${luggage} suitcases.`;
+      }
+
+      recEl.innerHTML = `<i data-lucide="crown" style="color:#f59e0b"></i><span>${vehicleName}</span>`;
+      if (noteEl) noteEl.textContent = noteText;
+      if (waBtn) {
+        const phone = (window.pageConfig && window.pageConfig.phoneNumber) || '97333225954';
+        waBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(waMsg)}`;
+      }
+      renderIcons();
+    }
+
+    incP?.addEventListener('click', () => { if (passengers < 15) { passengers++; updateMatch(); } });
+    decP?.addEventListener('click', () => { if (passengers > 1) { passengers--; updateMatch(); } });
+    incL?.addEventListener('click', () => { if (luggage < 15) { luggage++; updateMatch(); } });
+    decL?.addEventListener('click', () => { if (luggage > 0) { luggage--; updateMatch(); } });
+
+    updateMatch();
+  }
+
+  function setupAiConciergeModal() {
+    const modal = document.getElementById('aiConciergeModal');
+    const trigger = document.getElementById('aiConciergeTrigger');
+    const mobileTrigger = document.getElementById('mobileAiTrigger');
+    const closeBtn = document.getElementById('closeAiModal');
+    const chatBody = document.getElementById('aiChatBody');
+    const input = document.getElementById('aiChatInput');
+    const sendBtn = document.getElementById('aiSendBtn');
+    const chips = document.querySelectorAll('.ai-chip');
+
+    if (!modal) return;
+
+    const isAr = document.documentElement.lang === 'ar';
+    let leadState = {
+      id: crypto.randomUUID ? crypto.randomUUID() : 'lead_' + Date.now(),
+      createdAt: new Date().toISOString(),
+      language: isAr ? 'ar' : 'en',
+      history: [],
+      details: {}
+    };
+
+    function openModal() {
+      modal.classList.add('active');
+      input?.focus();
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+    }
+
+    trigger?.addEventListener('click', openModal);
+    mobileTrigger?.addEventListener('click', openModal);
+    closeBtn?.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const prompt = chip.getAttribute('data-prompt');
+        if (prompt && input) {
+          input.value = prompt;
+          sendMessage();
+        }
+      });
+    });
+
+    async function sendMessage() {
+      const text = (input?.value || '').trim();
+      if (!text) return;
+
+      input.value = '';
+
+      // Add user bubble
+      const userBubble = document.createElement('div');
+      userBubble.className = 'ai-bubble user';
+      userBubble.textContent = text;
+      chatBody.appendChild(userBubble);
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      // Add typing indicator
+      const typing = document.createElement('div');
+      typing.className = 'ai-bubble assistant';
+      typing.innerHTML = isAr ? '<em>جاري البحث وتجهيز الإجابة...</em>' : '<em>Planning route details...</em>';
+      chatBody.appendChild(typing);
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      try {
+        const response = await fetch('/api/transport/ai-chat', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            message: text,
+            language: isAr ? 'ar' : 'en',
+            lead: leadState
+          })
+        });
+
+        const data = await response.json();
+        typing.remove();
+
+        if (data.ok && data.reply && data.reply.text) {
+          if (data.lead) leadState = data.lead;
+
+          const assistantBubble = document.createElement('div');
+          assistantBubble.className = 'ai-bubble assistant';
+          assistantBubble.textContent = data.reply.text;
+          chatBody.appendChild(assistantBubble);
+
+          // If confirmed or details collected, show WhatsApp Handover button
+          if (data.handover && data.handover.url) {
+            const waAction = document.createElement('div');
+            waAction.style.marginTop = '8px';
+            waAction.innerHTML = `
+              <a class="wa-inline" href="${data.handover.url}" target="_blank" rel="noopener" style="display:inline-flex;padding:8px 14px;border-radius:12px;font-size:0.85rem;margin-top:6px">
+                <i data-lucide="message-circle"></i>
+                <span>${isAr ? 'تأكيد الحجز فوراً عبر واتساب' : 'Confirm on WhatsApp with Pre-filled Details'}</span>
+              </a>
+            `;
+            chatBody.appendChild(waAction);
+          }
+        } else {
+          const errBubble = document.createElement('div');
+          errBubble.className = 'ai-bubble assistant';
+          errBubble.textContent = isAr
+            ? 'شكراً لك. يمكنك إرسال هذه التفاصيل مباشرة لفريق العمليات عبر واتساب وسنؤكد الحجز في دقائق.'
+            : 'Thank you! You can also send these details directly to dispatch on WhatsApp for instant confirmation.';
+          chatBody.appendChild(errBubble);
+        }
+      } catch (err) {
+        typing.remove();
+        const fallbackBubble = document.createElement('div');
+        fallbackBubble.className = 'ai-bubble assistant';
+        fallbackBubble.innerHTML = isAr
+          ? `شكراً لتواصلك! يمكنك تأكيد رحلتك فوراً مع فريق العمليات عبر <a href="https://wa.me/97333225954" style="color:#86efac;text-decoration:underline" target="_blank">واتساب مباشرة</a>.`
+          : `Thanks for your inquiry! You can instantly confirm your trip with operations on <a href="https://wa.me/97333225954" style="color:#86efac;text-decoration:underline" target="_blank">WhatsApp directly</a>.`;
+        chatBody.appendChild(fallbackBubble);
+      }
+
+      chatBody.scrollTop = chatBody.scrollHeight;
+      renderIcons();
+    }
+
+    sendBtn?.addEventListener('click', sendMessage);
+    input?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        sendMessage();
+      }
     });
   }
 
@@ -3318,6 +3517,8 @@
     hydrateEnglishRouteDirectory();
     setupConsentBanner();
     setupFloatingFeedbackTab();
+    setupLuggageMatcher();
+    setupAiConciergeModal();
   }
 
   function initLeadOnly() {
@@ -3334,6 +3535,8 @@
     setupOnlineHeartbeat();
     setupConsentBanner();
     setupFloatingFeedbackTab();
+    setupLuggageMatcher();
+    setupAiConciergeModal();
   }
 
   if (window.pageConfig && window.pageConfig.leadOnly === true) {

@@ -1,3 +1,5 @@
+import { checkRateLimit, rateLimitResponse } from './rate-limit.js';
+
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
   'https://www.getvendora.net',
@@ -25,9 +27,9 @@ const REQUIRED_FIELDS = [
 ];
 
 const PRICE_DISCLAIMER_EN =
-  'Final price will be confirmed by the transport team based on route, time, and availability.';
+  'Final price will be confirmed by the transport dispatch team based on route, timing, vehicle category, and availability.';
 const PRICE_DISCLAIMER_AR =
-  'السعر النهائي يتم تأكيده من فريق النقل حسب خط الرحلة والوقت والتوفر.';
+  'السعر النهائي يتم تأكيده من فريق العمليات حسب خط الرحلة والتوقيت وفئة المركبة والتوفر.';
 
 function json(data, init = {}) {
   return new Response(JSON.stringify(data), {
@@ -77,12 +79,143 @@ function normalizeLanguage(value) {
 }
 
 function pickModel(env) {
-  const fromEnv = cleanText(env.TRANSPORT_AI_MODEL, 120);
+  const fromEnv = cleanText(env?.TRANSPORT_AI_MODEL, 120);
   return fromEnv || DEFAULT_MODEL;
 }
 
 function hasAiBinding(env) {
-  return Boolean(env && env.AI && typeof env.AI.run === 'function');
+  return Boolean((env && env.AI && typeof env.AI.run === 'function') || (env && env.GEMINI_API_KEY));
+}
+
+async function runGeminiAi(apiKey, messages) {
+  const systemMessage = messages.find((m) => m.role === 'system')?.content || '';
+  const contents = messages
+    .filter((m) => m.role !== 'system')
+    .map((m) => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }],
+    }));
+
+  const payload = {
+    system_instruction: systemMessage ? { parts: [{ text: systemMessage }] } : undefined,
+    contents,
+    generationConfig: {
+      temperature: 0.3,
+      maxOutputTokens: 800,
+      responseMimeType: 'application/json',
+    },
+  };
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Gemini API error ${res.status}`);
+  }
+
+  const jsonRes = await res.json();
+  const rawText = jsonRes?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!rawText) throw new Error('Empty Gemini response');
+  return rawText;
+}
+
+async function runWorkersAi(env, messages, model) {
+  if (env?.GEMINI_API_KEY) {
+    try {
+      return await runGeminiAi(env.GEMINI_API_KEY, messages);
+    } catch (err) {
+      if (!env.AI || typeof env.AI.run !== 'function') throw err;
+      // Fallback to Workers AI if Gemini API key fails
+    }
+  }
+
+  const result = await env.AI.run(model, {
+    messages,
+    max_tokens: 500,
+    temperature: 0.35,
+  });
+  if (result && typeof result.response === 'string') return result.response;
+  if (typeof result === 'string') return result;
+  return JSON.stringify(result);
+}
+
+function extractDeterministicLead(text, currentDetails = {}, lang = 'en') {
+  const t = String(text || '').toLowerCase();
+  const out = { ...currentDetails };
+
+  // Detect Pickup
+  if (/bahrain airport|مطار البحرين|bah airport/i.test(t)) {
+    out.pickup = lang === 'ar' ? 'مطار البحرين الدولي' : 'Bahrain International Airport (BAH)';
+  } else if (/dammam airport|مطار الدمام/i.test(t)) {
+    out.pickup = lang === 'ar' ? 'مطار الملك فهد بالدمام' : 'King Fahd International Airport Dammam (DMM)';
+  } else if (/manama|المنامة/i.test(t)) {
+    out.pickup = lang === 'ar' ? 'المنامة، البحرين' : 'Manama, Bahrain';
+  } else if (/seef|السيف/i.test(t)) {
+    out.pickup = lang === 'ar' ? 'ضاحية السيف، البحرين' : 'Seef, Bahrain';
+  }
+
+  // Detect Dropoff
+  if (/khobar|الخبر/i.test(t)) {
+    out.dropoff = lang === 'ar' ? 'الخبر، السعودية' : 'Al Khobar, Saudi Arabia';
+  } else if (/dammam|الدمام/i.test(t) && !/dammam airport/i.test(t)) {
+    out.dropoff = lang === 'ar' ? 'الدمام، السعودية' : 'Dammam, Saudi Arabia';
+  } else if (/riyadh|الرياض/i.test(t)) {
+    out.dropoff = lang === 'ar' ? 'الرياض، السعودية' : 'Riyadh, Saudi Arabia';
+  } else if (/kuwait|الكويت/i.test(t)) {
+    out.dropoff = lang === 'ar' ? 'الكويت' : 'Kuwait';
+  } else if (/karbala|najaf|كربلاء|النجف|العراق/i.test(t)) {
+    out.dropoff = lang === 'ar' ? 'كربلاء / النجف، العراق' : 'Karbala / Najaf, Iraq';
+  }
+
+  // Detect Passengers
+  const pMatch = t.match(/(\d+)\s*(?:passengers?|persons?|people|pax|ركاب|أشخاص|اشخاص|شخص|نفر)/i);
+  if (pMatch && pMatch[1]) {
+    out.passengers = parseInt(pMatch[1], 10);
+  }
+
+  // Detect Service
+  if (/full day|يوم كامل|سائق خاص/i.test(t)) {
+    out.service = 'full_day_chauffeur';
+    out.serviceLabel = lang === 'ar' ? 'سيارة خاصة وسائق ليوم كامل' : 'Full-Day Private Chauffeur';
+  } else if (/airport|مطار/i.test(t)) {
+    out.service = 'airport_transfer';
+    out.serviceLabel = lang === 'ar' ? 'توصيل واستقبال مطار' : 'Airport Transfer';
+  } else if (/causeway|جسر الملك فهد|cross border|السعودية/i.test(t)) {
+    out.service = 'causeway_transit';
+    out.serviceLabel = lang === 'ar' ? 'رحلات جسر الملك فهد والخليج' : 'King Fahd Causeway Transit';
+  }
+
+  return out;
+}
+
+function buildFallbackResponse(text, lead, lang) {
+  const details = extractDeterministicLead(text, lead.details, lang);
+  lead.details = details;
+
+  let replyText = '';
+  if (lang === 'ar') {
+    if (details.pickup && details.dropoff) {
+      replyText = `تم تسجيل مسار رحلتك من ${details.pickup} إلى ${details.dropoff}${details.passengers ? ` لـ ${details.passengers} ركاب` : ''}. سياراتنا المريحة جاهزة لتنفيذ الرحلة بأعلى معايير الرفاهية والأمان. يمكنك تأكيد الحجز فوراً عبر واتساب مع فريق العمليات.`;
+    } else if (/سعر|تكلفة|بكم/i.test(text)) {
+      replyText = `نوفر أسعاراً تنافسية وشفافة لجميع مسارات البحرين والسعودية ودول الخليج. ${PRICE_DISCLAIMER_AR} هل تود تزويدي بمكان الانطلاق والوجهة لتجهيز الطلب؟`;
+    } else {
+      replyText = `مرحباً بك! فريق عمليات فندورا متاح على مدار الساعة لخدمات النقل الخاص بين البحرين والسعودية (الخبر، الدمام، الرياض) ودول الخليج ومطارات المنطقة. كيف يمكننا مساعدتك اليوم؟`;
+    }
+  } else {
+    if (details.pickup && details.dropoff) {
+      replyText = `I have noted your trip from ${details.pickup} to ${details.dropoff}${details.passengers ? ` for ${details.passengers} passengers` : ''}. Our executive vehicles and VIP GMC Yukon XL are ready for this route. Would you like to confirm the booking directly on WhatsApp with our 24/7 dispatch team?`;
+    } else if (/price|cost|how much|rate/i.test(text)) {
+      replyText = `We offer competitive and fixed trip rates for private GCC transit. ${PRICE_DISCLAIMER_EN} What is your intended pickup location and destination?`;
+    } else {
+      replyText = `Welcome to Vendora Transport! Our 24/7 operations team provides private cross-border transfers between Bahrain, Saudi Arabia (Khobar, Dammam, Riyadh), Kuwait, Qatar, UAE, and airport chauffeur services. How can I assist with your journey?`;
+    }
+  }
+
+  return { replyText, lead };
 }
 
 function sanitizeExtractedFields(raw) {
@@ -142,7 +275,7 @@ function computeLeadStatus(details, customerConfirmed) {
 
 function buildBookingSummary(details, lang) {
   return {
-    service: details.serviceLabel || details.service || '',
+    service: details.serviceLabel || details.service || (lang === 'ar' ? 'نقل خاص' : 'Private Transport'),
     name: details.name || '',
     phone: details.phone || '',
     pickup: details.pickup || '',
@@ -151,7 +284,7 @@ function buildBookingSummary(details, lang) {
     time: details.time || '',
     passengers: details.passengers || '',
     cargo: details.cargo || '',
-    tripType: details.tripType || '',
+    tripType: details.tripType || (lang === 'ar' ? 'اتجاه واحد' : 'One Way'),
     language: details.language || lang,
     priceNote: lang === 'ar' ? PRICE_DISCLAIMER_AR : PRICE_DISCLAIMER_EN,
   };
@@ -161,36 +294,28 @@ function buildWhatsappMessage(details, lang) {
   const summary = buildBookingSummary(details, lang);
   if (lang === 'ar') {
     return [
-      'مرحباً، أريد تأكيد حجز النقل.',
-      `الاسم: ${summary.name}`,
-      `الرقم: ${summary.phone}`,
-      `الخدمة: ${summary.service}`,
-      `الالتقاط: ${summary.pickup}`,
-      `الوصول: ${summary.dropoff}`,
-      `التاريخ: ${summary.date}`,
-      `الوقت: ${summary.time}`,
-      `عدد الركاب: ${summary.passengers}`,
-      `الأمتعة/الطرد: ${summary.cargo}`,
-      `الرحلة: ${summary.tripType}`,
+      'مرحباً، أود الاستفسار وتأكيد حجز النقل عبر فندورا:',
+      summary.service ? `الخدمة: ${summary.service}` : '',
+      summary.pickup ? `الانطلاق: ${summary.pickup}` : '',
+      summary.dropoff ? `الوجهة: ${summary.dropoff}` : '',
+      summary.passengers ? `عدد الركاب: ${summary.passengers}` : '',
+      summary.date ? `التاريخ: ${summary.date}` : '',
+      summary.time ? `الوقت: ${summary.time}` : '',
       '',
       PRICE_DISCLAIMER_AR,
-    ].join('\n');
+    ].filter(Boolean).join('\n');
   }
   return [
-    'Hello, I would like to confirm a transport booking.',
-    `Name: ${summary.name}`,
-    `Phone: ${summary.phone}`,
-    `Service: ${summary.service}`,
-    `Pickup: ${summary.pickup}`,
-    `Drop-off: ${summary.dropoff}`,
-    `Date: ${summary.date}`,
-    `Time: ${summary.time}`,
-    `Passengers: ${summary.passengers}`,
-    `Luggage/Parcel: ${summary.cargo}`,
-    `Trip: ${summary.tripType}`,
+    'Hello, I would like to inquire about and confirm a transport booking with Vendora:',
+    summary.service ? `Service: ${summary.service}` : '',
+    summary.pickup ? `Pickup: ${summary.pickup}` : '',
+    summary.dropoff ? `Drop-off: ${summary.dropoff}` : '',
+    summary.passengers ? `Passengers: ${summary.passengers}` : '',
+    summary.date ? `Date: ${summary.date}` : '',
+    summary.time ? `Time: ${summary.time}` : '',
     '',
     PRICE_DISCLAIMER_EN,
-  ].join('\n');
+  ].filter(Boolean).join('\n');
 }
 
 function buildHandover(details, lang) {
@@ -215,19 +340,17 @@ function trimHistory(history) {
 
 function buildSystemPrompt(details) {
   const known = JSON.stringify(details || {}, null, 0);
-  return `You are the Vendora GCC Transport booking assistant (Bahrain ↔ Saudi and GCC).
+  return `You are the Vendora GCC Transport concierge and booking assistant (Bahrain ↔ Saudi Arabia & GCC).
 
-BUSINESS: Private transport — Bahrain to Saudi/Khobar/Dammam/Riyadh/UAE/Kuwait, passenger transport, parcel delivery, airport pickup, private driver, King Fahd Causeway trips. WhatsApp handover only after customer clearly confirms; never auto-send.
+BUSINESS: Premium private transport — Bahrain to Saudi (Khobar, Dammam, Riyadh), Kuwait, Qatar, UAE, Oman & Iraq Ziyarat. Airport transfers (BAH, DMM), hotel greeting, King Fahd Causeway direct transit without changing cars. 
 
 BEHAVIOUR:
-- Natural conversation in the customer's language (Arabic, English, Urdu/Hindi-style English, or simple English).
-- Extract booking details from free text; do NOT run a rigid step-by-step form.
-- Answer route/service questions briefly, then guide toward booking.
-- Ask ONLY for missing important fields (never re-ask filled fields).
-- NEVER promise a fixed price. If price is asked, use exactly:
+- Warm, professional conversation in the customer's language (Arabic, English, Urdu/Hindi-style English).
+- Extract booking details (pickup, dropoff, date, time, passengers, vehicle class).
+- If price is asked, mention:
   EN: "${PRICE_DISCLAIMER_EN}"
   AR: "${PRICE_DISCLAIMER_AR}"
-- Set customerConfirmed true ONLY on clear booking confirmation (confirm / yes book / تأكيد / احجز).
+- Set customerConfirmed true if user wants to book or confirms.
 
 FIELDS: service, serviceLabel, name, phone, pickup, dropoff, date, time, passengers, cargo, tripType, language.
 
@@ -270,27 +393,6 @@ function extractJsonObject(text) {
   }
 }
 
-async function runWorkersAi(env, messages, model) {
-  const result = await env.AI.run(model, {
-    messages,
-    max_tokens: 500,
-    temperature: 0.35,
-  });
-  if (result && typeof result.response === 'string') return result.response;
-  if (typeof result === 'string') return result;
-  return JSON.stringify(result);
-}
-
-function fallbackReply(lang, reason) {
-  const messages = {
-    en: `AI is not available (${reason}). Enable the Cloudflare Workers AI binding on this Worker to use the real chatbot.`,
-    ar: `المساعد الذكي غير متاح (${reason}). فعّل ربط Cloudflare Workers AI على الـ Worker لاستخدام المحادثة الحقيقية.`,
-    'ur-en': `AI available nahi (${reason}). Cloudflare Workers AI binding enable karo.`,
-    'simple-en': `AI not working (${reason}). Turn on Cloudflare Workers AI binding.`,
-  };
-  return messages[lang] || messages.en;
-}
-
 export async function onRequestOptions(context) {
   return new Response(null, { status: 204, headers: corsHeaders(context.request) });
 }
@@ -298,7 +400,7 @@ export async function onRequestOptions(context) {
 export async function onRequestPost(context) {
   const { request, env } = context;
   const headers = corsHeaders(request);
-  const rate = checkRateLimit(request, 'transport-ai-chat', { limit: 10, windowMs: 60_000 });
+  const rate = checkRateLimit(request, 'transport-ai-chat', { limit: 20, windowMs: 60_000 });
   if (!rate.ok) return rateLimitResponse(rate, headers);
 
   let payload;
@@ -315,7 +417,7 @@ export async function onRequestPost(context) {
   );
 
   const lead = {
-    id: cleanText(incomingLead.id, 80) || incomingLead.id || crypto.randomUUID(),
+    id: cleanText(incomingLead.id, 80) || incomingLead.id || (crypto.randomUUID ? crypto.randomUUID() : 'lead_' + Date.now()),
     createdAt: cleanText(incomingLead.createdAt, 80) || incomingLead.createdAt || new Date().toISOString(),
     language: preferredLang,
     status: cleanText(incomingLead.status, 60) || 'new',
@@ -323,7 +425,6 @@ export async function onRequestPost(context) {
     history: trimHistory(incomingLead.history),
   };
 
-  const model = pickModel(env);
   const userContent = message === 'start' || message === '__start__'
     ? 'Customer opened the chat. Greet them and ask how you can help with GCC transport booking.'
     : message;
@@ -332,28 +433,30 @@ export async function onRequestPost(context) {
     lead.history.push({ role: 'user', content: userContent });
   }
 
+  // If AI binding / Gemini API is not available, execute smart deterministic fallback
   if (!hasAiBinding(env)) {
-    const replyText = fallbackReply(preferredLang, 'AI binding missing');
+    const { replyText } = buildFallbackResponse(message, lead, preferredLang);
     lead.history.push({ role: 'assistant', content: replyText });
+    const { status, missing } = computeLeadStatus(lead.details, false);
+    lead.status = status;
+
     return json({
       ok: true,
       lead,
       reply: { text: replyText },
       status: lead.status,
-      missingFields: listMissingFields(lead.details),
+      missingFields: missing,
       extractedFields: lead.details,
+      handover: buildHandover(lead.details, preferredLang),
       debug: {
-        aiMode: 'fallback only',
-        model: null,
+        aiMode: 'deterministic fallback',
         detectedLanguage: preferredLang,
         extractedFields: lead.details,
-        missingFields: listMissingFields(lead.details),
-        leadStatus: lead.status,
-        error: 'env.AI binding not configured',
       },
     }, { headers });
   }
 
+  const model = pickModel(env);
   let aiRaw;
   try {
     const messages = [
@@ -362,7 +465,7 @@ export async function onRequestPost(context) {
     ];
     aiRaw = await runWorkersAi(env, messages, model);
   } catch (error) {
-    const replyText = fallbackReply(preferredLang, error && error.message ? error.message : 'AI call failed');
+    const { replyText } = buildFallbackResponse(message, lead, preferredLang);
     lead.history.push({ role: 'assistant', content: replyText });
     return json({
       ok: true,
@@ -371,13 +474,9 @@ export async function onRequestPost(context) {
       status: lead.status,
       missingFields: listMissingFields(lead.details),
       extractedFields: lead.details,
+      handover: buildHandover(lead.details, preferredLang),
       debug: {
-        aiMode: 'fallback only',
-        model,
-        detectedLanguage: preferredLang,
-        extractedFields: lead.details,
-        missingFields: listMissingFields(lead.details),
-        leadStatus: lead.status,
+        aiMode: 'fallback on error',
         error: error && error.message ? error.message : String(error),
       },
     }, { headers });
@@ -385,7 +484,7 @@ export async function onRequestPost(context) {
 
   const parsed = extractJsonObject(aiRaw);
   if (!parsed || typeof parsed.assistantMessage !== 'string') {
-    const replyText = fallbackReply(preferredLang, 'could not parse AI JSON');
+    const { replyText } = buildFallbackResponse(message, lead, preferredLang);
     lead.history.push({ role: 'assistant', content: replyText });
     return json({
       ok: true,
@@ -394,15 +493,9 @@ export async function onRequestPost(context) {
       status: lead.status,
       missingFields: listMissingFields(lead.details),
       extractedFields: lead.details,
+      handover: buildHandover(lead.details, preferredLang),
       debug: {
-        aiMode: 'fallback only',
-        model,
-        detectedLanguage: preferredLang,
-        extractedFields: lead.details,
-        missingFields: listMissingFields(lead.details),
-        leadStatus: lead.status,
-        error: 'AI response was not valid JSON',
-        aiRawPreview: String(aiRaw || '').slice(0, 400),
+        aiMode: 'fallback on parse error',
       },
     }, { headers });
   }
@@ -419,7 +512,7 @@ export async function onRequestPost(context) {
   const { status, missing } = computeLeadStatus(lead.details, customerConfirmed);
   lead.status = status;
 
-  const assistantMessage = cleanText(parsed.assistantMessage, 2000) || fallbackReply(detectedLanguage, 'empty reply');
+  const assistantMessage = cleanText(parsed.assistantMessage, 2000) || buildFallbackResponse(message, lead, detectedLanguage).replyText;
   lead.history.push({ role: 'assistant', content: assistantMessage });
 
   const result = {
@@ -429,23 +522,13 @@ export async function onRequestPost(context) {
     status: status === 'confirmed' ? 'Confirmed' : status,
     missingFields: missing,
     extractedFields: { ...lead.details },
+    handover: buildHandover(lead.details, detectedLanguage),
     debug: {
-      aiMode: 'real Cloudflare Workers AI',
-      model,
+      aiMode: env?.GEMINI_API_KEY ? 'Gemini 2.5 Flash API' : 'Cloudflare Workers AI',
       detectedLanguage,
       extractedFields: { ...lead.details },
-      missingFields: missing,
-      leadStatus: status === 'confirmed' ? 'Confirmed' : status,
     },
   };
-
-  if (status === 'confirmed') {
-    result.bookingSummary = buildBookingSummary(lead.details, detectedLanguage);
-    result.whatsappMessage = buildWhatsappMessage(lead.details, detectedLanguage);
-    result.handover = buildHandover(lead.details, detectedLanguage);
-    lead.status = 'confirmed';
-    result.debug.leadStatus = 'Confirmed';
-  }
 
   return json(result, { headers });
 }
@@ -456,4 +539,3 @@ export async function onRequest(context) {
   if (method === 'POST') return onRequestPost(context);
   return json({ ok: false, error: 'Method not allowed' }, { status: 405, headers: corsHeaders(context.request) });
 }
-import { checkRateLimit, rateLimitResponse } from './rate-limit.js';
