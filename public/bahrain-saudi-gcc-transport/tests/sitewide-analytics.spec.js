@@ -126,8 +126,9 @@ test('authenticated analytics dashboard layout is responsive and remains untrack
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/bahrain-saudi-gcc-transport/admin/');
   await expect(page.locator('#analyticsPanel')).toBeAttached();
-  await expect(page.locator('#analyticsAutoRefresh')).toBeAttached();
-  await expect(page.locator('#analyticsRefreshSeconds option')).toHaveCount(2);
+  await expect(page.locator('#analyticsAutoRefresh')).toHaveCount(0);
+  await expect(page.locator('#analyticsRefreshSeconds')).toHaveCount(0);
+  await expect(page.locator('#refreshBtn')).toBeAttached();
   await page.setViewportSize({ width: 1440, height: 900 });
   await expect(page.locator('#analyticsRoutes')).toBeAttached();
   expect(trackingRequests).toBe(0);

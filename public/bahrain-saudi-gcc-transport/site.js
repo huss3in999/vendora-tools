@@ -1770,6 +1770,7 @@
     if (window.__VENDORA_ONLINE_HEARTBEAT_READY__) return;
     window.__VENDORA_ONLINE_HEARTBEAT_READY__ = true;
     const sendHeartbeat = () => {
+      if (document.visibilityState === 'hidden') return;
       try {
         const payload = buildLeadPayload(null, null);
         payload.serviceType = 'presence_heartbeat';
@@ -1780,7 +1781,10 @@
       }
     };
     sendHeartbeat();
-    setInterval(sendHeartbeat, 30000);
+    // The admin "online now" window is 90 seconds. One visible heartbeat per
+    // minute keeps that feature accurate without writing to D1 twice a minute
+    // for every open tab. Hidden tabs do not represent an active visitor.
+    setInterval(sendHeartbeat, 60000);
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') sendHeartbeat();
     });

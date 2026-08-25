@@ -709,13 +709,6 @@
               <p class="mt-1 text-xs text-slate-400">Anonymous D1 events from public transport pages. Admin, private-preview, care-token and gone pages are excluded.</p>
             </div>
             <div class="flex flex-wrap items-center gap-2 text-xs">
-              <label class="flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900/50 px-3 py-2">
-                <input id="analyticsAutoRefresh" type="checkbox" class="accent-cyan-400" checked> Live refresh
-              </label>
-              <select id="analyticsRefreshSeconds" class="rounded-xl border border-slate-700 bg-slate-900 px-3 py-2 text-slate-200">
-                <option value="15" selected>15 seconds</option>
-                <option value="30">30 seconds</option>
-              </select>
               <span id="analyticsUpdatedAt" class="text-slate-500">Not loaded</span>
             </div>
           </div>
@@ -1495,7 +1488,6 @@
       passengerCare: [],
       activeCareFeedback: null,
       tracking: {},
-      analyticsRefreshTimer: null,
       googleAudience: { days: 30, loadedFor: null, loading: false, data: null },
     };
 
@@ -3896,7 +3888,6 @@
       } catch (err) {
         showStatus(err.message, 'error');
       }
-      configureAnalyticsAutoRefresh();
     }
 
     function visitorEventsForLead(lead) {
@@ -4280,34 +4271,6 @@ Note: This report is automatically compiled by the Control Room operations track
         showStatus(err.message, 'error');
       }
     });
-
-    function configureAnalyticsAutoRefresh() {
-      if (state.analyticsRefreshTimer) {
-        clearInterval(state.analyticsRefreshTimer);
-        state.analyticsRefreshTimer = null;
-      }
-      const toggle = document.getElementById('analyticsAutoRefresh');
-      if (!toggle?.checked || !state.token) return;
-      const seconds = Number(document.getElementById('analyticsRefreshSeconds')?.value || 60);
-      state.analyticsRefreshTimer = setInterval(async () => {
-        if (document.hidden || !state.token) return;
-        try {
-          const [summaryData, trackingData] = await Promise.all([
-            api(queryFromFilters({ resource: 'summary', bot_filter: state.trafficFilter, period: state.activePeriod })),
-            api('?resource=tracking&period=today'),
-          ]);
-          state.summary = summaryData.summary || {};
-          state.tracking = trackingData || {};
-          renderStats();
-          renderUnifiedAnalytics();
-          renderOnlineNow();
-        } catch (error) {
-          showStatus(`Analytics refresh failed: ${error.message}`, 'error');
-        }
-      }, seconds * 1000);
-    }
-    document.getElementById('analyticsAutoRefresh').addEventListener('change', configureAnalyticsAutoRefresh);
-    document.getElementById('analyticsRefreshSeconds').addEventListener('change', configureAnalyticsAutoRefresh);
 
     document.getElementById('exportBtn').addEventListener('click', exportCsv);
     document.getElementById('copyBusinessReportBtn').addEventListener('click', async () => {
