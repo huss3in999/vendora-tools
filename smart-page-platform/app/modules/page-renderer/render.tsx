@@ -103,7 +103,7 @@ export function isStandaloneHtmlPage(blocks: Block[]) {
   return blocks.length === 1 && blocks[0]?.type === "html_embed";
 }
 
-export function StandaloneHtmlPageFrame(props: { block: Extract<Block, { type: "html_embed" }> }) {
+export function StandaloneHtmlPageFrame(props: { code: string; block: Extract<Block, { type: "html_embed" }> }) {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   useEffect(() => {
@@ -143,9 +143,7 @@ export function StandaloneHtmlPageFrame(props: { block: Extract<Block, { type: "
       title="Hosted HTML page"
       sandbox={htmlEmbedSandbox(props.block.props.allowScripts)}
       referrerPolicy="no-referrer"
-      srcDoc={buildSandboxedHtmlDocument(props.block.props.html, HTML_EMBED_MAX_LENGTH, {
-        allowScripts: props.block.props.allowScripts
-      })}
+      src={`/hosted/${encodeURIComponent(props.code)}`}
       className="fixed inset-0 h-screen w-screen border-0 bg-white"
       style={{ height: "100dvh", width: "100vw" }}
     />

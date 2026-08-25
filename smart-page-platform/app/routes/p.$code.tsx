@@ -3,7 +3,7 @@ import type {
   LoaderFunctionArgs,
   MetaFunction
 } from "@remix-run/cloudflare";
-import { json } from "@remix-run/cloudflare";
+import { json, redirect } from "@remix-run/cloudflare";
 import { useLoaderData } from "@remix-run/react";
 import type { Block } from "~/modules/page-builder/blocks";
 import {
@@ -151,6 +151,9 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
     return raw === "ok" || raw === "invalid" ? raw : undefined;
   })();
   const code = params.code ?? "unknown";
+  if (code === "cos-team-rota-requests") {
+    throw redirect("/rota");
+  }
   const origin = new URL(request.url).origin;
   const canonicalUrl = `${origin}/p/${encodeURIComponent(code)}`;
   const db = getD1Database(context);
@@ -167,8 +170,11 @@ export async function loader({ request, params, context }: LoaderFunctionArgs) {
   if (db) {
     const publishedPage = await pageRepository(db).getPublishedPageByCode(code);
     if (publishedPage) {
-      const visitor = await getOrCreateVisitorId(request);
       const blocks = publishedPage.blocks;
+      if (isStandaloneHtmlPage(blocks)) {
+        throw redirect(`/hosted/${encodeURIComponent(code)}${url.hash}`);
+      }
+      const visitor = await getOrCreateVisitorId(request);
       const pageTitle = publishedPage.page.title;
       const metaTitle = resolvePublicMetaTitle(pageTitle, publishedPage.page.seo_title);
       const metaDescription = resolvePublicMetaDescription(blocks, pageTitle, publishedPage.page.seo_description);
@@ -370,7 +376,7 @@ export default function PublicPage() {
     : null;
 
   if (standaloneHtmlBlock) {
-    return <StandaloneHtmlPageFrame block={standaloneHtmlBlock} />;
+    return <StandaloneHtmlPageFrame code={data.code} block={standaloneHtmlBlock} />;
   }
 
   return (

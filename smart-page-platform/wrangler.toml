@@ -1,6 +1,7 @@
 name = "smart-page-platform"
 main = "./server.ts"
 compatibility_date = "2026-04-23"
+compatibility_flags = ["nodejs_compat"]
 
 [[routes]]
 # DOMAIN OWNERSHIP: smart.getvendora.net belongs only to Smart Page Platform.
@@ -14,6 +15,8 @@ directory = "./build/client"
 [vars]
 GOOGLE_ANALYTICS_MEASUREMENT_ID = "G-DFY197R2MS"
 ELASTIC_TRACKER_URL = ""
+VAPID_SUBJECT = "https://smart.getvendora.net/rota"
+VAPID_PUBLIC_KEY = "BGxTq8ANI10KQb1UEF0n_zKEmbUyZi1QMYFHf5rBUXOaQafOiDFlg03Hf6_QT8lfrXruwYDPojaIF-v5iFdr1V4"
 
 [[d1_databases]]
 binding = "DB"

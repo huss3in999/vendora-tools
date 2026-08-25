@@ -5,6 +5,7 @@ import { redirect, createCookieSessionStorage, json, createCookie } from "@remix
 import { useState, useEffect, useRef, Fragment, useMemo } from "react";
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { buildPushPayload } from "@block65/webcrypto-web-push";
 async function handleRequest(request, responseStatusCode, responseHeaders, remixContext) {
   const stream = await renderToReadableStream(
     /* @__PURE__ */ jsx(RemixServer, { context: remixContext, url: request.url }),
@@ -25,10 +26,14 @@ const entryServer = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineP
   __proto__: null,
   default: handleRequest
 }, Symbol.toStringTag, { value: "Module" }));
-const tailwindCss = "/assets/tailwind-BRFRRv5n.css";
+const tailwindCss = "/assets/tailwind-8RRO_sg7.css";
 const GOOGLE_ANALYTICS_MEASUREMENT_ID = "G-DFY197R2MS";
-const links = () => [{ rel: "stylesheet", href: tailwindCss }];
-const meta$7 = () => {
+const links = () => [
+  { rel: "stylesheet", href: tailwindCss },
+  { rel: "manifest", href: "/manifest.webmanifest" },
+  { rel: "apple-touch-icon", href: "/icons/cos-rota-192.png" }
+];
+const meta$9 = () => {
   return [
     { title: "Smart Page Platform - Link in Bio Website Builder" },
     {
@@ -68,7 +73,7 @@ const route0 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProper
   __proto__: null,
   default: App,
   links,
-  meta: meta$7
+  meta: meta$9
 }, Symbol.toStringTag, { value: "Module" }));
 const BLOCK_GROUPS = [
   {
@@ -632,6 +637,9 @@ function stripDangerousEmbedHtml(input, maxLen, options = {}) {
   return s.trim();
 }
 function sanitizeHtmlForSandboxStorage(input, maxLen = HTML_EMBED_MAX_LENGTH, options = {}) {
+  if (options.allowScripts) {
+    return stripCodeFence(String(input ?? "").slice(0, maxLen)).trim();
+  }
   return stripDangerousEmbedHtml(input, maxLen, options);
 }
 function injectSandboxHead(html, css, extraHead = "") {
@@ -644,6 +652,17 @@ function injectSandboxHead(html, css, extraHead = "") {
     return html.replace(/<html\b([^>]*)>/i, `<html$1><head>${safeHead}</head>`);
   }
   return `<!doctype html><html><head>${safeHead}</head><body>${html}</body></html>`;
+}
+function ensureHostedDocumentViewport(html) {
+  if (/<meta\b[^>]*\bname\s*=\s*(["'])viewport\1[^>]*>/i.test(html)) return html;
+  const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1">';
+  if (/<head\b[^>]*>/i.test(html)) {
+    return html.replace(/<head\b([^>]*)>/i, `<head$1>${viewport}`);
+  }
+  if (/<html\b[^>]*>/i.test(html)) {
+    return html.replace(/<html\b([^>]*)>/i, `<html$1><head>${viewport}</head>`);
+  }
+  return `<!doctype html><html><head>${viewport}</head><body>${html}</body></html>`;
 }
 function pickJsStringSetting(html, settingName) {
   const re = new RegExp(`${settingName}\\s*:\\s*("([^"]+)"|'([^']+)')`, "i");
@@ -713,9 +732,14 @@ function hostedHtmlCompatibilityScript(html, options) {
   <\/script>`;
 }
 function buildSandboxedHtmlDocument(input, maxLen = HTML_EMBED_MAX_LENGTH, options = {}) {
-  const cleaned = stripDangerousEmbedHtml(input, maxLen, options);
+  const cleaned = options.allowScripts ? stripCodeFence(String(input ?? "").slice(0, maxLen)).trim() : stripDangerousEmbedHtml(input, maxLen, options);
   const body = cleaned || '<p class="spp-empty">Preview empty</p>';
   const compatibility = hostedHtmlCompatibilityScript(body, options);
+  if (options.allowScripts && /<(?:!doctype|html|head|body)\b/i.test(body)) {
+    const exactDocument = ensureHostedDocumentViewport(body);
+    if (!compatibility) return exactDocument;
+    return exactDocument.replace(/<\/head\s*>/i, `${compatibility}</head>`);
+  }
   const frameCss = `
     html { color-scheme: light; }
     *, *::before, *::after { box-sizing: border-box; }
@@ -828,11 +852,11 @@ const HEX_COLOR_PATTERN = /^#[0-9a-fA-F]{6}$/;
 function isHexColor(value) {
   return typeof value === "string" && HEX_COLOR_PATTERN.test(value);
 }
-function cleanText$1(value, maxLength) {
+function cleanText$2(value, maxLength) {
   return String(value ?? "").trim().slice(0, maxLength);
 }
 function cleanExternalUrl(value) {
-  const text = cleanText$1(value, 500);
+  const text = cleanText$2(value, 500);
   return text.startsWith("https://") || text.startsWith("http://") ? text : void 0;
 }
 function allow(value, options, fallback) {
@@ -867,7 +891,7 @@ function sanitizePageTheme(input) {
       DEFAULT_PAGE_THEME.profileStyle
     ),
     showPlatformBadge: value.showPlatformBadge === false ? false : DEFAULT_PAGE_THEME.showPlatformBadge,
-    footerText: cleanText$1(value.footerText, 120)
+    footerText: cleanText$2(value.footerText, 120)
   };
 }
 function parsePageThemeJson(themeJson) {
@@ -997,9 +1021,7 @@ function StandaloneHtmlPageFrame(props) {
       title: "Hosted HTML page",
       sandbox: htmlEmbedSandbox(props.block.props.allowScripts),
       referrerPolicy: "no-referrer",
-      srcDoc: buildSandboxedHtmlDocument(props.block.props.html, HTML_EMBED_MAX_LENGTH, {
-        allowScripts: props.block.props.allowScripts
-      }),
+      src: `/hosted/${encodeURIComponent(props.code)}`,
       className: "fixed inset-0 h-screen w-screen border-0 bg-white",
       style: { height: "100dvh", width: "100vw" }
     }
@@ -1621,7 +1643,7 @@ function randomBlockId() {
   const random = crypto.randomUUID().replaceAll("-", "").slice(0, 20);
   return `blk_${random}`;
 }
-function cleanText(value, maxLength) {
+function cleanText$1(value, maxLength) {
   return String(value ?? "").trim().slice(0, maxLength);
 }
 function validateUrlLike(value) {
@@ -1651,7 +1673,7 @@ function cleanDividerVariant(value) {
   return "classic";
 }
 function cleanSectionColor(value) {
-  const s = cleanText(value, 16).trim();
+  const s = cleanText$1(value, 16).trim();
   if (/^#[0-9A-Fa-f]{6}$/.test(s) || /^#[0-9A-Fa-f]{3}$/.test(s)) return s;
   return void 0;
 }
@@ -1669,12 +1691,12 @@ function cleanProductItems(value) {
   return value.slice(0, 20).map((item) => {
     const entry2 = item && typeof item === "object" ? item : {};
     return {
-      title: cleanText(entry2.title, 140),
-      description: entry2.description ? cleanText(entry2.description, 500) : void 0,
-      priceText: entry2.priceText ? cleanText(entry2.priceText, 80) : void 0,
-      imageUrl: entry2.imageUrl ? cleanText(entry2.imageUrl, 500) : void 0,
-      buttonText: cleanText(entry2.buttonText, 80) || "Open",
-      buttonUrl: cleanText(entry2.buttonUrl, 500)
+      title: cleanText$1(entry2.title, 140),
+      description: entry2.description ? cleanText$1(entry2.description, 500) : void 0,
+      priceText: entry2.priceText ? cleanText$1(entry2.priceText, 80) : void 0,
+      imageUrl: entry2.imageUrl ? cleanText$1(entry2.imageUrl, 500) : void 0,
+      buttonText: cleanText$1(entry2.buttonText, 80) || "Open",
+      buttonUrl: cleanText$1(entry2.buttonUrl, 500)
     };
   }).filter((item) => item.title && item.buttonUrl && validateContactHref(item.buttonUrl)).map((item) => ({
     ...item,
@@ -1686,8 +1708,8 @@ function cleanFaqItems(value) {
   return value.slice(0, 10).map((item) => {
     const entry2 = item && typeof item === "object" ? item : {};
     return {
-      question: cleanText(entry2.question, 160),
-      answer: cleanText(entry2.answer, 700)
+      question: cleanText$1(entry2.question, 160),
+      answer: cleanText$1(entry2.answer, 700)
     };
   }).filter((item) => item.question && item.answer);
 }
@@ -1696,9 +1718,9 @@ function cleanPriceItems(value) {
   return value.slice(0, 20).map((item) => {
     const entry2 = item && typeof item === "object" ? item : {};
     return {
-      name: cleanText(entry2.name, 120),
-      description: entry2.description ? cleanText(entry2.description, 240) : void 0,
-      price: cleanText(entry2.price, 80)
+      name: cleanText$1(entry2.name, 120),
+      description: entry2.description ? cleanText$1(entry2.description, 240) : void 0,
+      price: cleanText$1(entry2.price, 80)
     };
   }).filter((item) => item.name && item.price);
 }
@@ -1707,8 +1729,8 @@ function cleanGalleryImages(value) {
   return value.slice(0, 12).map((item) => {
     const entry2 = item && typeof item === "object" ? item : {};
     return {
-      src: cleanText(entry2.src, 500),
-      alt: entry2.alt ? cleanText(entry2.alt, 160) : void 0
+      src: cleanText$1(entry2.src, 500),
+      alt: entry2.alt ? cleanText$1(entry2.alt, 160) : void 0
     };
   }).filter((item) => item.src && validateExternalUrl(item.src));
 }
@@ -1717,8 +1739,8 @@ function cleanSocialLinks(value) {
   return value.slice(0, 8).map((item) => {
     const entry2 = item && typeof item === "object" ? item : {};
     const platform = String(entry2.platform ?? "");
-    const label = cleanText(entry2.label, 80);
-    const href = cleanText(entry2.href, 500);
+    const label = cleanText$1(entry2.label, 80);
+    const href = cleanText$1(entry2.href, 500);
     return { platform, label, href };
   }).filter(
     (item) => SOCIAL_PLATFORMS.has(item.platform) && item.label && item.href && (item.platform === "email" ? validateEmail(item.href) || item.href.startsWith("mailto:") : validateContactHref(item.href))
@@ -1738,25 +1760,25 @@ function sanitizeBlock(input) {
   const typedProps = props;
   switch (candidate.type) {
     case "header": {
-      const title = cleanText(typedProps.title, 120);
+      const title = cleanText$1(typedProps.title, 120);
       if (!title) return null;
       return {
         id: id2,
         type: "header",
         props: {
           title,
-          subtitle: typedProps.subtitle ? cleanText(typedProps.subtitle, 180) : void 0
+          subtitle: typedProps.subtitle ? cleanText$1(typedProps.subtitle, 180) : void 0
         }
       };
     }
     case "text": {
-      const text = cleanText(typedProps.text, 2e3);
+      const text = cleanText$1(typedProps.text, 2e3);
       if (!text) return null;
       return { id: id2, type: "text", props: { text } };
     }
     case "link_button": {
-      const label = cleanText(typedProps.label, 80);
-      const href = cleanText(typedProps.href, 500);
+      const label = cleanText$1(typedProps.label, 80);
+      const href = cleanText$1(typedProps.href, 500);
       if (!label || !href || !validateUrlLike(href)) return null;
       return {
         id: id2,
@@ -1768,25 +1790,25 @@ function sanitizeBlock(input) {
       };
     }
     case "image": {
-      const src = cleanText(typedProps.src, 500);
+      const src = cleanText$1(typedProps.src, 500);
       if (!src || !validateUrlLike(src)) return null;
       return {
         id: id2,
         type: "image",
         props: {
           src,
-          alt: typedProps.alt ? cleanText(typedProps.alt, 160) : void 0
+          alt: typedProps.alt ? cleanText$1(typedProps.alt, 160) : void 0
         }
       };
     }
     case "video": {
-      const src = cleanText(typedProps.src, 500);
+      const src = cleanText$1(typedProps.src, 500);
       if (!src || !validateUrlLike(src)) return null;
       return { id: id2, type: "video", props: { src } };
     }
     case "whatsapp_button": {
-      const label = cleanText(typedProps.label, 80);
-      const phoneE164 = cleanText(typedProps.phoneE164, 32);
+      const label = cleanText$1(typedProps.label, 80);
+      const phoneE164 = cleanText$1(typedProps.phoneE164, 32);
       if (!label || !/^\+[1-9]\d{7,14}$/.test(phoneE164)) return null;
       return {
         id: id2,
@@ -1794,12 +1816,12 @@ function sanitizeBlock(input) {
         props: {
           label,
           phoneE164,
-          message: typedProps.message ? cleanText(typedProps.message, 300) : void 0
+          message: typedProps.message ? cleanText$1(typedProps.message, 300) : void 0
         }
       };
     }
     case "divider": {
-      const label = typedProps.label ? cleanText(typedProps.label, 80) : void 0;
+      const label = typedProps.label ? cleanText$1(typedProps.label, 80) : void 0;
       const variant = cleanDividerVariant(typedProps.variant);
       const indent = cleanDividerStep(typedProps.indent);
       const paddingTop = cleanDividerStep(typedProps.paddingTop);
@@ -1811,7 +1833,7 @@ function sanitizeBlock(input) {
         fullWidth: cleanBoolean(typedProps.fullWidth),
         softEdges: cleanBoolean(typedProps.softEdges),
         hidden: cleanBoolean(typedProps.hidden),
-        editorLabel: typedProps.editorLabel ? cleanText(typedProps.editorLabel, 80) : void 0,
+        editorLabel: typedProps.editorLabel ? cleanText$1(typedProps.editorLabel, 80) : void 0,
         paddingTop,
         paddingBottom,
         edgeIndent: cleanBoolean(typedProps.edgeIndent),
@@ -1821,8 +1843,8 @@ function sanitizeBlock(input) {
       return { id: id2, type: "divider", props: propsOut };
     }
     case "profile": {
-      const imageUrl = cleanText(typedProps.imageUrl, 500);
-      const name = cleanText(typedProps.name, 120);
+      const imageUrl = cleanText$1(typedProps.imageUrl, 500);
+      const name = cleanText$1(typedProps.name, 120);
       if (!imageUrl || !validateExternalUrl(imageUrl) || !name) return null;
       return {
         id: id2,
@@ -1830,7 +1852,7 @@ function sanitizeBlock(input) {
         props: {
           imageUrl,
           name,
-          subtitle: typedProps.subtitle ? cleanText(typedProps.subtitle, 180) : void 0,
+          subtitle: typedProps.subtitle ? cleanText$1(typedProps.subtitle, 180) : void 0,
           circular: cleanBoolean(typedProps.circular)
         }
       };
@@ -1844,9 +1866,9 @@ function sanitizeBlock(input) {
       return { id: id2, type: "faq", props: { items } };
     }
     case "map_location": {
-      const title = cleanText(typedProps.title, 120);
-      const mapsUrl = cleanText(typedProps.mapsUrl, 500);
-      const buttonText = cleanText(typedProps.buttonText, 80) || "Open map";
+      const title = cleanText$1(typedProps.title, 120);
+      const mapsUrl = cleanText$1(typedProps.mapsUrl, 500);
+      const buttonText = cleanText$1(typedProps.buttonText, 80) || "Open map";
       if (!title || !mapsUrl || !validateExternalUrl(mapsUrl)) return null;
       return { id: id2, type: "map_location", props: { title, mapsUrl, buttonText } };
     }
@@ -1856,7 +1878,7 @@ function sanitizeBlock(input) {
         id: id2,
         type: "price_list",
         props: {
-          title: typedProps.title ? cleanText(typedProps.title, 120) : void 0,
+          title: typedProps.title ? cleanText$1(typedProps.title, 120) : void 0,
           items
         }
       };
@@ -1866,24 +1888,24 @@ function sanitizeBlock(input) {
       return { id: id2, type: "gallery", props: { images } };
     }
     case "contact_card": {
-      const phone = typedProps.phone ? cleanText(typedProps.phone, 80) : void 0;
-      const whatsapp = typedProps.whatsapp ? cleanText(typedProps.whatsapp, 32) : void 0;
-      const email = typedProps.email ? cleanText(typedProps.email, 160) : void 0;
-      const address = typedProps.address ? cleanText(typedProps.address, 240) : void 0;
+      const phone = typedProps.phone ? cleanText$1(typedProps.phone, 80) : void 0;
+      const whatsapp = typedProps.whatsapp ? cleanText$1(typedProps.whatsapp, 32) : void 0;
+      const email = typedProps.email ? cleanText$1(typedProps.email, 160) : void 0;
+      const address = typedProps.address ? cleanText$1(typedProps.address, 240) : void 0;
       if (!phone && !whatsapp && !email && !address) return null;
       if (whatsapp && !/^\+[1-9]\d{7,14}$/.test(whatsapp)) return null;
       if (email && !validateEmail(email)) return null;
       return { id: id2, type: "contact_card", props: { phone, whatsapp, email, address } };
     }
     case "countdown": {
-      const title = cleanText(typedProps.title, 120);
-      const dateTimeText = cleanText(typedProps.dateTimeText, 120);
+      const title = cleanText$1(typedProps.title, 120);
+      const dateTimeText = cleanText$1(typedProps.dateTimeText, 120);
       if (!title || !dateTimeText) return null;
       return { id: id2, type: "countdown", props: { title, dateTimeText } };
     }
     case "announcement": {
-      const title = cleanText(typedProps.title, 120);
-      const message = cleanText(typedProps.message, 600);
+      const title = cleanText$1(typedProps.title, 120);
+      const message = cleanText$1(typedProps.message, 600);
       if (!title || !message) return null;
       return {
         id: id2,
@@ -1892,15 +1914,15 @@ function sanitizeBlock(input) {
       };
     }
     case "html_embed": {
-      const raw = cleanText(typedProps.html, HTML_EMBED_MAX_LENGTH);
+      const raw = cleanText$1(typedProps.html, HTML_EMBED_MAX_LENGTH);
       const allowScripts = cleanBoolean(typedProps.allowScripts);
       const html = sanitizeHtmlForSandboxStorage(raw, HTML_EMBED_MAX_LENGTH, { allowScripts });
       if (!html.trim()) return null;
       return { id: id2, type: "html_embed", props: { html, allowScripts } };
     }
     case "form": {
-      const title = cleanText(typedProps.title, 120) || "Contact form";
-      const submitText = cleanText(typedProps.submitText, 40) || "Send";
+      const title = cleanText$1(typedProps.title, 120) || "Contact form";
+      const submitText = cleanText$1(typedProps.submitText, 40) || "Send";
       const enabledFields = cleanEnabledLeadFields(typedProps.enabledFields);
       return {
         id: id2,
@@ -1913,8 +1935,8 @@ function sanitizeBlock(input) {
       };
     }
     case "digital_products": {
-      const title = typedProps.title ? cleanText(typedProps.title, 120) : void 0;
-      const note = typedProps.note ? cleanText(typedProps.note, 240) : void 0;
+      const title = typedProps.title ? cleanText$1(typedProps.title, 120) : void 0;
+      const note = typedProps.note ? cleanText$1(typedProps.note, 240) : void 0;
       return {
         id: id2,
         type: "digital_products",
@@ -1926,11 +1948,11 @@ function sanitizeBlock(input) {
       };
     }
     case "advanced_timer": {
-      const title = cleanText(typedProps.title, 120) || "Countdown";
-      const targetIso = cleanText(typedProps.targetIso, 80);
-      const dateTimeText = cleanText(typedProps.dateTimeText, 120) || targetIso || "Set date/time";
-      const beforeMessage = cleanText(typedProps.beforeMessage, 260) || "Ends soon";
-      const afterMessage = cleanText(typedProps.afterMessage, 260) || "Offer has ended";
+      const title = cleanText$1(typedProps.title, 120) || "Countdown";
+      const targetIso = cleanText$1(typedProps.targetIso, 80);
+      const dateTimeText = cleanText$1(typedProps.dateTimeText, 120) || targetIso || "Set date/time";
+      const beforeMessage = cleanText$1(typedProps.beforeMessage, 260) || "Ends soon";
+      const afterMessage = cleanText$1(typedProps.afterMessage, 260) || "Offer has ended";
       const parsed = targetIso ? Date.parse(targetIso) : Number.NaN;
       if (!Number.isFinite(parsed)) {
         return {
@@ -2367,6 +2389,10 @@ function requireD1Database(context) {
 function createId(prefix) {
   const random = crypto.randomUUID().replaceAll("-", "").slice(0, 20);
   return `${prefix}_${random}`;
+}
+async function all(statement) {
+  const result = await statement.all();
+  return result.results ?? [];
 }
 function isLikelyMissingSeoColumnsError(error) {
   const msg = error instanceof Error ? error.message : String(error);
@@ -3005,7 +3031,7 @@ async function logout(request, context) {
 function isRoleAllowed(userRole, required) {
   return userRole === "super_admin";
 }
-const meta$6 = () => [{ title: "Page editor - Smart Page Platform" }];
+const meta$8 = () => [{ title: "Page editor - Smart Page Platform" }];
 function editorErrorMessage(error) {
   if (error instanceof Error) {
     if (error.message === "page_not_found") return "That page could not be found in your workspace.";
@@ -3023,7 +3049,7 @@ function noticeMessage(notice) {
   if (notice === "created") return "Page created successfully.";
   return "Page updated successfully.";
 }
-async function loader$f({ request, context, params }) {
+async function loader$k({ request, context, params }) {
   const user = await requireUser(request, context);
   const db2 = requireD1Database(context);
   const repo = pageRepository(db2);
@@ -3043,7 +3069,7 @@ async function loader$f({ request, context, params }) {
   }
   return page;
 }
-async function action$6({ request, context, params }) {
+async function action$a({ request, context, params }) {
   const user = await requireUser(request, context);
   const db2 = requireD1Database(context);
   const repo = pageRepository(db2);
@@ -4136,28 +4162,84 @@ function PageEditor() {
       ] })
     ] }),
     /* @__PURE__ */ jsx(AddBlockModal, { open: addBlockOpen, onClose: () => setAddBlockOpen(false), onPickLive: (type) => addBlock(type) }),
-    /* @__PURE__ */ jsx("div", { className: "fixed bottom-0 left-0 right-0 z-40 border-t border-zinc-800 bg-zinc-950/96 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_40px_rgba(0,0,0,0.45)] backdrop-blur-md lg:hidden", children: /* @__PURE__ */ jsxs("div", { className: "mx-auto flex max-w-lg items-center gap-2 px-3 py-3", children: [
+    /* @__PURE__ */ jsx("div", { className: "fixed inset-x-0 bottom-0 z-50 border-t border-zinc-700 bg-zinc-950/98 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_40px_rgba(0,0,0,0.55)] backdrop-blur-md lg:hidden", children: /* @__PURE__ */ jsxs("div", { className: "mx-auto grid max-w-lg grid-cols-3 gap-2 px-3 py-3", children: [
       /* @__PURE__ */ jsx(
         Button,
         {
           type: "button",
           size: "sm",
-          className: "shrink-0 rounded-full bg-brand-600 px-4 py-2.5 text-xs font-bold uppercase tracking-wide text-white shadow-md shadow-brand-900/25 hover:bg-brand-500",
+          className: "h-11 w-full px-2 text-xs font-bold",
           onClick: () => setAddBlockOpen(true),
-          children: "Add block"
+          children: "Add"
         }
       ),
-      shareControls ? /* @__PURE__ */ jsx("div", { className: "flex shrink-0 gap-1", children: shareControls }) : null,
-      /* @__PURE__ */ jsx("div", { className: "flex flex-1 justify-end gap-2", children: publishControls })
+      publicCode ? /* @__PURE__ */ jsx(
+        Link,
+        {
+          to: `/p/${previewCode}`,
+          target: "_blank",
+          rel: "noreferrer",
+          className: buttonClassName({ size: "sm", variant: "secondary", className: "h-11 w-full px-2 text-xs font-bold" }),
+          children: "View"
+        }
+      ) : /* @__PURE__ */ jsx("span", { "aria-hidden": true }),
+      /* @__PURE__ */ jsx(
+        Button,
+        {
+          form: "page-editor-form",
+          type: "submit",
+          size: "sm",
+          name: "intent",
+          value: "save",
+          disabled: isSubmitting,
+          className: "h-11 w-full px-2 text-xs font-bold",
+          children: "Save"
+        }
+      ),
+      /* @__PURE__ */ jsx(
+        Button,
+        {
+          form: "page-editor-form",
+          type: "submit",
+          size: "sm",
+          name: "intent",
+          value: data.page.status === "published" ? "unpublish" : "publish",
+          variant: data.page.status === "published" ? "ghost" : "primary",
+          disabled: isSubmitting,
+          className: "col-span-3 h-11 w-full border border-zinc-700 px-2 text-xs font-bold text-white",
+          children: data.page.status === "published" ? "Move to draft" : "Publish page"
+        }
+      )
     ] }) })
   ] });
 }
 const route1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$6,
+  action: action$a,
   default: PageEditor,
-  loader: loader$f,
-  meta: meta$6
+  loader: loader$k,
+  meta: meta$8
+}, Symbol.toStringTag, { value: "Module" }));
+async function loader$j() {
+  return new Response(JSON.stringify({
+    name: "COS Rota Request Portal",
+    short_name: "COS Rota",
+    description: "Private shift and leave requests for the COS team.",
+    start_url: "/rota",
+    scope: "/",
+    display: "standalone",
+    background_color: "#f1f5f9",
+    theme_color: "#0f172a",
+    orientation: "portrait-primary",
+    icons: [
+      { src: "/icons/cos-rota-192.png", sizes: "192x192", type: "image/png", purpose: "any maskable" },
+      { src: "/icons/cos-rota-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" }
+    ]
+  }), { headers: { "Content-Type": "application/manifest+json", "Cache-Control": "public, max-age=3600" } });
+}
+const route2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  loader: loader$j
 }, Symbol.toStringTag, { value: "Module" }));
 const SECTIONS = [
   {
@@ -4197,7 +4279,7 @@ function AdminSettings() {
     ] }, section.title)) }) })
   ] });
 }
-const route2 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: AdminSettings
 }, Symbol.toStringTag, { value: "Module" }));
@@ -4279,7 +4361,7 @@ function adminRepository(db2) {
     }
   };
 }
-async function loader$e({ request, context }) {
+async function loader$i({ request, context }) {
   await requireUserRole(request, context);
   const db2 = requireD1Database(context);
   const workspaces = await adminRepository(db2).listWorkspaces();
@@ -4317,10 +4399,660 @@ function AdminTenants() {
     ] }) }) })
   ] });
 }
-const route3 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: AdminTenants,
-  loader: loader$e
+  loader: loader$i
+}, Symbol.toStringTag, { value: "Module" }));
+const PASSWORD_ALGORITHM = "pbkdf2_sha256";
+const PASSWORD_ITERATIONS = 1e5;
+const SALT_BYTES = 32;
+const KEY_BITS = 256;
+function base64UrlEncode(bytes) {
+  const binary = Array.from(bytes, (byte) => String.fromCharCode(byte)).join("");
+  return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
+}
+function base64UrlDecode(value) {
+  const padded = value.replaceAll("-", "+").replaceAll("_", "/").padEnd(
+    Math.ceil(value.length / 4) * 4,
+    "="
+  );
+  const binary = atob(padded);
+  return Uint8Array.from(binary, (char) => char.charCodeAt(0));
+}
+function constantTimeEqual(a, b) {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i += 1) {
+    diff |= a[i] ^ b[i];
+  }
+  return diff === 0;
+}
+function toArrayBuffer(bytes) {
+  const buffer = new ArrayBuffer(bytes.byteLength);
+  new Uint8Array(buffer).set(bytes);
+  return buffer;
+}
+async function derivePasswordKey(password, salt, iterations) {
+  const material = await crypto.subtle.importKey(
+    "raw",
+    toArrayBuffer(new TextEncoder().encode(password)),
+    "PBKDF2",
+    false,
+    ["deriveBits"]
+  );
+  const bits = await crypto.subtle.deriveBits(
+    {
+      name: "PBKDF2",
+      hash: "SHA-256",
+      salt: toArrayBuffer(salt),
+      iterations
+    },
+    material,
+    KEY_BITS
+  );
+  return new Uint8Array(bits);
+}
+async function hashPassword(password) {
+  const salt = crypto.getRandomValues(new Uint8Array(SALT_BYTES));
+  const hash = await derivePasswordKey(password, salt, PASSWORD_ITERATIONS);
+  return [
+    PASSWORD_ALGORITHM,
+    String(PASSWORD_ITERATIONS),
+    base64UrlEncode(salt),
+    base64UrlEncode(hash)
+  ].join("$");
+}
+async function verifyPassword(password, storedHash) {
+  if (!storedHash) return false;
+  const [algorithm, iterationsText, saltText, hashText] = storedHash.split("$");
+  if (algorithm !== PASSWORD_ALGORITHM || !iterationsText || !saltText || !hashText) {
+    return false;
+  }
+  const iterations = Number(iterationsText);
+  if (!Number.isSafeInteger(iterations) || iterations < 1e5) {
+    return false;
+  }
+  const salt = base64UrlDecode(saltText);
+  const expectedHash = base64UrlDecode(hashText);
+  const actualHash = await derivePasswordKey(password, salt, iterations);
+  return constantTimeEqual(actualHash, expectedHash);
+}
+const DAY_MS = 864e5;
+function parseDateOnly(value) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) return null;
+  const date = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+function formatDateOnly(date) {
+  return date.toISOString().slice(0, 10);
+}
+function addDays(dateOnly, days) {
+  const date = parseDateOnly(dateOnly);
+  if (!date) return dateOnly;
+  return formatDateOnly(new Date(date.getTime() + days * DAY_MS));
+}
+function weekStartForDate(dateOnly, weekStartDay) {
+  const date = parseDateOnly(dateOnly);
+  if (!date) return dateOnly;
+  const offset = (date.getUTCDay() - weekStartDay + 7) % 7;
+  return formatDateOnly(new Date(date.getTime() - offset * DAY_MS));
+}
+function cutoffForWeek(weekStart, settings) {
+  const start = parseDateOnly(weekStart);
+  if (!start) return new Date(Number.NaN);
+  let daysBefore = (settings.weekStartDay - settings.cutoffDay + 7) % 7;
+  if (daysBefore === 0) daysBefore = 7;
+  const cutoffDate = new Date(start.getTime() - daysBefore * DAY_MS);
+  const [hoursText, minutesText] = settings.cutoffTime.split(":");
+  const hours = Number(hoursText);
+  const minutes = Number(minutesText);
+  return new Date(
+    Date.UTC(
+      cutoffDate.getUTCFullYear(),
+      cutoffDate.getUTCMonth(),
+      cutoffDate.getUTCDate(),
+      Number.isFinite(hours) ? hours : 23,
+      Number.isFinite(minutes) ? minutes : 59
+    ) - settings.timezoneOffsetMinutes * 6e4
+  );
+}
+function normalizeRequestTarget(targetDate, settings, now = /* @__PURE__ */ new Date()) {
+  const parsed = parseDateOnly(targetDate);
+  if (!parsed) throw new Error("Choose a valid target date.");
+  const originalTargetDate = formatDateOnly(parsed);
+  let effectiveTargetDate = originalTargetDate;
+  let weekStart = weekStartForDate(effectiveTargetDate, settings.weekStartDay);
+  let cutoff = cutoffForWeek(weekStart, settings);
+  let movedWeeks = 0;
+  while (now.getTime() > cutoff.getTime() && movedWeeks < 104) {
+    effectiveTargetDate = addDays(effectiveTargetDate, 7);
+    weekStart = addDays(weekStart, 7);
+    cutoff = cutoffForWeek(weekStart, settings);
+    movedWeeks += 1;
+  }
+  return {
+    originalTargetDate,
+    targetDate: effectiveTargetDate,
+    weekStart,
+    weekEnd: addDays(weekStart, 6),
+    cutoffIso: cutoff.toISOString(),
+    movedWeeks,
+    isLate: movedWeeks > 0
+  };
+}
+function normalizeAnnualLeaveRange(startDate, endDate, settings, now = /* @__PURE__ */ new Date()) {
+  const start = parseDateOnly(startDate);
+  const end = parseDateOnly(endDate);
+  if (!start || !end) throw new Error("Choose valid From and To dates for annual leave.");
+  if (end.getTime() < start.getTime()) throw new Error("The To date cannot be before the From date.");
+  const durationDays = Math.round((end.getTime() - start.getTime()) / DAY_MS) + 1;
+  if (durationDays > 60) throw new Error("Annual leave can be submitted for up to 60 days at a time.");
+  const timing = normalizeRequestTarget(startDate, settings, now);
+  return {
+    ...timing,
+    originalEndDate: formatDateOnly(end),
+    endDate: addDays(formatDateOnly(end), timing.movedWeeks * 7),
+    durationDays
+  };
+}
+function formatWeekRange(weekStart, locale = "en-GB") {
+  const start = parseDateOnly(weekStart);
+  const end = parseDateOnly(addDays(weekStart, 6));
+  if (!start || !end) return weekStart;
+  const formatter = new Intl.DateTimeFormat(locale, {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    timeZone: "UTC"
+  });
+  return `${formatter.format(start)} – ${formatter.format(end)}`;
+}
+function requestTypeLabel(value) {
+  const labels = {
+    day_off: "Day off",
+    morning: "Morning shift",
+    mid: "Mid shift",
+    closing: "Closing shift",
+    shift_swap: "Shift swap",
+    annual_leave: "Annual leave",
+    emergency_leave: "Emergency leave",
+    other: "Other"
+  };
+  return labels[value] ?? value;
+}
+function statusLabel(value) {
+  const labels = {
+    pending: "Pending",
+    approved: "Approved",
+    rejected: "Rejected",
+    cancel_requested: "Cancellation requested",
+    cancelled: "Cancelled"
+  };
+  return labels[value] ?? value;
+}
+const REQUEST_SELECT = `SELECT
+  r.id, r.staff_id, s.name AS staff_name, s.employee_id,
+  r.request_type, r.original_target_date, r.target_date, r.original_end_date, r.end_date, r.rota_week_start,
+  r.shift_detail, r.reason, r.status, r.manager_note, r.late_submission,
+  r.created_at, r.updated_at
+FROM rota_requests r
+JOIN rota_staff s ON s.id = r.staff_id`;
+function toStaff(row) {
+  return {
+    id: row.id,
+    employeeId: row.employee_id,
+    name: row.name,
+    role: row.role,
+    active: row.active === 1,
+    hasPin: Boolean(row.pin_hash)
+  };
+}
+function toRequest(row) {
+  return {
+    id: row.id,
+    staffId: row.staff_id,
+    staffName: row.staff_name,
+    employeeId: row.employee_id,
+    requestType: row.request_type,
+    originalTargetDate: row.original_target_date,
+    targetDate: row.target_date,
+    originalEndDate: row.original_end_date,
+    endDate: row.end_date,
+    rotaWeekStart: row.rota_week_start,
+    shiftDetail: row.shift_detail,
+    reason: row.reason,
+    status: row.status,
+    managerNote: row.manager_note,
+    lateSubmission: row.late_submission === 1,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at
+  };
+}
+function cleanText(value, max) {
+  return value.trim().slice(0, max);
+}
+const REQUEST_TYPES = /* @__PURE__ */ new Set([
+  "day_off",
+  "morning",
+  "mid",
+  "closing",
+  "shift_swap",
+  "annual_leave",
+  "emergency_leave",
+  "other"
+]);
+function rotaRepository(db2) {
+  async function getSettings() {
+    const row = await db2.prepare("SELECT * FROM rota_settings WHERE id = 1").first();
+    if (!row) throw new Error("Rota settings are not initialized.");
+    return {
+      timezone: row.timezone,
+      timezoneOffsetMinutes: row.timezone_offset_minutes,
+      weekStartDay: row.week_start_day,
+      cutoffDay: row.cutoff_day,
+      cutoffTime: row.cutoff_time,
+      totalStaff: row.total_staff,
+      minimumMorning: row.minimum_morning,
+      minimumClosing: row.minimum_closing,
+      maxAbsentPerDay: row.max_absent_per_day,
+      allowEmergencyOverride: row.allow_emergency_override === 1,
+      shiftTemplatesJson: row.shift_templates_json
+    };
+  }
+  async function getStaffById(id2) {
+    const row = await db2.prepare("SELECT * FROM rota_staff WHERE id = ? AND active = 1").bind(id2).first();
+    return row ? toStaff(row) : null;
+  }
+  async function verifyStaffLogin(employeeId, pin) {
+    const normalizedId = employeeId.trim();
+    const row = await db2.prepare("SELECT * FROM rota_staff WHERE employee_id = ? AND active = 1").bind(normalizedId).first();
+    if (!row || !await verifyPassword(pin, row.pin_hash)) return null;
+    return toStaff(row);
+  }
+  async function setupStaffPin(employeeId, pin) {
+    if (!/^\d{4,8}$/.test(pin)) throw new Error("PIN must contain 4 to 8 numbers.");
+    const row = await db2.prepare("SELECT * FROM rota_staff WHERE employee_id = ? AND active = 1").bind(employeeId.trim()).first();
+    if (!row) throw new Error("Employee ID was not found.");
+    if (row.pin_hash) throw new Error("A PIN already exists. Sign in or ask a manager to reset it.");
+    const pinHash = await hashPassword(pin);
+    const result = await db2.prepare("UPDATE rota_staff SET pin_hash = ?, force_pin_reset = 0, updated_at = CURRENT_TIMESTAMP WHERE id = ? AND pin_hash IS NULL").bind(pinHash, row.id).run();
+    if (!result.meta.changes) throw new Error("A PIN was already created. Please sign in.");
+    return toStaff({ ...row, pin_hash: pinHash });
+  }
+  async function changeOwnPin(staffId, currentPin, newPin) {
+    if (!/^\d{4,8}$/.test(newPin)) throw new Error("New PIN must contain 4 to 8 numbers.");
+    const row = await db2.prepare("SELECT pin_hash FROM rota_staff WHERE id = ? AND active = 1").bind(staffId).first();
+    if (!row || !await verifyPassword(currentPin, row.pin_hash)) throw new Error("Current PIN is incorrect.");
+    await db2.prepare("UPDATE rota_staff SET pin_hash = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?").bind(await hashPassword(newPin), staffId).run();
+  }
+  async function loginAllowed(attemptKey) {
+    const row = await db2.prepare("SELECT CASE WHEN locked_until IS NOT NULL AND locked_until > CURRENT_TIMESTAMP THEN 1 ELSE 0 END AS locked FROM rota_login_attempts WHERE attempt_key = ?").bind(attemptKey).first();
+    return (row == null ? void 0 : row.locked) !== 1;
+  }
+  async function recordFailedLogin(attemptKey) {
+    await db2.prepare(`INSERT INTO rota_login_attempts (attempt_key, attempts, window_started_at, locked_until)
+      VALUES (?, 1, CURRENT_TIMESTAMP, NULL)
+      ON CONFLICT(attempt_key) DO UPDATE SET
+        attempts = CASE WHEN window_started_at < datetime('now', '-15 minutes') THEN 1 ELSE attempts + 1 END,
+        window_started_at = CASE WHEN window_started_at < datetime('now', '-15 minutes') THEN CURRENT_TIMESTAMP ELSE window_started_at END,
+        locked_until = CASE WHEN (CASE WHEN window_started_at < datetime('now', '-15 minutes') THEN 1 ELSE attempts + 1 END) >= 5 THEN datetime('now', '+15 minutes') ELSE locked_until END`).bind(attemptKey).run();
+  }
+  async function clearLoginAttempts(attemptKey) {
+    await db2.prepare("DELETE FROM rota_login_attempts WHERE attempt_key = ?").bind(attemptKey).run();
+  }
+  async function listStaff() {
+    const rows2 = await all(db2.prepare("SELECT * FROM rota_staff ORDER BY role DESC, name ASC"));
+    return rows2.map(toStaff);
+  }
+  async function setStaffPin(staffId, pin) {
+    if (!/^\d{4,8}$/.test(pin)) throw new Error("PIN must contain 4 to 8 numbers.");
+    const pinHash = await hashPassword(pin);
+    const result = await db2.prepare("UPDATE rota_staff SET pin_hash = ?, force_pin_reset = 0, updated_at = CURRENT_TIMESTAMP WHERE id = ?").bind(pinHash, staffId).run();
+    if (!result.meta.changes) throw new Error("Staff member not found.");
+  }
+  async function resetStaffPin(staffId) {
+    const result = await db2.prepare("UPDATE rota_staff SET pin_hash = NULL, force_pin_reset = 1, updated_at = CURRENT_TIMESTAMP WHERE id = ?").bind(staffId).run();
+    if (!result.meta.changes) throw new Error("Staff member not found.");
+  }
+  async function addStaff(input) {
+    const employeeId = cleanText(input.employeeId, 30);
+    const name = cleanText(input.name, 120);
+    if (!/^\d{2,30}$/.test(employeeId)) throw new Error("Employee ID must contain numbers only.");
+    if (name.length < 2) throw new Error("Enter the staff member's full name.");
+    if (!(/* @__PURE__ */ new Set(["staff", "manager"])).has(input.role)) throw new Error("Choose a valid role.");
+    try {
+      await db2.prepare("INSERT INTO rota_staff (id, employee_id, name, role) VALUES (?, ?, ?, ?)").bind(createId("rst"), employeeId, name, input.role).run();
+    } catch (error) {
+      if (String(error).toLowerCase().includes("unique")) throw new Error("That Employee ID already exists.");
+      throw error;
+    }
+  }
+  async function updateStaff(input) {
+    const employeeId = cleanText(input.employeeId, 30);
+    const name = cleanText(input.name, 120);
+    if (!/^\d{2,30}$/.test(employeeId) || name.length < 2) throw new Error("Enter a valid name and Employee ID.");
+    if (!(/* @__PURE__ */ new Set(["staff", "manager"])).has(input.role)) throw new Error("Choose a valid role.");
+    const current = await db2.prepare("SELECT role, active FROM rota_staff WHERE id = ?").bind(input.staffId).first();
+    if (!current) throw new Error("Staff member not found.");
+    if (current.role === "manager" && current.active === 1 && (input.role !== "manager" || !input.active)) {
+      const managers = await db2.prepare("SELECT COUNT(*) AS count FROM rota_staff WHERE role = 'manager' AND active = 1 AND id != ?").bind(input.staffId).first();
+      if (((managers == null ? void 0 : managers.count) ?? 0) < 1) throw new Error("Assign another active manager before removing the last manager.");
+    }
+    await db2.prepare("UPDATE rota_staff SET employee_id = ?, name = ?, role = ?, active = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?").bind(employeeId, name, input.role, input.active ? 1 : 0, input.staffId).run();
+  }
+  async function listRequestsForStaff(staffId) {
+    const rows2 = await all(
+      db2.prepare(`${REQUEST_SELECT} WHERE r.staff_id = ? ORDER BY r.created_at DESC`).bind(staffId)
+    );
+    return rows2.map(toRequest);
+  }
+  async function listAllRequests() {
+    const rows2 = await all(
+      db2.prepare(`${REQUEST_SELECT} ORDER BY r.rota_week_start DESC, r.created_at DESC`)
+    );
+    return rows2.map(toRequest);
+  }
+  async function listEvents(staffId) {
+    const where = staffId ? "WHERE r.staff_id = ?" : "";
+    const statement = db2.prepare(`SELECT e.id, e.request_id, e.actor_kind, e.event_type, e.from_status, e.to_status, e.comment, e.created_at
+      FROM rota_request_events e JOIN rota_requests r ON r.id = e.request_id
+      ${where} ORDER BY e.created_at DESC`);
+    const rows2 = await all(staffId ? statement.bind(staffId) : statement);
+    return rows2.map((row) => ({
+      id: row.id,
+      requestId: row.request_id,
+      actorKind: row.actor_kind,
+      eventType: row.event_type,
+      fromStatus: row.from_status,
+      toStatus: row.to_status,
+      comment: row.comment,
+      createdAt: row.created_at
+    }));
+  }
+  async function createRequest(input) {
+    if (!REQUEST_TYPES.has(input.requestType)) throw new Error("Choose a valid request type.");
+    const reason = cleanText(input.reason, 1e3);
+    if (reason.length < 3) throw new Error("Please add a short reason.");
+    const settings = await getSettings();
+    const timing = input.requestType === "annual_leave" ? normalizeAnnualLeaveRange(input.targetDate, input.endDate ?? "", settings) : normalizeRequestTarget(input.targetDate, settings);
+    const originalEndDate = "originalEndDate" in timing ? timing.originalEndDate : null;
+    const endDate = "endDate" in timing ? timing.endDate : null;
+    const requestId = createId("rrq");
+    const eventId = createId("rev");
+    const shiftDetail = cleanText(input.shiftDetail ?? "", 240) || null;
+    await db2.batch([
+      db2.prepare(`INSERT INTO rota_requests
+        (id, staff_id, request_type, original_target_date, target_date, original_end_date, end_date, rota_week_start, shift_detail, reason, late_submission)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(requestId, input.staffId, input.requestType, timing.originalTargetDate, timing.targetDate, originalEndDate, endDate, timing.weekStart, shiftDetail, reason, timing.isLate ? 1 : 0),
+      db2.prepare(`INSERT INTO rota_request_events
+        (id, request_id, actor_kind, actor_id, event_type, to_status, comment)
+        VALUES (?, ?, 'staff', ?, 'submitted', 'pending', ?)`).bind(eventId, requestId, input.staffId, timing.isLate ? `Automatically moved ${timing.movedWeeks} week(s) after the cutoff.` : null)
+    ]);
+    const managerIds = await all(db2.prepare("SELECT id FROM rota_staff WHERE role = 'manager' AND active = 1"));
+    const staff = await getStaffById(input.staffId);
+    if (managerIds.length) {
+      await db2.batch(managerIds.map((manager) => db2.prepare(`INSERT INTO rota_notifications
+        (id, staff_id, request_id, type, title, body)
+        VALUES (?, ?, ?, 'new_request', 'New rota request', ?)`).bind(createId("rnt"), manager.id, requestId, `${(staff == null ? void 0 : staff.name) ?? "A staff member"}: ${input.requestType.replaceAll("_", " ")} for ${timing.targetDate}${endDate ? ` to ${endDate}` : ""}.`)));
+    }
+    return { requestId, timing, managerStaffIds: managerIds.map((item) => item.id) };
+  }
+  async function cancelRequest(staffId, requestId) {
+    const row = await db2.prepare("SELECT status FROM rota_requests WHERE id = ? AND staff_id = ?").bind(requestId, staffId).first();
+    if (!row) throw new Error("Request not found.");
+    if (!(/* @__PURE__ */ new Set(["pending", "approved"])).has(row.status)) throw new Error("This request can no longer be cancelled.");
+    const nextStatus = row.status === "pending" ? "cancelled" : "cancel_requested";
+    await db2.batch([
+      db2.prepare(`UPDATE rota_requests SET status = ?, cancelled_at = CASE WHEN ? = 'cancelled' THEN CURRENT_TIMESTAMP ELSE cancelled_at END,
+        updated_at = CURRENT_TIMESTAMP WHERE id = ? AND staff_id = ?`).bind(nextStatus, nextStatus, requestId, staffId),
+      db2.prepare(`INSERT INTO rota_request_events
+        (id, request_id, actor_kind, actor_id, event_type, from_status, to_status)
+        VALUES (?, ?, 'staff', ?, 'cancellation_requested', ?, ?)`).bind(createId("rev"), requestId, staffId, row.status, nextStatus)
+    ]);
+    const managerIds = nextStatus === "cancel_requested" ? await all(db2.prepare("SELECT id FROM rota_staff WHERE role = 'manager' AND active = 1")) : [];
+    if (managerIds.length) {
+      await db2.batch(managerIds.map((manager) => db2.prepare(`INSERT INTO rota_notifications
+        (id, staff_id, request_id, type, title, body)
+        VALUES (?, ?, ?, 'cancellation_request', 'Cancellation requested', 'An approved rota request needs cancellation review.')`).bind(createId("rnt"), manager.id, requestId)));
+    }
+    return { status: nextStatus, managerStaffIds: managerIds.map((item) => item.id) };
+  }
+  async function updateRequest(input) {
+    const current = await db2.prepare("SELECT status, staff_id, request_type, target_date, end_date FROM rota_requests WHERE id = ?").bind(input.requestId).first();
+    if (!current) throw new Error("Request not found.");
+    const allowed = current.status === "cancel_requested" ? input.status === "cancelled" || input.status === "approved" : input.status === "approved" || input.status === "rejected";
+    if (!allowed) throw new Error("That status change is not allowed.");
+    const isAbsence = (/* @__PURE__ */ new Set(["day_off", "annual_leave", "emergency_leave"])).has(current.request_type);
+    if (input.status === "approved" && isAbsence && !input.overrideCoverage) {
+      const [settings, capacity] = await Promise.all([
+        getSettings(),
+        db2.prepare(`WITH RECURSIVE
+          candidate(day, final_day) AS (
+            SELECT ?, COALESCE(?, ?)
+            UNION ALL SELECT date(day, '+1 day'), final_day FROM candidate WHERE day < final_day
+          ),
+          approved_days(request_id, day, final_day) AS (
+            SELECT id, target_date, COALESCE(end_date, target_date)
+            FROM rota_requests
+            WHERE status = 'approved' AND request_type IN ('day_off', 'annual_leave', 'emergency_leave') AND id != ?
+            UNION ALL SELECT request_id, date(day, '+1 day'), final_day FROM approved_days WHERE day < final_day
+          )
+          SELECT candidate.day, COUNT(approved_days.request_id) AS approved_absent
+          FROM candidate LEFT JOIN approved_days ON approved_days.day = candidate.day
+          GROUP BY candidate.day ORDER BY approved_absent DESC LIMIT 1`).bind(current.target_date, current.end_date, current.target_date, input.requestId).first()
+      ]);
+      if (((capacity == null ? void 0 : capacity.approved_absent) ?? 0) >= settings.maxAbsentPerDay) {
+        throw new Error(`The absence limit is already reached on ${capacity == null ? void 0 : capacity.day}. Tick coverage override to approve anyway.`);
+      }
+    }
+    const note = cleanText(input.note ?? "", 500) || null;
+    await db2.batch([
+      db2.prepare(`UPDATE rota_requests SET status = ?, manager_note = ?, decided_by_staff_id = ?, decided_at = CURRENT_TIMESTAMP,
+        cancelled_at = CASE WHEN ? = 'cancelled' THEN CURRENT_TIMESTAMP ELSE cancelled_at END, updated_at = CURRENT_TIMESTAMP WHERE id = ?`).bind(input.status, note, input.managerStaffId, input.status, input.requestId),
+      db2.prepare(`INSERT INTO rota_request_events
+        (id, request_id, actor_kind, actor_id, event_type, from_status, to_status, comment)
+        VALUES (?, ?, 'manager', ?, 'manager_decision', ?, ?, ?)`).bind(createId("rev"), input.requestId, input.managerStaffId, current.status, input.status, input.overrideCoverage ? `${note ? `${note} ` : ""}[Coverage override]` : note),
+      db2.prepare(`INSERT INTO rota_notifications
+        (id, staff_id, request_id, type, title, body)
+        VALUES (?, ?, ?, 'request_update', 'Request updated', ?)`).bind(createId("rnt"), current.staff_id, input.requestId, `Your ${current.request_type.replaceAll("_", " ")} request for ${current.target_date}${current.end_date ? ` to ${current.end_date}` : ""} is ${input.status.replaceAll("_", " ")}.${note ? ` Manager: ${note}` : ""}`)
+    ]);
+    return { staffId: current.staff_id, requestType: current.request_type, targetDate: current.target_date, endDate: current.end_date, note };
+  }
+  async function saveSettings(input, managerStaffId) {
+    const weekStartDay = Number(input.weekStartDay);
+    const cutoffDay = Number(input.cutoffDay);
+    const cutoffTime = String(input.cutoffTime ?? "23:59");
+    const totalStaff = Number(input.totalStaff);
+    const minimumMorning = Number(input.minimumMorning);
+    const minimumClosing = Number(input.minimumClosing);
+    const maxAbsentPerDay = Number(input.maxAbsentPerDay);
+    if (![weekStartDay, cutoffDay].every((n) => Number.isInteger(n) && n >= 0 && n <= 6)) throw new Error("Choose valid week days.");
+    if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(cutoffTime)) throw new Error("Choose a valid cutoff time.");
+    if (![totalStaff, minimumMorning, minimumClosing, maxAbsentPerDay].every((n) => Number.isInteger(n) && n >= 0 && n <= 50)) throw new Error("Staffing values must be whole numbers.");
+    await db2.prepare(`UPDATE rota_settings SET week_start_day = ?, cutoff_day = ?, cutoff_time = ?, total_staff = ?,
+      minimum_morning = ?, minimum_closing = ?, max_absent_per_day = ?, allow_emergency_override = ?,
+      updated_by_staff_id = ?, updated_at = CURRENT_TIMESTAMP WHERE id = 1`).bind(weekStartDay, cutoffDay, cutoffTime, totalStaff, minimumMorning, minimumClosing, maxAbsentPerDay, input.allowEmergencyOverride ? 1 : 0, managerStaffId).run();
+  }
+  async function analytics() {
+    const topRequesters = await all(
+      db2.prepare(`SELECT s.name AS staff_name, COUNT(*) AS request_count,
+        s.id AS staff_id,
+        SUM(CASE WHEN r.status = 'approved' THEN 1 ELSE 0 END) AS approved_count,
+        SUM(CASE WHEN r.status IN ('pending', 'cancel_requested') THEN 1 ELSE 0 END) AS pending_count,
+        SUM(CASE WHEN r.status = 'rejected' THEN 1 ELSE 0 END) AS rejected_count
+        FROM rota_requests r JOIN rota_staff s ON s.id = r.staff_id
+        GROUP BY r.staff_id, s.name ORDER BY request_count DESC, s.name ASC LIMIT 10`)
+    );
+    const counts = await db2.prepare(`SELECT COUNT(*) AS total,
+      SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS pending,
+      SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approved,
+      SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) AS rejected
+      FROM rota_requests`).first();
+    return { topRequesters, counts: counts ?? { total: 0, pending: 0, approved: 0, rejected: 0 } };
+  }
+  async function coverage() {
+    return all(
+      db2.prepare(`WITH RECURSIVE request_days(request_id, target_date, final_date, status) AS (
+        SELECT id, target_date, COALESCE(end_date, target_date), status
+        FROM rota_requests
+        WHERE request_type IN ('day_off', 'annual_leave', 'emergency_leave')
+          AND status NOT IN ('rejected', 'cancelled')
+        UNION ALL
+        SELECT request_id, date(target_date, '+1 day'), final_date, status
+        FROM request_days WHERE target_date < final_date
+      )
+      SELECT target_date,
+        SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approved_absent,
+        SUM(CASE WHEN status IN ('pending', 'cancel_requested') THEN 1 ELSE 0 END) AS pending_absent
+        FROM request_days
+        GROUP BY target_date ORDER BY target_date ASC`)
+    );
+  }
+  async function listNotificationsForStaff(staffId) {
+    return all(
+      db2.prepare("SELECT id, title, body, read_at, created_at FROM rota_notifications WHERE staff_id = ? ORDER BY created_at DESC LIMIT 30").bind(staffId)
+    );
+  }
+  async function markStaffNotificationsRead(staffId) {
+    await db2.prepare("UPDATE rota_notifications SET read_at = CURRENT_TIMESTAMP WHERE staff_id = ? AND read_at IS NULL").bind(staffId).run();
+  }
+  async function savePushSubscription(input) {
+    if (!input.endpoint.startsWith("https://") || !input.p256dh || !input.auth) throw new Error("Invalid push subscription.");
+    await db2.prepare(`INSERT INTO rota_push_subscriptions
+      (id, staff_id, manager_user_id, endpoint, p256dh, auth, user_agent)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT(endpoint) DO UPDATE SET staff_id = excluded.staff_id, manager_user_id = excluded.manager_user_id,
+        p256dh = excluded.p256dh, auth = excluded.auth, user_agent = excluded.user_agent,
+        failure_count = 0, updated_at = CURRENT_TIMESTAMP`).bind(createId("rps"), input.staffId ?? null, input.managerUserId ?? null, input.endpoint, input.p256dh, input.auth, input.userAgent ?? null).run();
+  }
+  async function pushSubscriptionsForStaff(staffId) {
+    return all(
+      db2.prepare("SELECT id, endpoint, p256dh, auth FROM rota_push_subscriptions WHERE staff_id = ? AND failure_count < 3").bind(staffId)
+    );
+  }
+  async function pushSubscriptionsForManagers(managerUserIds) {
+    if (!managerUserIds.length) return [];
+    const placeholders = managerUserIds.map(() => "?").join(",");
+    return all(
+      db2.prepare(`SELECT id, endpoint, p256dh, auth FROM rota_push_subscriptions WHERE manager_user_id IN (${placeholders}) AND failure_count < 3`).bind(...managerUserIds)
+    );
+  }
+  async function recordPushResult(id2, ok, gone = false) {
+    if (gone) {
+      await db2.prepare("DELETE FROM rota_push_subscriptions WHERE id = ?").bind(id2).run();
+      return;
+    }
+    await db2.prepare(ok ? "UPDATE rota_push_subscriptions SET failure_count = 0, last_success_at = CURRENT_TIMESTAMP, updated_at = CURRENT_TIMESTAMP WHERE id = ?" : "UPDATE rota_push_subscriptions SET failure_count = failure_count + 1, updated_at = CURRENT_TIMESTAMP WHERE id = ?").bind(id2).run();
+  }
+  return {
+    getSettings,
+    getStaffById,
+    verifyStaffLogin,
+    setupStaffPin,
+    changeOwnPin,
+    loginAllowed,
+    recordFailedLogin,
+    clearLoginAttempts,
+    listStaff,
+    setStaffPin,
+    resetStaffPin,
+    addStaff,
+    updateStaff,
+    listRequestsForStaff,
+    listAllRequests,
+    listEvents,
+    createRequest,
+    cancelRequest,
+    updateRequest,
+    saveSettings,
+    analytics,
+    coverage,
+    listNotificationsForStaff,
+    markStaffNotificationsRead,
+    savePushSubscription,
+    pushSubscriptionsForStaff,
+    pushSubscriptionsForManagers,
+    recordPushResult
+  };
+}
+function storage(context) {
+  var _a;
+  const secret = ((_a = getAppEnv(context)) == null ? void 0 : _a.SESSION_SECRET) ?? "phase1-dev-secret-change-me";
+  return createCookieSessionStorage({
+    cookie: {
+      name: "__cos_rota_session",
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 30,
+      path: "/",
+      sameSite: "lax",
+      secrets: [secret],
+      secure: true
+    }
+  });
+}
+async function getRotaStaffId(request, context) {
+  const session = await storage(context).getSession(request.headers.get("Cookie"));
+  return session.get("staffId") ?? null;
+}
+async function createRotaSession(request, context, staffId, redirectTo = "/rota") {
+  const store = storage(context);
+  const session = await store.getSession(request.headers.get("Cookie"));
+  session.set("staffId", staffId);
+  return redirect(redirectTo, {
+    headers: { "Set-Cookie": await store.commitSession(session) }
+  });
+}
+async function destroyRotaSession(request, context) {
+  const store = storage(context);
+  const session = await store.getSession(request.headers.get("Cookie"));
+  return redirect("/rota", {
+    headers: { "Set-Cookie": await store.destroySession(session) }
+  });
+}
+async function action$9({ request, context }) {
+  var _a, _b;
+  const origin = request.headers.get("Origin");
+  if (origin && origin !== new URL(request.url).origin) {
+    return json({ ok: false, error: "Request rejected." }, { status: 403 });
+  }
+  const [staffId, manager] = await Promise.all([
+    getRotaStaffId(request, context),
+    getUser(request, context)
+  ]);
+  if (!staffId && !manager) return json({ ok: false, error: "Sign in first." }, { status: 401 });
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ ok: false, error: "Invalid subscription." }, { status: 400 });
+  }
+  const endpoint = typeof body.endpoint === "string" ? body.endpoint : "";
+  const p256dh = typeof ((_a = body.keys) == null ? void 0 : _a.p256dh) === "string" ? body.keys.p256dh : "";
+  const auth = typeof ((_b = body.keys) == null ? void 0 : _b.auth) === "string" ? body.keys.auth : "";
+  try {
+    const repo = rotaRepository(requireD1Database(context));
+    await repo.savePushSubscription({
+      staffId: staffId ?? void 0,
+      managerUserId: staffId ? void 0 : manager == null ? void 0 : manager.id,
+      endpoint,
+      p256dh,
+      auth,
+      userAgent: request.headers.get("User-Agent") ?? void 0
+    });
+    return json({ ok: true });
+  } catch (error) {
+    return json({ ok: false, error: error instanceof Error ? error.message : "Unable to save subscription." }, { status: 400 });
+  }
+}
+function PushSubscriptionRoute() {
+  return null;
+}
+const route5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  action: action$9,
+  default: PushSubscriptionRoute
 }, Symbol.toStringTag, { value: "Module" }));
 const visitorCookie = createCookie("__spp_vid", {
   httpOnly: true,
@@ -4509,7 +5241,7 @@ function analyticsRepository(db2) {
     }
   };
 }
-async function loader$d({ request, context }) {
+async function loader$h({ request, context }) {
   const user = await requireUser(request, context);
   const db2 = requireD1Database(context);
   const summary = await analyticsRepository(db2).ownerSummary(user.workspaceId);
@@ -4573,15 +5305,15 @@ function OwnerAnalytics() {
     ] })
   ] });
 }
-const route4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: OwnerAnalytics,
-  loader: loader$d
+  loader: loader$h
 }, Symbol.toStringTag, { value: "Module" }));
 function escapeXml(raw) {
   return raw.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
-async function loader$c({ request, context }) {
+async function loader$g({ request, context }) {
   const origin = new URL(request.url).origin;
   const db2 = getD1Database(context);
   const today = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);
@@ -4617,11 +5349,11 @@ async function loader$c({ request, context }) {
     }
   });
 }
-const route5 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  loader: loader$c
+  loader: loader$g
 }, Symbol.toStringTag, { value: "Module" }));
-async function loader$b({ request, context }) {
+async function loader$f({ request, context }) {
   await requireUserRole(request, context);
   const db2 = requireD1Database(context);
   const summary = await adminRepository(db2).platformSummary();
@@ -4669,10 +5401,10 @@ function SuperAdminDashboard() {
     ] }) })
   ] }) });
 }
-const route6 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: SuperAdminDashboard,
-  loader: loader$b
+  loader: loader$f
 }, Symbol.toStringTag, { value: "Module" }));
 function workspaceRepository(db2) {
   return {
@@ -4708,7 +5440,7 @@ function workspaceRepository(db2) {
     }
   };
 }
-async function loader$a({ request, context }) {
+async function loader$e({ request, context }) {
   const user = await requireUser(request, context);
   const db2 = requireD1Database(context);
   const repo = workspaceRepository(db2);
@@ -4721,7 +5453,7 @@ async function loader$a({ request, context }) {
   }
   return { workspace, account };
 }
-async function action$5({ request, context }) {
+async function action$8({ request, context }) {
   const user = await requireUser(request, context);
   const db2 = requireD1Database(context);
   const form = await request.formData();
@@ -4789,13 +5521,39 @@ function OwnerSettings() {
     ] })
   ] });
 }
-const route7 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$5,
+  action: action$8,
   default: OwnerSettings,
-  loader: loader$a
+  loader: loader$e
 }, Symbol.toStringTag, { value: "Module" }));
-async function loader$9({ request }) {
+async function loader$d({ params, context }) {
+  const code = params.code ?? "";
+  const db2 = getD1Database(context);
+  if (!db2 || !code) throw new Response("Not found", { status: 404 });
+  const publishedPage = await pageRepository(db2).getPublishedPageByCode(code);
+  if (!publishedPage || !isStandaloneHtmlPage(publishedPage.blocks)) {
+    throw new Response("Not found", { status: 404 });
+  }
+  const block = publishedPage.blocks[0];
+  if (block.type !== "html_embed") throw new Response("Not found", { status: 404 });
+  const html = buildSandboxedHtmlDocument(block.props.html, HTML_EMBED_MAX_LENGTH, {
+    allowScripts: block.props.allowScripts
+  });
+  return new Response(html, {
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-store, no-cache, must-revalidate",
+      "X-Content-Type-Options": "nosniff",
+      "Referrer-Policy": "no-referrer"
+    }
+  });
+}
+const route10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  loader: loader$d
+}, Symbol.toStringTag, { value: "Module" }));
+async function loader$c({ request }) {
   const origin = new URL(request.url).origin;
   const body = [
     "User-agent: *",
@@ -4815,11 +5573,415 @@ async function loader$9({ request }) {
     }
   });
 }
-const route8 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  loader: loader$9
+  loader: loader$c
 }, Symbol.toStringTag, { value: "Module" }));
-async function loader$8({ request, context }) {
+function pushIsConfigured(env) {
+  return Boolean((env == null ? void 0 : env.VAPID_PUBLIC_KEY) && (env == null ? void 0 : env.VAPID_PRIVATE_KEY) && (env == null ? void 0 : env.VAPID_SUBJECT));
+}
+async function sendToSubscriptions(repo, subscriptions, env, message) {
+  if (!pushIsConfigured(env)) return;
+  await Promise.all(
+    subscriptions.map(async (subscription) => {
+      try {
+        const payload = await buildPushPayload(
+          {
+            data: JSON.stringify({ ...message, url: message.url ?? "/rota" }),
+            options: { ttl: 60 * 60 * 24, urgency: "normal" }
+          },
+          {
+            endpoint: subscription.endpoint,
+            expirationTime: null,
+            keys: { p256dh: subscription.p256dh, auth: subscription.auth }
+          },
+          {
+            subject: env == null ? void 0 : env.VAPID_SUBJECT,
+            publicKey: env == null ? void 0 : env.VAPID_PUBLIC_KEY,
+            privateKey: env == null ? void 0 : env.VAPID_PRIVATE_KEY
+          }
+        );
+        const body = new ArrayBuffer(payload.body.byteLength);
+        new Uint8Array(body).set(payload.body);
+        const response = await fetch(subscription.endpoint, { ...payload, body });
+        await repo.recordPushResult(subscription.id, response.ok, response.status === 404 || response.status === 410);
+      } catch {
+        await repo.recordPushResult(subscription.id, false);
+      }
+    })
+  );
+}
+async function pushStaffUpdate(db2, env, staffId, message) {
+  const repo = rotaRepository(db2);
+  const subscriptions = await repo.pushSubscriptionsForStaff(staffId);
+  await sendToSubscriptions(repo, subscriptions, env, { ...message, url: message.url ?? "/rota" });
+}
+async function pushManagerUpdate(db2, env, managerStaffIds, message) {
+  const repo = rotaRepository(db2);
+  const subscriptions = (await Promise.all(managerStaffIds.map((id2) => repo.pushSubscriptionsForStaff(id2)))).flat();
+  await sendToSubscriptions(repo, subscriptions, env, { ...message, url: "/rota/manager" });
+}
+const meta$7 = () => [
+  { title: "COS Rota Manager" },
+  { name: "robots", content: "noindex, nofollow" },
+  { name: "theme-color", content: "#0f172a" }
+];
+async function loader$b({ request, context }) {
+  var _a;
+  const repo = rotaRepository(requireD1Database(context));
+  const staffId = await getRotaStaffId(request, context);
+  const manager = staffId ? await repo.getStaffById(staffId) : null;
+  if (!manager || manager.role !== "manager") throw redirect("/rota");
+  const [requests, staff, settings, analytics, coverage, events] = await Promise.all([
+    repo.listAllRequests(),
+    repo.listStaff(),
+    repo.getSettings(),
+    repo.analytics(),
+    repo.coverage(),
+    repo.listEvents()
+  ]);
+  return json({ requests, staff, settings, analytics, coverage, events, vapidPublicKey: ((_a = getAppEnv(context)) == null ? void 0 : _a.VAPID_PUBLIC_KEY) ?? null, managerName: manager.name });
+}
+async function action$7({ request, context }) {
+  const origin = request.headers.get("Origin");
+  if (origin && origin !== new URL(request.url).origin) return json({ ok: false, error: "Request rejected." }, { status: 403 });
+  const db2 = requireD1Database(context);
+  const repo = rotaRepository(db2);
+  const managerId = await getRotaStaffId(request, context);
+  const manager = managerId ? await repo.getStaffById(managerId) : null;
+  if (!manager || manager.role !== "manager") throw redirect("/rota");
+  const form = await request.formData();
+  const intent = String(form.get("intent") ?? "");
+  try {
+    if (intent === "test_push") {
+      await pushStaffUpdate(db2, getAppEnv(context), manager.id, { title: "COS Rota test alert", body: "Manager notifications are connected on this device.", url: "/rota/manager" });
+      return redirect("/rota/manager?notice=test-sent");
+    }
+    if (intent === "add_staff") {
+      await repo.addStaff({ employeeId: String(form.get("employeeId") ?? ""), name: String(form.get("name") ?? ""), role: form.get("role") === "manager" ? "manager" : "staff" });
+      return redirect("/rota/manager?notice=staff-added");
+    }
+    if (intent === "update_staff") {
+      await repo.updateStaff({ staffId: String(form.get("staffId") ?? ""), employeeId: String(form.get("employeeId") ?? ""), name: String(form.get("name") ?? ""), role: form.get("role") === "manager" ? "manager" : "staff", active: form.get("active") === "on" });
+      return redirect("/rota/manager?notice=staff-updated");
+    }
+    if (intent === "reset_pin") {
+      await repo.resetStaffPin(String(form.get("staffId") ?? ""));
+      return redirect("/rota/manager?notice=pin-reset");
+    }
+    if (intent === "update_request") {
+      const status = String(form.get("status") ?? "");
+      if (!(/* @__PURE__ */ new Set(["approved", "rejected", "cancelled"])).has(status)) throw new Error("Choose a valid decision.");
+      const decision = await repo.updateRequest({
+        requestId: String(form.get("requestId") ?? ""),
+        managerStaffId: manager.id,
+        status,
+        note: String(form.get("note") ?? ""),
+        overrideCoverage: form.get("overrideCoverage") === "on"
+      });
+      await pushStaffUpdate(db2, getAppEnv(context), decision.staffId, { title: `Request ${status}`, body: `${requestTypeLabel(decision.requestType)} · ${decision.targetDate}${decision.endDate ? ` – ${decision.endDate}` : ""}${decision.note ? ` · ${decision.note}` : ""}` });
+      return redirect(`/rota/manager?notice=${status}`);
+    }
+    if (intent === "save_settings") {
+      await repo.saveSettings({
+        weekStartDay: Number(form.get("weekStartDay")),
+        cutoffDay: Number(form.get("cutoffDay")),
+        cutoffTime: String(form.get("cutoffTime") ?? ""),
+        totalStaff: Number(form.get("totalStaff")),
+        minimumMorning: Number(form.get("minimumMorning")),
+        minimumClosing: Number(form.get("minimumClosing")),
+        maxAbsentPerDay: Number(form.get("maxAbsentPerDay")),
+        allowEmergencyOverride: form.get("allowEmergencyOverride") === "on"
+      }, manager.id);
+      return redirect("/rota/manager?notice=settings-saved");
+    }
+  } catch (error) {
+    return json({ ok: false, error: error instanceof Error ? error.message : "Unable to save that change." }, { status: 400 });
+  }
+  return json({ ok: false, error: "Unknown action." }, { status: 400 });
+}
+function badge(status) {
+  if (status === "approved") return "bg-emerald-100 text-emerald-700";
+  if (status === "rejected" || status === "cancelled") return "bg-rose-100 text-rose-700";
+  if (status === "cancel_requested") return "bg-violet-100 text-violet-700";
+  return "bg-amber-100 text-amber-700";
+}
+function ManagerPushButton({ publicKey }) {
+  const [label, setLabel] = useState("Enable manager alerts");
+  async function enable() {
+    if (!publicKey || !("serviceWorker" in navigator) || !("PushManager" in window)) {
+      setLabel("Alerts unavailable");
+      return;
+    }
+    setLabel("Enabling…");
+    try {
+      const registration = await navigator.serviceWorker.register("/sw.js", { scope: "/" });
+      if (await Notification.requestPermission() !== "granted") throw new Error();
+      const padded = publicKey.replace(/-/g, "+").replace(/_/g, "/").padEnd(Math.ceil(publicKey.length / 4) * 4, "=");
+      const key = Uint8Array.from(atob(padded), (char) => char.charCodeAt(0));
+      const subscription = await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key });
+      const response = await fetch("/api/rota/push", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(subscription.toJSON()) });
+      if (!response.ok) throw new Error();
+      setLabel("Manager alerts enabled ✓");
+    } catch {
+      setLabel("Could not enable alerts");
+    }
+  }
+  return /* @__PURE__ */ jsx("button", { type: "button", onClick: enable, className: "rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50", children: label });
+}
+function RotaManager() {
+  const data = useLoaderData();
+  const actionData = useActionData();
+  const navigation = useNavigation();
+  const [searchParams] = useSearchParams();
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [staffFilter, setStaffFilter] = useState("all");
+  const notice = searchParams.get("notice");
+  const requests = data.requests.filter((item) => (statusFilter === "all" || item.status === statusFilter) && (staffFilter === "all" || item.staffId === staffFilter));
+  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  return /* @__PURE__ */ jsx("main", { className: "min-h-screen bg-slate-100 px-3 py-4 text-slate-900 sm:px-6", children: /* @__PURE__ */ jsxs("div", { className: "mx-auto max-w-6xl space-y-6", children: [
+    /* @__PURE__ */ jsxs("section", { className: "overflow-hidden rounded-3xl bg-slate-950 p-6 text-white shadow-xl", children: [
+      /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center justify-between gap-4", children: [
+        /* @__PURE__ */ jsxs("div", { children: [
+          /* @__PURE__ */ jsx("p", { className: "text-xs font-black uppercase tracking-[0.18em] text-blue-400", children: "COS Rota" }),
+          /* @__PURE__ */ jsx("h1", { className: "mt-2 text-2xl font-black", children: "Manager control centre" }),
+          /* @__PURE__ */ jsxs("p", { className: "mt-1 text-sm text-slate-400", children: [
+            "Signed in as ",
+            data.managerName,
+            ". Requests, staff access, rules, and trends."
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap gap-2", children: [
+          /* @__PURE__ */ jsx(Link, { to: "/rota", className: "rounded-xl border border-white/20 px-3 py-2 text-xs font-bold", children: "My profile" }),
+          /* @__PURE__ */ jsx(ManagerPushButton, { publicKey: data.vapidPublicKey }),
+          /* @__PURE__ */ jsxs(Form, { method: "post", children: [
+            /* @__PURE__ */ jsx("input", { type: "hidden", name: "intent", value: "test_push" }),
+            /* @__PURE__ */ jsx("button", { className: "rounded-xl border border-white/20 px-3 py-2 text-xs font-bold", children: "Send test alert" })
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsx("div", { className: "mt-6 grid grid-cols-2 gap-3 md:grid-cols-4", children: [["Total", data.analytics.counts.total], ["Pending", data.analytics.counts.pending], ["Approved", data.analytics.counts.approved], ["Rejected", data.analytics.counts.rejected]].map(([label, value]) => /* @__PURE__ */ jsxs("div", { className: "rounded-2xl bg-white/5 p-4", children: [
+        /* @__PURE__ */ jsx("div", { className: "text-2xl font-black", children: value ?? 0 }),
+        /* @__PURE__ */ jsx("div", { className: "text-xs text-slate-400", children: label })
+      ] }, String(label))) })
+    ] }),
+    notice ? /* @__PURE__ */ jsx("div", { className: "rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm font-medium text-emerald-800", children: "Change saved successfully." }) : null,
+    (actionData == null ? void 0 : actionData.ok) === false ? /* @__PURE__ */ jsx("div", { className: "rounded-2xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700", children: actionData.error }) : null,
+    /* @__PURE__ */ jsxs("section", { className: "rounded-3xl border border-slate-200 bg-white p-5 shadow-sm", children: [
+      /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-center justify-between gap-3", children: [
+        /* @__PURE__ */ jsxs("div", { children: [
+          /* @__PURE__ */ jsx("h2", { className: "text-lg font-black", children: "Staff requests" }),
+          /* @__PURE__ */ jsx("p", { className: "text-sm text-slate-500", children: "Filter by person to review their complete request history." })
+        ] }),
+        /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap gap-2", children: [
+          /* @__PURE__ */ jsxs("select", { value: staffFilter, onChange: (e) => setStaffFilter(e.target.value), className: "rounded-xl border border-slate-300 px-3 py-2 text-sm", children: [
+            /* @__PURE__ */ jsx("option", { value: "all", children: "All staff" }),
+            data.staff.map((staff) => /* @__PURE__ */ jsx("option", { value: staff.id, children: staff.name }, staff.id))
+          ] }),
+          /* @__PURE__ */ jsxs("select", { value: statusFilter, onChange: (e) => setStatusFilter(e.target.value), className: "rounded-xl border border-slate-300 px-3 py-2 text-sm", children: [
+            /* @__PURE__ */ jsx("option", { value: "all", children: "All statuses" }),
+            /* @__PURE__ */ jsx("option", { value: "pending", children: "Pending" }),
+            /* @__PURE__ */ jsx("option", { value: "approved", children: "Approved" }),
+            /* @__PURE__ */ jsx("option", { value: "rejected", children: "Rejected" }),
+            /* @__PURE__ */ jsx("option", { value: "cancel_requested", children: "Cancellation requested" }),
+            /* @__PURE__ */ jsx("option", { value: "cancelled", children: "Cancelled" })
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsx("div", { className: "mt-5 space-y-3", children: requests.length ? requests.map((item) => /* @__PURE__ */ jsxs("article", { className: "rounded-2xl border border-slate-200 p-4", children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex flex-wrap items-start justify-between gap-3", children: [
+          /* @__PURE__ */ jsxs("div", { children: [
+            /* @__PURE__ */ jsx("div", { className: "font-black", children: item.staffName }),
+            /* @__PURE__ */ jsxs("div", { className: "mt-0.5 text-sm text-slate-600", children: [
+              requestTypeLabel(item.requestType),
+              " · ",
+              item.targetDate,
+              item.endDate ? ` – ${item.endDate}` : ""
+            ] }),
+            /* @__PURE__ */ jsxs("div", { className: "mt-1 text-xs text-slate-400", children: [
+              formatWeekRange(item.rotaWeekStart),
+              item.lateSubmission ? " · moved after cutoff" : ""
+            ] })
+          ] }),
+          /* @__PURE__ */ jsx("span", { className: `rounded-full px-2.5 py-1 text-[11px] font-black ${badge(item.status)}`, children: statusLabel(item.status) })
+        ] }),
+        /* @__PURE__ */ jsx("p", { className: "mt-3 text-sm text-slate-700", children: item.reason }),
+        /* @__PURE__ */ jsxs("details", { className: "mt-3 text-xs text-slate-500", children: [
+          /* @__PURE__ */ jsx("summary", { className: "cursor-pointer font-bold text-slate-600", children: "Full history" }),
+          /* @__PURE__ */ jsx("div", { className: "mt-2 space-y-2 border-l-2 border-slate-200 pl-3", children: data.events.filter((event) => event.requestId === item.id).map((event) => /* @__PURE__ */ jsxs("div", { children: [
+            /* @__PURE__ */ jsxs("div", { className: "font-semibold text-slate-700", children: [
+              event.eventType.replaceAll("_", " "),
+              event.toStatus ? ` · ${statusLabel(event.toStatus)}` : ""
+            ] }),
+            /* @__PURE__ */ jsxs("div", { children: [
+              event.createdAt,
+              event.comment ? ` · ${event.comment}` : ""
+            ] })
+          ] }, event.id)) })
+        ] }),
+        item.status === "pending" || item.status === "cancel_requested" ? /* @__PURE__ */ jsxs(Form, { method: "post", className: "mt-4 grid gap-3 md:grid-cols-[1fr_auto_auto]", children: [
+          /* @__PURE__ */ jsx("input", { type: "hidden", name: "intent", value: "update_request" }),
+          /* @__PURE__ */ jsx("input", { type: "hidden", name: "requestId", value: item.id }),
+          /* @__PURE__ */ jsx("input", { name: "note", defaultValue: item.managerNote ?? "", placeholder: "Manager comment (optional)", className: "rounded-xl border border-slate-300 px-3 py-2 text-sm" }),
+          item.status === "pending" ? /* @__PURE__ */ jsxs(Fragment$1, { children: [
+            /* @__PURE__ */ jsxs("label", { className: "md:col-span-3 flex items-center gap-2 text-xs font-semibold text-slate-500", children: [
+              /* @__PURE__ */ jsx("input", { type: "checkbox", name: "overrideCoverage" }),
+              "Coverage override if the daily absence limit is reached"
+            ] }),
+            /* @__PURE__ */ jsx("button", { name: "status", value: "approved", className: "rounded-xl bg-emerald-600 px-4 py-2 text-xs font-black text-white hover:bg-emerald-700", children: "Approve" }),
+            /* @__PURE__ */ jsx("button", { name: "status", value: "rejected", className: "rounded-xl bg-rose-600 px-4 py-2 text-xs font-black text-white hover:bg-rose-700", children: "Reject" })
+          ] }) : /* @__PURE__ */ jsxs(Fragment$1, { children: [
+            /* @__PURE__ */ jsx("button", { name: "status", value: "cancelled", className: "rounded-xl bg-rose-600 px-4 py-2 text-xs font-black text-white", children: "Approve cancellation" }),
+            /* @__PURE__ */ jsx("button", { name: "status", value: "approved", className: "rounded-xl bg-slate-700 px-4 py-2 text-xs font-black text-white", children: "Keep approved" })
+          ] })
+        ] }) : item.managerNote ? /* @__PURE__ */ jsxs("p", { className: "mt-3 rounded-xl bg-slate-50 px-3 py-2 text-sm", children: [
+          /* @__PURE__ */ jsx("span", { className: "font-bold", children: "Manager note:" }),
+          " ",
+          item.managerNote
+        ] }) : null
+      ] }, item.id)) : /* @__PURE__ */ jsx("div", { className: "rounded-2xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500", children: "No requests match this filter." }) })
+    ] }),
+    /* @__PURE__ */ jsxs("section", { className: "rounded-3xl border border-slate-200 bg-white p-5 shadow-sm", children: [
+      /* @__PURE__ */ jsx("h2", { className: "text-lg font-black", children: "Daily coverage" }),
+      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-slate-500", children: "Approved and pending absence requests against the configured daily limit." }),
+      /* @__PURE__ */ jsx("div", { className: "mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3", children: data.coverage.length ? data.coverage.map((day) => {
+        const remaining = Math.max(0, data.settings.maxAbsentPerDay - day.approved_absent);
+        return /* @__PURE__ */ jsxs("div", { className: `rounded-2xl border p-4 ${remaining === 0 ? "border-rose-200 bg-rose-50" : "border-slate-200 bg-slate-50"}`, children: [
+          /* @__PURE__ */ jsx("div", { className: "font-black", children: day.target_date }),
+          /* @__PURE__ */ jsxs("div", { className: "mt-2 text-sm text-slate-600", children: [
+            "Approved absent: ",
+            /* @__PURE__ */ jsx("b", { children: day.approved_absent })
+          ] }),
+          /* @__PURE__ */ jsxs("div", { className: "text-sm text-slate-600", children: [
+            "Pending absent: ",
+            /* @__PURE__ */ jsx("b", { children: day.pending_absent })
+          ] }),
+          /* @__PURE__ */ jsx("div", { className: `mt-2 text-xs font-black ${remaining === 0 ? "text-rose-700" : "text-emerald-700"}`, children: remaining === 0 ? "Absence limit reached" : `${remaining} absence slot(s) left` })
+        ] }, day.target_date);
+      }) : /* @__PURE__ */ jsx("p", { className: "text-sm text-slate-500", children: "No absence requests yet." }) })
+    ] }),
+    /* @__PURE__ */ jsxs("div", { className: "grid gap-6 lg:grid-cols-2", children: [
+      /* @__PURE__ */ jsxs("section", { className: "rounded-3xl border border-slate-200 bg-white p-5 shadow-sm", children: [
+        /* @__PURE__ */ jsx("h2", { className: "text-lg font-black", children: "Team access" }),
+        /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-slate-500", children: "Staff create their own PIN. You can assign managers, deactivate leavers, or reset access without seeing anyone's PIN." }),
+        /* @__PURE__ */ jsxs(Form, { method: "post", className: "mt-5 grid gap-2 rounded-2xl border border-dashed border-blue-300 bg-blue-50 p-3 sm:grid-cols-[1fr_140px_110px_auto]", children: [
+          /* @__PURE__ */ jsx("input", { type: "hidden", name: "intent", value: "add_staff" }),
+          /* @__PURE__ */ jsx("input", { name: "name", required: true, placeholder: "Full staff name", className: "rounded-xl border border-slate-300 px-3 py-2 text-sm" }),
+          /* @__PURE__ */ jsx("input", { name: "employeeId", required: true, inputMode: "numeric", placeholder: "Employee ID", className: "rounded-xl border border-slate-300 px-3 py-2 text-sm" }),
+          /* @__PURE__ */ jsxs("select", { name: "role", className: "rounded-xl border border-slate-300 px-3 py-2 text-sm", children: [
+            /* @__PURE__ */ jsx("option", { value: "staff", children: "Staff" }),
+            /* @__PURE__ */ jsx("option", { value: "manager", children: "Manager" })
+          ] }),
+          /* @__PURE__ */ jsx("button", { className: "rounded-xl bg-blue-600 px-4 py-2 text-xs font-black text-white", children: "Add person" })
+        ] }),
+        /* @__PURE__ */ jsx("div", { className: "mt-4 space-y-3", children: data.staff.map((staff) => /* @__PURE__ */ jsxs("div", { className: `rounded-2xl border p-3 ${staff.active ? "border-slate-200 bg-slate-50" : "border-rose-200 bg-rose-50"}`, children: [
+          /* @__PURE__ */ jsxs(Form, { method: "post", className: "grid gap-2 sm:grid-cols-[1fr_120px_105px_auto]", children: [
+            /* @__PURE__ */ jsx("input", { type: "hidden", name: "intent", value: "update_staff" }),
+            /* @__PURE__ */ jsx("input", { type: "hidden", name: "staffId", value: staff.id }),
+            /* @__PURE__ */ jsx("input", { name: "name", defaultValue: staff.name, required: true, className: "rounded-lg border border-slate-300 px-2 py-2 text-sm font-bold" }),
+            /* @__PURE__ */ jsx("input", { name: "employeeId", defaultValue: staff.employeeId, required: true, inputMode: "numeric", className: "rounded-lg border border-slate-300 px-2 py-2 text-sm" }),
+            /* @__PURE__ */ jsxs("select", { name: "role", defaultValue: staff.role, className: "rounded-lg border border-slate-300 px-2 py-2 text-sm", children: [
+              /* @__PURE__ */ jsx("option", { value: "staff", children: "Staff" }),
+              /* @__PURE__ */ jsx("option", { value: "manager", children: "Manager" })
+            ] }),
+            /* @__PURE__ */ jsx("button", { className: "rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white", children: "Save" }),
+            /* @__PURE__ */ jsxs("label", { className: "flex items-center gap-2 text-xs font-bold text-slate-600 sm:col-span-2", children: [
+              /* @__PURE__ */ jsx("input", { name: "active", type: "checkbox", defaultChecked: staff.active }),
+              "Active account"
+            ] }),
+            /* @__PURE__ */ jsx("div", { className: "text-xs text-slate-500", children: staff.hasPin ? "Private PIN active" : "Waiting for first-time PIN" })
+          ] }),
+          staff.hasPin ? /* @__PURE__ */ jsxs(Form, { method: "post", className: "mt-2", children: [
+            /* @__PURE__ */ jsx("input", { type: "hidden", name: "intent", value: "reset_pin" }),
+            /* @__PURE__ */ jsx("input", { type: "hidden", name: "staffId", value: staff.id }),
+            /* @__PURE__ */ jsx("button", { className: "text-xs font-bold text-rose-600", children: "Reset forgotten PIN" })
+          ] }) : null
+        ] }, staff.id)) })
+      ] }),
+      /* @__PURE__ */ jsxs("section", { className: "rounded-3xl border border-slate-200 bg-white p-5 shadow-sm", children: [
+        /* @__PURE__ */ jsx("h2", { className: "text-lg font-black", children: "Rota rules" }),
+        /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-slate-500", children: "Dates are calculated in Bahrain time." }),
+        /* @__PURE__ */ jsxs(Form, { method: "post", className: "mt-5 grid gap-4 sm:grid-cols-2", children: [
+          /* @__PURE__ */ jsx("input", { type: "hidden", name: "intent", value: "save_settings" }),
+          /* @__PURE__ */ jsxs("label", { className: "text-sm font-bold", children: [
+            "Week starts",
+            /* @__PURE__ */ jsx("select", { name: "weekStartDay", defaultValue: data.settings.weekStartDay, className: "mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5", children: dayNames.map((day, index) => /* @__PURE__ */ jsx("option", { value: index, children: day }, day)) })
+          ] }),
+          /* @__PURE__ */ jsxs("label", { className: "text-sm font-bold", children: [
+            "Request cutoff",
+            /* @__PURE__ */ jsx("select", { name: "cutoffDay", defaultValue: data.settings.cutoffDay, className: "mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5", children: dayNames.map((day, index) => /* @__PURE__ */ jsx("option", { value: index, children: day }, day)) })
+          ] }),
+          /* @__PURE__ */ jsxs("label", { className: "text-sm font-bold", children: [
+            "Cutoff time",
+            /* @__PURE__ */ jsx("input", { name: "cutoffTime", type: "time", defaultValue: data.settings.cutoffTime, className: "mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5" })
+          ] }),
+          /* @__PURE__ */ jsxs("label", { className: "text-sm font-bold", children: [
+            "Team size",
+            /* @__PURE__ */ jsx("input", { name: "totalStaff", type: "number", min: "1", max: "50", defaultValue: data.settings.totalStaff, className: "mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5" })
+          ] }),
+          /* @__PURE__ */ jsxs("label", { className: "text-sm font-bold", children: [
+            "Minimum morning",
+            /* @__PURE__ */ jsx("input", { name: "minimumMorning", type: "number", min: "0", max: "20", defaultValue: data.settings.minimumMorning, className: "mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5" })
+          ] }),
+          /* @__PURE__ */ jsxs("label", { className: "text-sm font-bold", children: [
+            "Minimum closing",
+            /* @__PURE__ */ jsx("input", { name: "minimumClosing", type: "number", min: "0", max: "20", defaultValue: data.settings.minimumClosing, className: "mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5" })
+          ] }),
+          /* @__PURE__ */ jsxs("label", { className: "text-sm font-bold", children: [
+            "Max absent per day",
+            /* @__PURE__ */ jsx("input", { name: "maxAbsentPerDay", type: "number", min: "0", max: "20", defaultValue: data.settings.maxAbsentPerDay, className: "mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5" })
+          ] }),
+          /* @__PURE__ */ jsxs("label", { className: "flex items-center gap-2 self-end rounded-xl bg-slate-50 px-3 py-3 text-sm font-bold", children: [
+            /* @__PURE__ */ jsx("input", { name: "allowEmergencyOverride", type: "checkbox", defaultChecked: data.settings.allowEmergencyOverride }),
+            "Allow emergency override"
+          ] }),
+          /* @__PURE__ */ jsx("button", { disabled: navigation.state !== "idle", className: "rounded-xl bg-blue-600 px-4 py-3 text-sm font-black text-white sm:col-span-2", children: navigation.state !== "idle" ? "Saving…" : "Save rota rules" })
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxs("section", { className: "rounded-3xl border border-slate-200 bg-white p-5 shadow-sm", children: [
+      /* @__PURE__ */ jsx("h2", { className: "text-lg font-black", children: "Request patterns" }),
+      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-slate-500", children: "Use this for fair planning context. Select a name to inspect their full history above." }),
+      /* @__PURE__ */ jsxs("div", { className: "mt-5 overflow-x-auto", children: [
+        /* @__PURE__ */ jsxs("table", { className: "w-full text-left text-sm", children: [
+          /* @__PURE__ */ jsx("thead", { className: "text-xs uppercase text-slate-500", children: /* @__PURE__ */ jsxs("tr", { children: [
+            /* @__PURE__ */ jsx("th", { className: "pb-3", children: "Staff member" }),
+            /* @__PURE__ */ jsx("th", { className: "pb-3", children: "Total" }),
+            /* @__PURE__ */ jsx("th", { className: "pb-3", children: "Approved" }),
+            /* @__PURE__ */ jsx("th", { className: "pb-3", children: "Pending" }),
+            /* @__PURE__ */ jsx("th", { className: "pb-3", children: "Rejected" })
+          ] }) }),
+          /* @__PURE__ */ jsx("tbody", { className: "divide-y divide-slate-100", children: data.analytics.topRequesters.map((item) => /* @__PURE__ */ jsxs("tr", { children: [
+            /* @__PURE__ */ jsx("td", { className: "py-3", children: /* @__PURE__ */ jsx("button", { type: "button", onClick: () => {
+              setStaffFilter(item.staff_id);
+              window.scrollTo({ top: 300, behavior: "smooth" });
+            }, className: "font-bold text-blue-700 hover:underline", children: item.staff_name }) }),
+            /* @__PURE__ */ jsx("td", { children: item.request_count }),
+            /* @__PURE__ */ jsx("td", { children: item.approved_count }),
+            /* @__PURE__ */ jsx("td", { children: item.pending_count }),
+            /* @__PURE__ */ jsx("td", { children: item.rejected_count })
+          ] }, item.staff_id)) })
+        ] }),
+        data.analytics.topRequesters.length === 0 ? /* @__PURE__ */ jsx("p", { className: "py-6 text-center text-sm text-slate-500", children: "Analytics will appear after requests are submitted." }) : null
+      ] })
+    ] })
+  ] }) });
+}
+const route19 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  action: action$7,
+  default: RotaManager,
+  loader: loader$b,
+  meta: meta$7
+}, Symbol.toStringTag, { value: "Module" }));
+const route12 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  action: action$7,
+  default: RotaManager,
+  loader: loader$b,
+  meta: meta$7
+}, Symbol.toStringTag, { value: "Module" }));
+async function loader$a({ request, context }) {
   await requireUserRole(request, context);
   const db2 = requireD1Database(context);
   const pages = await adminRepository(db2).listPages();
@@ -4866,12 +6028,12 @@ function AdminPages() {
     ] }) }) })
   ] });
 }
-const route9 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route13 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: AdminPages,
-  loader: loader$8
+  loader: loader$a
 }, Symbol.toStringTag, { value: "Module" }));
-async function loader$7({ request, context }) {
+async function loader$9({ request, context }) {
   await requireUserRole(request, context);
   const db2 = requireD1Database(context);
   const users = await adminRepository(db2).listUsers();
@@ -4907,12 +6069,23 @@ function AdminUsers() {
     ] }) }) })
   ] });
 }
-const route10 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route14 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: AdminUsers,
-  loader: loader$7
+  loader: loader$9
 }, Symbol.toStringTag, { value: "Module" }));
-async function loader$6({ request, context }) {
+async function action$6({ request, context }) {
+  return destroyRotaSession(request, context);
+}
+function RotaLogout() {
+  return null;
+}
+const route15 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  action: action$6,
+  default: RotaLogout
+}, Symbol.toStringTag, { value: "Module" }));
+async function loader$8({ request, context }) {
   const user = await requireUser(request, context);
   const db2 = requireD1Database(context);
   const [analytics, pageStats] = await Promise.all([
@@ -4979,10 +6152,10 @@ function OwnerDashboard() {
     ] })
   ] });
 }
-const route11 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route16 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: OwnerDashboard,
-  loader: loader$6
+  loader: loader$8
 }, Symbol.toStringTag, { value: "Module" }));
 function leadRepository(db2) {
   return {
@@ -5041,7 +6214,7 @@ function leadRepository(db2) {
     }
   };
 }
-async function loader$5({ request, context }) {
+async function loader$7({ request, context }) {
   const user = await requireUser(request, context);
   const db2 = requireD1Database(context);
   const leads = await leadRepository(db2).recentForWorkspace(user.workspaceId, 300);
@@ -5077,10 +6250,10 @@ function OwnerLeads() {
     ] }) }) })
   ] });
 }
-const route12 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route17 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: OwnerLeads,
-  loader: loader$5
+  loader: loader$7
 }, Symbol.toStringTag, { value: "Module" }));
 function StatusBadge(props) {
   return /* @__PURE__ */ jsx(
@@ -5105,13 +6278,13 @@ function pageActionError(error) {
   }
   return "Page action failed. Please try again.";
 }
-async function loader$4({ request, context }) {
+async function loader$6({ request, context }) {
   const user = await requireUser(request, context);
   const db2 = requireD1Database(context);
   const pages = await pageRepository(db2).listPages(user.workspaceId);
   return { pages };
 }
-async function action$4({ request, context }) {
+async function action$5({ request, context }) {
   const user = await requireUser(request, context);
   const db2 = requireD1Database(context);
   const repo = pageRepository(db2);
@@ -5236,18 +6409,18 @@ function OwnerPages() {
     ] })
   ] });
 }
-const route13 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route18 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$4,
+  action: action$5,
   default: OwnerPages,
-  loader: loader$4
+  loader: loader$6
 }, Symbol.toStringTag, { value: "Module" }));
-async function loader$3() {
+async function loader$5() {
   return new Response("ok", { headers: { "Content-Type": "text/plain" } });
 }
-const route14 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route20 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  loader: loader$3
+  loader: loader$5
 }, Symbol.toStringTag, { value: "Module" }));
 function demoBlocks(code) {
   return code === "demo" ? [
@@ -5315,7 +6488,7 @@ function demoBlocks(code) {
     { id: "b", type: "link_button", props: { label: "Home", href: "/" } }
   ];
 }
-const meta$5 = ({ data }) => {
+const meta$6 = ({ data }) => {
   if (!data) {
     return [{ title: "Public page - Smart Page Platform" }, { name: "robots", content: "noindex, nofollow" }];
   }
@@ -5343,13 +6516,16 @@ const meta$5 = ({ data }) => {
     ...ogTags
   ];
 };
-async function loader$2({ request, params, context }) {
+async function loader$4({ request, params, context }) {
   const url = new URL(request.url);
   const leadStatus = (() => {
     const raw = url.searchParams.get("lead");
     return raw === "ok" || raw === "invalid" ? raw : void 0;
   })();
   const code = params.code ?? "unknown";
+  if (code === "cos-team-rota-requests") {
+    throw redirect("/rota");
+  }
   const origin = new URL(request.url).origin;
   const canonicalUrl = `${origin}/p/${encodeURIComponent(code)}`;
   const db2 = getD1Database(context);
@@ -5361,8 +6537,11 @@ async function loader$2({ request, params, context }) {
   if (db2) {
     const publishedPage = await pageRepository(db2).getPublishedPageByCode(code);
     if (publishedPage) {
-      const visitor = await getOrCreateVisitorId(request);
       const blocks3 = publishedPage.blocks;
+      if (isStandaloneHtmlPage(blocks3)) {
+        throw redirect(`/hosted/${encodeURIComponent(code)}${url.hash}`);
+      }
+      const visitor = await getOrCreateVisitorId(request);
       const pageTitle = publishedPage.page.title;
       const metaTitle = resolvePublicMetaTitle(pageTitle, publishedPage.page.seo_title);
       const metaDescription = resolvePublicMetaDescription(blocks3, pageTitle, publishedPage.page.seo_description);
@@ -5438,7 +6617,7 @@ async function loader$2({ request, params, context }) {
     leadStatus
   });
 }
-async function action$3({ request, params, context }) {
+async function action$4({ request, params, context }) {
   const code = params.code ?? "unknown";
   const db2 = getD1Database(context);
   if (!db2) {
@@ -5538,7 +6717,7 @@ function PublicPage() {
   const data = useLoaderData();
   const standaloneHtmlBlock = isStandaloneHtmlPage(data.blocks) && data.blocks[0].type === "html_embed" ? data.blocks[0] : null;
   if (standaloneHtmlBlock) {
-    return /* @__PURE__ */ jsx(StandaloneHtmlPageFrame, { block: standaloneHtmlBlock });
+    return /* @__PURE__ */ jsx(StandaloneHtmlPageFrame, { code: data.code, block: standaloneHtmlBlock });
   }
   return /* @__PURE__ */ jsxs(Fragment$1, { children: [
     data.leadStatus === "ok" ? /* @__PURE__ */ jsx("div", { className: "fixed left-1/2 top-3 z-50 -translate-x-1/2 rounded-full border border-emerald-300 bg-emerald-50 px-4 py-2 text-xs font-semibold text-emerald-700 shadow", children: "Lead submitted successfully." }) : null,
@@ -5554,22 +6733,65 @@ function PublicPage() {
     )
   ] });
 }
-const route15 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route21 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$3,
+  action: action$4,
   default: PublicPage,
-  loader: loader$2,
-  meta: meta$5
+  loader: loader$4,
+  meta: meta$6
 }, Symbol.toStringTag, { value: "Module" }));
-async function action$2({ request, context }) {
+const SERVICE_WORKER = `
+self.addEventListener("install", () => self.skipWaiting());
+self.addEventListener("activate", (event) => event.waitUntil(self.clients.claim()));
+
+self.addEventListener("push", (event) => {
+  let message = { title: "COS Rota", body: "You have a new rota update.", url: "/rota" };
+  try {
+    if (event.data) message = { ...message, ...event.data.json() };
+  } catch {
+    if (event.data) message.body = event.data.text();
+  }
+  event.waitUntil(self.registration.showNotification(message.title, {
+    body: message.body,
+    icon: "/icons/cos-rota-192.png",
+    badge: "/icons/cos-rota-192.png",
+    tag: "cos-rota-" + Date.now(),
+    renotify: true,
+    data: { url: message.url || "/rota" }
+  }));
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const url = new URL(event.notification.data?.url || "/rota", self.location.origin).href;
+  event.waitUntil((async () => {
+    const windows = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+    for (const client of windows) {
+      if ("focus" in client) {
+        await client.navigate(url);
+        return client.focus();
+      }
+    }
+    return self.clients.openWindow(url);
+  })());
+});
+`;
+async function loader$3() {
+  return new Response(SERVICE_WORKER, { headers: { "Content-Type": "text/javascript; charset=utf-8", "Cache-Control": "no-cache", "Service-Worker-Allowed": "/" } });
+}
+const route22 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  loader: loader$3
+}, Symbol.toStringTag, { value: "Module" }));
+async function action$3({ request, context }) {
   return logout(request, context);
 }
 function Logout() {
   return null;
 }
-const route16 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route23 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$2,
+  action: action$3,
   default: Logout
 }, Symbol.toStringTag, { value: "Module" }));
 const db = {
@@ -5634,80 +6856,6 @@ function memoryAuthStore() {
       return user;
     }
   };
-}
-const PASSWORD_ALGORITHM = "pbkdf2_sha256";
-const PASSWORD_ITERATIONS = 1e5;
-const SALT_BYTES = 32;
-const KEY_BITS = 256;
-function base64UrlEncode(bytes) {
-  const binary = Array.from(bytes, (byte) => String.fromCharCode(byte)).join("");
-  return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
-}
-function base64UrlDecode(value) {
-  const padded = value.replaceAll("-", "+").replaceAll("_", "/").padEnd(
-    Math.ceil(value.length / 4) * 4,
-    "="
-  );
-  const binary = atob(padded);
-  return Uint8Array.from(binary, (char) => char.charCodeAt(0));
-}
-function constantTimeEqual(a, b) {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i += 1) {
-    diff |= a[i] ^ b[i];
-  }
-  return diff === 0;
-}
-function toArrayBuffer(bytes) {
-  const buffer = new ArrayBuffer(bytes.byteLength);
-  new Uint8Array(buffer).set(bytes);
-  return buffer;
-}
-async function derivePasswordKey(password, salt, iterations) {
-  const material = await crypto.subtle.importKey(
-    "raw",
-    toArrayBuffer(new TextEncoder().encode(password)),
-    "PBKDF2",
-    false,
-    ["deriveBits"]
-  );
-  const bits = await crypto.subtle.deriveBits(
-    {
-      name: "PBKDF2",
-      hash: "SHA-256",
-      salt: toArrayBuffer(salt),
-      iterations
-    },
-    material,
-    KEY_BITS
-  );
-  return new Uint8Array(bits);
-}
-async function hashPassword(password) {
-  const salt = crypto.getRandomValues(new Uint8Array(SALT_BYTES));
-  const hash = await derivePasswordKey(password, salt, PASSWORD_ITERATIONS);
-  return [
-    PASSWORD_ALGORITHM,
-    String(PASSWORD_ITERATIONS),
-    base64UrlEncode(salt),
-    base64UrlEncode(hash)
-  ].join("$");
-}
-async function verifyPassword(password, storedHash) {
-  if (!storedHash) return false;
-  const [algorithm, iterationsText, saltText, hashText] = storedHash.split("$");
-  if (algorithm !== PASSWORD_ALGORITHM || !iterationsText || !saltText || !hashText) {
-    return false;
-  }
-  const iterations = Number(iterationsText);
-  if (!Number.isSafeInteger(iterations) || iterations < 1e5) {
-    return false;
-  }
-  const salt = base64UrlDecode(saltText);
-  const expectedHash = base64UrlDecode(hashText);
-  const actualHash = await derivePasswordKey(password, salt, iterations);
-  return constantTimeEqual(actualHash, expectedHash);
 }
 function normalizeEmail(email) {
   return email.trim().toLowerCase();
@@ -5845,11 +6993,11 @@ function authStore(context) {
   }
   return memoryAuthStore();
 }
-const meta$4 = () => [
+const meta$5 = () => [
   { title: "Sign up - Smart Page Platform" },
   { name: "robots", content: "noindex, nofollow" }
 ];
-async function action$1({ request, context }) {
+async function action$2({ request, context }) {
   const form = await request.formData();
   const name = String(form.get("name") ?? "");
   const email = String(form.get("email") ?? "");
@@ -5969,11 +7117,11 @@ function Signup() {
     ] })
   ] }) }) });
 }
-const route17 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route24 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  action: action$1,
+  action: action$2,
   default: Signup,
-  meta: meta$4
+  meta: meta$5
 }, Symbol.toStringTag, { value: "Module" }));
 function Logo(props) {
   const tone = props.tone ?? "light";
@@ -5991,7 +7139,7 @@ function Logo(props) {
     ] })
   ] }) });
 }
-const meta$3 = () => [
+const meta$4 = () => [
   { title: "Smart Page Platform - Link-in-Bio, Landing Pages, and Hosted HTML Sites" },
   {
     name: "description",
@@ -6277,10 +7425,10 @@ function Index() {
     ] }) })
   ] });
 }
-const route18 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route25 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: Index,
-  meta: meta$3
+  meta: meta$4
 }, Symbol.toStringTag, { value: "Module" }));
 const TAPLINK_EDITOR_PATH = /^\/app\/pages\/[^/]+\/edit\/?$/;
 function AppShell(props) {
@@ -6288,8 +7436,8 @@ function AppShell(props) {
   const taplinkEditorLayout = props.mode === "owner" && TAPLINK_EDITOR_PATH.test(location.pathname);
   if (taplinkEditorLayout) {
     return /* @__PURE__ */ jsxs("div", { className: "min-h-screen bg-[#090b10] text-zinc-100", children: [
-      /* @__PURE__ */ jsx("header", { className: "sticky top-0 z-40 border-b border-zinc-800/95 bg-[#0c0f16]/92 backdrop-blur-md", children: /* @__PURE__ */ jsxs("div", { className: "mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6", children: [
-        /* @__PURE__ */ jsxs("div", { className: "flex min-w-0 flex-1 items-center gap-4 sm:gap-8", children: [
+      /* @__PURE__ */ jsx("header", { className: "sticky top-0 z-40 border-b border-zinc-800/95 bg-[#0c0f16]/92 backdrop-blur-md", children: /* @__PURE__ */ jsxs("div", { className: "mx-auto flex max-w-7xl items-center justify-between gap-2 px-3 py-2.5 sm:gap-4 sm:px-6 sm:py-3", children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex min-w-0 flex-1 items-center gap-3 sm:gap-8", children: [
           /* @__PURE__ */ jsx(Link, { to: "/app/pages", className: "min-w-0 shrink-0", children: /* @__PURE__ */ jsx(Logo, { tone: "dark" }) }),
           /* @__PURE__ */ jsx(
             Link,
@@ -6300,19 +7448,19 @@ function AppShell(props) {
             }
           )
         ] }),
-        /* @__PURE__ */ jsxs("div", { className: "flex shrink-0 items-center gap-3", children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex shrink-0 items-center gap-2 sm:gap-3", children: [
           props.userEmail ? /* @__PURE__ */ jsx("span", { className: "hidden max-w-[160px] truncate text-xs text-zinc-500 sm:inline", children: props.userEmail }) : null,
           /* @__PURE__ */ jsx("form", { action: "/logout", method: "post", children: /* @__PURE__ */ jsx(
             "button",
             {
               type: "submit",
-              className: "rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-200 transition hover:bg-zinc-800 hover:text-white",
+              className: "rounded-full border border-zinc-700 bg-zinc-900 px-2.5 py-1.5 text-[11px] font-medium text-zinc-200 transition hover:bg-zinc-800 hover:text-white sm:px-3 sm:text-xs",
               children: "Log out"
             }
           ) })
         ] })
       ] }) }),
-      /* @__PURE__ */ jsx("main", { className: "mx-auto max-w-7xl px-4 pb-36 pt-5 sm:px-6 lg:pb-12", children: /* @__PURE__ */ jsx(Outlet, {}) })
+      /* @__PURE__ */ jsx("main", { className: "mx-auto min-w-0 max-w-7xl overflow-x-hidden px-3 pb-44 pt-4 sm:px-6 sm:pt-5 lg:pb-12", children: /* @__PURE__ */ jsx(Outlet, {}) })
     ] });
   }
   const nav = props.mode === "super_admin" ? [
@@ -6323,6 +7471,7 @@ function AppShell(props) {
     { to: "/admin/settings", label: "Platform settings" }
   ] : [
     { to: "/app", label: "Dashboard" },
+    { to: "/app/rota", label: "COS Rota" },
     { to: "/app/pages", label: "Pages" },
     { to: "/app/analytics", label: "Analytics" },
     { to: "/app/leads", label: "Leads" },
@@ -6355,25 +7504,25 @@ function AppShell(props) {
     ] })
   ] });
 }
-const meta$2 = () => [{ name: "robots", content: "noindex, nofollow" }];
-async function loader$1({ request, context }) {
+const meta$3 = () => [{ name: "robots", content: "noindex, nofollow" }];
+async function loader$2({ request, context }) {
   await requireUserRole(request, context);
   return {};
 }
 function AdminLayout() {
   return /* @__PURE__ */ jsx(AppShell, { mode: "super_admin" });
 }
-const route19 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route26 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: AdminLayout,
-  loader: loader$1,
-  meta: meta$2
+  loader: loader$2,
+  meta: meta$3
 }, Symbol.toStringTag, { value: "Module" }));
-const meta$1 = () => [
+const meta$2 = () => [
   { title: "Login - Smart Page Platform" },
   { name: "robots", content: "noindex, nofollow" }
 ];
-async function action({ request, context }) {
+async function action$1({ request, context }) {
   const form = await request.formData();
   const email = String(form.get("email") ?? "");
   const password = String(form.get("password") ?? "");
@@ -6431,10 +7580,458 @@ function Login() {
     ] })
   ] }) }) });
 }
-const route20 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route27 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  action: action$1,
+  default: Login,
+  meta: meta$2
+}, Symbol.toStringTag, { value: "Module" }));
+const meta$1 = () => [
+  { title: "COS Rota Requests" },
+  { name: "description", content: "Private shift and leave request portal for the COS team." },
+  { name: "theme-color", content: "#0f172a" },
+  { name: "robots", content: "noindex, nofollow" }
+];
+function sameOrigin(request) {
+  const origin = request.headers.get("Origin");
+  return !origin || origin === new URL(request.url).origin;
+}
+async function loginAttemptKey(request, employeeId) {
+  var _a, _b;
+  const ip = request.headers.get("CF-Connecting-IP") ?? ((_b = (_a = request.headers.get("X-Forwarded-For")) == null ? void 0 : _a.split(",")[0]) == null ? void 0 : _b.trim()) ?? "unknown";
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`${ip}:${employeeId.trim()}`));
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+async function loader$1({ request, context }) {
+  var _a;
+  const db2 = requireD1Database(context);
+  const repo = rotaRepository(db2);
+  const staffId = await getRotaStaffId(request, context);
+  if (!staffId) return json({ authenticated: false });
+  const staff = await repo.getStaffById(staffId);
+  if (!staff) return json({ authenticated: false });
+  const [settings, requests, notifications, events] = await Promise.all([
+    repo.getSettings(),
+    repo.listRequestsForStaff(staff.id),
+    repo.listNotificationsForStaff(staff.id),
+    repo.listEvents(staff.id)
+  ]);
+  return json({
+    authenticated: true,
+    staff,
+    settings,
+    requests,
+    notifications,
+    events,
+    vapidPublicKey: ((_a = getAppEnv(context)) == null ? void 0 : _a.VAPID_PUBLIC_KEY) ?? null
+  });
+}
+async function action({ request, context }) {
+  if (!sameOrigin(request)) return json({ ok: false, error: "Request rejected." }, { status: 403 });
+  const db2 = requireD1Database(context);
+  const repo = rotaRepository(db2);
+  const form = await request.formData();
+  const intent = String(form.get("intent") ?? "login");
+  if (intent === "login") {
+    const employeeId = String(form.get("employeeId") ?? "");
+    const pin = String(form.get("pin") ?? "");
+    const attemptKey = await loginAttemptKey(request, employeeId);
+    if (!await repo.loginAllowed(attemptKey)) {
+      return json({ ok: false, error: "Too many attempts. Try again in 15 minutes or ask your manager to check your PIN." }, { status: 429 });
+    }
+    const staff2 = await repo.verifyStaffLogin(employeeId, pin);
+    if (!staff2) {
+      await repo.recordFailedLogin(attemptKey);
+      return json({ ok: false, error: "Employee ID or PIN is incorrect. Ask your manager if your PIN has not been set." }, { status: 400 });
+    }
+    await repo.clearLoginAttempts(attemptKey);
+    return createRotaSession(request, context, staff2.id);
+  }
+  if (intent === "setup_pin") {
+    const employeeId = String(form.get("employeeId") ?? "");
+    const pin = String(form.get("pin") ?? "");
+    const confirmPin = String(form.get("confirmPin") ?? "");
+    if (pin !== confirmPin) return json({ ok: false, error: "PIN confirmation does not match." }, { status: 400 });
+    const attemptKey = await loginAttemptKey(request, employeeId);
+    if (!await repo.loginAllowed(attemptKey)) return json({ ok: false, error: "Too many attempts. Try again in 15 minutes." }, { status: 429 });
+    try {
+      const staff2 = await repo.setupStaffPin(employeeId, pin);
+      await repo.clearLoginAttempts(attemptKey);
+      return createRotaSession(request, context, staff2.id);
+    } catch (error) {
+      await repo.recordFailedLogin(attemptKey);
+      return json({ ok: false, error: error instanceof Error ? error.message : "Unable to create PIN." }, { status: 400 });
+    }
+  }
+  const staffId = await getRotaStaffId(request, context);
+  const staff = staffId ? await repo.getStaffById(staffId) : null;
+  if (!staff) return json({ ok: false, error: "Please sign in again." }, { status: 401 });
+  try {
+    if (intent === "submit_request") {
+      const result = await repo.createRequest({
+        staffId: staff.id,
+        requestType: String(form.get("requestType") ?? ""),
+        targetDate: String(form.get("targetDate") ?? ""),
+        endDate: String(form.get("endDate") ?? ""),
+        shiftDetail: String(form.get("shiftDetail") ?? ""),
+        reason: String(form.get("reason") ?? "")
+      });
+      await pushManagerUpdate(db2, getAppEnv(context), result.managerStaffIds, {
+        title: "New rota request",
+        body: `${staff.name} · ${requestTypeLabel(String(form.get("requestType") ?? ""))} · ${result.timing.targetDate}${"endDate" in result.timing ? ` – ${result.timing.endDate}` : ""}`
+      });
+      return redirect(`/rota?notice=submitted${result.timing.isLate ? "&moved=1" : ""}`);
+    }
+    if (intent === "cancel_request") {
+      const result = await repo.cancelRequest(staff.id, String(form.get("requestId") ?? ""));
+      if (result.managerStaffIds.length) {
+        await pushManagerUpdate(db2, getAppEnv(context), result.managerStaffIds, {
+          title: "Cancellation requested",
+          body: `${staff.name} asked to cancel an approved request.`
+        });
+      }
+      return redirect(`/rota?notice=${result.status === "cancelled" ? "cancelled" : "cancel-requested"}`);
+    }
+    if (intent === "mark_notifications_read") {
+      await repo.markStaffNotificationsRead(staff.id);
+      return redirect("/rota?notice=notifications-read");
+    }
+    if (intent === "change_pin") {
+      const newPin = String(form.get("newPin") ?? "");
+      if (newPin !== String(form.get("confirmPin") ?? "")) throw new Error("New PIN confirmation does not match.");
+      await repo.changeOwnPin(staff.id, String(form.get("currentPin") ?? ""), newPin);
+      return redirect("/rota?notice=pin-changed");
+    }
+  } catch (error) {
+    return json({ ok: false, error: error instanceof Error ? error.message : "Unable to complete that request." }, { status: 400 });
+  }
+  return json({ ok: false, error: "Unknown action." }, { status: 400 });
+}
+function statusStyle(status) {
+  if (status === "approved") return "bg-emerald-100 text-emerald-700";
+  if (status === "rejected" || status === "cancelled") return "bg-rose-100 text-rose-700";
+  if (status === "cancel_requested") return "bg-violet-100 text-violet-700";
+  return "bg-amber-100 text-amber-700";
+}
+function PushButton({ publicKey }) {
+  const [state, setState] = useState("idle");
+  async function enable() {
+    if (!publicKey || !("serviceWorker" in navigator) || !("PushManager" in window)) {
+      setState("error");
+      return;
+    }
+    setState("working");
+    try {
+      const registration = await navigator.serviceWorker.register("/sw.js", { scope: "/" });
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") throw new Error("Permission not granted");
+      const key = publicKey.replace(/-/g, "+").replace(/_/g, "/");
+      const padded = key.padEnd(Math.ceil(key.length / 4) * 4, "=");
+      const applicationServerKey = Uint8Array.from(atob(padded), (char) => char.charCodeAt(0));
+      const subscription = await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey });
+      const response = await fetch("/api/rota/push", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(subscription.toJSON())
+      });
+      if (!response.ok) throw new Error("Unable to save subscription");
+      setState("enabled");
+    } catch {
+      setState("error");
+    }
+  }
+  return /* @__PURE__ */ jsx(
+    "button",
+    {
+      type: "button",
+      onClick: enable,
+      disabled: state === "working" || state === "enabled",
+      className: "rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-xs font-semibold text-white transition hover:bg-white/15 disabled:opacity-70",
+      children: state === "working" ? "Enabling…" : state === "enabled" ? "Alerts enabled ✓" : state === "error" ? "Alerts unavailable" : "Enable alerts"
+    }
+  );
+}
+function LoginScreen({ error }) {
+  const navigation = useNavigation();
+  const [firstTime, setFirstTime] = useState(false);
+  return /* @__PURE__ */ jsx("main", { className: "min-h-screen bg-slate-950 px-4 py-10 text-slate-900", children: /* @__PURE__ */ jsxs("div", { className: "mx-auto max-w-md", children: [
+    /* @__PURE__ */ jsxs("div", { className: "mb-8 text-center text-white", children: [
+      /* @__PURE__ */ jsx("div", { className: "mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-600 text-xl font-black shadow-xl shadow-blue-950/40", children: "COS" }),
+      /* @__PURE__ */ jsx("h1", { className: "mt-5 text-3xl font-black tracking-tight", children: "Rota requests, made clear." }),
+      /* @__PURE__ */ jsx("p", { className: "mt-2 text-sm text-slate-400", children: "Private access for the seven-person COS team." })
+    ] }),
+    /* @__PURE__ */ jsxs("div", { className: "rounded-3xl bg-white p-6 shadow-2xl", children: [
+      /* @__PURE__ */ jsxs("div", { className: "grid grid-cols-2 rounded-xl bg-slate-100 p-1 text-sm font-bold", children: [
+        /* @__PURE__ */ jsx("button", { type: "button", onClick: () => setFirstTime(false), className: `rounded-lg px-3 py-2 ${!firstTime ? "bg-white shadow-sm" : "text-slate-500"}`, children: "Sign in" }),
+        /* @__PURE__ */ jsx("button", { type: "button", onClick: () => setFirstTime(true), className: `rounded-lg px-3 py-2 ${firstTime ? "bg-white shadow-sm" : "text-slate-500"}`, children: "First time" })
+      ] }),
+      /* @__PURE__ */ jsx("h2", { className: "mt-5 text-xl font-bold", children: firstTime ? "Create your private PIN" : "Staff sign-in" }),
+      /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-slate-500", children: firstTime ? "Your manager cannot see your PIN. Use 4–8 numbers you will remember." : "Use your Employee ID and private PIN." }),
+      /* @__PURE__ */ jsxs(Form, { method: "post", className: "mt-6 space-y-4", children: [
+        /* @__PURE__ */ jsx("input", { type: "hidden", name: "intent", value: firstTime ? "setup_pin" : "login" }),
+        /* @__PURE__ */ jsxs("label", { className: "block text-sm font-semibold text-slate-700", children: [
+          "Employee ID",
+          /* @__PURE__ */ jsx("input", { name: "employeeId", inputMode: "numeric", autoComplete: "username", required: true, className: "mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" })
+        ] }),
+        /* @__PURE__ */ jsxs("label", { className: "block text-sm font-semibold text-slate-700", children: [
+          "PIN",
+          /* @__PURE__ */ jsx("input", { name: "pin", type: "password", inputMode: "numeric", autoComplete: "current-password", minLength: 4, maxLength: 8, required: true, className: "mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" })
+        ] }),
+        firstTime ? /* @__PURE__ */ jsxs("label", { className: "block text-sm font-semibold text-slate-700", children: [
+          "Confirm PIN",
+          /* @__PURE__ */ jsx("input", { name: "confirmPin", type: "password", inputMode: "numeric", minLength: 4, maxLength: 8, required: true, className: "mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-base outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" })
+        ] }) : null,
+        error ? /* @__PURE__ */ jsx("p", { className: "rounded-xl bg-rose-50 px-3 py-2 text-sm text-rose-700", children: error }) : null,
+        /* @__PURE__ */ jsx("button", { disabled: navigation.state !== "idle", className: "w-full rounded-xl bg-blue-600 px-4 py-3 font-bold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-700 disabled:opacity-60", children: navigation.state !== "idle" ? "Please wait…" : firstTime ? "Create PIN and continue" : "Sign in" })
+      ] })
+    ] })
+  ] }) });
+}
+function InstallAppCard() {
+  const [prompt, setPrompt] = useState(null);
+  const [installed, setInstalled] = useState(false);
+  useEffect(() => {
+    setInstalled(window.matchMedia("(display-mode: standalone)").matches);
+    const capture = (event) => {
+      event.preventDefault();
+      setPrompt(event);
+    };
+    const done = () => setInstalled(true);
+    window.addEventListener("beforeinstallprompt", capture);
+    window.addEventListener("appinstalled", done);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", capture);
+      window.removeEventListener("appinstalled", done);
+    };
+  }, []);
+  async function install() {
+    if (!prompt) return;
+    await prompt.prompt();
+    if ((await prompt.userChoice).outcome === "accepted") setInstalled(true);
+    setPrompt(null);
+  }
+  return /* @__PURE__ */ jsxs("div", { className: "rounded-3xl bg-slate-950 p-5 text-white shadow-sm", children: [
+    /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-3", children: [
+      /* @__PURE__ */ jsx("img", { src: "/icons/cos-rota-192.png", alt: "COS Rota", className: "h-14 w-14 rounded-2xl" }),
+      /* @__PURE__ */ jsxs("div", { children: [
+        /* @__PURE__ */ jsx("h2", { className: "font-black", children: "Install COS Rota" }),
+        /* @__PURE__ */ jsx("p", { className: "text-sm text-slate-400", children: "Open requests quickly and receive approval alerts." })
+      ] })
+    ] }),
+    installed ? /* @__PURE__ */ jsx("p", { className: "mt-4 rounded-xl bg-emerald-500/15 px-3 py-2 text-sm font-bold text-emerald-300", children: "App installed on this device ✓" }) : prompt ? /* @__PURE__ */ jsx("button", { type: "button", onClick: install, className: "mt-4 w-full rounded-xl bg-blue-600 px-4 py-3 text-sm font-black", children: "Install app" }) : /* @__PURE__ */ jsxs("div", { className: "mt-4 rounded-xl bg-white/10 px-3 py-3 text-sm text-slate-200", children: [
+      /* @__PURE__ */ jsx("b", { children: "iPhone:" }),
+      " tap Share, then Add to Home Screen.",
+      /* @__PURE__ */ jsx("br", {}),
+      /* @__PURE__ */ jsx("b", { children: "Android:" }),
+      " open the browser menu, then Install app or Add to Home screen."
+    ] })
+  ] });
+}
+function RotaPortal() {
+  const data = useLoaderData();
+  const actionData = useActionData();
+  const [searchParams] = useSearchParams();
+  const [tab, setTab] = useState("request");
+  const [requestType, setRequestType] = useState("day_off");
+  const [targetDate, setTargetDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const navigation = useNavigation();
+  const notice = searchParams.get("notice");
+  const preview = useMemo(() => {
+    if (!targetDate || !data.authenticated || requestType === "annual_leave" && !endDate) return null;
+    try {
+      return requestType === "annual_leave" ? normalizeAnnualLeaveRange(targetDate, endDate, data.settings, /* @__PURE__ */ new Date()) : normalizeRequestTarget(targetDate, data.settings, /* @__PURE__ */ new Date());
+    } catch {
+      return null;
+    }
+  }, [requestType, targetDate, endDate, data]);
+  if (!data.authenticated) return /* @__PURE__ */ jsx(LoginScreen, { error: (actionData == null ? void 0 : actionData.ok) === false ? actionData.error : void 0 });
+  const unread = data.notifications.filter((item) => !item.read_at).length;
+  const error = (actionData == null ? void 0 : actionData.ok) === false ? actionData.error : null;
+  return /* @__PURE__ */ jsxs("div", { className: "min-h-screen bg-slate-100 pb-28 text-slate-900", children: [
+    /* @__PURE__ */ jsx("header", { className: "bg-slate-950 text-white", children: /* @__PURE__ */ jsxs("div", { className: "mx-auto max-w-5xl px-4 pb-7 pt-5 sm:px-6", children: [
+      /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between gap-3", children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex min-w-0 items-center gap-3", children: [
+          /* @__PURE__ */ jsx("div", { className: "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-600 font-black", children: "COS" }),
+          /* @__PURE__ */ jsxs("div", { className: "min-w-0", children: [
+            /* @__PURE__ */ jsx("div", { className: "truncate font-bold", children: data.staff.name }),
+            /* @__PURE__ */ jsx("div", { className: "text-xs text-slate-400", children: "Rota Request Portal" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
+          data.staff.role === "manager" ? /* @__PURE__ */ jsx(Link, { to: "/rota/manager", className: "rounded-xl bg-blue-600 px-3 py-2 text-xs font-bold", children: "Manager" }) : null,
+          /* @__PURE__ */ jsx(PushButton, { publicKey: data.vapidPublicKey }),
+          /* @__PURE__ */ jsx(Form, { action: "/rota/logout", method: "post", children: /* @__PURE__ */ jsx("button", { className: "rounded-xl px-3 py-2 text-xs font-semibold text-slate-300 hover:bg-white/10", children: "Sign out" }) })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxs("div", { className: "mt-7 grid grid-cols-3 gap-2 text-center", children: [
+        /* @__PURE__ */ jsxs("div", { className: "rounded-2xl bg-white/5 p-3", children: [
+          /* @__PURE__ */ jsx("div", { className: "text-2xl font-black", children: data.requests.filter((r) => r.status === "pending").length }),
+          /* @__PURE__ */ jsx("div", { className: "text-[11px] text-slate-400", children: "Pending" })
+        ] }),
+        /* @__PURE__ */ jsxs("div", { className: "rounded-2xl bg-white/5 p-3", children: [
+          /* @__PURE__ */ jsx("div", { className: "text-2xl font-black", children: data.requests.filter((r) => r.status === "approved").length }),
+          /* @__PURE__ */ jsx("div", { className: "text-[11px] text-slate-400", children: "Approved" })
+        ] }),
+        /* @__PURE__ */ jsxs("div", { className: "rounded-2xl bg-white/5 p-3", children: [
+          /* @__PURE__ */ jsx("div", { className: "text-2xl font-black", children: unread }),
+          /* @__PURE__ */ jsx("div", { className: "text-[11px] text-slate-400", children: "New updates" })
+        ] })
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsxs("main", { className: "mx-auto max-w-5xl px-4 py-5 sm:px-6", children: [
+      notice ? /* @__PURE__ */ jsx("div", { className: "mb-4 rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm font-medium text-emerald-800", children: notice === "submitted" ? searchParams.get("moved") ? "Request saved and moved to the next eligible rota week because the cutoff passed." : "Request submitted successfully." : notice === "cancelled" ? "Pending request cancelled." : notice === "cancel-requested" ? "Cancellation sent to the manager for approval." : notice === "pin-changed" ? "Your private PIN was changed." : "Updates marked as read." }) : null,
+      error ? /* @__PURE__ */ jsx("div", { className: "mb-4 rounded-2xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700", children: error }) : null,
+      /* @__PURE__ */ jsx("div", { className: "mb-5 grid grid-cols-4 gap-1 rounded-2xl bg-white p-1.5 shadow-sm", children: [["request", "Request"], ["history", "History"], ["updates", `Updates${unread ? ` (${unread})` : ""}`], ["profile", "Profile"]].map(([key, label]) => /* @__PURE__ */ jsx("button", { onClick: () => setTab(key), className: `rounded-xl px-1 py-2.5 text-[11px] font-bold transition sm:text-xs ${tab === key ? "bg-slate-950 text-white" : "text-slate-500 hover:bg-slate-100"}`, children: label }, key)) }),
+      tab === "request" ? /* @__PURE__ */ jsxs("section", { className: "rounded-3xl bg-white p-5 shadow-sm sm:p-7", children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex items-start justify-between gap-4", children: [
+          /* @__PURE__ */ jsxs("div", { children: [
+            /* @__PURE__ */ jsx("h1", { className: "text-xl font-black", children: "What do you need?" }),
+            /* @__PURE__ */ jsx("p", { className: "mt-1 text-sm text-slate-500", children: "Choose one request and the system will confirm its rota week." })
+          ] }),
+          /* @__PURE__ */ jsx("span", { className: "rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700", children: "Fri–Thu" })
+        ] }),
+        /* @__PURE__ */ jsxs(Form, { method: "post", className: "mt-6 space-y-5", children: [
+          /* @__PURE__ */ jsx("input", { type: "hidden", name: "intent", value: "submit_request" }),
+          /* @__PURE__ */ jsxs("label", { className: "block text-sm font-bold", children: [
+            "Request type",
+            /* @__PURE__ */ jsxs("select", { name: "requestType", value: requestType, onChange: (event) => setRequestType(event.target.value), required: true, className: "mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-3 text-base", children: [
+              /* @__PURE__ */ jsx("option", { value: "day_off", children: "Day off" }),
+              /* @__PURE__ */ jsx("option", { value: "morning", children: "Morning shift" }),
+              /* @__PURE__ */ jsx("option", { value: "mid", children: "Mid shift" }),
+              /* @__PURE__ */ jsx("option", { value: "closing", children: "Closing shift" }),
+              /* @__PURE__ */ jsx("option", { value: "shift_swap", children: "Shift swap" }),
+              /* @__PURE__ */ jsx("option", { value: "annual_leave", children: "Annual leave" }),
+              /* @__PURE__ */ jsx("option", { value: "emergency_leave", children: "Emergency leave" }),
+              /* @__PURE__ */ jsx("option", { value: "other", children: "Other" })
+            ] })
+          ] }),
+          requestType === "annual_leave" ? /* @__PURE__ */ jsxs("div", { className: "grid gap-4 sm:grid-cols-2", children: [
+            /* @__PURE__ */ jsxs("label", { className: "block text-sm font-bold", children: [
+              "From date",
+              /* @__PURE__ */ jsx("input", { name: "targetDate", type: "date", value: targetDate, onChange: (event) => setTargetDate(event.target.value), required: true, className: "mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-3 text-base" })
+            ] }),
+            /* @__PURE__ */ jsxs("label", { className: "block text-sm font-bold", children: [
+              "To date",
+              /* @__PURE__ */ jsx("input", { name: "endDate", type: "date", min: targetDate || void 0, value: endDate, onChange: (event) => setEndDate(event.target.value), required: true, className: "mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-3 text-base" })
+            ] })
+          ] }) : /* @__PURE__ */ jsxs("label", { className: "block text-sm font-bold", children: [
+            "Requested date",
+            /* @__PURE__ */ jsx("input", { name: "targetDate", type: "date", value: targetDate, onChange: (event) => setTargetDate(event.target.value), required: true, className: "mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-3 text-base" })
+          ] }),
+          preview ? /* @__PURE__ */ jsxs("div", { className: `rounded-2xl border p-4 ${preview.isLate ? "border-amber-200 bg-amber-50" : "border-emerald-200 bg-emerald-50"}`, children: [
+            /* @__PURE__ */ jsx("div", { className: `text-sm font-black ${preview.isLate ? "text-amber-800" : "text-emerald-800"}`, children: preview.isLate ? "Cutoff passed — date will move" : "On time for this rota week" }),
+            /* @__PURE__ */ jsxs("div", { className: "mt-1 text-sm text-slate-700", children: [
+              preview.isLate ? `${preview.originalTargetDate}${"originalEndDate" in preview ? ` – ${preview.originalEndDate}` : ""} will become ${preview.targetDate}${"endDate" in preview ? ` – ${preview.endDate}` : ""}. ` : "",
+              "durationDays" in preview ? `${preview.durationDays} day${preview.durationDays === 1 ? "" : "s"}. ` : "",
+              "Rota week: ",
+              formatWeekRange(preview.weekStart)
+            ] })
+          ] }) : null,
+          /* @__PURE__ */ jsxs("label", { className: "block text-sm font-bold", children: [
+            "Shift details ",
+            /* @__PURE__ */ jsx("span", { className: "font-normal text-slate-400", children: "(optional)" }),
+            /* @__PURE__ */ jsx("input", { name: "shiftDetail", placeholder: "Example: 9–6, or swap with Jonathan", className: "mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-3 text-base" })
+          ] }),
+          /* @__PURE__ */ jsxs("label", { className: "block text-sm font-bold", children: [
+            "Reason",
+            /* @__PURE__ */ jsx("textarea", { name: "reason", rows: 3, minLength: 3, maxLength: 1e3, required: true, placeholder: "Add a clear, short reason", className: "mt-1.5 w-full rounded-xl border border-slate-300 bg-slate-50 px-3 py-3 text-base" })
+          ] }),
+          /* @__PURE__ */ jsx("button", { disabled: navigation.state !== "idle", className: "w-full rounded-xl bg-blue-600 px-5 py-3.5 font-black text-white shadow-lg shadow-blue-100 hover:bg-blue-700 disabled:opacity-60", children: navigation.state !== "idle" ? "Saving…" : "Submit request" })
+        ] })
+      ] }) : null,
+      tab === "history" ? /* @__PURE__ */ jsx("section", { className: "space-y-3", children: data.requests.length === 0 ? /* @__PURE__ */ jsx("div", { className: "rounded-3xl bg-white p-8 text-center text-sm text-slate-500", children: "No requests yet." }) : data.requests.map((item) => /* @__PURE__ */ jsxs("article", { className: "rounded-3xl bg-white p-5 shadow-sm", children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex items-start justify-between gap-3", children: [
+          /* @__PURE__ */ jsxs("div", { children: [
+            /* @__PURE__ */ jsx("div", { className: "font-black", children: requestTypeLabel(item.requestType) }),
+            /* @__PURE__ */ jsxs("div", { className: "mt-1 text-sm text-slate-500", children: [
+              item.targetDate,
+              item.endDate ? ` – ${item.endDate}` : "",
+              " · ",
+              formatWeekRange(item.rotaWeekStart)
+            ] })
+          ] }),
+          /* @__PURE__ */ jsx("span", { className: `rounded-full px-2.5 py-1 text-[11px] font-black ${statusStyle(item.status)}`, children: statusLabel(item.status) })
+        ] }),
+        item.lateSubmission ? /* @__PURE__ */ jsxs("p", { className: "mt-3 rounded-xl bg-amber-50 px-3 py-2 text-xs text-amber-800", children: [
+          "Original date",
+          item.originalEndDate ? "s" : "",
+          " ",
+          item.originalTargetDate,
+          item.originalEndDate ? ` – ${item.originalEndDate}` : "",
+          "; moved after the cutoff."
+        ] }) : null,
+        /* @__PURE__ */ jsx("p", { className: "mt-3 text-sm text-slate-700", children: item.reason }),
+        item.managerNote ? /* @__PURE__ */ jsxs("p", { className: "mt-3 rounded-xl bg-slate-100 px-3 py-2 text-sm", children: [
+          /* @__PURE__ */ jsx("span", { className: "font-bold", children: "Manager:" }),
+          " ",
+          item.managerNote
+        ] }) : null,
+        /* @__PURE__ */ jsxs("details", { className: "mt-3 text-xs text-slate-500", children: [
+          /* @__PURE__ */ jsx("summary", { className: "cursor-pointer font-bold text-slate-600", children: "Request history" }),
+          /* @__PURE__ */ jsx("div", { className: "mt-2 space-y-2 border-l-2 border-slate-200 pl-3", children: data.events.filter((event) => event.requestId === item.id).map((event) => /* @__PURE__ */ jsxs("div", { children: [
+            /* @__PURE__ */ jsxs("div", { className: "font-semibold text-slate-700", children: [
+              event.eventType.replaceAll("_", " "),
+              event.toStatus ? ` · ${statusLabel(event.toStatus)}` : ""
+            ] }),
+            /* @__PURE__ */ jsxs("div", { children: [
+              event.createdAt,
+              event.comment ? ` · ${event.comment}` : ""
+            ] })
+          ] }, event.id)) })
+        ] }),
+        item.status === "pending" || item.status === "approved" ? /* @__PURE__ */ jsxs(Form, { method: "post", className: "mt-4", children: [
+          /* @__PURE__ */ jsx("input", { type: "hidden", name: "intent", value: "cancel_request" }),
+          /* @__PURE__ */ jsx("input", { type: "hidden", name: "requestId", value: item.id }),
+          /* @__PURE__ */ jsx("button", { className: "text-xs font-bold text-rose-600 hover:underline", children: item.status === "pending" ? "Cancel request" : "Request cancellation" })
+        ] }) : null
+      ] }, item.id)) }) : null,
+      tab === "updates" ? /* @__PURE__ */ jsxs("section", { className: "rounded-3xl bg-white p-5 shadow-sm", children: [
+        /* @__PURE__ */ jsxs("div", { className: "flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxs("div", { children: [
+            /* @__PURE__ */ jsx("h2", { className: "text-lg font-black", children: "Updates" }),
+            /* @__PURE__ */ jsx("p", { className: "text-sm text-slate-500", children: "Approvals, rejections, and cancellations." })
+          ] }),
+          unread ? /* @__PURE__ */ jsxs(Form, { method: "post", children: [
+            /* @__PURE__ */ jsx("input", { type: "hidden", name: "intent", value: "mark_notifications_read" }),
+            /* @__PURE__ */ jsx("button", { className: "text-xs font-bold text-blue-700", children: "Mark all read" })
+          ] }) : null
+        ] }),
+        /* @__PURE__ */ jsx("div", { className: "mt-5 divide-y divide-slate-100", children: data.notifications.length ? data.notifications.map((item) => /* @__PURE__ */ jsxs("div", { className: "py-4", children: [
+          /* @__PURE__ */ jsxs("div", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsx("div", { className: "font-bold", children: item.title }),
+            !item.read_at ? /* @__PURE__ */ jsx("span", { className: "h-2 w-2 rounded-full bg-blue-600" }) : null
+          ] }),
+          /* @__PURE__ */ jsx("div", { className: "mt-1 text-sm text-slate-600", children: item.body }),
+          /* @__PURE__ */ jsx("div", { className: "mt-1 text-xs text-slate-400", children: item.created_at })
+        ] }, item.id)) : /* @__PURE__ */ jsx("div", { className: "py-8 text-center text-sm text-slate-500", children: "No updates yet." }) })
+      ] }) : null,
+      tab === "profile" ? /* @__PURE__ */ jsxs("section", { className: "space-y-4", children: [
+        /* @__PURE__ */ jsx(InstallAppCard, {}),
+        /* @__PURE__ */ jsxs("div", { className: "rounded-3xl bg-white p-5 shadow-sm", children: [
+          /* @__PURE__ */ jsx("h2", { className: "text-lg font-black", children: "Private access" }),
+          /* @__PURE__ */ jsxs("p", { className: "mt-1 text-sm text-slate-500", children: [
+            "Employee ID ",
+            data.staff.employeeId,
+            ". Your manager can reset access but cannot see your PIN."
+          ] }),
+          /* @__PURE__ */ jsxs(Form, { method: "post", className: "mt-5 grid gap-3 sm:grid-cols-3", children: [
+            /* @__PURE__ */ jsx("input", { type: "hidden", name: "intent", value: "change_pin" }),
+            /* @__PURE__ */ jsx("input", { name: "currentPin", type: "password", inputMode: "numeric", minLength: 4, maxLength: 8, required: true, placeholder: "Current PIN", className: "rounded-xl border border-slate-300 px-3 py-3" }),
+            /* @__PURE__ */ jsx("input", { name: "newPin", type: "password", inputMode: "numeric", minLength: 4, maxLength: 8, required: true, placeholder: "New PIN", className: "rounded-xl border border-slate-300 px-3 py-3" }),
+            /* @__PURE__ */ jsx("input", { name: "confirmPin", type: "password", inputMode: "numeric", minLength: 4, maxLength: 8, required: true, placeholder: "Confirm new PIN", className: "rounded-xl border border-slate-300 px-3 py-3" }),
+            /* @__PURE__ */ jsx("button", { className: "rounded-xl bg-slate-950 px-4 py-3 text-sm font-black text-white sm:col-span-3", children: "Change my PIN" })
+          ] })
+        ] })
+      ] }) : null
+    ] })
+  ] });
+}
+const route28 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   action,
-  default: Login,
+  default: RotaPortal,
+  loader: loader$1,
   meta: meta$1
 }, Symbol.toStringTag, { value: "Module" }));
 const meta = () => [{ name: "robots", content: "noindex, nofollow" }];
@@ -6445,13 +8042,13 @@ async function loader({ request, context }) {
 function AppLayout() {
   return /* @__PURE__ */ jsx(AppShell, { mode: "owner" });
 }
-const route21 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const route29 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   default: AppLayout,
   loader,
   meta
 }, Symbol.toStringTag, { value: "Module" }));
-const serverManifest = { "entry": { "module": "/assets/entry.client-I0k47a5u.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/components-BMLruC94.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/root-ChgdHHEE.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/components-BMLruC94.js"], "css": [] }, "routes/app.pages_.$pageId.edit": { "id": "routes/app.pages_.$pageId.edit", "parentId": "routes/app", "path": "pages/:pageId/edit", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app.pages_._pageId.edit-UE96z4aP.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Input-W0j2-8O_.js", "/assets/cn-DOIGBiOF.js", "/assets/render-BQPwR-g_.js", "/assets/components-BMLruC94.js", "/assets/Card-BksuJrdv.js", "/assets/Button-CDRzngdo.js"], "css": [] }, "routes/admin.settings": { "id": "routes/admin.settings", "parentId": "routes/admin", "path": "settings", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/admin.settings-B-mU-xVD.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Card-BksuJrdv.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/admin.tenants": { "id": "routes/admin.tenants", "parentId": "routes/admin", "path": "tenants", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/admin.tenants-T9c_HT_i.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Card-BksuJrdv.js", "/assets/Input-W0j2-8O_.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/app.analytics": { "id": "routes/app.analytics", "parentId": "routes/app", "path": "analytics", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app.analytics-D4xj6uX0.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Card-BksuJrdv.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/sitemap[.]xml": { "id": "routes/sitemap[.]xml", "parentId": "root", "path": "sitemap.xml", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/sitemap_._xml-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/admin._index": { "id": "routes/admin._index", "parentId": "routes/admin", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/admin._index-DSvD_NC0.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Card-BksuJrdv.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/app.settings": { "id": "routes/app.settings", "parentId": "routes/app", "path": "settings", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app.settings-BO61jI7X.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Button-CDRzngdo.js", "/assets/Card-BksuJrdv.js", "/assets/Input-W0j2-8O_.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/robots[.]txt": { "id": "routes/robots[.]txt", "parentId": "root", "path": "robots.txt", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/robots_._txt-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/admin.pages": { "id": "routes/admin.pages", "parentId": "routes/admin", "path": "pages", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/admin.pages-9F9cOUW-.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Button-CDRzngdo.js", "/assets/Card-BksuJrdv.js", "/assets/Input-W0j2-8O_.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/admin.users": { "id": "routes/admin.users", "parentId": "routes/admin", "path": "users", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/admin.users-C4Ert00r.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Card-BksuJrdv.js", "/assets/Input-W0j2-8O_.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/app._index": { "id": "routes/app._index", "parentId": "routes/app", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app._index-nC9ZRUjt.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Card-BksuJrdv.js", "/assets/Button-CDRzngdo.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/app.leads": { "id": "routes/app.leads", "parentId": "routes/app", "path": "leads", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app.leads-BVsXnVmC.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Card-BksuJrdv.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/app.pages": { "id": "routes/app.pages", "parentId": "routes/app", "path": "pages", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app.pages-DP96vXwr.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Button-CDRzngdo.js", "/assets/Card-BksuJrdv.js", "/assets/Input-W0j2-8O_.js", "/assets/cn-DOIGBiOF.js", "/assets/components-BMLruC94.js"], "css": [] }, "routes/healthz": { "id": "routes/healthz", "parentId": "root", "path": "healthz", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/healthz-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/p.$code": { "id": "routes/p.$code", "parentId": "root", "path": "p/:code", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/p._code-WBUfaavX.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/render-BQPwR-g_.js", "/assets/components-BMLruC94.js"], "css": [] }, "routes/logout": { "id": "routes/logout", "parentId": "root", "path": "logout", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/logout-CSxRPO1x.js", "imports": [], "css": [] }, "routes/signup": { "id": "routes/signup", "parentId": "root", "path": "signup", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/signup-CX8JDCRC.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Button-CDRzngdo.js", "/assets/Card-BksuJrdv.js", "/assets/Input-W0j2-8O_.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/_index": { "id": "routes/_index", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_index-B1WJn1G7.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Logo-BCozcDfA.js", "/assets/Button-CDRzngdo.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/admin": { "id": "routes/admin", "parentId": "root", "path": "admin", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/admin-DcnVZuGq.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/AppShell-Cppzia-3.js", "/assets/Logo-BCozcDfA.js", "/assets/cn-DOIGBiOF.js", "/assets/components-BMLruC94.js"], "css": [] }, "routes/login": { "id": "routes/login", "parentId": "root", "path": "login", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/login-mzcD0VXl.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Button-CDRzngdo.js", "/assets/Card-BksuJrdv.js", "/assets/Input-W0j2-8O_.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/app": { "id": "routes/app", "parentId": "root", "path": "app", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app-C8s-37-Z.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/AppShell-Cppzia-3.js", "/assets/Logo-BCozcDfA.js", "/assets/cn-DOIGBiOF.js", "/assets/components-BMLruC94.js"], "css": [] } }, "url": "/assets/manifest-483d84a8.js", "version": "483d84a8" };
+const serverManifest = { "entry": { "module": "/assets/entry.client-BLWIbyrj.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/components-BMLruC94.js"], "css": [] }, "routes": { "root": { "id": "root", "parentId": void 0, "path": "", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/root-DkM98YEP.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/components-BMLruC94.js"], "css": [] }, "routes/app.pages_.$pageId.edit": { "id": "routes/app.pages_.$pageId.edit", "parentId": "routes/app", "path": "pages/:pageId/edit", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app.pages_._pageId.edit-Dn0djexI.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Input-W0j2-8O_.js", "/assets/cn-DOIGBiOF.js", "/assets/render-B2wiLEXW.js", "/assets/components-BMLruC94.js", "/assets/Card-BksuJrdv.js", "/assets/Button-CDRzngdo.js"], "css": [] }, "routes/manifest[.]webmanifest": { "id": "routes/manifest[.]webmanifest", "parentId": "root", "path": "manifest.webmanifest", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/manifest_._webmanifest-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/admin.settings": { "id": "routes/admin.settings", "parentId": "routes/admin", "path": "settings", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/admin.settings-B-mU-xVD.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Card-BksuJrdv.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/admin.tenants": { "id": "routes/admin.tenants", "parentId": "routes/admin", "path": "tenants", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/admin.tenants-T9c_HT_i.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Card-BksuJrdv.js", "/assets/Input-W0j2-8O_.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/api.rota.push": { "id": "routes/api.rota.push", "parentId": "root", "path": "api/rota/push", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/api.rota.push-CZRkyE7c.js", "imports": [], "css": [] }, "routes/app.analytics": { "id": "routes/app.analytics", "parentId": "routes/app", "path": "analytics", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app.analytics-D4xj6uX0.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Card-BksuJrdv.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/sitemap[.]xml": { "id": "routes/sitemap[.]xml", "parentId": "root", "path": "sitemap.xml", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/sitemap_._xml-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/admin._index": { "id": "routes/admin._index", "parentId": "routes/admin", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/admin._index-DSvD_NC0.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Card-BksuJrdv.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/app.settings": { "id": "routes/app.settings", "parentId": "routes/app", "path": "settings", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app.settings-BO61jI7X.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Button-CDRzngdo.js", "/assets/Card-BksuJrdv.js", "/assets/Input-W0j2-8O_.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/hosted.$code": { "id": "routes/hosted.$code", "parentId": "root", "path": "hosted/:code", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/hosted._code-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/robots[.]txt": { "id": "routes/robots[.]txt", "parentId": "root", "path": "robots.txt", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/robots_._txt-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/rota.manager": { "id": "routes/rota.manager", "parentId": "routes/rota", "path": "manager", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/rota.manager-CyCUVeJC.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/week-BwALOztK.js", "/assets/components-BMLruC94.js"], "css": [] }, "routes/admin.pages": { "id": "routes/admin.pages", "parentId": "routes/admin", "path": "pages", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/admin.pages-9F9cOUW-.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Button-CDRzngdo.js", "/assets/Card-BksuJrdv.js", "/assets/Input-W0j2-8O_.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/admin.users": { "id": "routes/admin.users", "parentId": "routes/admin", "path": "users", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/admin.users-C4Ert00r.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Card-BksuJrdv.js", "/assets/Input-W0j2-8O_.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/rota.logout": { "id": "routes/rota.logout", "parentId": "routes/rota", "path": "logout", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/rota.logout-CSxRPO1x.js", "imports": [], "css": [] }, "routes/app._index": { "id": "routes/app._index", "parentId": "routes/app", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app._index-nC9ZRUjt.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Card-BksuJrdv.js", "/assets/Button-CDRzngdo.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/app.leads": { "id": "routes/app.leads", "parentId": "routes/app", "path": "leads", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app.leads-BVsXnVmC.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Card-BksuJrdv.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/app.pages": { "id": "routes/app.pages", "parentId": "routes/app", "path": "pages", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app.pages-DP96vXwr.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Button-CDRzngdo.js", "/assets/Card-BksuJrdv.js", "/assets/Input-W0j2-8O_.js", "/assets/cn-DOIGBiOF.js", "/assets/components-BMLruC94.js"], "css": [] }, "routes/app.rota": { "id": "routes/app.rota", "parentId": "routes/app", "path": "rota", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app.rota-IFBl2q0W.js", "imports": ["/assets/rota.manager-CyCUVeJC.js", "/assets/jsx-runtime-56DGgGmo.js", "/assets/week-BwALOztK.js", "/assets/components-BMLruC94.js"], "css": [] }, "routes/healthz": { "id": "routes/healthz", "parentId": "root", "path": "healthz", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/healthz-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/p.$code": { "id": "routes/p.$code", "parentId": "root", "path": "p/:code", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/p._code-0HnFh2jt.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/render-B2wiLEXW.js", "/assets/components-BMLruC94.js"], "css": [] }, "routes/sw[.]js": { "id": "routes/sw[.]js", "parentId": "root", "path": "sw.js", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/sw_._js-l0sNRNKZ.js", "imports": [], "css": [] }, "routes/logout": { "id": "routes/logout", "parentId": "root", "path": "logout", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/logout-CSxRPO1x.js", "imports": [], "css": [] }, "routes/signup": { "id": "routes/signup", "parentId": "root", "path": "signup", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/signup-CX8JDCRC.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Button-CDRzngdo.js", "/assets/Card-BksuJrdv.js", "/assets/Input-W0j2-8O_.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/_index": { "id": "routes/_index", "parentId": "root", "path": void 0, "index": true, "caseSensitive": void 0, "hasAction": false, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/_index-B1WJn1G7.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Logo-BCozcDfA.js", "/assets/Button-CDRzngdo.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/admin": { "id": "routes/admin", "parentId": "root", "path": "admin", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/admin-CpIE_WLI.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/AppShell-kVnWKmS9.js", "/assets/Logo-BCozcDfA.js", "/assets/cn-DOIGBiOF.js", "/assets/components-BMLruC94.js"], "css": [] }, "routes/login": { "id": "routes/login", "parentId": "root", "path": "login", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": false, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/login-mzcD0VXl.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/Button-CDRzngdo.js", "/assets/Card-BksuJrdv.js", "/assets/Input-W0j2-8O_.js", "/assets/components-BMLruC94.js", "/assets/cn-DOIGBiOF.js"], "css": [] }, "routes/rota": { "id": "routes/rota", "parentId": "root", "path": "rota", "index": void 0, "caseSensitive": void 0, "hasAction": true, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/rota-BegbzhG5.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/week-BwALOztK.js", "/assets/components-BMLruC94.js"], "css": [] }, "routes/app": { "id": "routes/app", "parentId": "root", "path": "app", "index": void 0, "caseSensitive": void 0, "hasAction": false, "hasLoader": true, "hasClientAction": false, "hasClientLoader": false, "hasErrorBoundary": false, "module": "/assets/app-CKCXyU1d.js", "imports": ["/assets/jsx-runtime-56DGgGmo.js", "/assets/AppShell-kVnWKmS9.js", "/assets/Logo-BCozcDfA.js", "/assets/cn-DOIGBiOF.js", "/assets/components-BMLruC94.js"], "css": [] } }, "url": "/assets/manifest-94b3e375.js", "version": "94b3e375" };
 const mode = "production";
 const assetsBuildDirectory = "build\\client";
 const basename = "/";
@@ -6476,13 +8073,21 @@ const routes = {
     caseSensitive: void 0,
     module: route1
   },
+  "routes/manifest[.]webmanifest": {
+    id: "routes/manifest[.]webmanifest",
+    parentId: "root",
+    path: "manifest.webmanifest",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route2
+  },
   "routes/admin.settings": {
     id: "routes/admin.settings",
     parentId: "routes/admin",
     path: "settings",
     index: void 0,
     caseSensitive: void 0,
-    module: route2
+    module: route3
   },
   "routes/admin.tenants": {
     id: "routes/admin.tenants",
@@ -6490,7 +8095,15 @@ const routes = {
     path: "tenants",
     index: void 0,
     caseSensitive: void 0,
-    module: route3
+    module: route4
+  },
+  "routes/api.rota.push": {
+    id: "routes/api.rota.push",
+    parentId: "root",
+    path: "api/rota/push",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route5
   },
   "routes/app.analytics": {
     id: "routes/app.analytics",
@@ -6498,7 +8111,7 @@ const routes = {
     path: "analytics",
     index: void 0,
     caseSensitive: void 0,
-    module: route4
+    module: route6
   },
   "routes/sitemap[.]xml": {
     id: "routes/sitemap[.]xml",
@@ -6506,7 +8119,7 @@ const routes = {
     path: "sitemap.xml",
     index: void 0,
     caseSensitive: void 0,
-    module: route5
+    module: route7
   },
   "routes/admin._index": {
     id: "routes/admin._index",
@@ -6514,7 +8127,7 @@ const routes = {
     path: void 0,
     index: true,
     caseSensitive: void 0,
-    module: route6
+    module: route8
   },
   "routes/app.settings": {
     id: "routes/app.settings",
@@ -6522,7 +8135,15 @@ const routes = {
     path: "settings",
     index: void 0,
     caseSensitive: void 0,
-    module: route7
+    module: route9
+  },
+  "routes/hosted.$code": {
+    id: "routes/hosted.$code",
+    parentId: "root",
+    path: "hosted/:code",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route10
   },
   "routes/robots[.]txt": {
     id: "routes/robots[.]txt",
@@ -6530,7 +8151,15 @@ const routes = {
     path: "robots.txt",
     index: void 0,
     caseSensitive: void 0,
-    module: route8
+    module: route11
+  },
+  "routes/rota.manager": {
+    id: "routes/rota.manager",
+    parentId: "routes/rota",
+    path: "manager",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route12
   },
   "routes/admin.pages": {
     id: "routes/admin.pages",
@@ -6538,7 +8167,7 @@ const routes = {
     path: "pages",
     index: void 0,
     caseSensitive: void 0,
-    module: route9
+    module: route13
   },
   "routes/admin.users": {
     id: "routes/admin.users",
@@ -6546,7 +8175,15 @@ const routes = {
     path: "users",
     index: void 0,
     caseSensitive: void 0,
-    module: route10
+    module: route14
+  },
+  "routes/rota.logout": {
+    id: "routes/rota.logout",
+    parentId: "routes/rota",
+    path: "logout",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route15
   },
   "routes/app._index": {
     id: "routes/app._index",
@@ -6554,7 +8191,7 @@ const routes = {
     path: void 0,
     index: true,
     caseSensitive: void 0,
-    module: route11
+    module: route16
   },
   "routes/app.leads": {
     id: "routes/app.leads",
@@ -6562,7 +8199,7 @@ const routes = {
     path: "leads",
     index: void 0,
     caseSensitive: void 0,
-    module: route12
+    module: route17
   },
   "routes/app.pages": {
     id: "routes/app.pages",
@@ -6570,7 +8207,15 @@ const routes = {
     path: "pages",
     index: void 0,
     caseSensitive: void 0,
-    module: route13
+    module: route18
+  },
+  "routes/app.rota": {
+    id: "routes/app.rota",
+    parentId: "routes/app",
+    path: "rota",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route19
   },
   "routes/healthz": {
     id: "routes/healthz",
@@ -6578,7 +8223,7 @@ const routes = {
     path: "healthz",
     index: void 0,
     caseSensitive: void 0,
-    module: route14
+    module: route20
   },
   "routes/p.$code": {
     id: "routes/p.$code",
@@ -6586,7 +8231,15 @@ const routes = {
     path: "p/:code",
     index: void 0,
     caseSensitive: void 0,
-    module: route15
+    module: route21
+  },
+  "routes/sw[.]js": {
+    id: "routes/sw[.]js",
+    parentId: "root",
+    path: "sw.js",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route22
   },
   "routes/logout": {
     id: "routes/logout",
@@ -6594,7 +8247,7 @@ const routes = {
     path: "logout",
     index: void 0,
     caseSensitive: void 0,
-    module: route16
+    module: route23
   },
   "routes/signup": {
     id: "routes/signup",
@@ -6602,7 +8255,7 @@ const routes = {
     path: "signup",
     index: void 0,
     caseSensitive: void 0,
-    module: route17
+    module: route24
   },
   "routes/_index": {
     id: "routes/_index",
@@ -6610,7 +8263,7 @@ const routes = {
     path: void 0,
     index: true,
     caseSensitive: void 0,
-    module: route18
+    module: route25
   },
   "routes/admin": {
     id: "routes/admin",
@@ -6618,7 +8271,7 @@ const routes = {
     path: "admin",
     index: void 0,
     caseSensitive: void 0,
-    module: route19
+    module: route26
   },
   "routes/login": {
     id: "routes/login",
@@ -6626,7 +8279,15 @@ const routes = {
     path: "login",
     index: void 0,
     caseSensitive: void 0,
-    module: route20
+    module: route27
+  },
+  "routes/rota": {
+    id: "routes/rota",
+    parentId: "root",
+    path: "rota",
+    index: void 0,
+    caseSensitive: void 0,
+    module: route28
   },
   "routes/app": {
     id: "routes/app",
@@ -6634,7 +8295,7 @@ const routes = {
     path: "app",
     index: void 0,
     caseSensitive: void 0,
-    module: route21
+    module: route29
   }
 };
 export {

@@ -7,6 +7,9 @@ export type AppBindings = {
   GOOGLE_ANALYTICS_API_SECRET?: string;
   ELASTIC_TRACKER_URL?: string;
   ELASTIC_API_KEY?: string;
+  VAPID_SUBJECT?: string;
+  VAPID_PUBLIC_KEY?: string;
+  VAPID_PRIVATE_KEY?: string;
 };
 
 type CloudflareLoadContext = AppLoadContext & {

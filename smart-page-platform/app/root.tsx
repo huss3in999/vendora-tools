@@ -10,7 +10,11 @@ import tailwindCss from "~/styles/tailwind.css?url";
 
 const GOOGLE_ANALYTICS_MEASUREMENT_ID = "G-DFY197R2MS";
 
-export const links: LinksFunction = () => [{ rel: "stylesheet", href: tailwindCss }];
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: tailwindCss },
+  { rel: "manifest", href: "/manifest.webmanifest" },
+  { rel: "apple-touch-icon", href: "/icons/cos-rota-192.png" }
+];
 
 export const meta: MetaFunction = () => {
   return [

@@ -1182,18 +1182,49 @@ export default function PageEditor() {
 
       <AddBlockModal open={addBlockOpen} onClose={() => setAddBlockOpen(false)} onPickLive={(type) => addBlock(type)} />
 
-      <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-zinc-800 bg-zinc-950/96 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_40px_rgba(0,0,0,0.45)] backdrop-blur-md lg:hidden">
-        <div className="mx-auto flex max-w-lg items-center gap-2 px-3 py-3">
+      <div className="fixed inset-x-0 bottom-0 z-50 border-t border-zinc-700 bg-zinc-950/98 pb-[env(safe-area-inset-bottom)] shadow-[0_-8px_40px_rgba(0,0,0,0.55)] backdrop-blur-md lg:hidden">
+        <div className="mx-auto grid max-w-lg grid-cols-3 gap-2 px-3 py-3">
           <Button
             type="button"
             size="sm"
-            className="shrink-0 rounded-full bg-brand-600 px-4 py-2.5 text-xs font-bold uppercase tracking-wide text-white shadow-md shadow-brand-900/25 hover:bg-brand-500"
+            className="h-11 w-full px-2 text-xs font-bold"
             onClick={() => setAddBlockOpen(true)}
           >
-            Add block
+            Add
           </Button>
-          {shareControls ? <div className="flex shrink-0 gap-1">{shareControls}</div> : null}
-          <div className="flex flex-1 justify-end gap-2">{publishControls}</div>
+          {publicCode ? (
+            <Link
+              to={`/p/${previewCode}`}
+              target="_blank"
+              rel="noreferrer"
+              className={buttonClassName({ size: "sm", variant: "secondary", className: "h-11 w-full px-2 text-xs font-bold" })}
+            >
+              View
+            </Link>
+          ) : <span aria-hidden />}
+          <Button
+            form="page-editor-form"
+            type="submit"
+            size="sm"
+            name="intent"
+            value="save"
+            disabled={isSubmitting}
+            className="h-11 w-full px-2 text-xs font-bold"
+          >
+            Save
+          </Button>
+          <Button
+            form="page-editor-form"
+            type="submit"
+            size="sm"
+            name="intent"
+            value={data.page.status === "published" ? "unpublish" : "publish"}
+            variant={data.page.status === "published" ? "ghost" : "primary"}
+            disabled={isSubmitting}
+            className="col-span-3 h-11 w-full border border-zinc-700 px-2 text-xs font-bold text-white"
+          >
+            {data.page.status === "published" ? "Move to draft" : "Publish page"}
+          </Button>
         </div>
       </div>
     </div>

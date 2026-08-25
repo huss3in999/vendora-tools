@@ -108,6 +108,12 @@ export function sanitizeHtmlForSandboxStorage(
   maxLen = HTML_EMBED_MAX_LENGTH,
   options: SandboxHtmlOptions = {}
 ): string {
+  // Trusted hosted documents need to be stored verbatim so their scripts,
+  // metadata, responsive CSS, and embeds behave as authored. Runtime iframe
+  // sandboxing remains the security boundary for this opt-in mode.
+  if (options.allowScripts) {
+    return stripCodeFence(String(input ?? "").slice(0, maxLen)).trim();
+  }
   return stripDangerousEmbedHtml(input, maxLen, options);
 }
 
@@ -124,6 +130,18 @@ function injectSandboxHead(html: string, css: string, extraHead = "") {
   }
 
   return `<!doctype html><html><head>${safeHead}</head><body>${html}</body></html>`;
+}
+
+function ensureHostedDocumentViewport(html: string) {
+  if (/<meta\b[^>]*\bname\s*=\s*(["'])viewport\1[^>]*>/i.test(html)) return html;
+  const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1">';
+  if (/<head\b[^>]*>/i.test(html)) {
+    return html.replace(/<head\b([^>]*)>/i, `<head$1>${viewport}`);
+  }
+  if (/<html\b[^>]*>/i.test(html)) {
+    return html.replace(/<html\b([^>]*)>/i, `<html$1><head>${viewport}</head>`);
+  }
+  return `<!doctype html><html><head>${viewport}</head><body>${html}</body></html>`;
 }
 
 function pickJsStringSetting(html: string, settingName: string): string | null {
@@ -215,9 +233,17 @@ export function buildSandboxedHtmlDocument(
   maxLen = HTML_EMBED_MAX_LENGTH,
   options: SandboxHtmlOptions = {}
 ): string {
-  const cleaned = stripDangerousEmbedHtml(input, maxLen, options);
+  const cleaned = options.allowScripts
+    ? stripCodeFence(String(input ?? "").slice(0, maxLen)).trim()
+    : stripDangerousEmbedHtml(input, maxLen, options);
   const body = cleaned || '<p class="spp-empty">Preview empty</p>';
   const compatibility = hostedHtmlCompatibilityScript(body, options);
+
+  if (options.allowScripts && /<(?:!doctype|html|head|body)\b/i.test(body)) {
+    const exactDocument = ensureHostedDocumentViewport(body);
+    if (!compatibility) return exactDocument;
+    return exactDocument.replace(/<\/head\s*>/i, `${compatibility}</head>`);
+  }
   const frameCss = `
     html { color-scheme: light; }
     *, *::before, *::after { box-sizing: border-box; }

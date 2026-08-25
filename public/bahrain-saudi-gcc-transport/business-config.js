@@ -8,7 +8,7 @@ window.VENDORA_BUSINESS_CONFIG = {
   booking_whatsapp: '97333225954',
   phoneNumber: '97333225954',
   support_phone: '97333404044',
-  public_email: '',
+  public_email: 'booking@getvendora.net',
   public_address: 'Office 240, Second Floor, The Address Tower, Seef, Bahrain',
   booking_whatsapp_enabled: true,
   support_phone_enabled: true,

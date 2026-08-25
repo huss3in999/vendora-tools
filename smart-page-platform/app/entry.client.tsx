@@ -11,3 +11,11 @@ startTransition(() => {
   );
 });
 
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    void navigator.serviceWorker.register("/sw.js", { scope: "/" }).catch(() => {
+      // Installation support must never block the application itself.
+    });
+  });
+}
+

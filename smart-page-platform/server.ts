@@ -6,6 +6,9 @@ import * as build from "./build/server/index.js";
 type Env = {
   DB?: D1Database;
   SESSION_SECRET?: string;
+  VAPID_SUBJECT?: string;
+  VAPID_PUBLIC_KEY?: string;
+  VAPID_PRIVATE_KEY?: string;
 };
 
 const handleRemixRequest = createRequestHandler(build as unknown as ServerBuild, "production");

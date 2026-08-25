@@ -13,8 +13,8 @@ export function AppShell(props: { mode: "owner" | "super_admin"; userEmail?: str
     return (
       <div className="min-h-screen bg-[#090b10] text-zinc-100">
         <header className="sticky top-0 z-40 border-b border-zinc-800/95 bg-[#0c0f16]/92 backdrop-blur-md">
-          <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-            <div className="flex min-w-0 flex-1 items-center gap-4 sm:gap-8">
+          <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-3 py-2.5 sm:gap-4 sm:px-6 sm:py-3">
+            <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-8">
               <Link to="/app/pages" className="min-w-0 shrink-0">
                 <Logo tone="dark" />
               </Link>
@@ -25,7 +25,7 @@ export function AppShell(props: { mode: "owner" | "super_admin"; userEmail?: str
                 ← Pages
               </Link>
             </div>
-            <div className="flex shrink-0 items-center gap-3">
+            <div className="flex shrink-0 items-center gap-2 sm:gap-3">
               {props.userEmail ? (
                 <span className="hidden max-w-[160px] truncate text-xs text-zinc-500 sm:inline">
                   {props.userEmail}
@@ -34,7 +34,7 @@ export function AppShell(props: { mode: "owner" | "super_admin"; userEmail?: str
               <form action="/logout" method="post">
                 <button
                   type="submit"
-                  className="rounded-full border border-zinc-700 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-200 transition hover:bg-zinc-800 hover:text-white"
+                  className="rounded-full border border-zinc-700 bg-zinc-900 px-2.5 py-1.5 text-[11px] font-medium text-zinc-200 transition hover:bg-zinc-800 hover:text-white sm:px-3 sm:text-xs"
                 >
                   Log out
                 </button>
@@ -42,7 +42,7 @@ export function AppShell(props: { mode: "owner" | "super_admin"; userEmail?: str
             </div>
           </div>
         </header>
-        <main className="mx-auto max-w-7xl px-4 pb-36 pt-5 sm:px-6 lg:pb-12">
+        <main className="mx-auto min-w-0 max-w-7xl overflow-x-hidden px-3 pb-44 pt-4 sm:px-6 sm:pt-5 lg:pb-12">
           <Outlet />
         </main>
       </div>
@@ -60,6 +60,7 @@ export function AppShell(props: { mode: "owner" | "super_admin"; userEmail?: str
         ]
       : [
           { to: "/app", label: "Dashboard" },
+          { to: "/app/rota", label: "COS Rota" },
           { to: "/app/pages", label: "Pages" },
           { to: "/app/analytics", label: "Analytics" },
           { to: "/app/leads", label: "Leads" },
