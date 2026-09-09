@@ -30,6 +30,8 @@ function transportRouteSlug(pathname) {
     'king-fahd-causeway-guide': 'king-fahd-causeway',
     'dammam-airport-to-bahrain': 'bahrain-to-dammam-airport',
     'full-day-vip-driver': 'bahrain-sightseeing-full-day',
+    'al-ahsa-to-bahrain': 'bahrain-to-al-ahsa',
+    'jubail-to-bahrain': 'bahrain-to-jubail',
   };
   return aliases[slug] || slug;
 }

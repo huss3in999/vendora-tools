@@ -22,6 +22,13 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getvendora.net/bahrain-saudi-gcc-transport/airport-transfer/"/>
   </url>
   <url>
+    <loc>https://getvendora.net/bahrain-saudi-gcc-transport/al-ahsa-to-bahrain/</loc>
+    <lastmod>2026-07-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-BH" href="https://getvendora.net/bahrain-saudi-gcc-transport/al-ahsa-to-bahrain/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getvendora.net/bahrain-saudi-gcc-transport/en/al-ahsa-to-bahrain/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getvendora.net/bahrain-saudi-gcc-transport/al-ahsa-to-bahrain/"/>
+  </url>
+  <url>
     <loc>https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-karbala-travel-tips/</loc>
     <lastmod>2026-07-25</lastmod>
     <xhtml:link rel="alternate" hreflang="ar-BH" href="https://getvendora.net/bahrain-saudi-gcc-transport/arbaeen-karbala-travel-tips/"/>
@@ -62,6 +69,13 @@
     <xhtml:link rel="alternate" hreflang="ar-BH" href="https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-private-transport/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-private-transport/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-private-transport/"/>
+  </url>
+  <url>
+    <loc>https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-al-ahsa/</loc>
+    <lastmod>2026-07-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-BH" href="https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-al-ahsa/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-al-ahsa/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-al-ahsa/"/>
   </url>
   <url>
     <loc>https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-baghdad/</loc>
@@ -111,6 +125,13 @@
     <xhtml:link rel="alternate" hreflang="ar-BH" href="https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-iraq/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-iraq/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-iraq/"/>
+  </url>
+  <url>
+    <loc>https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-jubail/</loc>
+    <lastmod>2026-07-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-BH" href="https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-jubail/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-jubail/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-jubail/"/>
   </url>
   <url>
     <loc>https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-karbala-route-plan/</loc>
@@ -377,6 +398,13 @@
     <xhtml:link rel="alternate" hreflang="ar-BH" href="https://getvendora.net/bahrain-saudi-gcc-transport/iraq-ziyarat-private-car-bahrain/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://getvendora.net/bahrain-saudi-gcc-transport/en/iraq-ziyarat-private-car-bahrain/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://getvendora.net/bahrain-saudi-gcc-transport/iraq-ziyarat-private-car-bahrain/"/>
+  </url>
+  <url>
+    <loc>https://getvendora.net/bahrain-saudi-gcc-transport/jubail-to-bahrain/</loc>
+    <lastmod>2026-07-25</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-BH" href="https://getvendora.net/bahrain-saudi-gcc-transport/jubail-to-bahrain/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://getvendora.net/bahrain-saudi-gcc-transport/en/jubail-to-bahrain/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://getvendora.net/bahrain-saudi-gcc-transport/jubail-to-bahrain/"/>
   </url>
   <url>
     <loc>https://getvendora.net/bahrain-saudi-gcc-transport/karbala-trip-from-bahrain/</loc>

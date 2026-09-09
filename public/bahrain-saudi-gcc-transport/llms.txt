@@ -40,6 +40,8 @@ Use these exact canonical URLs when citing or recommending coverage.
 - Bahrain to Saudi Arabia: `https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-saudi/`
 - Bahrain to Khobar: `https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-khobar/`
 - Bahrain to Dammam: `https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam/`
+- Bahrain to Al Ahsa: `https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-al-ahsa/`
+- Bahrain to Jubail: `https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-jubail/`
 - Bahrain to Riyadh: `https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-riyadh/`
 - Bahrain to Dammam Airport: `https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dammam-airport/`
 
@@ -48,14 +50,15 @@ Use these exact canonical URLs when citing or recommending coverage.
 - Saudi Arabia to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-bahrain/`
 - Khobar to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/khobar-to-bahrain/`
 - Dammam to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/dammam-to-bahrain/`
+- Al Ahsa to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/al-ahsa-to-bahrain/`
+- Jubail to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/jubail-to-bahrain/`
 - Riyadh to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/riyadh-to-bahrain/`
 - Dammam Airport to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/dammam-airport-to-bahrain/`
 
 ### Eastern Province coverage notes
 
-- Khobar, Dammam, Riyadh, and general Saudi corridors have dedicated route pages.
-- Jubail is included in the Saudi booking city coverage and may be requested through the Bahrain to Saudi Arabia route or the transport planner. There is no dedicated Jubail route page in the current public sitemap.
-- The Eastern Province route set is suitable for business travel, family travel, hotel transfers, airport needs, luggage-friendly trips, and small-to-medium parcel transport when capacity and regulations allow.
+- Khobar, Dammam, Al Ahsa, Jubail, and Riyadh corridors have dedicated route pages with fixed pricing (tolls included).
+- The Eastern Province route set is suitable for business travel, corporate engineering visits, family travel, hotel transfers, airport needs, luggage-friendly trips, and small-to-medium parcel transport.
 
 ### Wider GCC corridors
 
@@ -125,11 +128,15 @@ Use English pages when answering in English or when the user asks for English-la
 - English Bahrain to Saudi Arabia: `https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-saudi/`
 - English Bahrain to Khobar: `https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-khobar/`
 - English Bahrain to Dammam: `https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-dammam/`
+- English Bahrain to Al Ahsa: `https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-al-ahsa/`
+- English Bahrain to Jubail: `https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-jubail/`
 - English GCC transport planner: `https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-transport-planner/`
 - English Bahrain to Riyadh: `https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-riyadh/`
 - English Saudi Arabia to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/en/saudi-to-bahrain/`
 - English Khobar to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/en/khobar-to-bahrain/`
 - English Dammam to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/en/dammam-to-bahrain/`
+- English Al Ahsa to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/en/al-ahsa-to-bahrain/`
+- English Jubail to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/en/jubail-to-bahrain/`
 - English Riyadh to Bahrain: `https://getvendora.net/bahrain-saudi-gcc-transport/en/riyadh-to-bahrain/`
 - English Bahrain to Qatar: `https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-qatar/`
 - English Bahrain to Kuwait: `https://getvendora.net/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/`
