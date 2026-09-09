@@ -23,7 +23,7 @@ const MAX_LEADS_LIMIT = 1000;
 const VISITOR_ID_EXPR = "COALESCE(NULLIF(visitor_id, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.visitorId'), '') END)";
 const VISIT_COUNT_EXPR = "CASE WHEN json_valid(raw_payload) THEN CAST(COALESCE(json_extract(raw_payload, '$.visitCount'), 1) AS INTEGER) ELSE 1 END";
 const SESSION_PAGE_VIEWS_EXPR = "CASE WHEN json_valid(raw_payload) THEN CAST(COALESCE(json_extract(raw_payload, '$.sessionPageViews'), 1) AS INTEGER) ELSE 1 END";
-const TRAFFIC_SOURCE_EXPR = "COALESCE(NULLIF(utm_source, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.firstTrafficSource'), '') END, CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.trafficSource'), '') END, CASE WHEN referrer LIKE '%google.%' THEN 'Google Search' WHEN referrer LIKE '%chatgpt.%' THEN 'ChatGPT AI' WHEN referrer <> '' THEN referrer ELSE 'direct/unknown' END)";
+const TRAFFIC_SOURCE_EXPR = "COALESCE(NULLIF(utm_source, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.firstTrafficSource'), '') END, CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.trafficSource'), '') END, CASE WHEN referrer LIKE '%gemini.google.com%' OR referrer LIKE '%gemini.%' OR utm_source LIKE '%gemini%' THEN 'Gemini AI' WHEN referrer LIKE '%chatgpt.%' OR referrer LIKE '%openai.%' OR utm_source LIKE '%chatgpt%' THEN 'ChatGPT AI' WHEN referrer LIKE '%perplexity.%' OR utm_source LIKE '%perplexity%' THEN 'Perplexity AI' WHEN referrer LIKE '%copilot.%' OR utm_source LIKE '%copilot%' THEN 'Copilot AI' WHEN referrer LIKE '%claude.%' OR utm_source LIKE '%claude%' THEN 'Claude AI' WHEN referrer LIKE '%google.%' OR utm_source LIKE '%google%' THEN 'Google Search' WHEN referrer LIKE '%bing.%' OR utm_source LIKE '%bing%' THEN 'Bing Search' WHEN referrer <> '' AND referrer <> 'direct' THEN referrer ELSE 'direct/unknown' END)";
 const CAMPAIGN_EXPR = "COALESCE(NULLIF(utm_campaign, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.utmCampaign'), '') END, 'no campaign')";
 const NON_CLICK_SERVICE_SQL = "COALESCE(service_type, '') NOT IN ('pageview', 'presence_heartbeat', 'passenger-care-pageview', 'passenger-care-stub')";
 const NON_CLICK_ROUTE_SQL = "COALESCE(route_slug, '') NOT IN ('passenger-care', 'passenger-care-stub')";
@@ -992,7 +992,7 @@ async function getSummary(env, request) {
       LIMIT 10
     `),
     bindAll(allFilters, `
-      SELECT COALESCE(NULLIF(device_type, ''), 'unknown') AS label, COUNT(*) AS count
+      SELECT COALESCE(NULLIF(device_type, ''), 'unknown') AS label, COUNT(DISTINCT session_id) AS count
       FROM whatsapp_leads
       ${allFilters.whereSql}
       GROUP BY COALESCE(NULLIF(device_type, ''), 'unknown')
@@ -1689,13 +1689,13 @@ async function getSearchAndAiIntelligence(env) {
   const { results } = await env.TRANSPORT_DB.prepare(`
     SELECT
       CASE
+        WHEN referrer LIKE '%gemini.google.com%' OR referrer LIKE '%gemini.%' OR utm_source LIKE '%gemini%' THEN 'Gemini AI'
+        WHEN referrer LIKE '%chatgpt.%' OR referrer LIKE '%openai.%' OR utm_source LIKE '%chatgpt%' THEN 'ChatGPT AI'
+        WHEN referrer LIKE '%perplexity.%' OR utm_source LIKE '%perplexity%' THEN 'Perplexity AI'
+        WHEN referrer LIKE '%copilot.%' OR utm_source LIKE '%copilot%' THEN 'Copilot AI'
+        WHEN referrer LIKE '%claude.%' OR utm_source LIKE '%claude%' THEN 'Claude AI'
         WHEN referrer LIKE '%google.%' OR utm_source LIKE '%google%' THEN 'Google Search'
         WHEN referrer LIKE '%bing.%' OR utm_source LIKE '%bing%' THEN 'Bing Search'
-        WHEN referrer LIKE '%chatgpt.%' OR referrer LIKE '%openai.%' OR utm_source LIKE '%chatgpt%' THEN 'ChatGPT AI'
-        WHEN referrer LIKE '%copilot.%' OR utm_source LIKE '%copilot%' THEN 'Copilot AI'
-        WHEN referrer LIKE '%perplexity.%' OR utm_source LIKE '%perplexity%' THEN 'Perplexity AI'
-        WHEN referrer LIKE '%gemini.%' OR utm_source LIKE '%gemini%' THEN 'Gemini AI'
-        WHEN referrer LIKE '%claude.%' OR utm_source LIKE '%claude%' THEN 'Claude AI'
         WHEN referrer LIKE '%facebook.%' OR referrer LIKE '%instagram.%' OR referrer LIKE '%tiktok.%' THEN 'Social Media'
         WHEN referrer IS NULL OR referrer = '' OR referrer = 'direct' THEN 'Direct / Bookmarks'
         ELSE 'Other External Referral'

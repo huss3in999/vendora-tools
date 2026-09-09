@@ -5,10 +5,11 @@ const test = require('node:test');
 
 const root = path.resolve(__dirname, '..');
 
-test('presence tracking writes at most once per visible minute', () => {
+test('presence tracking has no continuous 60s or 30s setInterval heartbeat to D1', () => {
   const source = fs.readFileSync(path.join(root, 'bahrain-saudi-gcc-transport', 'site.js'), 'utf8');
   assert.match(source, /if \(document\.visibilityState === 'hidden'\) return;/);
-  assert.match(source, /setInterval\(sendHeartbeat, 60000\);/);
+  assert.doesNotMatch(source, /setInterval\s*\(\s*sendHeartbeat/);
+  assert.doesNotMatch(source, /setInterval\(sendHeartbeat, 60000\);/);
   assert.doesNotMatch(source, /setInterval\(sendHeartbeat, 30000\);/);
 });
 

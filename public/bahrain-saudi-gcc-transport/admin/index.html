@@ -497,12 +497,12 @@
 
       <!-- KPI METRIC CARDS GRID -->
       <p class="text-[10px] text-slate-500 -mb-1">Tip: tap any card below to jump straight to its full report.</p>
-      <section id="secondaryKpis" class="grid gap-3 grid-cols-2 md:grid-cols-4 xl:grid-cols-8">
+      <section id="secondaryKpis" class="grid gap-3 grid-cols-2 md:grid-cols-5 xl:grid-cols-10">
 
-        <!-- UNIQUE VISITORS -->
+        <!-- UNIQUE VISITORS / USERS -->
         <div data-jump="cohorts" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-cyan-500 transition hover:border-cyan-300 hover:bg-cyan-950/10">
           <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Visitors</span>
+            <span class="text-xs font-medium">Users</span>
             <i data-lucide="users" class="h-4 w-4 text-cyan-400"></i>
           </div>
           <p id="statVisitors" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
@@ -526,7 +526,7 @@
         <!-- PAGE VIEWS -->
         <div data-jump="pageviews" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-blue-500 transition hover:border-blue-300 hover:bg-blue-950/10">
           <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Page Views</span>
+            <span class="text-xs font-medium">Pageviews</span>
             <i data-lucide="eye" class="h-4 w-4 text-blue-400"></i>
           </div>
           <p id="statPageviews" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
@@ -538,7 +538,7 @@
         <!-- WHATSAPP INTENTS -->
         <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-amber-500 transition hover:border-amber-300 hover:bg-amber-950/10">
           <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">WhatsApp Interested</span>
+            <span class="text-xs font-medium">WhatsApp Intent</span>
             <i data-lucide="message-circle" class="h-4 w-4 text-amber-400"></i>
           </div>
           <p id="statIntents" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
@@ -550,7 +550,7 @@
         <!-- WHATSAPP CANCELLED -->
         <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-red-500 transition hover:border-red-300 hover:bg-red-950/10">
           <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">WhatsApp Cancelled</span>
+            <span class="text-xs font-medium">Cancelled</span>
             <i data-lucide="x-circle" class="h-4 w-4 text-red-400"></i>
           </div>
           <p id="statCancelled" class="mt-1.5 text-2xl font-extrabold text-red-300">0</p>
@@ -559,27 +559,51 @@
           </div>
         </div>
 
-        <!-- WHATSAPP DEPARTED -->
+        <!-- WHATSAPP CONFIRMED LEADS -->
         <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-emerald-500 transition hover:border-emerald-300 hover:bg-emerald-950/10">
           <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">WhatsApp Clicked</span>
+            <span class="text-xs font-medium">Confirmed Leads</span>
             <i data-lucide="send" class="h-4 w-4 text-emerald-400"></i>
           </div>
           <p id="statDeparted" class="mt-1.5 text-2xl font-extrabold text-emerald-300">0</p>
           <div class="mt-1 text-[10px] text-slate-400">
-            Continued to WhatsApp
+            Confirmed WhatsApp handoff
           </div>
         </div>
 
-        <!-- CONVERSION RATE -->
+        <!-- PASSIVE ABANDONMENT -->
+        <div data-jump="cohorts" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-rose-500 transition hover:border-rose-300 hover:bg-rose-950/10">
+          <div class="flex justify-between items-start text-slate-400">
+            <span class="text-xs font-medium">Passive Abandonment</span>
+            <i data-lucide="user-minus" class="h-4 w-4 text-rose-400"></i>
+          </div>
+          <p id="statPassiveAbandonment" class="mt-1.5 text-2xl font-extrabold text-rose-300">0</p>
+          <div class="mt-1 text-[10px] text-slate-400">
+            Left without WhatsApp action
+          </div>
+        </div>
+
+        <!-- INTENT RATE -->
         <div data-jump="reports" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-yellow-500 transition hover:border-yellow-300 hover:bg-yellow-950/10">
           <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Visit → WA %</span>
-            <i data-lucide="percent" class="h-4 w-4 text-yellow-400"></i>
+            <span class="text-xs font-medium">Intent Rate</span>
+            <i data-lucide="trending-up" class="h-4 w-4 text-yellow-400"></i>
           </div>
-          <p id="statConvRate" class="mt-1.5 text-2xl font-extrabold text-white">0.0%</p>
+          <p id="statIntentRate" class="mt-1.5 text-2xl font-extrabold text-white">0.0%</p>
           <div class="mt-1 text-[10px] text-slate-400">
-            Funnel conversion
+            Intent / Sessions
+          </div>
+        </div>
+
+        <!-- CONFIRMED LEAD RATE -->
+        <div data-jump="reports" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-emerald-500 transition hover:border-emerald-300 hover:bg-emerald-950/10">
+          <div class="flex justify-between items-start text-slate-400">
+            <span class="text-xs font-medium">Confirmed Lead Rate</span>
+            <i data-lucide="award" class="h-4 w-4 text-emerald-400"></i>
+          </div>
+          <p id="statConfirmedLeadRate" class="mt-1.5 text-2xl font-extrabold text-white"><span id="statConvRate">0.0%</span></p>
+          <div class="mt-1 text-[10px] text-slate-400">
+            Confirmed / Sessions
           </div>
         </div>
 
@@ -2555,10 +2579,13 @@
       const statSess = document.getElementById('statSessions');
       if (statSess) statSess.textContent = sessions;
 
-      // 3-Stage WhatsApp metrics
+      // 3-Stage WhatsApp metrics & Passive Abandonment
       const intents = Number(summary.whatsapp_intents_count || 0);
       const cancelled = Number(summary.whatsapp_cancelled_count || 0);
       const departed = Number(summary.whatsapp_departed_count || 0);
+      const passiveAbandonment = Number.isFinite(Number(summary.left_without_whatsapp))
+        ? Math.max(0, Number(summary.left_without_whatsapp))
+        : Math.max(0, sessions - intents);
 
       const statInt = document.getElementById('statIntents');
       if (statInt) statInt.textContent = intents;
@@ -2566,11 +2593,19 @@
       if (statCanc) statCanc.textContent = cancelled;
       const statDep = document.getElementById('statDeparted');
       if (statDep) statDep.textContent = departed;
+      const statAband = document.getElementById('statPassiveAbandonment');
+      if (statAband) statAband.textContent = passiveAbandonment;
 
-      // Funnel Conversion rate (Clicks / Visits)
-      const convRate = views > 0 ? (clicks / views) * 100 : 0.0;
+      // Distinct Rates: Intent Rate and Confirmed Lead Rate (both per session)
+      const intentRateVal = sessions > 0 ? ((intents / sessions) * 100).toFixed(1) : '0.0';
+      const statIR = document.getElementById('statIntentRate');
+      if (statIR) statIR.textContent = `${intentRateVal}%`;
+
+      const confirmedRateVal = sessions > 0 ? ((departed / sessions) * 100).toFixed(1) : '0.0';
+      const statCLR = document.getElementById('statConfirmedLeadRate');
+      if (statCLR) statCLR.textContent = `${confirmedRateVal}%`;
       const statCR = document.getElementById('statConvRate');
-      if (statCR) statCR.textContent = `${convRate.toFixed(1)}%`;
+      if (statCR) statCR.textContent = `${confirmedRateVal}%`;
 
       // CRM Sales stats
       const statJobComp = document.getElementById('statJobsCompleted');
@@ -2640,7 +2675,9 @@
         ? `${newVisitors} new · GA4 processed traffic`
         : `${newVisitors} new · ${summary.traffic_metrics_source === 'd1_fallback' ? 'temporary D1 fallback' : 'D1 filtered activity'}`;
       document.getElementById('ownerWhatsApp').textContent = clicks;
-      document.getElementById('ownerWhatsAppDetail').textContent = `${conversion}% of page views completed the WhatsApp handoff`;
+      const sessions = Number(summary.total_sessions || summary.pageview_sessions || 0);
+      const confirmedLeadRate = sessions > 0 ? ((clicks / sessions) * 100).toFixed(1) : '0.0';
+      document.getElementById('ownerWhatsAppDetail').textContent = `${confirmedLeadRate}% confirmed lead rate (${clicks} of ${sessions} sessions); ${conversion}% per pageview`;
       document.getElementById('ownerMarket').textContent = topCountry ? countryLabel(topCountry.label) : 'No data yet';
       document.getElementById('ownerMarketDetail').textContent = [
         topSource?.label ? `Top source: ${topSource.label}` : '',
@@ -3253,11 +3290,12 @@
         const source = String(payload.firstTrafficSource || payload.trafficSource || event.utm_source || '').trim();
         const referrer = String(payload.firstReferrerHost || payload.referrerHost || event.referrer || '').trim();
         const value = `${source} ${referrer}`.toLowerCase();
-        if (/google/.test(value)) return 'Google';
         if (/chatgpt|openai/.test(value)) return 'ChatGPT';
         if (/gemini|bard/.test(value)) return 'Gemini';
         if (/perplexity/.test(value)) return 'Perplexity';
         if (/copilot/.test(value)) return 'Copilot';
+        if (/claude|anthropic/.test(value)) return 'Claude';
+        if (/google/.test(value)) return 'Google';
         if (/bing/.test(value)) return 'Bing';
         if (/instagram/.test(value)) return 'Instagram';
         if (/facebook|fb\./.test(value)) return 'Facebook';
@@ -3398,13 +3436,24 @@
       const conversion = views > 0 ? ((clicks / views) * 100).toFixed(1) + '%' : '0%';
       const trafficDetail = summary.traffic_metrics_source === 'ga4' ? 'GA4 verified' : 'D1 fallback';
 
+      const passiveAbandonment = Number.isFinite(Number(summary.left_without_whatsapp))
+        ? Math.max(0, Number(summary.left_without_whatsapp))
+        : Math.max(0, sessions - intents);
+      const intentRate = sessions > 0 ? ((intents / sessions) * 100).toFixed(1) + '%' : '0.0%';
+      const confirmedLeadRate = sessions > 0 ? ((departed / sessions) * 100).toFixed(1) + '%' : '0.0%';
+      const pageviewRate = views > 0 ? ((intents / views) * 100).toFixed(1) + '%' : '0.0%';
+
       const cards = [
-        ['Visitors', totalVisitors, `${trafficDetail} users`, 'users', 'text-cyan-400'],
+        ['Users', totalVisitors, `${trafficDetail} users`, 'users', 'text-cyan-400'],
         ['Sessions', sessions, `${trafficDetail} visits`, 'eye', 'text-blue-400'],
-        ['WhatsApp Interested', intents, 'Click started', 'message-circle', 'text-amber-400'],
-        ['WhatsApp Cancelled', cancelled, 'Did not continue', 'x-circle', 'text-red-400'],
-        ['WhatsApp Clicked', departed, 'Confirmed WhatsApp handoff', 'check-circle-2', 'text-emerald-400'],
-        ['Conversion', conversion, 'Clicks per view', 'trending-up', 'text-brand-light']
+        ['Pageviews', views, `${summary.pageviews_today || 0} today`, 'file-text', 'text-indigo-400'],
+        ['WhatsApp Intent', intents, 'Intent started', 'message-circle', 'text-amber-400'],
+        ['Confirmed WhatsApp Leads', departed, 'Confirmed handoff', 'check-circle-2', 'text-emerald-400'],
+        ['Cancelled', cancelled, 'Did not continue', 'x-circle', 'text-red-400'],
+        ['Passive Abandonment', passiveAbandonment, 'Left without WhatsApp', 'user-minus', 'text-rose-400'],
+        ['Intent Rate', intentRate, 'Intent / Sessions', 'trending-up', 'text-yellow-400'],
+        ['Confirmed Lead Rate', confirmedLeadRate, 'Confirmed / Sessions', 'award', 'text-emerald-300'],
+        ['Pageview Clicks', pageviewRate, 'Clicks per view (not conversion rate)', 'mouse-pointer', 'text-slate-400']
       ];
 
       document.getElementById('reportCards').innerHTML = cards.map(([label, value, detail, icon, color]) => `
@@ -3602,7 +3651,8 @@
       });
 
       // Device text list
-      barList(devices, 'chartDevices', Number(summary.total || 0) + Number(summary.total_pageviews || 0));
+      const totalDeviceSessions = devices.reduce((sum, d) => sum + Number(d.count || 0), 0) || Number(summary.total_sessions || 0);
+      barList(devices, 'chartDevices', totalDeviceSessions);
     }
 
     function routeCard(route) {

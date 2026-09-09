@@ -101,6 +101,11 @@ function sourceDetails(payload, referrerHost) {
   let category = 'referral';
   let ai = textFrom(payload, ['ai_referral_source', 'aiReferralSource'], 80);
   if (!candidate || candidate === 'direct' || candidate === 'direct/unknown') category = 'direct';
+  else if (matches(/gemini|bard/)) { source = 'gemini'; category = 'ai_referral'; ai = ai || 'google_gemini'; }
+  else if (matches(/chatgpt|openai/)) { source = 'chatgpt'; category = 'ai_referral'; ai = ai || 'chatgpt'; }
+  else if (matches(/perplexity/)) { source = 'perplexity'; category = 'ai_referral'; ai = ai || 'perplexity'; }
+  else if (matches(/copilot/)) { source = 'copilot'; category = 'ai_referral'; ai = ai || 'microsoft_copilot'; }
+  else if (matches(/claude|anthropic/)) { source = 'claude'; category = 'ai_referral'; ai = ai || 'anthropic_claude'; }
   else if (matches(/google\.|^google$/)) { source = 'google'; category = 'organic_search'; }
   else if (matches(/bing\.|^bing$/)) { source = 'bing'; category = 'organic_search'; }
   else if (matches(/yahoo\.|^yahoo$/)) { source = 'yahoo'; category = 'organic_search'; }
@@ -110,11 +115,6 @@ function sourceDetails(payload, referrerHost) {
   else if (matches(/snapchat/)) { source = 'snapchat'; category = 'social'; }
   else if (matches(/twitter|t\.co|(^|\.)x\.com/)) { source = 'x_twitter'; category = 'social'; }
   else if (matches(/youtube|youtu\.be/)) { source = 'youtube'; category = 'social'; }
-  else if (matches(/chatgpt|openai/)) { source = 'chatgpt'; category = 'ai_referral'; ai = ai || 'chatgpt'; }
-  else if (matches(/perplexity/)) { source = 'perplexity'; category = 'ai_referral'; ai = ai || 'perplexity'; }
-  else if (matches(/gemini/)) { source = 'gemini'; category = 'ai_referral'; ai = ai || 'google_gemini'; }
-  else if (matches(/copilot/)) { source = 'copilot'; category = 'ai_referral'; ai = ai || 'microsoft_copilot'; }
-  else if (matches(/claude|anthropic/)) { source = 'claude'; category = 'ai_referral'; ai = ai || 'anthropic_claude'; }
   const paid = ['gclid', 'fbclid', 'ttclid', 'msclkid', 'dclid'].some((key) => textFrom(payload, [key], 240));
   if (paid || /(^|[_-])(cpc|ppc|paid|display)([_-]|$)/.test(String(textFrom(payload, ['utm_medium', 'utmMedium'], 80) || '').toLowerCase())) category = 'paid';
   return { source: cleanAnalyticsText(source, 120), category, ai: cleanAnalyticsText(ai, 80) };

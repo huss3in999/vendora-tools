@@ -1769,8 +1769,21 @@
   function setupOnlineHeartbeat() {
     if (window.__VENDORA_ONLINE_HEARTBEAT_READY__) return;
     window.__VENDORA_ONLINE_HEARTBEAT_READY__ = true;
-    const sendHeartbeat = () => {
+
+    // Event-driven lifecycle only: no continuous 60-second setInterval loop to D1.
+    // Idle tabs do not continuously write to the database.
+    let lastHeartbeat = Date.now();
+    let pingsSent = 0;
+    const MAX_PINGS = 2;
+    const MIN_INTERVAL_MS = 300000; // 5 minutes minimum between engagement pings
+
+    const sendHeartbeat = (isEngagement) => {
       if (document.visibilityState === 'hidden') return;
+      if (pingsSent >= MAX_PINGS) return;
+      const now = Date.now();
+      if (isEngagement && now - lastHeartbeat < MIN_INTERVAL_MS) return;
+      lastHeartbeat = now;
+      pingsSent += 1;
       try {
         const payload = buildLeadPayload(null, null);
         payload.serviceType = 'presence_heartbeat';
@@ -1780,14 +1793,16 @@
         // ignore heartbeat failures
       }
     };
-    sendHeartbeat();
-    // The admin "online now" window is 90 seconds. One visible heartbeat per
-    // minute keeps that feature accurate without writing to D1 twice a minute
-    // for every open tab. Hidden tabs do not represent an active visitor.
-    setInterval(sendHeartbeat, 60000);
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') sendHeartbeat();
-    });
+
+    // Trigger only upon active user interaction after cooldown, never in a continuous timer
+    const onUserActive = () => {
+      if (Date.now() - lastHeartbeat >= MIN_INTERVAL_MS) {
+        sendHeartbeat(true);
+      }
+    };
+
+    window.addEventListener('scroll', onUserActive, { passive: true });
+    window.addEventListener('click', onUserActive, { passive: true });
   }
 
   function setupErrorReporter() {

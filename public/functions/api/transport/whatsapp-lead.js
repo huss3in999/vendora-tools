@@ -829,6 +829,28 @@ export async function onRequestPost(context) {
     }
   }
 
+  if (cleanText(payload && payload.serviceType, 120) === 'presence_heartbeat' && payload && payload.sessionId) {
+    const sessionId = cleanText(payload.sessionId, 120);
+    const now = new Date().toISOString();
+    try {
+      const updateResult = await env.TRANSPORT_DB.prepare(`
+        UPDATE whatsapp_leads
+        SET clicked_at = ?, time_on_page_ms = ?, scroll_depth_percent = ?
+        WHERE session_id = ? AND service_type = 'presence_heartbeat'
+      `).bind(
+        now,
+        cleanInteger(payload.timeOnPageMs) || 0,
+        cleanInteger(payload.scrollDepthPercent) || 0,
+        sessionId
+      ).run();
+      if (Number(updateResult.meta?.changes || 0) > 0) {
+        return json({ ok: true, session_id: sessionId, updated: true }, { status: 200, headers: corsHeaders(request) });
+      }
+    } catch {
+      // If update fails, fall through to storeLead
+    }
+  }
+
   const leadUuid = crypto.randomUUID();
   const bookingRef = makeBookingRef(leadUuid);
   const careToken = makeCareToken();
