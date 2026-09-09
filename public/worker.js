@@ -32,6 +32,8 @@ function transportRouteSlug(pathname) {
     'full-day-vip-driver': 'bahrain-sightseeing-full-day',
     'al-ahsa-to-bahrain': 'bahrain-to-al-ahsa',
     'jubail-to-bahrain': 'bahrain-to-jubail',
+    'abu-dhabi-to-bahrain': 'bahrain-to-abu-dhabi',
+    'khafji-to-bahrain': 'bahrain-to-khafji',
   };
   return aliases[slug] || slug;
 }
