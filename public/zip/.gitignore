@@ -1,7 +1,0 @@
-node_modules/
-build/
-app/
-coverage/
-.DS_Store
-*.log
-.env*

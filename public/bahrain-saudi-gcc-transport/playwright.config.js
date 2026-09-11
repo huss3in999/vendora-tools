@@ -18,7 +18,7 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'npx --yes http-server . -p 4173 -c-1 --silent',
+    command: 'npx.cmd --yes http-server . -p 4173 -c-1 --silent',
     cwd: publicRoot,
     url: 'http://127.0.0.1:4173/bahrain-saudi-gcc-transport/',
     reuseExistingServer: !process.env.CI,

@@ -420,7 +420,11 @@ export default {
         || lowerPath === '/calculator' || lowerPath.startsWith('/calculator/')
         || lowerPath === '/restaurant-calculators' || lowerPath.startsWith('/restaurant-calculators/')
         || lowerPath === '/guides' || lowerPath.startsWith('/guides/')
-        || lowerPath === '/all-tools' || lowerPath.startsWith('/all-tools/')) {
+        || lowerPath === '/all-tools' || lowerPath.startsWith('/all-tools/')
+        || lowerPath === '/zip' || lowerPath.startsWith('/zip/')
+        || lowerPath === '/pdf' || lowerPath.startsWith('/pdf/')
+        || lowerPath === '/pdf-tools' || lowerPath.startsWith('/pdf-tools/')
+        || lowerPath === '/data/currencies.json') {
         return new Response('410 Gone - This tool has been decommissioned. Please visit Vendora Transport at https://getvendora.net/bahrain-saudi-gcc-transport/', {
           status: 410,
           headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=86400' },

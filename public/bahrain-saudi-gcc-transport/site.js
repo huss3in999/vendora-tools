@@ -867,7 +867,11 @@
     ["نقل خاص من الكويت إلى دول الخليج","Private transport from Kuwait across the GCC"],
     ["المسارات النشطة فقط من الكويت. كل طلب يخضع للتوفر والمراجعة التشغيلية ومتطلبات الحدود والوثائق وعرض السعر النهائي.","Only active routes from Kuwait are shown. Every request remains subject to availability, operational review, border and document requirements, and a final quotation."],
     ["نقل خاص من عُمان إلى دول الخليج","Private transport from Oman across the GCC"],
-    ["المسارات النشطة فقط من عُمان. كل طلب يخضع للتوفر والمراجعة التشغيلية ومتطلبات الحدود والوثائق وعرض السعر النهائي.","Only active routes from Oman are shown. Every request remains subject to availability, operational review, border and document requirements, and a final quotation."]
+    ["المسارات النشطة فقط من عُمان. كل طلب يخضع للتوفر والمراجعة التشغيلية ومتطلبات الحدود والوثائق وعرض السعر النهائي.","Only active routes from Oman are shown. Every request remains subject to availability, operational review, border and document requirements, and a final quotation."],
+    ["البريد الإلكتروني المباشر:","Direct email:"],
+    ["البريد الإلكتروني المباشر","Direct email"],
+    ["البريد الإلكتروني","Email"],
+    ["تنسق Vendora Transport طلبات النقل الخاص بين البحرين والسعودية ودول الخليج عبر واتساب والبريد الإلكتروني booking@getvendora.net، مع صفحات واضحة للمسارات والخدمات.","Vendora Transport coordinates private transport requests between Bahrain, Saudi Arabia, and GCC countries via WhatsApp and email booking@getvendora.net, with dedicated route and service pages."]
   );
   /* END GENERATED GCC BATCH 1 TRANSLATIONS */
 

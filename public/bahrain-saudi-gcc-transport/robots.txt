@@ -7,5 +7,6 @@ Allow: /
 # https://getvendora.net/data/tools-catalog.json
 
 Sitemap: https://getvendora.net/sitemap.xml
-Sitemap: https://getvendora.net/sitemap-tools.xml
 Sitemap: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-index.xml
+Sitemap: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-gcc-transport.xml
+Sitemap: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-gcc-transport-en.xml

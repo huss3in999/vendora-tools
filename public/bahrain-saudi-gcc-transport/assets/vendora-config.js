@@ -31,8 +31,8 @@ window.VENDORA_BUSINESS_CONFIG = Object.freeze({
     "wording_ar": "يمكن إرسال الشكاوى وطلبات الدعم من خلال صفحة الشكاوى أو رقم الدعم.",
     "wording_en": "Complaints and support requests can be submitted through the complaints page or support telephone."
   },
-  "public_email": "",
-  "public_email_enabled": false,
+  "public_email": "booking@getvendora.net",
+  "public_email_enabled": true,
   "social_links": {
     "instagram_url": "",
     "tiktok_url": "",
@@ -549,8 +549,8 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
     "booking_whatsapp_enabled": true,
     "support_phone": "97333404044",
     "support_phone_enabled": true,
-    "public_email": "",
-    "public_email_enabled": false,
+    "public_email": "booking@getvendora.net",
+    "public_email_enabled": true,
     "instagram_url": "",
     "tiktok_url": "",
     "other_social_url": "",

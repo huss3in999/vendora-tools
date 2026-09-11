@@ -248,11 +248,13 @@ function generatedRootContactHtml() {
         image: 'https://getvendora.net/bahrain-saudi-gcc-transport/assets/brand/vendora-transport-app-icon-512.png',
         description: business.service_description_en,
         telephone: `+${business.booking_whatsapp}`,
+        email: business.public_email,
         contactPoint: [
           {
             '@type': 'ContactPoint',
             contactType: 'reservations',
             telephone: `+${business.booking_whatsapp}`,
+            email: business.public_email,
             availableLanguage: ['English', 'Arabic'],
             hoursAvailable: {
               '@type': 'OpeningHoursSpecification',
@@ -265,6 +267,7 @@ function generatedRootContactHtml() {
             '@type': 'ContactPoint',
             contactType: 'customer support',
             telephone: `+${business.support_phone}`,
+            email: business.public_email,
             availableLanguage: ['English', 'Arabic']
           }
         ],
@@ -286,6 +289,7 @@ function generatedRootContactHtml() {
     BOOKING_PHONE_DISPLAY: business.booking_whatsapp_display,
     SUPPORT_PHONE_DISPLAY: business.support_phone_display,
     SUPPORT_PHONE: business.support_phone,
+    PUBLIC_EMAIL: business.public_email,
     ADDRESS: business.public_address,
     MAP_URL: business.google_maps_url,
     PAYMENT_METHODS: business.supported_payments.join(' and '),
