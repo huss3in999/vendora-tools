@@ -699,7 +699,7 @@
     ['نوع وموديل السيارة يعتمد على عدد الركاب والأمتعة والمسار والتوفر عند تأكيد الحجز.', 'Vehicle type and model depend on passenger count, luggage, route and availability at booking confirmation.'],
     ['ترتيبات المركبة والأمتعة', 'Vehicle and luggage arrangements'],
     ['تعتمد ترتيبات الأمتعة على المركبة المعيّنة وتجهيزها المؤكد. تتوفر عادة مساحة خلفية عادية للأمتعة، وقد يمكن ترتيب سعة إضافية مناسبة مثل حامل خلفي للأمتعة أو حامل شحن على وصلة السحب أو صندوق أمتعة على السقف أو مقطورة أمتعة، حسب التجهيز المتاح فعلياً. يجب الإفصاح مسبقاً عن عدد الحقائب وحجمها التقريبي، وتحتاج الأمتعة كبيرة الحجم أو غير المعتادة إلى تأكيد مسبق. لا تُضمن فئة مركبة أو سعة أو تجهيز أو ملحق محدد حتى تؤكده فندورا.', 'Luggage arrangements depend on the assigned vehicle and its confirmed configuration. Normal rear luggage space is usually available, and suitable additional capacity may be arranged through a rear luggage carrier, tow-hitch cargo carrier, roof luggage box, or luggage trailer, depending on the setup actually available. Passengers must disclose the number and approximate size of bags, and oversized or unusually large luggage requires advance confirmation. No vehicle category, capacity, setup, or accessory is guaranteed until Vendora confirms it.'],
-    ['تُعرض فئات المركبات وخيارات الحجز فقط. قد تُرتب المركبة بواسطة فندورا أو شريك تشغيل معتمد، ولا ترتبط الخدمة بشكل دائم بمركبة محددة.', 'Only vehicle categories and booking options are presented. The vehicle may be arranged by Vendora or an approved operating partner, and no specific vehicle is permanently tied to the service.']
+    ['تُعرض فئات المركبات وخيارات الحجز فقط. تُرتب المركبة والسائق وفق المسار والتوفر، ولا ترتبط الخدمة بشكل دائم بمركبة محددة.', 'Only vehicle categories and booking options are presented. The vehicle and driver are arranged according to the route and availability, and no specific vehicle is permanently tied to the service.']
   );
   /* BEGIN GENERATED GCC BATCH 1 TRANSLATIONS */
   translations.push(
@@ -742,11 +742,11 @@
     ["متى أعرف السائق والمركبة؟","When will I receive the driver and vehicle details?"],
     ["نرسل بيانات السائق والمركبة المعينة قبل الاستلام بعد اكتمال التأكيد التشغيلي.","We send the assigned driver and vehicle details before pickup after operational confirmation is complete."],
     ["رعاية الركاب والدعم","Passenger Care and support"],
-    ["يمكنك مراجعة سياسة الحجز أو إرسال شكوى أو قراءة تقييمات العملاء الموثقة.","Review the booking policy, submit a complaint or read verified customer reviews."],
+    ["يمكنك مراجعة سياسة الحجز أو إرسال شكوى أو قراءة تجارب العملاء.","Review the booking policy, submit a complaint or read customer experiences."],
     ["مرحباً فندورا، أريد عرض سعر لنقل خاص من {origin} إلى {destination}. موقع الاستلام: ___، الوجهة: ___، التاريخ والوقت: ___، عدد الركاب والحقائب: ___.","Hello Vendora, I need a private transport quotation from {origin} to {destination}. Pickup: ___, destination: ___, date and time: ___, passengers and luggage: ___."],
     ["فندورا للنقل","Vendora Transport"],
     ["نقل خاص بين دول الخليج","Private transport across the GCC"],
-    ["تنسيق نقل خاص عبر مركبات فندورا أو شركاء تشغيل معتمدين، مع تأكيد السائق والمركبة قبل الاستلام.","Private transport coordinated through Vendora vehicles or approved operating partners, with driver and vehicle details confirmed before pickup."],
+    ["تنسيق نقل خاص حسب المسار والتوفر، مع تأكيد السائق والمركبة قبل الاستلام.","Private transport coordinated according to route and availability, with driver and vehicle details confirmed before pickup."],
     ["نقل خاص من {origin} إلى دول الخليج","Private transport from {origin} across the GCC"],
     ["المسارات النشطة فقط من {origin}. كل طلب يخضع للتوفر والمراجعة التشغيلية ومتطلبات الحدود والوثائق وعرض السعر النهائي.","Only active routes from {origin} are shown. Every request remains subject to availability, operational review, border and document requirements, and a final quotation."],
     ["المسارات المتاحة للطلب","Routes available for request"],
@@ -2331,7 +2331,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     if (!anchor || document.querySelector('.vip-trust-strip')) return;
     const isEnglish = state.lang === 'en';
     const items = isEnglish
-      ? [['clock-3', '24/7 coordination'], ['car-front', 'Private vehicle'], ['scan-line', 'Journey reference']]
+      ? [['clock-3', 'at any time, subject to availability coordination'], ['car-front', 'Private vehicle'], ['scan-line', 'Journey reference']]
       : [['clock-3', 'تنسيق على مدار الساعة'], ['car-front', 'مركبة خاصة'], ['scan-line', 'مرجع للرحلة']];
     const strip = document.createElement('section');
     strip.className = `vip-trust-strip${home ? ' vip-home-trust' : ''}`;
