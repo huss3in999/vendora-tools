@@ -2555,7 +2555,8 @@ html[lang="ar"] body.vip-transport :is(p, li, label, input, textarea, select, bu
 .service-card > img,
 .service-media img,
 .route-card > img,
-.split-feature > img {
+.split-feature > img,
+.fleet-tier-image {
   display: block;
   width: 100%;
   height: auto;
@@ -4022,5 +4023,233 @@ body.vip-transport .page-shell a:is(:hover, :focus-visible) { color: #071a2e; }
     padding: 1rem !important;
   }
 }
+
+/* Final visual contrast contract: light cards use dark readable text. */
+body.vip-transport :is(.service-card, .authority-cert-card, .vehicle-grid article, .faq-item, .route-groups > div, .testimonial-card) {
+  color: #071a2e;
+}
+body.vip-transport :is(.service-card, .authority-cert-card, .vehicle-grid article, .faq-item, .route-groups > div, .testimonial-card) :is(h2, h3, h4, strong, summary) {
+  color: #071a2e;
+}
+body.vip-transport :is(.service-card, .authority-cert-card, .vehicle-grid article, .faq-item, .route-groups > div, .testimonial-card) :is(p, li, span, small, dt, dd) {
+  color: #334155;
+}
+body.vip-transport :is(.service-card, .authority-cert-card, .vehicle-grid article, .faq-item, .route-groups > div, .testimonial-card) :is([style*="color"], .muted, .text-muted) {
+  color: #334155 !important;
+}
+body.vip-transport :is(.cert-badge, .fleet-tier-badge, .service-badge, .trust-badge) {
+  background: #071a2e;
+  color: #fffaf0;
+}
+/* Review cards intentionally stay dark; keep every review token light on that surface. */
+body.vip-transport .review-card,
+body.vip-transport .review-card :is(.review-route-tag, .review-text, .review-author, .review-verified-pill) {
+  color: #fffaf0;
+}
+body.vip-transport .review-card p.review-text {
+  color: #fffaf0 !important;
+}
+body.vip-transport .review-card .review-stars {
+  color: #f4d994;
+}
+/* Responsive Hero Architecture & Visual Balance */
+
+/* Desktop >= 1025px: Corporate landing page balance */
+@media (min-width: 1025px) {
+  body.vip-transport .hero {
+    padding-block: clamp(20px, 3.5vh, 40px);
+    max-height: 800px;
+  }
+  body.vip-transport .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    gap: 32px;
+    align-items: center !important;
+  }
+  body.vip-transport .hero-copy {
+    padding: clamp(24px, 2.5vw, 36px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  body.vip-transport .hero-copy h1 {
+    font-size: clamp(2rem, 2.4vw, 2.55rem) !important;
+    line-height: 1.22 !important;
+    margin-top: 10px !important;
+    margin-bottom: 14px !important;
+    max-width: 18ch;
+  }
+  body.vip-transport .hero-copy p.lead {
+    font-size: 0.96rem !important;
+    line-height: 1.6 !important;
+    margin-bottom: 16px !important;
+  }
+  body.vip-transport .hero-points {
+    margin-bottom: 18px !important;
+    gap: 8px !important;
+  }
+  body.vip-transport .hero-points li {
+    font-size: 0.88rem !important;
+  }
+  body.vip-transport .hero-side.vip-home-visual {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 540px;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+  body.vip-transport .hero-side.vip-home-visual .vip-home-hero-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    max-height: 380px !important;
+    object-fit: cover;
+    object-position: center 60%;
+    border-radius: 20px;
+    display: block;
+  }
+}
+
+/* Tablet (641px - 1024px) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  body.vip-transport .hero {
+    padding-block: 20px;
+  }
+  body.vip-transport .hero-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr) !important;
+    gap: 20px !important;
+    align-items: center !important;
+  }
+  body.vip-transport .hero-copy h1 {
+    font-size: clamp(1.6rem, 2.8vw, 2rem) !important;
+    line-height: 1.24 !important;
+  }
+  body.vip-transport .hero-copy p.lead {
+    font-size: 0.88rem !important;
+    line-height: 1.55 !important;
+  }
+  body.vip-transport .hero-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+  body.vip-transport .hero-points li {
+    font-size: 0.82rem !important;
+  }
+  body.vip-transport .hero-side.vip-home-visual {
+    max-height: 420px;
+  }
+  body.vip-transport .hero-side.vip-home-visual .vip-home-hero-image,
+  body.vip-transport .vip-home-hero-image {
+    max-height: 280px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: center 60%;
+  }
+}
+
+/* Mobile (<= 640px): 390px, 400px viewports */
+@media (max-width: 640px) {
+  body.vip-transport .hero {
+    padding-block: 6px 12px;
+  }
+  body.vip-transport .hero-copy {
+    padding: 12px 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  body.vip-transport .hero-copy :is(.live-dispatch-bar, .eyebrow) {
+    order: 1;
+    margin-bottom: 6px !important;
+  }
+  body.vip-transport :is(.hero-copy, .vip-app-hero-copy) h1 {
+    order: 2;
+    font-size: clamp(1.22rem, 4.8vw, 1.45rem) !important;
+    line-height: 1.25 !important;
+    margin-top: 4px !important;
+    margin-bottom: 6px !important;
+    max-width: 100% !important;
+  }
+  body.vip-transport .vip-region-line {
+    order: 3;
+    font-size: 0.76rem !important;
+    margin-bottom: 6px !important;
+  }
+  body.vip-transport .hero-copy p.lead {
+    order: 4;
+    font-size: 0.82rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 10px !important;
+  }
+  body.vip-transport .hero-actions {
+    order: 5;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+  }
+  body.vip-transport .hero-actions > a {
+    min-height: 40px !important;
+    padding: 6px 10px !important;
+    font-size: 0.78rem !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  body.vip-transport .hero-points {
+    order: 6;
+    margin-bottom: 10px !important;
+    gap: 5px !important;
+  }
+  body.vip-transport .hero-points li {
+    font-size: 0.78rem !important;
+    line-height: 1.35 !important;
+  }
+  body.vip-transport .vip-app-hero-visual {
+    max-height: 160px !important;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+  body.vip-transport .vip-app-hero-visual .vip-home-hero-image,
+  body.vip-transport .vip-home-hero-image {
+    max-height: 160px !important;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    object-position: center 60%;
+  }
+  body.vip-transport :is(.service-card > img, .fleet-tier-image) {
+    max-height: 170px !important;
+    aspect-ratio: 16 / 9 !important;
+    object-fit: cover !important;
+    object-position: center 50% !important;
+  }
+  body.vip-transport .split-feature > img {
+    max-height: 200px;
+    object-fit: contain;
+  }
+  /* Booking & fixed bottom navigation clearance */
+  body.vip-transport #booking {
+    scroll-margin-top: 76px;
+    scroll-margin-bottom: 96px;
+  }
+  body.vip-transport .booking-card {
+    scroll-margin-bottom: 96px;
+  }
+  body.vip-transport .booking-actions {
+    padding-bottom: 28px !important;
+  }
+  body.vip-transport .vip-trip-switcher input:checked + span {
+    color: #071a2e !important;
+    background: #f4d994 !important;
+    border-color: #c8a96b !important;
+    font-weight: 800 !important;
+  }
+  body.vip-transport :is(section, [id]) {
+    scroll-margin-top: 76px;
+  }
+}
+
+
 
 

@@ -1035,8 +1035,8 @@
       ? 'https://getvendora.net/bahrain-saudi-gcc-transport/en/'
       : 'https://getvendora.net/bahrain-saudi-gcc-transport/';
     const sourceLine = isEnglish
-      ? 'Hello, I contacted you through the Vendora Transport website:'
-      : 'السلام عليكم، تواصلت معكم من خلال موقع فندورا للنقل:';
+      ? 'Vendora Website Enquiry:'
+      : 'طلب من موقع فيندورا:';
     const enquiryLine = isEnglish
       ? 'I would like to enquire about:'
       : 'أرغب في الاستفسار عن:';
@@ -1057,11 +1057,15 @@
 
     if (isEnglish) {
       details = details
+        .replace(/^Vendora Website Enquiry:?\s*/i, '')
+        .replace(/^Hello, I contacted you through the Vendora Transport website:?\s*/i, '')
         .replace(/^Hello,?\s*I would like to book through the website\.?\s*/i, '')
         .replace(/^Hello,?\s*/i, '')
         .trim();
     } else {
       details = details
+        .replace(/^طلب من موقع فيندورا:?\s*/i, '')
+        .replace(/^السلام عليكم، تواصلت معكم من خلال موقع فندورا للنقل:?\s*/i, '')
         .replace(/^السلام عليكم[،,]?\s*أريد الحجز عن طريق الموقع\.?\s*/i, '')
         .replace(/^السلام عليكم[،,]?\s*/i, '')
         .replace(/^مرحباً[،,]?\s*/i, '')
@@ -2484,15 +2488,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     }
     if (bookingSection) {
       bookingSection.id = bookingSection.id || 'booking';
-      hero.insertAdjacentElement('afterend', bookingSection);
       enhanceVipBooking(bookingForm, bookingSection);
-    }
-    const trust = addVipTrustStrip(bookingSection || hero, true);
-    const featured = addVipFeaturedRoute(trust || bookingSection || hero);
-    setupVipResponsiveHomeCopy(hero, heroCopy, featured || trust || bookingSection || hero);
-    const crosslink = document.querySelector('.lang-crosslink');
-    if (crosslink && crosslink.compareDocumentPosition(hero) & Node.DOCUMENT_POSITION_FOLLOWING) {
-      (document.querySelector('.vip-featured-route') || trust || bookingSection || hero).insertAdjacentElement('afterend', crosslink);
     }
   }
 
