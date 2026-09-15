@@ -85,13 +85,17 @@
     }
     #appNav .tab-btn {
       min-width: 0;
-      min-height: 48px;
-      padding: 9px 10px;
+      min-height: 44px;
+      padding: 9px 12px;
       border: 1px solid transparent;
+      border-radius: 14px;
     }
     #appNav .tab-btn:hover {
       border-color: rgba(71, 85, 105, .7);
       background: rgba(15, 23, 42, .72);
+    }
+    .subtab-btn {
+      transition: all 0.2s ease;
     }
     @media (max-width: 639px) {
       main { padding: 10px 12px 86px; }
@@ -108,18 +112,7 @@
       #onlineCareText { display: none; }
       #mobileDock { display: grid !important; }
       #mobileMenuToggle { display: none; }
-      #appNav { position: fixed; inset: 0; z-index: 60; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: start; overflow-y: auto; padding: 18px 16px 96px; border: 0; border-radius: 0; background: #070b14; box-shadow: none; gap: 10px; }
-      #appNav .app-menu-header { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; padding: 4px 4px 10px; }
-      #appNav .app-menu-section { grid-column: 1 / -1; margin: 8px 4px -2px; font-size: .65rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #64748b; }
-      #appNav .tab-btn { flex-direction: row; justify-content: flex-start; min-height: 58px; margin: 0; padding: 9px 10px; font-size: .72rem; text-align: left; border: 1px solid rgba(51, 65, 85, .72); background: rgba(15, 23, 42, .66); box-shadow: 0 6px 18px rgba(0,0,0,.12); }
-      #appNav .tab-btn i { width: 17px; height: 17px; padding: 7px; box-sizing: content-box; flex: 0 0 auto; border-radius: 11px; background: rgba(16,185,129,.10); color: #6ee7b7; }
-      #appNav .tab-btn span { min-width: 0; line-height: 1.25; text-align: left; }
-      #dashboardView.app-home #ownerSnapshot { margin-top: 0; }
-      #dashboardView.app-home #secondaryKpis, #dashboardView.app-home #insightsPanel { display: none; }
-      #dashboardView:not(.app-home) #ownerSnapshot,
-      #dashboardView:not(.app-home) #onlineNowPanel,
-      #dashboardView:not(.app-home) #secondaryKpis,
-      #dashboardView:not(.app-home) #insightsPanel { display: none; }
+      #appNav { display: none; }
       #leadsPanel > .glass-panel,
       #pageviewsPanel > .glass-panel,
       #passengerCarePanel > .glass-panel,
@@ -137,21 +130,6 @@
       #settingsPanel form { padding: 16px; gap: 18px; }
       #settingsPanel .grid { gap: 12px; }
       #settingsPanel input, #settingsPanel textarea { padding: 10px 12px; font-size: .78rem; }
-      #ownerSnapshot { border-radius: 20px; }
-      #ownerSnapshot .grid { gap: 10px; }
-      #reportsPanel { gap: 14px; }
-      #dashboardView.app-reports #periodControls { padding: 10px; border-radius: 18px; }
-      #dashboardView.app-reports #periodControls > div { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
-      #dashboardView.app-reports #periodControls > div > span { position: sticky; left: 0; z-index: 1; padding: 7px 8px 7px 2px; background: #0b0f19; }
-      #dashboardView.app-reports .period-btn { flex: 0 0 auto; padding: 8px 11px; font-size: .7rem; }
-      #dashboardView.app-reports .period-btn[data-period="21"],
-      #dashboardView.app-reports .period-btn[data-period="90"],
-      #dashboardView.app-reports .period-btn[data-period="180"],
-      #dashboardView.app-reports .period-btn[data-period="14"],
-      #dashboardView.app-reports .period-btn[data-period="all"],
-      #dashboardView.app-reports #botTrafficControl { display: none; }
-      #dashboardView.app-reports #botsFilterNote,
-      #dashboardView.app-reports #toggleFiltersBtn { display: none; }
       #customPeriodPicker { margin-top: 10px; }
       #customPeriodPicker input { min-height: 42px; }
       #reportsPanel > .glass-panel { padding: 16px; border-radius: 20px; }
@@ -255,70 +233,34 @@
 
       <p id="statusLine" class="hidden rounded-2xl border px-5 py-4 text-sm"></p>
 
-      <!-- APP-STYLE NAVIGATION -->
-      <button id="mobileMenuToggle" type="button" class="flex items-center justify-between rounded-2xl glass-panel px-4 py-3 text-sm font-bold text-white shadow-md">
-        <span class="flex items-center gap-2"><i data-lucide="menu" class="h-5 w-5 text-brand"></i> Menu &amp; details</span>
-        <i id="mobileMenuIcon" data-lucide="chevron-down" class="h-4 w-4 text-slate-400"></i>
-      </button>
-      <nav id="appNav" class="hidden grid-cols-2 gap-1 rounded-2xl glass-panel p-1.5 shadow-md sm:grid-cols-3 xl:grid-cols-10">
-        <div class="app-menu-header">
-          <div><p class="text-[10px] font-bold uppercase tracking-[.18em] text-brand">Vendora Transport</p><h2 class="mt-1 text-lg font-extrabold text-white">Admin menu</h2></div>
-          <button id="appMenuClose" type="button" class="flex h-10 w-10 items-center justify-center rounded-full border border-slate-700 bg-slate-900 text-slate-200"><i data-lucide="x" class="h-5 w-5"></i></button>
-        </div>
-        <p class="app-menu-section">Monitor</p>
-        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="home" type="button">
-          <i data-lucide="house" class="h-4 w-4 text-brand"></i> Home
+      <!-- 5 CLEAN SECTIONS NAVIGATION -->
+      <nav id="appNav" class="grid grid-cols-2 gap-1.5 rounded-2xl glass-panel p-2 shadow-md sm:grid-cols-5">
+        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-2.5 px-3 text-xs font-bold transition duration-200 bg-brand text-slate-950" data-tab="overview" type="button">
+          <i data-lucide="layout-dashboard" class="h-4 w-4"></i> Overview
         </button>
-        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="leads" type="button">
-          <i data-lucide="message-circle" class="h-4 w-4"></i> Clicks
+        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-2.5 px-3 text-xs font-bold transition duration-200 text-slate-400 hover:text-white" data-tab="inquiries" type="button">
+          <i data-lucide="message-circle" class="h-4 w-4"></i> Inquiries / CRM
         </button>
-        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="passengerCare" type="button">
-          <i data-lucide="heart-handshake" class="h-4 w-4 text-emerald-400"></i> Feedback
+        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-2.5 px-3 text-xs font-bold transition duration-200 text-slate-400 hover:text-white" data-tab="marketing" type="button">
+          <i data-lucide="trending-up" class="h-4 w-4"></i> Traffic & Marketing
         </button>
-        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="pageviews" type="button">
-          <i data-lucide="eye" class="h-4 w-4"></i> Visits
+        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-2.5 px-3 text-xs font-bold transition duration-200 text-slate-400 hover:text-white" data-tab="settings" type="button">
+          <i data-lucide="settings" class="h-4 w-4"></i> Settings / Rates
         </button>
-        <p class="app-menu-section">Business</p>
-        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="analytics" type="button">
-          <i data-lucide="radar" class="h-4 w-4 text-cyan-400"></i> Analytics
-        </button>
-        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="cohorts" type="button">
-          <i data-lucide="users" class="h-4 w-4 text-emerald-400"></i> Loyalty
-        </button>
-        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="reports" type="button">
-          <i data-lucide="bar-chart-3" class="h-4 w-4"></i> Charts
-        </button>
-        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="googleAudience" type="button">
-          <i data-lucide="users-round" class="h-4 w-4 text-blue-400"></i> Google Audience
-        </button>
-        <p class="app-menu-section">Manage</p>
-        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="pricing" type="button">
-          <i data-lucide="coins" class="h-4 w-4"></i><span>Route Pricing<br><small lang="ar" dir="rtl">&#1571;&#1587;&#1593;&#1575;&#1585; &#1575;&#1604;&#1585;&#1581;&#1604;&#1575;&#1578;</small></span>
-        </button>
-        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="settings" type="button">
-          <i data-lucide="settings" class="h-4 w-4"></i> Settings
-        </button>
-        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="alerts" type="button">
-          <i data-lucide="bell-ring" class="h-4 w-4"></i> Alerts
-        </button>
-        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-3 text-xs font-bold transition duration-200" data-tab="errors" type="button">
-          <i data-lucide="alert-triangle" class="h-4 w-4 text-red-400"></i> Errors
+        <button class="tab-btn flex items-center justify-center gap-2 rounded-xl py-2.5 px-3 text-xs font-bold transition duration-200 text-slate-400 hover:text-white" data-tab="health" type="button">
+          <i data-lucide="activity" class="h-4 w-4"></i> System Health
         </button>
       </nav>
 
-      <!-- TOP CONTROL BAR: quick period (always visible) + collapsible filters -->
+      <!-- TOP CONTROL BAR: clean period selector + collapsible filters -->
       <section id="periodControls" class="rounded-3xl glass-panel p-4 shadow-lg">
         <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
           <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 shrink-0 mr-1">Period</span>
-          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="today">Today</button>
+          <button type="button" class="period-btn shrink-0 rounded-lg border border-brand bg-brand px-3 py-1.5 text-[11px] font-bold text-slate-950" data-period="today">Today</button>
           <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="yesterday">Yesterday</button>
-          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="7">7 days</button>
-          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="14">2 weeks</button>
-          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="21">3 weeks</button>
-          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="30">1 month</button>
-          <button type="button" class="period-btn shrink-0 rounded-lg border border-brand/40 bg-brand/10 px-3 py-1.5 text-[11px] font-bold text-brand-light transition hover:bg-brand/20" data-period="90">3 months</button>
-          <button type="button" class="period-btn shrink-0 rounded-lg border border-brand/40 bg-brand/10 px-3 py-1.5 text-[11px] font-bold text-brand-light transition hover:bg-brand/20" data-period="180">6 months</button>
-          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="all">All time</button>
+          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="7">7 Days</button>
+          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="30">30 Days</button>
+          <button type="button" class="period-btn shrink-0 rounded-lg border border-slate-700/60 bg-slate-800/60 px-3 py-1.5 text-[11px] font-semibold text-slate-300 transition hover:bg-slate-700 hover:text-white" data-period="all">All Time</button>
           <div class="flex shrink-0 items-center gap-1.5 rounded-lg border border-slate-700/80 bg-slate-900/60 px-2 py-1">
             <span class="text-[10px] text-slate-400 font-bold uppercase">From:</span>
             <input id="quickFromDate" type="date" class="bg-transparent text-xs text-white outline-none" />
@@ -420,232 +362,426 @@
         </div>
       </section>
 
-      <!-- OWNER SNAPSHOT: the only section an owner needs to scan first -->
-      <section id="ownerSnapshot" class="rounded-3xl border border-brand/25 bg-gradient-to-br from-emerald-950/35 via-slate-950/70 to-slate-900/70 p-5 shadow-xl">
-        <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-brand">Owner snapshot</p>
-            <h2 class="mt-1 text-xl font-extrabold text-white">What is happening in your business?</h2>
-            <p class="mt-1 text-xs text-slate-400">Start here. Tap any card only when you want the detail.</p>
-          </div>
-          <div class="flex flex-wrap items-center gap-2">
-            <span id="ownerSnapshotPeriod" class="text-xs font-semibold text-brand-light">Selected period</span>
-            <span id="trafficMetricsSourceBadge" class="rounded-full border border-slate-700 bg-slate-900 px-2 py-1 text-[10px] font-bold text-slate-300">Checking source…</span>
-          </div>
-        </div>
-        <div class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <button type="button" data-jump="pageviews" class="rounded-2xl border border-cyan-500/20 bg-slate-950/45 p-4 text-left transition hover:border-cyan-400/60">
-            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Website visitors</p>
-            <p id="ownerVisitors" class="mt-2 text-3xl font-extrabold text-cyan-300">0</p>
-            <p id="ownerVisitorsDetail" class="mt-1 text-xs text-slate-400">No visitor data yet</p>
-          </button>
-          <button type="button" data-jump="leads" class="rounded-2xl border border-brand/20 bg-slate-950/45 p-4 text-left transition hover:border-brand/70">
-            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Handed to WhatsApp</p>
-            <p id="ownerWhatsApp" class="mt-2 text-3xl font-extrabold text-brand-light">0</p>
-            <p id="ownerWhatsAppDetail" class="mt-1 text-xs text-slate-400">No WhatsApp clicks yet</p>
-          </button>
-          <button type="button" data-jump="analytics" class="rounded-2xl border border-violet-500/20 bg-slate-950/45 p-4 text-left transition hover:border-violet-400/60">
-            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Main market</p>
-            <p id="ownerMarket" class="mt-2 truncate text-2xl font-extrabold text-violet-300">No data</p>
-            <p id="ownerMarketDetail" class="mt-1 text-xs text-slate-400">Country, device and source</p>
-          </button>
-          <button type="button" data-jump="reports" class="rounded-2xl border border-amber-500/20 bg-slate-950/45 p-4 text-left transition hover:border-amber-400/60">
-            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500">Question for the team</p>
-            <p id="ownerQuestion" class="mt-2 text-sm font-bold leading-5 text-amber-200">No question yet</p>
-            <p class="mt-2 text-[10px] text-slate-500">Based on website activity, not private chats</p>
-          </button>
-        </div>
-        <div id="customPeriodPicker" class="hidden rounded-2xl border border-brand/20 bg-slate-950/45 p-3">
-          <p class="mb-2 text-[11px] font-bold text-white">Choose a report period</p>
-          <div class="grid grid-cols-2 gap-2">
-            <label class="text-[10px] font-bold uppercase tracking-wide text-slate-400">From<input id="customFromDate" type="date" class="glass-input mt-1 block w-full rounded-xl px-2 py-2 text-xs outline-none" /></label>
-            <label class="text-[10px] font-bold uppercase tracking-wide text-slate-400">To<input id="customToDate" type="date" class="glass-input mt-1 block w-full rounded-xl px-2 py-2 text-xs outline-none" /></label>
-          </div>
-          <button id="applyCustomPeriodBtn" type="button" class="mt-3 w-full rounded-xl bg-brand py-2.5 text-xs font-bold text-slate-950">Apply these dates</button>
-        </div>
-      </section>
-
-      <!-- WHO IS ONLINE RIGHT NOW (always visible at top, on every tab) -->
-      <section id="onlineNowPanel" class="glass-panel rounded-3xl overflow-hidden shadow-xl">
-        <button id="toggleOnlineBtn" type="button" class="flex w-full items-center justify-between gap-2 border-b border-slate-800/80 p-4 text-left bg-slate-900/30">
-          <span class="flex items-center gap-2 text-base font-bold text-white">
-            <span class="relative flex h-2.5 w-2.5">
-              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-              <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
-            </span>
-            Online Now
-            <span id="onlineNowCount" class="rounded-full border border-emerald-500/20 bg-emerald-950/20 px-2 py-0.5 text-[11px] font-bold text-emerald-300">0</span>
-          </span>
-          <span class="flex items-center gap-2 text-[10px] text-slate-500">
-            Live updates every 15 seconds · active in the last 90 seconds
-            <i id="toggleOnlineIcon" data-lucide="chevron-up" class="h-4 w-4 text-slate-400"></i>
-          </span>
+      <!-- SECTION SUBNAV BARS (Appears when viewing Inquiries, Marketing, Settings, or Health) -->
+      <!-- 2. Inquiries Subnav -->
+      <div id="inquiriesSubnav" class="subnav-bar hidden flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none rounded-2xl glass-panel p-2">
+        <button type="button" class="subtab-btn flex items-center gap-2 rounded-xl border border-brand/40 bg-slate-800 px-3.5 py-2 text-xs font-bold text-brand-light transition" data-subtab="leads">
+          <i data-lucide="message-circle" class="h-4 w-4"></i> Leads &amp; CRM Auditor
         </button>
-        <p id="onlineCareSummary" class="hidden border-b border-slate-800/60 px-4 py-2 text-[11px] text-slate-400"></p>
-        <div id="onlineFiltersBar" class="border-b border-slate-800/60 p-3 bg-slate-900/50 flex flex-wrap items-center justify-between gap-3">
-          <span class="text-xs font-bold text-slate-400">Live Status Filter:</span>
-          <select id="onlineFilterStatus" class="bg-slate-950/80 border border-slate-700/60 rounded-xl px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-brand transition">
-            <option value="all">All Live Visitors</option>
-            <option value="no_wa">No WhatsApp</option>
-            <option value="intent">WhatsApp Interested</option>
-            <option value="cancelled">WhatsApp Cancelled</option>
-            <option value="departed">WhatsApp Clicked</option>
-          </select>
+        <button type="button" class="subtab-btn flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/60 px-3.5 py-2 text-xs font-semibold text-slate-400 transition hover:text-white" data-subtab="passengerCare">
+          <i data-lucide="heart-handshake" class="h-4 w-4"></i> Customer Feedback &amp; Reviews
+        </button>
+      </div>
+
+      <!-- 3. Marketing Subnav -->
+      <div id="marketingSubnav" class="subnav-bar hidden flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none rounded-2xl glass-panel p-2">
+        <button type="button" class="subtab-btn flex items-center gap-2 rounded-xl border border-brand/40 bg-slate-800 px-3.5 py-2 text-xs font-bold text-brand-light transition" data-subtab="pageviews">
+          <i data-lucide="navigation" class="h-4 w-4"></i> Visitors Log
+        </button>
+        <button type="button" class="subtab-btn flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/60 px-3.5 py-2 text-xs font-semibold text-slate-400 transition hover:text-white" data-subtab="analytics">
+          <i data-lucide="radar" class="h-4 w-4"></i> Site Analytics
+        </button>
+        <button type="button" class="subtab-btn flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/60 px-3.5 py-2 text-xs font-semibold text-slate-400 transition hover:text-white" data-subtab="cohorts">
+          <i data-lucide="users" class="h-4 w-4"></i> Customer Retention
+        </button>
+        <button type="button" class="subtab-btn flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/60 px-3.5 py-2 text-xs font-semibold text-slate-400 transition hover:text-white" data-subtab="reports">
+          <i data-lucide="clipboard-list" class="h-4 w-4"></i> Business Reports &amp; Charts
+        </button>
+        <button type="button" class="subtab-btn flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/60 px-3.5 py-2 text-xs font-semibold text-slate-400 transition hover:text-white" data-subtab="googleAudience">
+          <i data-lucide="users-round" class="h-4 w-4"></i> Google Audience
+        </button>
+      </div>
+
+      <!-- 4. Settings Subnav -->
+      <div id="settingsSubnav" class="subnav-bar hidden flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none rounded-2xl glass-panel p-2">
+        <button type="button" class="subtab-btn flex items-center gap-2 rounded-xl border border-brand/40 bg-slate-800 px-3.5 py-2 text-xs font-bold text-brand-light transition" data-subtab="pricing">
+          <i data-lucide="coins" class="h-4 w-4"></i> Route Pricing Engine
+        </button>
+        <button type="button" class="subtab-btn flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/60 px-3.5 py-2 text-xs font-semibold text-slate-400 transition hover:text-white" data-subtab="siteSettings">
+          <i data-lucide="settings" class="h-4 w-4"></i> Public Website Settings
+        </button>
+      </div>
+
+      <!-- 5. Health Subnav -->
+      <div id="healthSubnav" class="subnav-bar hidden flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none rounded-2xl glass-panel p-2">
+        <button type="button" class="subtab-btn flex items-center gap-2 rounded-xl border border-brand/40 bg-slate-800 px-3.5 py-2 text-xs font-bold text-brand-light transition" data-subtab="alerts">
+          <i data-lucide="bell-ring" class="h-4 w-4"></i> Phone Alert Controls
+        </button>
+        <button type="button" class="subtab-btn flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-900/60 px-3.5 py-2 text-xs font-semibold text-slate-400 transition hover:text-white" data-subtab="errors">
+          <i data-lucide="alert-triangle" class="h-4 w-4"></i> Error Log
+        </button>
+      </div>
+
+      <!-- ==================================================== -->
+      <!-- SECTION 1: OVERVIEW (EXECUTIVE SNAPSHOT & FUNNEL)    -->
+      <!-- ==================================================== -->
+      <section id="overviewPanel" class="tab-panel space-y-6">
+
+        <!-- 10-CARD EXECUTIVE SNAPSHOT -->
+        <div class="rounded-3xl border border-brand/25 bg-gradient-to-br from-emerald-950/35 via-slate-950/70 to-slate-900/70 p-5 shadow-xl">
+          <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between mb-4">
+            <div>
+              <p class="text-[10px] font-bold uppercase tracking-[0.22em] text-brand">Executive Snapshot</p>
+              <h2 class="mt-1 text-xl font-extrabold text-white">Business Health &amp; Conversions</h2>
+              <p class="mt-1 text-xs text-slate-400">10-second overview of traffic, pipeline handoffs, and trip performance.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="ownerSnapshotPeriod" class="text-xs font-semibold text-brand-light">Selected period</span>
+              <span id="trafficMetricsSourceBadge" class="rounded-full border border-slate-700 bg-slate-900 px-2 py-1 text-[10px] font-bold text-slate-300">Checking source…</span>
+            </div>
+          </div>
+
+          <div class="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-5">
+            <!-- 1. Unique Visitors -->
+            <div data-jump="pageviews" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-cyan-500 transition hover:border-cyan-300 hover:bg-cyan-950/10">
+              <div class="flex justify-between items-start text-slate-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Unique Visitors</span>
+                <i data-lucide="users" class="h-4 w-4 text-cyan-400"></i>
+              </div>
+              <p id="statVisitors" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
+              <div class="mt-1 text-[10px] text-slate-400 flex items-center justify-between">
+                <span><strong id="statNewVisitors" class="text-cyan-300">0</strong> new · <strong id="statReturningVisitors" class="text-amber-300">0</strong> ret.</span>
+                <span id="deltaVisitors" class="text-[10px] font-semibold text-slate-500">—</span>
+              </div>
+            </div>
+
+            <!-- 2. Sessions -->
+            <div data-jump="pageviews" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-indigo-500 transition hover:border-indigo-300 hover:bg-indigo-950/10">
+              <div class="flex justify-between items-start text-slate-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Sessions</span>
+                <i data-lucide="laptop" class="h-4 w-4 text-indigo-400"></i>
+              </div>
+              <p id="statSessions" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
+              <div class="mt-1 text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Distinct visits</span>
+                <span id="deltaSessions" class="text-[10px] font-semibold text-slate-500">—</span>
+              </div>
+            </div>
+
+            <!-- 3. Pageviews -->
+            <div data-jump="pageviews" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-blue-500 transition hover:border-blue-300 hover:bg-blue-950/10">
+              <div class="flex justify-between items-start text-slate-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Pageviews</span>
+                <i data-lucide="eye" class="h-4 w-4 text-blue-400"></i>
+              </div>
+              <p id="statPageviews" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
+              <div class="mt-1 text-[10px] text-slate-400 flex items-center justify-between">
+                <span><span id="statPvToday" class="font-bold text-blue-400">0</span> today</span>
+                <span id="deltaPageviews" class="text-[10px] font-semibold text-slate-500">—</span>
+              </div>
+            </div>
+
+            <!-- 4. Active / Online Now -->
+            <div data-jump="live" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-emerald-400 transition hover:border-emerald-300 hover:bg-emerald-950/10">
+              <div class="flex justify-between items-start text-slate-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Active Now</span>
+                <span class="relative flex h-2.5 w-2.5 mt-0.5">
+                  <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                  <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                </span>
+              </div>
+              <p id="statOnlineNow" class="mt-1.5 text-2xl font-extrabold text-emerald-400">0</p>
+              <div class="mt-1 text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Real-time on site</span>
+                <span class="text-[10px] font-bold text-emerald-400">Live</span>
+              </div>
+            </div>
+
+            <!-- 5. WhatsApp Clicks -->
+            <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-amber-500 transition hover:border-amber-300 hover:bg-amber-950/10">
+              <div class="flex justify-between items-start text-slate-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">WhatsApp Clicks</span>
+                <i data-lucide="message-circle" class="h-4 w-4 text-amber-400"></i>
+              </div>
+              <p id="statIntents" class="mt-1.5 text-2xl font-extrabold text-amber-300">0</p>
+              <div class="mt-1 text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Opened modal</span>
+                <span id="deltaWhatsAppClicks" class="text-[10px] font-semibold text-slate-500">—</span>
+              </div>
+            </div>
+
+            <!-- 6. WhatsApp Handoffs -->
+            <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-emerald-500 transition hover:border-emerald-300 hover:bg-emerald-950/10">
+              <div class="flex justify-between items-start text-slate-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">WA Handoffs</span>
+                <i data-lucide="send" class="h-4 w-4 text-emerald-400"></i>
+              </div>
+              <p id="statDeparted" class="mt-1.5 text-2xl font-extrabold text-emerald-300">0</p>
+              <div class="mt-1 text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Confirmed leads</span>
+                <span class="text-[10px] font-bold text-emerald-400">High intent</span>
+              </div>
+            </div>
+
+            <!-- 7. Contacted -->
+            <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-blue-400 transition hover:border-blue-300 hover:bg-blue-950/10">
+              <div class="flex justify-between items-start text-slate-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Contacted</span>
+                <i data-lucide="phone-call" class="h-4 w-4 text-blue-400"></i>
+              </div>
+              <p id="statContacted" class="mt-1.5 text-2xl font-extrabold text-blue-300">0</p>
+              <div class="mt-1 text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Driver assigned</span>
+                <span class="text-[10px] font-semibold text-blue-300">In CRM</span>
+              </div>
+            </div>
+
+            <!-- 8. Completed Trips -->
+            <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-teal-500 transition hover:border-teal-300 hover:bg-teal-950/10">
+              <div class="flex justify-between items-start text-slate-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Completed Trips</span>
+                <i data-lucide="check-circle-2" class="h-4 w-4 text-teal-400"></i>
+              </div>
+              <p id="statJobsCompleted" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
+              <div class="mt-1 text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Revenue:</span>
+                <span id="statRevenue" class="font-bold text-emerald-400">0.00 BHD</span>
+              </div>
+            </div>
+
+            <!-- 9. WhatsApp Cancellations -->
+            <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-rose-500 transition hover:border-rose-300 hover:bg-rose-950/10">
+              <div class="flex justify-between items-start text-slate-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">WA Cancellations</span>
+                <i data-lucide="x-circle" class="h-4 w-4 text-rose-400"></i>
+              </div>
+              <p id="statCancelled" class="mt-1.5 text-2xl font-extrabold text-rose-300">0</p>
+              <div class="mt-1 text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Pre-handoff abort</span>
+                <span class="text-[10px] font-semibold text-rose-400" title="User opened WhatsApp modal but clicked Cancel or closed without departing">Modal exit</span>
+              </div>
+            </div>
+
+            <!-- 10. Conversion Rate -->
+            <div data-jump="reports" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-yellow-500 transition hover:border-yellow-300 hover:bg-yellow-950/10">
+              <div class="flex justify-between items-start text-slate-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Conversion Rate</span>
+                <i data-lucide="trending-up" class="h-4 w-4 text-yellow-400"></i>
+              </div>
+              <p id="statConvRate" class="mt-1.5 text-2xl font-extrabold text-yellow-300">0.0%</p>
+              <div class="mt-1 text-[10px] text-slate-400 flex items-center justify-between">
+                <span>Handoffs / Sessions</span>
+                <span class="text-[10px] font-bold text-yellow-300">Funnel</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hidden legacy elements for script compatibility -->
+          <div class="hidden">
+            <span id="ownerVisitors">0</span>
+            <span id="ownerVisitorsDetail"></span>
+            <span id="ownerWhatsApp">0</span>
+            <span id="ownerWhatsAppDetail"></span>
+            <span id="ownerMarket"></span>
+            <span id="ownerMarketDetail"></span>
+            <span id="ownerQuestion"></span>
+            <span id="statPassiveAbandonment">0</span>
+            <span id="statIntentRate">0.0%</span>
+            <span id="statConfirmedLeadRate">0.0%</span>
+            <span id="statAvgTime">0s</span>
+            <span id="statAvgScroll">0%</span>
+            <span id="statPageviewsSession">1</span>
+          </div>
+
+          <div id="customPeriodPicker" class="hidden rounded-2xl border border-brand/20 bg-slate-950/45 p-3 mt-4">
+            <p class="mb-2 text-[11px] font-bold text-white">Choose a custom date range</p>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="text-[10px] font-bold uppercase tracking-wide text-slate-400">From<input id="customFromDate" type="date" class="glass-input mt-1 block w-full rounded-xl px-2 py-2 text-xs outline-none" /></label>
+              <label class="text-[10px] font-bold uppercase tracking-wide text-slate-400">To<input id="customToDate" type="date" class="glass-input mt-1 block w-full rounded-xl px-2 py-2 text-xs outline-none" /></label>
+            </div>
+            <button id="applyCustomPeriodBtn" type="button" class="mt-3 w-full rounded-xl bg-brand py-2.5 text-xs font-bold text-slate-950">Apply custom dates</button>
+          </div>
         </div>
-        <div id="onlineNowList" class="grid gap-3 p-4 sm:grid-cols-2 xl:grid-cols-3"></div>
+
+        <!-- 6-STAGE OPERATIONAL FUNNEL -->
+        <section id="businessFunnelSection" class="rounded-3xl glass-panel p-5 shadow-xl border border-slate-800/80">
+          <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between mb-4">
+            <div>
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i data-lucide="filter" class="h-4 w-4 text-brand"></i> End-to-End Operational Funnel (6 Stages)
+              </h3>
+              <p class="text-xs text-slate-400">Click any stage to filter or jump to that segment.</p>
+            </div>
+            <span class="text-[11px] font-semibold text-brand-light bg-brand/10 border border-brand/20 px-3 py-1 rounded-full w-fit">
+              6 Operational Stages
+            </span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 pt-1">
+            <!-- Stage 1 -->
+            <div data-funnel-jump="pageviews" role="button" tabindex="0" class="funnel-step cursor-pointer rounded-2xl bg-slate-900/60 hover:bg-slate-800 border border-slate-800 p-3.5 transition">
+              <div class="flex items-center justify-between text-[11px] text-slate-400 font-bold uppercase">
+                <span>1. Visitor</span>
+                <i data-lucide="users" class="h-3.5 w-3.5 text-cyan-400"></i>
+              </div>
+              <p id="funnelVisitorsCount" class="mt-2 text-2xl font-extrabold text-white">0</p>
+              <p class="text-[10px] text-slate-400 mt-1">Unique traffic</p>
+            </div>
+            <!-- Stage 2 -->
+            <div data-funnel-jump="pageviews" role="button" tabindex="0" class="funnel-step cursor-pointer rounded-2xl bg-slate-900/60 hover:bg-slate-800 border border-slate-800 p-3.5 transition">
+              <div class="flex items-center justify-between text-[11px] text-slate-400 font-bold uppercase">
+                <span>2. Route View</span>
+                <i data-lucide="map-pin" class="h-3.5 w-3.5 text-blue-400"></i>
+              </div>
+              <p id="funnelRouteViewsCount" class="mt-2 text-2xl font-extrabold text-white">0</p>
+              <p id="funnelRouteViewsRate" class="text-[10px] text-blue-300 mt-1">100% of visits</p>
+            </div>
+            <!-- Stage 3 -->
+            <div data-funnel-jump="leads" role="button" tabindex="0" class="funnel-step cursor-pointer rounded-2xl bg-slate-900/60 hover:bg-slate-800 border border-slate-800 p-3.5 transition">
+              <div class="flex items-center justify-between text-[11px] text-slate-400 font-bold uppercase">
+                <span>3. WA Click</span>
+                <i data-lucide="message-circle" class="h-3.5 w-3.5 text-amber-400"></i>
+              </div>
+              <p id="funnelWaClicksCount" class="mt-2 text-2xl font-extrabold text-amber-300">0</p>
+              <p id="funnelWaClicksRate" class="text-[10px] text-amber-300 mt-1">0.0% click rate</p>
+            </div>
+            <!-- Stage 4 -->
+            <div data-funnel-jump="leads" role="button" tabindex="0" class="funnel-step cursor-pointer rounded-2xl bg-slate-900/60 hover:bg-slate-800 border border-slate-800 p-3.5 transition">
+              <div class="flex items-center justify-between text-[11px] text-slate-400 font-bold uppercase">
+                <span>4. WA Handoff</span>
+                <i data-lucide="send" class="h-3.5 w-3.5 text-emerald-400"></i>
+              </div>
+              <p id="funnelWaHandoffsCount" class="mt-2 text-2xl font-extrabold text-brand-light">0</p>
+              <p id="funnelWaHandoffsRate" class="text-[10px] text-emerald-300 mt-1">0.0% handoff</p>
+            </div>
+            <!-- Stage 5 -->
+            <div data-funnel-jump="leads" role="button" tabindex="0" class="funnel-step cursor-pointer rounded-2xl bg-slate-900/60 hover:bg-slate-800 border border-slate-800 p-3.5 transition">
+              <div class="flex items-center justify-between text-[11px] text-slate-400 font-bold uppercase">
+                <span>5. Contacted</span>
+                <i data-lucide="phone-call" class="h-3.5 w-3.5 text-indigo-400"></i>
+              </div>
+              <p id="funnelContactedCount" class="mt-2 text-2xl font-extrabold text-indigo-300">0</p>
+              <p id="funnelContactedRate" class="text-[10px] text-indigo-300 mt-1">In CRM</p>
+            </div>
+            <!-- Stage 6 -->
+            <div data-funnel-jump="leads" role="button" tabindex="0" class="funnel-step cursor-pointer rounded-2xl bg-slate-900/60 hover:bg-slate-800 border border-slate-800 p-3.5 transition">
+              <div class="flex items-center justify-between text-[11px] text-slate-400 font-bold uppercase">
+                <span>6. Completed</span>
+                <i data-lucide="check-circle" class="h-3.5 w-3.5 text-emerald-400"></i>
+              </div>
+              <p id="funnelCompletedCount" class="mt-2 text-2xl font-extrabold text-emerald-300">0</p>
+              <p id="funnelCompletedRevenue" class="text-[10px] text-emerald-300 mt-1">0.00 BHD</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- RECENT OPERATIONAL ACTIVITY FEED -->
+        <section id="recentActivitySection" class="rounded-3xl glass-panel p-5 shadow-xl border border-slate-800/80">
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-slate-800/80 pb-4">
+            <div>
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i data-lucide="activity" class="h-4 w-4 text-brand"></i> Recent Operational Activity
+              </h3>
+              <p class="text-xs text-slate-400">Live feed of visitor events, route checks, and booking handoffs.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+              <div class="flex items-center rounded-xl bg-slate-900 border border-slate-700/60 p-1">
+                <button id="activityToggleLast20" type="button" class="px-2.5 py-1 text-xs font-bold rounded-lg bg-brand text-slate-950 transition">Last 20</button>
+                <button id="activityToggleToday" type="button" class="px-2.5 py-1 text-xs font-semibold text-slate-400 hover:text-white transition">Today</button>
+              </div>
+              <div class="flex items-center gap-1">
+                <button data-activity-filter="all" class="activity-filter-btn px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-800 text-brand-light border border-brand/30">All</button>
+                <button data-activity-filter="whatsapp_handoff" class="activity-filter-btn px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">Handoffs</button>
+                <button data-activity-filter="route_view" class="activity-filter-btn px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 text-slate-400 border border-slate-800 hover:text-white">Route Views</button>
+              </div>
+            </div>
+          </div>
+          <!-- Desktop Activity Table -->
+          <div class="hidden sm:block overflow-x-auto mt-4">
+            <table class="w-full text-left text-xs text-slate-300">
+              <thead class="bg-slate-900/40 text-[10px] uppercase font-bold text-slate-400 border-b border-slate-800">
+                <tr>
+                  <th class="py-2.5 px-3">Time</th>
+                  <th class="py-2.5 px-3">Action</th>
+                  <th class="py-2.5 px-3">Route / Path</th>
+                  <th class="py-2.5 px-3">Channel</th>
+                  <th class="py-2.5 px-3">Device / City</th>
+                  <th class="py-2.5 px-3 text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody id="recentActivityBody" class="divide-y divide-slate-850">
+                <tr><td colspan="6" class="py-4 text-center text-slate-500">Loading recent activity...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Mobile Activity Cards -->
+          <div id="recentActivityMobile" class="sm:hidden mt-3 space-y-2.5">
+            <p class="py-4 text-center text-xs text-slate-500">Loading recent activity...</p>
+          </div>
+        </section>
+
+        <!-- HIGHLIGHTS: TOP ROUTES & ACQUISITION CHANNELS -->
+        <section class="grid gap-5 md:grid-cols-2">
+          <!-- Route Engagement & Conversion -->
+          <div class="rounded-3xl glass-panel p-5 shadow-xl border border-slate-800/80">
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i data-lucide="navigation" class="h-4 w-4 text-emerald-400"></i> Route Engagement &amp; Conversion
+              </h3>
+              <span class="text-[10px] uppercase font-bold text-slate-500">Clicks / Views</span>
+            </div>
+            <div id="topRoutesHighlight" class="mt-3 space-y-2 text-xs">
+              <p class="text-slate-500 py-3 text-center">Loading routes...</p>
+            </div>
+          </div>
+
+          <!-- Main Acquisition Channels -->
+          <div class="rounded-3xl glass-panel p-5 shadow-xl border border-slate-800/80">
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-3">
+              <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                <i data-lucide="share-2" class="h-4 w-4 text-cyan-400"></i> Main Acquisition Channels
+              </h3>
+              <span class="text-[10px] uppercase font-bold text-slate-500">Traffic Source</span>
+            </div>
+            <div id="topSourcesHighlight" class="mt-3 space-y-2 text-xs">
+              <p class="text-slate-500 py-3 text-center">Loading sources...</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- WHO IS ONLINE RIGHT NOW (Preserving BI attributes and tests) -->
+        <section id="onlineNowPanel" class="glass-panel rounded-3xl overflow-hidden shadow-xl">
+          <button id="toggleOnlineBtn" type="button" class="flex w-full items-center justify-between gap-2 border-b border-slate-800/80 p-4 text-left bg-slate-900/30">
+            <span class="flex items-center gap-2 text-base font-bold text-white">
+              <span class="relative flex h-2.5 w-2.5">
+                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+              </span>
+              Online Now
+              <span id="onlineNowCount" class="rounded-full border border-emerald-500/20 bg-emerald-950/20 px-2 py-0.5 text-[11px] font-bold text-emerald-300">0</span>
+            </span>
+            <span class="flex items-center gap-2 text-[10px] text-slate-500">
+              Active in the last 90 seconds · Approx. City edge lookup
+              <i id="toggleOnlineIcon" data-lucide="chevron-up" class="h-4 w-4 text-slate-400"></i>
+            </span>
+          </button>
+          <p id="onlineCareSummary" class="hidden border-b border-slate-800/60 px-4 py-2 text-[11px] text-slate-400"></p>
+          <div id="onlineFiltersBar" class="border-b border-slate-800/60 p-3 bg-slate-900/50 flex flex-wrap items-center justify-between gap-3">
+            <span class="text-xs font-bold text-slate-400">Live Status Filter:</span>
+            <select id="onlineFilterStatus" class="bg-slate-950/80 border border-slate-700/60 rounded-xl px-3 py-1.5 text-xs text-slate-200 outline-none focus:border-brand transition">
+              <option value="all">All Live Visitors</option>
+              <option value="no_wa">No WhatsApp</option>
+              <option value="intent">WhatsApp Interested</option>
+              <option value="cancelled">WhatsApp Cancelled</option>
+              <option value="departed">WhatsApp Clicked</option>
+            </select>
+          </div>
+          <div id="onlineNowList" class="grid gap-3 p-4 sm:grid-cols-2 xl:grid-cols-3"></div>
+        </section>
+
+        <!-- SMART INSIGHTS -->
+        <section id="insightsPanel" class="rounded-2xl glass-panel p-4 shadow-md border-l-4 border-fuchsia-500">
+          <div class="flex items-center gap-2 text-slate-300">
+            <i data-lucide="lightbulb" class="h-4 w-4 text-fuchsia-400"></i>
+            <h3 class="text-sm font-bold">Smart Insights</h3>
+            <span class="text-[10px] text-slate-500">auto-generated for the selected period · Data last updated just now</span>
+          </div>
+          <ul id="insightsList" class="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-3 text-xs text-slate-300"></ul>
+        </section>
+
       </section>
 
-      <!-- KPI METRIC CARDS GRID -->
-      <p class="text-[10px] text-slate-500 -mb-1">Tip: tap any card below to jump straight to its full report.</p>
-      <section id="secondaryKpis" class="grid gap-3 grid-cols-2 md:grid-cols-5 xl:grid-cols-10">
-
-        <!-- UNIQUE VISITORS / USERS -->
-        <div data-jump="cohorts" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-cyan-500 transition hover:border-cyan-300 hover:bg-cyan-950/10">
-          <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Users</span>
-            <i data-lucide="users" class="h-4 w-4 text-cyan-400"></i>
-          </div>
-          <p id="statVisitors" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
-          <div class="mt-1 text-[10px] text-slate-400">
-            <strong id="statNewVisitors" class="text-cyan-300">0</strong> new · <strong id="statReturningVisitors" class="text-amber-300">0</strong> ret.
-          </div>
-        </div>
-
-        <!-- SESSIONS -->
-        <div data-jump="cohorts" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-indigo-500 transition hover:border-indigo-300 hover:bg-indigo-950/10">
-          <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Sessions</span>
-            <i data-lucide="laptop" class="h-4 w-4 text-indigo-400"></i>
-          </div>
-          <p id="statSessions" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
-          <div class="mt-1 text-[10px] text-slate-400">
-            Distinct site sessions
-          </div>
-        </div>
-
-        <!-- PAGE VIEWS -->
-        <div data-jump="pageviews" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-blue-500 transition hover:border-blue-300 hover:bg-blue-950/10">
-          <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Pageviews</span>
-            <i data-lucide="eye" class="h-4 w-4 text-blue-400"></i>
-          </div>
-          <p id="statPageviews" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
-          <div class="mt-1 text-[10px] text-slate-400">
-            <span id="statPvToday" class="font-bold text-blue-400">0</span> today
-          </div>
-        </div>
-
-        <!-- WHATSAPP INTENTS -->
-        <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-amber-500 transition hover:border-amber-300 hover:bg-amber-950/10">
-          <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">WhatsApp Intent</span>
-            <i data-lucide="message-circle" class="h-4 w-4 text-amber-400"></i>
-          </div>
-          <p id="statIntents" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
-          <div class="mt-1 text-[10px] text-slate-400">
-            Opened WhatsApp modal
-          </div>
-        </div>
-
-        <!-- WHATSAPP CANCELLED -->
-        <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-red-500 transition hover:border-red-300 hover:bg-red-950/10">
-          <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Cancelled</span>
-            <i data-lucide="x-circle" class="h-4 w-4 text-red-400"></i>
-          </div>
-          <p id="statCancelled" class="mt-1.5 text-2xl font-extrabold text-red-300">0</p>
-          <div class="mt-1 text-[10px] text-slate-400">
-            Closed before sending
-          </div>
-        </div>
-
-        <!-- WHATSAPP CONFIRMED LEADS -->
-        <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-emerald-500 transition hover:border-emerald-300 hover:bg-emerald-950/10">
-          <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Confirmed Leads</span>
-            <i data-lucide="send" class="h-4 w-4 text-emerald-400"></i>
-          </div>
-          <p id="statDeparted" class="mt-1.5 text-2xl font-extrabold text-emerald-300">0</p>
-          <div class="mt-1 text-[10px] text-slate-400">
-            Confirmed WhatsApp handoff
-          </div>
-        </div>
-
-        <!-- PASSIVE ABANDONMENT -->
-        <div data-jump="cohorts" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-rose-500 transition hover:border-rose-300 hover:bg-rose-950/10">
-          <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Passive Abandonment</span>
-            <i data-lucide="user-minus" class="h-4 w-4 text-rose-400"></i>
-          </div>
-          <p id="statPassiveAbandonment" class="mt-1.5 text-2xl font-extrabold text-rose-300">0</p>
-          <div class="mt-1 text-[10px] text-slate-400">
-            Left without WhatsApp action
-          </div>
-        </div>
-
-        <!-- INTENT RATE -->
-        <div data-jump="reports" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-yellow-500 transition hover:border-yellow-300 hover:bg-yellow-950/10">
-          <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Intent Rate</span>
-            <i data-lucide="trending-up" class="h-4 w-4 text-yellow-400"></i>
-          </div>
-          <p id="statIntentRate" class="mt-1.5 text-2xl font-extrabold text-white">0.0%</p>
-          <div class="mt-1 text-[10px] text-slate-400">
-            Intent / Sessions
-          </div>
-        </div>
-
-        <!-- CONFIRMED LEAD RATE -->
-        <div data-jump="reports" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-emerald-500 transition hover:border-emerald-300 hover:bg-emerald-950/10">
-          <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Confirmed Lead Rate</span>
-            <i data-lucide="award" class="h-4 w-4 text-emerald-400"></i>
-          </div>
-          <p id="statConfirmedLeadRate" class="mt-1.5 text-2xl font-extrabold text-white"><span id="statConvRate">0.0%</span></p>
-          <div class="mt-1 text-[10px] text-slate-400">
-            Confirmed / Sessions
-          </div>
-        </div>
-
-        <!-- REVENUE LOGGED -->
-        <div data-jump="reports" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-emerald-500 transition hover:border-emerald-300 hover:bg-emerald-950/10">
-          <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Revenue</span>
-            <i data-lucide="banknote" class="h-4 w-4 text-emerald-400"></i>
-          </div>
-          <p id="statRevenue" class="mt-1.5 text-xl font-extrabold text-emerald-400">0.00 BHD</p>
-          <div class="mt-1 text-[10px] text-slate-400">
-            <span id="statJobsCompleted" class="font-bold text-white">0</span> jobs done
-          </div>
-        </div>
-
-        <!-- USER ENGAGEMENT -->
-        <div data-jump="reports" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-4 shadow-md border-l-4 border-purple-500 transition hover:border-purple-300 hover:bg-purple-950/10">
-          <div class="flex justify-between items-start text-slate-400">
-            <span class="text-xs font-medium">Avg Active Time</span>
-            <i data-lucide="clock" class="h-4 w-4 text-purple-400"></i>
-          </div>
-          <p id="statAvgTime" class="mt-2 text-xl font-extrabold text-white">0s</p>
-          <div class="mt-1 text-[10px] text-slate-400 flex justify-between">
-            <span>Scroll: <strong id="statAvgScroll" class="text-purple-400">0%</strong></span>
-            <span>Views: <strong id="statPageviewsSession" class="text-purple-400">0</strong></span>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- SMART INSIGHTS: auto-generated plain-language takeaways -->
-      <section id="insightsPanel" class="rounded-2xl glass-panel p-4 shadow-md border-l-4 border-fuchsia-500">
-        <div class="flex items-center gap-2 text-slate-300">
-          <i data-lucide="lightbulb" class="h-4 w-4 text-fuchsia-400"></i>
-          <h3 class="text-sm font-bold">Smart Insights</h3>
-          <span class="text-[10px] text-slate-500">auto-generated for the selected period</span>
-        </div>
-        <ul id="insightsList" class="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-3 text-xs text-slate-300"></ul>
-      </section>
-
-      <!-- TAB 1: WHATSAPP CLICKS (CRM LOG) -->
-      <section id="homePanel" class="tab-panel"></section>
+      <!-- Placeholder for homePanel alias -->
+      <section id="homePanel" class="hidden"></section>
 
       <section id="leadsPanel" class="tab-panel space-y-4 hidden">
         <div class="glass-panel rounded-3xl overflow-hidden shadow-xl">
@@ -1176,12 +1312,12 @@
         </div>
       </section>
 
-      <nav id="mobileDock" class="fixed inset-x-3 bottom-3 z-40 grid-cols-5 rounded-2xl border border-slate-700/80 bg-slate-900/95 p-1.5 shadow-2xl backdrop-blur">
-        <button type="button" data-app-jump="home" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-brand-light"><i data-lucide="house" class="h-4 w-4"></i>Home</button>
-        <button type="button" data-app-jump="live" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="radio" class="h-4 w-4"></i>Live</button>
-        <button type="button" data-app-jump="visitors" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="users" class="h-4 w-4"></i>Visitors</button>
-        <button type="button" data-app-jump="reports" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="chart-no-axes-combined" class="h-4 w-4"></i>Reports</button>
-        <button type="button" data-app-jump="menu" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="menu" class="h-4 w-4"></i>Menu</button>
+      <nav id="mobileDock" class="fixed inset-x-3 bottom-3 z-40 grid grid-cols-5 rounded-2xl border border-slate-700/80 bg-slate-900/95 p-1.5 shadow-2xl backdrop-blur">
+        <button type="button" data-app-jump="overview" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-brand-light"><i data-lucide="layout-dashboard" class="h-4 w-4"></i>Overview</button>
+        <button type="button" data-app-jump="inquiries" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="message-circle" class="h-4 w-4"></i>Inquiries</button>
+        <button type="button" data-app-jump="marketing" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="trending-up" class="h-4 w-4"></i>Marketing</button>
+        <button type="button" data-app-jump="settings" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="settings" class="h-4 w-4"></i>Settings</button>
+        <button type="button" data-app-jump="health" class="flex flex-col items-center gap-1 rounded-xl py-2 text-[10px] font-bold text-slate-300"><i data-lucide="activity" class="h-4 w-4"></i>Health</button>
       </nav>
     </section>
   </main>
@@ -1491,7 +1627,9 @@
 
     const state = {
       token: sessionStorage.getItem(TOKEN_KEY) || '',
-      tab: 'home',
+      tab: 'overview',
+      activityMode: 'last20',
+      activityFilter: 'all',
       leads: [],
       pageviews: [],
       routes: [],
@@ -1514,6 +1652,8 @@
       tracking: {},
       googleAudience: { days: 30, loadedFor: null, loading: false, data: null },
     };
+    window.state = state;
+    window.__vendoraState = state;
 
     const loginView = document.getElementById('loginView');
     const dashboardView = document.getElementById('dashboardView');
@@ -2515,31 +2655,84 @@
       renderIcons();
     }
 
+    const TAB_MAP = {
+      overview: { section: 'overview', panel: 'overviewPanel', subnav: null, subtab: null },
+      home: { section: 'overview', panel: 'overviewPanel', subnav: null, subtab: null },
+
+      inquiries: { section: 'inquiries', panel: 'leadsPanel', subnav: 'inquiriesSubnav', subtab: 'leads' },
+      leads: { section: 'inquiries', panel: 'leadsPanel', subnav: 'inquiriesSubnav', subtab: 'leads' },
+      passengerCare: { section: 'inquiries', panel: 'passengerCarePanel', subnav: 'inquiriesSubnav', subtab: 'passengerCare' },
+
+      marketing: { section: 'marketing', panel: 'pageviewsPanel', subnav: 'marketingSubnav', subtab: 'pageviews' },
+      pageviews: { section: 'marketing', panel: 'pageviewsPanel', subnav: 'marketingSubnav', subtab: 'pageviews' },
+      analytics: { section: 'marketing', panel: 'analyticsPanel', subnav: 'marketingSubnav', subtab: 'analytics' },
+      cohorts: { section: 'marketing', panel: 'cohortsPanel', subnav: 'marketingSubnav', subtab: 'cohorts' },
+      reports: { section: 'marketing', panel: 'reportsPanel', subnav: 'marketingSubnav', subtab: 'reports' },
+      googleAudience: { section: 'marketing', panel: 'googleAudiencePanel', subnav: 'marketingSubnav', subtab: 'googleAudience' },
+
+      settings: { section: 'settings', panel: 'pricingPanel', subnav: 'settingsSubnav', subtab: 'pricing' },
+      pricing: { section: 'settings', panel: 'pricingPanel', subnav: 'settingsSubnav', subtab: 'pricing' },
+      siteSettings: { section: 'settings', panel: 'settingsPanel', subnav: 'settingsSubnav', subtab: 'siteSettings' },
+      businessSettings: { section: 'settings', panel: 'settingsPanel', subnav: 'settingsSubnav', subtab: 'siteSettings' },
+
+      health: { section: 'health', panel: 'alertsPanel', subnav: 'healthSubnav', subtab: 'alerts' },
+      alerts: { section: 'health', panel: 'alertsPanel', subnav: 'healthSubnav', subtab: 'alerts' },
+      errors: { section: 'health', panel: 'errorsPanel', subnav: 'healthSubnav', subtab: 'errors' },
+    };
+
     function setTab(tab) {
+      const target = TAB_MAP[tab] || TAB_MAP.overview;
       state.tab = tab;
-      ['home', 'leads', 'passengerCare', 'pageviews', 'analytics', 'cohorts', 'reports', 'googleAudience', 'pricing', 'settings', 'alerts', 'errors'].forEach((name) => dashboardView.classList.toggle(`app-${name}`, tab === name));
-      document.getElementById('appNav').classList.add('hidden');
-      document.getElementById('mobileMenuIcon').setAttribute('data-lucide', 'chevron-down');
-      document.querySelectorAll('.tab-btn').forEach((button) => {
-        const active = button.dataset.tab === tab;
+
+      ['home', 'leads', 'passengerCare', 'pageviews', 'analytics', 'cohorts', 'reports', 'googleAudience', 'pricing', 'settings', 'alerts', 'errors'].forEach((name) => {
+        dashboardView.classList.toggle(`app-${name}`, tab === name || target.panel === `${name}Panel`);
+      });
+
+      document.querySelectorAll('#appNav .tab-btn').forEach((button) => {
+        const active = button.dataset.tab === target.section;
         button.classList.toggle('bg-brand', active);
         button.classList.toggle('text-slate-950', active);
         button.classList.toggle('text-slate-400', !active);
         button.classList.toggle('bg-transparent', !active);
       });
-      document.querySelectorAll('.tab-panel').forEach((panel) => panel.classList.add('hidden'));
-      document.getElementById(`${tab}Panel`).classList.remove('hidden');
-      document.querySelectorAll('[data-app-jump]').forEach((button) => {
-        const active = (tab === 'home' && button.dataset.appJump === 'home')
-          || (tab === 'pageviews' && button.dataset.appJump === 'visitors')
-          || (tab === 'reports' && button.dataset.appJump === 'reports');
+
+      document.querySelectorAll('#mobileDock [data-app-jump]').forEach((button) => {
+        const active = button.dataset.appJump === target.section;
         button.classList.toggle('text-brand-light', active);
         button.classList.toggle('text-slate-300', !active);
         button.classList.toggle('bg-brand/10', active);
       });
+
+      document.querySelectorAll('.subnav-bar').forEach((bar) => bar.classList.add('hidden'));
+      if (target.subnav) {
+        const activeSubnav = document.getElementById(target.subnav);
+        if (activeSubnav) {
+          activeSubnav.classList.remove('hidden');
+          activeSubnav.querySelectorAll('.subtab-btn').forEach((btn) => {
+            const isCurrentSubtab = btn.dataset.subtab === (target.subtab || tab);
+            btn.classList.toggle('bg-slate-800', isCurrentSubtab);
+            btn.classList.toggle('text-brand-light', isCurrentSubtab);
+            btn.classList.toggle('border-brand/40', isCurrentSubtab);
+            btn.classList.toggle('text-slate-400', !isCurrentSubtab);
+            btn.classList.toggle('border-slate-800', !isCurrentSubtab);
+          });
+        }
+      }
+
+      document.querySelectorAll('.tab-panel').forEach((panel) => panel.classList.add('hidden'));
+      const panelEl = document.getElementById(target.panel);
+      if (panelEl) {
+        panelEl.classList.remove('hidden');
+      }
+      if (target.panel === 'overviewPanel') {
+        const homePanel = document.getElementById('homePanel');
+        if (homePanel) homePanel.classList.remove('hidden');
+      }
+
       if (tab === 'googleAudience' && state.googleAudience.loadedFor !== state.googleAudience.days) {
         loadGoogleAudience(state.googleAudience.days);
       }
+      renderIcons();
     }
 
     function fillSelect(name, values, label, formatter = (value) => value) {
@@ -2561,6 +2754,27 @@
       fillSelect('campaign', [...new Set(events.map((l) => l.utm_campaign || leadPayload(l).utmCampaign))], 'All campaigns');
       fillSelect('country', [...new Set(events.map((l) => normalizeCountryCode(l.cf_country)))], 'All countries', countryLabel);
       fillSelect('device', [...new Set(events.map((l) => l.device_type))], 'All devices');
+    }
+
+    function renderDeltaBadge(id, deltaVal) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (deltaVal === null || deltaVal === undefined) {
+        el.textContent = '—';
+        el.className = 'text-[10px] font-semibold text-slate-500';
+        return;
+      }
+      const num = Number(deltaVal);
+      if (num > 0) {
+        el.textContent = `+${num}%`;
+        el.className = 'text-[10px] font-semibold text-emerald-400';
+      } else if (num < 0) {
+        el.textContent = `${num}%`;
+        el.className = 'text-[10px] font-semibold text-rose-400';
+      } else {
+        el.textContent = '0%';
+        el.className = 'text-[10px] font-semibold text-slate-400';
+      }
     }
 
     function renderStats() {
@@ -2608,6 +2822,9 @@
       if (statCR) statCR.textContent = `${confirmedRateVal}%`;
 
       // CRM Sales stats
+      const contacted = Number(summary.contacted_count || 0);
+      const statCont = document.getElementById('statContacted');
+      if (statCont) statCont.textContent = contacted;
       const statJobComp = document.getElementById('statJobsCompleted');
       if (statJobComp) statJobComp.textContent = summary.completed_count || 0;
       const statRev = document.getElementById('statRevenue');
@@ -2640,6 +2857,68 @@
           : 'Traffic metrics come from D1 server activity for this filter.');
       }
 
+      // Prior-period comparison deltas
+      const prior = summary.prior_period || {};
+      renderDeltaBadge('deltaVisitors', prior.delta_visitors_pct);
+      renderDeltaBadge('deltaSessions', prior.delta_sessions_pct);
+      renderDeltaBadge('deltaPageviews', prior.delta_pageviews_pct);
+      renderDeltaBadge('deltaWhatsAppClicks', prior.delta_whatsapp_clicks_pct);
+      renderDeltaBadge('deltaWhatsAppHandoffs', prior.delta_whatsapp_handoffs_pct);
+      renderDeltaBadge('deltaContacted', prior.delta_contacted_pct);
+      renderDeltaBadge('deltaCompleted', prior.delta_completed_pct);
+      renderDeltaBadge('deltaRevenue', prior.delta_revenue_pct);
+      renderDeltaBadge('deltaConvRate', prior.delta_conv_rate_pct);
+
+      // 5-Stage Business Funnel
+      const funnel = summary.funnel || {
+        visitors: totalVisitors,
+        route_views: views,
+        whatsapp_clicks: intents,
+        whatsapp_handoffs: departed,
+        contacted: contacted,
+        completed: Number(summary.completed_count || 0)
+      };
+
+      const fVis = Number(funnel.visitors || 0);
+      const fRoutes = Number(funnel.route_views || 0);
+      const fClicks = Number(funnel.whatsapp_clicks || 0);
+      const fHandoffs = Number(funnel.whatsapp_handoffs || 0);
+      const fContacted = Number(funnel.contacted || 0);
+      const fCompleted = Number(funnel.completed || 0);
+
+      const elFVis = document.getElementById('funnelVisitorsCount');
+      if (elFVis) elFVis.textContent = fVis;
+
+      const elFRoutes = document.getElementById('funnelRouteViewsCount');
+      if (elFRoutes) elFRoutes.textContent = fRoutes;
+      const elFRoutesRate = document.getElementById('funnelRouteViewsRate');
+      if (elFRoutesRate) elFRoutesRate.textContent = fVis > 0 ? `${((fRoutes / fVis) * 100).toFixed(1)}% of visitors` : '100% Top of Funnel';
+
+      const elFClicks = document.getElementById('funnelWaClicksCount');
+      if (elFClicks) elFClicks.textContent = fClicks;
+      const elFClicksRate = document.getElementById('funnelWaClicksRate');
+      if (elFClicksRate) elFClicksRate.textContent = fRoutes > 0 ? `${((fClicks / fRoutes) * 100).toFixed(1)}% of views` : (fVis > 0 ? `${((fClicks / fVis) * 100).toFixed(1)}% of visitors` : '0.0% conv.');
+
+      const elFHandoffs = document.getElementById('funnelWaHandoffsCount');
+      if (elFHandoffs) elFHandoffs.textContent = fHandoffs;
+      const elFHandoffsRate = document.getElementById('funnelWaHandoffsRate');
+      if (elFHandoffsRate) elFHandoffsRate.textContent = fClicks > 0 ? `${((fHandoffs / fClicks) * 100).toFixed(1)}% handoff rate` : '0.0% handoff rate';
+
+      const elFContacted = document.getElementById('funnelContactedCount');
+      if (elFContacted) elFContacted.textContent = fContacted;
+      const elFContactedRate = document.getElementById('funnelContactedRate');
+      if (elFContactedRate) elFContactedRate.textContent = fHandoffs > 0 ? `${((fContacted / fHandoffs) * 100).toFixed(1)}% in CRM` : 'In CRM';
+
+      const elFCompleted = document.getElementById('funnelCompletedCount');
+      if (elFCompleted) elFCompleted.textContent = fCompleted;
+      const elFCompletedRev = document.getElementById('funnelCompletedRevenue');
+      if (elFCompletedRev) elFCompletedRev.textContent = `${Number(summary.total_revenue || 0).toFixed(2)} BHD`;
+
+      // Render Activity Feed & Highlights
+      renderRecentActivity();
+      renderTopRoutesHighlight(summary);
+      renderTopSourcesHighlight(summary);
+
       // Engagement
       const avgTime = summary.avg_time_on_page_ms || 0;
       const avgScroll = summary.avg_scroll_depth_percent || 0;
@@ -2654,6 +2933,179 @@
       renderOwnerSnapshot(summary);
       renderInsights(summary);
       updateBotsFilterNote();
+    }
+
+    function renderRecentActivity() {
+      const summary = state.summary || {};
+      const allEvents = summary.recent_activity || [];
+      const mode = state.activityMode || 'last20';
+      const filter = state.activityFilter || 'all';
+
+      let list = allEvents.slice();
+
+      if (mode === 'today') {
+        const todayStr = new Date().toISOString().slice(0, 10);
+        list = list.filter((item) => {
+          if (!item.time) return false;
+          return item.time.startsWith(todayStr);
+        });
+      }
+
+      if (filter === 'whatsapp_handoff') {
+        list = list.filter((item) => item.action_type === 'whatsapp_handoff' || item.action_type === 'whatsapp_intent');
+      } else if (filter === 'route_view') {
+        list = list.filter((item) => item.action_type === 'route_view' || item.action_type === 'pageview');
+      }
+
+      if (mode === 'last20') {
+        list = list.slice(0, 20);
+      }
+
+      const tbody = document.getElementById('recentActivityBody');
+      const mobileContainer = document.getElementById('recentActivityMobile');
+
+      if (list.length === 0) {
+        if (tbody) tbody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-slate-500">No operational activity recorded for this period.</td></tr>';
+        if (mobileContainer) mobileContainer.innerHTML = '<p class="py-6 text-center text-xs text-slate-500">No operational activity recorded.</p>';
+        return;
+      }
+
+      if (tbody) {
+        tbody.innerHTML = list.map((item) => {
+          const actionBadge = getActivityActionBadge(item.action_type);
+          const statusBadge = getActivityStatusBadge(item.status);
+          const routeTitle = prettyRouteName({ route_slug: item.route, page_path: item.page_path });
+          const timeFormatted = item.time ? formatDate(item.time) : '-';
+          const deviceCity = [item.device, item.city, item.country].filter(Boolean).join(' · ') || '-';
+
+          return `
+            <tr class="hover:bg-slate-900/40 transition">
+              <td class="py-2.5 px-3 text-slate-400 whitespace-nowrap">${escapeHtml(timeFormatted)}</td>
+              <td class="py-2.5 px-3 whitespace-nowrap">${actionBadge}</td>
+              <td class="py-2.5 px-3 font-medium text-white max-w-[200px] truncate" title="${escapeHtml(routeTitle)}">${escapeHtml(routeTitle)}</td>
+              <td class="py-2.5 px-3 text-slate-300 text-[11px]">${escapeHtml(item.channel || 'direct')}</td>
+              <td class="py-2.5 px-3 text-slate-400 text-[11px] whitespace-nowrap">${escapeHtml(deviceCity)}</td>
+              <td class="py-2.5 px-3 text-right whitespace-nowrap">${statusBadge}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      if (mobileContainer) {
+        mobileContainer.innerHTML = list.map((item) => {
+          const actionBadge = getActivityActionBadge(item.action_type);
+          const statusBadge = getActivityStatusBadge(item.status);
+          const routeTitle = prettyRouteName({ route_slug: item.route, page_path: item.page_path });
+          const timeFormatted = item.time ? formatDate(item.time) : '-';
+          const deviceCity = [item.device, item.city, item.country].filter(Boolean).join(' · ') || '-';
+
+          return `
+            <div class="rounded-2xl border border-slate-800 bg-slate-900/60 p-3 shadow space-y-2 text-xs">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] text-slate-400">${escapeHtml(timeFormatted)}</span>
+                ${statusBadge}
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="font-bold text-white truncate">${escapeHtml(routeTitle)}</span>
+                ${actionBadge}
+              </div>
+              <div class="flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-800/60 pt-2">
+                <span>${escapeHtml(item.channel || 'direct')}</span>
+                <span>${escapeHtml(deviceCity)}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+      renderIcons();
+    }
+
+    function getActivityActionBadge(actionType) {
+      if (actionType === 'whatsapp_handoff') {
+        return `<span class="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-950/40 px-2 py-0.5 text-[10px] font-bold text-emerald-300">
+          <i data-lucide="check-circle" class="h-3 w-3"></i> WhatsApp Lead
+        </span>`;
+      }
+      if (actionType === 'whatsapp_intent') {
+        return `<span class="inline-flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-950/40 px-2 py-0.5 text-[10px] font-bold text-amber-300">
+          <i data-lucide="message-circle" class="h-3 w-3"></i> Modal Click
+        </span>`;
+      }
+      return `<span class="inline-flex items-center gap-1 rounded-full border border-blue-500/30 bg-blue-950/40 px-2 py-0.5 text-[10px] font-semibold text-blue-300">
+        <i data-lucide="eye" class="h-3 w-3"></i> Route View
+      </span>`;
+    }
+
+    function getActivityStatusBadge(status) {
+      if (!status || status === 'new') {
+        return `<span class="rounded-lg border border-amber-500/20 bg-amber-950/20 px-2 py-0.5 text-[10px] font-bold text-amber-300">New Lead</span>`;
+      }
+      if (status === 'contacted') {
+        return `<span class="rounded-lg border border-indigo-500/20 bg-indigo-950/20 px-2 py-0.5 text-[10px] font-bold text-indigo-300">Contacted</span>`;
+      }
+      if (status === 'completed') {
+        return `<span class="rounded-lg border border-emerald-500/20 bg-emerald-950/20 px-2 py-0.5 text-[10px] font-bold text-emerald-300">Completed</span>`;
+      }
+      if (status === 'cancelled') {
+        return `<span class="rounded-lg border border-rose-500/20 bg-rose-950/20 px-2 py-0.5 text-[10px] font-bold text-rose-300">Cancelled</span>`;
+      }
+      return `<span class="text-[10px] text-slate-500">—</span>`;
+    }
+
+    function renderTopRoutesHighlight(summary) {
+      const container = document.getElementById('topRoutesHighlight');
+      if (!container) return;
+      const routes = (summary.by_route || []).slice(0, 5);
+      if (routes.length === 0) {
+        container.innerHTML = '<p class="text-slate-500 py-3 text-center">No route data for this period.</p>';
+        return;
+      }
+      container.innerHTML = routes.map((r, i) => {
+        const name = prettyRouteName({ route_slug: r.label });
+        const clicks = Number(r.clicks || r.count || 0);
+        const views = Number(r.pageviews || r.views || 0);
+        const cr = views > 0 ? `${((clicks / views) * 100).toFixed(1)}%` : (clicks > 0 ? 'N/A' : '0.0%');
+        return `
+          <div class="flex items-center justify-between rounded-xl bg-slate-900/60 border border-slate-800/80 p-2.5">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-slate-800 text-[10px] font-bold text-slate-400">${i + 1}</span>
+              <span class="font-bold text-white truncate text-xs" title="${escapeHtml(name)}">${escapeHtml(name)}</span>
+            </div>
+            <div class="flex items-center gap-3 shrink-0 text-right">
+              <span class="text-xs font-extrabold text-emerald-300">${clicks} clicks</span>
+              <span class="text-[11px] text-slate-400">${views} views</span>
+              <span class="rounded bg-emerald-950/40 border border-emerald-500/20 px-1.5 py-0.5 text-[10px] font-bold text-emerald-400" title="Click Rate = Clicks / Views">${cr}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderTopSourcesHighlight(summary) {
+      const container = document.getElementById('topSourcesHighlight');
+      if (!container) return;
+      const sources = (summary.by_source || []).slice(0, 5);
+      if (sources.length === 0) {
+        container.innerHTML = '<p class="text-slate-500 py-3 text-center">No acquisition sources for this period.</p>';
+        return;
+      }
+      const total = sources.reduce((acc, s) => acc + Number(s.count || 0), 0) || 1;
+      container.innerHTML = sources.map((s, i) => {
+        const count = Number(s.count || 0);
+        const pct = Math.round((count / total) * 100);
+        return `
+          <div class="flex items-center justify-between rounded-xl bg-slate-900/60 border border-slate-800/80 p-2.5">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-slate-800 text-[10px] font-bold text-slate-400">${i + 1}</span>
+              <span class="font-bold text-white truncate text-xs">${escapeHtml(s.label || 'direct')}</span>
+            </div>
+            <div class="flex items-center gap-3 shrink-0 text-right">
+              <span class="text-xs font-extrabold text-cyan-300">${count} visits</span>
+              <span class="rounded bg-cyan-950/40 border border-cyan-500/20 px-1.5 py-0.5 text-[10px] font-bold text-cyan-400">${pct}%</span>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     function renderOwnerSnapshot(summary) {
@@ -4439,39 +4891,96 @@ Note: This report is automatically compiled by the Control Room operations track
       loadGoogleAudience(Number(button.dataset.audienceDays));
     }));
     document.querySelectorAll('.tab-btn').forEach((button) => button.addEventListener('click', () => setTab(button.dataset.tab)));
-    document.getElementById('mobileMenuToggle').addEventListener('click', () => {
+    document.getElementById('mobileMenuToggle')?.addEventListener('click', () => {
       const nav = document.getElementById('appNav');
       const icon = document.getElementById('mobileMenuIcon');
       const isHidden = nav.classList.toggle('hidden');
-      icon.setAttribute('data-lucide', isHidden ? 'chevron-down' : 'chevron-up');
+      if (icon) icon.setAttribute('data-lucide', isHidden ? 'chevron-down' : 'chevron-up');
       renderIcons();
     });
-    document.getElementById('appMenuClose').addEventListener('click', () => {
+    document.getElementById('appMenuClose')?.addEventListener('click', () => {
       const nav = document.getElementById('appNav');
-      nav.classList.add('hidden');
-      document.getElementById('mobileMenuIcon').setAttribute('data-lucide', 'chevron-down');
+      if (nav) nav.classList.add('hidden');
+      const icon = document.getElementById('mobileMenuIcon');
+      if (icon) icon.setAttribute('data-lucide', 'chevron-down');
       renderIcons();
     });
     document.querySelectorAll('[data-app-jump]').forEach((button) => button.addEventListener('click', () => {
       const target = button.dataset.appJump;
-      if (target === 'home') { setTab('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-      else if (target === 'live') { setTab('home'); document.getElementById('onlineNowPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      if (target === 'home' || target === 'overview') { setTab('overview'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      else if (target === 'live') { setTab('overview'); document.getElementById('onlineNowPanel').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
       else if (target === 'visitors') { setTab('pageviews'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
       else if (target === 'reports') { setTab('reports'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
-      else {
-        const nav = document.getElementById('appNav');
-        const icon = document.getElementById('mobileMenuIcon');
-        const isHidden = nav.classList.toggle('hidden');
-        icon.setAttribute('data-lucide', isHidden ? 'chevron-down' : 'chevron-up');
-        renderIcons();
+      else if (target) { setTab(target); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    }));
+
+    // Subtab pill button navigation
+    document.querySelectorAll('.subtab-btn').forEach((button) => button.addEventListener('click', () => {
+      if (button.dataset.subtab) {
+        setTab(button.dataset.subtab);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     }));
+
+    // Interactive Funnel stage jumps
+    document.querySelectorAll('[data-funnel-jump]').forEach((el) => {
+      const go = () => {
+        if (el.dataset.funnelJump) {
+          setTab(el.dataset.funnelJump);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      };
+      el.addEventListener('click', go);
+      el.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          go();
+        }
+      });
+    });
+
+    // Recent Activity Toggles (Last 20 vs Today)
+    const toggleLast20 = document.getElementById('activityToggleLast20');
+    const toggleToday = document.getElementById('activityToggleToday');
+    if (toggleLast20 && toggleToday) {
+      toggleLast20.addEventListener('click', () => {
+        state.activityMode = 'last20';
+        toggleLast20.className = 'px-2.5 py-1 text-xs font-bold rounded-lg bg-brand text-slate-950 transition';
+        toggleToday.className = 'px-2.5 py-1 text-xs font-semibold text-slate-400 hover:text-white transition';
+        renderRecentActivity();
+      });
+      toggleToday.addEventListener('click', () => {
+        state.activityMode = 'today';
+        toggleToday.className = 'px-2.5 py-1 text-xs font-bold rounded-lg bg-brand text-slate-950 transition';
+        toggleLast20.className = 'px-2.5 py-1 text-xs font-semibold text-slate-400 hover:text-white transition';
+        renderRecentActivity();
+      });
+    }
+
+    // Recent Activity Filter Chips (All, Handoffs, Route Views)
+    document.querySelectorAll('.activity-filter-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.activityFilter = btn.dataset.activityFilter || 'all';
+        document.querySelectorAll('.activity-filter-btn').forEach((b) => {
+          const active = b === btn;
+          b.className = active
+            ? 'activity-filter-btn px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-800 text-brand-light border border-brand/30'
+            : 'activity-filter-btn px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-900 text-slate-400 border border-slate-800 hover:text-white';
+        });
+        renderRecentActivity();
+      });
+    });
 
     // KPI cards jump straight to their detailed report (tap or Enter/Space)
     document.querySelectorAll('[data-jump]').forEach((card) => {
       const go = () => {
-        setTab(card.dataset.jump);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (card.dataset.jump === 'live') {
+          const livePanel = document.getElementById('onlineNowPanel');
+          if (livePanel) livePanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          setTab(card.dataset.jump);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       };
       card.addEventListener('click', go);
       card.addEventListener('keydown', (event) => {
@@ -4987,7 +5496,7 @@ Note: This report is automatically compiled by the Control Room operations track
     });
 
     // INITIALIZATION
-    setTab('leads');
+    setTab('overview');
     if (state.token) {
       unlock(state.token).catch(() => {
         sessionStorage.removeItem(TOKEN_KEY);

@@ -392,3 +392,64 @@ test('48-52: GA4 replaces only aggregate traffic KPIs while D1 keeps WhatsApp tr
   assert.equal(merged.d1_total_visitors, 1164);
   assert.equal(merged.traffic_metrics_source, 'ga4');
 });
+
+test('53: GA4 cannot overwrite D1 headline metrics for current-day operational reporting', () => {
+  const mergedToday = mergeCanonicalTrafficMetrics({
+    total_visitors: 12,
+    total_sessions: 15,
+    total_pageviews: 28,
+    returning_visitors: 3,
+    whatsapp_intents_count: 4,
+    whatsapp_cancelled_count: 1,
+    whatsapp_departed_count: 3,
+    left_without_whatsapp: 8,
+  }, {
+    total_users: 0, // GA4 lag / 0 users
+    active_users: 0,
+    new_users: 0,
+    returning_users: 0,
+    sessions: 0,
+    page_views: 0,
+    start_date: 'today',
+    end_date: 'today',
+  }, { isCurrentDay: true });
+
+  assert.equal(mergedToday.total_visitors, 12, 'D1 visitors preserved for today');
+  assert.equal(mergedToday.total_sessions, 15, 'D1 sessions preserved for today');
+  assert.equal(mergedToday.total_pageviews, 28, 'D1 pageviews preserved for today');
+  assert.equal(mergedToday.whatsapp_intents_count, 4, 'WhatsApp clicks preserved');
+  assert.equal(mergedToday.whatsapp_departed_count, 3, 'WhatsApp handoffs preserved');
+  assert.equal(mergedToday.traffic_metrics_source, 'd1_primary', 'D1 marked as primary source for today');
+});
+
+test('54: Anonymous visitor journey simulation through all funnel stages', async () => {
+  const { sqlite, env } = await createTestEnv();
+
+  const visitorId = 'vis_anon_999';
+  const sessionId = 'sess_anon_999';
+
+  // 1. Page visit -> 2. Route view -> 3. WhatsApp click (intent) -> 4. WhatsApp handoff (departed)
+  sqlite.exec(`
+    INSERT INTO whatsapp_leads (
+      lead_uuid, visitor_id, session_id, service_type, route_slug, clicked_at, cf_country, cf_city, device_type, raw_payload, status
+    ) VALUES 
+    ('anon_1', '${visitorId}', '${sessionId}', 'pageview', '', datetime('now', '-3 minutes'), 'BH', 'Manama', 'mobile', '{}', 'new'),
+    ('anon_2', '${visitorId}', '${sessionId}', 'pageview', 'bahrain-to-khobar', datetime('now', '-2 minutes'), 'BH', 'Manama', 'mobile', '{}', 'new'),
+    ('anon_3', '${visitorId}', '${sessionId}', 'whatsapp_intent', 'bahrain-to-khobar', datetime('now', '-1 minute'), 'BH', 'Manama', 'mobile', '{"event":"modal_open"}', 'new'),
+    ('anon_4', '${visitorId}', '${sessionId}', 'whatsapp_click', 'bahrain-to-khobar', datetime('now', '-30 seconds'), 'BH', 'Manama', 'mobile', '{"confirmed_departure":1}', 'completed');
+  `);
+
+  const req = makeRequest('http://127.0.0.1:8787/api/transport/admin?resource=summary');
+  const res = await callAdmin(env, req);
+  const { summary } = await res.json();
+
+  assert.equal(summary.total_visitors, 1, 'Exactly 1 unique visitor counted');
+  assert.equal(summary.total_sessions, 1, 'Exactly 1 unique session counted');
+  assert.equal(summary.total_pageviews, 2, 'Exactly 2 pageviews counted (homepage + route)');
+  assert.equal(summary.whatsapp_intents_count, 1, 'Exactly 1 WhatsApp intent counted');
+  assert.equal(summary.whatsapp_departed_count, 1, 'Exactly 1 WhatsApp handoff counted');
+  assert.equal(summary.whatsapp_cancelled_count, 0, 'Zero cancellations recorded');
+  assert.equal(summary.left_without_whatsapp, 0, 'Visitor did not leave without WhatsApp');
+});
+
+

@@ -5,6 +5,7 @@ import routePriceConfig from '../../../bahrain-saudi-gcc-transport/config/route-
 const DEFAULT_BOOKING_NUMBER = businessConfig.booking_whatsapp;
 const CACHE_TTL_MS = 60_000;
 let cached = null;
+let pending = null;
 
 export const DEFAULT_PUBLIC_SETTINGS = Object.freeze({
   "brand_display_name": "Vendora Transport",

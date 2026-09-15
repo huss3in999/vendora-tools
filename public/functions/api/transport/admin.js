@@ -494,34 +494,64 @@ function ga4TrafficRequest(url) {
   };
 }
 
-export function mergeCanonicalTrafficMetrics(d1Metrics = {}, ga4Metrics = null) {
+export function mergeCanonicalTrafficMetrics(d1Metrics = {}, ga4Metrics = null, options = {}) {
+  const d1Visitors = Math.max(0, Number(d1Metrics.total_visitors || 0));
+  const d1Sessions = Math.max(0, Number(d1Metrics.total_sessions || 0));
+  const d1Pageviews = Math.max(0, Number(d1Metrics.total_pageviews || 0));
+
   if (!ga4Metrics) return {
     ...d1Metrics,
+    d1_total_visitors: d1Visitors,
+    d1_total_sessions: d1Sessions,
+    d1_total_pageviews: d1Pageviews,
     traffic_metrics_source: 'd1_fallback',
     traffic_metrics_warning: 'GA4 traffic metrics are temporarily unavailable; D1 server activity is shown as a fallback.',
   };
-  const totalVisitors = Math.max(0, Number(ga4Metrics.total_users || 0));
-  const returningVisitors = Math.min(totalVisitors, Math.max(0, Number(ga4Metrics.returning_users || 0)));
+
+  const ga4TotalVisitors = Math.max(0, Number(ga4Metrics.total_users || 0));
+  const ga4ReturningVisitors = Math.min(ga4TotalVisitors, Math.max(0, Number(ga4Metrics.returning_users || 0)));
+  const ga4Sessions = Math.max(0, Number(ga4Metrics.sessions || 0));
+  const ga4Pageviews = Math.max(0, Number(ga4Metrics.page_views || 0));
   const interestedVisitors = Math.max(0, Number(d1Metrics.whatsapp_intents_count || 0));
+
+  const isCurrentDay = Boolean(
+    options?.isCurrentDay
+    || (['today'].includes(ga4Metrics.start_date) && ['today'].includes(ga4Metrics.end_date))
+  );
+
+  // For current-day operational reporting or when GA4 returns 0 users (latency), first-party D1 is authoritative
+  const shouldUseD1 = isCurrentDay || (ga4TotalVisitors === 0 && d1Visitors > 0);
+  const totalVisitors = shouldUseD1 ? d1Visitors : ga4TotalVisitors;
+  const returningVisitors = shouldUseD1
+    ? Math.min(d1Visitors, Math.max(0, Number(d1Metrics.returning_visitors || 0)))
+    : ga4ReturningVisitors;
+  const totalSessions = shouldUseD1 ? d1Sessions : ga4Sessions;
+  const totalPageviews = shouldUseD1 ? d1Pageviews : ga4Pageviews;
+
   return {
     ...d1Metrics,
-    d1_total_visitors: Number(d1Metrics.total_visitors || 0),
-    d1_total_sessions: Number(d1Metrics.total_sessions || 0),
-    d1_total_pageviews: Number(d1Metrics.total_pageviews || 0),
+    d1_total_visitors: d1Visitors,
+    d1_total_sessions: d1Sessions,
+    d1_total_pageviews: d1Pageviews,
+    ga4_total_visitors: ga4TotalVisitors,
+    ga4_total_sessions: ga4Sessions,
+    ga4_total_pageviews: ga4Pageviews,
     total_visitors: totalVisitors,
-    active_visitors: Math.max(0, Number(ga4Metrics.active_users || 0)),
+    active_visitors: shouldUseD1 ? d1Visitors : Math.max(0, Number(ga4Metrics.active_users || 0)),
     new_visitors: Math.max(0, totalVisitors - returningVisitors),
     returning_visitors: returningVisitors,
-    total_sessions: Math.max(0, Number(ga4Metrics.sessions || 0)),
-    total_pageviews: Math.max(0, Number(ga4Metrics.page_views || 0)),
+    total_sessions: totalSessions,
+    total_pageviews: totalPageviews,
     left_without_whatsapp: Math.max(0, totalVisitors - Math.min(totalVisitors, interestedVisitors)),
-    traffic_metrics_source: 'ga4',
+    traffic_metrics_source: shouldUseD1 ? 'd1_primary' : 'ga4',
     traffic_metrics_property_id: ga4Metrics.property_id || '528414332',
     traffic_metrics_start_date: ga4Metrics.start_date || null,
     traffic_metrics_end_date: ga4Metrics.end_date || null,
     traffic_metrics_generated_at: ga4Metrics.generated_at || null,
     traffic_metrics_cached: Boolean(ga4Metrics.cached),
-    traffic_metrics_warning: null,
+    traffic_metrics_warning: isCurrentDay
+      ? 'Current-day operational reporting uses real-time first-party D1 telemetry.'
+      : null,
   };
 }
 
@@ -1111,26 +1141,165 @@ async function getSummary(env, request) {
   const byRoute = mergePerformanceRows(byRouteClicks || [], byRoutePageviews || []).slice(0, 10);
   const byCampaignMerged = mergePerformanceRows(byCampaign || [], byCampaignPageviews || []).slice(0, 10);
   const bySourceMerged = mergePerformanceRows(bySource || [], bySourcePageviews || []).slice(0, 10);
+  const today = bahrainToday();
+  const fromParam = cleanDate(url.searchParams.get('from'));
+  const toParam = cleanDate(url.searchParams.get('to'));
+  const periodParam = cleanText(url.searchParams.get('period'), 20);
+  const isTodayRequested = periodParam === 'today'
+    || (!fromParam && !toParam && periodParam !== 'all' && periodParam !== '7' && periodParam !== '30' && periodParam !== 'yesterday')
+    || (fromParam === today && toParam === today);
+
   const ga4TrafficResult = await ga4TrafficPromise;
   const canonicalFunnel = ga4TrafficResult && !ga4TrafficResult.__error
-    ? mergeCanonicalTrafficMetrics(visitorFunnel || {}, ga4TrafficResult)
+    ? mergeCanonicalTrafficMetrics(visitorFunnel || {}, ga4TrafficResult, { isCurrentDay: isTodayRequested })
     : {
-      ...mergeCanonicalTrafficMetrics(visitorFunnel || {}, null),
+      ...mergeCanonicalTrafficMetrics(visitorFunnel || {}, null, { isCurrentDay: isTodayRequested }),
       traffic_metrics_source: ga4Request ? 'd1_fallback' : 'd1_filtered',
       traffic_metrics_warning: ga4TrafficResult?.__error
         ? 'GA4 traffic metrics are temporarily unavailable; D1 server activity is shown as a fallback.'
         : 'Advanced filters are using D1 server activity because they cannot be matched exactly in GA4.',
     };
-  const today = bahrainToday();
-  const isTodayRange = canonicalFunnel.traffic_metrics_source === 'ga4'
+  const isTodayRange = isTodayRequested || (
+    canonicalFunnel.traffic_metrics_source === 'ga4'
     && ['today', today].includes(canonicalFunnel.traffic_metrics_start_date)
-    && ['today', today].includes(canonicalFunnel.traffic_metrics_end_date);
+    && ['today', today].includes(canonicalFunnel.traffic_metrics_end_date)
+  );
+
+  const funnel = {
+    visitors: canonicalFunnel.total_visitors || 0,
+    route_views: canonicalFunnel.total_pageviews || 0,
+    whatsapp_clicks: canonicalFunnel.whatsapp_intents_count || leadTotals?.whatsapp_intents_count || 0,
+    whatsapp_handoffs: canonicalFunnel.whatsapp_departed_count || leadTotals?.whatsapp_departed_count || 0,
+    contacted: leadTotals?.contacted_count || 0,
+    completed: leadTotals?.completed_count || 0,
+    cancelled: leadTotals?.cancelled_count || 0,
+  };
+
+  // Calculate prior period comparison when a bounded date range is specified
+  let priorPeriod = null;
+
+  if (fromParam && toParam) {
+    try {
+      const startDate = new Date(fromParam);
+      const endDate = new Date(toParam);
+      const diffMs = endDate.getTime() - startDate.getTime();
+      const durationDays = Math.max(1, Math.round(diffMs / (1000 * 60 * 60 * 24)) + 1);
+      const prevEndDate = new Date(startDate.getTime() - 24 * 60 * 60 * 1000);
+      const prevStartDate = new Date(prevEndDate.getTime() - (durationDays - 1) * 24 * 60 * 60 * 1000);
+      const prevFrom = prevStartDate.toISOString().slice(0, 10);
+      const prevTo = prevEndDate.toISOString().slice(0, 10);
+
+      const prevTotals = await env.TRANSPORT_DB.prepare(`
+        SELECT
+          COUNT(DISTINCT session_id) AS prev_sessions,
+          COUNT(DISTINCT COALESCE(NULLIF(visitor_id, ''), session_id)) AS prev_visitors,
+          SUM(CASE WHEN COALESCE(service_type, '') = 'pageview' THEN 1 ELSE 0 END) AS prev_pageviews,
+          SUM(CASE WHEN COALESCE(service_type, '') IN ('whatsapp_intent', 'whatsapp_click', 'whatsapp_cancel') OR COALESCE(click_text, '') <> '' THEN 1 ELSE 0 END) AS prev_whatsapp_intents
+        FROM whatsapp_leads
+        WHERE date(clicked_at, '+3 hours') >= ? AND date(clicked_at, '+3 hours') <= ?
+          AND COALESCE(page_path, '') NOT LIKE '%/admin/%'
+          AND COALESCE(page_path, '') NOT LIKE '%/care/%'
+      `).bind(prevFrom, prevTo).first();
+
+      const calcDelta = (curr, prev) => {
+        if (!prev || prev <= 0) return null;
+        return Math.round(((curr - prev) / prev) * 100);
+      };
+
+      const currVis = canonicalFunnel.total_visitors || 0;
+      const currSess = canonicalFunnel.total_sessions || 0;
+      const currPv = canonicalFunnel.total_pageviews || 0;
+      const currClicks = canonicalFunnel.whatsapp_intents_count || leadTotals?.whatsapp_intents_count || 0;
+
+      priorPeriod = {
+        from: prevFrom,
+        to: prevTo,
+        duration_days: durationDays,
+        visitors: Number(prevTotals?.prev_visitors || 0),
+        sessions: Number(prevTotals?.prev_sessions || 0),
+        pageviews: Number(prevTotals?.prev_pageviews || 0),
+        whatsapp_clicks: Number(prevTotals?.prev_whatsapp_intents || 0),
+        delta_visitors_pct: calcDelta(currVis, Number(prevTotals?.prev_visitors || 0)),
+        delta_sessions_pct: calcDelta(currSess, Number(prevTotals?.prev_sessions || 0)),
+        delta_pageviews_pct: calcDelta(currPv, Number(prevTotals?.prev_pageviews || 0)),
+        delta_whatsapp_clicks_pct: calcDelta(currClicks, Number(prevTotals?.prev_whatsapp_intents || 0)),
+      };
+    } catch {
+      priorPeriod = null;
+    }
+  }
+
+  // Recent operational activity feed (latest 40 customer events, indexed limit)
+  const { results: rawRecent } = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      lead_uuid,
+      visitor_id,
+      session_id,
+      clicked_at,
+      COALESCE(service_type, '') AS service_type,
+      route_label,
+      route_slug,
+      page_path,
+      device_type,
+      cf_city,
+      cf_country,
+      ${TRAFFIC_SOURCE_EXPR} AS traffic_source,
+      COALESCE(status, 'new') AS status,
+      COALESCE(revenue, 0) AS revenue,
+      raw_payload
+    FROM whatsapp_leads
+    WHERE COALESCE(page_path, '') NOT LIKE '%/admin/%'
+      AND COALESCE(page_path, '') NOT LIKE '%/care/%'
+    ORDER BY clicked_at DESC
+    LIMIT 40
+  `).all();
+
+  const recentActivity = (rawRecent || []).map((row) => {
+    let actionType = 'activity';
+    let actionLabel = 'Visitor Active';
+    let isConfirmed = false;
+    try {
+      if (row.raw_payload) {
+        const parsed = JSON.parse(row.raw_payload);
+        if (Number(parsed?.confirmed_departure || 0) === 1) isConfirmed = true;
+      }
+    } catch {}
+    if (['completed', 'contacted'].includes(row.status)) isConfirmed = true;
+
+    if (isConfirmed) {
+      actionType = 'whatsapp_handoff';
+      actionLabel = 'WhatsApp Handoff';
+    } else if (['whatsapp_intent', 'whatsapp_click'].includes(row.service_type)) {
+      actionType = 'whatsapp_click';
+      actionLabel = 'WhatsApp Click';
+    } else if (row.service_type === 'pageview') {
+      actionType = 'route_view';
+      actionLabel = 'Route Viewed';
+    }
+
+    return {
+      id: row.lead_uuid,
+      time: row.clicked_at,
+      channel: row.traffic_source || 'Direct',
+      route: row.route_label || row.route_slug || row.page_path || 'General Transport',
+      device: row.device_type || 'Unknown',
+      city: row.cf_city || '',
+      country: row.cf_country || '',
+      action_type: actionType,
+      action_label: actionLabel,
+      status: row.status,
+      revenue: row.revenue,
+    };
+  });
 
   return {
     summary: {
       ...(leadTotals || {}),
       ...(pageviewTotals || {}),
       ...canonicalFunnel,
+      funnel,
+      prior_period: priorPeriod,
+      recent_activity: recentActivity,
       lead_records_total: leadTotals?.total || 0,
       total: canonicalFunnel.whatsapp_intents_count || 0,
       today: leadTotals?.today || 0,
