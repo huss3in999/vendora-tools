@@ -473,7 +473,6 @@ export async function onRequestPost(context) {
 }
 
 export async function getPassengerCareAdminRows(env, request) {
-  await ensurePassengerCareSchema(env);
   const url = new URL(request.url);
   const search = cleanText(url.searchParams.get('search'), 120);
   const ref = normalizeBookingRef(url.searchParams.get('ref') || search);
@@ -585,7 +584,6 @@ export function parseReviewDisplay(commentRaw) {
 }
 
 export async function getPublicRouteReviews(env, routeSlug, limit = 5) {
-  await ensurePassengerCareSchema(env);
   const slug = cleanRouteSlug(routeSlug);
   const isGlobal = !slug || slug === 'all' || slug === 'home' || slug === 'english-home' || STUB_ROUTE_SLUGS.has(slug);
 
@@ -668,7 +666,6 @@ export async function getPublicRouteReviews(env, routeSlug, limit = 5) {
 }
 
 export async function updatePassengerCareReviewApproval(env, payload) {
-  await ensurePassengerCareSchema(env);
   const bookingRef = normalizeBookingRef(payload.booking_ref || payload.bookingRef || payload.ref);
   const rawId = Number(payload.id || 0);
 

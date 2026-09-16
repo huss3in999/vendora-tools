@@ -196,6 +196,27 @@ export async function getPublicConfig(env, options = {}) {
     try {
       value = await readPublicConfig(env);
     } catch (error) {
+      if (String(error?.message || error).toLowerCase().includes('daily row read limit')) {
+        return {
+          settings: { ...DEFAULT_PUBLIC_SETTINGS },
+          routes: DEFAULT_PUBLIC_ROUTES.map(([slug, ar, en, price, kind, unit]) => ({
+            route_slug: slug,
+            route_name_ar: ar,
+            route_name_en: en,
+            price_bhd: price,
+            price_kind: kind,
+            unit_kind: unit,
+            currency: 'BHD',
+            trip_type: unit === 'package' ? 'full_day' : unit === 'per_day' ? 'additional_day' : 'one_way',
+            public_price_enabled: true,
+            approximate_sar_enabled: false,
+            causeway_toll_included: false,
+            is_active: true,
+          })),
+          version: 1,
+          updated_at: '',
+        };
+      }
       if (!isMissingSchemaError(error)) throw error;
       await ensurePublicSettingsSchema(env);
       value = await readPublicConfig(env);

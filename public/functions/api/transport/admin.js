@@ -473,24 +473,27 @@ function boolSetting(value, fallback = false) {
 }
 
 async function getNotificationSettings(env) {
-  await ensureSettingsSchema(env);
-  const { results } = await env.TRANSPORT_DB.prepare(`
-    SELECT key, value
-    FROM transport_admin_settings
-    WHERE key IN (
-      'notifications_enabled',
-      'notify_whatsapp_clicks',
-      'notify_pageviews',
-      'notify_contacted_updates',
-      'notify_completed_updates'
-    )
-  `).all();
+  try {
+    const { results } = await env.TRANSPORT_DB.prepare(`
+      SELECT key, value
+      FROM transport_admin_settings
+      WHERE key IN (
+        'notifications_enabled',
+        'notify_whatsapp_clicks',
+        'notify_pageviews',
+        'notify_contacted_updates',
+        'notify_completed_updates'
+      )
+    `).all();
 
-  const saved = Object.fromEntries((results || []).map((row) => [row.key, row.value]));
-  return Object.fromEntries(Object.entries(DEFAULT_NOTIFICATION_SETTINGS).map(([key, fallback]) => [
-    key,
-    boolSetting(saved[key], fallback),
-  ]));
+    const saved = Object.fromEntries((results || []).map((row) => [row.key, row.value]));
+    return Object.fromEntries(Object.entries(DEFAULT_NOTIFICATION_SETTINGS).map(([key, fallback]) => [
+      key,
+      boolSetting(saved[key], fallback),
+    ]));
+  } catch {
+    return { ...DEFAULT_NOTIFICATION_SETTINGS };
+  }
 }
 
 async function updateNotificationSettings(env, payload) {
@@ -586,7 +589,7 @@ function eventClause(eventType) {
 }
 
 function buildLeadFilters(url, options = {}) {
-  const clauses = [PUBLIC_TRANSPORT_LEAD_SQL, LEAD_HAS_PUBLIC_PAGEVIEW_SQL];
+  const clauses = [PUBLIC_TRANSPORT_LEAD_SQL];
   const bindings = [];
   const eventSql = eventClause(options.eventType);
   if (eventSql) clauses.push(eventSql);
@@ -1950,9 +1953,7 @@ async function getTrackingSummary(env, request) {
 }
 
 async function getRoutes(env) {
-  await ensurePublicSettingsSchema(env);
-  await ensureAdminSchema(env);
-  const { results } = await env.TRANSPORT_DB.prepare(`
+  const fetchRoutes = () => env.TRANSPORT_DB.prepare(`
     SELECT
       p.*,
       p.price_bhd AS price_bd,
@@ -1967,6 +1968,21 @@ async function getRoutes(env) {
     LEFT JOIN transport_private_route_pricing private ON private.route_slug = p.route_slug
     ORDER BY p.sort_order ASC, p.route_slug ASC
   `).all();
+
+  let results;
+  try {
+    const res = await fetchRoutes();
+    results = res.results;
+  } catch (err) {
+    if (String(err?.message || err).toLowerCase().includes('no such table')) {
+      await ensurePublicSettingsSchema(env);
+      await ensureAdminSchema(env);
+      const res = await fetchRoutes();
+      results = res.results;
+    } else {
+      throw err;
+    }
+  }
 
   return { routes: results || [] };
 }
@@ -2287,17 +2303,20 @@ async function deleteBulkEvents(env, request) {
 }
 
 async function getErrors(env, request) {
-  await ensureErrorSchema(env);
   const url = new URL(request.url);
   const limitParam = Number(url.searchParams.get('limit') || 200);
   const limit = Math.max(1, Math.min(1000, Number.isFinite(limitParam) ? Math.round(limitParam) : 200));
-  const { results } = await env.TRANSPORT_DB.prepare(`
-    SELECT id, created_at, source, severity, message, stack, page_url, page_path, user_agent, ip_address, cf_country, context
-    FROM transport_error_log
-    ORDER BY id DESC
-    LIMIT ?
-  `).bind(limit).all();
-  return { errors: results || [] };
+  try {
+    const { results } = await env.TRANSPORT_DB.prepare(`
+      SELECT id, created_at, source, severity, message, stack, page_url, page_path, user_agent, ip_address, cf_country, context
+      FROM transport_error_log
+      ORDER BY id DESC
+      LIMIT ?
+    `).bind(limit).all();
+    return { errors: results || [] };
+  } catch {
+    return { errors: [] };
+  }
 }
 
 async function deleteErrors(env, request) {
@@ -2374,7 +2393,6 @@ export async function onRequestGet(context) {
   const resource = url.searchParams.get('resource') || 'leads';
 
   try {
-    await ensureAdminSchema(env);
     const data = resource === 'routes'
       ? await getRoutes(env)
       : resource === 'public-settings'
@@ -2406,15 +2424,9 @@ export async function onRequestGet(context) {
           : await getEventRows(env, request, 'lead');
     return json({ ok: true, ...data }, { headers });
   } catch (error) {
-    console.error(JSON.stringify({ event: 'transport_admin_get_failed', message: error.message }));
-    context.waitUntil(recordError(env, {
-      source: 'admin-api',
-      severity: 'error',
-      message: `Admin GET failed (resource=${resource}): ${error && error.message ? error.message : String(error)}`,
-      stack: error && error.stack ? error.stack : null,
-      context: request.url,
-    }));
-    return json({ ok: false, error: 'Failed to load admin data' }, { status: 500, headers });
+    const errorMsg = error && error.message ? error.message : String(error);
+    console.error(JSON.stringify({ event: 'transport_admin_get_failed', message: errorMsg }));
+    return json({ ok: false, error: errorMsg || 'Failed to load admin data' }, { status: 500, headers });
   }
 }
 
@@ -2441,7 +2453,6 @@ export async function onRequestDelete(context) {
   const mode = url.searchParams.get('mode') || '';
 
   try {
-    await ensureAdminSchema(env);
     let response;
     if (resource === 'errors') {
       response = await deleteErrors(env, request);

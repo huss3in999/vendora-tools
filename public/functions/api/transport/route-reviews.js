@@ -56,7 +56,6 @@ export async function onRequestGet(context) {
   const limit = Math.max(1, Math.min(50, Number.isFinite(limitParam) ? Math.round(limitParam) : 10));
 
   try {
-    await ensurePassengerCareSchema(env);
     const data = await getPublicRouteReviews(env, route, limit);
     return json({ ok: true, ...data }, { headers });
   } catch (error) {
