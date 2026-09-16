@@ -120,17 +120,38 @@ function sourceDetails(payload, referrerHost) {
   return { source: cleanAnalyticsText(source, 120), category, ai: cleanAnalyticsText(ai, 80) };
 }
 
+export function isVerifiedCrawler(userAgent, asn, networkOrg) {
+  const ua = String(userAgent || '').toLowerCase();
+  const org = String(networkOrg || '').toLowerCase();
+  const asnNum = Number(asn);
+
+  // Multi-signal: crawler token in UA + verified ASN/network ownership
+  if (ua.includes('googlebot') && (asnNum === 15169 || org.includes('google'))) return 1;
+  if (ua.includes('bingbot') && (asnNum === 8075 || org.includes('microsoft'))) return 1;
+  if (ua.includes('applebot') && (asnNum === 714 || org.includes('apple'))) return 1;
+  if (ua.includes('yandexbot') && (asnNum === 13238 || org.includes('yandex'))) return 1;
+  if (ua.includes('baiduspider') && (asnNum === 24429 || org.includes('baidu'))) return 1;
+  if (ua.includes('duckduckbot')) return 1;
+
+  return 0;
+}
+
 function cloudflareContext(request) {
   const cf = request.cf || {};
   const bot = cf.botManagement || {};
   const score = Number(bot.score);
   const asn = Number(cf.asn);
+  const rawUa = request.headers.get('user-agent') || '';
+  const crawlerMatch = isVerifiedCrawler(rawUa, asn, cf.asOrganization);
+  const cfVerified = typeof bot.verifiedBot === 'boolean' ? Number(bot.verifiedBot) : null;
+  const verifiedBot = cfVerified === 1 || crawlerMatch === 1 ? 1 : (cfVerified === 0 ? 0 : null);
+
   return {
     country: cleanAnalyticsText(cf.country, 8), region: cleanAnalyticsText(cf.region || cf.regionCode, 120),
     city: cleanAnalyticsText(cf.city, 120), timezone: cleanAnalyticsText(cf.timezone, 80),
     httpProtocol: cleanAnalyticsText(cf.httpProtocol, 30), asn: Number.isFinite(asn) ? Math.round(asn) : null,
     organization: cleanAnalyticsText(cf.asOrganization, 200), botScore: Number.isFinite(score) ? Math.round(score) : null,
-    verifiedBot: typeof bot.verifiedBot === 'boolean' ? Number(bot.verifiedBot) : null,
+    verifiedBot,
   };
 }
 

@@ -9,7 +9,7 @@ const ALLOWED_ORIGINS = new Set([
 ]);
 
 const MAX_BODY_BYTES = 4096;
-const BOOKING_REF_RE = /^GCC-[A-F0-9]{8}$/i;
+const BOOKING_REF_RE = /^(GCC-[A-F0-9]{6,8}|REV-[A-F0-9]{12})$/i;
 const CARE_TOKEN_RE = /^[a-f0-9]{48}$/i;
 const OUTCOMES = new Set([
   'driver_contacted',
@@ -41,7 +41,7 @@ function isRealWhatsAppLead(row) {
 }
 
 function leadUuidFromBookingRef(bookingRef) {
-  const hex = String(bookingRef || '').replace(/^GCC-/i, '').toLowerCase().padEnd(12, '0').slice(0, 12);
+  const hex = String(bookingRef || '').replace(/^[A-Z0-9]+-/i, '').toLowerCase().padEnd(12, '0').slice(0, 12);
   return `${hex.slice(0, 8)}-0000-4000-8000-${hex.slice(0, 12)}`;
 }
 
@@ -544,61 +544,156 @@ export async function getPassengerCareAdminRows(env, request) {
   return { feedback: results || [] };
 }
 
+export { BOOKING_REF_RE };
+
+export function sanitizeReviewAuthor(name) {
+  const clean = cleanText(name, 80);
+  if (!clean) return 'عميل موثق';
+  const parts = clean.split(/\s+/).filter(Boolean);
+  if (parts.length === 1) return parts[0];
+  const first = parts[0];
+  const second = parts[1];
+  const initial = second.charAt(0).toUpperCase();
+  return `${first} ${initial}.`;
+}
+
+export function scrubPrivateDataFromComment(text) {
+  if (!text) return '';
+  let scrubbed = text.replace(/(?:\+?\d[\d\s-]{7,}\d)/g, '[محجوب]');
+  scrubbed = scrubbed.replace(/[\w.+-]+@[\w.-]+\.[a-zA-Z]{2,}/g, '[محجوب]');
+  scrubbed = scrubbed.replace(/\b(?:GCC|REV)-[A-F0-9]{4,16}\b/gi, '[رقم الحجز]');
+  scrubbed = scrubbed.replace(/\b(?:cpr|iqama|id)\s*[:=]?\s*\d+\b/gi, '[محجوب]');
+  return scrubbed.trim();
+}
+
+export function parseReviewDisplay(commentRaw) {
+  const text = String(commentRaw || '').trim();
+  const colonIndex = text.indexOf(':');
+  let author = null;
+  let comment = text;
+  if (colonIndex > 0 && colonIndex < 40) {
+    const candidateName = text.slice(0, colonIndex).trim();
+    if (!candidateName.includes('\n') && !candidateName.includes('http')) {
+      author = sanitizeReviewAuthor(candidateName);
+      comment = text.slice(colonIndex + 1).trim();
+    }
+  }
+  return {
+    author_name: author || 'عميل موثق',
+    comment: scrubPrivateDataFromComment(comment),
+  };
+}
+
 export async function getPublicRouteReviews(env, routeSlug, limit = 5) {
   await ensurePassengerCareSchema(env);
   const slug = cleanRouteSlug(routeSlug);
-  if (!slug || STUB_ROUTE_SLUGS.has(slug)) {
-    return { route: slug || '', average_rating: null, review_count: 0, reviews: [] };
+  const isGlobal = !slug || slug === 'all' || slug === 'home' || slug === 'english-home' || STUB_ROUTE_SLUGS.has(slug);
+
+  const statsSql = isGlobal
+    ? `SELECT COUNT(*) AS review_count, ROUND(AVG(rating), 1) AS average_rating
+       FROM passenger_care_feedback
+       WHERE COALESCE(review_approved, 0) = 1
+         AND outcome IN ('completed', 'trip_completed')
+         AND rating IS NOT NULL`
+    : `SELECT COUNT(*) AS review_count, ROUND(AVG(rating), 1) AS average_rating
+       FROM passenger_care_feedback
+       WHERE route_slug = ?
+         AND COALESCE(review_approved, 0) = 1
+         AND outcome IN ('completed', 'trip_completed')
+         AND rating IS NOT NULL`;
+
+  const stats = isGlobal
+    ? await env.TRANSPORT_DB.prepare(statsSql).first()
+    : await env.TRANSPORT_DB.prepare(statsSql).bind(slug).first();
+
+  let reviewCount = Number(stats?.review_count || 0);
+  let averageRating = stats?.average_rating ?? null;
+
+  // Fallback to global top reviews if specific route has no approved reviews yet
+  let effectiveSlug = slug;
+  let useGlobalFallback = false;
+
+  if (!isGlobal && reviewCount === 0) {
+    const globalStats = await env.TRANSPORT_DB.prepare(`
+      SELECT COUNT(*) AS review_count, ROUND(AVG(rating), 1) AS average_rating
+      FROM passenger_care_feedback
+      WHERE COALESCE(review_approved, 0) = 1
+        AND outcome IN ('completed', 'trip_completed')
+        AND rating IS NOT NULL
+    `).first();
+    if (globalStats && Number(globalStats.review_count || 0) > 0) {
+      reviewCount = Number(globalStats.review_count);
+      averageRating = globalStats.average_rating;
+      useGlobalFallback = true;
+    }
   }
 
-  const stats = await env.TRANSPORT_DB.prepare(`
-    SELECT
-      COUNT(*) AS review_count,
-      ROUND(AVG(rating), 1) AS average_rating
-    FROM passenger_care_feedback
-    WHERE route_slug = ?
-      AND COALESCE(review_approved, 0) = 1
-      AND outcome IN ('completed', 'trip_completed')
-      AND rating IS NOT NULL
-  `).bind(slug).first();
+  const reviewsSql = (isGlobal || useGlobalFallback)
+    ? `SELECT rating, comment, submitted_at, route_slug, route_label
+       FROM passenger_care_feedback
+       WHERE COALESCE(review_approved, 0) = 1
+         AND outcome IN ('completed', 'trip_completed')
+         AND rating IS NOT NULL
+       ORDER BY submitted_at DESC
+       LIMIT ?`
+    : `SELECT rating, comment, submitted_at, route_slug, route_label
+       FROM passenger_care_feedback
+       WHERE route_slug = ?
+         AND COALESCE(review_approved, 0) = 1
+         AND outcome IN ('completed', 'trip_completed')
+         AND rating IS NOT NULL
+       ORDER BY submitted_at DESC
+       LIMIT ?`;
 
-  const { results } = await env.TRANSPORT_DB.prepare(`
-    SELECT rating, comment, submitted_at
-    FROM passenger_care_feedback
-    WHERE route_slug = ?
-      AND COALESCE(review_approved, 0) = 1
-      AND outcome IN ('completed', 'trip_completed')
-      AND rating IS NOT NULL
-    ORDER BY submitted_at DESC
-    LIMIT ?
-  `).bind(slug, limit).all();
+  const { results } = (isGlobal || useGlobalFallback)
+    ? await env.TRANSPORT_DB.prepare(reviewsSql).bind(limit).all()
+    : await env.TRANSPORT_DB.prepare(reviewsSql).bind(slug, limit).all();
 
   return {
-    route: slug,
-    average_rating: stats?.average_rating ?? null,
-    review_count: Number(stats?.review_count || 0),
-    reviews: (results || []).map((row) => ({
-      rating: row.rating,
-      comment: cleanText(row.comment, 1000),
-      date: row.submitted_at ? String(row.submitted_at).slice(0, 10) : null,
-    })),
+    route: isGlobal ? 'all' : (useGlobalFallback ? `${effectiveSlug} (featured)` : effectiveSlug),
+    average_rating: averageRating,
+    review_count: reviewCount,
+    reviews: (results || []).map((row) => {
+      const parsed = parseReviewDisplay(row.comment);
+      return {
+        rating: row.rating,
+        author_name: parsed.author_name,
+        comment: parsed.comment,
+        date: row.submitted_at ? String(row.submitted_at).slice(0, 10) : null,
+        route_slug: row.route_slug || null,
+        route_label: row.route_label || null,
+      };
+    }),
   };
 }
 
 export async function updatePassengerCareReviewApproval(env, payload) {
   await ensurePassengerCareSchema(env);
-  const bookingRef = normalizeBookingRef(payload.booking_ref || payload.bookingRef);
-  if (!bookingRef) {
-    return { ok: false, error: 'booking_ref is required', status: 400 };
+  const bookingRef = normalizeBookingRef(payload.booking_ref || payload.bookingRef || payload.ref);
+  const rawId = Number(payload.id || 0);
+
+  if (!bookingRef && !rawId) {
+    return { ok: false, error: 'booking_ref or id is required', status: 400 };
   }
 
-  const approved = payload.approved === true
-    || payload.approved === 1
-    || payload.approved === '1'
-    || payload.approved === 'true';
+  const rawStatus = String(payload.status || '').toLowerCase().trim();
+  let approvalStatus = 'pending';
+  let approvedInt = 0;
+
+  if (payload.approved === true || payload.approved === 1 || payload.approved === '1' || payload.approved === 'true' || rawStatus === 'approved') {
+    approvalStatus = 'approved';
+    approvedInt = 1;
+  } else if (payload.approved === -1 || payload.approved === '-1' || payload.approved === false || payload.approved === 'false' || payload.approved === 'rejected' || rawStatus === 'rejected') {
+    approvalStatus = 'rejected';
+    approvedInt = -1;
+  } else if (rawStatus === 'pending' || payload.approved === 0 || payload.approved === '0') {
+    approvalStatus = 'pending';
+    approvedInt = 0;
+  }
 
   const row = await env.TRANSPORT_DB.prepare(`
     SELECT
+      f.id,
       f.booking_ref,
       f.outcome,
       f.rating,
@@ -613,15 +708,15 @@ export async function updatePassengerCareReviewApproval(env, payload) {
       ORDER BY w.clicked_at ASC
       LIMIT 1
     )
-    WHERE f.booking_ref = ?
+    WHERE (f.booking_ref = ? AND ? IS NOT NULL) OR f.id = ?
     LIMIT 1
-  `).bind(bookingRef).first();
+  `).bind(bookingRef, bookingRef, rawId).first();
 
   if (!row) {
     return { ok: false, error: 'Feedback not found', status: 404 };
   }
 
-  if (approved && !canPublishAsRouteReview(row)) {
+  if (approvalStatus === 'approved' && !canPublishAsRouteReview(row)) {
     return {
       ok: false,
       error: 'Only completed trips with a rating and linked route can be approved for public display',
@@ -629,24 +724,26 @@ export async function updatePassengerCareReviewApproval(env, payload) {
     };
   }
 
+  const resolvedBookingRef = row.booking_ref || bookingRef;
   const result = await env.TRANSPORT_DB.prepare(`
     UPDATE passenger_care_feedback
     SET
       route_slug = COALESCE(NULLIF(route_slug, ''), ?),
       review_approved = ?,
       review_approved_at = ?
-    WHERE booking_ref = ?
+    WHERE id = ?
   `).bind(
-    cleanRouteSlug(row.route_slug),
-    approved ? 1 : 0,
-    approved ? new Date().toISOString() : null,
-    bookingRef,
+    cleanRouteSlug(row.route_slug) || 'general-transport',
+    approvedInt,
+    approvalStatus === 'approved' ? new Date().toISOString() : null,
+    row.id,
   ).run();
 
   return {
     ok: true,
-    booking_ref: bookingRef,
-    review_approved: approved ? 1 : 0,
+    booking_ref: resolvedBookingRef,
+    review_approved: approvedInt,
+    status: approvalStatus,
     changes: result.meta?.changes || 0,
   };
 }

@@ -39,7 +39,7 @@ const PUBLIC_TRANSPORT_ANALYTICS_SQL = `(
   AND e.page_path NOT LIKE '%/admin/%'
   AND e.page_path NOT LIKE '%/care/%'
 )`;
-const NON_AUTOMATED_ANALYTICS_SQL = "COALESCE(s.client_hints, '') NOT LIKE '%HeadlessChrome%'";
+const NON_AUTOMATED_ANALYTICS_SQL = "(COALESCE(s.client_hints, '') NOT LIKE '%HeadlessChrome%' AND COALESCE(s.verified_bot, 0) = 0)";
 const PUBLIC_TRANSPORT_LEAD_SQL = `(
   (page_url LIKE 'https://getvendora.net/%' OR page_url LIKE 'https://www.getvendora.net/%')
   AND (page_path = '/bahrain-saudi-gcc-transport' OR page_path LIKE '/bahrain-saudi-gcc-transport/%')
@@ -56,6 +56,7 @@ const LEAD_HAS_PUBLIC_PAGEVIEW_SQL = `whatsapp_leads.session_id IN (
     AND public_pv.page_path NOT LIKE '%/admin/%'
     AND public_pv.page_path NOT LIKE '%/care/%'
     AND COALESCE(public_session.client_hints, '') NOT LIKE '%HeadlessChrome%'
+    AND COALESCE(public_session.verified_bot, 0) = 0
 )`;
 
 const ADMIN_COLUMNS = [
@@ -556,7 +557,18 @@ export function mergeCanonicalTrafficMetrics(d1Metrics = {}, ga4Metrics = null, 
 }
 
 function buildAnalyticsFilters(url) {
-  const clauses = [PUBLIC_TRANSPORT_ANALYTICS_SQL, NON_AUTOMATED_ANALYTICS_SQL];
+  const botFilter = cleanText(url.searchParams.get('bot_filter'), 20);
+  const clauses = [PUBLIC_TRANSPORT_ANALYTICS_SQL];
+  if (botFilter === 'bots') {
+    clauses.push("(COALESCE(s.verified_bot, 0) = 1 OR COALESCE(s.bot_score, 99) < 30 OR COALESCE(s.client_hints, '') LIKE '%HeadlessChrome%')");
+  } else if (botFilter === 'all') {
+    // Show all traffic unfiltered
+  } else {
+    clauses.push(NON_AUTOMATED_ANALYTICS_SQL);
+    if (botFilter === 'real') {
+      clauses.push('COALESCE(s.bot_score, 99) >= 30');
+    }
+  }
   const bindings = [];
   const filters = [
     ['e.route_name', cleanText(url.searchParams.get('route'), 160)],
@@ -597,13 +609,6 @@ function buildAnalyticsFilters(url) {
     )`);
     const like = `%${search}%`;
     bindings.push(like, like, like, like, like, like);
-  }
-
-  const botFilter = cleanText(url.searchParams.get('bot_filter'), 20);
-  if (botFilter === 'real') {
-    clauses.push('COALESCE(s.verified_bot, 0) = 0 AND COALESCE(s.bot_score, 99) >= 30');
-  } else if (botFilter === 'bots') {
-    clauses.push('(COALESCE(s.verified_bot, 0) = 1 OR COALESCE(s.bot_score, 99) < 30)');
   }
 
   return {

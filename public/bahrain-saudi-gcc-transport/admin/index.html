@@ -1474,8 +1474,9 @@
     </div>
     <div id="careFeedbackDialogBody" class="max-h-[70vh] overflow-y-auto p-5"></div>
     <div class="border-t border-slate-800 p-5 flex flex-wrap justify-end gap-2">
-      <button id="approveCareReviewBtn" type="button" class="hidden rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-4 py-2 text-xs font-bold text-emerald-300 transition hover:bg-emerald-900/40">Approve for route page</button>
-      <button id="unapproveCareReviewBtn" type="button" class="hidden rounded-xl border border-amber-500/30 bg-amber-950/20 px-4 py-2 text-xs font-bold text-amber-300 transition hover:bg-amber-900/40">Remove from route page</button>
+      <button id="approveCareReviewBtn" type="button" class="hidden rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-4 py-2 text-xs font-bold text-emerald-300 transition hover:bg-emerald-900/40">Approve &amp; Publish to Site</button>
+      <button id="rejectCareReviewBtn" type="button" class="hidden rounded-xl border border-rose-500/30 bg-rose-950/20 px-4 py-2 text-xs font-bold text-rose-300 transition hover:bg-rose-900/40">Reject Review</button>
+      <button id="resetCareReviewBtn" type="button" class="hidden rounded-xl border border-amber-500/30 bg-amber-950/20 px-4 py-2 text-xs font-bold text-amber-300 transition hover:bg-amber-900/40">Reset to Pending</button>
       <button id="deleteCareFeedbackBtn" type="button" class="rounded-xl border border-red-500/30 bg-red-950/20 px-4 py-2 text-xs font-bold text-red-300 transition hover:bg-red-900/40">Delete feedback only</button>
     </div>
   </dialog>
@@ -3347,13 +3348,20 @@
         if (!eligible) {
           return '<span class="rounded-full border border-slate-700/60 bg-slate-900/40 px-2 py-1 text-[10px] font-bold text-slate-500">Not eligible</span>';
         }
-        if (Number(row.review_approved) === 1) {
+        const val = Number(row.review_approved);
+        if (val === 1) {
           return '<span class="rounded-full border border-emerald-500/30 bg-emerald-950/20 px-2 py-1 text-[10px] font-bold text-emerald-300">Approved</span>';
+        }
+        if (val === -1) {
+          return '<span class="rounded-full border border-rose-500/30 bg-rose-950/20 px-2 py-1 text-[10px] font-bold text-rose-300">Rejected</span>';
         }
         return '<span class="rounded-full border border-amber-500/30 bg-amber-950/20 px-2 py-1 text-[10px] font-bold text-amber-300">Pending</span>';
       }
 
-      document.getElementById('passengerCareTable').innerHTML = rows.map((row, index) => `
+      document.getElementById('passengerCareTable').innerHTML = rows.map((row, index) => {
+        const eligible = row.outcome === 'completed' && row.rating && (row.route_slug || row.stored_route_slug);
+        const val = Number(row.review_approved);
+        return `
         <tr class="transition duration-150 hover:bg-slate-900/40 cursor-pointer" data-care-index="${index}">
           <td class="px-5 py-4 font-bold text-emerald-300">${escapeHtml(row.booking_ref || '-')}</td>
           <td class="px-5 py-4 text-slate-400">${escapeHtml(formatDate(row.clicked_at))}</td>
@@ -3376,12 +3384,19 @@
           <td class="px-5 py-4">${escapeHtml(countryLabel(row.lead_country) || 'Unknown')}</td>
           <td class="px-5 py-4">${escapeHtml(countryLabel(row.feedback_country) || 'Unknown')}</td>
           <td class="px-5 py-4">
-            <button class="rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-3 py-1.5 text-[10px] font-bold text-emerald-300 transition hover:bg-emerald-900/30" data-view-care="${index}" type="button">View Details</button>
+            <div class="flex items-center gap-1.5">
+              ${eligible && val !== 1 ? `<button class="rounded-lg border border-emerald-500/30 bg-emerald-950/30 px-2.5 py-1 text-[10px] font-bold text-emerald-300 hover:bg-emerald-900/40 transition" data-approve-care="${index}" type="button" title="Approve &amp; publish to site">Approve</button>` : ''}
+              ${eligible && val !== -1 ? `<button class="rounded-lg border border-rose-500/30 bg-rose-950/30 px-2.5 py-1 text-[10px] font-bold text-rose-300 hover:bg-rose-900/40 transition" data-reject-care="${index}" type="button" title="Reject review">Reject</button>` : ''}
+              <button class="rounded-lg border border-slate-700/60 bg-slate-800/40 px-2.5 py-1 text-[10px] font-bold text-slate-300 hover:bg-slate-700/50 transition" data-view-care="${index}" type="button">Details</button>
+            </div>
           </td>
-        </tr>
-      `).join('') || empty;
+        </tr>`;
+      }).join('') || empty;
 
-      document.getElementById('passengerCareMobile').innerHTML = rows.map((row, index) => `
+      document.getElementById('passengerCareMobile').innerHTML = rows.map((row, index) => {
+        const eligible = row.outcome === 'completed' && row.rating && (row.route_slug || row.stored_route_slug);
+        const val = Number(row.review_approved);
+        return `
         <article class="rounded-2xl border border-slate-850 bg-slate-900/25 p-4 space-y-2 cursor-pointer" data-care-index="${index}">
           <div class="flex items-center justify-between gap-2"><div class="font-bold text-emerald-300">${escapeHtml(row.booking_ref || '-')}</div>${reviewStatusBadge(row)}</div>
           <div class="text-xs text-slate-400">Click: ${escapeHtml(formatDate(row.clicked_at))}</div>
@@ -3391,9 +3406,13 @@
           ${row.comment ? `<p class="line-clamp-2 text-xs leading-relaxed text-slate-300">${escapeHtml(row.comment)}</p>` : ''}
           <div class="text-xs text-slate-400">Click country: ${escapeHtml(countryLabel(row.lead_country) || 'Unknown')}</div>
           <div class="text-xs text-slate-400">Feedback country: ${escapeHtml(countryLabel(row.feedback_country) || 'Unknown')}</div>
-          <button class="mt-2 w-full rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-3 py-2 text-[10px] font-bold text-emerald-300" data-view-care="${index}" type="button">Review feedback</button>
-        </article>
-      `).join('') || '<p class="text-center text-slate-500 text-sm p-4">No passenger care feedback found.</p>';
+          <div class="flex items-center gap-2 mt-2">
+            ${eligible && val !== 1 ? `<button class="flex-1 rounded-xl border border-emerald-500/30 bg-emerald-950/30 px-3 py-2 text-[10px] font-bold text-emerald-300" data-approve-care="${index}" type="button">Approve</button>` : ''}
+            ${eligible && val !== -1 ? `<button class="flex-1 rounded-xl border border-rose-500/30 bg-rose-950/30 px-3 py-2 text-[10px] font-bold text-rose-300" data-reject-care="${index}" type="button">Reject</button>` : ''}
+            <button class="flex-1 rounded-xl border border-slate-700/60 bg-slate-800/40 px-3 py-2 text-[10px] font-bold text-slate-300" data-view-care="${index}" type="button">Details</button>
+          </div>
+        </article>`;
+      }).join('') || '<p class="text-center text-slate-500 text-sm p-4">No passenger care feedback found.</p>';
     }
 
     function showCareFeedbackDetails(index) {
@@ -3416,6 +3435,12 @@
           <dd class="text-right font-semibold text-slate-200 max-w-[60%] break-words">${value}</dd>
         </div>`;
 
+      const statusLabels = {
+        1: 'Approved for public website',
+        '-1': 'Rejected (hidden from public website)',
+        0: 'Pending review approval'
+      };
+
       const body = document.getElementById('careFeedbackDialogBody');
       body.innerHTML = `
         <dl>
@@ -3432,7 +3457,7 @@
           ${infoRow('Quoted price', row.quoted_price != null ? escapeHtml(String(row.quoted_price)) : '-')}
           ${infoRow('Paid price', row.paid_price != null ? escapeHtml(String(row.paid_price)) : '-')}
           ${infoRow('Submitted', escapeHtml(formatDate(row.feedback_submitted_at)))}
-          ${infoRow('Route review status', Number(row.review_approved) === 1 ? 'Approved for public route page' : 'Hidden until approved')}
+          ${infoRow('Route review status', statusLabels[Number(row.review_approved)] || 'Pending')}
           ${infoRow('Approved at', row.review_approved_at ? escapeHtml(formatDate(row.review_approved_at)) : '-')}
           ${infoRow('User agent', escapeHtml(row.feedback_user_agent || '-'))}
           ${infoRow('Lead UUID', escapeHtml(row.original_lead_uuid || row.lead_uuid || '-'))}
@@ -3441,25 +3466,46 @@
       document.getElementById('careFeedbackDialog').showModal();
 
       const eligible = row.outcome === 'completed' && row.rating && (row.route_slug || row.stored_route_slug);
+      const val = Number(row.review_approved);
       const approveBtn = document.getElementById('approveCareReviewBtn');
-      const unapproveBtn = document.getElementById('unapproveCareReviewBtn');
-      approveBtn.classList.toggle('hidden', !(eligible && Number(row.review_approved) !== 1));
-      unapproveBtn.classList.toggle('hidden', !(eligible && Number(row.review_approved) === 1));
+      const rejectBtn = document.getElementById('rejectCareReviewBtn');
+      const resetBtn = document.getElementById('resetCareReviewBtn');
+      if (approveBtn) approveBtn.classList.toggle('hidden', !(eligible && val !== 1));
+      if (rejectBtn) rejectBtn.classList.toggle('hidden', !(eligible && val !== -1));
+      if (resetBtn) resetBtn.classList.toggle('hidden', !(eligible && val !== 0));
 
       renderIcons();
     }
 
-    async function setActiveCareReviewApproval(approved) {
-      const row = state.activeCareFeedback;
-      if (!row || !row.booking_ref) return;
+    async function setActiveCareReviewApproval(targetStatus, specificRow = null) {
+      const row = specificRow || state.activeCareFeedback;
+      if (!row || (!row.booking_ref && !row.id)) return;
+      const ref = row.booking_ref || '';
+      const id = row.id || 0;
+
+      let status = 'pending';
+      if (targetStatus === true || targetStatus === 'approved' || targetStatus === 1) status = 'approved';
+      else if (targetStatus === false || targetStatus === 'rejected' || targetStatus === -1) status = 'rejected';
+
+      const statusMessages = {
+        approved: 'Review approved and published to public site.',
+        rejected: 'Review marked as rejected and hidden.',
+        pending: 'Review reset to pending state.'
+      };
+
       try {
-        await api('?resource=passenger-care-review', {
+        const res = await api('?resource=passenger-care-review', {
           method: 'PUT',
-          body: JSON.stringify({ booking_ref: row.booking_ref, approved }),
+          body: JSON.stringify({ booking_ref: ref, id, status }),
         });
-        document.getElementById('careFeedbackDialog').close();
-        await loadDashboard();
-        showStatus(approved ? 'Route review approved for public display.' : 'Route review removed from public display.', 'success');
+        if (res && res.ok) {
+          row.review_approved = status === 'approved' ? 1 : (status === 'rejected' ? -1 : 0);
+          row.review_approved_at = status === 'approved' ? new Date().toISOString() : null;
+          const dialog = document.getElementById('careFeedbackDialog');
+          if (dialog && dialog.open) dialog.close();
+          renderPassengerCare();
+          showStatus(statusMessages[status] || 'Review status updated.', 'success');
+        }
       } catch (err) {
         showStatus(err.message || 'Could not update route review approval.', 'error');
       }
@@ -5246,6 +5292,18 @@ Note: This report is automatically compiled by the Control Room operations track
     document.getElementById('leadsPanel').addEventListener('click', leadsHandler);
 
     const careHandler = (event) => {
+      const approveBtn = event.target.closest('[data-approve-care]');
+      if (approveBtn) {
+        const row = (state.passengerCare || [])[Number(approveBtn.dataset.approveCare)];
+        if (row) setActiveCareReviewApproval('approved', row);
+        return;
+      }
+      const rejectBtn = event.target.closest('[data-reject-care]');
+      if (rejectBtn) {
+        const row = (state.passengerCare || [])[Number(rejectBtn.dataset.rejectCare)];
+        if (row) setActiveCareReviewApproval('rejected', row);
+        return;
+      }
       const viewBtn = event.target.closest('[data-view-care]');
       const row = event.target.closest('[data-care-index]');
       if (viewBtn) {
@@ -5262,8 +5320,9 @@ Note: This report is automatically compiled by the Control Room operations track
       document.getElementById('careFeedbackDialog').close();
     });
     document.getElementById('deleteCareFeedbackBtn').addEventListener('click', deleteActiveCareFeedback);
-    document.getElementById('approveCareReviewBtn').addEventListener('click', () => setActiveCareReviewApproval(true));
-    document.getElementById('unapproveCareReviewBtn').addEventListener('click', () => setActiveCareReviewApproval(false));
+    document.getElementById('approveCareReviewBtn').addEventListener('click', () => setActiveCareReviewApproval('approved'));
+    document.getElementById('rejectCareReviewBtn').addEventListener('click', () => setActiveCareReviewApproval('rejected'));
+    document.getElementById('resetCareReviewBtn').addEventListener('click', () => setActiveCareReviewApproval('pending'));
 
     // VISITS (PAGEVIEWS) DELETE EVENTS — individual delete of a single visit
     const pageviewsPanel = document.getElementById('pageviewsPanel');

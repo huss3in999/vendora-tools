@@ -1,4 +1,4 @@
-import { corsHeaders, ensurePassengerCareSchema, getPublicRouteReviews } from './passenger-care.js';
+import { BOOKING_REF_RE, corsHeaders, ensurePassengerCareSchema, getPublicRouteReviews } from './passenger-care.js';
 import { checkRateLimit, rateLimitResponse } from './rate-limit.js';
 
 const MAX_BODY_BYTES = 4096;
@@ -107,6 +107,9 @@ export async function onRequestPost(context) {
   }
   if (!publishPermission || !privacyConsent) {
     return json({ ok: false, error: 'Permission to publish and privacy consent are required' }, { status: 400, headers });
+  }
+  if (bookingRefInput && !BOOKING_REF_RE.test(bookingRefInput)) {
+    return json({ ok: false, error: 'Invalid booking reference format. Example: GCC-8A2F1B' }, { status: 400, headers });
   }
 
   try {

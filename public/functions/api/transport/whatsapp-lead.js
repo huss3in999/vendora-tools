@@ -1,5 +1,5 @@
 import { recordError } from './error-log.js';
-import { ensurePassengerCareSchema, makeBookingRef, makeCareToken } from './passenger-care.js';
+import { BOOKING_REF_RE, ensurePassengerCareSchema, makeBookingRef, makeCareToken } from './passenger-care.js';
 import { checkRateLimit, rateLimitResponse } from './rate-limit.js';
 import { ensureAnalyticsEnrichmentSchema, freezeAnalyticsSession, upsertAnalyticsSession } from './analytics-enrichment.js';
 
@@ -436,10 +436,10 @@ function cleanLeadUuid(value) {
 }
 
 function cleanBookingRefValue(value) {
-  const text = cleanText(value, 20);
+  const text = cleanText(value, 40);
   if (!text) return null;
   const normalized = text.toUpperCase();
-  return /^GCC-[A-F0-9]{8}$/.test(normalized) ? normalized : null;
+  return BOOKING_REF_RE.test(normalized) ? normalized : null;
 }
 
 function cleanUrl(value) {

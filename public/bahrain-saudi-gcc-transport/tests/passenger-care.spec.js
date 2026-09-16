@@ -300,7 +300,8 @@ test.describe('Admin Passenger Care tab (mocked API)', () => {
     });
 
     await unlockAdmin(page);
-    await page.click('[data-tab="passengerCare"]');
+    await page.click('[data-tab="inquiries"]');
+    await page.click('[data-subtab="passengerCare"]');
     await expect(page.locator('#passengerCareTable')).toContainText('Bahrain Airport Transfer');
     await expect(page.locator('#passengerCareTable')).not.toContainText('Passenger Care');
     await expect(page.locator('#passengerCareTable')).toContainText('BH');
@@ -347,7 +348,8 @@ test.describe('Admin Passenger Care tab (mocked API)', () => {
     });
 
     await unlockAdmin(page);
-    await page.click('[data-tab="passengerCare"]');
+    await page.click('[data-tab="inquiries"]');
+    await page.click('[data-subtab="passengerCare"]');
     await page.locator('#passengerCareTable [data-view-care="0"]').click();
     await expect(page.locator('#careFeedbackDialog')).toBeVisible();
 
@@ -410,6 +412,7 @@ test.describe('Admin Passenger Care tab (mocked API)', () => {
               online_care: 1,
               online_recent: [
                 { person_key: 'a', route_label: 'Home', page_path: '/bahrain-saudi-gcc-transport/', country: 'BH', last_seen: new Date().toISOString(), seconds_on_page: 30, pages_viewed: 1, clicked_whatsapp: 0, device_type: 'desktop', language: 'ar' },
+                { person_key: 'b', route_label: 'Khobar', page_path: '/bahrain-saudi-gcc-transport/bahrain-to-khobar/', country: 'SA', last_seen: new Date().toISOString(), seconds_on_page: 20, pages_viewed: 1, clicked_whatsapp: 0, device_type: 'mobile', language: 'ar' },
               ],
             },
           }),

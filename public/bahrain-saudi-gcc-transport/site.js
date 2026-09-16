@@ -3112,14 +3112,17 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     const verifiedLabel = isEn ? 'Verified passenger trip' : 'رحلة راكب موثّقة';
 
     const reviewCards = (data.reviews || []).map((review) => {
+      const escape = (str) => String(str || '').replace(/[<>&"']/g, (char) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;',
+      }[char]));
       const comment = review.comment
-        ? `<p class="route-review-comment">${review.comment.replace(/[<>&"']/g, (char) => ({
-          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;',
-        }[char]))}</p>`
+        ? `<p class="route-review-comment">${escape(review.comment)}</p>`
         : `<p class="route-review-comment">${isEn ? 'Verified trip feedback submitted after booking.' : 'تم إرسال تقييم موثّق بعد الحجز.'}</p>`;
+      const author = review.author_name ? `<div class="route-review-author" style="color:var(--accent, #fbbf24);margin:4px 0;font-size:0.9rem;font-weight:600;">${escape(review.author_name)}</div>` : '';
       return `
         <article class="route-review-card">
           <div class="route-review-stars" aria-label="${review.rating}/5">${renderReviewStars(review.rating)}</div>
+          ${author}
           ${comment}
           <div class="route-review-meta">${verifiedLabel}${review.date ? ` · ${formatReviewDate(review.date)}` : ''}</div>
         </article>`;
@@ -3166,12 +3169,15 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     if (!path.includes('/bahrain-saudi-gcc-transport/')) return;
     if (path.includes('/care/') || path.includes('/admin/')) return;
 
-    const slug = getRouteSlug();
-    if (!slug || ROUTE_REVIEW_EXCLUDED_SLUGS.has(slug)) return;
-    if (document.querySelector('[data-route-reviews]')) return;
+    const rawSlug = getRouteSlug();
+    const isHome = !rawSlug || rawSlug === 'home' || rawSlug === 'english-home';
+    const isExcluded = rawSlug && ROUTE_REVIEW_EXCLUDED_SLUGS.has(rawSlug) && !isHome;
+    if (isExcluded) return;
+
+    const querySlug = isHome ? 'all' : rawSlug;
 
     try {
-      const response = await fetch(`${resolveRouteReviewsApiUrl()}?route=${encodeURIComponent(slug)}&limit=3`, {
+      const response = await fetch(`${resolveRouteReviewsApiUrl()}?route=${encodeURIComponent(querySlug)}&limit=3`, {
         credentials: 'omit',
       });
       if (!response.ok) return;
