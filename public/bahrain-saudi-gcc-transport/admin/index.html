@@ -432,16 +432,20 @@
           </div>
 
           <div class="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-5">
-            <!-- 1. Unique Visitors -->
-            <div data-jump="pageviews" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-cyan-500 transition hover:border-cyan-300 hover:bg-cyan-950/10">
+            <!-- 1. Human-Likely Visitors -->
+            <div data-jump="pageviews" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-cyan-500 transition hover:border-cyan-300 hover:bg-cyan-950/10" title="Human-Likely Visitors excludes verified bots and cloud datacenter probes. Unresolved traffic (cloud VPS, proxies) is tracked separately.">
               <div class="flex justify-between items-start text-slate-400">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Unique Visitors</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Human-Likely Visitors</span>
                 <i data-lucide="users" class="h-4 w-4 text-cyan-400"></i>
               </div>
               <p id="statVisitors" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
               <div class="mt-1 text-[10px] text-slate-400 flex items-center justify-between">
-                <span><strong id="statNewVisitors" class="text-cyan-300">0</strong> new · <strong id="statReturningVisitors" class="text-amber-300">0</strong> ret.</span>
+                <span><strong id="statUnresolved" class="text-amber-300">0</strong> unresolved · <strong id="statBotsExcluded" class="text-rose-400">0</strong> bots excl.</span>
                 <span id="deltaVisitors" class="text-[10px] font-semibold text-slate-500">—</span>
+              </div>
+              <div class="hidden">
+                <span id="statNewVisitors">0</span>
+                <span id="statReturningVisitors">0</span>
               </div>
             </div>
 
@@ -2832,13 +2836,19 @@
       if (statRev) statRev.textContent = `${Number(summary.total_revenue || 0).toFixed(2)} BHD`;
 
       // Unique visitors (real people, not page hits)
-      const totalVisitors = Number(summary.total_visitors || 0);
+      const humanVisitors = Number(summary.human_likely_visitors ?? summary.total_visitors ?? 0);
+      const unresolvedTraffic = Number(summary.unresolved_traffic ?? 0);
+      const botsExcluded = Number(summary.verified_bots_excluded ?? 0);
       const returningVisitors = Number(summary.returning_visitors || 0);
       const newVisitors = Number.isFinite(Number(summary.new_visitors))
         ? Math.max(0, Number(summary.new_visitors))
-        : Math.max(0, totalVisitors - returningVisitors);
+        : Math.max(0, humanVisitors - returningVisitors);
       const statVis = document.getElementById('statVisitors');
-      if (statVis) statVis.textContent = totalVisitors;
+      if (statVis) statVis.textContent = humanVisitors;
+      const statUnres = document.getElementById('statUnresolved');
+      if (statUnres) statUnres.textContent = unresolvedTraffic;
+      const statBotsExcl = document.getElementById('statBotsExcluded');
+      if (statBotsExcl) statBotsExcl.textContent = botsExcluded;
       const statNewVis = document.getElementById('statNewVisitors');
       if (statNewVis) statNewVis.textContent = newVisitors;
       const statRetVis = document.getElementById('statReturningVisitors');
@@ -4494,6 +4504,35 @@
       }).join('') || '<p class="text-xs text-slate-500">No matching journey events are loaded for this visitor yet.</p>';
     }
 
+    function normalizedSourceText(lead) {
+      const payload = leadPayload(lead);
+      const rawSource = payload.firstTrafficSource || payload.trafficSource || lead.utm_source || '';
+      const rawReferrer = payload.firstReferrer || lead.referrer || '';
+      const utmMedium = lead.utm_medium || payload.utmMedium || '';
+      const s = String(rawSource).toLowerCase();
+      const r = String(rawReferrer).toLowerCase();
+      const m = String(utmMedium).toLowerCase();
+
+      if (['cpc', 'ppc', 'paid', 'display', 'ads'].includes(m) || payload.gclid || payload.fbclid) {
+        return 'Paid / UTM';
+      }
+      if (s.includes('gemini') || r.includes('gemini.')) return 'Gemini';
+      if (s.includes('chatgpt') || s.includes('openai') || r.includes('chatgpt.') || r.includes('openai.')) return 'ChatGPT';
+      if (s.includes('perplexity') || r.includes('perplexity.')) return 'Perplexity';
+      if (s === 'google' || r.includes('google.')) return 'Google Organic';
+      if (s === 'bing' || r.includes('bing.')) return 'Bing Organic';
+      if (s === 'instagram' || r.includes('instagram.')) return 'Instagram';
+      if (s === 'tiktok' || r.includes('tiktok.')) return 'TikTok';
+      if (s === 'facebook' || r.includes('facebook.') || r.includes('fb.')) return 'Facebook';
+      if (s === 'whatsapp' || r.includes('whatsapp.') || r.includes('wa.me')) return 'WhatsApp Shared Link';
+      if (!s || s === 'direct' || s === 'direct/unknown') {
+        if (!r || r === 'direct' || r === 'direct/unknown') return 'Direct';
+      }
+      if (r.startsWith('http')) return 'Referral Website';
+      if (rawSource) return rawSource;
+      return 'Source unavailable';
+    }
+
     function showLeadDetails(id) {
       const lead = state.leads.find((item) => String(item.id) === String(id));
       if (!lead) return;
@@ -4534,6 +4573,12 @@
       }
       
       const rows = [
+        ['Acquisition Source', normalizedSourceText(lead)],
+        ['Landing Page', payload.firstLandingPage || payload.firstLandingPath || lead.page_path || 'Unavailable'],
+        ['Route', lead.route_label || lead.route_slug || 'General Transport'],
+        ['Device', lead.device_type || 'Unknown'],
+        ['WhatsApp Click Time', formatDate(lead.client_clicked_at || lead.clicked_at)],
+        ['WhatsApp Handoff Time', lead.whatsapp_confirmed_at ? formatDate(lead.whatsapp_confirmed_at) : 'Not confirmed'],
         ['Timestamp', formatDate(lead.clicked_at)],
         ['Booking Ref', lead.booking_ref || makeBookingRefPreview(lead.lead_uuid)],
         ['Booking WhatsApp used', lead.booking_phone_used ? `+${lead.booking_phone_used}` : '-'],

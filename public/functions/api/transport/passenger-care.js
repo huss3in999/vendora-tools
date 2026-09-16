@@ -743,7 +743,8 @@ export async function updatePassengerCareReviewApproval(env, payload) {
     ok: true,
     booking_ref: resolvedBookingRef,
     review_approved: approvedInt,
-    status: approvalStatus,
+    approval_status: approvalStatus,
+    status: 200,
     changes: result.meta?.changes || 0,
   };
 }

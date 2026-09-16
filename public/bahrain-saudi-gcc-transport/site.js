@@ -1116,21 +1116,31 @@
   function inferTrafficSource(utm, referrer) {
     if (utm.utmSource) return utm.utmSource;
     const host = getHostFromUrl(referrer).toLowerCase();
-    if (!host) return 'direct/unknown';
+    if (!host) return 'direct';
+    if (host.includes('gemini.google.com') || host.includes('gemini.')) return 'gemini';
+    if (host.includes('chatgpt.com') || host.includes('openai.com')) return 'chatgpt';
+    if (host.includes('perplexity.ai')) return 'perplexity';
+    if (host.includes('copilot.microsoft.com')) return 'copilot';
+    if (host.includes('claude.ai') || host.includes('anthropic.com')) return 'claude';
     if (host.includes('google.')) return 'google';
-    if (host.includes('instagram.')) return 'instagram';
-    if (host.includes('facebook.') || host.includes('fb.')) return 'facebook';
-    if (host.includes('tiktok.')) return 'tiktok';
     if (host.includes('bing.')) return 'bing';
     if (host.includes('yahoo.')) return 'yahoo';
-    if (host.includes('whatsapp.')) return 'whatsapp';
+    if (host.includes('instagram.')) return 'instagram';
+    if (host.includes('tiktok.')) return 'tiktok';
+    if (host.includes('facebook.') || host.includes('fb.') || host.includes('l.facebook.com')) return 'facebook';
+    if (host.includes('whatsapp.') || host.includes('wa.me') || host.includes('api.whatsapp.com')) return 'whatsapp';
+    if (host.includes('t.co') || host.includes('twitter.') || host.includes('x.com')) return 'x_twitter';
+    if (host.includes('youtube.') || host.includes('youtu.be')) return 'youtube';
     return host;
   }
 
   function getFirstTouch() {
     try {
-      const saved = JSON.parse(localStorage.getItem(firstTouchKey) || 'null');
-      return saved && typeof saved === 'object' ? saved : {};
+      const sessionSaved = JSON.parse(sessionStorage.getItem(firstTouchKey) || 'null');
+      if (sessionSaved && typeof sessionSaved === 'object' && sessionSaved.firstSeenAt) return sessionSaved;
+      const localSaved = JSON.parse(localStorage.getItem(firstTouchKey) || 'null');
+      if (localSaved && typeof localSaved === 'object') return localSaved;
+      return {};
     } catch {
       return {};
     }
@@ -1139,17 +1149,21 @@
   function setupAttributionTracking() {
     const utm = getUtmParams();
     const trafficSource = inferTrafficSource(utm, document.referrer || '');
+    const firstTouchData = {
+      firstSeenAt: pageLoadedAt,
+      landingPage: pageUrl,
+      landingPath: window.location.pathname,
+      referrer: document.referrer || '',
+      referrerHost: getHostFromUrl(document.referrer || ''),
+      trafficSource,
+      ...utm,
+    };
     try {
+      if (!sessionStorage.getItem(firstTouchKey)) {
+        sessionStorage.setItem(firstTouchKey, JSON.stringify(firstTouchData));
+      }
       if (!localStorage.getItem(firstTouchKey)) {
-        localStorage.setItem(firstTouchKey, JSON.stringify({
-          firstSeenAt: pageLoadedAt,
-          landingPage: pageUrl,
-          landingPath: window.location.pathname,
-          referrer: document.referrer || '',
-          referrerHost: getHostFromUrl(document.referrer || ''),
-          trafficSource,
-          ...utm,
-        }));
+        localStorage.setItem(firstTouchKey, JSON.stringify(firstTouchData));
       }
     } catch {}
 

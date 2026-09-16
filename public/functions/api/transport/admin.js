@@ -23,7 +23,121 @@ const MAX_LEADS_LIMIT = 1000;
 const VISITOR_ID_EXPR = "COALESCE(NULLIF(visitor_id, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.visitorId'), '') END)";
 const VISIT_COUNT_EXPR = "CASE WHEN json_valid(raw_payload) THEN CAST(COALESCE(json_extract(raw_payload, '$.visitCount'), 1) AS INTEGER) ELSE 1 END";
 const SESSION_PAGE_VIEWS_EXPR = "CASE WHEN json_valid(raw_payload) THEN CAST(COALESCE(json_extract(raw_payload, '$.sessionPageViews'), 1) AS INTEGER) ELSE 1 END";
-const TRAFFIC_SOURCE_EXPR = "COALESCE(NULLIF(utm_source, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.firstTrafficSource'), '') END, CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.trafficSource'), '') END, CASE WHEN referrer LIKE '%gemini.google.com%' OR referrer LIKE '%gemini.%' OR utm_source LIKE '%gemini%' THEN 'Gemini AI' WHEN referrer LIKE '%chatgpt.%' OR referrer LIKE '%openai.%' OR utm_source LIKE '%chatgpt%' THEN 'ChatGPT AI' WHEN referrer LIKE '%perplexity.%' OR utm_source LIKE '%perplexity%' THEN 'Perplexity AI' WHEN referrer LIKE '%copilot.%' OR utm_source LIKE '%copilot%' THEN 'Copilot AI' WHEN referrer LIKE '%claude.%' OR utm_source LIKE '%claude%' THEN 'Claude AI' WHEN referrer LIKE '%google.%' OR utm_source LIKE '%google%' THEN 'Google Search' WHEN referrer LIKE '%bing.%' OR utm_source LIKE '%bing%' THEN 'Bing Search' WHEN referrer <> '' AND referrer <> 'direct' THEN referrer ELSE 'direct/unknown' END)";
+const TRAFFIC_SOURCE_EXPR = `(CASE
+  WHEN (
+    LOWER(COALESCE(utm_medium, '')) IN ('cpc', 'ppc', 'paid', 'display', 'cpm', 'ads', 'paidsocial')
+    OR (json_valid(raw_payload) AND (
+      json_extract(raw_payload, '$.gclid') IS NOT NULL
+      OR json_extract(raw_payload, '$.fbclid') IS NOT NULL
+      OR json_extract(raw_payload, '$.ttclid') IS NOT NULL
+      OR json_extract(raw_payload, '$.msclkid') IS NOT NULL
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.utmMedium'), '')) IN ('cpc', 'ppc', 'paid', 'display', 'cpm', 'ads', 'paidsocial')
+    ))
+  ) THEN 'Paid / UTM'
+  WHEN (
+    LOWER(COALESCE(referrer, '')) LIKE '%gemini.google.com%'
+    OR LOWER(COALESCE(referrer, '')) LIKE '%gemini.%'
+    OR LOWER(COALESCE(utm_source, '')) LIKE '%gemini%'
+    OR (json_valid(raw_payload) AND (
+      LOWER(COALESCE(json_extract(raw_payload, '$.firstReferrer'), '')) LIKE '%gemini%'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.firstTrafficSource'), '')) = 'gemini'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.trafficSource'), '')) = 'gemini'
+    ))
+  ) THEN 'Gemini'
+  WHEN (
+    LOWER(COALESCE(referrer, '')) LIKE '%chatgpt.%'
+    OR LOWER(COALESCE(referrer, '')) LIKE '%openai.%'
+    OR LOWER(COALESCE(utm_source, '')) LIKE '%chatgpt%'
+    OR (json_valid(raw_payload) AND (
+      LOWER(COALESCE(json_extract(raw_payload, '$.firstReferrer'), '')) LIKE '%chatgpt%'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.firstReferrer'), '')) LIKE '%openai%'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.firstTrafficSource'), '')) = 'chatgpt'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.trafficSource'), '')) = 'chatgpt'
+    ))
+  ) THEN 'ChatGPT'
+  WHEN (
+    LOWER(COALESCE(referrer, '')) LIKE '%perplexity.%'
+    OR LOWER(COALESCE(utm_source, '')) LIKE '%perplexity%'
+    OR (json_valid(raw_payload) AND (
+      LOWER(COALESCE(json_extract(raw_payload, '$.firstReferrer'), '')) LIKE '%perplexity%'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.firstTrafficSource'), '')) = 'perplexity'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.trafficSource'), '')) = 'perplexity'
+    ))
+  ) THEN 'Perplexity'
+  WHEN (
+    (
+      LOWER(COALESCE(referrer, '')) LIKE '%google.%'
+      OR LOWER(COALESCE(utm_source, '')) = 'google'
+      OR (json_valid(raw_payload) AND (
+        LOWER(COALESCE(json_extract(raw_payload, '$.firstReferrer'), '')) LIKE '%google.%'
+        OR LOWER(COALESCE(json_extract(raw_payload, '$.firstTrafficSource'), '')) = 'google'
+        OR LOWER(COALESCE(json_extract(raw_payload, '$.trafficSource'), '')) = 'google'
+      ))
+    )
+    AND LOWER(COALESCE(referrer, '')) NOT LIKE '%gemini.google.com%'
+  ) THEN 'Google Organic'
+  WHEN (
+    LOWER(COALESCE(referrer, '')) LIKE '%bing.%'
+    OR LOWER(COALESCE(utm_source, '')) = 'bing'
+    OR (json_valid(raw_payload) AND (
+      LOWER(COALESCE(json_extract(raw_payload, '$.firstReferrer'), '')) LIKE '%bing.%'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.firstTrafficSource'), '')) = 'bing'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.trafficSource'), '')) = 'bing'
+    ))
+  ) THEN 'Bing Organic'
+  WHEN (
+    LOWER(COALESCE(referrer, '')) LIKE '%instagram.%'
+    OR LOWER(COALESCE(utm_source, '')) = 'instagram'
+    OR (json_valid(raw_payload) AND (
+      LOWER(COALESCE(json_extract(raw_payload, '$.firstReferrer'), '')) LIKE '%instagram.%'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.firstTrafficSource'), '')) = 'instagram'
+    ))
+  ) THEN 'Instagram'
+  WHEN (
+    LOWER(COALESCE(referrer, '')) LIKE '%tiktok.%'
+    OR LOWER(COALESCE(utm_source, '')) = 'tiktok'
+    OR (json_valid(raw_payload) AND (
+      LOWER(COALESCE(json_extract(raw_payload, '$.firstReferrer'), '')) LIKE '%tiktok.%'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.firstTrafficSource'), '')) = 'tiktok'
+    ))
+  ) THEN 'TikTok'
+  WHEN (
+    LOWER(COALESCE(referrer, '')) LIKE '%facebook.%'
+    OR LOWER(COALESCE(referrer, '')) LIKE '%fb.%'
+    OR LOWER(COALESCE(utm_source, '')) = 'facebook'
+    OR (json_valid(raw_payload) AND (
+      LOWER(COALESCE(json_extract(raw_payload, '$.firstReferrer'), '')) LIKE '%facebook.%'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.firstReferrer'), '')) LIKE '%fb.%'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.firstTrafficSource'), '')) = 'facebook'
+    ))
+  ) THEN 'Facebook'
+  WHEN (
+    LOWER(COALESCE(referrer, '')) LIKE '%whatsapp.%'
+    OR LOWER(COALESCE(referrer, '')) LIKE '%wa.me%'
+    OR LOWER(COALESCE(utm_source, '')) = 'whatsapp'
+    OR (json_valid(raw_payload) AND (
+      LOWER(COALESCE(json_extract(raw_payload, '$.firstReferrer'), '')) LIKE '%whatsapp.%'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.firstReferrer'), '')) LIKE '%wa.me%'
+      OR LOWER(COALESCE(json_extract(raw_payload, '$.firstTrafficSource'), '')) = 'whatsapp'
+    ))
+  ) THEN 'WhatsApp Shared Link'
+  WHEN (
+    (referrer IS NULL OR referrer = '' OR LOWER(referrer) IN ('direct', 'direct/unknown'))
+    AND (utm_source IS NULL OR utm_source = '' OR LOWER(utm_source) IN ('direct', 'direct/unknown'))
+    AND (
+      NOT json_valid(raw_payload)
+      OR (
+        COALESCE(json_extract(raw_payload, '$.firstReferrer'), '') = ''
+        AND COALESCE(json_extract(raw_payload, '$.firstTrafficSource'), '') IN ('', 'direct', 'direct/unknown')
+      )
+    )
+  ) THEN 'Direct'
+  WHEN (
+    COALESCE(referrer, '') LIKE 'http%'
+    OR (json_valid(raw_payload) AND COALESCE(json_extract(raw_payload, '$.firstReferrer'), '') LIKE 'http%')
+  ) THEN 'Referral Website'
+  ELSE 'Other'
+END)`;
 const CAMPAIGN_EXPR = "COALESCE(NULLIF(utm_campaign, ''), CASE WHEN json_valid(raw_payload) THEN NULLIF(json_extract(raw_payload, '$.utmCampaign'), '') END, 'no campaign')";
 const NON_CLICK_SERVICE_SQL = "COALESCE(service_type, '') NOT IN ('pageview', 'presence_heartbeat', 'passenger-care-pageview', 'passenger-care-stub')";
 const NON_CLICK_ROUTE_SQL = "COALESCE(route_slug, '') NOT IN ('passenger-care', 'passenger-care-stub')";
@@ -39,7 +153,85 @@ const PUBLIC_TRANSPORT_ANALYTICS_SQL = `(
   AND e.page_path NOT LIKE '%/admin/%'
   AND e.page_path NOT LIKE '%/care/%'
 )`;
-const NON_AUTOMATED_ANALYTICS_SQL = "(COALESCE(s.client_hints, '') NOT LIKE '%HeadlessChrome%' AND COALESCE(s.verified_bot, 0) = 0)";
+const IS_VERIFIED_BOT_SQL = `(
+  COALESCE(s.verified_bot, 0) = 1
+  OR COALESCE(s.client_hints, '') LIKE '%HeadlessChrome%'
+  OR LOWER(COALESCE(s.browser_name, '')) LIKE '%bot%'
+  OR LOWER(COALESCE(s.browser_name, '')) LIKE '%crawl%'
+  OR LOWER(COALESCE(s.browser_name, '')) LIKE '%spider%'
+  OR LOWER(COALESCE(s.network_organization, '')) LIKE '%googlebot%'
+)`;
+
+const IS_LIKELY_BOT_SQL = `(
+  NOT (
+    COALESCE(s.verified_bot, 0) = 1
+    OR COALESCE(s.client_hints, '') LIKE '%HeadlessChrome%'
+    OR LOWER(COALESCE(s.browser_name, '')) LIKE '%bot%'
+    OR LOWER(COALESCE(s.browser_name, '')) LIKE '%crawl%'
+    OR LOWER(COALESCE(s.browser_name, '')) LIKE '%spider%'
+    OR LOWER(COALESCE(s.network_organization, '')) LIKE '%googlebot%'
+  )
+  AND (
+    COALESCE(s.bot_score, 99) < 30
+    OR (
+      (s.asn IN (16509, 14618, 8075, 15169, 20473, 14061, 63949, 4837, 4134, 45090)
+       OR LOWER(COALESCE(s.network_organization, '')) LIKE '%amazon%'
+       OR LOWER(COALESCE(s.network_organization, '')) LIKE '%vultr%'
+       OR LOWER(COALESCE(s.network_organization, '')) LIKE '%digitalocean%'
+       OR LOWER(COALESCE(s.network_organization, '')) LIKE '%alibaba%'
+       OR LOWER(COALESCE(s.network_organization, '')) LIKE '%tencent%')
+      AND (
+        (s.viewport_width = s.viewport_height AND s.viewport_width > 0)
+        OR LOWER(COALESCE(s.operating_system_version, '')) LIKE '5.0%'
+        OR LOWER(COALESCE(s.operating_system, '')) = 'android 5.0'
+        OR COALESCE(s.screen_width, 0) = 0
+        OR (COALESCE(s.touch_support, 0) = 0 AND LOWER(COALESCE(s.operating_system, '')) IN ('android', 'ios'))
+      )
+    )
+  )
+)`;
+
+const IS_UNKNOWN_TRAFFIC_SQL = `(
+  NOT (
+    COALESCE(s.verified_bot, 0) = 1
+    OR COALESCE(s.client_hints, '') LIKE '%HeadlessChrome%'
+    OR LOWER(COALESCE(s.browser_name, '')) LIKE '%bot%'
+    OR LOWER(COALESCE(s.browser_name, '')) LIKE '%crawl%'
+    OR LOWER(COALESCE(s.browser_name, '')) LIKE '%spider%'
+    OR LOWER(COALESCE(s.network_organization, '')) LIKE '%googlebot%'
+  )
+  AND NOT (
+    COALESCE(s.bot_score, 99) < 30
+    OR (
+      (s.asn IN (16509, 14618, 8075, 15169, 20473, 14061, 63949, 4837, 4134, 45090)
+       OR LOWER(COALESCE(s.network_organization, '')) LIKE '%amazon%'
+       OR LOWER(COALESCE(s.network_organization, '')) LIKE '%vultr%'
+       OR LOWER(COALESCE(s.network_organization, '')) LIKE '%digitalocean%'
+       OR LOWER(COALESCE(s.network_organization, '')) LIKE '%alibaba%'
+       OR LOWER(COALESCE(s.network_organization, '')) LIKE '%tencent%')
+      AND (
+        (s.viewport_width = s.viewport_height AND s.viewport_width > 0)
+        OR LOWER(COALESCE(s.operating_system_version, '')) LIKE '5.0%'
+        OR LOWER(COALESCE(s.operating_system, '')) = 'android 5.0'
+        OR COALESCE(s.screen_width, 0) = 0
+        OR (COALESCE(s.touch_support, 0) = 0 AND LOWER(COALESCE(s.operating_system, '')) IN ('android', 'ios'))
+      )
+    )
+  )
+  AND (
+    s.asn IN (16509, 14618, 20473, 14061, 63949, 4837, 4134)
+    OR LOWER(COALESCE(s.network_organization, '')) LIKE '%amazon%'
+    OR LOWER(COALESCE(s.network_organization, '')) LIKE '%vultr%'
+    OR LOWER(COALESCE(s.network_organization, '')) LIKE '%digitalocean%'
+    OR LOWER(COALESCE(s.network_organization, '')) LIKE '%hosting%'
+    OR LOWER(COALESCE(s.network_organization, '')) LIKE '%datacenter%'
+    OR LOWER(COALESCE(s.network_organization, '')) LIKE '%cloud%'
+    OR (COALESCE(s.bot_score, 99) >= 30 AND COALESCE(s.bot_score, 99) < 50)
+  )
+)`;
+
+const NON_AUTOMATED_ANALYTICS_SQL = `(NOT ${IS_VERIFIED_BOT_SQL} AND NOT ${IS_LIKELY_BOT_SQL})`;
+const HUMAN_LIKELY_ANALYTICS_SQL = `(NOT ${IS_VERIFIED_BOT_SQL} AND NOT ${IS_LIKELY_BOT_SQL} AND NOT ${IS_UNKNOWN_TRAFFIC_SQL})`;
 const PUBLIC_TRANSPORT_LEAD_SQL = `(
   (page_url LIKE 'https://getvendora.net/%' OR page_url LIKE 'https://www.getvendora.net/%')
   AND (page_path = '/bahrain-saudi-gcc-transport' OR page_path LIKE '/bahrain-saudi-gcc-transport/%')
@@ -95,9 +287,24 @@ const DEFAULT_NOTIFICATION_SETTINGS = {
   notify_completed_updates: true,
 };
 
+function resolveHttpStatus(result, fallback = 200) {
+  if (typeof result?.httpStatus === 'number' && result.httpStatus >= 200 && result.httpStatus <= 599) {
+    return result.httpStatus;
+  }
+  if (typeof result?.status === 'number' && result.status >= 200 && result.status <= 599) {
+    return result.status;
+  }
+  return result?.ok ? fallback : 400;
+}
+
 function json(data, init = {}) {
+  let status = init.status;
+  if (typeof status !== 'number' || status < 200 || status > 599) {
+    status = (data && data.ok === false) ? 500 : 200;
+  }
   return new Response(JSON.stringify(data), {
     ...init,
+    status,
     headers: {
       'content-type': 'application/json; charset=utf-8',
       'cache-control': 'no-store',
@@ -496,15 +703,23 @@ function ga4TrafficRequest(url) {
 }
 
 export function mergeCanonicalTrafficMetrics(d1Metrics = {}, ga4Metrics = null, options = {}) {
-  const d1Visitors = Math.max(0, Number(d1Metrics.total_visitors || 0));
+  const d1Visitors = Math.max(0, Number(d1Metrics.human_likely_visitors ?? d1Metrics.total_visitors ?? 0));
   const d1Sessions = Math.max(0, Number(d1Metrics.total_sessions || 0));
   const d1Pageviews = Math.max(0, Number(d1Metrics.total_pageviews || 0));
+  const humanLikelyVisitors = d1Metrics.human_likely_visitors ?? d1Visitors;
+  const unresolvedTraffic = d1Metrics.unresolved_traffic ?? 0;
+  const verifiedBotsExcluded = d1Metrics.verified_bots_excluded ?? 0;
+  const rawVisitors = d1Metrics.raw_visitors ?? d1Visitors;
 
   if (!ga4Metrics) return {
     ...d1Metrics,
     d1_total_visitors: d1Visitors,
     d1_total_sessions: d1Sessions,
     d1_total_pageviews: d1Pageviews,
+    human_likely_visitors: humanLikelyVisitors,
+    unresolved_traffic: unresolvedTraffic,
+    verified_bots_excluded: verifiedBotsExcluded,
+    raw_visitors: rawVisitors,
     traffic_metrics_source: 'd1_fallback',
     traffic_metrics_warning: 'GA4 traffic metrics are temporarily unavailable; D1 server activity is shown as a fallback.',
   };
@@ -534,6 +749,10 @@ export function mergeCanonicalTrafficMetrics(d1Metrics = {}, ga4Metrics = null, 
     d1_total_visitors: d1Visitors,
     d1_total_sessions: d1Sessions,
     d1_total_pageviews: d1Pageviews,
+    human_likely_visitors: humanLikelyVisitors,
+    unresolved_traffic: unresolvedTraffic,
+    verified_bots_excluded: verifiedBotsExcluded,
+    raw_visitors: rawVisitors,
     ga4_total_visitors: ga4TotalVisitors,
     ga4_total_sessions: ga4Sessions,
     ga4_total_pageviews: ga4Pageviews,
@@ -556,15 +775,17 @@ export function mergeCanonicalTrafficMetrics(d1Metrics = {}, ga4Metrics = null, 
   };
 }
 
-function buildAnalyticsFilters(url) {
-  const botFilter = cleanText(url.searchParams.get('bot_filter'), 20);
+function buildAnalyticsFilters(url, options = {}) {
+  const botFilter = options.botFilter || cleanText(url.searchParams.get('bot_filter'), 20);
   const clauses = [PUBLIC_TRANSPORT_ANALYTICS_SQL];
   if (botFilter === 'bots') {
-    clauses.push("(COALESCE(s.verified_bot, 0) = 1 OR COALESCE(s.bot_score, 99) < 30 OR COALESCE(s.client_hints, '') LIKE '%HeadlessChrome%')");
+    clauses.push(IS_VERIFIED_BOT_SQL);
+  } else if (botFilter === 'unresolved') {
+    clauses.push(`(${IS_LIKELY_BOT_SQL} OR ${IS_UNKNOWN_TRAFFIC_SQL})`);
   } else if (botFilter === 'all') {
     // Show all traffic unfiltered
   } else {
-    clauses.push(NON_AUTOMATED_ANALYTICS_SQL);
+    clauses.push(HUMAN_LIKELY_ANALYTICS_SQL);
     if (botFilter === 'real') {
       clauses.push('COALESCE(s.bot_score, 99) >= 30');
     }
@@ -861,6 +1082,39 @@ async function getSummary(env, request) {
     FROM valid_events
   `);
 
+  const rawAnalyticsFilters = buildAnalyticsFilters(url, { botFilter: 'all' });
+  const sessionBreakdown = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      COUNT(DISTINCT e.visitor_id) AS raw_visitors,
+      COUNT(DISTINCT CASE WHEN ${IS_VERIFIED_BOT_SQL} THEN e.visitor_id END) AS verified_bots_excluded,
+      COUNT(DISTINCT CASE WHEN ${IS_LIKELY_BOT_SQL} THEN e.visitor_id END) AS likely_bots_count,
+      COUNT(DISTINCT CASE WHEN ${IS_UNKNOWN_TRAFFIC_SQL} THEN e.visitor_id END) AS unknown_traffic_count,
+      COUNT(DISTINCT CASE WHEN ${HUMAN_LIKELY_ANALYTICS_SQL} THEN e.visitor_id END) AS human_likely_visitors
+    FROM analytics_events e
+    LEFT JOIN analytics_sessions s ON s.session_id = e.session_id
+    ${rawAnalyticsFilters.whereSql}
+      AND e.event_name = 'page_view'
+      AND e.visitor_id IS NOT NULL AND e.visitor_id <> ''
+  `).bind(...rawAnalyticsFilters.bindings).first().catch(() => ({}));
+
+  const rawVisitors = Number(sessionBreakdown?.raw_visitors || visitorFunnel?.total_visitors || 0);
+  const verifiedBotsExcluded = Number(sessionBreakdown?.verified_bots_excluded || 0);
+  const likelyBotsCount = Number(sessionBreakdown?.likely_bots_count || 0);
+  const unknownTrafficCount = Number(sessionBreakdown?.unknown_traffic_count || 0);
+  const unresolvedTraffic = likelyBotsCount + unknownTrafficCount;
+  const humanLikelyVisitors = Number(sessionBreakdown?.human_likely_visitors || visitorFunnel?.total_visitors || 0);
+
+  const enrichedVisitorFunnel = {
+    ...(visitorFunnel || {}),
+    total_visitors: humanLikelyVisitors,
+    human_likely_visitors: humanLikelyVisitors,
+    unresolved_traffic: unresolvedTraffic,
+    verified_bots_excluded: verifiedBotsExcluded,
+    raw_visitors: rawVisitors,
+    likely_bots_count: likelyBotsCount,
+    unknown_traffic_count: unknownTrafficCount,
+  };
+
   // "Online now" = activity in the last 5 minutes from whatsapp_leads.
   // Transport visitors exclude admin and Passenger Care pages.
   // Care visitors are counted separately.
@@ -1156,9 +1410,9 @@ async function getSummary(env, request) {
 
   const ga4TrafficResult = await ga4TrafficPromise;
   const canonicalFunnel = ga4TrafficResult && !ga4TrafficResult.__error
-    ? mergeCanonicalTrafficMetrics(visitorFunnel || {}, ga4TrafficResult, { isCurrentDay: isTodayRequested })
+    ? mergeCanonicalTrafficMetrics(enrichedVisitorFunnel, ga4TrafficResult, { isCurrentDay: isTodayRequested })
     : {
-      ...mergeCanonicalTrafficMetrics(visitorFunnel || {}, null, { isCurrentDay: isTodayRequested }),
+      ...mergeCanonicalTrafficMetrics(enrichedVisitorFunnel, null, { isCurrentDay: isTodayRequested }),
       traffic_metrics_source: ga4Request ? 'd1_fallback' : 'd1_filtered',
       traffic_metrics_warning: ga4TrafficResult?.__error
         ? 'GA4 traffic metrics are temporarily unavailable; D1 server activity is shown as a fallback.'
@@ -1302,6 +1556,19 @@ async function getSummary(env, request) {
       ...(leadTotals || {}),
       ...(pageviewTotals || {}),
       ...canonicalFunnel,
+      human_likely_visitors: canonicalFunnel.human_likely_visitors ?? humanLikelyVisitors,
+      unresolved_traffic: canonicalFunnel.unresolved_traffic ?? unresolvedTraffic,
+      verified_bots_excluded: canonicalFunnel.verified_bots_excluded ?? verifiedBotsExcluded,
+      raw_visitors: canonicalFunnel.raw_visitors ?? rawVisitors,
+      likely_bots_count: likelyBotsCount,
+      unknown_traffic_count: unknownTrafficCount,
+      acquisition_summary: bySourceMerged.slice(0, 5).map((row) => ({
+        label: row.label || 'Direct',
+        visits: row.pageviews || 0,
+        leads: row.clicks || row.count || 0,
+        completed: row.completed || 0,
+        conversion_rate: (row.pageviews || 0) > 0 ? `${(((row.clicks || row.count || 0) / row.pageviews) * 100).toFixed(1)}%` : '0.0%',
+      })),
       funnel,
       prior_period: priorPeriod,
       recent_activity: recentActivity,
@@ -2221,19 +2488,20 @@ async function handleAdminWrite(context) {
   const resource = url.searchParams.get('resource') || '';
 
   try {
-    await ensureAdminSchema(env);
     if (resource === 'passenger-care-review') {
       const result = await updatePassengerCareReviewApproval(env, payload);
-      return json(result, { status: result.status || (result.ok ? 200 : 400), headers });
+      return json(result, { status: resolveHttpStatus(result, 200), headers });
     }
     if (resource === 'passenger-care-link') {
       const result = await regeneratePassengerCareToken(env, payload);
-      return json(result, { status: result.status || (result.ok ? 200 : 400), headers });
+      return json(result, { status: resolveHttpStatus(result, 200), headers });
     }
     if (resource === 'complaint-status' || resource === 'complaint') {
       const result = await updateComplaintStatus(env, payload);
-      return json(result, { status: result.status || (result.ok ? 200 : 400), headers });
+      return json(result, { status: resolveHttpStatus(result, 200), headers });
     }
+
+    await ensureAdminSchema(env);
 
     const response = resource === 'lead'
       ? await updateLeadOutcome(env, payload)
@@ -2254,7 +2522,9 @@ async function handleAdminWrite(context) {
       stack: error && error.stack ? error.stack : null,
       context: request.url,
     }));
-    return json({ ok: false, error: 'Failed to save admin data' }, { status: 500, headers });
+    const reason = error && error.message ? error.message : String(error);
+    const errorPrefix = resource === 'passenger-care-review' ? 'Review approval failed' : 'Failed to save admin data';
+    return json({ ok: false, error: `${errorPrefix}: ${reason}` }, { status: 500, headers });
   }
 }
 

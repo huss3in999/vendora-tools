@@ -299,7 +299,7 @@ export async function updateComplaintStatus(env, payload) {
     return { ok: false, error: 'Complaint not found', status: 404 };
   }
 
-  return { ok: true, complaint_ref: complaintRef, status, updated_at: now };
+  return { ok: true, complaint_ref: complaintRef, complaint_status: status, status: 200, updated_at: now };
 }
 
 export async function onRequest(context) {
