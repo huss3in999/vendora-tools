@@ -51,6 +51,14 @@
   let whatsAppClickLockUntil = 0;
 
   const translations = [
+    ['خدمات النقل الخاص من البحرين إلى الدمام', 'Private transport from Bahrain to Dammam'],
+    ['تشمل خيارات الحجز سيارة خاصة من البحرين إلى الدمام، وسائقاً خاصاً، ونقلاً من البحرين إلى الدمام للعائلات ورحلات العمل والطرود. أرسل موقع الاستلام وعدد الركاب والأمتعة عبر واتساب لتأكيد التوفر والتفاصيل المناسبة للمسار.', 'Booking options include a private car from Bahrain to Dammam, a private driver, and Bahrain to Dammam transport for families, business trips, and parcels. Send the pickup location, passenger count, and luggage details on WhatsApp to confirm availability and route details.'],
+    ['خدمات النقل الخاص من البحرين إلى الخبر', 'Private transport from Bahrain to Khobar'],
+    ['تشمل خيارات الحجز سيارة خاصة من البحرين إلى الخبر، وسائقاً خاصاً، ونقلاً من البحرين إلى الخبر للعائلات ورحلات العمل والرحلات الخاصة. أرسل موقع الاستلام وعدد الركاب والأمتعة عبر واتساب لتأكيد التوفر والتفاصيل المناسبة للمسار.', 'Booking options include a private car from Bahrain to Khobar, a private driver, and Bahrain to Khobar transport for families, business trips, and private travel. Send the pickup location, passenger count, and luggage details on WhatsApp to confirm availability and route details.'],
+    ['النقل الخاص من الدمام إلى البحرين', 'Private transport from Dammam to Bahrain'],
+    ['يمكن طلب تاكسي خاص أو سائق خاص من الدمام إلى البحرين، بما في ذلك رحلات العودة والتوصيل إلى مطار البحرين والرحلات العائلية. أرسل موقع الاستلام والوجهة وعدد الركاب والأمتعة عبر واتساب لتأكيد التوفر.', 'Request a private taxi or private driver from Dammam to Bahrain, including return trips, Bahrain airport drop-offs, and family travel. Send the pickup location, destination, passenger count, and luggage details on WhatsApp to confirm availability.'],
+    ['النقل الخاص من الخبر إلى البحرين', 'Private transport from Khobar to Bahrain'],
+    ['يمكن طلب تاكسي خاص أو سائق خاص من الخبر إلى البحرين، بما في ذلك رحلات العودة والتوصيل إلى مطار البحرين والرحلات العائلية. أرسل موقع الاستلام والوجهة وعدد الركاب والأمتعة عبر واتساب لتأكيد التوفر.', 'Request a private taxi or private driver from Khobar to Bahrain, including return trips, Bahrain airport drop-offs, and family travel. Send the pickup location, destination, passenger count, and luggage details on WhatsApp to confirm availability.'],
     ['نقل البحرين والسعودية والخليج 24 ساعة | حجز واتساب فوري | Vendora', 'Bahrain, Saudi Arabia and GCC transport 24 hours | Instant WhatsApp booking | Vendora'],
     ['من نحن | خدمة نقل خاصة بين البحرين والسعودية والخليج | Vendora', 'About us | Private transport between Bahrain, Saudi Arabia and the GCC | Vendora'],
     ['توصيل طرود من البحرين إلى السعودية والخليج | خدمة يومية 24 ساعة | Vendora', 'Parcel delivery from Bahrain to Saudi Arabia and the GCC | Daily 24-hour service | Vendora'],
