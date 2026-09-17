@@ -51,6 +51,8 @@
   let whatsAppClickLockUntil = 0;
 
   const translations = [
+    ['يمكن التحقق من طلب سيارة بسبعة مقاعد للرحلات العائلية بعد تأكيد عدد الركاب والأمتعة والتوفر.', 'Seven-seater enquiries can be checked for family travel when passenger count, luggage and availability are confirmed.'],
+    ['يمكن التحقق من طلب سيارة بسبعة مقاعد أو سائق خاص للرحلات العائلية بعد تأكيد عدد الركاب والأمتعة والتوفر.', 'Seven-seater enquiries and chauffeur requests can be checked for family travel when passenger count, luggage and availability are confirmed.'],
     ['خدمات النقل الخاص من البحرين إلى الدمام', 'Private transport from Bahrain to Dammam'],
     ['تشمل خيارات الحجز سيارة خاصة من البحرين إلى الدمام، وسائقاً خاصاً، ونقلاً من البحرين إلى الدمام للعائلات ورحلات العمل والطرود. أرسل موقع الاستلام وعدد الركاب والأمتعة عبر واتساب لتأكيد التوفر والتفاصيل المناسبة للمسار.', 'Booking options include a private car from Bahrain to Dammam, a private driver, and Bahrain to Dammam transport for families, business trips, and parcels. Send the pickup location, passenger count, and luggage details on WhatsApp to confirm availability and route details.'],
     ['خدمات النقل الخاص من البحرين إلى الخبر', 'Private transport from Bahrain to Khobar'],
