@@ -157,6 +157,9 @@ test.describe('GCC Private Transport Guide Telemetry & Tracking Integration', ()
 
     await page.goto(enPath, { waitUntil: 'domcontentloaded' });
 
+    // The production consent banner intentionally blocks underlying controls until a choice is made.
+    await page.locator('#vendoraConsentEssential').click();
+
     // Catch WhatsApp redirect
     await page.route('https://wa.me/**', (route) => route.fulfill({ status: 204 }));
 

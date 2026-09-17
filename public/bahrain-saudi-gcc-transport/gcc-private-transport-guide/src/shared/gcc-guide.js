@@ -640,7 +640,7 @@
         targetUrl: link.href || ""
       }, plannerData));
     }
-  });
+  }, true);
   // --- TRACKING CODE END ---
 
   function initForm(form) {
@@ -806,5 +806,7 @@
     const text = link.getAttribute("data-wa-static") || "";
     const lang = document.documentElement.lang === "ar" ? "ar" : "en";
     link.href = `https://wa.me/${PHONE}?text=${encodeURIComponent(identifyVendoraSource(lang, text))}`;
+    link.target = "_blank";
+    link.rel = "noopener";
   });
 })();

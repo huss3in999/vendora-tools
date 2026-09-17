@@ -115,7 +115,7 @@ p { margin: 0; color: var(--muted); }
   font-weight: 800;
 }
 .hero-media { position: relative; overflow: hidden; min-height: 100%; }
-.hero-media img { width: 100%; height: clamp(430px, 42vw, 560px); object-fit: cover; object-position: center; border-radius: var(--radius); }
+.hero-media img { width: 100%; height: auto; aspect-ratio: 1400 / 875; object-fit: cover; object-position: center; border-radius: var(--radius); }
 .media-caption {
   position: absolute;
   inset-inline: 18px;
@@ -255,7 +255,7 @@ details p { padding-top: 10px; }
   .hero-copy { gap: 14px; }
   h1 { font-size: clamp(2.15rem, 10.5vw, 3.35rem); }
   .lead { font-size: 1rem; line-height: 1.65; }
-  .hero-media img { min-height: 230px; }
+  .hero-media img { min-height: 0; }
   .field-row, .grid-4, .index-links, .trust-checklist { grid-template-columns: 1fr; }
   .brand-sub { display: none; }
   .nav-link { min-height: 36px; padding: 8px 11px; font-size: 12px; }

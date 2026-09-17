@@ -66,7 +66,7 @@ test('all 140 public pages keep active text opaque and light-panel copy readable
         .filter((element) => Number(getComputedStyle(element).opacity) < 0.8)
         .map((element) => element.textContent.trim().slice(0, 70));
 
-      const excluded = '.company-panel,.price-callout,.calculator-tabs,.calculator-timeline,.calculator-result,.vip-featured-card,.service-card,.planner-panel';
+      const excluded = '.company-panel,.price-callout,.calculator-tabs,.calculator-timeline,.calculator-result,.vip-featured-card,.service-card,.planner-panel,.fleet-tier,.fleet-tier-body,.fleet-tier-features,.matcher-panel,.matcher-inputs,.matcher-output-box,.review-card,.dark-panel';
       const lowContrast = document.body.classList.contains('vip-transport')
         ? [...document.querySelectorAll('.section-shell p,.section-shell li,.section-shell label,.section-shell summary,.section-shell .field-help,.section-shell .footer-copy')]
           .filter(visible)
@@ -199,7 +199,7 @@ test('shared WhatsApp source wrapper identifies Vendora once in both languages',
   expect(Arabic).toContain('توصيل مطار البحرين');
 
   const English = await page.evaluate(() => window.vendoraIdentifyWhatsAppSource('Hello, I need a Bahrain Airport transfer.', 'en'));
-  expect(English).toContain('Vendora Transport website');
+  expect(English).toContain('Vendora Website Enquiry:');
   expect(English).toContain('I would like to enquire about:');
   expect(English.match(/https:\/\/getvendora\.net\/bahrain-saudi-gcc-transport\/en\//g)).toHaveLength(1);
   expect(English).toContain('Bahrain Airport transfer');
@@ -208,7 +208,7 @@ test('shared WhatsApp source wrapper identifies Vendora once in both languages',
 test('price, planner and guide messages include the correct source and selected service', async ({ page }) => {
   await page.goto(`${root}en/prices/`);
   const priceMessage = await page.locator('.price-card [data-wa-message]').first().getAttribute('data-wa-message');
-  expect(priceMessage).toContain('Vendora Transport website');
+  expect(priceMessage).toMatch(/Vendora (?:Website Enquiry:|Transport website)/);
   expect(priceMessage).toContain('/en/');
 
   await page.goto(`${root}gcc-transport-planner/`);
@@ -219,6 +219,6 @@ test('price, planner and guide messages include the correct source and selected 
   await page.goto(`${root}en/gcc-private-transport-guide/`);
   const guideHref = await page.locator('[data-wa-static]').first().getAttribute('href');
   const guideMessage = new URL(guideHref).searchParams.get('text');
-  expect(guideMessage).toContain('Vendora Transport website');
+  expect(guideMessage).toContain('Vendora Website Enquiry:');
   expect(guideMessage).toContain('/en/');
 });

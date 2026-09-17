@@ -4253,3 +4253,10 @@ body.vip-transport .review-card .review-stars {
 
 
 
+body.vip-transport .section-shell .faq-item :is(summary, p),
+body.vip-transport .section-shell .section-head p {
+  color: #415163 !important;
+  opacity: 1 !important;
+}
+
+

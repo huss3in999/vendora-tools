@@ -1046,7 +1046,7 @@
       : 'https://getvendora.net/bahrain-saudi-gcc-transport/';
     const sourceLine = isEnglish
       ? 'Vendora Website Enquiry:'
-      : 'طلب من موقع فيندورا:';
+      : '\u0637\u0644\u0628 \u0645\u0646 \u0645\u0648\u0642\u0639 \u0641\u0646\u062f\u0648\u0631\u0627 \u0644\u0644\u0646\u0642\u0644:';
     const enquiryLine = isEnglish
       ? 'I would like to enquire about:'
       : 'أرغب في الاستفسار عن:';
@@ -1925,6 +1925,7 @@
   }
 
   function neutralizeWhatsAppHrefs() {
+    if (window.__VENDORA_PAGE_OWNS_WA_TRACKING__) return;
     document.querySelectorAll('a[href*="wa.me"], a[href*="api.whatsapp.com"]').forEach((link) => {
       if (!link.hasAttribute('data-wa-preserved-href')) {
         const currentHref = link.getAttribute('href') || '';
@@ -2525,7 +2526,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     hero.classList.add('vip-content-hero');
     const grid = hero.querySelector('.hero-grid, .premium-hero-grid, .planner-hero-grid');
     const copy = hero.querySelector('.hero-copy, .premium-hero-copy, .planner-hero-copy');
-    let visual = hero.querySelector('.hero-side, .hero-media-card, .planner-media-frame');
+    let visual = hero.querySelector('.hero-side, .hero-media-card, .planner-media-frame, .hero-media');
     grid?.classList.add('vip-content-hero-grid');
     copy?.classList.add('vip-content-hero-copy');
     if (!visual && grid) {
@@ -2533,7 +2534,9 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
       visual.className = 'hero-side glass';
       grid.appendChild(visual);
     }
-    visual?.classList.add('vip-content-hero-visual');
+    if (visual && !visual.classList.contains('hero-media')) {
+      visual.classList.add('vip-content-hero-visual');
+    }
     const existingImage = visual?.querySelector('img');
     if (existingImage) {
       existingImage.classList.add('vip-page-hero-image');
