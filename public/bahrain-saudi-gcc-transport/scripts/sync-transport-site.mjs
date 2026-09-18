@@ -273,7 +273,7 @@ function generatedRootContactHtml() {
         ],
         address: {
           '@type': 'PostalAddress',
-          streetAddress: 'Office 240, Second Floor, The Address Tower',
+          streetAddress: business.public_address,
           addressLocality: 'Seef',
           addressCountry: 'BH'
         },
