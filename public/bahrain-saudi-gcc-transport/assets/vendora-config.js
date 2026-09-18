@@ -50,7 +50,7 @@ window.VENDORA_BUSINESS_CONFIG = Object.freeze({
   "luggage_policy_wording_en": "Vehicle type and model depend on the route, passenger count, luggage and availability when the booking is confirmed. Customers must provide the number and approximate size of their bags. Additional luggage arrangements may be possible when suitable and confirmed in advance.",
   "insurance_wording_ar": "ترتيب المركبة والسائق حسب المسار والتوفر.",
   "insurance_wording_en": "Vehicle and driver arrangements depend on route and availability.",
-  "legal_name": "Vendora Transport",
+  "legal_name": "Vendora Gulf Transport & Logistics Services",
   "cr_number": "",
   "legal_information_enabled": true,
   "sar_per_bhd": 10
@@ -572,7 +572,7 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
     "insurance_wording_en": "Vehicle and driver arrangements depend on route and availability.",
     "public_address": "Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain",
     "address_display_enabled": false,
-    "legal_name": "Vendora Transport",
+    "legal_name": "Vendora Gulf Transport & Logistics Services",
     "cr_number": "",
     "legal_information_enabled": true,
     "sar_per_bhd": 10,

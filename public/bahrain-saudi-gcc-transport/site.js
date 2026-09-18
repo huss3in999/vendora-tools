@@ -51,6 +51,8 @@
   let whatsAppClickLockUntil = 0;
 
   const translations = [
+    ['منشأة مسجلة في مملكة البحرين', 'Registered business in the Kingdom of Bahrain'],
+    ['تعمل Vendora Transport تحت اسم المنشأة البحرينية المسجلة Vendora Gulf Transport & Logistics Services.', 'Vendora Transport operates under the registered Bahrain business Vendora Gulf Transport & Logistics Services.'],
     ['يمكن التحقق من طلب سيارة بسبعة مقاعد للرحلات العائلية بعد تأكيد عدد الركاب والأمتعة والتوفر.', 'Seven-seater enquiries can be checked for family travel when passenger count, luggage and availability are confirmed.'],
     ['يمكن التحقق من طلب سيارة بسبعة مقاعد أو سائق خاص للرحلات العائلية بعد تأكيد عدد الركاب والأمتعة والتوفر.', 'Seven-seater enquiries and chauffeur requests can be checked for family travel when passenger count, luggage and availability are confirmed.'],
     ['خدمات النقل الخاص من البحرين إلى الدمام', 'Private transport from Bahrain to Dammam'],
@@ -997,14 +999,18 @@
           name: 'Vendora Transport',
           url: 'https://getvendora.net/bahrain-saudi-gcc-transport/',
           inLanguage: ['ar', 'en'],
-          publisher: { '@id': 'https://getvendora.net/bahrain-saudi-gcc-transport/#org' },
+          publisher: { '@id': 'https://getvendora.net/bahrain-saudi-gcc-transport/#organization' },
         },
         {
           '@type': 'Organization',
-          '@id': 'https://getvendora.net/bahrain-saudi-gcc-transport/#org',
+          '@id': 'https://getvendora.net/bahrain-saudi-gcc-transport/#organization',
           name: 'Vendora Transport',
+          legalName: centralBusinessConfig.legal_name || 'Vendora Gulf Transport & Logistics Services',
           url: 'https://getvendora.net/bahrain-saudi-gcc-transport/',
-          telephone: '+973-3322-5954',
+          telephone: centralBusinessConfig.booking_whatsapp ? `+${centralBusinessConfig.booking_whatsapp}` : '+973-3322-5954',
+          contactPoint: centralBusinessConfig.support_phone ? [{ '@type': 'ContactPoint', contactType: 'customer support', telephone: `+${centralBusinessConfig.support_phone}` }] : undefined,
+          address: centralBusinessConfig.public_address ? { '@type': 'PostalAddress', streetAddress: centralBusinessConfig.public_address, addressCountry: 'BH' } : undefined,
+          paymentAccepted: Array.isArray(centralBusinessConfig.supported_payments) ? centralBusinessConfig.supported_payments.join(', ') : 'Cash, BenefitPay',
           areaServed: ['BH', 'SA', 'KW', 'AE', 'QA', 'OM', 'IQ'],
         },
         {
@@ -2370,6 +2376,19 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     return strip;
   }
 
+  function addBusinessAuthorityNotice() {
+    const path = window.location.pathname.replace(/\\/g, '/');
+    if (!/(?:^|\/)bahrain-saudi-gcc-transport\/(?:en\/)?(?:about|contact)\/?$/.test(path) || document.querySelector('[data-vendora-business-authority]')) return;
+    const isEnglish = state.lang === 'en';
+    const notice = document.createElement('section');
+    notice.className = 'section vendora-business-authority';
+    notice.dataset.vendoraBusinessAuthority = 'true';
+    notice.innerHTML = `<div class="container section-shell"><div class="company-panel glass"><h2>${isEnglish ? 'Registered business in the Kingdom of Bahrain' : 'منشأة مسجلة في مملكة البحرين'}</h2><p>${isEnglish ? 'Vendora Transport operates under the registered Bahrain business Vendora Gulf Transport &amp; Logistics Services.' : 'تعمل Vendora Transport تحت اسم المنشأة البحرينية المسجلة Vendora Gulf Transport &amp; Logistics Services.'}</p></div></div>`;
+    const main = document.querySelector('main');
+    const hero = main?.querySelector(':scope > .hero, :scope > .premium-hero');
+    (hero || main)?.insertAdjacentElement('afterend', notice);
+  }
+
   function enhanceVipBooking(form, section) {
     if (!form || form.dataset.vipEnhanced === 'true') return;
     form.dataset.vipEnhanced = 'true';
@@ -3561,6 +3580,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     setupForms();
     injectFlagImages();
     applyLanguage();
+    addBusinessAuthorityNotice();
     setupVipShell();
     renderIcons();
     trackPageView();

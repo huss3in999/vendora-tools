@@ -10,7 +10,7 @@ window.VENDORA_BUSINESS_CONFIG = {
   support_phone: '97333404044',
   public_email: 'booking@getvendora.net',
   public_email_enabled: true,
-  public_address: 'Office 240, Second Floor, The Address Tower, Seef, Bahrain',
+  public_address: 'Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain',
   booking_whatsapp_enabled: true,
   support_phone_enabled: true,
   brand_colors: {
