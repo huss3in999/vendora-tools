@@ -17,8 +17,9 @@
     "test:gcc-batch-1": "playwright test tests/gcc-route-batch-1.spec.js",
     "validate:analytics": "node scripts/validate-sitewide-analytics.mjs",
     "test:analytics-api": "node tests/analytics-api.test.mjs",
+    "test:d1-efficiency": "node tests/d1-analytics-efficiency.test.mjs",
     "test:analytics": "playwright test tests/sitewide-analytics.spec.js",
-    "test:node": "node tests/analytics-api.test.mjs && node tests/whatsapp-confirmation-api.test.mjs && node --test tests/batch1-security.test.cjs && node --test tests/passenger-care-approval.test.mjs",
+    "test:node": "node tests/analytics-api.test.mjs && node tests/d1-analytics-efficiency.test.mjs && node tests/whatsapp-confirmation-api.test.mjs && node --test tests/batch1-security.test.cjs && node --test tests/passenger-care-approval.test.mjs",
     "test": "npm run test:node && playwright test",
     "test:ui": "playwright test --ui"
   },

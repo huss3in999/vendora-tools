@@ -62,12 +62,13 @@ await send('whatsapp_click', { event_id: 'second-confirmed-exit', confirmed_depa
 await send('whatsapp_intent', { event_id: 'undecided-intent', visitor_id: 'visitor_undecided', session_id: 'session_undecided', button_text: 'Ask on WhatsApp', cta_location: 'body' });
 await send('quote_request');
 await send('session_heartbeat');
+await send('page_view', { synthetic_test: true });
 await send('page_view', { page_url: 'https://getvendora.net/', page_path: '/', route_name: '' });
 await send('navigation_click', { event_id: 'retry-safe-event', target_path: '/bahrain-saudi-gcc-transport/en/' });
 await send('navigation_click', { event_id: 'retry-safe-event', target_path: '/bahrain-saudi-gcc-transport/en/' });
 
 const stored = sqlite.prepare('SELECT event_name, target_url, user_agent, raw_payload FROM analytics_events ORDER BY id').all();
-assert.equal(stored.length, 14);
+assert.equal(stored.length, 13, 'low-value heartbeat and synthetic test events are suppressed before D1 writes');
 assert.equal(stored.find((row) => row.event_name === 'whatsapp_click').target_url, 'https://wa.me/');
 assert.equal(JSON.parse(stored.find((row) => row.event_name === 'whatsapp_click').raw_payload).confirmed_departure, true);
 assert.equal(JSON.parse(stored.find((row) => row.event_name === 'whatsapp_cancel').raw_payload).cancellation_method, 'back_button');

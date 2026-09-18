@@ -4386,16 +4386,17 @@
 
     async function loadDashboard() {
       const search = state.filters.search || '';
+      const allTime = state.activePeriod === 'all';
       const [leadsData, pvsData, routesData, summaryData, notificationData, errorsData, careData, publicData, trackingData] = await Promise.all([
-        api(queryFromFilters({ resource: 'leads', limit: 800 })),
-        api(queryFromFilters({ resource: 'pageviews', limit: 800 })),
+        allTime ? Promise.resolve({ leads: [] }) : api(queryFromFilters({ resource: 'leads', limit: 200 })),
+        allTime ? Promise.resolve({ leads: [] }) : api(queryFromFilters({ resource: 'pageviews', limit: 200 })),
         api('?resource=routes'),
         api(queryFromFilters({ resource: 'summary', bot_filter: state.trafficFilter, period: state.activePeriod })),
         api('?resource=notification-settings'),
         api('?resource=errors&limit=200').catch(() => ({ errors: state.errors })),
         api(search ? `?resource=passenger-care&search=${encodeURIComponent(search)}&limit=200` : '?resource=passenger-care&limit=200'),
         api('?resource=public-settings'),
-        api('?resource=tracking&period=7_days'),
+        api(queryFromFilters({ resource: 'tracking', period: state.activePeriod || 'today' })),
       ]);
       state.leads = leadsData.leads || [];
       state.pageviews = pvsData.leads || [];
