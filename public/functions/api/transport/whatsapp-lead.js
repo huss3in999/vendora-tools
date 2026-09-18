@@ -578,7 +578,13 @@ async function storeLead(request, env, payload, leadUuid, bookingRef, careToken)
   const geo = getRequestGeo(request);
   await ensurePassengerCareSchema(env);
   await ensureAnalyticsEnrichmentSchema(env);
-  await upsertAnalyticsSession(request, env, payload);
+  const pageview = isPageview(payload);
+  const sessionPageViews = Number(payload.sessionPageViews ?? payload.session_page_views ?? 0);
+  // Keep the first page and conversion context, but do not rewrite the same
+  // analytics session for every additional pageview-only lead row.
+  if (!pageview || sessionPageViews <= 1) {
+    await upsertAnalyticsSession(request, env, payload);
+  }
   const stmt = env.TRANSPORT_DB.prepare(`
     INSERT INTO whatsapp_leads (
       lead_uuid,
@@ -714,6 +720,14 @@ export async function onRequestPost(context) {
     return json({ ok: false, error: 'Invalid JSON payload' }, { status: 400, headers });
   }
 
+  const leadPagePath = String(payload.pagePath || '').toLowerCase();
+  const leadUa = String(request.headers.get('user-agent') || '').toLowerCase();
+  const leadBot = request.cf?.botManagement?.verifiedBot === true
+    || /bot|crawler|spider|headless|puppeteer|selenium|playwright|ahrefs|semrush|bytespider|gptbot|claudebot|perplexitybot/i.test(leadUa);
+  if (leadBot || payload.synthetic_test === true || payload.internal_test === true || leadPagePath.includes('/admin/') || leadPagePath.includes('/care/')) {
+    return json({ ok: true, suppressed: true }, { status: 202, headers });
+  }
+
   const handoffAction = cleanText(payload.action, 80);
   if (handoffAction === 'confirm_whatsapp_handoff' || handoffAction === 'cancel_whatsapp_handoff') {
     const leadId = cleanText(payload.leadId, 80);
@@ -846,6 +860,7 @@ export async function onRequestPost(context) {
       if (Number(updateResult.meta?.changes || 0) > 0) {
         return json({ ok: true, session_id: sessionId, updated: true }, { status: 200, headers: corsHeaders(request) });
       }
+      return json({ ok: true, session_id: sessionId, suppressed: true }, { status: 202, headers: corsHeaders(request) });
     } catch {
       // If update fails, fall through to storeLead
     }

@@ -1,6 +1,7 @@
 import { recordError } from './error-log.js';
 import { checkRateLimit, rateLimitResponse } from './rate-limit.js';
 import { upsertAnalyticsSession } from './analytics-enrichment.js';
+import { updateDailyAnalyticsAggregate } from './analytics-rollups.js';
 
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
@@ -177,7 +178,7 @@ async function writeEventToDb(request, env, payload, eventId) {
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
-  await stmt.bind(
+  const result = await stmt.bind(
     eventId,
     cleanText(payload.visitor_id, 80) || 'unknown_visitor',
     cleanText(payload.session_id, 120) || 'unknown_session',
@@ -206,6 +207,24 @@ async function writeEventToDb(request, env, payload, eventId) {
     geo.timezone,
     safePayloadJson(payload)
   ).run();
+  return Number(result?.meta?.changes || 0);
+}
+
+const LOW_VALUE_EVENT_NAMES = new Set([
+  'session_heartbeat', 'presence_heartbeat', 'scroll', 'scroll_depth',
+  'mousemove', 'mouse_move', 'hover', 'visibility_change', 'engagement_ping',
+]);
+
+function shouldSuppressBeforeWrite(request, payload) {
+  const pagePath = String(payload.page_path || '').toLowerCase();
+  const userAgent = String(request.headers.get('user-agent') || '').toLowerCase();
+  const cfBot = request.cf?.botManagement || {};
+  const knownCrawler = /bot|crawler|spider|headless|puppeteer|selenium|playwright|ahrefs|semrush|bytespider|gptbot|claudebot|perplexitybot/i.test(userAgent);
+  const verifiedBot = cfBot.verifiedBot === true || cfBot.verifiedBot === 1;
+  const internalTest = payload.synthetic_test === true || payload.internal_test === true;
+  const adminOrCare = pagePath.includes('/admin/') || pagePath.includes('/care/');
+  const lowValue = LOW_VALUE_EVENT_NAMES.has(String(payload.event_name || '').toLowerCase());
+  return { knownCrawler, verifiedBot, internalTest, adminOrCare, lowValue };
 }
 
 export async function onRequestOptions(context) {
@@ -240,11 +259,23 @@ export async function onRequestPost(context) {
   }
   payload.event_name = eventName;
 
+  const suppression = shouldSuppressBeforeWrite(request, payload);
+  if (suppression.knownCrawler || suppression.verifiedBot || suppression.internalTest || suppression.adminOrCare || suppression.lowValue) {
+    return json({ ok: true, eventId: cleanText(payload.event_id, 80) || null, suppressed: true }, { status: 202, headers });
+  }
+
   const eventId = cleanText(payload.event_id, 80) || crypto.randomUUID();
-  const dbTask = Promise.all([
-    writeEventToDb(request, env, payload, eventId),
-    upsertAnalyticsSession(request, env, payload),
-  ]).catch((error) => {
+  const dbTask = (async () => {
+    const inserted = await writeEventToDb(request, env, payload, eventId);
+    if (!inserted) return;
+
+    const sessionPageViews = Number(payload.sessionPageViews ?? payload.session_page_views ?? 0);
+    const importantEvent = new Set(['page_view', 'whatsapp_intent', 'whatsapp_click', 'whatsapp_cancel', 'quote_request', 'booking_start', 'booking_submit', 'phone_click']);
+    if (importantEvent.has(eventName) && (eventName !== 'page_view' || sessionPageViews <= 1)) {
+      await upsertAnalyticsSession(request, env, payload);
+    }
+    await updateDailyAnalyticsAggregate(env, payload, eventName);
+  })().catch((error) => {
     console.error(JSON.stringify({
       event: 'tracking_event_insert_failed',
       eventId,

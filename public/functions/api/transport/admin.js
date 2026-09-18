@@ -276,6 +276,8 @@ const ADMIN_COLUMNS = [
 
 let schemaReady = false;
 let settingsSchemaReady = false;
+const ADMIN_ANALYTICS_CACHE = new Map();
+const ADMIN_ANALYTICS_CACHE_TTL_MS = 2 * 60 * 1000;
 
 const DEFAULT_NOTIFICATION_SETTINGS = {
   notifications_enabled: true,
@@ -985,8 +987,51 @@ function mergePerformanceRows(clickRows = [], pageviewRows = []) {
   return [...map.values()].sort((a, b) => b.clicks - a.clicks || b.pageviews - a.pageviews);
 }
 
+async function getAggregateSummary(env) {
+  try {
+    const totals = await env.TRANSPORT_DB.prepare(`
+      SELECT COALESCE(SUM(unique_visitors), 0) AS total_visitors,
+        COALESCE(SUM(sessions), 0) AS total_sessions,
+        COALESCE(SUM(page_views), 0) AS total_pageviews,
+        COALESCE(SUM(events), 0) AS total_events,
+        COALESCE(SUM(whatsapp_clicks), 0) AS whatsapp_clicks,
+        COALESCE(SUM(leads), 0) AS lead_records_total,
+        COALESCE(SUM(confirmed_bookings), 0) AS completed
+      FROM daily_analytics_aggregates
+    `).first();
+    const { results: byDay } = await env.TRANSPORT_DB.prepare(`
+      SELECT aggregate_date AS label, SUM(page_views) AS pageviews, SUM(whatsapp_clicks) AS count
+      FROM daily_analytics_aggregates GROUP BY aggregate_date ORDER BY aggregate_date DESC LIMIT 366
+    `).all();
+    const { results: byRoute } = await env.TRANSPORT_DB.prepare(`
+      SELECT COALESCE(NULLIF(route_name, ''), 'unknown') AS label,
+        SUM(page_views) AS pageviews, SUM(whatsapp_clicks) AS clicks, SUM(leads) AS count
+      FROM daily_analytics_aggregates GROUP BY route_name ORDER BY pageviews DESC LIMIT 20
+    `).all();
+    return { summary: {
+      ...(totals || {}), total: Number(totals?.whatsapp_clicks || 0), today: 0,
+      sessions: Number(totals?.total_sessions || 0), total_sessions: Number(totals?.total_sessions || 0),
+      total_pageviews: Number(totals?.total_pageviews || 0), pageviews_today: 0,
+      whatsapp_intents_count: Number(totals?.whatsapp_clicks || 0),
+      human_likely_visitors: Number(totals?.total_visitors || 0),
+      traffic_metrics_source: 'd1_daily_aggregate',
+      traffic_metrics_warning: 'All Time uses incremental aggregates only. Historical rows are not backfilled automatically.',
+      aggregate_coverage: 'incremental_since_migration',
+      funnel: { visitors: Number(totals?.total_visitors || 0), route_views: Number(totals?.total_pageviews || 0), whatsapp_clicks: Number(totals?.whatsapp_clicks || 0), completed: Number(totals?.completed || 0) },
+      by_route: byRoute || [], by_day: byDay || [], by_source: [], by_campaign: [], by_country: [], by_device: [], by_hour: [],
+      status_breakdown: [], top_pages: [], lost_reasons: [], repeat_customers: [], recent_activity: [],
+      online_now: 0, online_transport: 0, online_care: 0, online_all: 0, online_sessions: 0, online_recent: [], online_care_recent: [],
+      business_report: { route_performance: byRoute || [], campaign_performance: [], source_performance: [], top_pages: [], status_breakdown: [], lost_reasons: [] },
+    } };
+  } catch (error) {
+    if (/no such table/i.test(String(error?.message || error))) return { summary: { traffic_metrics_source: 'd1_daily_aggregate', traffic_metrics_warning: 'Daily aggregate migration is not applied yet.', aggregate_coverage: 'unavailable' } };
+    throw error;
+  }
+}
+
 async function getSummary(env, request) {
   const url = new URL(request.url);
+  if (url.searchParams.get('period') === 'all') return getAggregateSummary(env);
   const ga4Request = ga4TrafficRequest(url);
   const ga4TrafficPromise = ga4Request && env.GA4_SERVICE_ACCOUNT_JSON
     ? getGa4TrafficMetrics(env, ga4Request).catch((error) => ({ __error: String(error?.message || error).slice(0, 240) }))
@@ -1617,6 +1662,36 @@ async function getTrackingSummary(env, request) {
   const url = new URL(request.url);
   const period = url.searchParams.get('period') || '24 hours';
   const sessionId = url.searchParams.get('session_id') || '';
+
+  if (period === 'all') {
+    try {
+      const totals = await env.TRANSPORT_DB.prepare(`
+        SELECT COALESCE(SUM(unique_visitors), 0) AS visitors,
+          COALESCE(SUM(sessions), 0) AS sessions, COALESCE(SUM(page_views), 0) AS page_views,
+          COALESCE(SUM(whatsapp_clicks), 0) AS whatsapp_clicks, COALESCE(SUM(leads), 0) AS leads,
+          COALESCE(SUM(events), 0) AS events
+        FROM daily_analytics_aggregates
+      `).first();
+      const { results: pages } = await env.TRANSPORT_DB.prepare(`
+        SELECT COALESCE(NULLIF(page_path, ''), 'unknown') AS page_path,
+          SUM(page_views) AS views, SUM(whatsapp_clicks + leads) AS conversions
+        FROM daily_analytics_aggregates GROUP BY page_path ORDER BY views DESC LIMIT 50
+      `).all();
+      return {
+        totals: totals || {}, top_pages: pages || [], top_referrers: [], recent_events: [],
+        event_totals: { page_views: Number(totals?.page_views || 0), whatsapp_clicks: Number(totals?.whatsapp_clicks || 0), events: Number(totals?.events || 0) },
+        session_metrics: { sessions: Number(totals?.sessions || 0) }, online_now: [], route_performance: [],
+        country_hub_performance: [], page_performance: pages || [], pages_without_conversion: [], ai_referrals: [],
+        dimensions: { country: [], city: [], device: [], language: [], source: [] },
+        aggregate_coverage: 'incremental_since_migration',
+        warning: 'All Time uses incremental aggregates only. Historical rows are not backfilled automatically.',
+        gcc_summary: { ar_views: 0, en_views: 0, total_views: 0, planner_starts: 0, quotes_generated: 0, whatsapp_clicks: 0, airport_routes: 0, custom_locations: 0, recent_events: [] },
+      };
+    } catch (error) {
+      if (/no such table/i.test(String(error?.message || error))) return { totals: {}, top_pages: [], recent_events: [], aggregate_coverage: 'unavailable', warning: 'Daily aggregate migration is not applied yet.' };
+      throw error;
+    }
+  }
   
   if (sessionId) {
     const { results: journey } = await env.TRANSPORT_DB.prepare(`
@@ -1632,6 +1707,11 @@ async function getTrackingSummary(env, request) {
   let since = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-24 hours')";
   if (period === 'today') {
     since = "strftime('%Y-%m-%dT00:00:00.000Z', 'now', '+3 hours')";
+  } else if (period === 'yesterday') {
+    since = "strftime('%Y-%m-%dT00:00:00.000Z', 'now', '-1 day', '+3 hours')";
+  } else if (/^(7|7_days|14|21|30|90|180)$/.test(period)) {
+    const days = Number.parseInt(period, 10);
+    since = `strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-${Math.max(1, days)} days')`;
   } else if (period === '7_days') {
     since = "strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-7 days')";
   }
@@ -2393,6 +2473,10 @@ export async function onRequestGet(context) {
   const resource = url.searchParams.get('resource') || 'leads';
 
   try {
+    const cacheable = resource === 'summary' || resource === 'tracking';
+    const cacheKey = `${resource}:${url.search}`;
+    const cached = cacheable ? ADMIN_ANALYTICS_CACHE.get(cacheKey) : null;
+    if (cached && cached.expiresAt > Date.now()) return json({ ok: true, ...cached.data, cached: true }, { headers });
     const data = resource === 'routes'
       ? await getRoutes(env)
       : resource === 'public-settings'
@@ -2422,7 +2506,8 @@ export async function onRequestGet(context) {
         : resource === 'pageviews'
           ? await getEventRows(env, request, 'pageview')
           : await getEventRows(env, request, 'lead');
-    return json({ ok: true, ...data }, { headers });
+    if (cacheable) ADMIN_ANALYTICS_CACHE.set(cacheKey, { expiresAt: Date.now() + ADMIN_ANALYTICS_CACHE_TTL_MS, data });
+    return json({ ok: true, ...data, cached: false }, { headers });
   } catch (error) {
     const errorMsg = error && error.message ? error.message : String(error);
     console.error(JSON.stringify({ event: 'transport_admin_get_failed', message: errorMsg }));
@@ -2447,6 +2532,7 @@ export async function onRequestDelete(context) {
   if (!(await authorize(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, { status: 401, headers });
   }
+  ADMIN_ANALYTICS_CACHE.clear();
 
   const url = new URL(request.url);
   const resource = url.searchParams.get('resource') || '';
@@ -2487,6 +2573,7 @@ async function handleAdminWrite(context) {
   if (!(await authorize(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, { status: 401, headers });
   }
+  ADMIN_ANALYTICS_CACHE.clear();
 
   let payload;
   try {
