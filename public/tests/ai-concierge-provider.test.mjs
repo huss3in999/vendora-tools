@@ -86,6 +86,17 @@ test('Cloudflare Workers AI is selected without requiring Gemini', async () => {
   assert.equal(model, '@cf/meta/llama-3.1-8b-instruct-fast');
 });
 
+test('Cloudflare Workers AI nested response objects are parsed as concierge data', async () => {
+  const db = makeDb({ enabled: 1, provider: 'cloudflare' });
+  const response = await concierge.onRequestPost({ ...context(db, { AI: { run: async () => ({ response: { response: JSON.stringify({ text: 'Ready in English', duration: '5 hours', vehicle: 'Yukon XL', price: 'From 120 BHD' }) } }) } }), request: new Request('https://getvendora.net/bahrain-saudi-gcc-transport/api/ai-chat', { method: 'POST', body: JSON.stringify({ message: 'Bahrain to Riyadh' }) }) });
+  const body = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(body.reply.text.startsWith('Ready in English'), true);
+  assert.equal(body.reply.duration, '5 hours');
+  assert.equal(body.reply.vehicle, 'Yukon XL');
+  assert.equal(body.reply.price, 'From 120 BHD');
+});
+
 test('Gemini selection does not silently use Cloudflare when fallback is off', async () => {
   const db = makeDb({ enabled: 1, provider: 'gemini', allow_fallback: 0 });
   const response = await concierge.onRequestPost({ ...context(db, { AI: { run: async () => ({ response: '{}' }) } }), request: new Request('https://getvendora.net/bahrain-saudi-gcc-transport/api/ai-chat', { method: 'POST', body: JSON.stringify({ message: 'Bahrain to Khobar' }) }) });
