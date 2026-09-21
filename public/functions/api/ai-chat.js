@@ -19,7 +19,16 @@ async function ensureSchema(env) { if (!env?.TRANSPORT_DB) return; await env.TRA
 async function settings(env) { if (!env?.TRANSPORT_DB) return defaultSettings(); try { const row = await env.TRANSPORT_DB.prepare('SELECT * FROM concierge_settings WHERE id=1').first(); return { ...defaultSettings(), ...(row || {}) }; } catch { return defaultSettings(); } }
 async function authorized(request, env) { const expected = env.TRANSPORT_ADMIN_TOKEN || ''; const got = (request.headers.get('authorization') || '').replace(/^Bearer\s+/i, ''); return Boolean(expected && got && expected === got); }
 function buildSystemPrompt(row) { const reference = clean(row.reference_data, MAX_REFERENCE); return [DEFAULT_PROMPT, clean(row.instructions, MAX_INSTRUCTIONS), reference && `ADMIN KNOWLEDGE BASE:\n${reference}`].filter(Boolean).join('\n\n'); }
-function parseModelJson(raw) { const text = String(raw || '').replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim(); try { const parsed = JSON.parse(text); return parsed && typeof parsed === 'object' ? parsed : { text }; } catch { return { text }; } }
+function parseModelJson(raw) {
+  if (raw && typeof raw === 'object') {
+    if (raw.response && raw.response !== raw) return parseModelJson(raw.response);
+    if (raw.result && raw.result !== raw) return parseModelJson(raw.result);
+    if (raw.text || raw.duration || raw.vehicle || raw.price) return raw;
+    return { text: JSON.stringify(raw) };
+  }
+  const text = String(raw || '').replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+  try { const parsed = JSON.parse(text); return parsed && typeof parsed === 'object' ? parsed : { text }; } catch { return { text }; }
+}
 function userPrompt(message, language) { return `Return JSON only with keys text,duration,vehicle,price. Customer language: ${language || 'auto'}. Query: ${message}`; }
 async function runGemini(env, row, message, language) { if (!hasGemini(env)) throw new Error('Gemini provider is not configured'); const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(env.GEMINI_API_KEY)}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ system_instruction: { parts: [{ text: buildSystemPrompt(row) }] }, contents: [{ role: 'user', parts: [{ text: userPrompt(message, language) }] }], generationConfig: { temperature: 0.25, maxOutputTokens: 700, responseMimeType: 'application/json' } }) }); if (!response.ok) throw new Error(`Gemini ${response.status}`); const raw = (await response.json()).candidates?.[0]?.content?.parts?.map((part) => part.text || '').join('') || ''; if (!raw) throw new Error('Gemini returned an empty response'); return parseModelJson(raw); }
 async function runCloudflare(env, row, message, language) { if (!hasWorkersAi(env)) throw new Error('Cloudflare Workers AI is not configured'); const result = await env.AI.run(normalizeModel(row.model), { messages: [{ role: 'system', content: buildSystemPrompt(row) }, { role: 'user', content: userPrompt(message, language) }], max_tokens: 700, temperature: 0.25 }); const raw = typeof result === 'string' ? result : result?.response || result?.text || JSON.stringify(result); return parseModelJson(raw); }
