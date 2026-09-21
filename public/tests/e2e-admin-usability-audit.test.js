@@ -27,10 +27,9 @@ test('Admin index.html contains visitor timeline and journey function handlers',
   assert.ok(html.includes('visitorEventsForLead'), 'Must have visitorEventsForLead function');
 });
 
-test('site.js setupConsentBanner ensures document.body readiness before appendChild', () => {
+test('site.js retires the cookie consent banner', () => {
   const code = fs.readFileSync(siteJsPath, 'utf8');
-  assert.ok(code.includes('setupConsentBanner'), 'site.js must include setupConsentBanner');
-  assert.ok(code.includes('vendora_consent_choice'), 'site.js must check vendora_consent_choice');
+  assert.ok(code.includes('Consent banner retired sitewide'), 'site.js must disable the retired banner');
 });
 
 test('admin.js preserves 100% of historical records without deletion or forced migration', () => {
