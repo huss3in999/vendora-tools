@@ -5,6 +5,7 @@ import * as adminApi from './functions/api/transport/admin.js';
 import * as googleAudienceApi from './functions/api/transport/google-audience.js';
 import * as leadApi from './functions/api/transport/whatsapp-lead.js';
 import * as aiChatApi from './functions/api/transport/ai-chat.js';
+import * as conciergeApi from './functions/api/ai-chat.js';
 import * as errorApi from './functions/api/transport/error-log.js';
 import * as trackingApi from './functions/api/transport/tracking.js';
 import * as publicSettingsApi from './functions/api/transport/public-settings.js';
@@ -456,6 +457,14 @@ export default {
 
       if (path === '/api/transport/ai-chat') {
         return await dispatchPagesFunction(aiChatApi, request, env, ctx);
+      }
+
+      // AI Concierge endpoint. This must be dispatched by the Worker because
+      // this project uses Workers Static Assets, not automatic Pages Functions
+      // routing. logicalPathname() strips /bahrain-saudi-gcc-transport first,
+      // so both /api/ai-chat and /bahrain-saudi-gcc-transport/api/ai-chat work.
+      if (path === '/api/ai-chat') {
+        return await dispatchPagesFunction(conciergeApi, request, env, ctx);
       }
 
       if (path === '/api/transport/log') {

@@ -2672,14 +2672,6 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     });
 
     const isAr = document.documentElement.lang === 'ar';
-    let leadState = {
-      id: crypto.randomUUID ? crypto.randomUUID() : 'lead_' + Date.now(),
-      createdAt: new Date().toISOString(),
-      language: isAr ? 'ar' : 'en',
-      history: [],
-      details: {}
-    };
-
     function openModal() {
       modal.classList.add('active');
       input?.focus();
@@ -2732,8 +2724,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({
             message: text,
-            language: isAr ? 'ar' : 'en',
-            lead: leadState
+            language: isAr ? 'ar' : 'en'
           })
         });
 
@@ -2741,8 +2732,6 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
         typing.remove();
 
         if (data.ok && data.reply && data.reply.text) {
-          if (data.lead) leadState = data.lead;
-
           const assistantBubble = document.createElement('div');
           assistantBubble.className = 'ai-bubble assistant';
           assistantBubble.textContent = data.reply.text;
@@ -3399,184 +3388,6 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     } catch {
       /* The curated links above remain available if the sitemap cannot be loaded. */
     }
-  }
-
-  const CONSENT_KEY = 'vendora_consent_choice';
-
-  function getConsentChoice() {
-    try {
-      return localStorage.getItem(CONSENT_KEY) || null;
-    } catch {
-      return null;
-    }
-  }
-
-  function setConsentChoice(choice) {
-    try {
-      localStorage.setItem(CONSENT_KEY, choice);
-    } catch {}
-  }
-
-  function loadOptionalAnalytics() {
-    if (getConsentChoice() !== 'allowed') return;
-    if (window.__VENDORA_ANALYTICS_LOADED__) return;
-    window.__VENDORA_ANALYTICS_LOADED__ = true;
-    if (window.gtag && typeof window.gtag === 'function') {
-      window.gtag('consent', 'update', {
-        analytics_storage: 'granted',
-        ad_storage: 'granted'
-      });
-    }
-  }
-
-  function setupConsentBanner() {
-    // Consent banner retired sitewide. Analytics is handled without a blocking popup.
-    return;
-    if (getConsentChoice() !== null) {
-      if (getConsentChoice() === 'allowed') {
-        loadOptionalAnalytics();
-      }
-      return;
-    }
-    if (document.getElementById('vendoraConsentBanner')) return;
-
-    const path = window.location.pathname.replace(/\\/g, '/');
-    if (path.includes('/admin/') || path.includes('/care/') || path.includes('/ai-chat-test/')) return;
-
-    const isEn = state.lang === 'en';
-    const banner = document.createElement('div');
-    banner.id = 'vendoraConsentBanner';
-    banner.className = 'vendora-consent-banner';
-    banner.setAttribute('role', 'region');
-    banner.setAttribute('aria-label', isEn ? 'Cookie consent' : 'موافقة الخصوصية');
-
-    banner.innerHTML = `
-      <style>
-        .vendora-consent-banner {
-          position: fixed;
-          bottom: 1.25rem;
-          ${isEn ? 'right: 1.25rem;' : 'left: 1.25rem;'}
-          z-index: 9999;
-          max-width: 23rem;
-          width: calc(100vw - 2.5rem);
-          background: rgba(11, 15, 25, 0.94);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          border-radius: 1.25rem;
-          padding: 1rem 1.15rem;
-          color: #f3f4f6;
-          font-family: inherit;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
-          animation: vendoraConsentSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes vendoraConsentSlideIn {
-          from { opacity: 0; transform: translateY(1rem); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .vendora-consent-head {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          margin-bottom: 0.35rem;
-        }
-        .vendora-consent-head h3 {
-          margin: 0;
-          font-size: 0.88rem;
-          font-weight: 700;
-          color: #fff;
-        }
-        .vendora-consent-body {
-          margin: 0 0 0.85rem;
-          font-size: 0.78rem;
-          line-height: 1.45;
-          color: #94a3b8;
-        }
-        .vendora-consent-actions {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-        .vendora-consent-btn-allow {
-          flex: 1;
-          padding: 0.55rem 0.85rem;
-          border: none;
-          border-radius: 0.75rem;
-          background: #10b981;
-          color: #030712;
-          font-size: 0.78rem;
-          font-weight: 700;
-          cursor: pointer;
-          transition: background 0.2s ease;
-          text-align: center;
-        }
-        .vendora-consent-btn-allow:hover {
-          background: #34d399;
-        }
-        .vendora-consent-btn-essential {
-          flex: 1;
-          padding: 0.55rem 0.85rem;
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          border-radius: 0.75rem;
-          background: rgba(31, 41, 55, 0.6);
-          color: #cbd5e1;
-          font-size: 0.78rem;
-          font-weight: 600;
-          cursor: pointer;
-          transition: background 0.2s ease, color 0.2s ease;
-          text-align: center;
-        }
-        .vendora-consent-btn-essential:hover {
-          background: rgba(55, 65, 81, 0.8);
-          color: #fff;
-        }
-        .vendora-consent-footer {
-          margin-top: 0.5rem;
-          text-align: center;
-        }
-        .vendora-consent-privacy-link {
-          font-size: 0.7rem;
-          color: #64748b;
-          text-decoration: underline;
-        }
-        .vendora-consent-privacy-link:hover {
-          color: #94a3b8;
-        }
-      </style>
-      <div class="vendora-consent-head">
-        <span style="color:#10b981;">🛡️</span>
-        <h3>${isEn ? 'Help us improve GetVendora' : 'ساعدنا في تحسين فندورا'}</h3>
-      </div>
-      <p class="vendora-consent-body">
-        ${isEn ? 'Optional analytics help us understand how visitors use the website and improve our services.' : 'تساعدنا التحليلات الاختيارية على فهم كيفية استخدام الزوار للموقع وتحسين خدماتنا.'}
-      </p>
-      <div class="vendora-consent-actions">
-        <button type="button" class="vendora-consent-btn-allow" id="vendoraConsentAllow">
-          ${isEn ? 'Allow analytics' : 'السماح بالتحليلات'}
-        </button>
-        <button type="button" class="vendora-consent-btn-essential" id="vendoraConsentEssential">
-          ${isEn ? 'Essential only' : 'الأساسية فقط'}
-        </button>
-      </div>
-      <div class="vendora-consent-footer">
-        <a class="vendora-consent-privacy-link" href="${vipRouteHref(isEn ? 'en/privacy' : 'privacy')}">
-          ${isEn ? 'Privacy preferences' : 'تفضيلات الخصوصية'}
-        </a>
-      </div>
-    `;
-
-    document.body.appendChild(banner);
-
-    document.getElementById('vendoraConsentAllow')?.addEventListener('click', () => {
-      setConsentChoice('allowed');
-      banner.remove();
-      loadOptionalAnalytics();
-    });
-
-    document.getElementById('vendoraConsentEssential')?.addEventListener('click', () => {
-      setConsentChoice('essential');
-      banner.remove();
-    });
   }
 
   function init() {
