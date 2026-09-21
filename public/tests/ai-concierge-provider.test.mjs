@@ -4,7 +4,7 @@ import * as concierge from '../functions/api/ai-chat.js';
 import worker from '../worker.js';
 
 function makeDb(initial = {}) {
-  const row = {
+  let row = initial === null ? null : {
     id: 1,
     enabled: 0,
     provider: 'cloudflare',
@@ -25,13 +25,14 @@ function makeDb(initial = {}) {
         bind(...values) { binds = values; return statement; },
         async run() {
           if (sql.includes('INSERT INTO concierge_settings')) {
-            [row.enabled, row.provider, row.model, row.allow_fallback, row.instructions, row.reference_name, row.reference_data] = binds;
+            const [enabled, provider, model, allow_fallback, instructions, reference_name, reference_data] = binds;
+            row = { id: 1, enabled, provider, model, allow_fallback, instructions, reference_name, reference_data };
           }
           return { success: true };
         },
-        async first() { return sql.includes('SELECT * FROM concierge_settings') ? { ...row } : null; },
+        async first() { return sql.includes('SELECT * FROM concierge_settings') && row ? { ...row } : null; },
         async all() {
-          if (sql.includes('PRAGMA table_info')) return { results: Object.keys(row).map((name) => ({ name })) };
+          if (sql.includes('PRAGMA table_info')) return { results: Object.keys(row || { id: 1, enabled: 0, provider: 'cloudflare', model: '', allow_fallback: 0, instructions: '', reference_name: '', reference_data: '' }).map((name) => ({ name })) };
           return { results: [] };
         },
       };
@@ -50,6 +51,27 @@ test('AI master switch blocks customer requests without invoking a provider', as
   const response = await concierge.onRequestPost({ ...context(db, { AI: { run: async () => { calls += 1; } } }), request: new Request('https://getvendora.net/bahrain-saudi-gcc-transport/api/ai-chat', { method: 'POST', body: JSON.stringify({ message: 'Bahrain to Khobar' }) }) });
   assert.equal(response.status, 403);
   assert.equal(calls, 0);
+});
+
+test('Admin settings save creates the missing id=1 row and preserves all fields', async () => {
+  const db = makeDb(null);
+  const response = await concierge.onRequestPost({
+    ...context(db),
+    request: new Request('https://getvendora.net/bahrain-saudi-gcc-transport/api/ai-chat', {
+      method: 'POST',
+      headers: { authorization: 'Bearer test-token' },
+      body: JSON.stringify({ admin_update: true, enabled: true, provider: 'cloudflare', model: '@cf/meta/llama-3.1-8b-instruct-fast', allow_fallback: false, instructions: 'Use the approved route rules.', reference_name: 'rules.txt', reference_data: 'Bahrain to Riyadh: ask for date.' }),
+    }),
+  });
+  assert.equal(response.status, 200);
+  const saved = await concierge.onRequestGet({ ...context(db), request: new Request('https://getvendora.net/bahrain-saudi-gcc-transport/api/ai-chat', { headers: { authorization: 'Bearer test-token' } }) });
+  const body = await saved.json();
+  assert.equal(body.concierge_settings.enabled, true);
+  assert.equal(body.concierge_settings.provider, 'cloudflare');
+  assert.equal(body.concierge_settings.allow_fallback, false);
+  assert.equal(body.concierge_settings.instructions, 'Use the approved route rules.');
+  assert.equal(body.concierge_settings.reference_name, 'rules.txt');
+  assert.equal(body.concierge_settings.reference_size, 'Bahrain to Riyadh: ask for date.'.length);
 });
 
 test('Cloudflare Workers AI is selected without requiring Gemini', async () => {
