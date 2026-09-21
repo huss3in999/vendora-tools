@@ -831,12 +831,13 @@ body.vip-transport .route-review-card .review-author,
   bottom: 96px;
   right: 24px;
   z-index: 55;
-  display: grid;
+  display: inline-flex;
   place-items: center;
-  width: 54px;
-  height: 54px;
-  padding: 0;
-  border-radius: 50%;
+  min-height: 50px;
+  min-width: 210px;
+  padding: 0 18px;
+  gap: 9px;
+  border-radius: 999px;
   background: linear-gradient(135deg, #102b47, #071a2e);
   border: 1px solid rgba(200, 169, 107, 0.45);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 20px rgba(200, 169, 107, 0.2);
@@ -844,9 +845,10 @@ body.vip-transport .route-review-card .review-author,
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   font-weight: 800;
-  font-size: 1.15rem;
+  font-size: 0.88rem;
+  white-space: nowrap;
 }
-.ai-concierge-launcher span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ai-concierge-launcher span { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: nowrap; }
 [dir="rtl"] .ai-concierge-launcher { right: auto; left: 24px; }
 .ai-concierge-launcher:hover {
   transform: translateY(-3px) scale(1.02);
@@ -856,6 +858,7 @@ body.vip-transport .route-review-card .review-author,
   color: var(--vendora-gold-bright, #f4d994);
   font-size: 1.1rem;
 }
+.ai-chat-icon { width: 18px; height: 18px; flex: 0 0 auto; }
 
 /* AI Concierge Modal */
 .ai-modal-overlay {
@@ -1027,7 +1030,7 @@ body.vip-transport .route-review-card .review-author,
   .dock-btn i { width: 18px; height: 18px; }
   .floating-wa { display: none !important; }
   body.vip-transport { padding-bottom: 74px; }
-  .ai-concierge-launcher { display: grid; right: 16px; bottom: 88px; }
+  .ai-concierge-launcher { display: inline-flex; right: 16px; bottom: 88px; min-width: 0; min-height: 46px; padding: 0 14px; font-size: 0.8rem; }
   [dir="rtl"] .ai-concierge-launcher { right: auto; left: 16px; }
   
   .authority-cert-grid { grid-template-columns: 1fr 1fr; }
@@ -1037,4 +1040,7 @@ body.vip-transport .route-review-card .review-author,
 }
 @media (max-width: 480px) {
   .authority-cert-grid { grid-template-columns: 1fr; }
+  .ai-modal-overlay { align-items: flex-end; padding: 12px 12px 82px; }
+  .ai-modal-card { max-height: calc(100vh - 104px); border-radius: 20px; }
+  .ai-concierge-launcher { bottom: 82px; max-width: calc(100vw - 32px); }
 }

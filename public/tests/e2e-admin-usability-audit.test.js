@@ -33,6 +33,14 @@ test('site.js contains no cookie consent banner implementation', () => {
   assert.ok(!code.includes('vendora_consent_choice'), 'site.js must not persist cookie consent state');
 });
 
+test('AI Concierge keeps its CTA on transient status errors and uses customer-facing labels', () => {
+  const code = fs.readFileSync(siteJsPath, 'utf8');
+  assert.ok(code.includes('Chat with us directly'), 'English customer CTA must be visible');
+  assert.ok(code.includes('تحدث معنا مباشرة'), 'Arabic customer CTA must be visible');
+  assert.ok(code.includes("status.ok === true && status.enabled === false"), 'Only an explicit OFF status may remove the CTA');
+  assert.ok(code.includes("trigger.dataset.conciergeStatus = 'unknown'"), 'Status failures must preserve the CTA');
+});
+
 test('admin.js preserves 100% of historical records without deletion or forced migration', () => {
   const code = fs.readFileSync(adminJsPath, 'utf8');
   assert.ok(code.includes('whatsapp_intents_count'), 'admin.js must summarize whatsapp_intents_count');

@@ -2649,11 +2649,71 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     updateMatch();
   }
 
+  function ensureAiConciergeMarkup(isAr) {
+    const labels = isAr
+      ? {
+        cta: 'تحدث معنا مباشرة',
+        aria: 'تحدث معنا مباشرة',
+        title: 'تحدث معنا مباشرة',
+        welcome: 'يا هلا والله وحياك الله! اكتب لي وجهتك وموعدك وعدد الركاب والحقائب، وأبشر بتجهيز مدة الرحلة والمركبة والسعر التقديري.',
+        placeholder: 'اكتب تفاصيل رحلتك أو استفسارك هنا...',
+        close: 'إغلاق المحادثة',
+        send: 'إرسال الرسالة',
+      }
+      : {
+        cta: 'Chat with us directly',
+        aria: 'Chat with us directly',
+        title: 'Chat with us directly',
+        welcome: 'Welcome! Share your pickup, destination, date, passengers and luggage, and I will help prepare the journey details.',
+        placeholder: 'Type your trip details or question here...',
+        close: 'Close chat',
+        send: 'Send message',
+      };
+
+    let trigger = document.getElementById('aiConciergeTrigger');
+    if (!trigger) {
+      trigger = document.createElement('button');
+      trigger.id = 'aiConciergeTrigger';
+      trigger.className = 'ai-concierge-launcher';
+      trigger.type = 'button';
+      trigger.innerHTML = '<i data-lucide="message-circle" class="ai-chat-icon" aria-hidden="true"></i><span data-ai-label></span>';
+      document.body.appendChild(trigger);
+    }
+    trigger.setAttribute('aria-label', labels.aria);
+    const label = trigger.querySelector('[data-ai-label]') || trigger.querySelector('span');
+    if (label) label.textContent = labels.cta;
+
+    let modal = document.getElementById('aiConciergeModal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'aiConciergeModal';
+      modal.className = 'ai-modal-overlay';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.setAttribute('aria-labelledby', 'aiModalTitle');
+      modal.innerHTML = `<div class="ai-modal-card" dir="${isAr ? 'rtl' : 'ltr'}"><div class="ai-modal-header"><h3 id="aiModalTitle"><i data-lucide="message-circle" aria-hidden="true"></i><span data-ai-title></span></h3><button class="ai-modal-close" id="closeAiModal" type="button"><i data-lucide="x" aria-hidden="true"></i></button></div><div class="ai-modal-chat-body" id="aiChatBody"><div class="ai-bubble assistant" data-ai-welcome></div><div class="ai-quick-chips" id="aiQuickChips"></div></div><div class="ai-modal-footer"><input class="ai-input-field" id="aiChatInput" autocomplete="off" /><button class="ai-send-btn" id="aiSendBtn" type="button"><i data-lucide="send" aria-hidden="true"></i></button></div></div>`;
+      document.body.appendChild(modal);
+    }
+    modal.setAttribute('aria-label', labels.title);
+    modal.querySelector('.ai-modal-card')?.setAttribute('dir', isAr ? 'rtl' : 'ltr');
+    modal.querySelector('[data-ai-title]')?.replaceChildren(document.createTextNode(labels.title));
+    modal.querySelector('[data-ai-welcome]')?.replaceChildren(document.createTextNode(labels.welcome));
+    const input = modal.querySelector('#aiChatInput');
+    if (input) {
+      input.placeholder = labels.placeholder;
+      input.setAttribute('aria-label', labels.placeholder);
+    }
+    modal.querySelector('#closeAiModal')?.setAttribute('aria-label', labels.close);
+    modal.querySelector('#aiSendBtn')?.setAttribute('aria-label', labels.send);
+    return { trigger, modal };
+  }
+
   function setupAiConciergeModal() {
     const conciergeEndpoint = '/bahrain-saudi-gcc-transport/api/ai-chat';
-    const modal = document.getElementById('aiConciergeModal');
-    const trigger = document.getElementById('aiConciergeTrigger');
-    const mobileTrigger = document.getElementById('mobileAiTrigger');
+    const path = window.location.pathname.replace(/\\/g, '/');
+    if (!path.includes('/bahrain-saudi-gcc-transport/') || /\/(admin|care|ai-chat-test|api)(\/|$)/.test(path)) return;
+    const isAr = document.documentElement.lang === 'ar';
+    const { trigger, modal } = ensureAiConciergeMarkup(isAr);
     const closeBtn = document.getElementById('closeAiModal');
     const chatBody = document.getElementById('aiChatBody');
     const input = document.getElementById('aiChatInput');
@@ -2661,17 +2721,19 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     const chips = document.querySelectorAll('.ai-chip');
 
     if (!modal) return;
-    fetch(conciergeEndpoint, { credentials: 'omit' }).then((response) => response.ok ? response.json() : { enabled: false }).then((status) => {
-      if (!status.enabled) {
+    fetch(conciergeEndpoint, { credentials: 'omit' }).then(async (response) => {
+      if (!response.ok) throw new Error(`Concierge status ${response.status}`);
+      return response.json();
+    }).then((status) => {
+      if (status.ok === true && status.enabled === false) {
         document.getElementById('aiConciergeTrigger')?.remove();
         document.getElementById('aiConciergeModal')?.remove();
       }
     }).catch(() => {
-      document.getElementById('aiConciergeTrigger')?.remove();
-      document.getElementById('aiConciergeModal')?.remove();
+      // Keep the CTA available on transient status/network errors. The chat
+      // request will show its own clear error state if the service is down.
+      trigger.dataset.conciergeStatus = 'unknown';
     });
-
-    const isAr = document.documentElement.lang === 'ar';
     function openModal() {
       modal.classList.add('active');
       input?.focus();
@@ -2682,7 +2744,6 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     }
 
     trigger?.addEventListener('click', openModal);
-    mobileTrigger?.addEventListener('click', openModal);
     closeBtn?.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => {
       if (e.target === modal) closeModal();
@@ -2703,6 +2764,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
       if (!text) return;
 
       input.value = '';
+      if (sendBtn) sendBtn.disabled = true;
 
       // Add user bubble
       const userBubble = document.createElement('div');
@@ -2753,18 +2815,20 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
           const errBubble = document.createElement('div');
           errBubble.className = 'ai-bubble assistant';
           errBubble.textContent = isAr
-            ? 'شكراً لك. يمكنك إرسال هذه التفاصيل مباشرة لفريق العمليات عبر واتساب وسنؤكد الحجز في دقائق.'
-            : 'Thank you! You can also send these details directly to dispatch on WhatsApp for instant confirmation.';
+            ? 'تعذر تجهيز الرد حالياً. حاول مرة أخرى بعد قليل، أو أرسل طلبك مباشرة عبر واتساب.'
+            : 'The chat service is temporarily unavailable. Please try again, or send your request directly on WhatsApp.';
           chatBody.appendChild(errBubble);
         }
       } catch (err) {
         typing.remove();
         const fallbackBubble = document.createElement('div');
         fallbackBubble.className = 'ai-bubble assistant';
-        fallbackBubble.innerHTML = isAr
-          ? `شكراً لتواصلك! يمكنك تأكيد رحلتك فوراً مع فريق العمليات عبر <a href="https://wa.me/97333225954" style="color:#86efac;text-decoration:underline" target="_blank">واتساب مباشرة</a>.`
-          : `Thanks for your inquiry! You can instantly confirm your trip with operations on <a href="https://wa.me/97333225954" style="color:#86efac;text-decoration:underline" target="_blank">WhatsApp directly</a>.`;
+        fallbackBubble.textContent = isAr
+          ? 'تعذر الاتصال بخدمة المحادثة حالياً. حاول مرة أخرى بعد قليل، أو تواصل معنا مباشرة عبر واتساب.'
+          : 'We could not connect to the chat service. Please try again, or contact us directly on WhatsApp.';
         chatBody.appendChild(fallbackBubble);
+      } finally {
+        if (sendBtn) sendBtn.disabled = false;
       }
 
       chatBody.scrollTop = chatBody.scrollHeight;
