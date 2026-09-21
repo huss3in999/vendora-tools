@@ -2650,6 +2650,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
   }
 
   function setupAiConciergeModal() {
+    const conciergeEndpoint = '/bahrain-saudi-gcc-transport/api/ai-chat';
     const modal = document.getElementById('aiConciergeModal');
     const trigger = document.getElementById('aiConciergeTrigger');
     const mobileTrigger = document.getElementById('mobileAiTrigger');
@@ -2660,6 +2661,15 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     const chips = document.querySelectorAll('.ai-chip');
 
     if (!modal) return;
+    fetch(conciergeEndpoint, { credentials: 'omit' }).then((response) => response.ok ? response.json() : { enabled: false }).then((status) => {
+      if (!status.enabled) {
+        document.getElementById('aiConciergeTrigger')?.remove();
+        document.getElementById('aiConciergeModal')?.remove();
+      }
+    }).catch(() => {
+      document.getElementById('aiConciergeTrigger')?.remove();
+      document.getElementById('aiConciergeModal')?.remove();
+    });
 
     const isAr = document.documentElement.lang === 'ar';
     let leadState = {
@@ -2717,7 +2727,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
       chatBody.scrollTop = chatBody.scrollHeight;
 
       try {
-        const response = await fetch('/api/transport/ai-chat', {
+        const response = await fetch(conciergeEndpoint, {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({
@@ -3420,6 +3430,8 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
   }
 
   function setupConsentBanner() {
+    // Consent banner retired sitewide. Analytics is handled without a blocking popup.
+    return;
     if (getConsentChoice() !== null) {
       if (getConsentChoice() === 'allowed') {
         loadOptionalAnalytics();
@@ -3587,7 +3599,6 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     setupOnlineHeartbeat();
     initRouteReviews();
     hydrateEnglishRouteDirectory();
-    setupConsentBanner();
     setupFloatingFeedbackTab();
     setupLuggageMatcher();
     setupAiConciergeModal();
@@ -3605,7 +3616,6 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     setupVipShell();
     trackPageView();
     setupOnlineHeartbeat();
-    setupConsentBanner();
     setupFloatingFeedbackTab();
     setupLuggageMatcher();
     setupAiConciergeModal();
