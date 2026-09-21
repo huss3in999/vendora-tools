@@ -1178,8 +1178,16 @@
           <div class="flex justify-end"><button type="submit" class="rounded-xl bg-brand px-5 py-2.5 text-xs font-bold text-slate-950 hover:bg-brand-light">Save Public Settings</button></div>
         </form>
         <form id="conciergeSettingsForm" class="rounded-3xl glass-panel p-6 shadow-xl space-y-5">
-          <div><h2 class="text-lg font-bold text-white flex items-center gap-2"><i data-lucide="sparkles" class="text-brand"></i> AI Concierge Management</h2><p class="mt-1 text-xs text-slate-400">Enable the public concierge and maintain its instructions, pricing rules, and reference file.</p></div>
-          <label class="flex items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/40 p-4"><span><strong class="block text-sm text-white">Enable public AI Concierge</strong><small class="block mt-1 text-xs text-slate-400">Disabled means the public widget and chat endpoint are inactive.</small></span><input name="enabled" type="checkbox" class="h-5 w-5 accent-brand" /></label>
+          <div><h2 class="text-lg font-bold text-white flex items-center gap-2"><i data-lucide="sparkles" class="text-brand"></i> AI Concierge Management</h2><p class="mt-1 text-xs text-slate-400">Control the public concierge, choose one provider, and maintain its instructions, pricing rules, and reference file.</p></div>
+          <div class="grid gap-3 sm:grid-cols-2">
+            <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4"><span class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Current provider status</span><strong id="conciergeProviderStatus" class="mt-1 block text-sm text-white">Not checked</strong></div>
+            <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4"><span class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Model</span><strong id="conciergeModelStatus" class="mt-1 block break-all text-xs text-white">Not checked</strong></div>
+            <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4"><span class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Gemini API status</span><strong id="conciergeGeminiStatus" class="mt-1 block text-sm text-white">Not checked</strong></div>
+            <div class="rounded-2xl border border-slate-800 bg-slate-950/40 p-4"><span class="block text-[10px] font-bold uppercase tracking-wider text-slate-500">Cloudflare AI status</span><strong id="conciergeCloudflareStatus" class="mt-1 block text-sm text-white">Not checked</strong></div>
+          </div>
+          <label class="flex items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/40 p-4"><span><strong class="block text-sm text-white">AI Concierge: ON/OFF</strong><small class="block mt-1 text-xs text-slate-400">OFF removes the public widget and rejects chat requests.</small></span><input name="enabled" type="checkbox" class="h-5 w-5 accent-brand" /></label>
+          <label class="block"><span class="text-xs font-bold text-slate-300">Provider</span><select name="provider" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs"><option value="cloudflare">Cloudflare Workers AI</option><option value="gemini">Gemini</option></select><small class="mt-1 block text-xs text-slate-500">Only the selected provider is used unless explicit fallback is enabled.</small></label>
+          <label class="flex items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/40 p-4"><span><strong class="block text-sm text-white">Allow provider fallback</strong><small class="block mt-1 text-xs text-slate-400">OFF is safest. If ON, a failed selected provider may use the other configured provider.</small></span><input name="allow_fallback" type="checkbox" class="h-5 w-5 accent-brand" /></label>
           <label class="block"><span class="text-xs font-bold text-slate-300">Instructions &amp; pricing rules</span><textarea name="instructions" rows="7" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" placeholder="Route prices, policies, vehicle rules, border reminders..."></textarea></label>
           <label class="block"><span class="text-xs font-bold text-slate-300">Reference file (.txt, .md, .json)</span><input id="conciergeReferenceFile" type="file" accept=".txt,.md,.json,text/plain,text/markdown,application/json" class="mt-1.5 block w-full rounded-xl border border-slate-800 bg-slate-950/50 p-3 text-xs text-slate-300" /><small class="block mt-2 text-xs text-slate-500">Uploading replaces the previous reference completely.</small></label>
           <div class="flex justify-end"><button type="submit" class="rounded-xl bg-brand px-5 py-2.5 text-xs font-bold text-slate-950">Save AI Concierge</button></div>
@@ -4457,7 +4465,14 @@
           if (settings) {
             const form = document.getElementById('conciergeSettingsForm');
             form.elements.enabled.checked = settings.enabled === true;
+            form.elements.provider.value = settings.provider || 'cloudflare';
+            form.elements.allow_fallback.checked = settings.allow_fallback === true;
             form.elements.instructions.value = settings.instructions || '';
+            const status = settings.provider_status || {};
+            document.getElementById('conciergeProviderStatus').textContent = `${status.provider === 'gemini' ? 'Gemini' : 'Cloudflare Workers AI'} — ${status.status === 'ready' ? 'Ready' : 'Not configured'}`;
+            document.getElementById('conciergeModelStatus').textContent = status.model || settings.model || 'Not set';
+            document.getElementById('conciergeGeminiStatus').textContent = status.gemini_configured ? 'Configured' : 'Not configured';
+            document.getElementById('conciergeCloudflareStatus').textContent = status.cloudflare_ai_configured ? 'Configured' : 'Not configured';
           }
         }
         showStatus('Dashboard updated for Today.', 'success');
@@ -5621,7 +5636,7 @@ Note: This report is automatically compiled by the Control Room operations track
       event.preventDefault();
       const form = event.currentTarget;
       const file = document.getElementById('conciergeReferenceFile').files[0];
-      const payload = { admin_update: true, enabled: form.elements.enabled.checked, instructions: form.elements.instructions.value };
+      const payload = { admin_update: true, enabled: form.elements.enabled.checked, provider: form.elements.provider.value, allow_fallback: form.elements.allow_fallback.checked, instructions: form.elements.instructions.value };
       if (file) {
         if (!/\.(txt|md|json)$/i.test(file.name) || file.size > 180000) { showStatus('Use a .txt, .md, or .json file under 180 KB.', 'error'); return; }
         payload.reference_name = file.name;

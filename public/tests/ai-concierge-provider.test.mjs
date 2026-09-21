@@ -1,0 +1,87 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import * as concierge from '../functions/api/ai-chat.js';
+import worker from '../worker.js';
+
+function makeDb(initial = {}) {
+  const row = {
+    id: 1,
+    enabled: 0,
+    provider: 'cloudflare',
+    model: '@cf/meta/llama-3.1-8b-instruct-fast',
+    allow_fallback: 0,
+    instructions: '',
+    reference_name: '',
+    reference_data: '',
+    ...initial,
+  };
+  const calls = [];
+  return {
+    calls,
+    prepare(sql) {
+      calls.push(sql);
+      let binds = [];
+      const statement = {
+        bind(...values) { binds = values; return statement; },
+        async run() {
+          if (sql.includes('INSERT INTO concierge_settings')) {
+            [row.enabled, row.provider, row.model, row.allow_fallback, row.instructions, row.reference_name, row.reference_data] = binds;
+          }
+          return { success: true };
+        },
+        async first() { return sql.includes('SELECT * FROM concierge_settings') ? { ...row } : null; },
+        async all() {
+          if (sql.includes('PRAGMA table_info')) return { results: Object.keys(row).map((name) => ({ name })) };
+          return { results: [] };
+        },
+      };
+      return statement;
+    },
+  };
+}
+
+function context(db, extra = {}) {
+  return { request: new Request('https://getvendora.net/bahrain-saudi-gcc-transport/api/ai-chat'), env: { TRANSPORT_DB: db, TRANSPORT_ADMIN_TOKEN: 'test-token', ...extra } };
+}
+
+test('AI master switch blocks customer requests without invoking a provider', async () => {
+  const db = makeDb({ enabled: 0 });
+  let calls = 0;
+  const response = await concierge.onRequestPost({ ...context(db, { AI: { run: async () => { calls += 1; } } }), request: new Request('https://getvendora.net/bahrain-saudi-gcc-transport/api/ai-chat', { method: 'POST', body: JSON.stringify({ message: 'Bahrain to Khobar' }) }) });
+  assert.equal(response.status, 403);
+  assert.equal(calls, 0);
+});
+
+test('Cloudflare Workers AI is selected without requiring Gemini', async () => {
+  const db = makeDb({ enabled: 1, provider: 'cloudflare' });
+  let model;
+  const env = { AI: { run: async (name) => { model = name; return { response: JSON.stringify({ text: 'Ready', duration: '1 hour', vehicle: 'Executive sedan', price: '40 BHD' }) }; } } };
+  const response = await concierge.onRequestPost({ ...context(db, env), request: new Request('https://getvendora.net/bahrain-saudi-gcc-transport/api/ai-chat', { method: 'POST', body: JSON.stringify({ message: 'Bahrain to Khobar' }) }) });
+  const body = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(body.provider, 'cloudflare');
+  assert.equal(body.fallback_used, false);
+  assert.equal(model, '@cf/meta/llama-3.1-8b-instruct-fast');
+});
+
+test('Gemini selection does not silently use Cloudflare when fallback is off', async () => {
+  const db = makeDb({ enabled: 1, provider: 'gemini', allow_fallback: 0 });
+  const response = await concierge.onRequestPost({ ...context(db, { AI: { run: async () => ({ response: '{}' }) } }), request: new Request('https://getvendora.net/bahrain-saudi-gcc-transport/api/ai-chat', { method: 'POST', body: JSON.stringify({ message: 'Bahrain to Khobar' }) }) });
+  assert.equal(response.status, 503);
+});
+
+test('explicit fallback may use the other configured provider', async () => {
+  const db = makeDb({ enabled: 1, provider: 'gemini', allow_fallback: 1 });
+  const response = await concierge.onRequestPost({ ...context(db, { AI: { run: async () => ({ response: JSON.stringify({ text: 'Fallback response' }) }) } }), request: new Request('https://getvendora.net/bahrain-saudi-gcc-transport/api/ai-chat', { method: 'POST', body: JSON.stringify({ message: 'Bahrain to Khobar' }) }) });
+  const body = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(body.provider, 'cloudflare');
+  assert.equal(body.fallback_used, true);
+});
+
+test('Worker routes the public concierge endpoint through the existing Worker', async () => {
+  const db = makeDb({ enabled: 0 });
+  const response = await worker.fetch(new Request('https://getvendora.net/bahrain-saudi-gcc-transport/api/ai-chat'), { TRANSPORT_DB: db }, { waitUntil() {} });
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), { ok: true, enabled: false });
+});
