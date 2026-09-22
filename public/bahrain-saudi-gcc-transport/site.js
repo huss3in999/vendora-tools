@@ -1627,6 +1627,7 @@
     style.textContent = '#vendora-booking-ready{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:1rem}.vendora-booking-backdrop{position:absolute;inset:0;background:rgba(5,8,17,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.vendora-booking-dialog{position:relative;max-width:32rem;width:100%;background:#0b1120;color:#f8fafc;border:1px solid rgba(200,169,107,.3);border-radius:1.25rem;padding:1.75rem;box-shadow:0 24px 70px rgba(0,0,0,.75)}.vendora-booking-dialog h2{margin:0 0 .6rem;color:#fff;font-size:1.4rem}.vendora-booking-dialog p{color:#cbd5e1;line-height:1.55}.vendora-booking-dialog strong{color:#c8a96b}.vendora-booking-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.25rem}.vendora-booking-dialog button{min-height:48px;border:0;border-radius:.75rem;padding:.8rem 1.25rem;background:#168b4b;color:#fff;font:inherit;font-weight:700;cursor:pointer;transition:transform .15s,background .15s}.vendora-booking-dialog button:hover{background:#1ca75a}.vendora-booking-dialog [data-booking-cancel]{background:rgba(255,255,255,.08);color:#cbd5e1;border:1px solid rgba(255,255,255,.12)}.vendora-booking-dialog [data-booking-cancel]:hover{background:rgba(255,255,255,.14);color:#fff}.vendora-booking-dialog button:focus-visible{outline:3px solid #c8a96b;outline-offset:3px}';
     modal.appendChild(style);
     document.body.appendChild(modal);
+    window.vendoraTrackLocal?.('whatsapp_handoff_offered', { event_category: 'transport_funnel', cta_location: 'booking_dialog' });
     if (bookingRef && typeof window.vendoraTrackLocal === 'function') {
       window.vendoraTrackLocal('prepared_dialog_view', { event_category: 'transport_funnel', lead_status: 'prepared' });
     }
@@ -2737,6 +2738,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     function openModal() {
       modal.classList.add('active');
       input?.focus();
+      window.vendoraTrackLocal?.('ai_concierge_opened', { cta_location: 'ai_concierge_launcher' });
     }
 
     function closeModal() {
@@ -2762,6 +2764,9 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     async function sendMessage() {
       const text = (input?.value || '').trim();
       if (!text) return;
+
+      window.vendoraTrackLocal?.('ai_chat_started', { cta_location: 'ai_concierge' });
+      window.vendoraTrackLocal?.('ai_chat_message_sent', { cta_location: 'ai_concierge' });
 
       input.value = '';
       if (sendBtn) sendBtn.disabled = true;
@@ -2801,14 +2806,18 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
 
           // If confirmed or details collected, show WhatsApp Handover button
           if (data.handover && data.handover.url) {
+            window.vendoraTrackLocal?.('ai_handoff_offered', { cta_location: 'ai_concierge' });
             const waAction = document.createElement('div');
             waAction.style.marginTop = '8px';
             waAction.innerHTML = `
-              <a class="wa-inline" href="${data.handover.url}" target="_blank" rel="noopener" style="display:inline-flex;padding:8px 14px;border-radius:12px;font-size:0.85rem;margin-top:6px">
+              <a class="wa-inline" data-ai-whatsapp-handoff href="${data.handover.url}" target="_blank" rel="noopener" style="display:inline-flex;padding:8px 14px;border-radius:12px;font-size:0.85rem;margin-top:6px">
                 <i data-lucide="message-circle"></i>
                 <span>${isAr ? 'تأكيد الحجز فوراً عبر واتساب' : 'Confirm on WhatsApp with Pre-filled Details'}</span>
               </a>
             `;
+            waAction.querySelector('[data-ai-whatsapp-handoff]')?.addEventListener('click', () => {
+              window.vendoraTrackLocal?.('ai_handoff_clicked', { cta_location: 'ai_concierge' });
+            }, { once: true });
             chatBody.appendChild(waAction);
           }
         } else {

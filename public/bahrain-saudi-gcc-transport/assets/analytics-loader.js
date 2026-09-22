@@ -110,6 +110,54 @@
     return '';
   }
 
+  // Clarity receives action names only. Keep richer payloads on the existing
+  // D1/GA4 path, and never send chat text or contact details to Clarity.
+  var clarityEventMap = {
+    whatsapp_click: 'whatsapp_button_clicked',
+    whatsapp_handoff_offered: 'whatsapp_booking_handoff_offered',
+    whatsapp_handoff_clicked: 'whatsapp_booking_handoff_clicked',
+    phone_click: 'phone_contact_clicked',
+    ai_concierge_opened: 'ai_concierge_opened',
+    ai_chat_started: 'ai_conversation_started',
+    ai_chat_message_sent: 'ai_conversation_progressed',
+    ai_handoff_offered: 'ai_whatsapp_handoff_offered',
+    ai_handoff_clicked: 'ai_whatsapp_handoff_clicked',
+    route_selected: 'route_selected',
+    route_view: 'route_viewed',
+    route_page_view: 'route_viewed',
+    price_view: 'price_or_quote_viewed',
+    booking_started: 'booking_started',
+    booking_start: 'booking_form_started',
+    booking_request_started: 'booking_request_started',
+    booking_submit: 'booking_form_submitted',
+    quote_request: 'quote_requested',
+    lead_created: 'booking_request_created',
+    prepared_dialog_view: 'booking_handoff_offered',
+    language_switch: 'language_switched',
+    form_started: 'booking_form_started',
+    form_submitted: 'booking_form_submitted'
+  };
+
+  function trackClarityEvent(eventName, params) {
+    var clarityName = eventName === 'whatsapp_click' && params && params.confirmed_departure === 1
+      ? 'whatsapp_booking_handoff_clicked'
+      : clarityEventMap[eventName];
+    if (!clarityName || typeof window.clarity !== 'function') return;
+    try {
+      window.clarity('event', clarityName);
+      var context = params || {};
+      var safeTags = {
+        language: (document.documentElement.getAttribute('lang') || 'en').toLowerCase(),
+        page_category: getPageCategory(),
+        route: getTransportRoute() || context.route_name || '',
+        action_source: context.cta_location || context.method || ''
+      };
+      Object.keys(safeTags).forEach(function (key) {
+        if (safeTags[key]) window.clarity('set', key, String(safeTags[key]).slice(0, 80));
+      });
+    } catch (err) { /* Analytics must never affect customer actions. */ }
+  }
+
   function generateUUID() {
     if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -205,6 +253,7 @@
   // Unified Local Tracking Function
   window.vendoraTrackLocal = function (eventName, params) {
     var safeParams = params || {};
+    trackClarityEvent(eventName, safeParams);
     var allowedExtraKeys = {
       event_category: true, category: true, event_label: true, label: true,
       calculator_slug: true, tool_id: true, route_name: true, button_text: true,
@@ -421,9 +470,10 @@
 
     if (typeof window.clarity === 'function') {
       try {
-        window.clarity("set", "visitor_id", getVisitorId());
-        window.clarity("set", "session_id", getSessionId());
-        window.clarity("set", "route", getTransportRoute());
+        window.clarity("set", "language", (document.documentElement.getAttribute('lang') || 'en').toLowerCase());
+        window.clarity("set", "page_category", getPageCategory());
+        if (getTransportRoute()) window.clarity("set", "route", getTransportRoute());
+        if (getTransportCluster()) window.clarity("set", "transport_cluster", getTransportCluster());
       } catch (e) { /* ignore */ }
     }
 
@@ -500,6 +550,7 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', trackInitialPage, { once: true });
   else trackInitialPage();
+
 
   // Render Real-time Debug Widget
   if (window.location.search.indexOf('debug_tracking=1') !== -1) {

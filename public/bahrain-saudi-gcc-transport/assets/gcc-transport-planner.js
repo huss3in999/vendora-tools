@@ -93,6 +93,7 @@
   };
 
   const $ = (selector, scope = document) => scope.querySelector(selector);
+  const track = (name, params = {}) => window.vendoraTrackLocal?.(name, params);
   const fromSelect = $('[data-planner-from]');
   const toSelect = $('[data-planner-to]');
   const typeSelect = $('[data-planner-type]');
@@ -326,7 +327,18 @@
     control.addEventListener('input', update);
     control.addEventListener('change', update);
   });
-  $('[data-calculator-submit]').addEventListener('click', () => { update(); result.focus({ preventScroll: true }); result.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  $('[data-calculator-submit]').addEventListener('click', () => {
+    update();
+    const route = currentRoute();
+    track('route_selected', { cta_location: 'trip_calculator', route_name: `${route.from.id}-${route.to.id}` });
+    track('price_viewed', { cta_location: 'trip_calculator', route_name: `${route.from.id}-${route.to.id}` });
+    result.focus({ preventScroll: true });
+    result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  waLink.addEventListener('click', () => {
+    const route = currentRoute();
+    track('booking_started', { cta_location: 'trip_calculator', route_name: `${route.from.id}-${route.to.id}` });
+  });
   copyButton.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(waLink.getAttribute('data-wa-message') || '');
