@@ -117,9 +117,25 @@
   // D1/GA4 path, and never send chat text or contact details to Clarity.
   var clarityEventMap = {
     whatsapp_click: 'whatsapp_button_clicked',
+    whatsapp_intent: 'whatsapp_contact_intent',
+    whatsapp_cancel: 'whatsapp_handoff_cancelled',
     whatsapp_handoff_offered: 'whatsapp_booking_handoff_offered',
     whatsapp_handoff_clicked: 'whatsapp_booking_handoff_clicked',
     phone_click: 'phone_contact_clicked',
+    map_click: 'map_opened',
+    feedback_widget_open: 'feedback_opened',
+    navigation_click: 'navigation_clicked',
+    route_card_click: 'route_card_clicked',
+    country_hub_view: 'country_hub_viewed',
+    chauffeur_service_view: 'chauffeur_service_viewed',
+    calculator_open: 'planner_opened',
+    planner_start: 'planner_started',
+    planner_complete: 'planner_completed',
+    faq_open: 'faq_opened',
+    complaint_open: 'complaint_page_opened',
+    complaint_submit: 'complaint_submitted',
+    review_open: 'reviews_opened',
+    review_submit: 'review_submitted',
     ai_concierge_opened: 'ai_concierge_opened',
     ai_chat_started: 'ai_conversation_started',
     ai_chat_message_sent: 'ai_conversation_progressed',
@@ -469,6 +485,10 @@
   }
 
   function loadSecondaryTools() {
+    // Never send local preview, test, or file:// traffic to the production
+    // Clarity project. Historical local sessions cannot be removed safely,
+    // but this prevents new contamination.
+    if (isLocalPreview) return;
     appendScript('https://www.clarity.ms/tag/w28z01fb1p');
 
     if (typeof window.clarity === 'function') {
@@ -479,8 +499,6 @@
         if (getTransportCluster()) window.clarity("set", "transport_cluster", getTransportCluster());
       } catch (e) { /* ignore */ }
     }
-
-    if (isLocalPreview) return;
 
     appendScript(
       'https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516',
