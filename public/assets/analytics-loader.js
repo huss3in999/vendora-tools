@@ -10,8 +10,11 @@
 
   var initialPath = String(window.location.pathname || '/').toLowerCase();
   var dnt = String(navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack || '').toLowerCase();
-  if (/(^|\/)(admin|api|private|test|tests|test-results|care|ai-chat-test)(\/|$)/.test(initialPath) || dnt === '1' || dnt === 'yes') {
+  var userAgent = String(navigator.userAgent || '').toLowerCase();
+  var knownCrawler = /bot|crawler|spider|puppeteer|selenium|playwright|ahrefs|semrush|bytespider|gptbot|claudebot|perplexitybot/.test(userAgent);
+  if (/(^|\/)(admin|api|private|test|tests|test-results|care|ai-chat-test)(\/|$)/.test(initialPath) || dnt === '1' || dnt === 'yes' || knownCrawler) {
     window.__VENDORA_TRACKING_DISABLED__ = true;
+    window.__VENDORA_TRACKING_DISABLED_REASON__ = knownCrawler ? 'known_crawler' : (dnt === '1' || dnt === 'yes' ? 'do_not_track' : 'private_path');
     return;
   }
 
@@ -110,6 +113,40 @@
     return '';
   }
 
+  var clarityEventMap = {
+    whatsapp_click: 'whatsapp_button_clicked', whatsapp_intent: 'whatsapp_contact_intent',
+    whatsapp_cancel: 'whatsapp_handoff_cancelled', whatsapp_handoff_offered: 'whatsapp_booking_handoff_offered',
+    whatsapp_handoff_clicked: 'whatsapp_booking_handoff_clicked', phone_click: 'phone_contact_clicked',
+    map_click: 'map_opened', feedback_widget_open: 'feedback_opened', navigation_click: 'navigation_clicked',
+    route_card_click: 'route_card_clicked', country_hub_view: 'country_hub_viewed',
+    chauffeur_service_view: 'chauffeur_service_viewed', calculator_open: 'planner_opened',
+    planner_start: 'planner_started', planner_complete: 'planner_completed', faq_open: 'faq_opened',
+    complaint_open: 'complaint_page_opened', complaint_submit: 'complaint_submitted',
+    review_open: 'reviews_opened', review_submit: 'review_submitted', ai_concierge_opened: 'ai_concierge_opened',
+    ai_chat_started: 'ai_conversation_started', ai_chat_message_sent: 'ai_conversation_progressed',
+    ai_handoff_offered: 'ai_whatsapp_handoff_offered', ai_handoff_clicked: 'ai_whatsapp_handoff_clicked',
+    route_selected: 'route_selected', route_view: 'route_viewed', route_page_view: 'route_viewed',
+    price_view: 'price_or_quote_viewed', price_viewed: 'price_or_quote_viewed', booking_started: 'booking_started',
+    booking_start: 'booking_form_started', booking_submit: 'booking_form_submitted', quote_request: 'quote_requested',
+    lead_created: 'booking_request_created', prepared_dialog_view: 'booking_handoff_offered',
+    language_switch: 'language_switched', form_started: 'booking_form_started', form_submitted: 'booking_form_submitted'
+  };
+
+  function trackClarityEvent(eventName, params) {
+    var clarityName = eventName === 'whatsapp_click' && params && params.confirmed_departure === 1
+      ? 'whatsapp_booking_handoff_clicked' : clarityEventMap[eventName];
+    if (!clarityName || typeof window.clarity !== 'function') return;
+    try {
+      window.clarity('event', clarityName);
+      var context = params || {};
+      [['language', document.documentElement.getAttribute('lang') || 'en'],
+        ['page_category', getPageCategory()], ['route', getTransportRoute() || context.route_name || ''],
+        ['action_source', context.cta_location || context.method || '']].forEach(function (entry) {
+        if (entry[1]) window.clarity('set', entry[0], String(entry[1]).slice(0, 80));
+      });
+    } catch (e) { /* Analytics must never affect customer actions. */ }
+  }
+
   function generateUUID() {
     if (typeof crypto !== 'undefined' && crypto.randomUUID) return crypto.randomUUID();
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -205,6 +242,7 @@
   // Unified Local Tracking Function
   window.vendoraTrackLocal = function (eventName, params) {
     var safeParams = params || {};
+    trackClarityEvent(eventName, safeParams);
     var allowedExtraKeys = {
       event_category: true, category: true, event_label: true, label: true,
       calculator_slug: true, tool_id: true, route_name: true, button_text: true,
@@ -417,17 +455,17 @@
   }
 
   function loadSecondaryTools() {
+    if (isLocalPreview) return;
     appendScript('https://www.clarity.ms/tag/w28z01fb1p');
 
     if (typeof window.clarity === 'function') {
       try {
-        window.clarity("set", "visitor_id", getVisitorId());
-        window.clarity("set", "session_id", getSessionId());
+        window.clarity("set", "language", (document.documentElement.getAttribute('lang') || 'en').toLowerCase());
+        window.clarity("set", "page_category", getPageCategory());
         window.clarity("set", "route", getTransportRoute());
+        window.clarity("set", "transport_cluster", getTransportCluster());
       } catch (e) { /* ignore */ }
     }
-
-    if (isLocalPreview) return;
 
     appendScript(
       'https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516',

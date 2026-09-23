@@ -332,6 +332,8 @@ function logicalPathname(url) {
 function secureAssetResponse(request, response) {
   const pathname = new URL(request.url).pathname;
   const privatePath = /\/(?:admin|care|ai-chat-test|api|scratch|tests|test-results)(?:\/|$)/i.test(pathname);
+  const staticAsset = /\.(?:js|css|svg|webp|avif|png|jpe?g|gif|ico|woff2?|json)$/i.test(pathname);
+  const longLivedAsset = /\.(?:webp|avif|png|jpe?g|gif|ico|woff2?)$/i.test(pathname);
   const headers = new Headers(response.headers);
   headers.set('x-content-type-options', 'nosniff');
   headers.set('referrer-policy', 'strict-origin-when-cross-origin');
@@ -340,6 +342,10 @@ function secureAssetResponse(request, response) {
   if (privatePath) {
     headers.set('x-robots-tag', 'noindex, nofollow, noarchive');
     headers.set('cache-control', 'no-store');
+  } else if (staticAsset) {
+    headers.set('cache-control', longLivedAsset
+      ? 'public, max-age=86400, stale-while-revalidate=604800'
+      : 'public, max-age=3600, stale-while-revalidate=86400');
   }
   return new Response(response.body, {
     status: response.status,

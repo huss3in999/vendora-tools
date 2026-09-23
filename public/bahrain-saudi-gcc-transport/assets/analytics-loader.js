@@ -11,7 +11,7 @@
   var initialPath = String(window.location.pathname || '/').toLowerCase();
   var dnt = String(navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack || '').toLowerCase();
   var userAgent = String(navigator.userAgent || '').toLowerCase();
-  var knownCrawler = /bot|crawler|spider|headless|puppeteer|selenium|playwright|ahrefs|semrush|bytespider|gptbot|claudebot|perplexitybot/.test(userAgent);
+  var knownCrawler = /bot|crawler|spider|puppeteer|selenium|playwright|ahrefs|semrush|bytespider|gptbot|claudebot|perplexitybot/.test(userAgent);
   if (/(^|\/)(admin|api|private|test|tests|test-results|care|ai-chat-test)(\/|$)/.test(initialPath) || dnt === '1' || dnt === 'yes' || knownCrawler) {
     window.__VENDORA_TRACKING_DISABLED__ = true;
     window.__VENDORA_TRACKING_DISABLED_REASON__ = knownCrawler ? 'known_crawler' : (dnt === '1' || dnt === 'yes' ? 'do_not_track' : 'private_path');
@@ -113,68 +113,38 @@
     return '';
   }
 
-  // Clarity receives action names only. Keep richer payloads on the existing
-  // D1/GA4 path, and never send chat text or contact details to Clarity.
   var clarityEventMap = {
-    whatsapp_click: 'whatsapp_button_clicked',
-    whatsapp_intent: 'whatsapp_contact_intent',
-    whatsapp_cancel: 'whatsapp_handoff_cancelled',
-    whatsapp_handoff_offered: 'whatsapp_booking_handoff_offered',
-    whatsapp_handoff_clicked: 'whatsapp_booking_handoff_clicked',
-    phone_click: 'phone_contact_clicked',
-    map_click: 'map_opened',
-    feedback_widget_open: 'feedback_opened',
-    navigation_click: 'navigation_clicked',
-    route_card_click: 'route_card_clicked',
-    country_hub_view: 'country_hub_viewed',
-    chauffeur_service_view: 'chauffeur_service_viewed',
-    calculator_open: 'planner_opened',
-    planner_start: 'planner_started',
-    planner_complete: 'planner_completed',
-    faq_open: 'faq_opened',
-    complaint_open: 'complaint_page_opened',
-    complaint_submit: 'complaint_submitted',
-    review_open: 'reviews_opened',
-    review_submit: 'review_submitted',
-    ai_concierge_opened: 'ai_concierge_opened',
-    ai_chat_started: 'ai_conversation_started',
-    ai_chat_message_sent: 'ai_conversation_progressed',
-    ai_handoff_offered: 'ai_whatsapp_handoff_offered',
-    ai_handoff_clicked: 'ai_whatsapp_handoff_clicked',
-    route_selected: 'route_selected',
-    route_view: 'route_viewed',
-    route_page_view: 'route_viewed',
-    price_view: 'price_or_quote_viewed',
-    booking_started: 'booking_started',
-    booking_start: 'booking_form_started',
-    booking_request_started: 'booking_request_started',
-    booking_submit: 'booking_form_submitted',
-    quote_request: 'quote_requested',
-    lead_created: 'booking_request_created',
-    prepared_dialog_view: 'booking_handoff_offered',
-    language_switch: 'language_switched',
-    form_started: 'booking_form_started',
-    form_submitted: 'booking_form_submitted'
+    whatsapp_click: 'whatsapp_button_clicked', whatsapp_intent: 'whatsapp_contact_intent',
+    whatsapp_cancel: 'whatsapp_handoff_cancelled', whatsapp_handoff_offered: 'whatsapp_booking_handoff_offered',
+    whatsapp_handoff_clicked: 'whatsapp_booking_handoff_clicked', phone_click: 'phone_contact_clicked',
+    map_click: 'map_opened', feedback_widget_open: 'feedback_opened', navigation_click: 'navigation_clicked',
+    route_card_click: 'route_card_clicked', country_hub_view: 'country_hub_viewed',
+    chauffeur_service_view: 'chauffeur_service_viewed', calculator_open: 'planner_opened',
+    planner_start: 'planner_started', planner_complete: 'planner_completed', faq_open: 'faq_opened',
+    complaint_open: 'complaint_page_opened', complaint_submit: 'complaint_submitted',
+    review_open: 'reviews_opened', review_submit: 'review_submitted', ai_concierge_opened: 'ai_concierge_opened',
+    ai_chat_started: 'ai_conversation_started', ai_chat_message_sent: 'ai_conversation_progressed',
+    ai_handoff_offered: 'ai_whatsapp_handoff_offered', ai_handoff_clicked: 'ai_whatsapp_handoff_clicked',
+    route_selected: 'route_selected', route_view: 'route_viewed', route_page_view: 'route_viewed',
+    price_view: 'price_or_quote_viewed', price_viewed: 'price_or_quote_viewed', booking_started: 'booking_started',
+    booking_start: 'booking_form_started', booking_submit: 'booking_form_submitted', quote_request: 'quote_requested',
+    lead_created: 'booking_request_created', prepared_dialog_view: 'booking_handoff_offered',
+    language_switch: 'language_switched', form_started: 'booking_form_started', form_submitted: 'booking_form_submitted'
   };
 
   function trackClarityEvent(eventName, params) {
     var clarityName = eventName === 'whatsapp_click' && params && params.confirmed_departure === 1
-      ? 'whatsapp_booking_handoff_clicked'
-      : clarityEventMap[eventName];
+      ? 'whatsapp_booking_handoff_clicked' : clarityEventMap[eventName];
     if (!clarityName || typeof window.clarity !== 'function') return;
     try {
       window.clarity('event', clarityName);
       var context = params || {};
-      var safeTags = {
-        language: (document.documentElement.getAttribute('lang') || 'en').toLowerCase(),
-        page_category: getPageCategory(),
-        route: getTransportRoute() || context.route_name || '',
-        action_source: context.cta_location || context.method || ''
-      };
-      Object.keys(safeTags).forEach(function (key) {
-        if (safeTags[key]) window.clarity('set', key, String(safeTags[key]).slice(0, 80));
+      [['language', document.documentElement.getAttribute('lang') || 'en'],
+        ['page_category', getPageCategory()], ['route', getTransportRoute() || context.route_name || ''],
+        ['action_source', context.cta_location || context.method || '']].forEach(function (entry) {
+        if (entry[1]) window.clarity('set', entry[0], String(entry[1]).slice(0, 80));
       });
-    } catch (err) { /* Analytics must never affect customer actions. */ }
+    } catch (e) { /* Analytics must never affect customer actions. */ }
   }
 
   function generateUUID() {
@@ -485,9 +455,6 @@
   }
 
   function loadSecondaryTools() {
-    // Never send local preview, test, or file:// traffic to the production
-    // Clarity project. Historical local sessions cannot be removed safely,
-    // but this prevents new contamination.
     if (isLocalPreview) return;
     appendScript('https://www.clarity.ms/tag/w28z01fb1p');
 
@@ -495,8 +462,8 @@
       try {
         window.clarity("set", "language", (document.documentElement.getAttribute('lang') || 'en').toLowerCase());
         window.clarity("set", "page_category", getPageCategory());
-        if (getTransportRoute()) window.clarity("set", "route", getTransportRoute());
-        if (getTransportCluster()) window.clarity("set", "transport_cluster", getTransportCluster());
+        window.clarity("set", "route", getTransportRoute());
+        window.clarity("set", "transport_cluster", getTransportCluster());
       } catch (e) { /* ignore */ }
     }
 
@@ -571,7 +538,6 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', trackInitialPage, { once: true });
   else trackInitialPage();
-
 
   // Render Real-time Debug Widget
   if (window.location.search.indexOf('debug_tracking=1') !== -1) {

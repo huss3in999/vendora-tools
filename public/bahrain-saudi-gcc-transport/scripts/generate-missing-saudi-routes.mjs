@@ -444,7 +444,7 @@ function generateHtml(p) {
   <link rel="apple-touch-icon" sizes="512x512" href="${relAssetPrefix}assets/brand/vendora-transport-app-icon-512.png" data-vendora-brand-icon />
   <!-- Vendora global sources: edit config/*.json and assets/vendora-theme.css, then run npm run sync. -->
   <link rel="stylesheet" href="${relAssetPrefix}assets/vendora-theme.css" data-vendora-global-theme />
-  <script src="${relAssetPrefix}assets/vendora-config.js" data-vendora-global-config></script>
+  <script defer src="${relAssetPrefix}assets/vendora-config.js" data-vendora-global-config></script>
   <script defer src="${relAssetPrefix}assets/transport-analytics-map.js" data-vendora-analytics-map></script>
   <script defer src="${relAssetPrefix}assets/transport-analytics.js" data-vendora-transport-analytics></script>
   <link rel="canonical" href="${canonical}">

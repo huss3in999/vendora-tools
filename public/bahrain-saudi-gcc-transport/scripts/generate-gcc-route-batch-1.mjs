@@ -157,7 +157,7 @@ function head({ lang, title, description, canonical, alternate, type = 'website'
   <link rel="icon" type="image/svg+xml" href="${depth}assets/brand/vendora-transport-app-icon.svg">
   <link rel="stylesheet" href="${depth}site.css">
   <link rel="stylesheet" href="${depth}assets/vendora-theme.css" data-vendora-global-theme>
-  <script src="${depth}assets/vendora-config.js" data-vendora-global-config></script>
+  <script defer src="${depth}assets/vendora-config.js" data-vendora-global-config></script>
   <script defer src="${depth}assets/lucide.min.js"></script>
   <script type="application/ld+json">${JSON.stringify(schema)}</script>
 </head>`;
