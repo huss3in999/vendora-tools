@@ -10,8 +10,11 @@
 
   var initialPath = String(window.location.pathname || '/').toLowerCase();
   var dnt = String(navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack || '').toLowerCase();
-  if (/(^|\/)(admin|api|private|test|tests|test-results|care|ai-chat-test)(\/|$)/.test(initialPath) || dnt === '1' || dnt === 'yes') {
+  var userAgent = String(navigator.userAgent || '').toLowerCase();
+  var knownCrawler = /bot|crawler|spider|headless|puppeteer|selenium|playwright|ahrefs|semrush|bytespider|gptbot|claudebot|perplexitybot/.test(userAgent);
+  if (/(^|\/)(admin|api|private|test|tests|test-results|care|ai-chat-test)(\/|$)/.test(initialPath) || dnt === '1' || dnt === 'yes' || knownCrawler) {
     window.__VENDORA_TRACKING_DISABLED__ = true;
+    window.__VENDORA_TRACKING_DISABLED_REASON__ = knownCrawler ? 'known_crawler' : (dnt === '1' || dnt === 'yes' ? 'do_not_track' : 'private_path');
     return;
   }
 
