@@ -8,6 +8,8 @@ window.VENDORA_BUSINESS_CONFIG = {
   booking_whatsapp: '97333225954',
   phoneNumber: '97333225954',
   support_phone: '97333404044',
+  legal_name: 'Vendora Gulf Transport & Logistics Services',
+  cr_number: '134856-1',
   public_email: 'booking@getvendora.net',
   public_email_enabled: true,
   public_address: 'Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain',

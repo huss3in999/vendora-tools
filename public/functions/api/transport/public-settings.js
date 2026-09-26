@@ -39,7 +39,7 @@ export const DEFAULT_PUBLIC_SETTINGS = Object.freeze({
   "public_address": "Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain",
   "address_display_enabled": false,
   "legal_name": "Vendora Gulf Transport & Logistics Services",
-  "cr_number": "",
+  "cr_number": "134856-1",
   "legal_information_enabled": true,
   "sar_per_bhd": 10,
   "customer_name_enabled": false,

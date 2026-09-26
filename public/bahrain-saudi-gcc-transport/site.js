@@ -2106,6 +2106,20 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     if (touchIcon) touchIcon.href = touchHref;
 
     const footerCard = document.querySelector('.footer .footer-card');
+    if (footerCard && !footerCard.querySelector('[data-vendora-cr]')) {
+      const crSmall = document.createElement('small');
+      crSmall.setAttribute('data-vendora-cr', '');
+      crSmall.style.cssText = 'display:block; font-size: 11px; opacity: 0.75; margin-top: 6px;';
+      crSmall.textContent = state.lang === 'en'
+        ? 'Vendora Gulf Transport & Logistics Services | CR No: 134856-1 | Office 240, The Address Tower, Seef, Kingdom of Bahrain'
+        : 'فيندورا الخليج لخدمات النقل واللوجستيات | س.ت: 134856-1 | مكتب 240، برج ذا أدريس، السيف، مملكة البحرين';
+      const targetP = footerCard.querySelector('p:last-of-type') || footerCard.querySelector('p');
+      if (targetP) {
+        targetP.after(crSmall);
+      } else {
+        footerCard.appendChild(crSmall);
+      }
+    }
     if (footerCard && !footerCard.querySelector('.vip-footer-logo')) {
       const footerLogo = document.createElement('img');
       footerLogo.className = 'vip-footer-logo';
@@ -3326,8 +3340,8 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     if (footer && !footer.classList.contains('transport-footer')) {
       footer.classList.add('transport-footer');
       footer.innerHTML = isEn
-        ? `<div class="container footer-grid"><div class="footer-card"><h3>Vendora Transport</h3><p>Private transport coordinated from Bahrain through WhatsApp, subject to vehicle availability and booking confirmation.</p><a class="wa-inline" data-wa-message="Hello, I would like to book private transport.">Book on WhatsApp</a></div><div class="footer-card"><h3>Bahrain services</h3><div class="footer-links"><a href="${base}bahrain-private-transport/">Local Bahrain transport</a><a href="${base}airport-transfer/">Airport transfers</a><a href="${base}hotel-transfer-bahrain/">Hotel transfers</a><a href="${base}full-day-vip-driver/">Full-day car</a></div></div><div class="footer-card"><h3>Information & Rights</h3><div class="footer-links"><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}booking-terms/">Booking terms</a><a href="${base}complaints/">Submit complaint</a><a href="${base}customer-reviews/">Customer reviews</a></div></div></div>`
-        : `<div class="container footer-grid"><div class="footer-card"><h3>Vendora Transport</h3><p>تنسيق نقل خاص من البحرين عبر واتساب، حسب توفر المركبة وتأكيد الحجز.</p><a class="wa-inline" data-wa-message="مرحباً، أريد حجز خدمة نقل خاصة.">احجز عبر واتساب</a></div><div class="footer-card"><h3>خدمات البحرين</h3><div class="footer-links"><a href="${base}bahrain-private-transport/">النقل داخل البحرين</a><a href="${base}airport-transfer/">توصيل المطار</a><a href="${base}hotel-transfer-bahrain/">توصيل الفنادق</a><a href="${base}full-day-vip-driver/">سيارة ليوم كامل</a></div></div><div class="footer-card"><h3>المعلومات وحقوق العملاء</h3><div class="footer-links"><a href="${base}about/">عن فندورا</a><a href="${base}contact/">التواصل</a><a href="${base}privacy/">الخصوصية</a><a href="${base}booking-terms/">شروط الحجز والإلغاء</a><a href="${base}complaints/">تقديم شكوى</a><a href="${base}customer-reviews/">تقييمات العملاء</a></div></div></div>`;
+        ? `<div class="container footer-grid"><div class="footer-card"><h3>Vendora Transport</h3><p>Private transport coordinated from Bahrain through WhatsApp, subject to vehicle availability and booking confirmation.</p><small style="display:block; font-size: 11px; opacity: 0.75; margin-top: 6px;">Vendora Gulf Transport & Logistics Services | CR No: 134856-1 | Office 240, The Address Tower, Seef, Kingdom of Bahrain</small><a class="wa-inline" data-wa-message="Hello, I would like to book private transport.">Book on WhatsApp</a></div><div class="footer-card"><h3>Bahrain services</h3><div class="footer-links"><a href="${base}bahrain-private-transport/">Local Bahrain transport</a><a href="${base}airport-transfer/">Airport transfers</a><a href="${base}hotel-transfer-bahrain/">Hotel transfers</a><a href="${base}full-day-vip-driver/">Full-day car</a></div></div><div class="footer-card"><h3>Information & Rights</h3><div class="footer-links"><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}booking-terms/">Booking terms</a><a href="${base}complaints/">Submit complaint</a><a href="${base}customer-reviews/">Customer reviews</a></div></div></div>`
+        : `<div class="container footer-grid"><div class="footer-card"><h3>Vendora Transport</h3><p>تنسيق نقل خاص من البحرين عبر واتساب، حسب توفر المركبة وتأكيد الحجز.</p><small style="display:block; font-size: 11px; opacity: 0.75; margin-top: 6px;">فيندورا الخليج لخدمات النقل واللوجستيات | س.ت: 134856-1 | مكتب 240، برج ذا أدريس، السيف، مملكة البحرين</small><a class="wa-inline" data-wa-message="مرحباً، أريد حجز خدمة نقل خاصة.">احجز عبر واتساب</a></div><div class="footer-card"><h3>خدمات البحرين</h3><div class="footer-links"><a href="${base}bahrain-private-transport/">النقل داخل البحرين</a><a href="${base}airport-transfer/">توصيل المطار</a><a href="${base}hotel-transfer-bahrain/">توصيل الفنادق</a><a href="${base}full-day-vip-driver/">سيارة ليوم كامل</a></div></div><div class="footer-card"><h3>المعلومات وحقوق العملاء</h3><div class="footer-links"><a href="${base}about/">عن فندورا</a><a href="${base}contact/">التواصل</a><a href="${base}privacy/">الخصوصية</a><a href="${base}booking-terms/">شروط الحجز والإلغاء</a><a href="${base}complaints/">تقديم شكوى</a><a href="${base}customer-reviews/">تقييمات العملاء</a></div></div></div>`;
     }
   }
 

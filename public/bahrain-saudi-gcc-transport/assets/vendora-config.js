@@ -51,7 +51,7 @@ window.VENDORA_BUSINESS_CONFIG = Object.freeze({
   "insurance_wording_ar": "ترتيب المركبة والسائق حسب المسار والتوفر.",
   "insurance_wording_en": "Vehicle and driver arrangements depend on route and availability.",
   "legal_name": "Vendora Gulf Transport & Logistics Services",
-  "cr_number": "",
+  "cr_number": "134856-1",
   "legal_information_enabled": true,
   "sar_per_bhd": 10
 });
@@ -573,7 +573,7 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
     "public_address": "Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain",
     "address_display_enabled": false,
     "legal_name": "Vendora Gulf Transport & Logistics Services",
-    "cr_number": "",
+    "cr_number": "134856-1",
     "legal_information_enabled": true,
     "sar_per_bhd": 10,
     "customer_name_enabled": false,
