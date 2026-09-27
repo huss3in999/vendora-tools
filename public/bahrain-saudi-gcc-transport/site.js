@@ -51,6 +51,22 @@
   let whatsAppClickLockUntil = 0;
 
   const translations = [
+    ['سائق تحت الطلب للاجتماعات والتسوق والجولات', 'On-demand driver for meetings, shopping & city tours'],
+    ['جمس يوكون أسود ملكي / سيدان', 'Royal Black GMC Yukon / Sedan'],
+    ['مرنة (بالساعة / يوم كامل)', 'Flexible (Hourly / Full-day)'],
+    ['سائق خاص بالساعة واليوم (داخل البحرين)', 'Private Chauffeur by the Hour & Day (Inside Bahrain)'],
+    ['توصيل مباشر بدون توقف للمنتجعات', 'Direct non-stop resort transfer'],
+    ['جمس يوكون عائلي / سيدان', 'Family GMC Yukon / Sedan'],
+    ['~35 – 45 دقيقة', '~35–45 minutes'],
+    ['مطار البحرين ⇄ منتجع جميرا خليج البحرين / الزلاق', 'Bahrain Airport ⇄ Jumeirah Gulf of Bahrain Resort / Zallaq'],
+    ['استقبال داخل الصالة ومساعدة بالأمتعة', 'Terminal meet & greet with luggage assistance'],
+    ['جمس يوكون XL VIP / سيدان فاخرة', 'VIP GMC Yukon XL / Luxury Sedan'],
+    ['~15 – 25 دقيقة', '~15–25 minutes'],
+    ['مطار البحرين ⇄ فور سيزونز / ريتز كارلتون (السيف)', 'Bahrain Airport ⇄ Four Seasons / The Ritz-Carlton (Seef)'],
+    ['مميزات الخدمة', 'Service Highlights'],
+    ['فئات المركبات المتاحة', 'Available Vehicle Classes'],
+    ['المدة التقريبية', 'Approx. Duration'],
+    ['المسار والخدمة', 'Route & Service'],
     ['منشأة مسجلة في مملكة البحرين', 'Registered business in the Kingdom of Bahrain'],
     ['تعمل Vendora Transport تحت اسم المنشأة البحرينية المسجلة Vendora Gulf Transport & Logistics Services.', 'Vendora Transport operates under the registered Bahrain business Vendora Gulf Transport & Logistics Services.'],
     ['يمكن التحقق من طلب سيارة بسبعة مقاعد للرحلات العائلية بعد تأكيد عدد الركاب والأمتعة والتوفر.', 'Seven-seater enquiries can be checked for family travel when passenger count, luggage and availability are confirmed.'],
