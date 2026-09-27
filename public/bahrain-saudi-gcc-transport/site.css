@@ -3665,6 +3665,18 @@ body.vip-transport :is(.section-shell, .legal-content)
   text-decoration-thickness: 2px;
 }
 
+/* Contact-page email links can carry a legacy inline gold style. On the
+   light route-card surface they must use the readable navy link token. */
+body.vip-transport .section-shell .route-card a[style*="var(--gold"] {
+  color: #243b63 !important;
+}
+
+/* Legal identity text is important customer-facing information, not disabled
+   or decorative copy. Keep it fully legible across the bilingual site. */
+body.vip-transport small[style*="opacity"] {
+  opacity: 1 !important;
+}
+
 /* These components are deliberately navy, black, glass or image-overlay
    surfaces, including dark cards nested inside an ivory section shell. */
 body.vip-transport :is(
