@@ -114,8 +114,8 @@ for (const url of sitemapUrls) requireValue(expected.has(url), `Non-indexable or
 const robots = readFileSync(join(publicRoot, 'robots.txt'), 'utf8');
 for (const crawler of ['OAI-SearchBot', 'Googlebot', 'Bingbot']) requireValue(robots.includes(`User-agent: ${crawler}`), `Missing explicit crawler group: ${crawler}`);
 requireValue(robots.includes(`Sitemap: ${config.site_origin}${config.site_path}sitemap-index.xml`), 'Root robots missing transport sitemap index');
-requireValue(existsSync(join(root, `${config.indexnow.key}.txt`)), 'IndexNow key file missing');
-requireValue(readFileSync(join(root, `${config.indexnow.key}.txt`), 'utf8').trim() === config.indexnow.key, 'IndexNow key file mismatch');
+requireValue(existsSync(join(root, '..', `${config.indexnow.key}.txt`)), 'IndexNow key file missing');
+requireValue(readFileSync(join(root, '..', `${config.indexnow.key}.txt`), 'utf8').trim() === config.indexnow.key, 'IndexNow key file mismatch');
 requireValue(/chatgpt|perplexity|copilot|gemini/i.test(readFileSync(join(root, 'assets', 'analytics-loader.js'), 'utf8')), 'AI referral classification missing');
 requireValue(/AI-assisted illustrative image/.test(readFileSync(join(root, 'en', 'index.html'), 'utf8')), 'English AI-image disclosure missing');
 requireValue(/الذكاء الاصطناعي/.test(readFileSync(join(root, 'index.html'), 'utf8')), 'Arabic AI-image disclosure missing');
