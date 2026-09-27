@@ -7,6 +7,7 @@
     "sync:search": "node scripts/sync-search-discovery.mjs",
     "validate:central-config": "node scripts/validate-central-config.mjs",
     "validate:search": "node scripts/validate-search-discovery.mjs",
+    "validate:search-presence": "node scripts/validate-transport-search-presence.mjs",
     "validate:indexnow": "node scripts/submit-indexnow.mjs",
     "preview:gcc": "node scripts/generate-gcc-private-preview.mjs",
     "capture:gcc-preview": "node scripts/capture-gcc-preview-contact-sheet.mjs",

@@ -71,23 +71,24 @@ function publicSchema(url, config, route, lang) {
   const base = `${SITE_PATH_PREFIX}/`;
   const graph = [{
     '@type': 'Organization',
-    '@id': `https://getvendora.net${base}#organization`,
-    name: settings.brand_display_name,
-    url: `https://getvendora.net${base}`,
+    '@id': 'https://getvendora.net/#organization',
+    name: 'Vendora Transport',
+    url: 'https://getvendora.net/',
+    logo: 'https://getvendora.net/bahrain-saudi-gcc-transport/assets/brand/vendora-transport-logo-light.svg',
     description: lang === 'en' ? settings.service_description_en : settings.service_description_ar,
     telephone: settings.booking_whatsapp_enabled ? `+${settings.booking_whatsapp}` : undefined,
   }, {
     '@type': 'WebSite',
-    '@id': `https://getvendora.net${base}#website`,
-    url: `https://getvendora.net${base}`,
-    name: settings.brand_display_name,
+    '@id': 'https://getvendora.net/#website',
+    url: 'https://getvendora.net/',
+    name: 'Vendora Transport',
     inLanguage: ['ar', 'en'],
   }, {
     '@type': 'WebPage',
     '@id': `${url}#webpage`,
     url,
     inLanguage: lang,
-    isPartOf: { '@id': `https://getvendora.net${base}#website` },
+    isPartOf: { '@id': 'https://getvendora.net/#website' },
   }, {
     '@type': 'BreadcrumbList',
     '@id': `${url}#breadcrumb`,
@@ -108,7 +109,7 @@ function publicSchema(url, config, route, lang) {
       '@type': 'Service',
       '@id': `${url}#service`,
       name: lang === 'en' ? route.route_name_en : route.route_name_ar,
-      provider: { '@id': `https://getvendora.net${base}#organization` },
+      provider: { '@id': 'https://getvendora.net/#organization' },
       areaServed: ['BH', 'SA', 'KW', 'QA', 'AE', 'OM', 'IQ'],
     };
     if (route.price_bhd != null) {
