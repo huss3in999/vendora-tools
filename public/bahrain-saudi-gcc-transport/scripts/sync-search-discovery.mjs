@@ -100,6 +100,7 @@ function schemaFor({ url, title, description, language }) {
 }
 
 const genericReplacements = [
+  ['Private Car with Driver | Private Car with Driver | Vendora', 'Private Car with Driver | Vendora'],
   ['Vendora Bahrain GCC Transport', 'Vendora Transport'],
   ['GetVendora Transport', 'Vendora Transport'],
   ['GetVendora', 'Vendora Transport'],
