@@ -162,7 +162,7 @@ const IS_VERIFIED_BOT_SQL = `(
   OR LOWER(COALESCE(s.network_organization, '')) LIKE '%googlebot%'
 )`;
 
-const IS_LIKELY_BOT_SQL = `(
+const IS_LIKELY_BOT_SQL = `COALESCE((
   NOT (
     COALESCE(s.verified_bot, 0) = 1
     OR COALESCE(s.client_hints, '') LIKE '%HeadlessChrome%'
@@ -189,9 +189,9 @@ const IS_LIKELY_BOT_SQL = `(
       )
     )
   )
-)`;
+), 0)`;
 
-const IS_UNKNOWN_TRAFFIC_SQL = `(
+const IS_UNKNOWN_TRAFFIC_SQL = `COALESCE((
   NOT (
     COALESCE(s.verified_bot, 0) = 1
     OR COALESCE(s.client_hints, '') LIKE '%HeadlessChrome%'
@@ -228,7 +228,7 @@ const IS_UNKNOWN_TRAFFIC_SQL = `(
     OR LOWER(COALESCE(s.network_organization, '')) LIKE '%cloud%'
     OR (COALESCE(s.bot_score, 99) >= 30 AND COALESCE(s.bot_score, 99) < 50)
   )
-)`;
+), 0)`;
 
 const NON_AUTOMATED_ANALYTICS_SQL = `(NOT ${IS_VERIFIED_BOT_SQL} AND NOT ${IS_LIKELY_BOT_SQL})`;
 const HUMAN_LIKELY_ANALYTICS_SQL = `(NOT ${IS_VERIFIED_BOT_SQL} AND NOT ${IS_LIKELY_BOT_SQL} AND NOT ${IS_UNKNOWN_TRAFFIC_SQL})`;
@@ -274,10 +274,23 @@ const ADMIN_COLUMNS = [
   ['whatsapp_confirmed_at', 'ALTER TABLE whatsapp_leads ADD COLUMN whatsapp_confirmed_at TEXT'],
 ];
 
-let schemaReady = false;
-let settingsSchemaReady = false;
-const ADMIN_ANALYTICS_CACHE = new Map();
+// Cache schema checks per D1 binding, not globally. A Worker isolate can serve
+// more than one test/local binding, and a global flag can incorrectly skip the
+// compatibility columns for a newly attached database. The promise cache also
+// prevents the dashboard's parallel requests from repeating PRAGMA/DDL work.
+const adminSchemaPromises = new WeakMap();
+const settingsSchemaPromises = new WeakMap();
+const ADMIN_ANALYTICS_CACHE = new WeakMap();
 const ADMIN_ANALYTICS_CACHE_TTL_MS = 2 * 60 * 1000;
+
+function analyticsCacheFor(db) {
+  let cache = ADMIN_ANALYTICS_CACHE.get(db);
+  if (!cache) {
+    cache = new Map();
+    ADMIN_ANALYTICS_CACHE.set(db, cache);
+  }
+  return cache;
+}
 
 const DEFAULT_NOTIFICATION_SETTINGS = {
   notifications_enabled: true,
@@ -422,22 +435,25 @@ function requireDb(env, headers = {}) {
 }
 
 async function ensureAdminSchema(env) {
-  try {
-    const table = await env.TRANSPORT_DB.prepare('PRAGMA table_info(whatsapp_leads)').all();
+  const db = env.TRANSPORT_DB;
+  if (!db) return;
+  if (adminSchemaPromises.has(db)) return adminSchemaPromises.get(db);
+
+  const promise = (async () => {
+    const table = await db.prepare('PRAGMA table_info(whatsapp_leads)').all();
     const existing = new Set((table.results || []).map((row) => row.name));
 
     for (const [name, sql] of ADMIN_COLUMNS) {
       if (existing.has(name)) continue;
       try {
-        await env.TRANSPORT_DB.prepare(sql).run();
+        await db.prepare(sql).run();
       } catch (error) {
-        if (!String(error.message || error).toLowerCase().includes('duplicate column')) {
-          /* ignore duplicate column */
-        }
+        // Another request may have added the compatibility column first.
+        if (!String(error.message || error).toLowerCase().includes('duplicate column')) throw error;
       }
     }
 
-    await env.TRANSPORT_DB.prepare(`
+    await db.prepare(`
       CREATE TABLE IF NOT EXISTS transport_private_route_pricing (
         route_slug TEXT PRIMARY KEY,
         private_minimum_bhd REAL,
@@ -446,23 +462,30 @@ async function ensureAdminSchema(env) {
         CHECK (private_minimum_bhd IS NULL OR private_minimum_bhd >= 0)
       )
     `).run();
-  } catch (e) {
-    /* ignore schema setup errors */
-  }
+  })().catch((error) => {
+    adminSchemaPromises.delete(db);
+    throw error;
+  });
+  adminSchemaPromises.set(db, promise);
+  return promise;
 }
 
 async function ensureSettingsSchema(env) {
-  if (settingsSchemaReady) return;
-
-  await env.TRANSPORT_DB.prepare(`
+  const db = env.TRANSPORT_DB;
+  if (!db) return;
+  if (settingsSchemaPromises.has(db)) return settingsSchemaPromises.get(db);
+  const promise = db.prepare(`
     CREATE TABLE IF NOT EXISTS transport_admin_settings (
       key TEXT PRIMARY KEY,
       value TEXT NOT NULL,
       updated_at TEXT DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
     )
-  `).run();
-
-  settingsSchemaReady = true;
+  `).run().catch((error) => {
+    settingsSchemaPromises.delete(db);
+    throw error;
+  });
+  settingsSchemaPromises.set(db, promise);
+  return promise;
 }
 
 function boolSetting(value, fallback = false) {
@@ -2473,9 +2496,20 @@ export async function onRequestGet(context) {
   const resource = url.searchParams.get('resource') || 'leads';
 
   try {
+    // GET requests must also ensure compatibility columns exist. Several
+    // dashboard resources reference CRM columns that were introduced after
+    // the original D1 schema; skipping this step makes the read-only admin
+    // page fail with a 500 instead of repairing the schema once.
+    // The all-time view reads only daily aggregates and does not need the
+    // legacy CRM compatibility columns. Skipping the PRAGMA there keeps the
+    // quota-sensitive path entirely aggregate-only.
+    if (!(resource === 'summary' && url.searchParams.get('period') === 'all')) {
+      await ensureAdminSchema(env);
+    }
     const cacheable = resource === 'summary' || resource === 'tracking';
     const cacheKey = `${resource}:${url.search}`;
-    const cached = cacheable ? ADMIN_ANALYTICS_CACHE.get(cacheKey) : null;
+    const cache = analyticsCacheFor(env.TRANSPORT_DB);
+    const cached = cacheable ? cache.get(cacheKey) : null;
     if (cached && cached.expiresAt > Date.now()) return json({ ok: true, ...cached.data, cached: true }, { headers });
     const data = resource === 'routes'
       ? await getRoutes(env)
@@ -2506,7 +2540,7 @@ export async function onRequestGet(context) {
         : resource === 'pageviews'
           ? await getEventRows(env, request, 'pageview')
           : await getEventRows(env, request, 'lead');
-    if (cacheable) ADMIN_ANALYTICS_CACHE.set(cacheKey, { expiresAt: Date.now() + ADMIN_ANALYTICS_CACHE_TTL_MS, data });
+    if (cacheable) cache.set(cacheKey, { expiresAt: Date.now() + ADMIN_ANALYTICS_CACHE_TTL_MS, data });
     return json({ ok: true, ...data, cached: false }, { headers });
   } catch (error) {
     const errorMsg = error && error.message ? error.message : String(error);
@@ -2532,7 +2566,7 @@ export async function onRequestDelete(context) {
   if (!(await authorize(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, { status: 401, headers });
   }
-  ADMIN_ANALYTICS_CACHE.clear();
+  ADMIN_ANALYTICS_CACHE.get(env.TRANSPORT_DB)?.clear();
 
   const url = new URL(request.url);
   const resource = url.searchParams.get('resource') || '';
@@ -2573,7 +2607,7 @@ async function handleAdminWrite(context) {
   if (!(await authorize(request, env))) {
     return json({ ok: false, error: 'Unauthorized' }, { status: 401, headers });
   }
-  ADMIN_ANALYTICS_CACHE.clear();
+  ADMIN_ANALYTICS_CACHE.get(env.TRANSPORT_DB)?.clear();
 
   let payload;
   try {
