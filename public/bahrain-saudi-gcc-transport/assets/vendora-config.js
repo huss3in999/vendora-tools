@@ -328,25 +328,7 @@ window.VENDORA_ROUTE_PRICES = Object.freeze([
     },
     "active": true,
     "last_updated": "2026-07-23"
-  },
-  {
-    "route_id": "bahrain-to-iraq",
-    "name_ar": "مسارات العراق",
-    "name_en": "Iraq routes",
-    "origin": "Bahrain",
-    "destination": "Iraq",
-    "one_way_price": 300,
-    "return_price": null,
-    "minimum_price": null,
-    "maximum_price": null,
-    "price_type": "from",
-    "unit": "vehicle",
-    "visibility": "public",
-    "note_ar": "سعر ابتدائي للمركبة كاملة؛ السعر النهائي حسب المدينة.",
-    "note_en": "Starting price per complete vehicle; final price depends on the city.",
-    "surcharge": {
-      "causeway_toll_included": true
-    },
+  },
     "active": true,
     "last_updated": "2026-07-23"
   },
@@ -868,29 +850,7 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
       "route_notes_ar": "للمركبة كاملة، اتجاه واحد.",
       "route_notes_en": "Per complete vehicle, one way.",
       "sort_order": 13
-    },
-    {
-      "route_slug": "bahrain-to-iraq",
-      "route_name_ar": "مسارات العراق",
-      "route_name_en": "Iraq routes",
-      "price_bhd": 300,
-      "price_kind": "from",
-      "unit_kind": "one_way_vehicle",
-      "currency": "BHD",
-      "trip_type": "one_way",
-      "public_price_enabled": true,
-      "approximate_sar_enabled": false,
-      "causeway_toll_included": true,
-      "is_active": true,
-      "whatsapp_override": "",
-      "booking_notice_ar": "سعر ابتدائي للمركبة كاملة؛ السعر النهائي حسب المدينة.",
-      "booking_notice_en": "Starting price per complete vehicle; final price depends on the city.",
-      "included_ar": "يشمل رسوم جسر الملك فهد عند انطباقها.",
-      "included_en": "Includes King Fahd Causeway tolls where applicable.",
-      "route_notes_ar": "سعر ابتدائي للمركبة كاملة؛ السعر النهائي حسب المدينة.",
-      "route_notes_en": "Starting price per complete vehicle; final price depends on the city.",
-      "sort_order": 14
-    },
+    },
     {
       "route_slug": "bahrain-to-qatar",
       "route_name_ar": "البحرين إلى قطر",

@@ -28,7 +28,6 @@
     },
     {
       "name": "Cross-Border GCC Corridors",
-      "description": "Direct private car with driver transport from Bahrain to Saudi Arabia, Kuwait, Qatar, UAE, Oman, and Iraq.",
       "importantUrls": [
         "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-saudi/",
         "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-khobar/",
@@ -38,10 +37,7 @@
         "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-qatar/",
         "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-uae/",
         "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dubai/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-iraq/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-karbala/",
-        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-najaf/"
+        "https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/"
       ]
     }
   ],
@@ -58,7 +54,6 @@
     "Bahrain to Kuwait private transport",
     "Bahrain to Qatar private car",
     "Bahrain to Dubai transport",
-    "Bahrain to Iraq ziyarat transport",
     "full day car with driver Bahrain"
   ],
   "keywordsArabic": [
@@ -74,7 +69,6 @@
     "توصيل من البحرين إلى الكويت",
     "توصيل من البحرين إلى قطر",
     "توصيل من البحرين إلى دبي",
-    "توصيل من البحرين إلى العراق",
     "سائق خاص يومي البحرين"
   ],
   "alternateName": "GetVendora Transport",
@@ -103,7 +97,6 @@
     },
     {
       "question": "What services does Vendora Transport provide?",
-      "answer": "Private car with driver, chauffeur service inside Bahrain, airport transfers (BAH/DMM/KWI/DOH), cross-border transport to Saudi Arabia, Kuwait, Qatar, UAE, Oman, and Iraq, and full-day bookings.",
       "canonicalUrl": "https://getvendora.net/"
     },
     {

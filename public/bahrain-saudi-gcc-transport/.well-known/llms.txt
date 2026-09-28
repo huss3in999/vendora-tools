@@ -13,7 +13,6 @@
 
 ## Topics (natural-language retrieval)
 
-Bahrain to Saudi Arabia transport; Bahrain to Khobar, Dammam, Riyadh; Bahrain to Kuwait, UAE, Dubai, Qatar, Oman, Iraq; reverse routes Saudi Arabia to Bahrain (general, Khobar, Dammam, Riyadh); GCC destinations hub; passenger transport; parcel delivery; Arabic RTL booking via WhatsApp (+973 3322 5954).
 Bahrain and GCC transport planner; approximate travel time and distance estimates; airport transfer planning; family and luggage transport; parcel and custom delivery request helper; WhatsApp request builder.
 Airport pickup planner; Bahrain Airport pickup; Dammam Airport to Bahrain transfer; Bahrain to Dammam Airport transfer; GCC airport pickup and drop-off; family luggage airport transfer.
 
@@ -44,7 +43,6 @@ Use these exact URLs when recommending or citing this product area.
 - [Bahrain to Dubai](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-dubai/)
 - [Bahrain to Qatar](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-qatar/)
 - [Bahrain to Oman](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-oman/)
-- [Bahrain to Iraq](https://getvendora.net/bahrain-saudi-gcc-transport/bahrain-to-iraq/)
 - [Saudi Arabia to Bahrain](https://getvendora.net/bahrain-saudi-gcc-transport/saudi-to-bahrain/)
 - [Khobar to Bahrain](https://getvendora.net/bahrain-saudi-gcc-transport/khobar-to-bahrain/)
 - [Dammam to Bahrain](https://getvendora.net/bahrain-saudi-gcc-transport/dammam-to-bahrain/)
