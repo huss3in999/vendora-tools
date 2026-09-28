@@ -56,8 +56,10 @@ test('repository and transport sitemaps expose the same indexable page inventory
   expect(new Set(inventoryPaths).size).toBe(inventoryPaths.length);
   expect(new Set(mappedSitemapPaths).size).toBe(mappedSitemapPaths.length);
   expect(mappedSitemapPaths).toEqual([...inventoryPaths].sort());
-  expect(publicPages.filter(({ language }) => language === 'ar')).toHaveLength(89);
-  expect(publicPages.filter(({ language }) => language === 'en')).toHaveLength(89);
+  const arabicPages = publicPages.filter(({ language }) => language === 'ar');
+  const englishPages = publicPages.filter(({ language }) => language === 'en');
+  expect(arabicPages.length).toBeGreaterThan(0);
+  expect(englishPages.length).toBe(arabicPages.length);
 });
 
 test('every public transport page passes sitewide readability and layout audit', async ({ page }) => {

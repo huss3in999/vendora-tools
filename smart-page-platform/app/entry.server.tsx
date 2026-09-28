@@ -19,6 +19,9 @@ export default async function handleRequest(
   );
 
   responseHeaders.set("Content-Type", "text/html; charset=utf-8");
+  // Smart Page Platform is personal-use infrastructure. Keep every response
+  // out of public search, including hosted HTML and published customer pages.
+  responseHeaders.set("X-Robots-Tag", "noindex, nofollow, noarchive, nosnippet");
   return new Response(stream, {
     status: responseStatusCode,
     headers: responseHeaders

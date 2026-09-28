@@ -60,6 +60,10 @@ export const DEFAULT_PUBLIC_ROUTES = Object.freeze(routePriceConfig.routes.map((
 /* END GENERATED CENTRAL TRANSPORT DEFAULTS */
 
 const ALLOWED_SETTING_KEYS = new Set(Object.keys(DEFAULT_PUBLIC_SETTINGS));
+const RETIRED_NON_GCC_ROUTES = new Set([
+  'bahrain-to-iraq', 'bahrain-to-baghdad', 'bahrain-to-basra', 'bahrain-to-karbala', 'bahrain-to-najaf',
+  'arbaeen-transport', 'ziyarat-iraq-transport', 'family-transport-bahrain-najaf-karbala'
+]);
 
 function cleanText(value, max = 500) {
   if (typeof value !== 'string') return '';
@@ -171,7 +175,7 @@ async function readPublicConfig(env) {
   try { saved = JSON.parse(settingsRow?.settings_json || '{}'); } catch { saved = {}; }
   const value = {
     settings: sanitizePublicSettings(saved),
-    routes: (routeResult.results || []).map(sanitizePublicRoute).map((route) => (
+    routes: (routeResult.results || []).map(sanitizePublicRoute).filter((route) => !RETIRED_NON_GCC_ROUTES.has(route.route_slug)).map((route) => (
       route.public_price_enabled && route.price_kind !== 'request_quote'
         ? route
         : { ...route, price_bhd: null }

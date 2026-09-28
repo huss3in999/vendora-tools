@@ -7,6 +7,8 @@ const publicRoot = resolve(root, '..');
 const config = JSON.parse(readFileSync(join(root, 'config', 'search-discovery.json'), 'utf8'));
 const excludedRoots = new Set(['admin', 'ai-chat-test', 'functions', 'node_modules', 'scratch', 'test-results', 'tests', 'templates']);
 const excludedGuideSegments = new Set(['src', 'content', 'data', 'planning', 'qa', 'references', 'research', 'seo']);
+const retiredNonGccSlugs = new Set(['arbaeen-karbala-travel-tips', 'arbaeen-packing-list', 'arbaeen-season-bahrain-to-karbala', 'arbaeen-transport', 'bahrain-to-iraq', 'bahrain-to-baghdad', 'bahrain-to-basra', 'bahrain-to-karbala', 'bahrain-to-karbala-route-plan', 'bahrain-to-najaf', 'bahrain-to-najaf-driving-time', 'best-car-for-iraq-family-travel', 'best-time-bahrain-to-iraq', 'best-way-bahrain-to-karbala', 'book-private-car-bahrain-to-karbala', 'book-private-car-bahrain-to-najaf', 'direct-transport-bahrain-to-karbala', 'family-transport-bahrain-najaf-karbala', 'family-travel-bahrain-to-iraq', 'iraq-ziyarat-private-car-bahrain', 'karbala-trip-from-bahrain', 'najaf-trip-from-bahrain', 'overland-travel-bahrain-to-iraq', 'pilgrims-transport-bahrain-to-iraq', 'private-car-bahrain-to-iraq', 'private-car-vs-other-iraq-travel', 'ziyarat-iraq-transport']);
+const isRetiredNonGccRel = (rel) => { const segments = rel.split('/').filter(Boolean); const slug = segments[0] === 'en' ? segments[1] : segments[0]; return retiredNonGccSlugs.has(slug); };
 const toPosix = (value) => value.split(sep).join('/');
 const errors = [];
 const pages = [];
@@ -19,6 +21,7 @@ function discover(directory = root) {
     const segments = rel.split('/');
     if (entry.isDirectory()) {
       if (excludedRoots.has(segments[0])) continue;
+      if (isRetiredNonGccRel(rel)) continue;
       if (segments[0] === 'gcc-private-transport-guide' && segments.slice(1).some((part) => excludedGuideSegments.has(part))) continue;
       discover(full);
     } else if (entry.name.toLowerCase() === 'index.html') {
@@ -114,8 +117,8 @@ for (const url of sitemapUrls) requireValue(expected.has(url), `Non-indexable or
 const robots = readFileSync(join(publicRoot, 'robots.txt'), 'utf8');
 for (const crawler of ['OAI-SearchBot', 'Googlebot', 'Bingbot']) requireValue(robots.includes(`User-agent: ${crawler}`), `Missing explicit crawler group: ${crawler}`);
 requireValue(robots.includes(`Sitemap: ${config.site_origin}${config.site_path}sitemap-index.xml`), 'Root robots missing transport sitemap index');
-requireValue(existsSync(join(root, `${config.indexnow.key}.txt`)), 'IndexNow key file missing');
-requireValue(readFileSync(join(root, `${config.indexnow.key}.txt`), 'utf8').trim() === config.indexnow.key, 'IndexNow key file mismatch');
+requireValue(existsSync(join(root, '..', `${config.indexnow.key}.txt`)), 'IndexNow key file missing');
+requireValue(readFileSync(join(root, '..', `${config.indexnow.key}.txt`), 'utf8').trim() === config.indexnow.key, 'IndexNow key file mismatch');
 requireValue(/chatgpt|perplexity|copilot|gemini/i.test(readFileSync(join(root, 'assets', 'analytics-loader.js'), 'utf8')), 'AI referral classification missing');
 requireValue(/AI-assisted illustrative image/.test(readFileSync(join(root, 'en', 'index.html'), 'utf8')), 'English AI-image disclosure missing');
 requireValue(/الذكاء الاصطناعي/.test(readFileSync(join(root, 'index.html'), 'utf8')), 'Arabic AI-image disclosure missing');

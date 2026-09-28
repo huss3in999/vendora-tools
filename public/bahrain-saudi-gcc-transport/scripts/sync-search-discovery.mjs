@@ -8,6 +8,8 @@ const checkOnly = process.argv.includes('--check');
 const seoLinksOnly = process.argv.includes('--seo-links-only');
 const excludedRoots = new Set(['admin', 'ai-chat-test', 'functions', 'node_modules', 'scratch', 'test-results', 'tests', 'templates']);
 const excludedGuideSegments = new Set(['src', 'content', 'data', 'planning', 'qa', 'references', 'research', 'seo']);
+const retiredNonGccSlugs = new Set(['arbaeen-karbala-travel-tips', 'arbaeen-packing-list', 'arbaeen-season-bahrain-to-karbala', 'arbaeen-transport', 'bahrain-to-iraq', 'bahrain-to-baghdad', 'bahrain-to-basra', 'bahrain-to-karbala', 'bahrain-to-karbala-route-plan', 'bahrain-to-najaf', 'bahrain-to-najaf-driving-time', 'best-car-for-iraq-family-travel', 'best-time-bahrain-to-iraq', 'best-way-bahrain-to-karbala', 'book-private-car-bahrain-to-karbala', 'book-private-car-bahrain-to-najaf', 'direct-transport-bahrain-to-karbala', 'family-transport-bahrain-najaf-karbala', 'family-travel-bahrain-to-iraq', 'iraq-ziyarat-private-car-bahrain', 'karbala-trip-from-bahrain', 'najaf-trip-from-bahrain', 'overland-travel-bahrain-to-iraq', 'pilgrims-transport-bahrain-to-iraq', 'private-car-bahrain-to-iraq', 'private-car-vs-other-iraq-travel', 'ziyarat-iraq-transport']);
+const isRetiredNonGccRel = (rel) => { const segments = rel.split('/').filter(Boolean); const slug = segments[0] === 'en' ? segments[1] : segments[0]; return retiredNonGccSlugs.has(slug); };
 const toPosix = (value) => value.split(sep).join('/');
 const escapeXml = (value) => String(value).replace(/[<>&'"]/g, (character) => ({
   '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;'
@@ -20,6 +22,7 @@ function discover(directory = root, files = []) {
     const segments = rel.split('/');
     if (entry.isDirectory()) {
       if (excludedRoots.has(segments[0])) continue;
+      if (isRetiredNonGccRel(rel)) continue;
       if (segments[0] === 'gcc-private-transport-guide' && segments.slice(1).some((part) => excludedGuideSegments.has(part))) continue;
       discover(full, files);
     } else if (entry.name.toLowerCase() === 'index.html') {
@@ -100,6 +103,7 @@ function schemaFor({ url, title, description, language }) {
 }
 
 const genericReplacements = [
+  ['Private Car with Driver | Private Car with Driver | Vendora', 'Private Car with Driver | Vendora'],
   ['Vendora Bahrain GCC Transport', 'Vendora Transport'],
   ['GetVendora Transport', 'Vendora Transport'],
   ['GetVendora', 'Vendora Transport'],

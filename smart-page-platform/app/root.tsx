@@ -25,6 +25,7 @@ export const meta: MetaFunction = () => {
         "Create fast mobile landing pages, link-in-bio websites, short links, forms, analytics, and hosted HTML pages on Cloudflare."
     },
     { name: "viewport", content: "width=device-width, initial-scale=1" },
+    { name: "robots", content: "noindex, nofollow, noarchive, nosnippet" },
     { property: "og:site_name", content: "Smart Page Platform" },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" }

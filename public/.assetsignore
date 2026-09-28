@@ -37,6 +37,7 @@ bahrain-saudi-gcc-transport/*.log
 bahrain-saudi-gcc-transport/*.bat
 bahrain-saudi-gcc-transport/*.cmd
 bahrain-saudi-gcc-transport/*.ps1
+bahrain-saudi-gcc-transport/indexnow-state.json
 bahrain-saudi-gcc-transport/ADMIN-DEPLOY-NOTES.md
 bahrain-saudi-gcc-transport/GCC-IMAGE-PROMPTS.md
 bahrain-saudi-gcc-transport/scratch

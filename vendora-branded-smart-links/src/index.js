@@ -32,7 +32,9 @@ async function route(request, env, ctx) {
   }
 
   if (url.pathname === "/healthz") return text("ok");
-  if (url.pathname === "/robots.txt") return text("User-agent: *\nAllow: /\nDisallow: /admin\n");
+  if (url.pathname === "/robots.txt") return new Response("User-agent: *\nDisallow: /\n", {
+    headers: { "Content-Type": "text/plain; charset=utf-8", "X-Robots-Tag": "noindex, nofollow, noarchive, nosnippet" }
+  });
   if (url.pathname.startsWith("/p/") && ["GET", "HEAD"].includes(request.method)) return redirectLegacyProfile(url, env);
 
   if (url.pathname === "/api/create" && request.method === "POST") return createLink(request, env);
@@ -63,7 +65,7 @@ async function handleShortLink(request, env, ctx) {
 
   const careRedirect = resolveGccCareRedirect(candidate, env);
   if (careRedirect) {
-    return Response.redirect(careRedirect, 302);
+    return redirectNoindex(careRedirect, 302);
   }
 
   const link = await getLink(env, candidate);
@@ -74,7 +76,7 @@ async function handleShortLink(request, env, ctx) {
   ctx.waitUntil(trackClick(env, request, link));
 
   if (link.redirectMode === "instant") {
-    return Response.redirect(link.url, 302);
+    return redirectNoindex(link.url, 302);
   }
 
   return htmlPage(`${link.brandName || "Opening link"} - Smart Link`, previewPage(link), {
@@ -86,7 +88,14 @@ async function handleShortLink(request, env, ctx) {
 function redirectLegacyProfile(url, env) {
   const slug = normalizeSlug(url.pathname.slice(3).split("/")[0]);
   if (!isValidSlug(slug)) return htmlPage("Short link not found", notFoundPage(), { status: 404 });
-  return Response.redirect(`${shortOrigin(env)}/${slug}`, 301);
+  return redirectNoindex(`${shortOrigin(env)}/${slug}`, 301);
+}
+
+function redirectNoindex(location, status) {
+  return new Response(null, {
+    status,
+    headers: { Location: location, "X-Robots-Tag": "noindex, nofollow, noarchive, nosnippet" }
+  });
 }
 
 function transportCareOrigin(env) {
@@ -708,7 +717,11 @@ function htmlPage(title, body, options = {}) {
     `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(title)}</title><meta name="description" content="Create branded short links, QR codes, and smart redirect pages for your business.">${googleTag}${options.extraHead || ""}<style>${CSS}</style></head><body>${body}<script>${CLIENT_JS}</script></body></html>`,
     {
       status: options.status || 200,
-      headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" }
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "no-store",
+        "X-Robots-Tag": "noindex, nofollow, noarchive, nosnippet"
+      }
     }
   );
 }
