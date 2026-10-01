@@ -2163,27 +2163,33 @@
       all: 'All time'
     };
 
-    function ymdLocal(date) {
-      const y = date.getFullYear();
-      const m = String(date.getMonth() + 1).padStart(2, '0');
-      const d = String(date.getDate()).padStart(2, '0');
-      return `${y}-${m}-${d}`;
+    function ymdBahrain(date) {
+      const parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Bahrain',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).formatToParts(date);
+      const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+      return `${values.year}-${values.month}-${values.day}`;
     }
 
     function periodToDates(period) {
       if (period === 'all') return { from: '', to: '' };
       const today = new Date();
-      if (period === 'today') return { from: ymdLocal(today), to: ymdLocal(today) };
+      if (period === 'today') return { from: ymdBahrain(today), to: ymdBahrain(today) };
       if (period === 'yesterday') {
-        const y = new Date();
-        y.setDate(y.getDate() - 1);
-        return { from: ymdLocal(y), to: ymdLocal(y) };
+        const bahrainToday = ymdBahrain(today);
+        const y = new Date(`${bahrainToday}T00:00:00+03:00`);
+        y.setUTCDate(y.getUTCDate() - 1);
+        return { from: ymdBahrain(y), to: ymdBahrain(y) };
       }
       const days = Number(period);
       if (Number.isFinite(days) && days > 0) {
-        const from = new Date();
-        from.setDate(from.getDate() - (days - 1));
-        return { from: ymdLocal(from), to: ymdLocal(today) };
+        const bahrainToday = ymdBahrain(today);
+        const from = new Date(`${bahrainToday}T00:00:00+03:00`);
+        from.setUTCDate(from.getUTCDate() - (days - 1));
+        return { from: ymdBahrain(from), to: bahrainToday };
       }
       return { from: '', to: '' };
     }
