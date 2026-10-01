@@ -414,6 +414,16 @@ function synchronizeHtml(file, original) {
 }
 
 const changes = [];
+// A narrow repair mode avoids rewriting unrelated pages or Worker defaults.
+if (process.argv.includes('--config-only')) {
+  const target = join(root, 'assets', 'vendora-config.js');
+  const expected = generatedConfigSource();
+  const current = readFileSync(target, 'utf8');
+  if (current !== expected && !checkOnly) writeFileSync(target, expected, 'utf8');
+  console.log(JSON.stringify({ mode: checkOnly ? 'check' : 'write', config_only: true, changed_files: current === expected ? 0 : 1 }));
+  if (checkOnly && current !== expected) process.exitCode = 1;
+  process.exit();
+}
 const workerDefaultsPath = resolve(root, '..', 'functions', 'api', 'transport', 'public-settings.js');
 const workerCurrent = readFileSync(workerDefaultsPath, 'utf8');
 const workerExpected = workerCurrent.replace(/\/\* BEGIN GENERATED CENTRAL TRANSPORT DEFAULTS \*\/[\s\S]*?\/\* END GENERATED CENTRAL TRANSPORT DEFAULTS \*\//, generatedWorkerDefaultsSource());
