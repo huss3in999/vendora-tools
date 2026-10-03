@@ -95,7 +95,7 @@ async function login(page) {
   await expect(page.locator('#dashboardView')).toBeVisible();
   await expect(page.locator('#ownerVisitors')).toHaveText('2');
   await expect(page.locator('#ownerWhatsApp')).toHaveText('1');
-  await expect(page.locator('#ownerWhatsAppDetail')).toContainText('completed the WhatsApp handoff');
+  await expect(page.locator('#ownerWhatsAppDetail')).toContainText('confirmed lead rate');
   await expect(page.locator('#trafficMetricsSourceBadge')).toContainText('GA4 verified');
 }
 
@@ -147,12 +147,12 @@ test('mobile menu is compact, retains bottom navigation and has no horizontal ov
   await page.setViewportSize({ width: 390, height: 844 });
   await mockAdmin(page);
   await login(page);
-  await page.locator('[data-app-jump="menu"]').click();
-  await expect(page.locator('#appNav')).toBeVisible();
+  await page.locator('[data-app-jump="overview"]').click();
+  await expect(page.locator('#mobileDock')).toBeVisible();
 
   const layout = await page.evaluate(() => ({
     overflow: document.documentElement.scrollWidth > window.innerWidth,
-    menuCards: [...document.querySelectorAll('#appNav .tab-btn')].map((el) => {
+    menuCards: [...document.querySelectorAll('#mobileDock [data-app-jump]')].map((el) => {
       const box = el.getBoundingClientRect();
       return { width: box.width, height: box.height };
     }),
@@ -160,8 +160,9 @@ test('mobile menu is compact, retains bottom navigation and has no horizontal ov
   }));
   expect(layout.overflow).toBe(false);
   expect(layout.menuCards.every((card) => card.height <= 70 && card.width > card.height)).toBe(true);
-  expect(layout.dockLabels).toEqual(['Home', 'Live', 'Visitors', 'Reports', 'Menu']);
-  await expect(page.locator('#appNav [data-tab="googleAudience"]')).toBeVisible();
+  expect(layout.dockLabels).toEqual(['Overview', 'Inquiries', 'Marketing', 'Settings', 'Health']);
+  await page.locator('[data-app-jump="marketing"]').click();
+  await expect(page.locator('#marketingSubnav')).toBeVisible();
 });
 
 test('Google Audience displays aggregate data without affecting core admin', async ({ page }) => {
@@ -186,7 +187,7 @@ test('Google Audience displays aggregate data without affecting core admin', asy
   await expect(page.locator('#googleAudienceCountries')).toContainText('Bahrain');
 
   await page.evaluate(() => setTab('home'));
-  await expect(page.locator('#ownerSnapshot')).toBeVisible();
+  await expect(page.locator('#overviewPanel')).toBeVisible();
   await expect(page.locator('#ownerVisitors')).toHaveText('2');
 });
 
@@ -198,5 +199,5 @@ test('missing Google secret stays isolated and core admin remains usable', async
   await expect(page.locator('#googleAudienceAge')).toContainText('Demographic data not available yet');
   await page.evaluate(() => setTab('reports'));
   await expect(page.locator('#reportCards')).toBeVisible();
-  await expect(page.locator('#reportCards')).toContainText('Visitors');
+  await expect(page.locator('#reportCards')).toContainText('Users');
 });

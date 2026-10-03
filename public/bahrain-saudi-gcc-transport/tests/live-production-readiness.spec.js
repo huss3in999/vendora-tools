@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 // Worker without weakening the default production readiness check.
 const LIVE = String(process.env.TRANSPORT_RELEASE_ORIGIN || 'https://getvendora.net').replace(/\/$/, '');
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
+const publishedPriceCount = JSON.parse(readFileSync(join(root, 'config', 'route-prices.json'), 'utf8')).routes.filter(r => r.active && r.visibility === 'public' && !['quotation', 'range'].includes(r.price_type) && r.one_way_price != null).length;
 const suspicious = /ÃƒÆ’|Ãƒâ€š|ÃƒËœ|Ãƒâ„¢|ÃƒÂ¢Ã¢â€šÂ¬|ÃƒÂ°Ã…Â¸|Ã¯Â¿Â½|\uFFFD/;
 const paths = [...new Set(['sitemap-gcc-transport.xml', 'sitemap-gcc-transport-en.xml'].flatMap((file) => (
   [...readFileSync(join(root, file), 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => new URL(match[1]).pathname)
@@ -31,11 +32,12 @@ test('raw production pricing is server-rendered and private fields stay private'
 
 test('all production sitemap URLs return clean, tracked HTML', async ({ request }) => {
   test.setTimeout(240_000);
-  const results = await Promise.all(paths.map(async (path) => {
-    const response = await request.get(`${LIVE}${path}`);
+  const results = [];
+  for (const path of paths) {
+    const response = await request.get(`${LIVE}${path}`, {maxRetries: 2});
     const html = await response.text();
-    return { path, status: response.status(), html };
-  }));
+    results.push({ path, status: response.status(), html });
+  }
   expect(results).toHaveLength(paths.length);
   for (const result of results) {
     expect(result.status, result.path).toBe(200);
@@ -56,7 +58,7 @@ for (const width of [1366, 768, 390, 360, 320]) {
       });
       const response = await page.goto(`${LIVE}/bahrain-saudi-gcc-transport/${path}`, { waitUntil: 'load' });
       expect(response?.status()).toBe(200);
-      await expect(page.locator('#priceList .price-card')).toHaveCount(23);
+      await expect(page.locator('#priceList .price-card')).toHaveCount(publishedPriceCount);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
       expect(consoleErrors).toEqual([]);
       expect(failedRequired).toEqual([]);
@@ -69,7 +71,7 @@ test('English prices remain visible with JavaScript disabled', async ({ browser 
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto(`${LIVE}/bahrain-saudi-gcc-transport/en/prices/`);
-  await expect(page.locator('#priceList .price-card')).toHaveCount(23);
+  await expect(page.locator('#priceList .price-card')).toHaveCount(publishedPriceCount);
   await context.close();
 });
 

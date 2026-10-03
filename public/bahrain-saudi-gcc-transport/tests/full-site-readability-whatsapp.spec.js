@@ -36,7 +36,7 @@ const representatives = [
 
 const widths = [320, 360, 375, 390, 430, 768, 1440];
 
-test('all 140 public pages keep active text opaque and light-panel copy readable', async ({ page }) => {
+test('public pages keep active text opaque and panel copy readable', async ({ page }) => {
   test.setTimeout(240_000);
   await page.setViewportSize({ width: 390, height: 844 });
 
@@ -61,6 +61,14 @@ test('all 140 public pages keep active text opaque and light-panel copy readable
         const b = luminance(background);
         return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
       };
+      const backgroundFor = (element) => {
+        for (let current = element; current; current = current.parentElement) {
+          const background = getComputedStyle(current).backgroundColor;
+          const channels = background.match(/[\d.]+/g) || [];
+          if (channels.length === 3 || Number(channels[3]) >= 0.99) return background;
+        }
+        return 'rgb(255, 255, 255)';
+      };
       const faded = [...document.querySelectorAll('a,button,summary,label,p,li,.field-help,.footer-copy')]
         .filter(visible)
         .filter((element) => Number(getComputedStyle(element).opacity) < 0.8)
@@ -71,7 +79,7 @@ test('all 140 public pages keep active text opaque and light-panel copy readable
         ? [...document.querySelectorAll('.section-shell p,.section-shell li,.section-shell label,.section-shell summary,.section-shell .field-help,.section-shell .footer-copy')]
           .filter(visible)
           .filter((element) => !element.closest(excluded))
-          .map((element) => ({ text: element.textContent.trim().slice(0, 70), ratio: contrast(getComputedStyle(element).color, 'rgb(255, 253, 248)') }))
+          .map((element) => ({ text: element.textContent.trim().slice(0, 70), ratio: contrast(getComputedStyle(element).color, backgroundFor(element)) }))
           .filter(({ text, ratio }) => text && ratio < 4.35)
         : [];
 
@@ -217,7 +225,7 @@ test('price, planner and guide messages include the correct source and selected 
   expect(plannerMessage).toContain('نوع الخدمة');
 
   await page.goto(`${root}en/gcc-private-transport-guide/`);
-  const guideHref = await page.locator('[data-wa-static]').first().getAttribute('href');
+  const guideHref = await page.locator('[data-wa-message][href*="wa.me"]').first().getAttribute('href');
   const guideMessage = new URL(guideHref).searchParams.get('text');
   expect(guideMessage).toContain('Vendora Website Enquiry:');
   expect(guideMessage).toContain('/en/');

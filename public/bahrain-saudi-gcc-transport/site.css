@@ -4272,3 +4272,38 @@ body.vip-transport .section-shell .section-head p {
 }
 
 
+
+/* Direct route booking and locally published starting fares. */
+.direct-route-booking { display:grid; gap:1rem; }
+.route-fare-badge { font-size:1.2rem; font-weight:700; color:var(--accent,#fbbf24); }
+.local-transfer-pricing { margin:1.25rem 0; }
+.local-transfer-pricing h2 { font-size:1.2rem; }
+.local-transfer-fares { width:100%; border-collapse:collapse; text-align:start; font-size:.95rem; }
+.local-transfer-fares caption { text-align:start; padding:.5rem 0; }
+.local-transfer-fares th,.local-transfer-fares td { white-space:normal; padding:.65rem .4rem; border-bottom:1px solid rgba(255,255,255,.15); }
+.local-transfer-fares th { font-weight:400; }
+.local-transfer-fares td { min-width:5.5rem; }
+.footer [data-vendora-cr] { display:block; font-size:11px; opacity:.8; margin-top:6px; line-height:1.6; }
+
+@media(max-width:900px) { .vip-home-booking .booking-show-details .vip-booking-secondary { display:grid; } }
+@media(min-width:901px) { .booking-details-toggle { display:none; } }
+
+/* Keep guide and standalone policy typography readable after shared branding. */
+body[data-conversion-guide] { background:#071a2e!important; color:#f8fafc!important; }
+body[data-conversion-guide] :is(p,li,summary,label,a,h1,h2,h3,small) { color:#f8fafc!important; }
+body[data-conversion-guide] :is(.panel,.hero-copy,.route-card,.faq-item,.section-shell) { background:#10263d!important; }
+body[data-conversion-guide] :is(.btn.primary,.primary-btn) { background:#d9b971!important; background-image:none!important; color:#071a2e!important; }
+body[data-conversion-guide] :is(.btn.whatsapp,.wa-inline,.floating-wa) { background:#12663a!important; color:#fff!important; }
+body[data-conversion-privacy] :is(h1,h2,h3) { color:#172b40!important; }
+body.vip-content-app .section-shell:not(.glass) > :is(h1,h2,h3) { color:#172b40!important; }
+body.vip-home-app [data-luggage-matcher] p { color:#172b40!important; }
+.mobile-bottom-dock .dock-btn.primary-wa { background:#12663a!important; color:#fff!important; }
+@media(max-width:900px) { body.vip-transport { padding-bottom:104px!important; } }
+
+body[data-conversion-guide] :is(main,section.section,.card,.compare-card,.table-wrap) { background:#10263d!important; }
+body[data-conversion-guide] a.skip-link { color:#071a2e!important; }
+body.vip-home-app .luggage-matcher-panel p { color:#172b40!important; }
+body.vip-content-app .hero-copy .section-shell :is(h1,h2,h3) { color:#172b40!important; }
+
+body[data-conversion-guide].vip-content-app .section-shell p { color:#f8fafc!important; }
+body.vip-home-app .luggage-matcher-panel .matcher-output-box p { color:#f8fafc!important; }

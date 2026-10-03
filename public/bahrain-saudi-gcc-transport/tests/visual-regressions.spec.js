@@ -64,30 +64,21 @@ for (const scenario of [
   { lang: 'en', path: '/en/bahrain-to-riyadh/', width: 320, height: 760 },
   { lang: 'en', path: '/en/bahrain-to-riyadh/', width: 390, height: 844 },
 ]) {
-  test(`${scenario.lang} prepared-request dialog is readable at ${scenario.width}px`, async ({ page }) => {
+  test(`${scenario.lang} direct WhatsApp action is reachable at ${scenario.width}px`, async ({ page }) => {
     await page.setViewportSize({ width: scenario.width, height: scenario.height });
     await page.route('**/api/transport/event', (route) => route.fulfill({
       status: 201,
       contentType: 'application/json; charset=utf-8',
       body: JSON.stringify({ ok: true, leadId: 1, booking_ref: 'GCC-A1B2C3D4', care_token: token }),
     }));
-    await page.route('https://wa.me/**', (route) => route.fulfill({ status: 204, body: '' }));
-    await page.goto(`/bahrain-saudi-gcc-transport${scenario.path}`, { waitUntil: 'domcontentloaded' });
-    const trigger = page.locator('[data-booking-submit], [data-wa-message], [data-track-wa], .wa-inline').first();
-    await trigger.dispatchEvent('click', { bubbles: true, cancelable: true });
-    const dialog = page.locator('#vendora-booking-ready');
-    await expect(dialog).toBeVisible();
-    await expect(page.locator('#vendora-booking-title')).toHaveText(scenario.lang === 'ar' ? 'تم تجهيز طلبك' : 'Your request is ready');
-    await expect(dialog).toContainText(scenario.lang === 'ar'
-      ? 'تم إنشاء مرجع لطلبك. تابع إلى واتساب لتأكيد التوفر والسعر النهائي.'
-      : 'Your request reference has been created. Continue to WhatsApp to confirm availability and the final price.');
-    await expect(dialog).toContainText('GCC-A1B2C3D4');
-    const continueButton = dialog.locator('[data-booking-continue]');
-    await expect(continueButton).toHaveText(scenario.lang === 'ar' ? 'المتابعة إلى واتساب' : 'Continue to WhatsApp');
-    await expect(continueButton).toBeFocused();
-    expect(suspicious.test(await dialog.innerText())).toBeFalsy();
+    await page.context().route('https://wa.me/**', route => route.fulfill({status:200,body:'<title>WhatsApp</title>'}));
+    await page.goto(`/bahrain-saudi-gcc-transport${scenario.path}`, {waitUntil:'domcontentloaded'});
+    const trigger = page.locator('a[data-wa-message]:visible').first();
+    await expect(trigger).toHaveAttribute('href', /^https:\/\/wa\.me\/97333225954\?text=/);
+    const outgoing = page.context().waitForEvent('request', {predicate:r=>r.url().startsWith('https://wa.me/')});
+    await trigger.click();
+    expect(new URL((await outgoing).url()).searchParams.get('text')).toBeTruthy();
+    await expect(page.locator('#vendora-booking-ready')).toHaveCount(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBeTruthy();
-    await page.keyboard.press('Escape');
-    await expect(dialog).toBeHidden();
   });
 }

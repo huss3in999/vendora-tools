@@ -1,13 +1,13 @@
 (function () {
   // This guide owns its WhatsApp click/lead handler. Tell the shared site layer
   // not to intercept the same click and create a duplicate lead record.
-  window.__VENDORA_PAGE_OWNS_WA_TRACKING__ = true;
+  window.__VENDORA_PAGE_OWNS_WA_TRACKING__ = false;
 
   const PHONE = window.VENDORA_BUSINESS_CONFIG?.booking_whatsapp || "";
 
   const locationsData = {
     ar: {
-      countries: ["البحرين", "السعودية", "قطر", "الكويت", "الإمارات", "عمان", "العراق"],
+      countries: ["البحرين", "السعودية", "قطر", "الكويت", "الإمارات", "عمان"],
       locations: {
         "البحرين": [
           { name: "المنامة", group: "cities" },
@@ -121,7 +121,7 @@
       }
     },
     en: {
-      countries: ["Bahrain", "Saudi Arabia", "Qatar", "Kuwait", "UAE", "Oman", "Iraq"],
+      countries: ["Bahrain", "Saudi Arabia", "Qatar", "Kuwait", "UAE", "Oman"],
       locations: {
         "Bahrain": [
           { name: "Manama", group: "cities" },
@@ -626,20 +626,7 @@
       fireTelemetry('gcc_guide_whatsapp_click', { click_location: clickLoc });
     }
     
-    if (clickLoc === 'planner') {
-      handleQuoteGeneration();
-    } else {
-      const formEl = document.querySelector("[data-route-planner]");
-      const plannerData = formEl ? getPlannerData(formEl) : {};
-      sendLeadEvent('whatsapp_click', Object.assign({
-        fromCountry: plannerData.pickup_country || "",
-        fromCity: plannerData.pickup_location || "",
-        toCountry: plannerData.destination_country || "",
-        toCity: plannerData.destination_location || "",
-        clickText: link.textContent.trim(),
-        targetUrl: link.href || ""
-      }, plannerData));
-    }
+    // Shared site.js owns lead registration and direct handoff tracking.
   }, true);
   // --- TRACKING CODE END ---
 

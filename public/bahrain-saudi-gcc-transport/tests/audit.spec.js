@@ -103,10 +103,12 @@ test.describe('Interactive UI', () => {
     await page.goto('/bahrain-saudi-gcc-transport/');
     const submit = page.locator('[data-booking-submit]');
     await submit.waitFor({ state: 'visible' });
+    await page.context().route('https://wa.me/**', route => route.abort());
+    const whatsapp = page.context().waitForEvent('request', { predicate: request => request.url().startsWith('https://wa.me/97333225954') });
+    await page.locator('[data-booking-extra="pickup-location"]').fill('المنامة');
+    await page.locator('[data-booking-extra="destination-location"]').fill('الخبر');
     await submit.click();
-    await expect(page.locator('#vendora-booking-ready')).toBeVisible();
-    const whatsapp = page.waitForRequest((request) => request.url().startsWith('https://wa.me/97333225954'));
-    await page.locator('#vendora-booking-ready [data-booking-continue]').click();
+    await expect(page.locator('#vendora-booking-ready')).toHaveCount(0);
     await whatsapp;
   });
 });

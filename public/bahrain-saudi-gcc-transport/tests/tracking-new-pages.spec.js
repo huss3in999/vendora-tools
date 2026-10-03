@@ -80,12 +80,12 @@ test.describe('New GCC transport page tracking', () => {
 
       await expect.poll(() => leadRequests.length, { message: `${slug} lead request` }).toBeGreaterThan(0);
       expect(leadRequests[0].routeSlug).toBe(slug);
-      await expect(page.locator('#vendora-booking-ready')).toBeVisible();
-      await page.locator('#vendora-booking-ready [data-booking-continue]').click();
+      await expect(page.locator('#vendora-booking-ready')).toHaveCount(0);
+      await expect.poll(() => page.evaluate(() => (window.__gtagCalls || []).some(call => call[1] === 'lead_created'))).toBeTruthy();
 
       const gtagCalls = await page.evaluate(() => window.__gtagCalls || []);
       expect(gtagCalls.some((call) => call[0] === 'config' && call[1] === 'G-DFY197R2MS')).toBeTruthy();
-      for (const eventName of ['landing_page_view', 'route_view', 'whatsapp_intent', 'lead_created', 'prepared_dialog_view', 'whatsapp_click']) {
+      for (const eventName of ['landing_page_view', 'route_view', 'whatsapp_intent', 'lead_created', 'whatsapp_click']) {
         expect(gtagCalls.some((call) => call[0] === 'event' && call[1] === eventName), `${slug}: ${eventName}`).toBeTruthy();
       }
       expect(gtagCalls.some((call) => call[0] === 'event' && call[1] === 'whatsapp_click' && call[2]?.confirmed_departure === 1), `${slug}: confirmed WhatsApp departure`).toBeTruthy();

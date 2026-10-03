@@ -149,7 +149,8 @@ test('mobile bottom navigation labels, safe spacing and WhatsApp control are cor
   await expect(page.locator('.vip-bottom-nav')).not.toContainText('Prices');
   await expect(page.locator('.floating-wa')).toBeHidden();
   await expect(page.locator('[data-vip-bottom-whatsapp]')).toHaveCount(1);
-  await page.locator('footer').scrollIntoViewIfNeeded();
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await expect.poll(() => page.evaluate(() => Math.abs(window.scrollY + window.innerHeight - document.documentElement.scrollHeight))).toBeLessThan(2);
   const geometry = await page.evaluate(() => {
     const nav = document.querySelector('.vip-bottom-nav').getBoundingClientRect();
     const footer = document.querySelector('footer').getBoundingClientRect();
@@ -182,10 +183,9 @@ test('calculator source contains no hardcoded public amount or telephone number'
   expect(planner).toContain('api/transport/public-settings');
 });
 
-test('promotional surfaces contain no fixed currency amount', () => {
-  const files = ['index.html', join('en', 'index.html'), join('bahrain-to-riyadh', 'index.html'), join('en', 'bahrain-to-riyadh', 'index.html')];
-  for (const file of files) {
-    const html = readFileSync(join(root, file), 'utf8');
-    expect(html).not.toMatch(/(?:hero|featured)[\s\S]{0,1200}\b(?:BHD\s*\d+|\d+\s*BHD)\b/i);
-  }
+test('published route fares match the approved central price catalog', async ({ page }) => {
+  const config = JSON.parse(readFileSync(join(root, 'config', 'route-prices.json'), 'utf8'));
+  const riyadh = config.routes.find(route => route.route_id === 'bahrain-to-riyadh');
+  await page.goto('/bahrain-saudi-gcc-transport/en/bahrain-to-riyadh/');
+  await expect(page.locator('body')).toContainText(String(riyadh.one_way_price));
 });
