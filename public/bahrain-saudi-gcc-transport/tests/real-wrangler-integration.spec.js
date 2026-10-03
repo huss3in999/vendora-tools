@@ -1,8 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { spawn, spawnSync } from 'node:child_process';
 import { mkdirSync, readFileSync, rmSync } from 'node:fs';
-import { tmpdir } from 'node:os';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const transportRoot = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -10,7 +9,9 @@ const publicRoot = dirname(transportRoot);
 const port = 8800 + (process.pid % 500);
 const connectedOrigin = String(process.env.VENDORA_WRANGLER_BASE || '').replace(/\/$/, '');
 const origin = connectedOrigin || `http://127.0.0.1:${port}`;
-const persistPath = join(tmpdir(), `vendora-real-wrangler-${process.pid}`);
+// Keep the database inside the workspace but outside the watched assets tree.
+const testCacheRoot = join(dirname(publicRoot), '.wrangler');
+const persistPath = join(testCacheRoot, `integration-test-${process.pid}`);
 const sitePrefix = '/bahrain-saudi-gcc-transport';
 const fatalPattern = /Can't modify immutable headers|An error has occurred|Worker threw exception|Uncaught Worker exception/i;
 let wrangler;
@@ -81,7 +82,13 @@ test.describe('real Wrangler HTML response integration', () => {
         wrangler.kill('SIGTERM');
       }
     }
-    rmSync(persistPath, { recursive: true, force: true });
+    // Windows can briefly retain SQLite handles after the Worker tree exits.
+    // Restrict cleanup to this test's own temporary directory and retry locks.
+    const cleanupPath = resolve(persistPath);
+    if (dirname(cleanupPath) !== resolve(testCacheRoot) || !cleanupPath.endsWith(`integration-test-${process.pid}`)) {
+      throw new Error('Refusing cleanup outside the Wrangler test directory');
+    }
+    rmSync(cleanupPath, { recursive: true, force: true, maxRetries: 20, retryDelay: 250 });
   });
 
   test('every sitemap page is rewritten successfully by the real Worker', async () => {
@@ -117,7 +124,7 @@ test.describe('real Wrangler HTML response integration', () => {
       `${sitePrefix}/gcc-transport-planner/`, `${sitePrefix}/en/gcc-transport-planner/`,
       `${sitePrefix}/airport-pickup-planner/`,
       `${sitePrefix}/bahrain-to-khobar/`,
-      `${sitePrefix}/en/arbaeen-karbala-travel-tips/`,
+      `${sitePrefix}/en/private-chauffeur-bahrain/`,
     ];
     const assetUrls = new Set();
 

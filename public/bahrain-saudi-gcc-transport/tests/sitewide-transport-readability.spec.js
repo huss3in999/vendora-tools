@@ -10,6 +10,18 @@ const reportOnly = phase !== 'final';
 const outputRoot = join(projectRoot, 'test-results', 'sitewide-readability');
 const excludedRoots = new Set(['admin', 'ai-chat-test', 'functions', 'node_modules', 'scratch', 'test-results', 'tests']);
 const excludedGuideSegments = new Set(['src', 'content', 'data', 'planning', 'qa', 'references', 'research', 'seo']);
+const retiredNonGccSlugs = new Set([
+        'arbaeen-karbala-travel-tips', 'arbaeen-packing-list', 'arbaeen-season-bahrain-to-karbala',
+        'arbaeen-transport', 'bahrain-to-iraq', 'bahrain-to-baghdad', 'bahrain-to-basra',
+        'bahrain-to-karbala', 'bahrain-to-karbala-route-plan', 'bahrain-to-najaf',
+        'bahrain-to-najaf-driving-time', 'best-car-for-iraq-family-travel', 'best-time-bahrain-to-iraq',
+        'best-way-bahrain-to-karbala', 'book-private-car-bahrain-to-karbala',
+        'book-private-car-bahrain-to-najaf', 'direct-transport-bahrain-to-karbala',
+        'family-transport-bahrain-najaf-karbala', 'family-travel-bahrain-to-iraq',
+        'iraq-ziyarat-private-car-bahrain', 'karbala-trip-from-bahrain', 'najaf-trip-from-bahrain',
+        'overland-travel-bahrain-to-iraq', 'pilgrims-transport-bahrain-to-iraq',
+        'private-car-bahrain-to-iraq', 'private-car-vs-other-iraq-travel', 'ziyarat-iraq-transport'
+      ]);
 const requestedViewports = [
   { width: 305, height: 520 },
   { width: 390, height: 844 },
@@ -25,7 +37,7 @@ function discoverPublicPages(directory = projectRoot, pages = []) {
     const rel = relative(projectRoot, full).split(sep).join('/');
     const segments = rel.split('/');
     if (entry.isDirectory()) {
-      if (excludedRoots.has(segments[0])) continue;
+      if (excludedRoots.has(segments[0]) || retiredNonGccSlugs.has(segments[0] === 'en' ? segments[1] : segments[0])) continue;
       if (segments[0] === 'gcc-private-transport-guide' && segments.slice(1).some((part) => excludedGuideSegments.has(part))) continue;
       discoverPublicPages(full, pages);
     } else if (entry.name.toLowerCase() === 'index.html') {

@@ -5,11 +5,11 @@ const TEST_UUID = 'a1b2c3d4-e5f6-4789-a012-3456789abcde';
 const TEST_TOKEN = 'a'.repeat(48);
 
 function captureWhatsAppClick(page) {
-  return page.waitForRequest((req) => req.url().includes('wa.me/'), { timeout: 15000 });
+  return page.context().waitForEvent('request', { predicate: req => req.url().startsWith('https://wa.me/'), timeout: 15000 });
 }
 
 async function stubWhatsAppNavigation(page) {
-  await page.route('https://wa.me/**', async (route) => {
+  await page.context().route('https://wa.me/**', async (route) => {
     await route.fulfill({ status: 204, body: '' });
   });
 }
@@ -30,8 +30,7 @@ function mockLeadApi(page, bookingRef = TEST_REF, leadId = TEST_UUID) {
 }
 
 async function continuePreparedRequest(page) {
-  await expect(page.locator('#vendora-booking-ready')).toBeVisible();
-  await page.locator('#vendora-booking-ready [data-booking-continue]').click();
+  await expect(page.locator('#vendora-booking-ready, #vendora-contact-step')).toHaveCount(0);
 }
 
 function mockPassengerCareApi(page, options = {}) {
@@ -145,8 +144,8 @@ test.describe('Passenger Care pages', () => {
   });
 });
 
-test.describe('WhatsApp passenger care append', () => {
-  test('Arabic homepage data-wa-message adds booking ref, care block, and short link', async ({ page }) => {
+test.describe('Direct WhatsApp contact with background Passenger Care tracking', () => {
+  test('Arabic homepage data-wa-message opens directly without inserting administrative references', async ({ page }) => {
     await mockLeadApi(page);
     await stubWhatsAppNavigation(page);
 
@@ -156,11 +155,10 @@ test.describe('WhatsApp passenger care append', () => {
     await continuePreparedRequest(page);
     const openedUrl = (await waRequest).url();
 
-    expect(openedUrl).toMatch(/GCC-[A-F0-9]{8}/);
-    const decoded = decodeURIComponent(openedUrl);
-    expect(decoded).toContain('\u0631\u0642\u0645 \u0627\u0644\u062d\u062c\u0632');
-    expect(decoded).toContain('\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0645\u0633\u0627\u0641\u0631');
-    expect(decoded).toContain(`/care/?token=${TEST_TOKEN}`);
+    const message = new URL(openedUrl).searchParams.get('text');
+    expect(message).toBeTruthy();
+    expect(message).not.toContain('Booking Ref:');
+    expect(message).not.toContain('care/?token=');
   });
 
   test('Arabic airport page intercepts data-wa-message', async ({ page }) => {
@@ -173,11 +171,11 @@ test.describe('WhatsApp passenger care append', () => {
     await continuePreparedRequest(page);
     const openedUrl = (await waRequest).url();
 
-    expect(decodeURIComponent(openedUrl)).toMatch(/GCC-[A-F0-9]{8}/);
-    expect(decodeURIComponent(openedUrl)).toContain('\u0631\u0639\u0627\u064a\u0629 \u0627\u0644\u0645\u0633\u0627\u0641\u0631');
+    expect(new URL(openedUrl).pathname).toBe('/97333225954');
+    expect(new URL(openedUrl).searchParams.get('text')).toBeTruthy();
   });
 
-  test('English page hardcoded wa.me adds Booking Ref, Passenger Care, English care link', async ({ page }) => {
+  test('English page hardcoded wa.me opens directly with an English greeting', async ({ page }) => {
     await mockLeadApi(page, 'GCC-B2C3D4E5', 'b2c3d4e5-f6a7-4890-b123-456789abcdef');
     await stubWhatsAppNavigation(page);
 
@@ -187,10 +185,9 @@ test.describe('WhatsApp passenger care append', () => {
     await continuePreparedRequest(page);
     const decoded = decodeURIComponent((await waRequest).url());
 
-    expect(decoded).toMatch(/GCC-[A-F0-9]{8}/);
-    expect(decoded).toContain('Booking Ref:');
-    expect(decoded).toContain('Passenger Care:');
-    expect(decoded).toContain(`/care/en/?token=${TEST_TOKEN}`);
+    expect(decoded).toContain('I would like');
+    expect(decoded).not.toContain('Booking Ref:');
+    expect(decoded).not.toContain('Passenger Care:');
   });
 
   test('Floating WhatsApp button works', async ({ page }) => {
@@ -203,7 +200,7 @@ test.describe('WhatsApp passenger care append', () => {
     const waRequest = captureWhatsAppClick(page);
     await floatBtn.click();
     await continuePreparedRequest(page);
-    expect(decodeURIComponent((await waRequest).url())).toMatch(/GCC-[A-F0-9]{8}/);
+    expect(new URL((await waRequest).url()).pathname).toBe('/97333225954');
   });
 
   test('API failure opens WhatsApp without a synthetic reference or care token', async ({ page }) => {

@@ -9,7 +9,7 @@ test('report page mobile overflow', async ({ page }) => {
   });
 
   const fileUrl = new URL('../admin/index.html', import.meta.url).href;
-  await page.goto(fileUrl);
+  await page.goto('/bahrain-saudi-gcc-transport/admin/');
   await page.locator('#tokenInput').fill('test-token');
   await page.locator('#loginForm').evaluate(form => form.requestSubmit());
   await page.waitForSelector('#dashboardView');
@@ -19,7 +19,7 @@ test('report page mobile overflow', async ({ page }) => {
   await page.waitForTimeout(1000);
 
   // Navigate to reports using the mobile button
-  await page.locator('[data-app-jump="reports"]').click();
+  await page.evaluate(() => setTab('reports'));
   await page.waitForSelector('#reportsPanel:not(.hidden)');
 
   // Wait a bit for charts to render

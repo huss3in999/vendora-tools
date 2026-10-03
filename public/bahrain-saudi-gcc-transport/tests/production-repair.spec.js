@@ -27,14 +27,11 @@ for(const path of ['','en/','en/bahrain-to-khobar/','en/prices/']){
  for(const successful of [true,false]){
  test(`WhatsApp ${path||'Arabic home'} with backend ${successful?'success':'failure'}`,async({page})=>{
   await page.route('**/api/transport/event',r=>r.fulfill({status:successful?201:503,json:successful?{ok:true,leadId:1,booking_ref:'GCC-A1B2C3D4',care_token:'a'.repeat(48)}:{ok:false}}));
-  await page.route('**/wa.me/**',r=>r.abort());
+  await page.context().route('**/wa.me/**',r=>r.abort());
   await page.goto(root+path,{waitUntil:'networkidle'});
+  const outgoing=page.context().waitForEvent('request', {predicate:r=>r.url().startsWith('https://wa.me/')});
   await page.locator('a[data-wa-message]:visible').first().click();
-  const modal=page.locator('#vendora-booking-ready');await expect(modal).toBeVisible();
-  if(successful)await expect(modal).toContainText('GCC-A1B2C3D4');
-  else expect(await modal.innerText()).not.toMatch(/has been created|تم إنشاء مرجع/);
-  const outgoing=page.waitForRequest(r=>r.url().startsWith('https://wa.me/'));
-  await modal.locator('[data-booking-continue]').click();
+  await expect(page.locator('#vendora-booking-ready, #vendora-contact-step')).toHaveCount(0);
   const url=new URL((await outgoing).url());expect(url.pathname).toBe('/97333225954');expect(url.searchParams.get('text')).toBeTruthy();
  });
  }

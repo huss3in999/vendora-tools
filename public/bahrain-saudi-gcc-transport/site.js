@@ -15,6 +15,7 @@
     ? ''
     : (config.booking_whatsapp || config.phoneNumber || '');
   const siteSegment = '/bahrain-saudi-gcc-transport/';
+  const defaultEnglishMessage = config.default_whatsapp_message_en || 'Hello, I would like to ask about booking and service details.';
   const defaultArabicMessage = config.defaultWhatsAppMessage || config.default_whatsapp_message_ar || 'مرحباً، أود معرفة تفاصيل الحجز والخدمة.';
   const leadEndpoint = config.leadEndpoint || (`${siteSegment.replace(/\/$/, '')}/api/transport/event`);
   const pageUrl = window.location.href;
@@ -51,6 +52,24 @@
   let whatsAppClickLockUntil = 0;
 
   const translations = [
+    ["افتح حاسبة الرحلة", "Open the Trip Calculator"],
+    ["تواصل مباشرة عبر واتساب", "Contact directly on WhatsApp"],
+    ["تفاصيل الرحلة الاختيارية", "Optional journey details"],
+    ["أسعار توصيل مطار البحرين والفنادق تبدأ من", "Bahrain Airport & Hotel Transfer Starting Fares"],
+    ["سعر المركبة لاتجاه واحد", "One-way vehicle fares"],
+    ["أسعار استرشادية لاتجاه واحد للمركبة كاملة. أكد عنوان الاستلام وفئة المركبة وأي وقت انتظار في المحادثة قبل الحجز.", "Indicative one-way fares per vehicle. Confirm your pickup address, vehicle category and any waiting time in the chat before booking."],
+    ["مطار البحرين ⇄ المنامة / السيف — سيدان تنفيذية", "Bahrain Airport ⇄ Manama / Seef — Executive Sedan"],
+    ["مطار البحرين ⇄ المنامة / السيف — جمس يوكون VIP", "Bahrain Airport ⇄ Manama / Seef — GMC Yukon XL VIP"],
+    ["مطار البحرين ⇄ الزلاق / المنتجعات", "Bahrain Airport ⇄ Zallaq / resorts"],
+    ["من 15 د.ب", "From 15 BHD"],
+    ["من 20 د.ب", "From 20 BHD"],
+    ["من 25 د.ب", "From 25 BHD"],
+    ["أسطول معتمد: مركبات حديثة، مكيفة ونظيفة بالكامل مطابقة للفئة المطلوبة (جمس يوكون VIP أو سيدان تنفيذية) مع سائق رسمي ملتزم بالموعد.", "Verified Fleet: Late-model, fully air-conditioned, spotless vehicles matching your confirmed category (VIP GMC Yukon XL or Executive Sedan) with a professional vetted chauffeur."],
+    ["احجز مباشرة عبر واتساب", "Book directly on WhatsApp"],
+    ["خدمة من الباب إلى الباب. أرسل موقع الاستلام والتاريخ المناسب في المحادثة.", "Door-to-door service. Send your pickup point and preferred date in the chat."],
+    ["اطلب سعر مسارك عبر واتساب", "Request your route price on WhatsApp"],
+    ["30 د.ب (حوالي 300 ر.س) للمركبة كاملة | رسوم الجسر مشمولة", "30 BHD (~300 SAR) Complete Vehicle | Causeway Toll Included"],
+    ["يرجى إكمال حقول الرحلة المطلوبة.", "Please complete the required journey fields."],
     ['خدمات النقل المرتبطة في البحرين', 'Related Bahrain Domestic Services'],
     ['نعم، نوفر سائقاً خاصاً ينتظرك طوال سهرتك في مطاعم ووجهات بلوك 338 والجفير وفنادق البحرين الفاخرة لتنقل آمن وراقٍ دون عناء البحث عن مواقف.', 'Yes. Your dedicated chauffeur remains on standby throughout your evening in Block 338, Juffair, and luxury resorts, ensuring seamless travel with zero parking hassles.'],
     ['هل تشمل الخدمة السهرات والتنقل في الجفير وبلوك 338؟', 'Does the service cover nightlife and late dining in Block 338 and Juffair?'],
@@ -791,7 +810,7 @@
     ['نوع وموديل السيارة يعتمد على عدد الركاب والأمتعة والمسار والتوفر عند تأكيد الحجز.', 'Vehicle type and model depend on passenger count, luggage, route and availability at booking confirmation.'],
     ['ترتيبات المركبة والأمتعة', 'Vehicle and luggage arrangements'],
     ['تعتمد ترتيبات الأمتعة على المركبة المعيّنة وتجهيزها المؤكد. تتوفر عادة مساحة خلفية عادية للأمتعة، وقد يمكن ترتيب سعة إضافية مناسبة مثل حامل خلفي للأمتعة أو حامل شحن على وصلة السحب أو صندوق أمتعة على السقف أو مقطورة أمتعة، حسب التجهيز المتاح فعلياً. يجب الإفصاح مسبقاً عن عدد الحقائب وحجمها التقريبي، وتحتاج الأمتعة كبيرة الحجم أو غير المعتادة إلى تأكيد مسبق. لا تُضمن فئة مركبة أو سعة أو تجهيز أو ملحق محدد حتى تؤكده فندورا.', 'Luggage arrangements depend on the assigned vehicle and its confirmed configuration. Normal rear luggage space is usually available, and suitable additional capacity may be arranged through a rear luggage carrier, tow-hitch cargo carrier, roof luggage box, or luggage trailer, depending on the setup actually available. Passengers must disclose the number and approximate size of bags, and oversized or unusually large luggage requires advance confirmation. No vehicle category, capacity, setup, or accessory is guaranteed until Vendora confirms it.'],
-    ['تُعرض فئات المركبات وخيارات الحجز فقط. تُرتب المركبة والسائق وفق المسار والتوفر، ولا ترتبط الخدمة بشكل دائم بمركبة محددة.', 'Only vehicle categories and booking options are presented. The vehicle and driver are arranged according to the route and availability, and no specific vehicle is permanently tied to the service.']
+    ['أسطول معتمد: مركبات حديثة، مكيفة ونظيفة بالكامل مطابقة للفئة المطلوبة (جمس يوكون VIP أو سيدان تنفيذية) مع سائق رسمي ملتزم بالموعد.', 'Verified Fleet: Late-model, fully air-conditioned, spotless vehicles matching your confirmed category (VIP GMC Yukon XL or Executive Sedan) with a professional vetted chauffeur.']
   );
   /* BEGIN GENERATED GCC BATCH 1 TRANSLATIONS */
   translations.push(
@@ -1092,7 +1111,7 @@
           contactPoint: centralBusinessConfig.support_phone ? [{ '@type': 'ContactPoint', contactType: 'customer support', telephone: `+${centralBusinessConfig.support_phone}` }] : undefined,
           address: centralBusinessConfig.public_address ? { '@type': 'PostalAddress', streetAddress: centralBusinessConfig.public_address, addressCountry: 'BH' } : undefined,
           paymentAccepted: Array.isArray(centralBusinessConfig.supported_payments) ? centralBusinessConfig.supported_payments.join(', ') : 'Cash, BenefitPay',
-          areaServed: ['BH', 'SA', 'KW', 'AE', 'QA', 'OM', 'IQ'],
+          areaServed: ['BH', 'SA', 'KW', 'AE', 'QA', 'OM'],
         },
         {
           '@type': 'WebPage',
@@ -1360,11 +1379,11 @@
       const next = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
       sessionStorage.setItem('__vendora_session_id', next);
       sessionStorage.setItem(sessionIdKey, next);
-      
+
       let count = Number(localStorage.getItem(visitCountKey) || 0);
       count += 1;
       localStorage.setItem(visitCountKey, String(count));
-      
+
       return next;
     } catch {
       return '';
@@ -1693,134 +1712,18 @@
     }[char]));
   }
 
-  function showBookingReadyModal(message, onContinue, bookingRef, leadId, careToken) {
-    const old = document.getElementById('vendora-booking-ready');
-    if (old) old.remove();
-    const previousFocus = document.activeElement;
-    const en = state.lang === 'en';
-    const handoffDescription = bookingRef
-      ? (en ? 'Your request reference has been created. Continue to WhatsApp to confirm availability and the final price.' : 'تم إنشاء مرجع لطلبك. تابع إلى واتساب لتأكيد التوفر والسعر النهائي.')
-      : (en ? 'Continue to WhatsApp to send your request. Availability and the final price are confirmed in the conversation.' : 'تابع إلى واتساب لإرسال طلبك. يتم تأكيد التوفر والسعر النهائي في المحادثة.');
-    const modal = document.createElement('div');
-    modal.id = 'vendora-booking-ready';
-    modal.setAttribute('role', 'dialog');
-    modal.setAttribute('aria-modal', 'true');
-    modal.setAttribute('aria-labelledby', 'vendora-booking-title');
-    modal.innerHTML = `<div class="vendora-booking-backdrop" data-booking-cancel></div><div class="vendora-booking-dialog"><h2 id="vendora-booking-title">${en ? 'Your request is ready' : 'تم تجهيز طلبك'}</h2><p>${handoffDescription}</p>${bookingRef ? `<p><strong>${en ? 'Request reference' : 'رقم الطلب'}: <bdi dir="ltr">${escapeHtml(bookingRef)}</bdi></strong></p>` : ''}<div class="vendora-booking-actions"><button type="button" data-booking-cancel>${en ? 'Back and edit request' : 'العودة وتعديل الطلب'}</button><button type="button" data-booking-continue>${en ? 'Continue to WhatsApp' : 'المتابعة إلى واتساب'}</button></div></div>`;
-    const style = document.createElement('style');
-    style.textContent = '#vendora-booking-ready{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:1rem}.vendora-booking-backdrop{position:absolute;inset:0;background:rgba(5,8,17,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.vendora-booking-dialog{position:relative;max-width:32rem;width:100%;background:#0b1120;color:#f8fafc;border:1px solid rgba(200,169,107,.3);border-radius:1.25rem;padding:1.75rem;box-shadow:0 24px 70px rgba(0,0,0,.75)}.vendora-booking-dialog h2{margin:0 0 .6rem;color:#fff;font-size:1.4rem}.vendora-booking-dialog p{color:#cbd5e1;line-height:1.55}.vendora-booking-dialog strong{color:#c8a96b}.vendora-booking-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.25rem}.vendora-booking-dialog button{min-height:48px;border:0;border-radius:.75rem;padding:.8rem 1.25rem;background:#168b4b;color:#fff;font:inherit;font-weight:700;cursor:pointer;transition:transform .15s,background .15s}.vendora-booking-dialog button:hover{background:#1ca75a}.vendora-booking-dialog [data-booking-cancel]{background:rgba(255,255,255,.08);color:#cbd5e1;border:1px solid rgba(255,255,255,.12)}.vendora-booking-dialog [data-booking-cancel]:hover{background:rgba(255,255,255,.14);color:#fff}.vendora-booking-dialog button:focus-visible{outline:3px solid #c8a96b;outline-offset:3px}';
-    modal.appendChild(style);
-    document.body.appendChild(modal);
-    window.vendoraTrackLocal?.('whatsapp_handoff_offered', { event_category: 'transport_funnel', cta_location: 'booking_dialog' });
-    if (bookingRef && typeof window.vendoraTrackLocal === 'function') {
-      window.vendoraTrackLocal('prepared_dialog_view', { event_category: 'transport_funnel', lead_status: 'prepared' });
-    }
-    const continueButton = modal.querySelector('[data-booking-continue]');
-    const close = () => {
-      modal.remove();
-      document.removeEventListener('keydown', onKeydown);
-      if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus();
-    };
-    const cancel = () => {
-      if (typeof window.vendoraTrackLocal === 'function') {
-        window.vendoraTrackLocal('whatsapp_cancel', {
-          event_category: 'transport_funnel',
-          method: 'prepared_dialog',
-          cancellation_method: 'back_button'
-        });
-      }
-      if (bookingRef && leadId && careToken) {
-        postLeadPayloadToEndpoint('/api/transport/event', {
-          action: 'cancel_whatsapp_handoff',
-          booking_ref: bookingRef,
-          leadId,
-          careToken
-        });
-      }
-      close();
-    };
-    const onKeydown = (event) => {
-      if (event.key === 'Escape') cancel();
-    };
-    modal.querySelectorAll('[data-booking-cancel]').forEach((node) => node.addEventListener('click', cancel));
-    continueButton.addEventListener('click', () => {
-      if (typeof window.vendoraTrackLocal === 'function') {
-        window.vendoraTrackLocal('whatsapp_click', {
-          event_category: 'transport_funnel',
-          method: 'prepared_dialog',
-          confirmed_departure: 1
-        });
-      }
-      if (bookingRef) {
-        postLeadPayloadToEndpoint('/api/transport/event', {
-          action: 'confirm_whatsapp_handoff',
-          booking_ref: bookingRef,
-          leadId: leadId || 1,
-          careToken: careToken || ''
-        });
-      }
-      close();
-      onContinue(message);
-    }, { once: true });
-    document.addEventListener('keydown', onKeydown);
-    continueButton.focus();
-  }
-
-  function collectOptionalContact() {
-    const nameEnabled = config.customer_name_enabled === true;
-    const phoneEnabled = config.customer_phone_enabled === true;
-    if (!nameEnabled && !phoneEnabled) return Promise.resolve({});
-    return new Promise((resolve) => {
-      const modal = document.createElement('div');
-      modal.id = 'vendora-contact-step';
-      modal.setAttribute('role', 'dialog');
-      modal.setAttribute('aria-modal', 'true');
-      const en = state.lang === 'en';
-      modal.innerHTML = `<div class="vendora-booking-backdrop"></div><form class="vendora-booking-dialog"><h2>${en ? 'Prepare your request' : 'تجهيز طلبك'}</h2><p>${en ? 'These details are used only to identify and follow up this transport request.' : 'تستخدم هذه البيانات فقط لتمييز طلب النقل ومتابعته.'}</p>${nameEnabled ? `<label>${en ? 'Name' : 'الاسم'}<input name="customerName" maxlength="100" ${config.customer_name_required ? 'required' : ''}></label>` : ''}${phoneEnabled ? `<label>${en ? 'Contact number' : 'رقم التواصل'}<input name="customerPhone" inputmode="tel" maxlength="20" ${config.customer_phone_required ? 'required' : ''}></label>` : ''}${phoneEnabled && config.follow_up_consent_enabled ? `<label class="vendora-consent"><input name="followUpConsent" type="checkbox" required> ${en ? 'I agree to be contacted about this request.' : 'أوافق على التواصل معي بشأن هذا الطلب.'}</label>` : ''}<div><button type="button" data-cancel>${en ? 'Cancel' : 'إلغاء'}</button><button type="submit">${en ? 'Prepare request' : 'تجهيز الطلب'}</button></div></form>`;
-      const style = document.createElement('style');
-      style.textContent = '#vendora-contact-step{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:1rem}.vendora-booking-backdrop{position:absolute;inset:0;background:rgba(5,8,17,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.vendora-booking-dialog{position:relative;max-width:32rem;width:100%;background:#0b1120;color:#f8fafc;border:1px solid rgba(200,169,107,.3);border-radius:1.25rem;padding:1.75rem;box-shadow:0 24px 70px rgba(0,0,0,.75)}.vendora-booking-dialog h2{margin:0 0 .6rem;color:#fff;font-size:1.4rem}.vendora-booking-dialog p{color:#cbd5e1;line-height:1.55}.vendora-booking-dialog label{display:grid;gap:.4rem;margin-top:1rem;font-weight:600;color:#e2e8f0}.vendora-booking-dialog input:not([type=checkbox]){min-height:46px;border:1px solid rgba(255,255,255,.15);border-radius:.75rem;padding:.75rem 1rem;background:rgba(3,7,18,.8);color:#fff;font:inherit;outline:none;transition:border-color .2s}.vendora-booking-dialog input:not([type=checkbox]):focus{border-color:#c8a96b;box-shadow:0 0 0 2px rgba(200,169,107,.25)}.vendora-booking-dialog button{min-height:48px;margin:1.25rem .25rem 0;border:0;border-radius:.75rem;padding:.8rem 1.25rem;background:#168b4b;color:#fff;font:inherit;font-weight:700;cursor:pointer;transition:transform .15s,background .15s}.vendora-booking-dialog button:hover{background:#1ca75a}.vendora-booking-dialog [data-cancel]{background:rgba(255,255,255,.08);color:#cbd5e1;border:1px solid rgba(255,255,255,.12)}.vendora-booking-dialog [data-cancel]:hover{background:rgba(255,255,255,.14);color:#fff}.vendora-consent{grid-template-columns:auto 1fr!important;align-items:start;font-weight:400!important;color:#94a3b8}';
-      modal.appendChild(style);
-      document.body.appendChild(modal);
-      const form = modal.querySelector('form');
-      form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const data = new FormData(form);
-        const phone = String(data.get('customerPhone') || '').replace(/[^\d+]/g, '').slice(0, 16);
-        if (phone && !/^\+?\d{7,15}$/.test(phone)) {
-          form.querySelector('[name="customerPhone"]').setCustomValidity(en ? 'Enter a valid contact number.' : 'أدخل رقم تواصل صحيحاً.');
-          form.reportValidity();
-          return;
-        }
-        modal.remove();
-        resolve({ customerName: String(data.get('customerName') || '').trim().slice(0, 100), customerPhone: phone, followUpConsent: data.get('followUpConsent') === 'on' });
-      });
-      modal.querySelector('[data-cancel]').addEventListener('click', () => { modal.remove(); resolve(null); });
-      form.querySelector('input')?.focus();
-    });
-  }
-
-  async function handlePassengerCareWhatsAppClick(link, event) {
-    const now = Date.now();
-    if (now < whatsAppClickLockUntil) return;
-    whatsAppClickLockUntil = now + 1200;
-
-    const payload = buildLeadPayload(link, event);
-    const contact = await collectOptionalContact();
-    if (contact === null) return;
-    Object.assign(payload, contact);
-    const baseMessage = stripPassengerCareFromMessage(extractWhatsAppMessage(link) || defaultArabicMessage);
-    trackWhatsAppClick(payload);
+  // Keep lead creation independent of navigation: a slow or unavailable API must
+  // never stop a passenger from contacting the booking team.
+  async function recordDirectWhatsAppHandoff(payload) {
     const lead = await registerLead(payload);
-    if (!lead) {
-      showBookingReadyModal(baseMessage, openWhatsAppMessage, '');
-      return;
-    }
-    if (typeof window.vendoraTrackLocal === 'function') {
-      window.vendoraTrackLocal('lead_created', { event_category: 'transport_funnel', lead_status: 'created', route_name: payload.routeSlug });
-    }
-    const careUrl = buildPassengerCareUrl(lead.care_token);
-    const finalMessage = `${baseMessage}${buildPassengerCareBlock(lead.booking_ref, careUrl)}`;
-    showBookingReadyModal(finalMessage, openWhatsAppMessage, lead.booking_ref, lead.leadId || lead.lead_id || 1, lead.care_token);
+    if (!lead) return;
+    window.vendoraTrackLocal?.('lead_created', {
+      event_category: 'transport_funnel', lead_status: 'created', route_name: payload.routeSlug,
+    });
+    await postLeadPayloadToEndpoint('/api/transport/event', {
+      action: 'confirm_whatsapp_handoff', booking_ref: lead.booking_ref,
+      leadId: lead.leadId || lead.lead_id, careToken: lead.care_token,
+    });
   }
 
   function trackWhatsAppClick(payload) {
@@ -1841,40 +1744,21 @@
     if (window.__VENDORA_WA_INTERCEPTOR_BOUND__) return;
     window.__VENDORA_WA_INTERCEPTOR_BOUND__ = true;
     if (document.body) document.body.dataset.leadInterceptorReady = 'true';
-
+    // Bubble after form validation; preserve the anchor's native, single-click
+    // navigation, including keyboard activation and modifier keys.
     document.addEventListener('click', (event) => {
-      const link = event.target.closest('a');
-      if (!isWhatsAppTarget(link)) return;
-
-      if (!isPassengerCareEnabled()) {
-        const payload = buildLeadPayload(link, event);
-        sendLeadPayload(payload, { preferBeacon: true });
-        trackWhatsAppClick(payload);
-        return;
-      }
-
-      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
-        return;
-      }
-
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-
+      const link = event.target?.closest?.('a');
+      if (!isWhatsAppTarget(link) || event.defaultPrevented) return;
+      const message = extractWhatsAppMessage(link) ||
+        (state.lang === 'en' ? defaultEnglishMessage : defaultArabicMessage);
+      link.href = toWhatsApp(message);
       const payload = buildLeadPayload(link, event);
-      try {
-        handlePassengerCareWhatsAppClick(link, event).catch((error) => {
-          console.error('WhatsApp passenger care click failed:', error);
-          const fallbackMessage = stripPassengerCareFromMessage(extractWhatsAppMessage(link) || defaultArabicMessage);
-          showBookingReadyModal(fallbackMessage, openWhatsAppMessage);
-        });
-      } catch (error) {
-        console.error('WhatsApp passenger care click failed:', error);
-        const fallbackMessage = stripPassengerCareFromMessage(extractWhatsAppMessage(link) || defaultArabicMessage);
-        openWhatsAppMessage(fallbackMessage);
-        sendLeadPayload(payload, { preferBeacon: true });
-      }
-    }, { capture: true });
+      window.vendoraTrackLocal?.('whatsapp_click', {
+        event_category: 'transport_funnel', route_name: payload.routeSlug,
+        button_text: payload.clickText, method: 'direct_link', confirmed_departure: 1,
+      });
+      recordDirectWhatsAppHandoff(payload).catch(() => {});
+    });
   }
 
   function trackPageView() {
@@ -2016,40 +1900,19 @@
   }
 
   function neutralizeWhatsAppHrefs() {
-    if (window.__VENDORA_PAGE_OWNS_WA_TRACKING__) return;
     document.querySelectorAll('a[href*="wa.me"], a[href*="api.whatsapp.com"]').forEach((link) => {
-      if (!link.hasAttribute('data-wa-preserved-href')) {
-        const currentHref = link.getAttribute('href') || '';
-        if (currentHref && currentHref !== '#') {
-          link.setAttribute('data-wa-preserved-href', currentHref);
-        }
-      }
-      if (!isPassengerCareEnabled()) {
-        const message = extractWhatsAppMessage(link) || defaultArabicMessage;
-        link.href = toWhatsApp(message);
-        link.removeAttribute('role');
-        link.target = '_blank';
-        link.rel = 'noopener';
-        return;
-      }
-      link.setAttribute('href', '#');
-      link.setAttribute('role', 'button');
-      link.removeAttribute('target');
-      link.removeAttribute('rel');
+      link.href = toWhatsApp(extractWhatsAppMessage(link) ||
+        (state.lang === 'en' ? defaultEnglishMessage : defaultArabicMessage));
+      link.removeAttribute('role');
+      link.target = '_blank';
+      link.rel = 'noopener';
     });
   }
 
   function setStaticWhatsAppLink(link) {
     if (!link || !link.hasAttribute('data-wa-message')) return;
-    if (isPassengerCareEnabled()) {
-      link.setAttribute('href', '#');
-      link.setAttribute('role', 'button');
-      link.removeAttribute('target');
-      link.removeAttribute('rel');
-      return;
-    }
-    const message = link.getAttribute('data-wa-message') || defaultArabicMessage;
-    link.href = toWhatsApp(message);
+    link.href = toWhatsApp(link.getAttribute('data-wa-message') ||
+      (state.lang === 'en' ? defaultEnglishMessage : defaultArabicMessage));
     link.removeAttribute('role');
     link.target = '_blank';
     link.rel = 'noopener';
@@ -2190,7 +2053,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     if (touchIcon) touchIcon.href = touchHref;
 
     const footerCard = document.querySelector('.footer .footer-card');
-    if (footerCard && !footerCard.querySelector('[data-vendora-cr]')) {
+    if (footerCard && ![...footerCard.querySelectorAll('small')].some((el) => el.textContent.includes('134856-1'))) {
       const crSmall = document.createElement('small');
       crSmall.setAttribute('data-vendora-cr', '');
       crSmall.style.cssText = 'display:block; font-size: 11px; opacity: 0.75; margin-top: 6px;';
@@ -2493,14 +2356,16 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     form.dataset.vipEnhanced = 'true';
     section?.classList.add('vip-home-booking');
     const groups = [...form.querySelectorAll('.field-group')];
-    groups.forEach((group) => group.classList.add('vip-booking-field'));
-    if (groups[0]) groups[0].classList.add('vip-booking-secondary');
-    if (groups[1]) groups[1].classList.add('vip-booking-secondary');
-    if (groups[2]) groups[2].classList.add('vip-booking-from');
-    if (groups[3]) groups[3].classList.add('vip-booking-secondary');
-    if (groups[4]) groups[4].classList.add('vip-booking-to');
-    groups.slice(5).forEach((group) => group.classList.add('vip-booking-secondary'));
-
+    groups.forEach((group) => {
+      group.classList.add('vip-booking-field');
+      if (group.querySelector('[data-booking-extra="pickup-location"], [data-booking="from-city"]')) {
+        group.classList.add('vip-booking-from');
+      } else if (group.querySelector('[data-booking-extra="destination-location"], [data-booking="to-city"]')) {
+        group.classList.add('vip-booking-to');
+      } else {
+        group.classList.add('vip-booking-secondary');
+      }
+    });
     const isEnglish = state.lang === 'en';
     const switcher = document.createElement('fieldset');
     switcher.className = 'vip-trip-switcher';
@@ -2508,6 +2373,16 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
       <label><input type="radio" name="vip-trip-type" value="one-way" checked><span>${isEnglish ? 'One Way' : 'اتجاه واحد'}</span></label>
       <label><input type="radio" name="vip-trip-type" value="return"><span>${isEnglish ? 'Return' : 'ذهاب وعودة'}</span></label>`;
     form.prepend(switcher);
+    const detailsToggle = document.createElement('button');
+    detailsToggle.type = 'button';
+    detailsToggle.className = 'ghost-btn booking-details-toggle';
+    detailsToggle.textContent = isEnglish ? 'Optional journey details' : 'تفاصيل الرحلة الاختيارية';
+    detailsToggle.setAttribute('aria-expanded', 'false');
+    detailsToggle.addEventListener('click', () => {
+      const expanded = form.classList.toggle('booking-show-details');
+      detailsToggle.setAttribute('aria-expanded', String(expanded));
+    });
+    switcher.after(detailsToggle);
 
     const submit = form.querySelector('[data-booking-submit]');
     if (submit && !form.querySelector('.vip-calculate-action')) {
@@ -2525,7 +2400,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
       form.dataset.vipTripType = selected;
       const notes = form.querySelector('[data-booking="notes"]');
       if (notes) notes.dataset.vipTripType = selected;
-      form.querySelector('[data-booking="to-city"]')?.dispatchEvent(new Event('change', { bubbles: true }));
+      form.querySelector('[data-booking-extra="pickup-location"], [data-booking="to-city"]')?.dispatchEvent(new Event('change', { bubbles: true }));
     };
     switcher.addEventListener('change', syncTripType);
     syncTripType();
@@ -3024,8 +2899,8 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
         '',
         data.tripType && `Journey: ${data.tripType === 'return' ? 'Return' : 'One Way'}`,
         `Service: ${translateString(data.service || 'Not selected')}`,
-        `From: ${translateString(data.fromCountry || 'Not selected')}${data.fromCity ? ` - ${translateString(data.fromCity)}` : ''}`,
-        `To: ${translateString(data.toCountry || 'Not selected')}${data.toCity ? ` - ${translateString(data.toCity)}` : ''}`,
+        data.fromCountry && `From: ${translateString(data.fromCountry)}${data.fromCity ? ` - ${translateString(data.fromCity)}` : ''}`,
+        data.toCountry && `To: ${translateString(data.toCountry)}${data.toCity ? ` - ${translateString(data.toCity)}` : ''}`,
       ];
       if (data.pickupLocation) lines.push(`Pickup location: ${data.pickupLocation}`);
       if (data.destinationLocation) lines.push(`Destination location: ${data.destinationLocation}`);
@@ -3039,7 +2914,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
       if (data.flight) lines.push(`Flight number: ${data.flight}`);
       if (data.notes) lines.push(`Extra details: ${data.notes}`);
       lines.push(`Page URL: ${pageUrl}`);
-      return lines.join('\n');
+      return lines.filter(line => line !== false && line !== undefined).join('\n');
     }
 
     const lines = [
@@ -3047,8 +2922,8 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
       '',
       data.tripType && `نوع الرحلة: ${data.tripType === 'return' ? 'ذهاب وعودة' : 'اتجاه واحد'}`,
       `نوع الخدمة: ${data.service || 'غير محدد'}`,
-      `من: ${data.fromCountry || 'غير محدد'}${data.fromCity ? ` - ${data.fromCity}` : ''}`,
-      `إلى: ${data.toCountry || 'غير محدد'}${data.toCity ? ` - ${data.toCity}` : ''}`,
+      data.fromCountry && `من: ${data.fromCountry}${data.fromCity ? ` - ${data.fromCity}` : ''}`,
+      data.toCountry && `إلى: ${data.toCountry}${data.toCity ? ` - ${data.toCity}` : ''}`,
     ];
     if (data.pickupLocation) lines.push(`موقع الانطلاق: ${data.pickupLocation}`);
     if (data.destinationLocation) lines.push(`موقع الوجهة: ${data.destinationLocation}`);
@@ -3062,7 +2937,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     if (data.flight) lines.push(`رقم الرحلة: ${data.flight}`);
     if (data.notes) lines.push(`تفاصيل إضافية: ${data.notes}`);
     lines.push(`رابط الصفحة: ${pageUrl}`);
-    return lines.join('\n');
+    return lines.filter(line => line !== false && line !== undefined).join('\n');
   }
 
   function setupForms() {
@@ -3077,32 +2952,33 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
       const submit = form.querySelector('[data-booking-submit]');
       const summary = form.querySelector('[data-booking-summary]');
 
-      service.dataset.currentValue = form.dataset.defaultService || service.dataset.currentValue || '';
-      fromCountry.dataset.currentValue = form.dataset.defaultFromCountry || fromCountry.dataset.currentValue || '';
-      toCountry.dataset.currentValue = form.dataset.defaultToCountry || toCountry.dataset.currentValue || '';
+      if (!submit) return;
+      if (service) service.dataset.currentValue = form.dataset.defaultService || service.dataset.currentValue || '';
+      if (fromCountry) fromCountry.dataset.currentValue = form.dataset.defaultFromCountry || fromCountry.dataset.currentValue || '';
+      if (toCountry) toCountry.dataset.currentValue = form.dataset.defaultToCountry || toCountry.dataset.currentValue || '';
 
-      setOptions(service, serviceOptions, state.lang === 'en' ? 'Choose service type' : 'اختر نوع الخدمة');
-      setOptions(fromCountry, Object.keys(locations), state.lang === 'en' ? 'Choose country' : 'اختر البلد');
-      setOptions(toCountry, Object.keys(locations), state.lang === 'en' ? 'Choose country' : 'اختر البلد');
+      if (service) setOptions(service, serviceOptions, state.lang === 'en' ? 'Choose service type' : 'اختر نوع الخدمة');
+      if (fromCountry) setOptions(fromCountry, Object.keys(locations), state.lang === 'en' ? 'Choose country' : 'اختر البلد');
+      if (toCountry) setOptions(toCountry, Object.keys(locations), state.lang === 'en' ? 'Choose country' : 'اختر البلد');
 
-      fromCity.dataset.currentValue = form.dataset.defaultFromCity || fromCity.dataset.currentValue || '';
-      toCity.dataset.currentValue = form.dataset.defaultToCity || toCity.dataset.currentValue || '';
-      setOptions(fromCity, locations[fromCountry.value] || [], state.lang === 'en' ? 'Choose city' : 'اختر المدينة');
-      setOptions(toCity, locations[toCountry.value] || [], state.lang === 'en' ? 'Choose city' : 'اختر المدينة');
+      if (fromCity) fromCity.dataset.currentValue = form.dataset.defaultFromCity || fromCity.dataset.currentValue || '';
+      if (toCity) toCity.dataset.currentValue = form.dataset.defaultToCity || toCity.dataset.currentValue || '';
+      if (fromCity) setOptions(fromCity, locations[fromCountry?.value] || [], state.lang === 'en' ? 'Choose city' : 'اختر المدينة');
+      if (toCity) setOptions(toCity, locations[toCountry?.value] || [], state.lang === 'en' ? 'Choose city' : 'اختر المدينة');
 
-      notes.placeholder = state.lang === 'en'
+      if (notes) notes.placeholder = state.lang === 'en'
         ? 'Add the estimated time or any useful note for the booking.'
         : 'أضف الوقت التقريبي أو أي ملاحظة تساعدنا في ترتيب الخدمة.';
 
       const update = () => {
         const value = (name) => form.querySelector(`[data-booking-extra="${name}"]`)?.value.trim() || '';
         const data = {
-          service: service.value,
-          fromCountry: fromCountry.value,
-          fromCity: fromCity.value,
-          toCountry: toCountry.value,
-          toCity: toCity.value,
-          notes: notes.value.trim(),
+          service: service?.value || '',
+          fromCountry: fromCountry?.value || '',
+          fromCity: fromCity?.value || '',
+          toCountry: toCountry?.value || '',
+          toCity: toCity?.value || '',
+          notes: notes?.value.trim() || '',
           tripType: value('trip-type') || form.dataset.vipTripType || '',
           pickupLocation: value('pickup-location'),
           destinationLocation: value('destination-location'),
@@ -3116,30 +2992,27 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
           vehicle: value('vehicle'),
           flight: value('flight'),
         };
-        submit.href = isPassengerCareEnabled() ? '#' : toWhatsApp(buildWhatsAppMessage(data));
-        if (isPassengerCareEnabled()) {
-          submit.setAttribute('role', 'button');
-          submit.removeAttribute('target');
-        } else {
-          submit.setAttribute('target', '_blank');
-        }
-        summary.textContent = buildBookingSummary(data);
+        submit.href = toWhatsApp(buildWhatsAppMessage(data));
+        submit.target = '_blank';
+        submit.rel = 'noopener';
+        submit.removeAttribute('role');
+        if (summary) summary.textContent = buildBookingSummary(data);
       };
 
       if (form.dataset.bookingReady !== 'true') {
-        fromCountry.addEventListener('change', () => {
+        if (fromCountry && fromCity) fromCountry.addEventListener('change', () => {
           fromCity.dataset.currentValue = '';
           setOptions(fromCity, locations[fromCountry.value] || [], state.lang === 'en' ? 'Choose city' : 'اختر المدينة');
           update();
         });
 
-        toCountry.addEventListener('change', () => {
+        if (toCountry && toCity) toCountry.addEventListener('change', () => {
           toCity.dataset.currentValue = '';
           setOptions(toCity, locations[toCountry.value] || [], state.lang === 'en' ? 'Choose city' : 'اختر المدينة');
           update();
         });
 
-        [service, fromCity, toCity, notes, ...extraFields].forEach((field) => {
+        [service, fromCity, toCity, notes, ...extraFields].filter(Boolean).forEach((field) => {
           field.addEventListener('change', update);
           field.addEventListener('input', update);
         });
@@ -3147,12 +3020,14 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
         submit.addEventListener('click', (event) => {
           const required = [...form.querySelectorAll('[required]')];
           const invalid = required.find((field) => !field.value.trim());
-          if (!service.value || !fromCountry.value || !toCountry.value || invalid) {
+          if (invalid) {
             event.preventDefault();
-            (invalid || (!service.value ? service : !fromCountry.value ? fromCountry : toCountry)).focus();
-            summary.textContent = state.lang === 'en'
-              ? 'Please complete the required service, route, date, time and passenger fields.'
-              : 'يرجى إكمال حقول الخدمة والمسار والتاريخ والوقت وعدد الركاب المطلوبة.';
+            invalid.focus();
+            if (summary) summary.textContent = state.lang === 'en'
+              ? 'Please complete the required journey fields.'
+              : 'يرجى إكمال حقول الرحلة المطلوبة.';
+          } else {
+            update();
           }
         });
 
@@ -3270,7 +3145,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     if (toggle) toggle.textContent = 'EN';
     setupForms();
     normalizeInternalLinks();
-    injectFlagImages();
+
     renderIcons();
   }
 
@@ -3321,9 +3196,6 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     const isEn = state.lang === 'en';
     const title = isEn ? 'Passenger Reviews' : 'تقييمات الركاب';
     const averageLabel = isEn ? 'Average Rating' : 'متوسط التقييم';
-    const basedOn = isEn
-      ? `Based on ${count} verified ${count === 1 ? 'trip' : 'trips'}`
-      : `بناءً على ${count} ${count === 1 ? 'رحلة موثّقة' : 'رحلات موثّقة'}`;
     const latestLabel = isEn ? 'Latest reviews' : 'أحدث التقييمات';
     const verifiedLabel = isEn ? 'Verified passenger trip' : 'رحلة راكب موثّقة';
 
@@ -3362,12 +3234,12 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
       <div class="container section-shell">
         <div class="section-head">
           <h2>${title}</h2>
-          <p>${isEn ? 'Approved feedback from verified Passenger Care submissions only.' : 'تقييمات معتمدة من نموذج Passenger Care فقط بعد رحلات موثّقة.'}</p>
+          <p>${isEn ? 'Approved feedback from verified Passenger Care submissions only.' : 'تقييمات معتمدة بعد رحلات موثّقة.'}</p>
         </div>
         <div class="route-reviews-wrap">
           <div class="route-reviews-summary">
             <div><strong>${averageLabel}:</strong> ${average || '-'} / 5</div>
-            <div>${basedOn}</div>
+            <div>${isEn ? 'Verified Passenger Rating' : 'تقييمات معتمدة من المسافرين'}: ${average || '-'} / 5 ${renderReviewStars(Math.round(Number(average)))} (${isEn ? 'Approved feedback from corporate & family travelers' : 'رحلات موثقة لرجال الأعمال والعائلات'})</div>
           </div>
           <div>
             <h3 style="margin:0 0 12px;font-size:1rem;">${latestLabel}</h3>
@@ -3384,8 +3256,8 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
       || document.querySelector('footer.footer')
       || document.querySelector('main');
     if (!anchor) return;
-    if (anchor.matches('footer.footer, main')) {
-      anchor.parentNode.insertBefore(section, anchor);
+    if (anchor.matches('main')) {
+      anchor.appendChild(section);
     } else {
       anchor.parentNode.insertBefore(section, anchor);
     }
@@ -3583,7 +3455,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     setStaticLinks();
     insertLanguageToggle();
     setupForms();
-    injectFlagImages();
+
     applyLanguage();
     addBusinessAuthorityNotice();
     setupVipShell();
@@ -3592,9 +3464,9 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     setupOnlineHeartbeat();
     initRouteReviews();
     hydrateEnglishRouteDirectory();
-    setupFloatingFeedbackTab();
+
     setupLuggageMatcher();
-    setupAiConciergeModal();
+
   }
 
   function initLeadOnly() {
@@ -3609,9 +3481,9 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     setupVipShell();
     trackPageView();
     setupOnlineHeartbeat();
-    setupFloatingFeedbackTab();
+
     setupLuggageMatcher();
-    setupAiConciergeModal();
+
   }
 
   if (window.pageConfig && window.pageConfig.leadOnly === true) {

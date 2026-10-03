@@ -23,14 +23,14 @@ test('production final visitor and WhatsApp journey is preserved end to end', as
 
   let cta = page.locator('a[data-booking-submit], a[data-wa-message]').first();
   await cta.click();
-  await page.locator('#vendora-booking-ready [data-booking-cancel]').last().click();
+  await expect(page.locator('#vendora-booking-ready')).toHaveCount(0);
   await page.waitForTimeout(1400);
 
   await page.goto(`${root}/bahrain-to-riyadh/`, { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(1200);
   cta = page.locator('a[data-booking-submit], a[data-wa-message]').first();
   await cta.click();
-  await page.locator('#vendora-booking-ready [data-booking-continue]').click();
+  await expect(page.locator('#vendora-booking-ready')).toHaveCount(0);
   await page.waitForTimeout(1800);
 
   const analytics = tracked.map((entry) => entry.payload).filter((payload) => payload.event_name);
@@ -42,8 +42,8 @@ test('production final visitor and WhatsApp journey is preserved end to end', as
 
   expect(pageviews).toHaveLength(3);
   expect(intents).toHaveLength(2);
-  expect(cancels).toHaveLength(1);
-  expect(clicks).toHaveLength(1);
+  expect(cancels).toHaveLength(0);
+  expect(clicks).toHaveLength(2);
   expect(visitorIds).toHaveLength(1);
   console.log(`FINAL_ACCEPTANCE_VISITOR=${visitorIds[0]}`);
 });

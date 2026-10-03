@@ -61,7 +61,7 @@ test.describe('GCC transport planner documents', () => {
       expect(await page.title()).toMatch(/\S+/);
       await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /\S+/);
       await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', plannerPage.canonical);
-      await expect(page.locator(`link[rel="alternate"][href="${plannerPage.alternate}"]`)).toHaveCount(1);
+      await expect(page.locator(`link[rel="alternate"]:not([hreflang="x-default"])[href="${plannerPage.alternate}"]`)).toHaveCount(1);
       await expect(page.locator('script[src*="analytics-loader.js"]')).toHaveCount(1);
       await expect(page.locator('script[src*="gcc-transport-planner.js"]')).toHaveCount(1);
       const whatsappAnchors = page.locator('a[data-wa-message]');
@@ -94,13 +94,13 @@ test.describe('GCC transport planner documents', () => {
       }
 
       await page.evaluate(async () => {
-        for (const image of document.images) {
-          image.scrollIntoView({ block: 'center' });
-          await new Promise((resolve) => window.setTimeout(resolve, 30));
-        }
-        window.scrollTo(0, 0);
+        await Promise.all([...document.images].map(image => {
+          image.loading = 'eager';
+          return image.decode().catch(() => {});
+        }));
       });
-      await expect.poll(() => page.locator('img').evaluateAll((images) => images.every((image) => image.complete && image.naturalWidth > 0))).toBeTruthy();
+      const brokenImages = await page.locator('img').evaluateAll(images => images.filter(image => !image.complete || image.naturalWidth === 0).map(image => image.currentSrc || image.src));
+      expect(brokenImages).toEqual([]);
     });
 
     test(`${plannerPage.lang} direct WhatsApp links use configured public settings`, async ({ page }) => {
@@ -193,9 +193,12 @@ test.describe('GCC transport planner behavior', () => {
     const selector = '.quick-links a[data-wa-message]';
     expect(await tabTo(page, selector)).toBeTruthy();
     await expect(page.locator(selector)).toBeFocused();
+    await expect(page.locator(selector)).toHaveAttribute('href', /^https:\/\/wa\.me\/97333225954\?text=/);
+    await page.context().route('https://wa.me/**', route => route.abort());
+    const outgoing = page.context().waitForEvent('request', {predicate:r=>r.url().startsWith('https://wa.me/')});
     await page.keyboard.press('Enter');
-    await expect(page.locator('#vendora-booking-ready')).toBeVisible();
-    await expect(page.locator('#vendora-booking-ready')).toContainText('VND-PLANNER-1');
+    expect(new URL((await outgoing).url()).pathname).toBe('/97333225954');
+    await expect(page.locator('#vendora-booking-ready')).toHaveCount(0);
   });
 
   test('direct mode opens configured WhatsApp href with the latest selected route', async ({ page, context }) => {
@@ -235,10 +238,10 @@ test.describe('GCC transport planner behavior', () => {
     await page.locator('[data-planner-to]').selectOption('bahrain');
     await expect(page.locator('[data-planner-whatsapp]')).toHaveAttribute('data-wa-message', /From: 🇸🇦 Riyadh[\s\S]*To: 🇧🇭 Bahrain/);
 
-    const whatsappRequest = page.waitForRequest((request) => request.url().startsWith('https://wa.me/97339998888'));
+    await page.context().route('https://wa.me/**', route => route.abort());
+    const whatsappRequest = page.context().waitForEvent('request', {predicate:request=>request.url().startsWith('https://wa.me/97339998888')});
     await page.locator('[data-planner-whatsapp]').click();
-    await expect(page.locator('#vendora-booking-ready')).toBeVisible();
-    await page.locator('[data-booking-continue]').click();
+    await expect(page.locator('#vendora-booking-ready')).toHaveCount(0);
     const request = await whatsappRequest;
     const message = new URL(request.url()).searchParams.get('text');
     expect(message).toContain('From: 🇸🇦 Riyadh');

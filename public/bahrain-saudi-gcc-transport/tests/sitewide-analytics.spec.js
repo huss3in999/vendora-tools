@@ -51,7 +51,7 @@ test('route page emits one GA page view, route metadata, and one WhatsApp event'
   await expect.poll(() => internal.filter((item) => item.event_name === 'map_click').length).toBe(1);
 });
 
-test('WhatsApp funnel emits one intent, one cancel, and one confirmed departure', async ({ page }) => {
+test('WhatsApp funnel emits one intent and one confirmed departure per direct click', async ({ page }) => {
   const rawEvents = [];
   const leadActions = [];
   let leadNumber = 0;
@@ -83,17 +83,14 @@ test('WhatsApp funnel emits one intent, one cancel, and one confirmed departure'
 
   await page.goto('/bahrain-saudi-gcc-transport/en/bahrain-to-khobar/');
   const cta = page.locator('a[data-booking-submit], a[data-wa-message]').first();
+  await page.context().route('https://wa.me/**', route => route.abort());
   await cta.click();
-  await page.locator('#vendora-booking-ready [data-booking-cancel]').last().click();
-  await page.waitForTimeout(1300);
-  await cta.click();
-  await page.locator('#vendora-booking-ready [data-booking-continue]').click();
-
-  await expect.poll(() => rawEvents.filter((event) => event.event_name === 'whatsapp_intent').length).toBe(2);
-  expect(rawEvents.filter((event) => event.event_name === 'whatsapp_cancel')).toHaveLength(1);
+  await expect(page.locator('#vendora-booking-ready')).toHaveCount(0);
+  await expect.poll(() => rawEvents.filter((event) => event.event_name === 'whatsapp_intent').length).toBe(1);
+  expect(rawEvents.filter((event) => event.event_name === 'whatsapp_cancel')).toHaveLength(0);
   const departures = rawEvents.filter((event) => event.event_name === 'whatsapp_click' && event.confirmed_departure === 1);
   expect(departures).toHaveLength(1);
-  expect(leadActions).toEqual(['create_lead', 'cancel_whatsapp_handoff', 'create_lead', 'confirm_whatsapp_handoff']);
+  await expect.poll(() => leadActions).toEqual(['create_lead', 'confirm_whatsapp_handoff']);
 });
 
 test('policy page is tracked and DNT disables all tracking', async ({ browser }) => {

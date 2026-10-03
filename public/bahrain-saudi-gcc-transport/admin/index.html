@@ -149,9 +149,9 @@
   </script>
 </head>
 <body class="min-h-screen text-slate-100 antialiased selection:bg-brand/30 selection:text-brand-light">
-  
+
   <main class="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 py-6 sm:px-6 lg:px-8">
-    
+
     <!-- LOGIN VIEW -->
     <section id="loginView" class="m-auto w-full max-w-md p-2">
       <div class="glass-panel rounded-3xl p-8 shadow-2xl transition-all duration-300 hover:border-brand/20">
@@ -164,7 +164,7 @@
             <h1 class="text-xl font-bold tracking-tight text-white">Control Room</h1>
           </div>
         </div>
-        
+
         <p class="mt-6 text-sm text-slate-400 leading-relaxed">
           Enter your admin password to view real-time traffic pageviews, WhatsApp lead conversions, campaign performance, and audit driver outcomes.
         </p>
@@ -199,7 +199,7 @@
 
     <!-- DASHBOARD VIEW -->
     <section id="dashboardView" class="hidden space-y-6">
-      
+
       <!-- TOP STATUS BAR & HEADER -->
       <header class="flex flex-col gap-4 rounded-3xl glass-panel p-6 shadow-xl sm:flex-row sm:items-center sm:justify-between">
         <div class="flex items-center gap-4">
@@ -985,7 +985,7 @@
           <!-- Funnel Area Chart -->
           <div class="rounded-3xl glass-panel p-4 sm:p-6 shadow-lg min-w-0 w-full lg:col-span-2">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 flex-wrap">
-              <i data-lucide="trending-up" class="text-brand shrink-0"></i> 
+              <i data-lucide="trending-up" class="text-brand shrink-0"></i>
               <span class="break-words">Traffic vs Click Funnel Conversion Trend (Last 14 Days)</span>
             </h3>
             <div class="relative w-full h-80 min-w-0">
@@ -1358,9 +1358,9 @@
       </div>
       <div class="flex gap-2"><button id="regenerateCareLinkBtn" class="rounded-xl border border-emerald-500/30 bg-emerald-950/20 px-3 py-2 text-xs font-bold text-emerald-300" type="button">Generate secure Care link</button><button id="closeDialogBtn" class="rounded-xl bg-slate-850 hover:bg-slate-800 border border-slate-800/80 px-3 py-2 text-xs font-bold text-slate-400 hover:text-white transition" type="button">Close</button></div>
     </div>
-    
+
     <div class="max-h-[75vh] overflow-y-auto p-6 space-y-6">
-      
+
       <!-- Suspicion warning alert placeholder -->
       <div id="leadSuspicionAlert"></div>
 
@@ -1372,9 +1372,9 @@
         <p class="text-xs text-slate-300">
           Mark if the driver successfully completed the booking, how much they earned, and record notes to match their reports.
         </p>
-        
+
         <input type="hidden" id="auditLeadUuid" name="lead_uuid" />
-        
+
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <label class="block">
             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Job outcome status</span>
@@ -1682,7 +1682,7 @@
     const dashboardView = document.getElementById('dashboardView');
     const statusLine = document.getElementById('statusLine');
     const localPreviewNotice = document.getElementById('localPreviewNotice');
-    
+
     if (
       localPreviewNotice &&
       (window.location.protocol === 'file:' || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost')
@@ -2280,13 +2280,13 @@
           let payload = {};
           try { payload = typeof v.lead_data === 'string' ? JSON.parse(v.lead_data) : v.lead_data || {}; } catch(e){}
           const leadStatus = v.lead_status || payload.intent_status || payload.status || '';
-          
+
           const isCancelled = leadStatus === 'cancelled' || leadStatus === 'whatsapp_cancelled';
           const isDeparted = leadStatus === 'whatsapp_departed' || leadStatus === 'departed' || leadStatus === 'contacted' || leadStatus === 'completed';
           const clicked = Number(v.clicked_whatsapp) === 1;
           const isIntent = clicked && !isCancelled && !isDeparted;
           const hasNoWA = !clicked && !leadStatus;
-          
+
           if (statusFilter === 'no_wa') return hasNoWA;
           if (statusFilter === 'intent') return isIntent;
           if (statusFilter === 'cancelled') return isCancelled;
@@ -2356,14 +2356,14 @@
         const personKey = v.person_key || v.visitor_id || v.session_id || '';
         const vShort = formattedVisitorShortId(v.visitor_id);
         const sShort = formattedSessionShortId(v.session_id);
-        
+
         let payload = {};
         try { payload = typeof v.lead_data === 'string' ? JSON.parse(v.lead_data) : v.lead_data || {}; } catch(e){}
         const leadStatus = v.lead_status || payload.intent_status || payload.status || '';
         const isCancelled = leadStatus === 'cancelled' || leadStatus === 'whatsapp_cancelled';
         const isDeparted = leadStatus === 'whatsapp_departed' || leadStatus === 'departed' || leadStatus === 'contacted' || leadStatus === 'completed';
         const isIntent = clicked && !isCancelled && !isDeparted;
-        
+
         let waBadge = '';
         if (isCancelled) waBadge = '<span class="ml-auto rounded-full bg-red-900/40 border border-red-500/30 px-2 py-0.5 font-bold text-red-300">WhatsApp Cancelled ❌</span>';
         else if (isDeparted) waBadge = '<span class="ml-auto rounded-full bg-emerald-900/40 border border-emerald-500/30 px-2 py-0.5 font-bold text-emerald-300">WhatsApp Clicked ✔️</span>';
@@ -2810,7 +2810,7 @@
       const summary = state.summary || {};
       const views = Number(summary.total_pageviews || 0);
       const clicks = Number(summary.whatsapp_intents_count || summary.total || 0);
-      
+
       // Pageviews (funnel top)
       const statPv = document.getElementById('statPageviews');
       if (statPv) statPv.textContent = views;
@@ -2906,7 +2906,7 @@
 
       // 5-Stage Business Funnel
       const funnel = summary.funnel || {
-        visitors: totalVisitors,
+        visitors: humanVisitors,
         route_views: views,
         whatsapp_clicks: intents,
         whatsapp_handoffs: departed,
@@ -3964,7 +3964,7 @@
       const cancelled = Number(summary.whatsapp_cancelled_count || 0);
       const departed = Number(summary.whatsapp_departed_count || 0);
       const clicks = intents;
-      
+
       const conversion = views > 0 ? ((clicks / views) * 100).toFixed(1) + '%' : '0%';
       const trafficDetail = summary.traffic_metrics_source === 'ga4' ? 'GA4 verified' : 'D1 fallback';
 
@@ -4049,7 +4049,7 @@
     function renderReports() {
       const summary = state.summary || {};
       renderBusinessReport();
-      
+
       // Horizontal Bars
       barList(summary.by_route || [], 'chartRoutes');
       barList(summary.by_source || [], 'chartSources');
@@ -4060,7 +4060,7 @@
       if (state.charts.funnel) {
         state.charts.funnel.destroy();
       }
-      
+
       const days = summary.by_day || [];
       const labels = days.map((d) => d.label.slice(5)); // Show MM-DD format
       const leadClicksData = days.map((d) => d.count);
@@ -4160,7 +4160,7 @@
       const devices = summary.by_device || [];
       const deviceLabels = devices.map((d) => d.label);
       const deviceCounts = devices.map((d) => d.count);
-      
+
       const devicesCtx = document.getElementById('chartDevicesCanvas').getContext('2d');
       state.charts.devices = new Chart(devicesCtx, {
         type: 'doughnut',
@@ -4249,7 +4249,7 @@
 
     function renderCohorts() {
       const summary = state.summary || {};
-      
+
       // Update header statistics
       document.getElementById('cohortTotalVisitors').textContent = summary.total_visitors || 0;
       document.getElementById('cohortReturningVisitors').textContent = summary.returning_visitors || 0;
@@ -4266,8 +4266,8 @@
 
         // Highlight suspicious cases where WhatsApp Clicks > 0 but revenue = 0 or status = spam
         const isSuspicious = clicks > 0 && revenue === 0 && (c.status === 'spam' || c.status === 'new' || !c.status);
-        const rowClass = isSuspicious 
-          ? 'transition duration-150 hover:bg-yellow-950/20 bg-yellow-950/5 border-l-2 border-yellow-500 cursor-pointer font-medium' 
+        const rowClass = isSuspicious
+          ? 'transition duration-150 hover:bg-yellow-950/20 bg-yellow-950/5 border-l-2 border-yellow-500 cursor-pointer font-medium'
           : 'transition duration-150 hover:bg-slate-900/40 cursor-pointer';
 
         return `
@@ -4431,7 +4431,7 @@
       state.passengerCare = careData.feedback || [];
       state.publicConfig = publicData.public_config || state.publicConfig;
       state.tracking = trackingData || {};
-      
+
       renderFilterOptions();
       renderStats();
       renderOnlineNow();
@@ -4624,10 +4624,10 @@
     function showLeadDetails(id) {
       const lead = state.leads.find((item) => String(item.id) === String(id));
       if (!lead) return;
-      
+
       state.activeLeadId = id;
       const payload = leadPayload(lead);
-      
+
       // Load into Auditing Form
       document.getElementById('auditLeadUuid').value = lead.lead_uuid;
       document.getElementById('auditStatus').value = lead.status || 'new';
@@ -4641,7 +4641,7 @@
       document.getElementById('auditDriverPhone').value = lead.driver_phone || '';
       document.getElementById('auditLostReason').value = lead.lost_reason || '';
       document.getElementById('auditFollowUpAt').value = lead.follow_up_at ? String(lead.follow_up_at).slice(0, 16) : '';
-      
+
       // Render dynamic suspicion warning card
       const alertEl = document.getElementById('leadSuspicionAlert');
       if (lead.suspicion_score > 60) {
@@ -4659,7 +4659,7 @@
         alertEl.innerHTML = '';
         alertEl.classList.add('hidden');
       }
-      
+
       const rows = [
         ['Acquisition Source', normalizedSourceText(lead)],
         ['Landing Page', payload.firstLandingPage || payload.firstLandingPath || lead.page_path || 'Unavailable'],
@@ -4708,7 +4708,7 @@
         ['Network User Agent', lead.user_agent || '-'],
         ['Cloudflare Edge Ray ID', lead.request_ray_id || '-']
       ];
-      
+
       if (payload.pickup_country) rows.push(['Selected Pickup Country', payload.pickup_country]);
       if (payload.pickup_location) rows.push(['Selected Pickup Location', payload.pickup_location]);
       if (payload.destination_country) rows.push(['Selected Destination Country', payload.destination_country]);
@@ -4723,7 +4723,7 @@
       if (payload.notes) rows.push(['Custom Notes', payload.notes]);
 
       rows.push(...visitorEnvironmentRows(payload));
-      
+
       document.getElementById('leadDetails').innerHTML = rows.map(([label, value]) => `
         <div class="rounded-xl bg-slate-950/40 border border-slate-850 p-3.5">
           <dt class="text-[10px] font-bold uppercase tracking-wider text-slate-500">${escapeHtml(label)}</dt>
@@ -4732,7 +4732,7 @@
       `).join('');
 
       renderVisitorJourney(lead);
-      
+
       document.getElementById('leadDialog').showModal();
       renderIcons();
     }
@@ -4759,9 +4759,9 @@
         'cancelled': 'ملغي / لم يتم الاتفاق',
         'spam': 'نقرة وهمية / سبام'
       }[lead.status] || 'جديد';
-      
+
       const adminNotes = lead.admin_notes || 'لا توجد ملاحظات';
-      
+
       return `تقرير تتبع حركة العميل - فيندورا للنقل 🚗📊
 ------------------------------------------
 مسار الطلب: ${lead.route_label || lead.route_slug || '-'}
@@ -4805,9 +4805,9 @@ ${lead.lead_uuid}
         'cancelled': 'Cancelled / Lost Booking',
         'spam': 'Spam / Test Click'
       }[lead.status] || 'New';
-      
+
       const adminNotes = lead.admin_notes || 'No notes';
-      
+
       return `Customer Journey Tracking Report - Vendora Transport 🚗📊
 ------------------------------------------
 Requested Route: ${lead.route_label || lead.route_slug || '-'}
@@ -5411,7 +5411,7 @@ Note: This report is automatically compiled by the Control Room operations track
         return;
       }
       if (!del) return;
-      
+
       if (!confirm('Are you sure you want to delete this lead record?')) return;
       try {
         await api(`?id=${encodeURIComponent(del.dataset.deleteLead)}`, { method: 'DELETE' });
@@ -5514,7 +5514,7 @@ Note: This report is automatically compiled by the Control Room operations track
     document.getElementById('auditForm').addEventListener('submit', async (event) => {
       event.preventDefault();
       const payload = Object.fromEntries(new FormData(event.currentTarget).entries());
-      
+
       try {
         await api('?resource=lead', {
           method: 'PUT',
@@ -5532,7 +5532,7 @@ Note: This report is automatically compiled by the Control Room operations track
             follow_up_at: payload.follow_up_at
           })
         });
-        
+
         document.getElementById('leadDialog').close();
         await loadDashboard();
         showStatus('Auditor outcome saved successfully.', 'success');
@@ -5590,7 +5590,7 @@ Note: This report is automatically compiled by the Control Room operations track
         route_notes_en: card.querySelector('[data-field="route_notes_en"]').value,
         route_notes_ar: card.querySelector('[data-field="route_notes_ar"]').value
       };
-      
+
       button.disabled = true;
       button.textContent = 'Saving...';
       try {

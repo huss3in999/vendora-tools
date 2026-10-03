@@ -1715,7 +1715,7 @@ async function getTrackingSummary(env, request) {
       throw error;
     }
   }
-  
+
   if (sessionId) {
     const { results: journey } = await env.TRANSPORT_DB.prepare(`
       SELECT event_id, visitor_id, session_id, created_at, page_path, event_name, event_label, button_text, target_url, referrer, ip_city, ip_country, device_type
@@ -2482,6 +2482,11 @@ export async function onRequestOptions(context) {
   return new Response(null, { status: 204, headers: corsHeaders(context.request) });
 }
 
+async function recoverMissingAdminSchema(context) {
+  await ensureAdminSchema(context.env);
+  return onRequestGet({ ...context, schemaRecoveryAttempted: true });
+}
+
 export async function onRequestGet(context) {
   const { request, env } = context;
   const headers = corsHeaders(request);
@@ -2496,16 +2501,8 @@ export async function onRequestGet(context) {
   const resource = url.searchParams.get('resource') || 'leads';
 
   try {
-    // GET requests must also ensure compatibility columns exist. Several
-    // dashboard resources reference CRM columns that were introduced after
-    // the original D1 schema; skipping this step makes the read-only admin
-    // page fail with a 500 instead of repairing the schema once.
-    // The all-time view reads only daily aggregates and does not need the
-    // legacy CRM compatibility columns. Skipping the PRAGMA there keeps the
-    // quota-sensitive path entirely aggregate-only.
-    if (!(resource === 'summary' && url.searchParams.get('period') === 'all')) {
-      await ensureAdminSchema(env);
-    }
+    // Normal reads perform no schema work. Repair legacy schema only if a
+    // query reports a missing table or column, then retry once.
     const cacheable = resource === 'summary' || resource === 'tracking';
     const cacheKey = `${resource}:${url.search}`;
     const cache = analyticsCacheFor(env.TRANSPORT_DB);
@@ -2544,6 +2541,9 @@ export async function onRequestGet(context) {
     return json({ ok: true, ...data, cached: false }, { headers });
   } catch (error) {
     const errorMsg = error && error.message ? error.message : String(error);
+    if (!context.schemaRecoveryAttempted && /no such (?:table|column)/i.test(errorMsg)) {
+      return recoverMissingAdminSchema(context);
+    }
     console.error(JSON.stringify({ event: 'transport_admin_get_failed', message: errorMsg }));
     return json({ ok: false, error: errorMsg || 'Failed to load admin data' }, { status: 500, headers });
   }

@@ -9,8 +9,8 @@
   <meta name="theme-color" content="#080c12" />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="en_US" />
-  <meta property="og:title" content="GCC Private Transport Guide | Vendora Transport" />
-  <meta property="og:description" content="A practical Vendora Transport guide to private GCC transport, airport transfers, Causeway travel, family trips, business travel and WhatsApp quote requests." />
+  <meta property="og:title" content="GCC Private Transport Guide | Bahrain, Saudi Arabia, Qatar, Kuwait, UAE and Oman" />
+  <meta property="og:description" content="Plan private transport across Bahrain, Saudi Arabia, Qatar, Kuwait, UAE, Oman with Vendora Transport. Airport transfers, Causeway travel, family trips, business travel and WhatsApp quote requests." />
   <meta property="og:image" content="https://getvendora.net/bahrain-saudi-gcc-transport/assets/images/hero-gcc-private-transport.webp" />
   <link rel="stylesheet" href="../../gcc-private-transport-guide/src/shared/gcc-guide.css" />
   <script type="application/ld+json" data-vendora-schema>
@@ -46,8 +46,7 @@
         "itemListElement": [
           { "@type": "ListItem", "position": 1, "name": "Bahrain to Saudi Arabia routes: Khobar, Dammam, Riyadh, Dhahran, Jubail, Qatif, Hofuf and Al Ahsa" },
           { "@type": "ListItem", "position": 2, "name": "Airport transfers: BAH, DMM, RUH, DOH, KWI, DXB, AUH and MCT" },
-          { "@type": "ListItem", "position": 3, "name": "Wider GCC routes: Qatar, Doha, Kuwait City, UAE, Dubai, Abu Dhabi, Oman and Muscat" },
-        ]
+          { "@type": "ListItem", "position": 3, "name": "Wider GCC routes: Qatar, Doha, Kuwait City, UAE, Dubai, Abu Dhabi, Oman and Muscat" }]
       },
             {
         "@type": "FAQPage",
@@ -107,7 +106,7 @@
 
 
 <script defer src="../../business-config.js"></script>
-  <script defer src="../../site.js?v=20261001-repair1"></script>
+  <script defer src="../../site.js?v=20261004-conversion1"></script>
   <link rel="canonical" href="https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-private-transport-guide/">
   <link rel="alternate" hreflang="ar-BH" href="https://getvendora.net/bahrain-saudi-gcc-transport/gcc-private-transport-guide/">
   <link rel="alternate" hreflang="en" href="https://getvendora.net/bahrain-saudi-gcc-transport/en/gcc-private-transport-guide/">
@@ -118,11 +117,11 @@
   <link rel="apple-touch-icon" sizes="512x512" href="../../assets/brand/vendora-transport-app-icon-512.png" data-vendora-brand-icon />
   <!-- Vendora global sources: edit config/*.json and assets/vendora-theme.css, then run npm run sync. -->
   <link rel="stylesheet" href="../../assets/vendora-theme.css" data-vendora-global-theme />
-  <script defer src="../../assets/vendora-config.js?v=20261001-repair1" data-vendora-global-config></script>
+  <script defer src="../../assets/vendora-config.js?v=20261004-conversion1" data-vendora-global-config></script>
   <script defer src="../../assets/transport-analytics-map.js" data-vendora-analytics-map></script>
   <script defer src="../../assets/transport-analytics.js" data-vendora-transport-analytics></script>
-</head>
-<body>
+<link rel="stylesheet" href="../../site.css?v=20261004-conversion1"></head>
+<body class="vip-transport" data-conversion-guide>
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="topbar">
     <div class="container nav">
@@ -155,7 +154,7 @@
           </div>
           <div class="hero-actions">
             <a class="btn primary" href="#planner">Plan Trip & Request Quote</a>
-            <a class="btn whatsapp" data-wa-static="Hello, I would like to request a quote for Vendora Transport private GCC transport.">Request Quote via WhatsApp</a>
+            <a class="btn whatsapp" data-wa-message="Hello, I would like to request a quote for Vendora Transport private GCC transport.">Request Quote via WhatsApp</a>
           </div>
           <p class="notice">No fixed prices are published in this build. Quotes depend on route, timing, vehicle needs, passengers, luggage and return details.</p>
         </div>
@@ -197,95 +196,7 @@
           <p>The planner does not calculate a fixed price. We coordinate your journey responsibly—matching your exact needs rather than sending a random driver. This planner prepares a structured WhatsApp request to help us provide an accurate quote.</p>
         </div>
         <div class="planner">
-          <form class="panel planner-form" data-route-planner data-lang="en" data-result="#planner-result" data-whatsapp="#planner-whatsapp">
-            <div class="field-row">
-              <div class="field">
-                <label for="tripType">Trip type</label>
-                <select id="tripType" name="tripType">
-                  <option>One way</option>
-                  <option>Return trip</option>
-                  <option>Same-day return</option>
-                  <option>Multi-stop trip</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="purpose">Purpose</label>
-                <select id="purpose" name="purpose">
-                  <option>General trip</option>
-                  <option>Airport transfer</option>
-                  <option>Family and luggage</option>
-                  <option>Business or VIP</option>
-                  <option>Parcel or document</option>
-                  <option>GCC private transport</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="field-row">
-              <div class="field">
-                <label for="pickupCountry">Pickup country</label>
-                <select id="pickupCountry" name="pickupCountry">
-                  <!-- Populated dynamically -->
-                </select>
-              </div>
-              <div class="field">
-                <label for="pickupLocation">Pickup location</label>
-                <select id="pickupLocation" name="pickupLocation">
-                  <!-- Populated dynamically -->
-                </select>
-              </div>
-            </div>
-            
-            <div class="field" id="pickupCustomField" style="display: none;">
-              <label for="pickupCustom">Write exact pickup location</label>
-              <input id="pickupCustom" name="pickupCustom" placeholder="Example: Ritz Carlton Hotel, Exhibition Road, Juffair..." />
-            </div>
-
-            <div class="field-row">
-              <div class="field">
-                <label for="destinationCountry">Destination country</label>
-                <select id="destinationCountry" name="destinationCountry">
-                  <!-- Populated dynamically -->
-                </select>
-              </div>
-              <div class="field">
-                <label for="destinationLocation">Destination location</label>
-                <select id="destinationLocation" name="destinationLocation">
-                  <!-- Populated dynamically -->
-                </select>
-              </div>
-            </div>
-
-            <div class="field" id="destinationCustomField" style="display: none;">
-              <label for="destinationCustom">Write exact destination location</label>
-              <input id="destinationCustom" name="destinationCustom" placeholder="Example: King Fahd Airport DMM, Al Yasmin district Riyadh..." />
-            </div>
-
-            <div class="field-row">
-              <div class="field"><label for="date">Date</label><input id="date" name="date" type="date" /></div>
-              <div class="field"><label for="time">Time</label><input id="time" name="time" type="time" /></div>
-            </div>
-
-            <div class="field-row">
-              <div class="field"><label for="passengers">Passengers</label><input id="passengers" name="passengers" type="number" min="1" placeholder="Example: 3" /></div>
-              <div class="field"><label for="luggage">Luggage pieces</label><input id="luggage" name="luggage" type="number" min="0" placeholder="Example: 4" /></div>
-            </div>
-
-            <div class="field" id="flightNumberField" style="display: none;">
-              <label for="flightNumber">Flight number (for airport trips)</label>
-              <input id="flightNumber" name="flightNumber" placeholder="Example: GF 123 or SV 456" />
-            </div>
-
-            <div class="field"><label for="notes">Extra notes</label><textarea id="notes" name="notes" placeholder="Any extra details like: hotel name, return trip, stops, parcel size..."></textarea></div>
-
-                        <div class="field-help" style="margin: 0 0 15px; font-size: 13px; color: var(--muted); line-height: 1.5; border-left: 2px solid var(--accent); padding-left: 10px;">
-              <p style="margin: 0 0 5px;">* Select from popular GCC cities, airports and areas. If your location is not listed, choose Other and write it manually.</p>
-              <p style="margin: 0; font-style: italic;"><strong>Popular booking needs:</strong> Customers may ask for Bahrain to Dammam private taxi, Bahrain to Khobar driver, Dammam Airport to Bahrain transfer, or Saudi to Bahrain private car. If the exact area is not listed, choose Other and write the location.</p>
-            </div>
-
-            <button class="btn primary" type="submit">Confirm details & Send to WhatsApp</button>
-            <p data-planner-status></p>
-</form>
+          <div class="direct-route-booking"><a class="btn primary" href="/bahrain-saudi-gcc-transport/en/gcc-transport-planner/">Open the Trip Calculator</a><a class="btn whatsapp" data-wa-message="Hello, I would like to arrange private GCC transport." href="https://wa.me/97333225954">Contact directly on WhatsApp</a></div>
           <aside class="panel result-box">
             <div id="planner-result"></div>
             <a id="planner-whatsapp" class="btn whatsapp" target="_blank" rel="noopener">Send request on WhatsApp</a>
@@ -355,7 +266,7 @@
           <article class="card"><h3>Bahrain to Khobar</h3><p>A key King Fahd Causeway route for families, business meetings and hotel transfers.</p><a class="btn ghost" href="/bahrain-saudi-gcc-transport/en/bahrain-to-khobar/">View route</a></article>
           <article class="card"><h3>Bahrain to Dammam</h3><p>Useful for Eastern Province appointments, families and city-to-city trips.</p><a class="btn ghost" href="/bahrain-saudi-gcc-transport/en/bahrain-to-dammam/">View route</a></article>
           <article class="card"><h3>Bahrain to Riyadh</h3><p>A longer journey that needs clearer timing, luggage planning and stop planning.</p><a class="btn ghost" href="/bahrain-saudi-gcc-transport/en/bahrain-to-riyadh/">View route</a></article>
-          
+
           <article class="card compact"><h3>Eastern Province cities</h3><p>We provide private driver and chauffeur services to Dhahran, Jubail, Qatif, Hofuf, Al Ahsa, Ras Tanura, Abqaiq, and the Aramco / Dhahran area, covering hotel and corporate compounds between Bahrain and Saudi Arabia.</p></article>
           <article class="card compact"><h3>Qatar and Doha</h3><p>Doha and Hamad International Airport, DOH, are longer-distance requests that need timing and luggage planning.</p><a class="btn ghost" href="/bahrain-saudi-gcc-transport/en/bahrain-to-qatar/">Qatar route</a></article>
           <article class="card compact"><h3>Kuwait and Kuwait City</h3><p>Kuwait City and KWI airport trips should be quoted with passenger count, luggage and return requirements.</p><a class="btn ghost" href="/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/">Kuwait route</a></article>
@@ -450,7 +361,7 @@
           <article class="card"><h3>Kuwait</h3><p>Kuwait City and KWI airport trips should include passenger count, bags, documents, timing and whether the trip is one way or return.</p></article>
           <article class="card"><h3>UAE</h3><p>Dubai, Abu Dhabi, DXB and AUH routes are longer GCC trips where comfort, business timing and luggage capacity matter.</p></article>
           <article class="card"><h3>Oman</h3><p>Muscat and MCT routes need long-distance planning, stop expectations and clear luggage details.</p></article>
-          
+
         </div>
       </div>
     </section>
@@ -484,8 +395,8 @@
           <a href="/bahrain-saudi-gcc-transport/en/bahrain-to-kuwait/">Bahrain to Kuwait private transport</a>
           <a href="/bahrain-saudi-gcc-transport/en/bahrain-to-uae/">Bahrain to UAE private transport</a>
           <a href="/bahrain-saudi-gcc-transport/en/bahrain-to-oman/">Bahrain to Oman private transport</a>
-          
-          
+
+
           <a href="/bahrain-saudi-gcc-transport/en/parcel-delivery/">Parcel delivery</a>
           <a href="/bahrain-saudi-gcc-transport/en/passenger-transport/">Passenger transport</a>
         </div>
@@ -533,7 +444,7 @@
         </p>
       </div>
     </section>
-  <section class="section vehicle-confirmation" data-vendora-vehicle-luggage-notice><div class="container section-shell"><div class="section-head"><h2>Vehicle and luggage arrangements</h2><p>Vehicle type and model depend on the route, passenger count, luggage and availability when the booking is confirmed. Customers must provide the number and approximate size of their bags. Additional luggage arrangements may be possible when suitable and confirmed in advance.</p><p>Only vehicle categories and booking options are presented. The vehicle and driver are arranged according to the route and availability, and no specific vehicle is permanently tied to the service.</p></div></div></section></main>
+  <section class="section vehicle-confirmation" data-vendora-vehicle-luggage-notice><div class="container section-shell"><div class="section-head"><h2>Vehicle and luggage arrangements</h2><p>Vehicle type and model depend on the route, passenger count, luggage and availability when the booking is confirmed. Customers must provide the number and approximate size of their bags. Additional luggage arrangements may be possible when suitable and confirmed in advance.</p><p>Verified Fleet: Late-model, fully air-conditioned, spotless vehicles matching your confirmed category (VIP GMC Yukon XL or Executive Sedan) with a professional vetted chauffeur.</p></div></div></section></main>
 
   <footer class="footer">
     <div class="container footer-grid">
@@ -542,12 +453,12 @@
         <p>Before the trip, the important details are reviewed: pickup, timing, destination, passengers, luggage and purpose. That is the difference between a professional transport company and a casual driver handoff.</p>
       </div>
       <div class="panel">
-        <a class="btn whatsapp" data-wa-static="Hello, I would like to request a quote for Vendora Transport private GCC transport.">Request a quote on WhatsApp</a>
+        <a class="btn whatsapp" data-wa-message="Hello, I would like to request a quote for Vendora Transport private GCC transport.">Request a quote on WhatsApp</a>
       </div>
     </div>
 <nav class="discovery-trust-links" aria-label="Booking and trust information"><a href="/bahrain-saudi-gcc-transport/en/booking-policy/">Booking policy</a><a href="/bahrain-saudi-gcc-transport/en/cancellation-policy/">Cancellation policy</a><a href="/bahrain-saudi-gcc-transport/en/passenger-safety/">Passenger safety</a><a href="/bahrain-saudi-gcc-transport/en/payment-policy/">Payment policy</a><a href="/bahrain-saudi-gcc-transport/en/support-policy/">Support</a><a href="/bahrain-saudi-gcc-transport/en/complaints/">Complaints</a><a href="/bahrain-saudi-gcc-transport/en/customer-reviews/">Customer feedback</a></nav></footer>
-  <a class="floating-wa" data-wa-static="Hello, I would like to request a quote for Vendora Transport private GCC transport." aria-label="WhatsApp">WA</a>
-  <script src="../../gcc-private-transport-guide/src/shared/gcc-guide.js"></script>
+  <a class="floating-wa" data-wa-message="Hello, I would like to request a quote for Vendora Transport private GCC transport." aria-label="WhatsApp">WA</a>
+  <script defer src="../../gcc-private-transport-guide/src/shared/gcc-guide.js"></script>
   <script defer src="../../../assets/analytics-loader.js" data-vendora-analytics-loader></script>
 </body>
 </html>
