@@ -825,6 +825,7 @@
     ["سياسة الحجز","Booking policy"],
     ["الشكاوى","Complaints"],
     ["تقييمات العملاء","Customer reviews"],
+    ["أرسل هذا الراكب تقييمه المكتوب بلغة أخرى.","This passenger submitted their written review in another language."],
     ["صفحات المدن والمطارات ذات الصلة","Related city and airport pages"],
     ["أسئلة شائعة عن هذا المسار","Frequently asked questions for this route"],
     ["هل الرحلة مضمونة بمجرد إرسال الطلب؟","Is the journey guaranteed when I send a request?"],
@@ -1697,12 +1698,15 @@
     if (old) old.remove();
     const previousFocus = document.activeElement;
     const en = state.lang === 'en';
+    const handoffDescription = bookingRef
+      ? (en ? 'Your request reference has been created. Continue to WhatsApp to confirm availability and the final price.' : 'تم إنشاء مرجع لطلبك. تابع إلى واتساب لتأكيد التوفر والسعر النهائي.')
+      : (en ? 'Continue to WhatsApp to send your request. Availability and the final price are confirmed in the conversation.' : 'تابع إلى واتساب لإرسال طلبك. يتم تأكيد التوفر والسعر النهائي في المحادثة.');
     const modal = document.createElement('div');
     modal.id = 'vendora-booking-ready';
     modal.setAttribute('role', 'dialog');
     modal.setAttribute('aria-modal', 'true');
     modal.setAttribute('aria-labelledby', 'vendora-booking-title');
-    modal.innerHTML = `<div class="vendora-booking-backdrop" data-booking-cancel></div><div class="vendora-booking-dialog"><h2 id="vendora-booking-title">${en ? 'Your request is ready' : 'تم تجهيز طلبك'}</h2><p>${en ? 'Your request reference has been created. Continue to WhatsApp to confirm availability and the final price.' : 'تم إنشاء مرجع لطلبك. تابع إلى واتساب لتأكيد التوفر والسعر النهائي.'}</p>${bookingRef ? `<p><strong>${en ? 'Request reference' : 'رقم الطلب'}: <bdi dir="ltr">${escapeHtml(bookingRef)}</bdi></strong></p>` : ''}<div class="vendora-booking-actions"><button type="button" data-booking-cancel>${en ? 'Back and edit request' : 'العودة وتعديل الطلب'}</button><button type="button" data-booking-continue>${en ? 'Continue to WhatsApp' : 'المتابعة إلى واتساب'}</button></div></div>`;
+    modal.innerHTML = `<div class="vendora-booking-backdrop" data-booking-cancel></div><div class="vendora-booking-dialog"><h2 id="vendora-booking-title">${en ? 'Your request is ready' : 'تم تجهيز طلبك'}</h2><p>${handoffDescription}</p>${bookingRef ? `<p><strong>${en ? 'Request reference' : 'رقم الطلب'}: <bdi dir="ltr">${escapeHtml(bookingRef)}</bdi></strong></p>` : ''}<div class="vendora-booking-actions"><button type="button" data-booking-cancel>${en ? 'Back and edit request' : 'العودة وتعديل الطلب'}</button><button type="button" data-booking-continue>${en ? 'Continue to WhatsApp' : 'المتابعة إلى واتساب'}</button></div></div>`;
     const style = document.createElement('style');
     style.textContent = '#vendora-booking-ready{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:1rem}.vendora-booking-backdrop{position:absolute;inset:0;background:rgba(5,8,17,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.vendora-booking-dialog{position:relative;max-width:32rem;width:100%;background:#0b1120;color:#f8fafc;border:1px solid rgba(200,169,107,.3);border-radius:1.25rem;padding:1.75rem;box-shadow:0 24px 70px rgba(0,0,0,.75)}.vendora-booking-dialog h2{margin:0 0 .6rem;color:#fff;font-size:1.4rem}.vendora-booking-dialog p{color:#cbd5e1;line-height:1.55}.vendora-booking-dialog strong{color:#c8a96b}.vendora-booking-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.25rem}.vendora-booking-dialog button{min-height:48px;border:0;border-radius:.75rem;padding:.8rem 1.25rem;background:#168b4b;color:#fff;font:inherit;font-weight:700;cursor:pointer;transition:transform .15s,background .15s}.vendora-booking-dialog button:hover{background:#1ca75a}.vendora-booking-dialog [data-booking-cancel]{background:rgba(255,255,255,.08);color:#cbd5e1;border:1px solid rgba(255,255,255,.12)}.vendora-booking-dialog [data-booking-cancel]:hover{background:rgba(255,255,255,.14);color:#fff}.vendora-booking-dialog button:focus-visible{outline:3px solid #c8a96b;outline-offset:3px}';
     modal.appendChild(style);
@@ -3327,10 +3331,21 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
       const escape = (str) => String(str || '').replace(/[<>&"']/g, (char) => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;',
       }[char]));
-      const comment = review.comment
-        ? `<p class="route-review-comment">${escape(review.comment)}</p>`
+      // Do not leak arbitrary user-generated copy into the other language.
+      // Only an explicitly supplied translation may stand in for the original.
+      const rawComment = String(review.comment || '');
+      const translatedComment = isEn ? review.comment_en : review.comment_ar;
+      const sameLanguage = isEn ? !/[\u0600-\u06ff]/.test(rawComment) : !/[A-Za-z]/.test(rawComment);
+      const displayComment = translatedComment || (sameLanguage ? rawComment : '');
+      const comment = displayComment
+        ? `<p class="route-review-comment">${escape(displayComment)}</p>`
+        : rawComment
+          ? `<p class="route-review-comment">${isEn ? 'This passenger submitted their written review in another language.' : 'أرسل هذا الراكب تقييمه المكتوب بلغة أخرى.'}</p>`
         : `<p class="route-review-comment">${isEn ? 'Verified trip feedback submitted after booking.' : 'تم إرسال تقييم موثّق بعد الحجز.'}</p>`;
-      const author = review.author_name ? `<div class="route-review-author" style="color:var(--accent, #fbbf24);margin:4px 0;font-size:0.9rem;font-weight:600;">${escape(review.author_name)}</div>` : '';
+      const rawAuthor = String(review.author_name || '');
+      const authorMatchesLanguage = isEn ? !/[\u0600-\u06ff]/.test(rawAuthor) : !/[A-Za-z]/.test(rawAuthor);
+      const displayAuthor = authorMatchesLanguage ? rawAuthor : (isEn ? 'Passenger' : 'راكب');
+      const author = displayAuthor ? `<div class="route-review-author" style="color:var(--accent, #fbbf24);margin:4px 0;font-size:0.9rem;font-weight:600;">${escape(displayAuthor)}</div>` : '';
       return `
         <article class="route-review-card">
           <div class="route-review-stars" aria-label="${review.rating}/5">${renderReviewStars(review.rating)}</div>

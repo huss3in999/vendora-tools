@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { Script } from 'node:vm';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const business = JSON.parse(readFileSync(join(root, 'config', 'business-config.json'), 'utf8'));
@@ -8,6 +9,14 @@ const pricing = JSON.parse(readFileSync(join(root, 'config', 'route-prices.json'
 const excludedRoots = new Set(['admin', 'ai-chat-test', 'functions', 'node_modules', 'scratch', 'test-results', 'tests', 'templates']);
 const excludedGuideSegments = new Set(['src', 'content', 'data', 'planning', 'qa', 'references', 'research', 'seo']);
 const errors = [];
+try {
+  const sandbox = {};
+  new Script(readFileSync(join(root, 'assets', 'vendora-config.js'), 'utf8'), { filename: 'vendora-config.js' }).runInNewContext({ window: sandbox }, { timeout: 1000 });
+  if (JSON.stringify(sandbox.VENDORA_ROUTE_PRICES) !== JSON.stringify(pricing.routes)) errors.push('Generated route configuration differs from config/route-prices.json');
+  if (JSON.stringify(sandbox.VENDORA_BUSINESS_CONFIG) !== JSON.stringify(business)) errors.push('Generated business configuration differs from config/business-config.json');
+} catch (error) {
+  errors.push(`Generated configuration cannot execute: ${error.message}`);
+}
 const pages = [];
 const toPosix = (value) => value.split(sep).join('/');
 
@@ -67,7 +76,7 @@ for (const file of pages) {
   requireValue(!/\b(?:up to|seats?|seating for)\s+(?:6|7)\b/i.test(html), `Unverified exact passenger capacity: ${rel}`);
   requireValue(!/(?:حتى|سعة|تسع)\s*(?:6|7)\s*(?:ركاب|راكب)/.test(html), `Unverified exact passenger capacity: ${rel}`);
   const theme = html.match(/<link\b[^>]*href=["']([^"']*vendora-theme\.css)["'][^>]*data-vendora-global-theme[^>]*>/i);
-  const config = html.match(/<script\b[^>]*src=["']([^"']*vendora-config\.js)["'][^>]*data-vendora-global-config[^>]*><\/script>/i);
+  const config = html.match(/<script\b[^>]*src=["']([^"']*vendora-config\.js)(?:\?[^"']*)?["'][^>]*data-vendora-global-config[^>]*><\/script>/i);
   requireValue(theme, `Missing global theme: ${rel}`);
   requireValue(config, `Missing global config: ${rel}`);
   if (theme) requireValue(existsSync(resolve(dirname(file), theme[1])), `Broken theme path: ${rel}`);

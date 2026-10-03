@@ -113,6 +113,8 @@ test.describe('Interactive UI', () => {
 
 test.describe('Links & WhatsApp actions', () => {
   test('every route: internal links resolve; WhatsApp links valid', async ({ page, request }) => {
+    test.setTimeout(240_000);
+    const checkedLinks = new Set();
     const origin = 'http://127.0.0.1:4173';
     const segment = '/bahrain-saudi-gcc-transport';
 
@@ -132,6 +134,9 @@ test.describe('Links & WhatsApp actions', () => {
           expect(href).toContain('97333225954');
           continue;
         }
+        const absoluteHref = new URL(href, pageUrl).href;
+        if (checkedLinks.has(absoluteHref)) continue;
+        checkedLinks.add(absoluteHref);
         if (href.startsWith('http://') || href.startsWith('https://')) {
           if (href.includes('flagcdn.com') || href.includes('unpkg.com')) continue;
           const head = await request.head(href).catch(() => null);

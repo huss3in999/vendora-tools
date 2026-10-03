@@ -328,9 +328,6 @@ window.VENDORA_ROUTE_PRICES = Object.freeze([
     },
     "active": true,
     "last_updated": "2026-07-23"
-  },
-    "active": true,
-    "last_updated": "2026-07-23"
   },
   {
     "route_id": "bahrain-to-qatar",
@@ -850,7 +847,7 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
       "route_notes_ar": "للمركبة كاملة، اتجاه واحد.",
       "route_notes_en": "Per complete vehicle, one way.",
       "sort_order": 13
-    },
+    },
     {
       "route_slug": "bahrain-to-qatar",
       "route_name_ar": "البحرين إلى قطر",
@@ -871,7 +868,7 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
       "included_en": "Includes King Fahd Causeway tolls where applicable.",
       "route_notes_ar": "للمركبة كاملة، اتجاه واحد.",
       "route_notes_en": "Per complete vehicle, one way.",
-      "sort_order": 15
+      "sort_order": 14
     },
     {
       "route_slug": "bahrain-to-dubai",
@@ -893,7 +890,7 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
       "included_en": "Includes King Fahd Causeway tolls where applicable.",
       "route_notes_ar": "للمركبة كاملة، اتجاه واحد.",
       "route_notes_en": "Per complete vehicle, one way.",
-      "sort_order": 16
+      "sort_order": 15
     },
     {
       "route_slug": "bahrain-to-abu-dhabi",
@@ -915,7 +912,7 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
       "included_en": "Includes King Fahd Causeway tolls where applicable.",
       "route_notes_ar": "للمركبة كاملة، اتجاه واحد.",
       "route_notes_en": "Per complete vehicle, one way.",
-      "sort_order": 17
+      "sort_order": 16
     },
     {
       "route_slug": "bahrain-to-oman",
@@ -937,7 +934,7 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
       "included_en": "Includes King Fahd Causeway tolls where applicable.",
       "route_notes_ar": "للمركبة كاملة، اتجاه واحد.",
       "route_notes_en": "Per complete vehicle, one way.",
-      "sort_order": 18
+      "sort_order": 17
     },
     {
       "route_slug": "bahrain-sightseeing-full-day",
@@ -959,7 +956,7 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
       "included_en": "",
       "route_notes_ar": "لباقة المركبة الكاملة.",
       "route_notes_en": "Per complete vehicle package.",
-      "sort_order": 19
+      "sort_order": 18
     },
     {
       "route_slug": "bahrain-sightseeing-afternoon",
@@ -981,7 +978,7 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
       "included_en": "",
       "route_notes_ar": "لباقة المركبة الكاملة.",
       "route_notes_en": "Per complete vehicle package.",
-      "sort_order": 20
+      "sort_order": 19
     },
     {
       "route_slug": "dammam-shopping-full-day",
@@ -1003,7 +1000,7 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
       "included_en": "Includes King Fahd Causeway tolls where applicable.",
       "route_notes_ar": "لباقة المركبة الكاملة.",
       "route_notes_en": "Per complete vehicle package.",
-      "sort_order": 21
+      "sort_order": 20
     },
     {
       "route_slug": "dammam-shopping-afternoon",
@@ -1025,7 +1022,7 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
       "included_en": "Includes King Fahd Causeway tolls where applicable.",
       "route_notes_ar": "لباقة المركبة الكاملة.",
       "route_notes_en": "Per complete vehicle package.",
-      "sort_order": 22
+      "sort_order": 21
     },
     {
       "route_slug": "additional-gcc-vehicle-day",
@@ -1047,7 +1044,7 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
       "included_en": "",
       "route_notes_ar": "لكل يوم مركبة إضافي مؤهل.",
       "route_notes_en": "Per qualifying additional vehicle day.",
-      "sort_order": 23
+      "sort_order": 22
     }
   ],
   "version": 1,
