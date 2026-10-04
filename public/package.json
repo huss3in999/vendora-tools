@@ -8,5 +8,10 @@
   "scripts": {
     "test": "node --test tests/business-visitor-intelligence.test.js tests/admin-short-id-regression.test.js tests/public-settings-cache.test.mjs tests/d1-usage-protection.test.js tests/ai-concierge-provider.test.mjs bahrain-saudi-gcc-transport/tests/passenger-care-approval.test.mjs",
     "test:e2e": "playwright test -c e2e/playwright.config.cjs"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true,
+    "workerd@1.20260617.1": true,
+    "sharp@0.34.5": true
   }
 }
