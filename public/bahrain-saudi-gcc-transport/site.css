@@ -4298,6 +4298,8 @@ body[data-conversion-privacy] :is(h1,h2,h3) { color:#172b40!important; }
 body.vip-content-app .section-shell:not(.glass) > :is(h1,h2,h3) { color:#172b40!important; }
 body.vip-home-app [data-luggage-matcher] p { color:#172b40!important; }
 .mobile-bottom-dock .dock-btn.primary-wa { background:#12663a!important; color:#fff!important; }
+body.vip-transport .vip-home-booking .booking-actions .ghost-btn,
+body.vip-transport .vip-home-booking .booking-actions .ghost-btn:is(:hover, :focus-visible) { background:#17344e!important; color:#fffaf0!important; transition:none!important; }
 @media(max-width:900px) { body.vip-transport { padding-bottom:104px!important; } }
 
 body[data-conversion-guide] :is(main,section.section,.card,.compare-card,.table-wrap) { background:#10263d!important; }
