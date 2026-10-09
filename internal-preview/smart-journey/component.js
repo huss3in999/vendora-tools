@@ -1,0 +1,49 @@
+(() => {
+  'use strict';
+  const slug=location.pathname.split('/').filter(Boolean).filter(s=>s!=='index.html').at(-1);
+  if(!['bahrain-to-dammam','bahrain-to-khobar','dammam-to-bahrain','khobar-to-bahrain'].includes(slug)||document.querySelector('[data-smart-journey]'))return;
+  const en=document.documentElement.lang==='en';
+  const t = en ? {
+    kicker:'YOUR JOURNEY, AT A GLANCE',title:'Bahrain to Dammam',sub:'A useful snapshot before your private transfer.',preview:'Private preview · Live website unchanged',snapshot:'Journey snapshot',traffic:'Causeway road congestion',unknown:'Live measurements unavailable',light:'Light',moderate:'Moderate',heavy:'Heavy',closed:'Road closure reported',loading:'Loading snapshot…',distance:'Road distance',eta:'Road ETA',weather:'Destination forecast',noRoute:'Route not yet verified',noWeather:'Forecast unavailable',map:'Google Maps',mapWait:'Interactive map awaits authorized setup',mapSub:'Destination and route appear after provider verification.',open:'View route in Google Maps',book:'Book on WhatsApp',share:'Share on WhatsApp',copy:'Copy Link',copied:'Link copied',copyFail:'Could not copy. Use WhatsApp sharing.',note:'Road traffic and road ETA do not include immigration or customs waiting time. Your exact pickup and drop-off affect the journey.',source:'Source',updated:'Last successful update',forecast:'Forecast for',model:'Model updated',standard:'Without live traffic',minutes:'min',km:'km',google:'Google Maps',tomtom:'TomTom',met:'MET Norway',failure:'Snapshot unavailable. Booking is still available.'
+  } : {
+    kicker:'رحلتك في لمحة',title:'البحرين إلى الدمام',sub:'لمحة مفيدة قبل رحلتك بسيارة خاصة.',preview:'معاينة خاصة · الموقع المباشر دون تغيير',snapshot:'لمحة الرحلة',traffic:'ازدحام الطريق على الجسر',unknown:'القياسات المباشرة غير متاحة',light:'خفيف',moderate:'متوسط',heavy:'شديد',closed:'إبلاغ عن إغلاق الطريق',loading:'جارٍ تحميل المعلومات…',distance:'مسافة الطريق',eta:'مدة القيادة',weather:'توقعات طقس الوجهة',noRoute:'المسار لم يُتحقق منه بعد',noWeather:'التوقعات غير متاحة',map:'خرائط جوجل',mapWait:'الخريطة التفاعلية بانتظار الإعداد المعتمد',mapSub:'تظهر الوجهة والمسار بعد التحقق من الخدمة.',open:'عرض المسار في خرائط جوجل',book:'احجز عبر واتساب',share:'شارك عبر واتساب',copy:'نسخ الرابط',copied:'تم نسخ الرابط',copyFail:'تعذر النسخ. يمكنك المشاركة عبر واتساب.',note:'ازدحام الطريق ومدة القيادة لا يشملان انتظار الجوازات أو الجمارك. يتأثر وقت الرحلة بموقع الاستلام والتوصيل.',source:'المصدر',updated:'آخر تحديث ناجح',forecast:'توقعات الساعة',model:'تحديث نموذج الطقس',standard:'دون حركة المرور المباشرة',minutes:'دقيقة',km:'كم',google:'خرائط جوجل',tomtom:'توم توم',met:'هيئة الأرصاد النرويجية',failure:'معلومات الرحلة غير متاحة. يمكنك متابعة الحجز.'
+  };
+  const names={'bahrain-to-dammam':t.title,'bahrain-to-khobar':en?'Bahrain to Khobar':'البحرين إلى الخبر','dammam-to-bahrain':en?'Dammam to Bahrain':'الدمام إلى البحرين','khobar-to-bahrain':en?'Khobar to Bahrain':'الخبر إلى البحرين'};
+  const canonical=document.querySelector('link[rel="canonical"]')?.href || location.href;
+  const emit=(name)=>window.vendoraTransportAnalytics?.emit(name,{route_slug:slug,cta_location:'smart_journey',language:en?'en':'ar'});
+  const section=document.createElement('section');section.className='section sj';section.dataset.smartJourney='';
+  section.innerHTML=`<div class="container"><div class="sj-shell"><div class="sj-head"><div><span class="sj-kicker">${t.kicker}</span><h2>${names[slug]}</h2><p class="sj-sub">${t.sub}</p></div><span class="sj-tag">${t.snapshot}</span></div><div class="sj-layout"><div class="sj-stats"><article class="sj-card"><div class="sj-label">${t.traffic}</div><strong class="sj-value" data-sj-traffic>${t.loading}</strong><div class="sj-pills">${['light','moderate','heavy'].map(k=>`<span class="sj-pill" data-level="${k}">${t[k]}</span>`).join('')}</div><small class="sj-source" data-sj-traffic-source></small></article><article class="sj-card"><div class="sj-label">${t.distance}</div><strong class="sj-value" data-sj-distance>—</strong><small class="sj-source" data-sj-route-source>${t.noRoute}</small></article><article class="sj-card"><div class="sj-label">${t.eta}</div><strong class="sj-value" data-sj-eta>—</strong><small class="sj-source" data-sj-eta-source></small></article><article class="sj-card" style="grid-column:1/-1"><div class="sj-label">${t.weather}</div><strong class="sj-value" data-sj-weather>${t.loading}</strong><small class="sj-source" data-sj-weather-source></small></article></div><div class="sj-map" aria-label="${t.map}"><div class="sj-map-empty"><span aria-hidden="true">⌖</span><strong>${t.mapWait}</strong><span class="sj-source">${t.mapSub}</span><a data-sj-map-link target="_blank" rel="noopener">${t.open}</a></div></div></div><div class="sj-actions"><a class="sj-book" data-sj-book>${t.book}</a><a data-sj-share>${t.share}</a><button type="button" data-sj-copy>${t.copy}</button></div><p class="sj-foot">${t.note}</p><div class="sj-status" role="status" aria-live="polite"></div></div></div>`;
+  const hero=document.querySelector('main .hero, main .premium-hero'); if(!hero)return;hero.after(section);
+  const $=s=>section.querySelector(s),set=(s,v)=>$(s).textContent=v;
+  const dates=v=>new Date(v).toLocaleString(en?'en-GB':'ar-BH',{timeZone:'Asia/Bahrain',dateStyle:'short',timeStyle:'short'});
+  const book=$('[data-sj-book]');
+  const existing=document.querySelector('.hero a[href*="wa.me"], .premium-hero a[href*="wa.me"]');book.href=existing?.href || 'https://wa.me/97333225954';
+  book.addEventListener('click',()=>emit('smart_journey_booking_click'));
+  $('[data-sj-share]').href='https://wa.me/?text='+encodeURIComponent(names[slug]+' '+canonical);
+  $('[data-sj-share]').addEventListener('click',()=>emit('smart_journey_share_whatsapp'));
+  $('[data-sj-copy]').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(canonical);set('.sj-status',t.copied);emit('smart_journey_copy_link');}catch{set('.sj-status',t.copyFail);}});
+  const origins={'bahrain-to-dammam':['Manama Bahrain','Dammam Saudi Arabia'],'bahrain-to-khobar':['Manama Bahrain','Al Khobar Saudi Arabia'],'dammam-to-bahrain':['Dammam Saudi Arabia','Manama Bahrain'],'khobar-to-bahrain':['Al Khobar Saudi Arabia','Manama Bahrain']};
+  const mapLink=$('[data-sj-map-link]');mapLink.href='https://www.google.com/maps/dir/?api=1&origin='+encodeURIComponent(origins[slug][0])+'&destination='+encodeURIComponent(origins[slug][1])+'&travelmode=driving';mapLink.addEventListener('click',()=>emit('smart_journey_map_open'));
+  function fallback(){set('[data-sj-traffic]',t.unknown);set('[data-sj-weather]',t.noWeather);}
+  function decode(encoded){let lat=0,lng=0,index=0,result=[];while(index<encoded.length){const read=()=>{let value=0,shift=0,b;do{b=encoded.charCodeAt(index++)-63;value|=(b&31)<<shift;shift+=5;if(shift>30||index>encoded.length)throw Error('polyline');}while(b>=32);return value&1?~(value>>1):value>>1;};lat+=read();lng+=read();result.push({lat:lat/1e5,lng:lng/1e5});}return result;}
+  async function map(data){
+    if(!data.map.enabled)return;
+    try{
+      await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(data.map.browserKey)+'&language='+(en?'en':'ar');script.onload=resolve;script.onerror=reject;document.head.append(script);});
+      const node=$('.sj-map');const destination={lat:data.destination[0],lng:data.destination[1]};
+      const m=new google.maps.Map(node,{center:destination,zoom:10,mapTypeControl:false,streetViewControl:false,gestureHandling:'cooperative'});
+      new google.maps.Marker({position:destination,map:m,title:names[slug]});new google.maps.TrafficLayer({autoRefresh:false}).setMap(m);
+      if(data.routing.status==='available'){const path=decode(data.routing.encodedPolyline);new google.maps.Polyline({path,map:m,strokeColor:'#7344b0',strokeOpacity:1,strokeWeight:5});const bounds=new google.maps.LatLngBounds();path.forEach(p=>bounds.extend(p));m.fitBounds(bounds);}
+      m.addListener('click',()=>emit('smart_journey_map_interaction'));
+    }catch{set('.sj-status',t.mapWait);}
+  }
+  // Exactly one snapshot request on initial page load; no traffic timer or background refresh.
+  fetch('/api/smart-journey?route='+encodeURIComponent(slug),{signal:AbortSignal.timeout(12000)}).then(r=>{if(!r.ok)throw Error('snapshot');return r.json();}).then(data=>{
+    fallback();
+    const flow=data.traffic;
+    if(['light','moderate','heavy','closed'].includes(flow.status)){set('[data-sj-traffic]',t[flow.status]);const pill=$(`[data-level="${flow.status}"]`);if(pill)pill.dataset.active=flow.status;set('[data-sj-traffic-source]',t.source+': '+t.tomtom+' · '+t.updated+': '+dates(flow.updatedAt));}
+    if(data.routing.status==='available'){set('[data-sj-distance]',(data.routing.distanceMeters/1000).toFixed(1)+' '+t.km);set('[data-sj-eta]',Math.round(data.routing.durationSeconds/60)+' '+t.minutes);set('[data-sj-route-source]',t.google+' · '+t.updated+': '+dates(data.routing.updatedAt));set('[data-sj-eta-source]',data.routing.trafficAware?t.google:t.standard);}
+    if(data.weather.status==='available'){set('[data-sj-weather]',Math.round(data.weather.temperatureC)+'°');const source=$('[data-sj-weather-source]');source.textContent=t.met+' · '+t.forecast+': '+dates(data.weather.validAt)+' · '+t.model+': '+dates(data.weather.modelUpdatedAt)+' · '+t.updated+': '+dates(data.weather.updatedAt)+' · ';const link=document.createElement('a');link.href='https://creativecommons.org/licenses/by/4.0/';link.textContent=en?'CC BY 4.0 · temperature excerpt':'ترخيص المشاع الإبداعي ٤٫٠ · مقتطف درجة الحرارة';link.style.color='inherit';source.append(link);}
+    map(data);emit('smart_journey_view');
+  }).catch(()=>{fallback();set('.sj-status',t.failure);});
+})();

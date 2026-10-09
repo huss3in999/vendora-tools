@@ -1,0 +1,6 @@
+.env
+.dev.vars
+.cache/
+artifacts/
+dist/
+.wrangler/
