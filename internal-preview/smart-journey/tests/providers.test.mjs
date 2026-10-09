@@ -14,11 +14,12 @@ test('paid routes and traffic do not call providers without authorization',async
   const fail=()=>{throw Error('should not call');};assert.equal((await googleRoute(routes['bahrain-to-dammam'],{GOOGLE_MAPS_SERVER_KEY:'synthetic'},fail)).reason,'configuration');assert.equal((await tomtomFlow(routes['bahrain-to-dammam'],{},fail)).status,'unavailable');
 });
 test('HTTP 200 route requires semantic fields and explicit road validation',async()=>{
-  const env={GOOGLE_MAPS_BILLING_APPROVED:'true',GOOGLE_MAPS_SERVER_KEY:'synthetic'};
-  assert.equal((await googleRoute(routes['bahrain-to-dammam'],env,async()=>Response.json({routes:[{}]}))).status,'unavailable');
+  const env={GOOGLE_MAPS_BILLING_APPROVED:'true',GOOGLE_MAPS_SERVER_KEY:'synthetic',GOOGLE_KEY_RESTRICTIONS_VERIFIED:'true',GOOGLE_PROVIDER_QUOTAS_VERIFIED:'true'};
+  const budget={reserve:async()=>true};
+  assert.equal((await googleRoute(routes['bahrain-to-dammam'],env,async()=>Response.json({routes:[{}]}),budget)).status,'unavailable');
   const fetcher=async()=>Response.json({routes:[{distanceMeters:80000,duration:'4200s',polyline:{encodedPolyline:'test-only'}}]});
-  assert.equal((await googleRoute(routes['bahrain-to-dammam'],env,fetcher)).reason,'coverage');
-  assert.equal((await googleRoute(routes['bahrain-to-dammam'],{...env,GOOGLE_ROUTE_COVERAGE_APPROVED:'true'},fetcher)).trafficAware,false);
+  assert.equal((await googleRoute(routes['bahrain-to-dammam'],env,fetcher,budget)).reason,'coverage');
+  assert.equal((await googleRoute(routes['bahrain-to-dammam'],{...env,GOOGLE_ROUTE_COVERAGE_APPROVED:'true'},fetcher,budget)).trafficAware,false);
 });
 test('weather is explicitly a forecast and honors cached expiry',async()=>{
   let stored,calls=0;const cache={get:async()=>stored,set:async(k,v)=>stored=v};

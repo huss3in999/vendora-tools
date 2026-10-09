@@ -1,0 +1,9 @@
+import {readFile,writeFile} from 'node:fs/promises';
+const env=Object.fromEntries((await readFile(new URL('.env',import.meta.url),'utf8')).split(/\r?\n/).filter(x=>/^[A-Z_]+=/.test(x)).map(x=>[x.slice(0,x.indexOf('=')),x.slice(x.indexOf('=')+1)]));
+const rows=JSON.parse(await readFile(new URL('artifacts/causeway-segments.json',import.meta.url)));
+const selected=[rows[0],rows[2],rows[3],rows[5]],report={checkedAt:new Date().toISOString(),roads:[],routes:[]};
+async function get(url){url.searchParams.set('key',env.TOMTOM_API_KEY);const r=await fetch(url,{signal:AbortSignal.timeout(8000)});return {httpStatus:r.status,data:await r.json(),retrievedAt:new Date().toISOString()};}
+for(const x of selected){const u=new URL(`https://api.tomtom.com/search/2/reverseGeocode/${x.point.join(',')}.json`);u.searchParams.set('returnRoadUse','true');const r=await get(u);report.roads.push({point:x.point,...r});}
+for(const direction of ['westbound','eastbound']){const points=direction==='westbound'?[selected[0].point,selected[2].point]:[selected[3].point,selected[1].point];const u=new URL(`https://api.tomtom.com/routing/1/calculateRoute/${points.map(x=>x.join(',')).join(':')}/json`);u.searchParams.set('traffic','true');u.searchParams.set('departAt','now');u.searchParams.set('computeTravelTimeFor','all');u.searchParams.set('sectionType','country');const r=await get(u);report.routes.push({direction,...r});}
+await writeFile(new URL('artifacts/causeway-road-review.json',import.meta.url),JSON.stringify(report,null,2));
+console.log(JSON.stringify({roads:report.roads.map(x=>({point:x.point,httpStatus:x.httpStatus,addresses:x.data.addresses})),routes:report.routes.map(x=>({direction:x.direction,httpStatus:x.httpStatus,summary:x.data.routes?.[0]?.summary,sections:x.data.routes?.[0]?.sections}))},null,2));

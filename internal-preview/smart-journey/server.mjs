@@ -3,12 +3,16 @@ import { readFile, mkdir, writeFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { snapshot } from './providers.mjs';
+import { DatabaseSync } from 'node:sqlite';
+import { budgetSchema,reserveStatement } from './budget.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
 const publicRoot=path.resolve(here,'../../public');
 const env={...process.env};
 try{for(const line of (await readFile(path.join(here,'.env'),'utf8')).split(/\r?\n/)){const m=line.match(/^([A-Z_]+)=(.*)$/);if(m&&!env[m[1]])env[m[1]]=m[2].replace(/^['"]|['"]$/g,'');}}catch{}
 const weatherDir=path.join(here,'.cache');await mkdir(weatherDir,{recursive:true});
+const budgetDb=new DatabaseSync(path.join(weatherDir,'google-budget.sqlite'));budgetDb.exec(budgetSchema);
+const budget={reserve:async kind=>{try{const {sql,args}=reserveStatement(kind);return budgetDb.prepare(sql).run(...args).changes===1;}catch{return false;}}};
 const cache={get:async key=>{try{return JSON.parse(await readFile(path.join(weatherDir,Buffer.from(key).toString('hex')+'.json'),'utf8'));}catch{return null;}},set:async(key,v)=>writeFile(path.join(weatherDir,Buffer.from(key).toString('hex')+'.json'),JSON.stringify(v))};
 const types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png','.jpg':'image/jpeg','.json':'application/json'};
 export function injectPreview(html){
@@ -23,7 +27,7 @@ const server=http.createServer(async(req,res)=>{
   try{
     if(req.method!=='GET'&&req.method!=='HEAD'){res.writeHead(405);res.end('Preview is read-only');return;}
     if(u.pathname==='/api/smart-journey'){
-      const data=await snapshot(u.searchParams.get('route'),env,cache);res.writeHead(data?200:404,{'Content-Type':'application/json'});res.end(JSON.stringify(data||{error:'unknown_route'}));return;
+      const data=await snapshot(u.searchParams.get('route'),env,cache,fetch,budget);res.writeHead(data?200:404,{'Content-Type':'application/json'});res.end(JSON.stringify(data||{error:'unknown_route'}));return;
     }
     if(u.pathname.includes('/api/')){
       // Read-only review preparation: no production writes or invented ratings.

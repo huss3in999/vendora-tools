@@ -1,4 +1,5 @@
 import { routes } from './routes.mjs';
+import { googleControlsReady } from './budget.mjs';
 
 const unavailable = (reason) => ({ status: 'unavailable', reason, updatedAt: null });
 export function classifyFlow(samples, now = Date.now()) {
@@ -21,8 +22,10 @@ export async function requestJson(url, options = {}, fetcher = fetch) {
   return { data: await response.json(), date: response.headers.get('date'), expires: response.headers.get('expires') };
 }
 
-export async function googleRoute(route, env, fetcher = fetch) {
+export async function googleRoute(route, env, fetcher = fetch, budget = null) {
   if (env.GOOGLE_MAPS_BILLING_APPROVED !== 'true' || !env.GOOGLE_MAPS_SERVER_KEY) return unavailable('configuration');
+  if (!googleControlsReady(env,budget)) return unavailable('budget_controls');
+  if (!await budget.reserve('route')) return unavailable('budget_limit');
   try {
     const point = ([latitude, longitude]) => ({ location: { latLng: { latitude, longitude } } });
     const aware = env.GOOGLE_TRAFFIC_AWARE_APPROVED === 'true';
@@ -80,11 +83,11 @@ export async function weather(route, cache, fetcher = fetch) {
   } catch { return unavailable('provider'); }
 }
 
-export async function snapshot(slug, env, cache, fetcher = fetch) {
+export async function snapshot(slug, env, cache, fetcher = fetch, budget = null) {
   const route = routes[slug];
   if (!route) return null;
-  const [routing,forecast,traffic] = await Promise.all([googleRoute(route,env,fetcher),env.WEATHER_ENABLED==='false'?unavailable('disabled'):weather(route,cache,fetcher),tomtomFlow(route,env,fetcher)]);
+  const [routing,forecast,traffic] = await Promise.all([googleRoute(route,env,fetcher,budget),env.WEATHER_ENABLED==='false'?unavailable('disabled'):weather(route,cache,fetcher),tomtomFlow(route,env,fetcher)]);
+  const mapEnabled=googleControlsReady(env,budget) && !!env.GOOGLE_MAPS_BROWSER_KEY && await budget.reserve('map');
   return { route:slug, direction:route.direction, traffic, routing, weather:forecast,
-    map: { enabled:env.GOOGLE_MAPS_BILLING_APPROVED==='true' && !!env.GOOGLE_MAPS_BROWSER_KEY,
-      browserKey:env.GOOGLE_MAPS_BILLING_APPROVED==='true' ? env.GOOGLE_MAPS_BROWSER_KEY || '' : '' }, destination:route.destination };
+    map: { enabled:mapEnabled, browserKey:mapEnabled ? env.GOOGLE_MAPS_BROWSER_KEY : '', reason:mapEnabled?null:'configuration_or_budget' }, destination:route.destination };
 }
