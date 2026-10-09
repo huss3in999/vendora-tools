@@ -24,7 +24,7 @@ try{for(const language of ['ar','en'])for(const viewport of [{width:1440,height:
   assert.ok((await page.locator('[data-sj-book]').getAttribute('href')).startsWith('https://wa.me/97333225954'));
   const share=new URL(await page.locator('[data-sj-share]').getAttribute('href'));assert.ok(share.searchParams.get('text').includes('https://getvendora.net/'));
   await page.locator('[data-sj-copy]').click();assert.ok(await page.evaluate(()=>navigator.clipboard.readText()).then(s=>s.startsWith('https://getvendora.net/')));
-  await component.scrollIntoViewIfNeeded();await page.screenshot({path:path.join(here,'artifacts',`${language}-${viewport.width}-journey.png`)});
+  await page.evaluate(()=>{const el=document.querySelector('[data-smart-journey]');window.scrollTo(0,el.getBoundingClientRect().top+scrollY-90);});await page.screenshot({path:path.join(here,'artifacts',`${language}-${viewport.width}-journey.png`)});
   await component.screenshot({path:path.join(here,'artifacts',`${language}-${viewport.width}-component.png`)});
   await page.screenshot({path:path.join(here,'artifacts',`${language}-${viewport.width}-page.png`),fullPage:true});
   const weather=await page.locator('[data-sj-weather]').innerText();results.push({language,viewport,requests,overflow,weather,booking:true,share:true,copy:true});await context.close();
