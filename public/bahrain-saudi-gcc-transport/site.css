@@ -4402,13 +4402,51 @@ body.vip-transport :is(
 /* Inner badges, pills, and chips */
 body.vip-transport :is(.pill, .badge, .chip, .tag, .hero-tag, .trust-chip) {
   background: var(--vendora-surface-inner);
-  color: var(--vendora-gold-light);
+  color: #0f172a;
   border: 1px solid var(--vendora-border-gold);
+  font-weight: 700;
 }
 
 /* Headings color adaptation */
 body.vip-transport :is(h1, h2, h3, h4, h5, h6) {
   color: var(--vendora-heading);
+}
+
+/* High-Contrast Route Buttons & Link Chips on Light Surfaces */
+#gcc-routes a,
+.route-groups a,
+.complete-route-directory a,
+.route-link,
+.gcc-route-item,
+body.vip-transport .route-groups a,
+body.vip-transport .complete-route-directory a {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+}
+
+/* Headings on Light Cards */
+#gcc-routes :is(h2, h3, h4):not(.price-callout h3),
+.route-groups h3,
+.complete-route-directory h3 {
+  color: #0f294a !important;
+  font-weight: 800 !important;
+}
+body.vip-transport .price-callout h3 {
+  color: var(--readable-gold) !important;
+}
+
+
+/* Hover state for route buttons */
+#gcc-routes a:hover,
+.route-groups a:hover,
+.complete-route-directory a:hover,
+.route-link:hover {
+  background-color: #0f294a !important;
+  color: #ffffff !important;
+  border-color: #0f294a !important;
 }
 
 /* Text coloring within section shells */
@@ -4419,6 +4457,7 @@ body.vip-transport .section-shell li {
 body.vip-transport .section-shell :is(p strong, li strong, span strong) {
   color: var(--vendora-heading);
 }
+
 
 /* Highlights for Price & Rate Badges: High contrast on light surfaces, metallic gold in dark mode */
 body.vip-transport :is(.price-badge, .route-fare-badge) {
@@ -4522,10 +4561,28 @@ body.vip-transport :is(.dock-btn.primary-wa, [data-booking-submit]) span {
     color: #ffe2a3 !important;
   }
 
+  body.vip-transport #gcc-routes a,
+  body.vip-transport .route-groups a,
+  body.vip-transport .complete-route-directory a,
+  body.vip-transport .route-link {
+    color: #f8fafc !important;
+    background-color: #192438 !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+  }
+  body.vip-transport #gcc-routes a:hover,
+  body.vip-transport .route-groups a:hover,
+  body.vip-transport .complete-route-directory a:hover,
+  body.vip-transport .route-link:hover {
+    background-color: #243550 !important;
+    color: #ffffff !important;
+    border-color: var(--vendora-gold) !important;
+  }
+
   body.vip-transport :is(footer, .site-footer, .transport-footer) {
     background-color: #060a10 !important;
   }
 }
+
 
 /* ==========================================================
    4. MOBILE TABLE SQUEEZE FIX (Pure CSS Card Layout)
