@@ -22,7 +22,7 @@ test('legal identity and address are configured with real details by default', (
   assert.equal(business.public_address, 'Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain');
   assert.equal(business.address_display_enabled, false);
   assert.equal(business.legal_name, 'Vendora Gulf Transport & Logistics Services');
-  assert.equal(business.cr_number, '134856-1');
+  assert.equal(business.cr_number, '134858-1');
   assert.equal(business.legal_information_enabled, true);
   assert.match(source, /businessConfig/);
 });

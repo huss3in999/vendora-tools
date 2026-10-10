@@ -41,7 +41,7 @@ for (const language of ['', 'en/']) {
     for (const slug of ['bahrain-to-khobar', 'bahrain-to-dammam', 'bahrain-airport-transfer', 'hotel-transfer-bahrain']) {
       await page.goto(`/bahrain-saudi-gcc-transport/${language}${slug}/`, { waitUntil: 'networkidle' });
       await expect(page.locator('[data-booking-form]')).toHaveCount(0);
-      await expect(page.locator('footer small').filter({ hasText: '134856-1' })).toHaveCount(1);
+      await expect(page.locator('footer small').filter({ hasText: '134858-1' })).toHaveCount(1);
       const title = await page.title();
       await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', title);
       await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content', title);
