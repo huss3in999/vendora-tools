@@ -75,7 +75,7 @@ for (const file of pages) {
   requireValue(!/(?:رقم لوحة|لوحة تسجيل|رقم الهيكل|هوية السائق|معرّف الأسطول الداخلي)/.test(html), `Private vehicle or driver identifier wording: ${rel}`);
   requireValue(!/\b(?:up to|seats?|seating for)\s+(?:6|7)\b/i.test(html), `Unverified exact passenger capacity: ${rel}`);
   requireValue(!/(?:حتى|سعة|تسع)\s*(?:6|7)\s*(?:ركاب|راكب)/.test(html), `Unverified exact passenger capacity: ${rel}`);
-  const theme = html.match(/<link\b[^>]*href=["']([^"']*vendora-theme\.css)["'][^>]*data-vendora-global-theme[^>]*>/i);
+  const theme = html.match(/<link\b[^>]*href=["']([^"']*vendora-theme\.css)(?:\?[^"']*)?["'][^>]*data-vendora-global-theme[^>]*>/i);
   const config = html.match(/<script\b[^>]*src=["']([^"']*vendora-config\.js)(?:\?[^"']*)?["'][^>]*data-vendora-global-config[^>]*><\/script>/i);
   requireValue(theme, `Missing global theme: ${rel}`);
   requireValue(config, `Missing global config: ${rel}`);
