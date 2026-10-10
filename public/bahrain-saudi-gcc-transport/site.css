@@ -4412,17 +4412,27 @@ body.vip-transport :is(h1, h2, h3, h4, h5, h6) {
   color: var(--vendora-heading);
 }
 
-/* High-Contrast Route Buttons & Link Chips on Light Surfaces */
+/* High-Contrast Route Group Cards and Route Buttons */
+body.vip-transport .route-groups > div,
+body.vip-transport .complete-route-directory > div {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+}
+
 #gcc-routes a,
 .route-groups a,
 .complete-route-directory a,
 .route-link,
 .gcc-route-item,
+body.vip-transport #gcc-routes a,
 body.vip-transport .route-groups a,
 body.vip-transport .complete-route-directory a {
   color: #0f172a !important;
   font-weight: 700 !important;
-  background-color: #ffffff !important;
+  background-color: #f8fafc !important;
   border: 1px solid #cbd5e1 !important;
   box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
 }
@@ -4430,7 +4440,9 @@ body.vip-transport .complete-route-directory a {
 /* Headings on Light Cards */
 #gcc-routes :is(h2, h3, h4):not(.price-callout h3),
 .route-groups h3,
-.complete-route-directory h3 {
+.complete-route-directory h3,
+body.vip-transport .route-groups h3,
+body.vip-transport .complete-route-directory h3 {
   color: #0f294a !important;
   font-weight: 800 !important;
 }
@@ -4443,7 +4455,10 @@ body.vip-transport .price-callout h3 {
 #gcc-routes a:hover,
 .route-groups a:hover,
 .complete-route-directory a:hover,
-.route-link:hover {
+.route-link:hover,
+body.vip-transport #gcc-routes a:hover,
+body.vip-transport .route-groups a:hover,
+body.vip-transport .complete-route-directory a:hover {
   background-color: #0f294a !important;
   color: #ffffff !important;
   border-color: #0f294a !important;
@@ -4538,14 +4553,26 @@ body.vip-transport :is(.dock-btn.primary-wa, [data-booking-submit]) span {
     .review-card,
     .service-card,
     .panel,
-    .faq-item
+    .faq-item,
+    .route-groups > div,
+    .complete-route-directory > div
   ) {
     background: #121a29 !important;
     color: #f8fafc !important;
     border: 1px solid rgba(212, 175, 55, 0.3) !important;
   }
 
-  body.vip-transport :is(h1, h2, h3, h4, h5, h6) {
+  body.vip-transport .route-groups > div,
+  body.vip-transport .complete-route-directory > div {
+    background: #121a29 !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(212, 175, 55, 0.3) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+  }
+
+  body.vip-transport :is(h1, h2, h3, h4, h5, h6),
+  body.vip-transport .route-groups h3,
+  body.vip-transport .complete-route-directory h3 {
     color: #ffffff !important;
   }
 

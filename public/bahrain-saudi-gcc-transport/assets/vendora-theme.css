@@ -86,6 +86,70 @@
     --vendora-border: rgba(255, 255, 255, 0.08);
     --vendora-cta-whatsapp: #25d366;
   }
+
+  body.vip-transport .route-groups > div,
+  body.vip-transport .complete-route-directory > div {
+    background: #121a29 !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(212, 175, 55, 0.3) !important;
+  }
+
+  body.vip-transport .route-groups h3,
+  body.vip-transport .complete-route-directory h3 {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+  }
+
+  body.vip-transport #gcc-routes a,
+  body.vip-transport .route-groups a,
+  body.vip-transport .complete-route-directory a,
+  body.vip-transport .route-link {
+    color: #f8fafc !important;
+    background-color: #192438 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  }
+
+  body.vip-transport #gcc-routes a:hover,
+  body.vip-transport .route-groups a:hover,
+  body.vip-transport .complete-route-directory a:hover,
+  body.vip-transport .route-link:hover {
+    background-color: #243550 !important;
+    color: #ffffff !important;
+    border-color: #d4af37 !important;
+  }
+}
+
+body.vip-transport .route-groups > div,
+body.vip-transport .complete-route-directory > div {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 16px !important;
+}
+
+body.vip-transport .route-groups h3,
+body.vip-transport .complete-route-directory h3 {
+  color: #0f294a !important;
+  font-weight: 800 !important;
+}
+
+body.vip-transport #gcc-routes a,
+body.vip-transport .route-groups a,
+body.vip-transport .complete-route-directory a,
+body.vip-transport .route-link {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+  background-color: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+body.vip-transport #gcc-routes a:hover,
+body.vip-transport .route-groups a:hover,
+body.vip-transport .complete-route-directory a:hover,
+body.vip-transport .route-link:hover {
+  background-color: #0f294a !important;
+  color: #ffffff !important;
+  border-color: #0f294a !important;
 }
 
 html[lang="ar"] body { font-family: var(--vendora-font-ar); }
