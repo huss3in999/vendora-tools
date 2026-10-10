@@ -4505,10 +4505,10 @@ body.vip-transport :is(.dock-btn.primary-wa, [data-booking-submit]) span {
 
 /* In dark mode, ensure WhatsApp and primary CTAs pop with crisp white text */
 @media (prefers-color-scheme: dark) {
-  body.vip-transport :is(.primary-btn, .wa-inline, .dock-btn, .floating-wa, [data-booking-submit], .btn.whatsapp) {
+  body.vip-transport :is(.wa-inline, .dock-btn, .floating-wa, [data-booking-submit], .btn.whatsapp) {
     color: #ffffff !important;
   }
-  body.vip-transport :is(.primary-btn, .wa-inline, .dock-btn, .floating-wa, [data-booking-submit], .btn.whatsapp) span {
+  body.vip-transport :is(.wa-inline, .dock-btn, .floating-wa, [data-booking-submit], .btn.whatsapp) span {
     color: #ffffff !important;
   }
 }
@@ -4584,7 +4584,7 @@ body.vip-transport :is(.dock-btn.primary-wa, [data-booking-submit]) span {
     color: #ffffff !important;
   }
 
-  body.vip-transport :is(.section-shell, .legal-content) a:not(.primary-btn):not(.wa-inline):not(.ghost-btn):not(.wa-text) {
+  body.vip-transport :is(.section-shell, .legal-content) a:not(.primary-btn):not(.wa-inline):not(.ghost-btn):not(.wa-text):not(.price-card a):not(.price-card a):not(.price-card a) {
     color: #ffe2a3 !important;
   }
 
@@ -4698,3 +4698,504 @@ body.vip-transport :is(.dock-btn.primary-wa, [data-booking-submit]) span {
   }
 }
 
+/* ==========================================================================
+   VENDORA UNIVERSAL WCAG AA CONTRAST & ACCESSIBILITY CONTRACT
+   Strictly isolated theme contracts ensuring WCAG AA across all viewports.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. CRISP EXECUTIVE LIGHT MODE
+   ========================================================================== */
+@media (prefers-color-scheme: light) {
+  body.vip-transport {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+  }
+
+  /* Headings on light surfaces */
+  body.vip-transport :is(h1, h2, h3, h4, h5, h6):not(footer *):not(.footer *):not(.discovery-trust-links *):not(.price-callout *):not(.luggage-matcher-panel *),
+  body.vip-transport .section-head :is(h1, h2, h3, h4),
+  body.vip-transport :is(.hero-copy, .section-shell, .booking-card, .price-card, .route-card, .service-card, .panel, .faq-item, .premium-hero-copy, .company-panel) :is(h1, h2, h3, h4, h5, h6),
+  body.vip-transport #gcc-routes :is(h2, h3, h4):not(.price-callout h3),
+  body.vip-transport .route-groups h3,
+  body.vip-transport .complete-route-directory h3,
+  body.vip-transport .section-shell > .glass :is(h1, h2, h3, h4) {
+    color: #0f294a !important;
+  }
+
+  /* Paragraphs and descriptions on light surfaces */
+  body.vip-transport :is(main, .hero, .section, header) :is(p, li, dt, dd, small):not(.price):not(.lead strong):not(footer *):not(.footer *):not(.discovery-trust-links *):not(.primary-btn *):not(.dock-btn *):not(.wa-inline *):not(.price-callout *):not(.luggage-matcher-panel *),
+  body.vip-transport .section-head p:not(footer *):not(.footer *),
+  body.vip-transport :is(.hero-copy, .section-shell, .booking-card, .route-card, .service-card, .panel, .faq-item, .premium-hero-copy, .company-panel):not(footer *):not(.footer *) :is(p, li, dt, dd, small):not(.price):not(.primary-btn *):not(.wa-inline *):not(.price-callout *):not(.luggage-matcher-panel *),
+  body.vip-transport .section-shell > .glass :is(p, li, dt, dd, small):not(.price-callout *):not(.luggage-matcher-panel *) {
+    color: #334155 !important;
+  }
+
+  /* Strong emphasis on light surfaces */
+  body.vip-transport strong:not(.eyebrow *):not(.badge *):not(.pill *):not(footer *):not(.footer *):not(.primary-btn *):not(.wa-inline *):not(.dock-btn *):not(.hero-media-caption *):not(.price-callout *):not(.luggage-matcher-panel *),
+  body.vip-transport b:not(.eyebrow *):not(.badge *):not(.pill *):not(footer *):not(.footer *):not(.primary-btn *) {
+    color: #0f294a !important;
+  }
+
+  /* Eyebrows, pills and badges */
+  body.vip-transport :is(.eyebrow, .badge, .pill, .section-kicker, .hero-tag) {
+    color: #854d0e !important;
+  }
+  body.vip-transport :is(.eyebrow, .badge, .pill, .section-kicker, .hero-tag) strong {
+    color: #854d0e !important;
+  }
+
+  /* Cards and elevated panels on light surfaces */
+  body.vip-transport :is(
+    .hero-card,
+    .vendora-route-summary,
+    .route-card,
+    .vehicle-card,
+    .pricing-card,
+    .price-card,
+    .feature-card,
+    .card,
+    .spec-box,
+    .review-card,
+    .service-card,
+    .panel,
+    .faq-item,
+    .booking-card,
+    .section-shell,
+    .route-groups > div,
+    .complete-route-directory > div,
+    .premium-hero,
+    .premium-hero-copy,
+    .hero,
+    .hero-copy,
+    .hero-side,
+    .hero-media-card,
+    .company-panel,
+    .section-shell > .glass
+  ):not(.price-callout):not(.luggage-matcher-panel) {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+  }
+
+  /* Vehicle grid cards on light surfaces */
+  body.vip-transport .vehicle-grid article {
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+  }
+  body.vip-transport .vehicle-grid article strong {
+    color: #0f294a !important;
+  }
+  body.vip-transport .vehicle-grid article span {
+    color: #475569 !important;
+  }
+
+  /* Form inputs in light mode */
+  body.vip-transport :is(input, textarea, select) {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+  }
+  body.vip-transport label:not(.luggage-matcher-panel *):not(.matcher-card *),
+  body.vip-transport .field-group label {
+    color: #0f294a !important;
+    font-weight: 700 !important;
+  }
+  body.vip-transport :is(input, textarea)::placeholder {
+    color: #64748b !important;
+  }
+
+  /* Primary buttons in light mode */
+  body.vip-transport .primary-btn,
+  body.vip-transport .primary-btn :is(span, strong, *):not(i):not(svg) {
+    background: #0f294a !important;
+    color: #ffffff !important;
+    border-color: #0f294a !important;
+  }
+  body.vip-transport .primary-btn:hover {
+    background: #1e3a5f !important;
+    color: #ffffff !important;
+  }
+
+  /* WhatsApp CTAs & text links */
+  body.vip-transport :is(.wa-inline, .floating-wa, .dock-btn.primary-wa, [data-booking-submit], .btn.whatsapp) {
+    background: #15803d !important;
+    color: #ffffff !important;
+    border-color: #166534 !important;
+  }
+  body.vip-transport :is(.wa-inline, .floating-wa, .dock-btn.primary-wa, [data-booking-submit], .btn.whatsapp) :is(span, strong, i, svg) {
+    color: #ffffff !important;
+    fill: currentColor;
+  }
+  body.vip-transport .wa-text {
+    color: #15803d !important;
+    font-weight: 700 !important;
+  }
+
+  /* Ghost buttons on light surfaces */
+  body.vip-transport .ghost-btn,
+  body.vip-transport .ghost-btn :is(span, strong) {
+    background: #ffffff !important;
+    color: #0f294a !important;
+    border: 1px solid #cbd5e1 !important;
+  }
+  body.vip-transport .ghost-btn:hover {
+    background: #f1f5f9 !important;
+    color: #0f294a !important;
+  }
+
+  /* Route Directory links on light surfaces */
+  body.vip-transport #gcc-routes a,
+  body.vip-transport .route-groups a,
+  body.vip-transport .complete-route-directory a,
+  body.vip-transport .route-link,
+  body.vip-transport .gcc-route-item {
+    background-color: #ffffff !important;
+    color: #0f294a !important;
+    border: 1px solid #cbd5e1 !important;
+    font-weight: 700 !important;
+  }
+  body.vip-transport #gcc-routes a:hover,
+  body.vip-transport .route-groups a:hover,
+  body.vip-transport .complete-route-directory a:hover,
+  body.vip-transport .route-link:hover {
+    background-color: #0f294a !important;
+    color: #ffffff !important;
+    border-color: #0f294a !important;
+  }
+
+  /* Price card action button */
+  body.vip-transport .price-card a,
+  body.vip-transport [data-price] a,
+  body.vip-transport :is(.section-shell, .legal-content) :is(.price-card, [data-price]) a {
+    background: #15803d !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+
+  /* Price numbers */
+  body.vip-transport .price-card .price strong,
+  body.vip-transport [data-price] strong {
+    color: #0f294a !important;
+  }
+  body.vip-transport .price-card .price span,
+  body.vip-transport [data-price] span {
+    color: #475569 !important;
+  }
+
+  /* Mailto links */
+  body.vip-transport a[href^="mailto:"] {
+    color: #0f294a !important;
+    font-weight: 700 !important;
+    text-decoration: underline !important;
+  }
+
+  /* Company panel links */
+  body.vip-transport .company-panel a {
+    color: #0f294a !important;
+    font-weight: 700 !important;
+    text-decoration: underline !important;
+  }
+
+  /* Dedicated dark card widgets on light pages (luggage matcher, price callout) */
+  body.vip-transport :is(.luggage-matcher-panel, .matcher-card, .price-callout) {
+    background-color: #10263d !important;
+    border: 1px solid rgba(200, 169, 107, 0.4) !important;
+  }
+  body.vip-transport :is(.luggage-matcher-panel, .matcher-card, .price-callout) :is(h1, h2, h3, h4, strong) {
+    color: #ffffff !important;
+  }
+  body.vip-transport :is(.luggage-matcher-panel, .matcher-card, .price-callout) :is(p, span, li, small, label, .matcher-note) {
+    color: #cbd5e1 !important;
+  }
+
+  /* Airport Route Visual in light mode */
+  body.vip-transport .arv-node strong {
+    color: #0f294a !important;
+  }
+  body.vip-transport .arv-node span {
+    color: #475569 !important;
+  }
+
+  /* Discovery Trust Links Bar (Unified in Light Mode) */
+  body.vip-transport .discovery-trust-links {
+    background-color: #0f294a !important;
+    color: #ffffff !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 12px 18px !important;
+    padding: 16px 20px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  body.vip-transport .discovery-trust-links a,
+  body.vip-transport :is(footer, .footer, .site-footer, .transport-footer) .discovery-trust-links a {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-decoration: underline !important;
+  }
+  body.vip-transport .discovery-trust-links a:hover {
+    color: #d4af37 !important;
+  }
+
+  /* Footer in Light Mode */
+  body.vip-transport :is(footer, .footer, .site-footer, .transport-footer) {
+    background-color: #0f294a !important;
+    color: #cbd5e1 !important;
+  }
+  body.vip-transport :is(footer, .footer, .site-footer, .transport-footer) :is(h1, h2, h3, h4, strong) {
+    color: #ffffff !important;
+  }
+  body.vip-transport :is(footer, .footer, .site-footer, .transport-footer) :is(p, li, small, .footer-copy, .footer-note, dt, dd, span):not(.badge) {
+    color: #cbd5e1 !important;
+  }
+  body.vip-transport :is(footer, .footer, .site-footer, .transport-footer) a:not(.wa-inline):not(.primary-btn) {
+    color: #ffffff !important;
+    text-decoration: underline !important;
+  }
+  body.vip-transport :is(footer, .footer, .site-footer, .transport-footer) a:hover {
+    color: #d4af37 !important;
+  }
+
+  /* Hero Media Captions */
+  body.vip-transport .hero-media-caption strong { color: #ffffff !important; }
+  body.vip-transport .hero-media-caption span { color: #cbd5e1 !important; }
+}
+
+
+/* ==========================================================================
+   2. LUXURY OBSIDIAN DARK MODE
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+  body.vip-transport {
+    background-color: #090e17 !important;
+    color: #f8fafc !important;
+  }
+
+  /* Cards and elevated panels in dark mode */
+  body.vip-transport :is(
+    .hero-card,
+    .vendora-route-summary,
+    .route-card,
+    .vehicle-card,
+    .pricing-card,
+    .price-card,
+    .feature-card,
+    .card,
+    .spec-box,
+    .review-card,
+    .service-card,
+    .panel,
+    .faq-item,
+    .booking-card,
+    .section-shell,
+    .route-groups > div,
+    .complete-route-directory > div,
+    .premium-hero,
+    .premium-hero-copy,
+    .hero,
+    .hero-copy,
+    .hero-side,
+    .hero-media-card,
+    .company-panel,
+    .section-shell > .glass,
+    .price-callout,
+    .luggage-matcher-panel
+  ) {
+    background-color: #121a29 !important;
+    background-image: none !important;
+    color: #f8fafc !important;
+    border-color: rgba(212, 175, 55, 0.3) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+  }
+
+  /* Vehicle grid cards in dark mode */
+  body.vip-transport .vehicle-grid article {
+    background-color: #121a29 !important;
+    border: 1px solid rgba(212, 175, 55, 0.3) !important;
+    color: #f8fafc !important;
+  }
+  body.vip-transport .vehicle-grid article strong {
+    color: #ffffff !important;
+  }
+  body.vip-transport .vehicle-grid article span {
+    color: #94a3b8 !important;
+  }
+
+  /* Headings on dark surfaces */
+  body.vip-transport :is(h1, h2, h3, h4, h5, h6),
+  body.vip-content-app :is(h1, h2, h3, h4, h5, h6),
+  body.vip-transport .section-head :is(h1, h2, h3, h4),
+  body.vip-content-app .section-head :is(h1, h2, h3, h4),
+  body.vip-transport :is(.hero-copy, .section-shell, .booking-card, .price-card, .route-card, .service-card, .panel, .faq-item, .premium-hero-copy, .company-panel) :is(h1, h2, h3, h4, h5, h6),
+  body.vip-content-app :is(.hero-copy, .section-shell, .booking-card, .price-card, .route-card, .service-card, .panel, .faq-item, .premium-hero-copy, .company-panel) :is(h1, h2, h3, h4, h5, h6),
+  body.vip-transport .section-shell:not(.glass) > :is(h1, h2, h3, h4, h5, h6),
+  body.vip-content-app .section-shell:not(.glass) > :is(h1, h2, h3, h4, h5, h6),
+  body.vip-transport #gcc-routes :is(h2, h3, h4):not(.price-callout h3),
+  body.vip-transport .route-groups h3,
+  body.vip-transport .complete-route-directory h3,
+  body.vip-transport .section-shell > .glass :is(h1, h2, h3, h4) {
+    color: #ffffff !important;
+  }
+
+  /* Paragraphs and list items on dark surfaces */
+  body.vip-transport :is(main, .hero, .section, header) :is(p, li, dt, dd, small):not(.price):not(.lead strong):not(footer *):not(.footer *):not(.primary-btn *):not(.dock-btn *):not(.wa-inline *),
+  body.vip-transport .section-head p,
+  body.vip-transport :is(.hero-copy, .section-shell, .booking-card, .route-card, .service-card, .panel, .faq-item, .premium-hero-copy, .company-panel) :is(p, li, dt, dd, small):not(.price):not(.primary-btn *):not(.wa-inline *),
+  body.vip-transport .section-shell > .glass :is(p, li, dt, dd, small) {
+    color: #94a3b8 !important;
+  }
+
+  /* Strong text on dark surfaces */
+  body.vip-transport strong:not(.eyebrow *):not(.badge *):not(.pill *):not(.primary-btn *):not(.wa-inline *):not(.dock-btn *),
+  body.vip-transport b:not(.eyebrow *):not(.badge *):not(.pill *):not(.primary-btn *) {
+    color: #ffffff !important;
+  }
+
+  /* Eyebrows, pills and badges in dark mode */
+  body.vip-transport :is(.eyebrow, .badge, .pill, .section-kicker, .hero-tag) {
+    color: #d4af37 !important;
+  }
+  body.vip-transport :is(.eyebrow, .badge, .pill, .section-kicker, .hero-tag) strong {
+    color: #d4af37 !important;
+  }
+
+  /* Form inputs in dark mode */
+  body.vip-transport :is(input, textarea, select) {
+    background-color: #192438 !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+  body.vip-transport label,
+  body.vip-transport .field-group label {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+  body.vip-transport :is(input, textarea)::placeholder {
+    color: #64748b !important;
+  }
+
+  /* Primary Button on Gold in Dark Mode (Dark navy on gold for WCAG AA compliance) */
+  body.vip-transport .primary-btn,
+  body.vip-transport .primary-btn :is(span, strong, *):not(i):not(svg) {
+    background: #d4af37 !important;
+    background-image: none !important;
+    color: #071a2e !important;
+    border-color: #d4af37 !important;
+  }
+  body.vip-transport .primary-btn:hover,
+  body.vip-transport .primary-btn:hover :is(span, strong, *):not(i):not(svg) {
+    background: #e5c358 !important;
+    color: #071a2e !important;
+  }
+
+  /* WhatsApp buttons & links in dark mode */
+  body.vip-transport :is(.wa-inline, .floating-wa, .dock-btn.primary-wa, [data-booking-submit], .btn.whatsapp) {
+    background: #15803d !important;
+    color: #ffffff !important;
+    border-color: #166534 !important;
+  }
+  body.vip-transport :is(.wa-inline, .floating-wa, .dock-btn.primary-wa, [data-booking-submit], .btn.whatsapp) :is(span, strong, i, svg) {
+    color: #ffffff !important;
+    fill: currentColor;
+  }
+  body.vip-transport .wa-text {
+    color: #4ade80 !important;
+    font-weight: 700 !important;
+  }
+
+  /* Ghost buttons in dark mode */
+  body.vip-transport .ghost-btn,
+  body.vip-transport .ghost-btn :is(span, strong) {
+    background: #192438 !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  }
+
+  /* Route Directory links in dark mode */
+  body.vip-transport #gcc-routes a,
+  body.vip-transport .route-groups a,
+  body.vip-transport .complete-route-directory a,
+  body.vip-transport .route-link,
+  body.vip-transport .gcc-route-item {
+    background-color: #192438 !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  }
+  body.vip-transport #gcc-routes a:hover,
+  body.vip-transport .route-groups a:hover,
+  body.vip-transport .complete-route-directory a:hover,
+  body.vip-transport .route-link:hover {
+    background-color: #243550 !important;
+    color: #ffffff !important;
+    border-color: #d4af37 !important;
+  }
+
+  /* Price card action button in dark mode (Must stay crisp white on green) */
+  body.vip-transport .price-card a,
+  body.vip-transport [data-price] a,
+  body.vip-transport :is(.section-shell, .legal-content) :is(.price-card, [data-price]) a {
+    background: #15803d !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+  }
+
+  /* Price figures in dark mode */
+  body.vip-transport .price-card .price strong,
+  body.vip-transport [data-price] strong {
+    color: #d4af37 !important;
+  }
+  body.vip-transport .price-card .price span,
+  body.vip-transport [data-price] span {
+    color: #cbd5e1 !important;
+  }
+
+  /* Mailto links in dark mode */
+  body.vip-transport a[href^="mailto:"] {
+    color: #f8fafc !important;
+  }
+
+  /* Company panel links in dark mode */
+  body.vip-transport .company-panel a {
+    color: #d4af37 !important;
+    font-weight: 700 !important;
+    text-decoration: underline !important;
+  }
+
+  /* Airport Route Visual in dark mode */
+  body.vip-transport .arv-node strong {
+    color: #ffffff !important;
+  }
+  body.vip-transport .arv-node span {
+    color: #cbd5e1 !important;
+  }
+
+  /* Discovery Trust Links Bar in dark mode */
+  body.vip-transport .discovery-trust-links {
+    background-color: #060a10 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+  body.vip-transport .discovery-trust-links a,
+  body.vip-transport :is(footer, .footer, .site-footer, .transport-footer) .discovery-trust-links a {
+    color: #d4af37 !important;
+    font-weight: 700 !important;
+    text-decoration: underline !important;
+  }
+
+  /* Footer in Dark Mode */
+  body.vip-transport :is(footer, .footer, .site-footer, .transport-footer) {
+    background-color: #060a10 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+  body.vip-transport :is(footer, .footer, .site-footer, .transport-footer) :is(h1, h2, h3, h4, strong) {
+    color: #ffffff !important;
+  }
+  body.vip-transport :is(footer, .footer, .site-footer, .transport-footer) :is(p, li, small, .footer-copy, .footer-note, dt, dd, span):not(.badge) {
+    color: #94a3b8 !important;
+  }
+  body.vip-transport :is(footer, .footer, .site-footer, .transport-footer) a:not(.wa-inline):not(.primary-btn) {
+    color: #d4af37 !important;
+  }
+}
