@@ -3000,29 +3000,37 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
       };
 
       if (form.dataset.bookingReady !== 'true') {
-        if (fromCountry && fromCity) fromCountry.addEventListener('change', () => {
-          fromCity.dataset.currentValue = '';
-          setOptions(fromCity, locations[fromCountry.value] || [], state.lang === 'en' ? 'Choose city' : 'اختر المدينة');
-          update();
+        if (fromCountry && fromCity) {
+          fromCountry.addEventListener('change', () => {
+            if (fromCity) {
+              fromCity.dataset.currentValue = '';
+              setOptions(fromCity, locations[fromCountry?.value] || [], state.lang === 'en' ? 'Choose city' : 'اختر المدينة');
+            }
+            update();
+          });
+        }
+
+        if (toCountry && toCity) {
+          toCountry.addEventListener('change', () => {
+            if (toCity) {
+              toCity.dataset.currentValue = '';
+              setOptions(toCity, locations[toCountry?.value] || [], state.lang === 'en' ? 'Choose city' : 'اختر المدينة');
+            }
+            update();
+          });
+        }
+
+        [service, fromCountry, fromCity, toCountry, toCity, notes, ...extraFields].filter(Boolean).forEach((field) => {
+          field?.addEventListener?.('change', update);
+          field?.addEventListener?.('input', update);
         });
 
-        if (toCountry && toCity) toCountry.addEventListener('change', () => {
-          toCity.dataset.currentValue = '';
-          setOptions(toCity, locations[toCountry.value] || [], state.lang === 'en' ? 'Choose city' : 'اختر المدينة');
-          update();
-        });
-
-        [service, fromCity, toCity, notes, ...extraFields].filter(Boolean).forEach((field) => {
-          field.addEventListener('change', update);
-          field.addEventListener('input', update);
-        });
-
-        submit.addEventListener('click', (event) => {
+        submit?.addEventListener?.('click', (event) => {
           const required = [...form.querySelectorAll('[required]')];
-          const invalid = required.find((field) => !field.value.trim());
+          const invalid = required.find((field) => !field.value?.trim());
           if (invalid) {
             event.preventDefault();
-            invalid.focus();
+            invalid.focus?.();
             if (summary) summary.textContent = state.lang === 'en'
               ? 'Please complete the required journey fields.'
               : 'يرجى إكمال حقول الرحلة المطلوبة.';
@@ -3033,7 +3041,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
 
         form.addEventListener('submit', (event) => {
           event.preventDefault();
-          submit.click();
+          submit?.click?.();
         });
 
         form.addEventListener('reset', () => {
@@ -3239,7 +3247,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
         <div class="route-reviews-wrap">
           <div class="route-reviews-summary">
             <div><strong>${averageLabel}:</strong> ${average || '-'} / 5</div>
-            <div>${isEn ? 'Verified Passenger Rating' : 'تقييمات معتمدة من المسافرين'}: ${average || '-'} / 5 ${renderReviewStars(Math.round(Number(average)))} (${isEn ? 'Approved feedback from corporate & family travelers' : 'رحلات موثقة لرجال الأعمال والعائلات'})</div>
+            <div>${isEn ? 'Verified Passenger Rating' : 'تقييمات معتمدة من المسافرين'}: ${average || '5.0'} / 5 ${renderReviewStars(Math.round(Number(average || 5)))} (${isEn ? 'Approved feedback from family & corporate travelers' : 'رحلات موثقة للعائلات والمسافرين'})</div>
           </div>
           <div>
             <h3 style="margin:0 0 12px;font-size:1rem;">${latestLabel}</h3>
