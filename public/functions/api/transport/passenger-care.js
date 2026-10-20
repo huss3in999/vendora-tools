@@ -1,10 +1,17 @@
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
+  'http://getvendora.net',
+  'https://www.getvendora.net',
+  'http://www.getvendora.net',
   'https://www.getvendora.net',
   'http://127.0.0.1:4173',
   'http://localhost:4173',
   'http://127.0.0.1:8787',
   'http://localhost:8787',
+  'http://127.0.0.1:8799',
+  'http://localhost:8799',
+  'https://127.0.0.1:8799',
+  'https://localhost:8799',
   'null',
 ]);
 

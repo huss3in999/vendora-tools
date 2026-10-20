@@ -1,0 +1,34 @@
+{
+  "name": "Vendora Dispatch · فندورا ديسباتش",
+  "short_name": "Vendora",
+  "description": "Vendora Transport Dispatch & Booking Tracker",
+  "start_url": "/booking-desk/",
+  "scope": "/booking-desk/",
+  "display": "standalone",
+  "background_color": "#08111f",
+  "theme_color": "#0b192c",
+  "orientation": "portrait-primary",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/booking-desk/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/booking-desk/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/booking-desk/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

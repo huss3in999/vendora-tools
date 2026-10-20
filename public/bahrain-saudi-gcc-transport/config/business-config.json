@@ -1,6 +1,12 @@
 {
-  "config_version": 1,
-  "last_updated": "2026-07-23",
+  "config_version": 2,
+  "aggregate_rating": {
+    "value": 5,
+    "review_count": 1,
+    "verified_at": "2026-10-20",
+    "source": "https://getvendora.net/api/transport/route-reviews?limit=1"
+  },
+  "last_updated": "2026-10-20",
   "brand_display_name": "Vendora Transport",
   "booking_whatsapp_display": "+973 3322 5954",
   "booking_whatsapp": "97333225954",
@@ -8,7 +14,7 @@
   "support_phone_display": "+973 3340 4044",
   "support_phone": "97333404044",
   "support_phone_enabled": true,
-  "public_address": "Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain",
+  "public_address": "Office 240, 2nd Floor, The Address Tower, Seef, Kingdom of Bahrain",
   "address_display_enabled": false,
   "google_maps_url": "https://maps.app.goo.gl/XgirVcNRYSqJb1N26?g_st=ac",
   "operating_hours_ar": "يمكن إرسال طلب الرحلة في أي وقت، والتأكيد حسب التوفر.",
@@ -52,5 +58,7 @@
   "legal_name": "Vendora Gulf Transport & Logistics Services",
   "cr_number": "134858-1",
   "legal_information_enabled": true,
-  "sar_per_bhd": 10
+  "sar_per_bhd": 10,
+  "legal_name_ar": "فندورا الخليج لخدمات النقل واللوجستيات",
+  "public_address_ar": "مكتب ٢٤٠، الطابق الثاني، برج ذا أدريس، السيف، مملكة البحرين"
 }

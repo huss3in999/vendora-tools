@@ -267,7 +267,8 @@ test('capture representative post-fix Arabic and English screenshots', async ({ 
   for (const viewport of viewports) {
     await page.setViewportSize(viewport);
     for (const representative of representatives) {
-      await page.goto(representative.path, { waitUntil: 'networkidle' });
+      await page.goto(representative.path, { waitUntil: 'domcontentloaded' });
+      await expect(page.locator('.vip-menu-toggle')).toBeAttached();
       const file = join(outputRoot, 'screenshots', `${representative.name}-${viewport.width}x${viewport.height}.png`);
       await page.screenshot({ path: file, fullPage: true });
       expect(existsSync(file)).toBeTruthy();

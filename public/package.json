@@ -6,7 +6,8 @@
     "wrangler": "^4.103.0"
   },
   "scripts": {
-    "test": "node --test tests/business-visitor-intelligence.test.js tests/admin-short-id-regression.test.js tests/public-settings-cache.test.mjs tests/d1-usage-protection.test.js tests/ai-concierge-provider.test.mjs bahrain-saudi-gcc-transport/tests/passenger-care-approval.test.mjs",
+    "build": "npm --prefix bahrain-saudi-gcc-transport run build && wrangler deploy --dry-run --outdir ../.wrangler/seo-geo-build",
+    "test": "node --test tests/business-visitor-intelligence.test.js tests/admin-short-id-regression.test.js tests/public-settings-cache.test.mjs tests/d1-usage-protection.test.js tests/ai-concierge-provider.test.mjs bahrain-saudi-gcc-transport/tests/passenger-care-approval.test.mjs tests/booking-desk-validation.test.mjs tests/booking-desk-document-sharing.test.mjs tests/booking-desk-safety-isolation.test.mjs",
     "test:e2e": "playwright test -c e2e/playwright.config.cjs"
   },
   "allowScripts": {

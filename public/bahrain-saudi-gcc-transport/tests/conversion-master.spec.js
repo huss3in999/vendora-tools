@@ -10,7 +10,7 @@ for (const path of ['/', '/bahrain-saudi-gcc-transport/', '/bahrain-saudi-gcc-tr
   test(`${path} initializes and contacts WhatsApp with one click despite unavailable lead API`, async ({ page, context }) => {
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
-    await page.goto(path, { waitUntil: 'networkidle' });
+    await page.goto(path, { waitUntil: 'domcontentloaded' });
     expect(errors).toEqual([]);
     const form = page.locator('[data-booking-form]').first();
     await expect(form).toHaveAttribute('data-booking-ready', 'true');
@@ -39,16 +39,17 @@ test('homepage free-text request keeps entered locations and needs only the rout
 for (const language of ['', 'en/']) {
   test(`${language || 'Arabic'} route pages publish fares and bypass redundant forms`, async ({ page }) => {
     for (const slug of ['bahrain-to-khobar', 'bahrain-to-dammam', 'bahrain-airport-transfer', 'hotel-transfer-bahrain']) {
-      await page.goto(`/bahrain-saudi-gcc-transport/${language}${slug}/`, { waitUntil: 'networkidle' });
+      await page.goto(`/bahrain-saudi-gcc-transport/${language}${slug}/`, { waitUntil: 'domcontentloaded' });
       await expect(page.locator('[data-booking-form]')).toHaveCount(0);
       await expect(page.locator('footer small').filter({ hasText: '134858-1' })).toHaveCount(1);
       const title = await page.title();
       await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', title);
       await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content', title);
       if (slug.includes('airport') || slug.includes('hotel')) {
-        await expect(page.locator('[data-local-transfer-pricing]')).toContainText('15');
-        await expect(page.locator('[data-local-transfer-pricing]')).toContainText('20');
-        await expect(page.locator('[data-local-transfer-pricing]')).toContainText('25');
+        // Local transfers have no approved active numeric rate in the catalog.
+        // They must remain quote-only instead of resurrecting historical fares.
+        await expect(page.locator('[data-local-transfer-pricing]')).toContainText(language ? 'Price on request' : 'تسعيرة عند الطلب');
+        await expect(page.locator('[data-local-transfer-pricing]')).not.toContainText(/(?:15|20|25)\s*(?:BHD|د\.ب)/);
       }
       if (language) expect(await page.locator('body').innerText()).not.toMatch(/[\u0600-\u06ff]/);
     }

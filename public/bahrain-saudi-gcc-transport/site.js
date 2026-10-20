@@ -52,6 +52,288 @@
   let whatsAppClickLockUntil = 0;
 
   const translations = [
+    // BEGIN GENERATED TRUST TRANSLATIONS
+    ["أسعار واضحة مسبقاً","Transparent Upfront Pricing"],
+    ["أسعار موسمية مرنة — احصل على تسعير فوري عبر الواتساب","Seasonal Market Rates — On-Demand Live Quote on WhatsApp"],
+    ["احصل على عرض سعر موسمي فوري","Get Live Seasonal Quote"],
+    ["عروض أسعار المسارات الشائعة","Popular route quotes"],
+    ["خطط لرحلة البحرين إلى الخبر","Plan your Bahrain to Khobar journey"],
+    ["45–95 كم · 0.75–1.5 ساعة قيادة","45–95 km · 0.75–1.5 driving hours"],
+    ["تقديرات لمسار بري نموذجي؛ تعتمد المسافة الدقيقة على مواقع الاستلام والوصول. يضاف وقت لانتظار الحدود والاستراحات وازدحام المدن.","Representative road estimates; exact distance depends on pickup and drop-off pins. Border queues, rest stops and city traffic add time."],
+    ["ترتيب الاستلام","Pickup planning"],
+    ["أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام.","Share the building entrance and a reachable mobile number for pickup."],
+    ["نقاط الوصول في الوجهة","Destination drop-off hubs"],
+    ["كورنيش الخبر وفنادق العليا","Khobar Corniche and Al Olaya hotels"],
+    ["حدد مدخل الكورنيش أو بهو الفندق؛ قد تغير حركة الفعاليات على الواجهة البحرية طريق الوصول الأخير.","Choose the Corniche entrance or hotel lobby; waterfront event traffic can change the final approach."],
+    ["الرسوم ووثائق الحدود","Tolls and border documents"],
+    ["جسر الملك فهد: أكد رسم عبور المركبة الحالي عبر تطبيق جسر أو المؤسسة. تم استبدال تعرفة ٢٫٥٠٠ دينار بحريني أو ٢٥ ريالاً سعودياً في فبراير ٢٠٢٦. اسأل إن كان السعر المؤكد يشمل الرسوم والتأمين والانتظار.","King Fahd Causeway: confirm the current vehicle toll in the JESR app or with the authority. The former BHD 2.500 / SAR 25 tariff was superseded in February 2026. Ask whether the confirmed fare includes tolls, insurance and waiting."],
+    ["مواطنو دول مجلس التعاون: احمل جواز السفر الأصلي أو الهوية الوطنية المقبولة لهذا المعبر. المقيمون: احمل جواز السفر الأصلي والإقامة السارية وتأشيرات الوجهة أو العبور المطلوبة لجنسيتك. تحقق من متطلبات الخروج والعودة لدى بلد الإقامة. صرّح عن السلع المقيدة للجمارك؛ لا يستطيع السائق ضمان الدخول.","GCC citizens: carry an original passport or a national ID accepted for this crossing. Residents: carry your original passport, valid residence permit and the destination or transit visas required for your nationality. Check exit/re-entry requirements with your residence country. Declare restricted goods to customs; the driver cannot guarantee entry."],
+    ["مؤسسة جسر الملك فهد","Causeway authority"],
+    ["بوابة التأشيرة السعودية","Saudi visa portal"],
+    ["أهلية تأشيرة البحرين","Bahrain visa eligibility"],
+    ["أسئلة هذا المسار","Questions for this route"],
+    ["كم تستغرق رحلة البحرين إلى الخبر البرية؟","How long is the Bahrain to Khobar road journey?"],
+    ["تستغرق القيادة تقريباً 0.75–1.5 ساعة لمسافة 45–95 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 0.75–1.5 driving hours over 45–95 km. Border processing, traffic and rest stops add time. The Saudi reference city is Khobar. Confirm exact addresses before departure."],
+    ["أين يمكن التوصيل في الخبر؟","Where can I be dropped off in Khobar?"],
+    ["كورنيش الخبر وفنادق العليا. حدد مدخل الكورنيش أو بهو الفندق؛ قد تغير حركة الفعاليات على الواجهة البحرية طريق الوصول الأخير.","Khobar Corniche and Al Olaya hotels. Choose the Corniche entrance or hotel lobby; waterfront event traffic can change the final approach."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى الخبر؟","What should I send to book Bahrain to Khobar?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في الخبر والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Khobar, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة الخبر إلى البحرين","Plan your Khobar to Bahrain journey"],
+    ["فنادق المنامة والسيف ومطار البحرين الدولي","Manama hotels, Seef and Bahrain International Airport"],
+    ["كم تستغرق رحلة الخبر إلى البحرين البرية؟","How long is the Khobar to Bahrain road journey?"],
+    ["أين يمكن التوصيل في البحرين؟","Where can I be dropped off in Bahrain?"],
+    ["فنادق المنامة والسيف ومطار البحرين الدولي. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام.","Manama hotels, Seef and Bahrain International Airport. Share the building entrance and a reachable mobile number for pickup."],
+    ["ماذا أرسل لحجز رحلة الخبر إلى البحرين؟","What should I send to book Khobar to Bahrain?"],
+    ["أرسل موقع الاستلام في الخبر وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. حدد مدخل الكورنيش أو بهو الفندق؛ قد تغير حركة الفعاليات على الواجهة البحرية طريق الوصول الأخير. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Khobar, the destination pin in Bahrain, date, passenger and luggage counts. Choose the Corniche entrance or hotel lobby; waterfront event traffic can change the final approach. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى الدمام","Plan your Bahrain to Dammam journey"],
+    ["90–130 كم · 1–2 ساعة قيادة","90–130 km · 1–2 driving hours"],
+    ["محطة قطار الدمام وفنادق المدينة؛ ومطار الملك فهد بترتيب منفصل","Dammam railway station and city hotels; King Fahd Airport by separate arrangement"],
+    ["يتطلب الربط بالقطار تحديد وقت المغادرة. يقع المطار خارج وسط الدمام، لذا حدد وجهته بصورة منفصلة.","A railway connection needs a train departure time. The airport is outside central Dammam, so specify it separately."],
+    ["كم تستغرق رحلة البحرين إلى الدمام البرية؟","How long is the Bahrain to Dammam road journey?"],
+    ["تستغرق القيادة تقريباً 1–2 ساعة لمسافة 90–130 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 1–2 driving hours over 90–130 km. Border processing, traffic and rest stops add time. Confirm exact addresses before departure."],
+    ["أين يمكن التوصيل في الدمام؟","Where can I be dropped off in Dammam?"],
+    ["محطة قطار الدمام وفنادق المدينة؛ ومطار الملك فهد بترتيب منفصل. يتطلب الربط بالقطار تحديد وقت المغادرة. يقع المطار خارج وسط الدمام، لذا حدد وجهته بصورة منفصلة.","Dammam railway station and city hotels; King Fahd Airport by separate arrangement. A railway connection needs a train departure time. The airport is outside central Dammam, so specify it separately."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى الدمام؟","What should I send to book Bahrain to Dammam?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في الدمام والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Dammam, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة الدمام إلى البحرين","Plan your Dammam to Bahrain journey"],
+    ["كم تستغرق رحلة الدمام إلى البحرين البرية؟","How long is the Dammam to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة الدمام إلى البحرين؟","What should I send to book Dammam to Bahrain?"],
+    ["أرسل موقع الاستلام في الدمام وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. يتطلب الربط بالقطار تحديد وقت المغادرة. يقع المطار خارج وسط الدمام، لذا حدد وجهته بصورة منفصلة. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Dammam, the destination pin in Bahrain, date, passenger and luggage counts. A railway connection needs a train departure time. The airport is outside central Dammam, so specify it separately. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى مطار الدمام","Plan your Bahrain to Dammam Airport journey"],
+    ["105–145 كم · 1–1.75 ساعة قيادة","105–145 km · 1–1.75 driving hours"],
+    ["صالة مطار الملك فهد الدولي ونقطة اللقاء المتفق عليها","King Fahd International Airport terminal and agreed meeting point"],
+    ["أرسل رقم الرحلة والصالة ووقت الوصول أو الإقلاع وعدد الحقائب المشحونة. يتم تأكيد انتظار المطار بصورة منفصلة.","Send the flight number, terminal, landing or departure time and checked-bag count. Airport waiting is confirmed separately."],
+    ["كم تستغرق رحلة البحرين إلى مطار الدمام البرية؟","How long is the Bahrain to Dammam Airport road journey?"],
+    ["تستغرق القيادة تقريباً 1–1.75 ساعة لمسافة 105–145 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 1–1.75 driving hours over 105–145 km. Border processing, traffic and rest stops add time. Confirm exact addresses before departure."],
+    ["أين يمكن التوصيل في مطار الدمام؟","Where can I be dropped off in Dammam Airport?"],
+    ["صالة مطار الملك فهد الدولي ونقطة اللقاء المتفق عليها. أرسل رقم الرحلة والصالة ووقت الوصول أو الإقلاع وعدد الحقائب المشحونة. يتم تأكيد انتظار المطار بصورة منفصلة.","King Fahd International Airport terminal and agreed meeting point. Send the flight number, terminal, landing or departure time and checked-bag count. Airport waiting is confirmed separately."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى مطار الدمام؟","What should I send to book Bahrain to Dammam Airport?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في مطار الدمام والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Dammam Airport, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة مطار الدمام إلى البحرين","Plan your Dammam Airport to Bahrain journey"],
+    ["كم تستغرق رحلة مطار الدمام إلى البحرين البرية؟","How long is the Dammam Airport to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة مطار الدمام إلى البحرين؟","What should I send to book Dammam Airport to Bahrain?"],
+    ["أرسل موقع الاستلام في مطار الدمام وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. أرسل رقم الرحلة والصالة ووقت الوصول أو الإقلاع وعدد الحقائب المشحونة. يتم تأكيد انتظار المطار بصورة منفصلة. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Dammam Airport, the destination pin in Bahrain, date, passenger and luggage counts. Send the flight number, terminal, landing or departure time and checked-bag count. Airport waiting is confirmed separately. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى الرياض","Plan your Bahrain to Riyadh journey"],
+    ["460–520 كم · 4.5–6 ساعة قيادة","460–520 km · 4.5–6 driving hours"],
+    ["مركز الملك عبدالله المالي وحي السفارات وفنادق وسط الرياض","KAFD, Diplomatic Quarter and central Riyadh hotels"],
+    ["تختلف مداخل مركز الملك عبدالله المالي وحي السفارات. أرسل موقع المبنى واترك وقتاً لحركة المدينة بعد الطريق السريع.","KAFD and the Diplomatic Quarter have different access points. Send the building pin and allow time for city traffic after the highway."],
+    ["كم تستغرق رحلة البحرين إلى الرياض البرية؟","How long is the Bahrain to Riyadh road journey?"],
+    ["تستغرق القيادة تقريباً 4.5–6 ساعة لمسافة 460–520 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 4.5–6 driving hours over 460–520 km. Border processing, traffic and rest stops add time. Confirm exact addresses before departure."],
+    ["أين يمكن التوصيل في الرياض؟","Where can I be dropped off in Riyadh?"],
+    ["مركز الملك عبدالله المالي وحي السفارات وفنادق وسط الرياض. تختلف مداخل مركز الملك عبدالله المالي وحي السفارات. أرسل موقع المبنى واترك وقتاً لحركة المدينة بعد الطريق السريع.","KAFD, Diplomatic Quarter and central Riyadh hotels. KAFD and the Diplomatic Quarter have different access points. Send the building pin and allow time for city traffic after the highway."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى الرياض؟","What should I send to book Bahrain to Riyadh?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في الرياض والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Riyadh, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة الرياض إلى البحرين","Plan your Riyadh to Bahrain journey"],
+    ["كم تستغرق رحلة الرياض إلى البحرين البرية؟","How long is the Riyadh to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة الرياض إلى البحرين؟","What should I send to book Riyadh to Bahrain?"],
+    ["أرسل موقع الاستلام في الرياض وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. تختلف مداخل مركز الملك عبدالله المالي وحي السفارات. أرسل موقع المبنى واترك وقتاً لحركة المدينة بعد الطريق السريع. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Riyadh, the destination pin in Bahrain, date, passenger and luggage counts. KAFD and the Diplomatic Quarter have different access points. Send the building pin and allow time for city traffic after the highway. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى الأحساء","Plan your Bahrain to Al Ahsa journey"],
+    ["160–210 كم · 2–3 ساعة قيادة","160–210 km · 2–3 driving hours"],
+    ["فنادق الهفوف والمبرز","Al Hofuf hotels and Al Mubarraz"],
+    ["حدد الهفوف أو المبرز والفندق بدقة؛ تحتاج زيارات المزارع والواحات إلى خطة توقف منفصلة.","Specify Hofuf or Mubarraz and the exact hotel; farm and oasis visits require a separate stop plan."],
+    ["كم تستغرق رحلة البحرين إلى الأحساء البرية؟","How long is the Bahrain to Al Ahsa road journey?"],
+    ["تستغرق القيادة تقريباً 2–3 ساعة لمسافة 160–210 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 2–3 driving hours over 160–210 km. Border processing, traffic and rest stops add time. Confirm exact addresses before departure."],
+    ["أين يمكن التوصيل في الأحساء؟","Where can I be dropped off in Al Ahsa?"],
+    ["فنادق الهفوف والمبرز. حدد الهفوف أو المبرز والفندق بدقة؛ تحتاج زيارات المزارع والواحات إلى خطة توقف منفصلة.","Al Hofuf hotels and Al Mubarraz. Specify Hofuf or Mubarraz and the exact hotel; farm and oasis visits require a separate stop plan."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى الأحساء؟","What should I send to book Bahrain to Al Ahsa?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في الأحساء والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Al Ahsa, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة الأحساء إلى البحرين","Plan your Al Ahsa to Bahrain journey"],
+    ["كم تستغرق رحلة الأحساء إلى البحرين البرية؟","How long is the Al Ahsa to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة الأحساء إلى البحرين؟","What should I send to book Al Ahsa to Bahrain?"],
+    ["أرسل موقع الاستلام في الأحساء وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. حدد الهفوف أو المبرز والفندق بدقة؛ تحتاج زيارات المزارع والواحات إلى خطة توقف منفصلة. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Al Ahsa, the destination pin in Bahrain, date, passenger and luggage counts. Specify Hofuf or Mubarraz and the exact hotel; farm and oasis visits require a separate stop plan. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى الجبيل","Plan your Bahrain to Jubail journey"],
+    ["180–230 كم · 2–3 ساعة قيادة","180–230 km · 2–3 driving hours"],
+    ["فنادق مدينة الجبيل والجبيل الصناعية","Jubail city hotels and Jubail Industrial City"],
+    ["قد تتطلب المواقع الصناعية دعوة أو تصريح دخول. أكد البوابة والشخص المسؤول ووقت بداية العمل.","Industrial sites may require an invitation or gate pass. Confirm the gate, contact person and shift start."],
+    ["كم تستغرق رحلة البحرين إلى الجبيل البرية؟","How long is the Bahrain to Jubail road journey?"],
+    ["تستغرق القيادة تقريباً 2–3 ساعة لمسافة 180–230 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 2–3 driving hours over 180–230 km. Border processing, traffic and rest stops add time. Confirm exact addresses before departure."],
+    ["أين يمكن التوصيل في الجبيل؟","Where can I be dropped off in Jubail?"],
+    ["فنادق مدينة الجبيل والجبيل الصناعية. قد تتطلب المواقع الصناعية دعوة أو تصريح دخول. أكد البوابة والشخص المسؤول ووقت بداية العمل.","Jubail city hotels and Jubail Industrial City. Industrial sites may require an invitation or gate pass. Confirm the gate, contact person and shift start."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى الجبيل؟","What should I send to book Bahrain to Jubail?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في الجبيل والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Jubail, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة الجبيل إلى البحرين","Plan your Jubail to Bahrain journey"],
+    ["كم تستغرق رحلة الجبيل إلى البحرين البرية؟","How long is the Jubail to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة الجبيل إلى البحرين؟","What should I send to book Jubail to Bahrain?"],
+    ["أرسل موقع الاستلام في الجبيل وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. قد تتطلب المواقع الصناعية دعوة أو تصريح دخول. أكد البوابة والشخص المسؤول ووقت بداية العمل. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Jubail, the destination pin in Bahrain, date, passenger and luggage counts. Industrial sites may require an invitation or gate pass. Confirm the gate, contact person and shift start. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى الخفجي","Plan your Bahrain to Khafji journey"],
+    ["320–380 كم · 3.5–5 ساعة قيادة","320–380 km · 3.5–5 driving hours"],
+    ["كورنيش الخفجي وفنادق وسط المدينة","Khafji Corniche and central hotels"],
+    ["تظل وجهة الخفجي داخل السعودية. تتطلب متابعة الرحلة إلى الكويت مراجعة منفصلة للحدود والتأشيرة.","A Khafji drop-off stays in Saudi Arabia. Continuing to Kuwait requires a separate border and visa review."],
+    ["كم تستغرق رحلة البحرين إلى الخفجي البرية؟","How long is the Bahrain to Khafji road journey?"],
+    ["تستغرق القيادة تقريباً 3.5–5 ساعة لمسافة 320–380 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 3.5–5 driving hours over 320–380 km. Border processing, traffic and rest stops add time. Confirm exact addresses before departure."],
+    ["أين يمكن التوصيل في الخفجي؟","Where can I be dropped off in Khafji?"],
+    ["كورنيش الخفجي وفنادق وسط المدينة. تظل وجهة الخفجي داخل السعودية. تتطلب متابعة الرحلة إلى الكويت مراجعة منفصلة للحدود والتأشيرة.","Khafji Corniche and central hotels. A Khafji drop-off stays in Saudi Arabia. Continuing to Kuwait requires a separate border and visa review."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى الخفجي؟","What should I send to book Bahrain to Khafji?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في الخفجي والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Khafji, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة الخفجي إلى البحرين","Plan your Khafji to Bahrain journey"],
+    ["كم تستغرق رحلة الخفجي إلى البحرين البرية؟","How long is the Khafji to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة الخفجي إلى البحرين؟","What should I send to book Khafji to Bahrain?"],
+    ["أرسل موقع الاستلام في الخفجي وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. تظل وجهة الخفجي داخل السعودية. تتطلب متابعة الرحلة إلى الكويت مراجعة منفصلة للحدود والتأشيرة. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Khafji, the destination pin in Bahrain, date, passenger and luggage counts. A Khafji drop-off stays in Saudi Arabia. Continuing to Kuwait requires a separate border and visa review. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى الكويت","Plan your Bahrain to Kuwait journey"],
+    ["430–520 كم · 5.5–7 ساعة قيادة","430–520 km · 5.5–7 driving hours"],
+    ["فنادق مدينة الكويت والسالمية وشرق","Kuwait City hotels, Salmiya and Sharq"],
+    ["حدد مدينة الكويت أو السالمية وتحقق من أهلية عبور السعودية والدخول إلى الكويت.","State whether the stop is Kuwait City or Salmiya and check Saudi transit as well as Kuwait entry eligibility."],
+    ["كم تستغرق رحلة البحرين إلى الكويت البرية؟","How long is the Bahrain to Kuwait road journey?"],
+    ["تستغرق القيادة تقريباً 5.5–7 ساعة لمسافة 430–520 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 5.5–7 driving hours over 430–520 km. Border processing, traffic and rest stops add time. Confirm exact addresses before departure."],
+    ["أين يمكن التوصيل في الكويت؟","Where can I be dropped off in Kuwait?"],
+    ["فنادق مدينة الكويت والسالمية وشرق. حدد مدينة الكويت أو السالمية وتحقق من أهلية عبور السعودية والدخول إلى الكويت.","Kuwait City hotels, Salmiya and Sharq. State whether the stop is Kuwait City or Salmiya and check Saudi transit as well as Kuwait entry eligibility."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى الكويت؟","What should I send to book Bahrain to Kuwait?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في الكويت والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Kuwait, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة الكويت إلى البحرين","Plan your Kuwait to Bahrain journey"],
+    ["كم تستغرق رحلة الكويت إلى البحرين البرية؟","How long is the Kuwait to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة الكويت إلى البحرين؟","What should I send to book Kuwait to Bahrain?"],
+    ["أرسل موقع الاستلام في الكويت وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. حدد مدينة الكويت أو السالمية وتحقق من أهلية عبور السعودية والدخول إلى الكويت. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Kuwait, the destination pin in Bahrain, date, passenger and luggage counts. State whether the stop is Kuwait City or Salmiya and check Saudi transit as well as Kuwait entry eligibility. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى مطار الكويت الدولي","Plan your Bahrain to Kuwait International Airport journey"],
+    ["صالة مطار الكويت الدولي التي تؤكدها شركة الطيران","Kuwait International Airport terminal confirmed by the airline"],
+    ["تستخدم شركات الطيران صالات مختلفة. أرسل الصالة ورقم الرحلة قبل الاتفاق على نقطة الاستلام.","Airlines use different terminals. Send the terminal and flight number before agreeing the pickup point."],
+    ["كم تستغرق رحلة البحرين إلى مطار الكويت الدولي البرية؟","How long is the Bahrain to Kuwait International Airport road journey?"],
+    ["أين يمكن التوصيل في مطار الكويت الدولي؟","Where can I be dropped off in Kuwait International Airport?"],
+    ["صالة مطار الكويت الدولي التي تؤكدها شركة الطيران. تستخدم شركات الطيران صالات مختلفة. أرسل الصالة ورقم الرحلة قبل الاتفاق على نقطة الاستلام.","Kuwait International Airport terminal confirmed by the airline. Airlines use different terminals. Send the terminal and flight number before agreeing the pickup point."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى مطار الكويت الدولي؟","What should I send to book Bahrain to Kuwait International Airport?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في مطار الكويت الدولي والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Kuwait International Airport, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة مطار الكويت الدولي إلى البحرين","Plan your Kuwait International Airport to Bahrain journey"],
+    ["كم تستغرق رحلة مطار الكويت الدولي إلى البحرين البرية؟","How long is the Kuwait International Airport to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة مطار الكويت الدولي إلى البحرين؟","What should I send to book Kuwait International Airport to Bahrain?"],
+    ["أرسل موقع الاستلام في مطار الكويت الدولي وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. تستخدم شركات الطيران صالات مختلفة. أرسل الصالة ورقم الرحلة قبل الاتفاق على نقطة الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Kuwait International Airport, the destination pin in Bahrain, date, passenger and luggage counts. Airlines use different terminals. Send the terminal and flight number before agreeing the pickup point. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى قطر","Plan your Bahrain to Qatar journey"],
+    ["420–520 كم · 4.5–6 ساعة قيادة","420–520 km · 4.5–6 driving hours"],
+    ["الخليج الغربي ولوسيل وفنادق وسط الدوحة","Doha West Bay, Lusail and central Doha hotels"],
+    ["تمر الرحلة البرية بالحدود السعودية القطرية. حدد الخليج الغربي أو لوسيل واترك وقتاً للحدود الثانية.","A road trip uses the Saudi–Qatar border. Specify West Bay or Lusail and include time for the second border."],
+    ["كم تستغرق رحلة البحرين إلى قطر البرية؟","How long is the Bahrain to Qatar road journey?"],
+    ["تستغرق القيادة تقريباً 4.5–6 ساعة لمسافة 420–520 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 4.5–6 driving hours over 420–520 km. Border processing, traffic and rest stops add time. Confirm exact addresses before departure."],
+    ["أين يمكن التوصيل في قطر؟","Where can I be dropped off in Qatar?"],
+    ["الخليج الغربي ولوسيل وفنادق وسط الدوحة. تمر الرحلة البرية بالحدود السعودية القطرية. حدد الخليج الغربي أو لوسيل واترك وقتاً للحدود الثانية.","Doha West Bay, Lusail and central Doha hotels. A road trip uses the Saudi–Qatar border. Specify West Bay or Lusail and include time for the second border."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى قطر؟","What should I send to book Bahrain to Qatar?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في قطر والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Qatar, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة قطر إلى البحرين","Plan your Qatar to Bahrain journey"],
+    ["كم تستغرق رحلة قطر إلى البحرين البرية؟","How long is the Qatar to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة قطر إلى البحرين؟","What should I send to book Qatar to Bahrain?"],
+    ["أرسل موقع الاستلام في قطر وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. تمر الرحلة البرية بالحدود السعودية القطرية. حدد الخليج الغربي أو لوسيل واترك وقتاً للحدود الثانية. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Qatar, the destination pin in Bahrain, date, passenger and luggage counts. A road trip uses the Saudi–Qatar border. Specify West Bay or Lusail and include time for the second border. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى مطار حمد الدولي","Plan your Bahrain to Hamad International Airport journey"],
+    ["440–540 كم · 4.5–6 ساعة قيادة","440–540 km · 4.5–6 driving hours"],
+    ["صالة المسافرين في مطار حمد الدولي","Hamad International Airport passenger terminal"],
+    ["أكد موعد إغلاق إجراءات السفر لدى شركة الطيران واترك هامشاً للحدود قبل رحلة المغادرة.","Confirm the airline check-in deadline and leave a border buffer before a departing flight."],
+    ["كم تستغرق رحلة البحرين إلى مطار حمد الدولي البرية؟","How long is the Bahrain to Hamad International Airport road journey?"],
+    ["تستغرق القيادة تقريباً 4.5–6 ساعة لمسافة 440–540 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 4.5–6 driving hours over 440–540 km. Border processing, traffic and rest stops add time. Confirm exact addresses before departure."],
+    ["أين يمكن التوصيل في مطار حمد الدولي؟","Where can I be dropped off in Hamad International Airport?"],
+    ["صالة المسافرين في مطار حمد الدولي. أكد موعد إغلاق إجراءات السفر لدى شركة الطيران واترك هامشاً للحدود قبل رحلة المغادرة.","Hamad International Airport passenger terminal. Confirm the airline check-in deadline and leave a border buffer before a departing flight."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى مطار حمد الدولي؟","What should I send to book Bahrain to Hamad International Airport?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في مطار حمد الدولي والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Hamad International Airport, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة مطار حمد الدولي إلى البحرين","Plan your Hamad International Airport to Bahrain journey"],
+    ["كم تستغرق رحلة مطار حمد الدولي إلى البحرين البرية؟","How long is the Hamad International Airport to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة مطار حمد الدولي إلى البحرين؟","What should I send to book Hamad International Airport to Bahrain?"],
+    ["أرسل موقع الاستلام في مطار حمد الدولي وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. أكد موعد إغلاق إجراءات السفر لدى شركة الطيران واترك هامشاً للحدود قبل رحلة المغادرة. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Hamad International Airport, the destination pin in Bahrain, date, passenger and luggage counts. Confirm the airline check-in deadline and leave a border buffer before a departing flight. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى دبي","Plan your Bahrain to Dubai journey"],
+    ["850–980 كم · 9–11 ساعة قيادة","850–980 km · 9–11 driving hours"],
+    ["وسط دبي ودبي مارينا وفنادق المدينة","Downtown Dubai, Dubai Marina and city hotels"],
+    ["وسط دبي ومارينا وجهتان منفصلتان. أرسل الفندق وأي توقف إضافي لتسعير رسوم الطريق والانتظار.","Downtown and Marina are separate stops. Include the hotel and any extra stop so road tolls and waiting can be quoted."],
+    ["كم تستغرق رحلة البحرين إلى دبي البرية؟","How long is the Bahrain to Dubai road journey?"],
+    ["تستغرق القيادة تقريباً 9–11 ساعة لمسافة 850–980 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 9–11 driving hours over 850–980 km. Border processing, traffic and rest stops add time. Confirm exact addresses before departure."],
+    ["أين يمكن التوصيل في دبي؟","Where can I be dropped off in Dubai?"],
+    ["وسط دبي ودبي مارينا وفنادق المدينة. وسط دبي ومارينا وجهتان منفصلتان. أرسل الفندق وأي توقف إضافي لتسعير رسوم الطريق والانتظار.","Downtown Dubai, Dubai Marina and city hotels. Downtown and Marina are separate stops. Include the hotel and any extra stop so road tolls and waiting can be quoted."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى دبي؟","What should I send to book Bahrain to Dubai?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في دبي والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Dubai, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة دبي إلى البحرين","Plan your Dubai to Bahrain journey"],
+    ["كم تستغرق رحلة دبي إلى البحرين البرية؟","How long is the Dubai to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة دبي إلى البحرين؟","What should I send to book Dubai to Bahrain?"],
+    ["أرسل موقع الاستلام في دبي وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. وسط دبي ومارينا وجهتان منفصلتان. أرسل الفندق وأي توقف إضافي لتسعير رسوم الطريق والانتظار. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Dubai, the destination pin in Bahrain, date, passenger and luggage counts. Downtown and Marina are separate stops. Include the hotel and any extra stop so road tolls and waiting can be quoted. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى أبوظبي","Plan your Bahrain to Abu Dhabi journey"],
+    ["760–900 كم · 8–10 ساعة قيادة","760–900 km · 8–10 driving hours"],
+    ["كورنيش أبوظبي وجزيرة ياس وفنادق المدينة","Abu Dhabi Corniche, Yas Island and city hotels"],
+    ["تختلف طرق الوصول إلى جزيرة ياس والكورنيش. أكد مدخل الموقع وموعد الفعالية.","Yas Island and the Corniche need different final approaches. Confirm the venue entrance and event time."],
+    ["كم تستغرق رحلة البحرين إلى أبوظبي البرية؟","How long is the Bahrain to Abu Dhabi road journey?"],
+    ["تستغرق القيادة تقريباً 8–10 ساعة لمسافة 760–900 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 8–10 driving hours over 760–900 km. Border processing, traffic and rest stops add time. Confirm exact addresses before departure."],
+    ["أين يمكن التوصيل في أبوظبي؟","Where can I be dropped off in Abu Dhabi?"],
+    ["كورنيش أبوظبي وجزيرة ياس وفنادق المدينة. تختلف طرق الوصول إلى جزيرة ياس والكورنيش. أكد مدخل الموقع وموعد الفعالية.","Abu Dhabi Corniche, Yas Island and city hotels. Yas Island and the Corniche need different final approaches. Confirm the venue entrance and event time."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى أبوظبي؟","What should I send to book Bahrain to Abu Dhabi?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في أبوظبي والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Abu Dhabi, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة أبوظبي إلى البحرين","Plan your Abu Dhabi to Bahrain journey"],
+    ["كم تستغرق رحلة أبوظبي إلى البحرين البرية؟","How long is the Abu Dhabi to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة أبوظبي إلى البحرين؟","What should I send to book Abu Dhabi to Bahrain?"],
+    ["أرسل موقع الاستلام في أبوظبي وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. تختلف طرق الوصول إلى جزيرة ياس والكورنيش. أكد مدخل الموقع وموعد الفعالية. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Abu Dhabi, the destination pin in Bahrain, date, passenger and luggage counts. Yas Island and the Corniche need different final approaches. Confirm the venue entrance and event time. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى الإمارات العربية المتحدة","Plan your Bahrain to United Arab Emirates journey"],
+    ["760–900 كم · 8–11 ساعة قيادة","760–900 km · 8–11 driving hours"],
+    ["أبوظبي أو دبي حسب التأكيد قبل التسعير","Abu Dhabi or Dubai, confirmed before quoting"],
+    ["حدد الإمارة أولاً. يستخدم التقدير أبوظبي؛ تتغير المسافة والرسوم عند اختيار دبي أو إمارة أخرى.","Name the emirate first. The estimate uses Abu Dhabi; Dubai or another emirate changes distance and charges."],
+    ["كم تستغرق رحلة البحرين إلى الإمارات العربية المتحدة البرية؟","How long is the Bahrain to United Arab Emirates road journey?"],
+    ["تستغرق القيادة تقريباً 8–11 ساعة لمسافة 760–900 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 8–11 driving hours over 760–900 km. Border processing, traffic and rest stops add time. Confirm exact addresses before departure."],
+    ["أين يمكن التوصيل في الإمارات العربية المتحدة؟","Where can I be dropped off in United Arab Emirates?"],
+    ["أبوظبي أو دبي حسب التأكيد قبل التسعير. حدد الإمارة أولاً. يستخدم التقدير أبوظبي؛ تتغير المسافة والرسوم عند اختيار دبي أو إمارة أخرى.","Abu Dhabi or Dubai, confirmed before quoting. Name the emirate first. The estimate uses Abu Dhabi; Dubai or another emirate changes distance and charges."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى الإمارات العربية المتحدة؟","What should I send to book Bahrain to United Arab Emirates?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في الإمارات العربية المتحدة والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in United Arab Emirates, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة الإمارات العربية المتحدة إلى البحرين","Plan your United Arab Emirates to Bahrain journey"],
+    ["كم تستغرق رحلة الإمارات العربية المتحدة إلى البحرين البرية؟","How long is the United Arab Emirates to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة الإمارات العربية المتحدة إلى البحرين؟","What should I send to book United Arab Emirates to Bahrain?"],
+    ["أرسل موقع الاستلام في الإمارات العربية المتحدة وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. حدد الإمارة أولاً. يستخدم التقدير أبوظبي؛ تتغير المسافة والرسوم عند اختيار دبي أو إمارة أخرى. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in United Arab Emirates, the destination pin in Bahrain, date, passenger and luggage counts. Name the emirate first. The estimate uses Abu Dhabi; Dubai or another emirate changes distance and charges. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى عُمان","Plan your Bahrain to Oman journey"],
+    ["1050–1250 كم · 12–15 ساعة قيادة","1050–1250 km · 12–15 driving hours"],
+    ["فنادق مسقط ونقاط اللقاء المتفق عليها داخل المدينة","Muscat hotels and agreed city meeting points"],
+    ["هذه رحلة طويلة عبر عدة حدود. اتفق مسبقاً على الاستراحات وترتيبات السائق وشروط دخول السعودية والإمارات وعُمان.","This is a long multi-border journey. Agree rest stops, driver arrangements and Saudi, UAE and Oman entry conditions in advance."],
+    ["كم تستغرق رحلة البحرين إلى عُمان البرية؟","How long is the Bahrain to Oman road journey?"],
+    ["تستغرق القيادة تقريباً 12–15 ساعة لمسافة 1050–1250 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 12–15 driving hours over 1050–1250 km. Border processing, traffic and rest stops add time. Confirm exact addresses before departure."],
+    ["أين يمكن التوصيل في عُمان؟","Where can I be dropped off in Oman?"],
+    ["فنادق مسقط ونقاط اللقاء المتفق عليها داخل المدينة. هذه رحلة طويلة عبر عدة حدود. اتفق مسبقاً على الاستراحات وترتيبات السائق وشروط دخول السعودية والإمارات وعُمان.","Muscat hotels and agreed city meeting points. This is a long multi-border journey. Agree rest stops, driver arrangements and Saudi, UAE and Oman entry conditions in advance."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى عُمان؟","What should I send to book Bahrain to Oman?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في عُمان والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Oman, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة عُمان إلى البحرين","Plan your Oman to Bahrain journey"],
+    ["كم تستغرق رحلة عُمان إلى البحرين البرية؟","How long is the Oman to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة عُمان إلى البحرين؟","What should I send to book Oman to Bahrain?"],
+    ["أرسل موقع الاستلام في عُمان وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. هذه رحلة طويلة عبر عدة حدود. اتفق مسبقاً على الاستراحات وترتيبات السائق وشروط دخول السعودية والإمارات وعُمان. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Oman, the destination pin in Bahrain, date, passenger and luggage counts. This is a long multi-border journey. Agree rest stops, driver arrangements and Saudi, UAE and Oman entry conditions in advance. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة البحرين إلى السعودية","Plan your Bahrain to Saudi Arabia journey"],
+    ["الخبر أو الدمام أو الرياض حسب المدينة المؤكدة","Khobar, Dammam or Riyadh, according to the confirmed city"],
+    ["السعودية دولة وليست نقطة وصول واحدة. يستخدم التقدير الخبر؛ أرسل المدينة لتحديد الخطة النهائية.","Saudi Arabia is a country, not one drop-off. The representative estimate uses Khobar; send the city for a final plan."],
+    ["كم تستغرق رحلة البحرين إلى السعودية البرية؟","How long is the Bahrain to Saudi Arabia road journey?"],
+    ["أين يمكن التوصيل في السعودية؟","Where can I be dropped off in Saudi Arabia?"],
+    ["الخبر أو الدمام أو الرياض حسب المدينة المؤكدة. السعودية دولة وليست نقطة وصول واحدة. يستخدم التقدير الخبر؛ أرسل المدينة لتحديد الخطة النهائية.","Khobar, Dammam or Riyadh, according to the confirmed city. Saudi Arabia is a country, not one drop-off. The representative estimate uses Khobar; send the city for a final plan."],
+    ["ماذا أرسل لحجز رحلة البحرين إلى السعودية؟","What should I send to book Bahrain to Saudi Arabia?"],
+    ["أرسل موقع الاستلام في البحرين وموقع الوصول في السعودية والتاريخ وعدد الركاب والحقائب. أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Bahrain, the destination pin in Saudi Arabia, date, passenger and luggage counts. Share the building entrance and a reachable mobile number for pickup. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة السعودية إلى البحرين","Plan your Saudi Arabia to Bahrain journey"],
+    ["كم تستغرق رحلة السعودية إلى البحرين البرية؟","How long is the Saudi Arabia to Bahrain road journey?"],
+    ["ماذا أرسل لحجز رحلة السعودية إلى البحرين؟","What should I send to book Saudi Arabia to Bahrain?"],
+    ["أرسل موقع الاستلام في السعودية وموقع الوصول في البحرين والتاريخ وعدد الركاب والحقائب. السعودية دولة وليست نقطة وصول واحدة. يستخدم التقدير الخبر؛ أرسل المدينة لتحديد الخطة النهائية. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Saudi Arabia, the destination pin in Bahrain, date, passenger and luggage counts. Saudi Arabia is a country, not one drop-off. The representative estimate uses Khobar; send the city for a final plan. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة السعودية إلى قطر","Plan your Saudi Arabia to Qatar journey"],
+    ["580–650 كم · 6–8 ساعة قيادة","580–650 km · 6–8 driving hours"],
+    ["لا يمر هذا المسار بجسر الملك فهد. أكد المعابر البرية ورسوم الطرق والتأمين والانتظار في عرض السعر المكتوب.","This route does not use King Fahd Causeway. Confirm the land borders, road tolls, insurance and waiting charges in your written quote."],
+    ["كم تستغرق رحلة السعودية إلى قطر البرية؟","How long is the Saudi Arabia to Qatar road journey?"],
+    ["تستغرق القيادة تقريباً 6–8 ساعة لمسافة 580–650 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 6–8 driving hours over 580–650 km. Border processing, traffic and rest stops add time. The Saudi reference city is Riyadh. Confirm exact addresses before departure."],
+    ["ماذا أرسل لحجز رحلة السعودية إلى قطر؟","What should I send to book Saudi Arabia to Qatar?"],
+    ["أرسل موقع الاستلام في السعودية وموقع الوصول في قطر والتاريخ وعدد الركاب والحقائب. السعودية دولة وليست نقطة وصول واحدة. يستخدم التقدير الخبر؛ أرسل المدينة لتحديد الخطة النهائية. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Saudi Arabia, the destination pin in Qatar, date, passenger and luggage counts. Saudi Arabia is a country, not one drop-off. The representative estimate uses Khobar; send the city for a final plan. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة قطر إلى السعودية","Plan your Qatar to Saudi Arabia journey"],
+    ["كم تستغرق رحلة قطر إلى السعودية البرية؟","How long is the Qatar to Saudi Arabia road journey?"],
+    ["ماذا أرسل لحجز رحلة قطر إلى السعودية؟","What should I send to book Qatar to Saudi Arabia?"],
+    ["أرسل موقع الاستلام في قطر وموقع الوصول في السعودية والتاريخ وعدد الركاب والحقائب. تمر الرحلة البرية بالحدود السعودية القطرية. حدد الخليج الغربي أو لوسيل واترك وقتاً للحدود الثانية. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Qatar, the destination pin in Saudi Arabia, date, passenger and luggage counts. A road trip uses the Saudi–Qatar border. Specify West Bay or Lusail and include time for the second border. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة السعودية إلى الإمارات العربية المتحدة","Plan your Saudi Arabia to United Arab Emirates journey"],
+    ["900–1050 كم · 9–12 ساعة قيادة","900–1050 km · 9–12 driving hours"],
+    ["كم تستغرق رحلة السعودية إلى الإمارات العربية المتحدة البرية؟","How long is the Saudi Arabia to United Arab Emirates road journey?"],
+    ["تستغرق القيادة تقريباً 9–12 ساعة لمسافة 900–1050 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 9–12 driving hours over 900–1050 km. Border processing, traffic and rest stops add time. The Saudi reference city is Riyadh. Confirm exact addresses before departure."],
+    ["ماذا أرسل لحجز رحلة السعودية إلى الإمارات العربية المتحدة؟","What should I send to book Saudi Arabia to United Arab Emirates?"],
+    ["أرسل موقع الاستلام في السعودية وموقع الوصول في الإمارات العربية المتحدة والتاريخ وعدد الركاب والحقائب. السعودية دولة وليست نقطة وصول واحدة. يستخدم التقدير الخبر؛ أرسل المدينة لتحديد الخطة النهائية. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Saudi Arabia, the destination pin in United Arab Emirates, date, passenger and luggage counts. Saudi Arabia is a country, not one drop-off. The representative estimate uses Khobar; send the city for a final plan. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة الإمارات العربية المتحدة إلى السعودية","Plan your United Arab Emirates to Saudi Arabia journey"],
+    ["كم تستغرق رحلة الإمارات العربية المتحدة إلى السعودية البرية؟","How long is the United Arab Emirates to Saudi Arabia road journey?"],
+    ["ماذا أرسل لحجز رحلة الإمارات العربية المتحدة إلى السعودية؟","What should I send to book United Arab Emirates to Saudi Arabia?"],
+    ["أرسل موقع الاستلام في الإمارات العربية المتحدة وموقع الوصول في السعودية والتاريخ وعدد الركاب والحقائب. حدد الإمارة أولاً. يستخدم التقدير أبوظبي؛ تتغير المسافة والرسوم عند اختيار دبي أو إمارة أخرى. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in United Arab Emirates, the destination pin in Saudi Arabia, date, passenger and luggage counts. Name the emirate first. The estimate uses Abu Dhabi; Dubai or another emirate changes distance and charges. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة قطر إلى الإمارات العربية المتحدة","Plan your Qatar to United Arab Emirates journey"],
+    ["550–700 كم · 6–9 ساعة قيادة","550–700 km · 6–9 driving hours"],
+    ["كم تستغرق رحلة قطر إلى الإمارات العربية المتحدة البرية؟","How long is the Qatar to United Arab Emirates road journey?"],
+    ["تستغرق القيادة تقريباً 6–9 ساعة لمسافة 550–700 كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.","Allow approximately 6–9 driving hours over 550–700 km. Border processing, traffic and rest stops add time. Confirm exact addresses before departure."],
+    ["ماذا أرسل لحجز رحلة قطر إلى الإمارات العربية المتحدة؟","What should I send to book Qatar to United Arab Emirates?"],
+    ["أرسل موقع الاستلام في قطر وموقع الوصول في الإمارات العربية المتحدة والتاريخ وعدد الركاب والحقائب. تمر الرحلة البرية بالحدود السعودية القطرية. حدد الخليج الغربي أو لوسيل واترك وقتاً للحدود الثانية. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in Qatar, the destination pin in United Arab Emirates, date, passenger and luggage counts. A road trip uses the Saudi–Qatar border. Specify West Bay or Lusail and include time for the second border. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    ["خطط لرحلة الإمارات العربية المتحدة إلى قطر","Plan your United Arab Emirates to Qatar journey"],
+    ["كم تستغرق رحلة الإمارات العربية المتحدة إلى قطر البرية؟","How long is the United Arab Emirates to Qatar road journey?"],
+    ["ماذا أرسل لحجز رحلة الإمارات العربية المتحدة إلى قطر؟","What should I send to book United Arab Emirates to Qatar?"],
+    ["أرسل موقع الاستلام في الإمارات العربية المتحدة وموقع الوصول في قطر والتاريخ وعدد الركاب والحقائب. حدد الإمارة أولاً. يستخدم التقدير أبوظبي؛ تتغير المسافة والرسوم عند اختيار دبي أو إمارة أخرى. اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.","Send the pickup pin in United Arab Emirates, the destination pin in Qatar, date, passenger and luggage counts. Name the emirate first. The estimate uses Abu Dhabi; Dubai or another emirate changes distance and charges. Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp."],
+    // END GENERATED TRUST TRANSLATIONS
+
+
+
+
+
+
+
+
+
+
+
     ["افتح حاسبة الرحلة", "Open the Trip Calculator"],
     ["تواصل مباشرة عبر واتساب", "Contact directly on WhatsApp"],
     ["تفاصيل الرحلة الاختيارية", "Optional journey details"],
@@ -68,6 +350,8 @@
     ["احجز مباشرة عبر واتساب", "Book directly on WhatsApp"],
     ["خدمة من الباب إلى الباب. أرسل موقع الاستلام والتاريخ المناسب في المحادثة.", "Door-to-door service. Send your pickup point and preferred date in the chat."],
     ["اطلب سعر مسارك عبر واتساب", "Request your route price on WhatsApp"],
+    ["تواصل معنا عبر واتساب لمعرفة السعر", "Get Live Seasonal Quote"],
+    ["احصل على عرض سعر موسمي فوري", "Get Live Seasonal Quote"],
     ["30 د.ب (حوالي 300 ر.س) للمركبة كاملة | رسوم الجسر مشمولة", "30 BHD (~300 SAR) Complete Vehicle | Causeway Toll Included"],
     ["يرجى إكمال حقول الرحلة المطلوبة.", "Please complete the required journey fields."],
     ['خدمات النقل المرتبطة في البحرين', 'Related Bahrain Domestic Services'],
@@ -2056,10 +2340,8 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     if (footerCard && ![...footerCard.querySelectorAll('small')].some((el) => el.textContent.includes('134858-1'))) {
       const crSmall = document.createElement('small');
       crSmall.setAttribute('data-vendora-cr', '');
-      crSmall.style.cssText = 'display:block; font-size: 11px; opacity: 0.75; margin-top: 6px;';
-      crSmall.textContent = state.lang === 'en'
-        ? 'Vendora Gulf Transport & Logistics Services | CR No: 134858-1 | Office 240, The Address Tower, Seef, Kingdom of Bahrain'
-        : 'فيندورا الخليج لخدمات النقل واللوجستيات | س.ت: 134858-1 | مكتب 240، برج ذا أدريس، السيف، مملكة البحرين';
+      crSmall.style.cssText = 'display:block; font-size: 11px; opacity: 1; margin-top: 6px;';
+      crSmall.textContent = `${state.lang === 'en' ? config.legal_name : config.legal_name_ar} | ${state.lang === 'en' ? 'CR No:' : 'س.ت:'} ${config.cr_number} | ${state.lang === 'en' ? config.public_address : config.public_address_ar}`;
       const targetP = footerCard.querySelector('p:last-of-type') || footerCard.querySelector('p');
       if (targetP) {
         targetP.after(crSmall);
@@ -3157,6 +3439,156 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     renderIcons();
   }
 
+  function currentPriceVisibilityGroup() {
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    const rootIndex = parts.indexOf('bahrain-saudi-gcc-transport');
+    const pageSlug = parts.slice(rootIndex + 1).filter((part) => part !== 'en')[0] || '';
+    if (/qatar|doha|hamad/.test(pageSlug)) return 'qatar';
+    if (/kuwait|abdali/.test(pageSlug)) return 'kuwait';
+    if (/uae|dubai|abu-dhabi|sharjah/.test(pageSlug)) return 'uae';
+    if (/oman|muscat/.test(pageSlug)) return 'oman';
+    if (/saudi|riyadh|khobar|dammam|khafji|jubail|ahsa|madinah|makkah|mecca|causeway/.test(pageSlug)) return 'saudi_arabia';
+    if (/bahrain|manama/.test(pageSlug)) return 'bahrain';
+    return 'other';
+  }
+
+  function currencyAmountPattern() {
+    const currencies = 'BHD|SAR|QAR|AED|KWD|OMR|د\\.ب|ر\\.س|ر\\.ق|د\\.إ|د\\.ك|ر\\.ع';
+    return new RegExp(`(?:\\d[\\d,]*(?:\\.\\d+)?\\s*(?:${currencies})|(?:${currencies})\\s*\\d[\\d,]*(?:\\.\\d+)?)(?:\\s*\\([^)]*(?:${currencies})[^)]*\\))?`, 'gi');
+  }
+
+  function routeFarePattern() {
+    return /(?:\d[\d,]*(?:\.\d+)?\s*(?:BHD|BD|د\.ب)|(?:BHD|BD|د\.ب)\s*\d[\d,]*(?:\.\d+)?)(?:\s*\([^)]*(?:SAR|ر\.س)[^)]*\))?/gi;
+  }
+
+  function formatRouteFare(route, settings) {
+    const amount = Number(route?.price_bhd);
+    if (!Number.isFinite(amount)) return '';
+    const formatted = Number.isInteger(amount) ? String(amount) : amount.toFixed(3).replace(/0+$/, '').replace(/\.$/, '');
+    const isEn = state.lang === 'en';
+    const currency = isEn ? 'BHD' : 'د.ب';
+    const sar = route.approximate_sar_enabled ? Math.round(amount * Number(settings?.sar_per_bhd || 10)).toLocaleString(isEn ? 'en' : 'ar') : null;
+    const approx = sar ? (isEn ? ` (approx. SAR ${sar})` : ` (تقريباً ${sar} ر.س)`) : '';
+    return `${formatted} ${currency}${approx}`;
+  }
+
+  async function applySitewidePriceVisibility() {
+    try {
+      const parts = window.location.pathname.split('/').filter(Boolean);
+      const rootIndex = parts.indexOf('bahrain-saudi-gcc-transport');
+      const pageSlug = parts.slice(rootIndex + 1).filter((part) => part !== 'en')[0] || '';
+      if (pageSlug === 'prices' || pageSlug === 'gcc-transport-planner') return;
+      // Quote-only static pages still need live fares restored when admin enables
+      // fixed pricing. Do not gate the settings request on an existing amount.
+      const response = await fetch('/bahrain-saudi-gcc-transport/api/transport/public-settings', { credentials: 'omit', cache: 'no-store' });
+      if (!response.ok) throw new Error('Unable to load current price visibility settings');
+      const data = await response.json();
+      const settings = data.settings || {};
+      const hiddenGroups = Array.isArray(settings.hidden_price_destination_groups) ? settings.hidden_price_destination_groups : [];
+      const routeAliases = {
+        'bahrain-to-dammam': 'bahrain-to-dammam-airport',
+        'dammam-to-bahrain': 'bahrain-to-dammam-airport',
+        'dammam-to-bahrain-city': 'bahrain-to-dammam-airport',
+        'king-fahd-causeway-guide': 'king-fahd-causeway',
+        'bahrain-to-saudi': 'king-fahd-causeway',
+        'saudi-to-bahrain': 'king-fahd-causeway'
+      };
+      const routeSlug = routeAliases[pageSlug] || (pageSlug.endsWith('-to-bahrain') ? `bahrain-to-${pageSlug.slice(0, -'-to-bahrain'.length)}` : pageSlug);
+      const pageRoute = (Array.isArray(data.routes) ? data.routes : []).find((route) => route.route_slug === routeSlug);
+      const hidden = settings.public_prices_enabled === false
+        || hiddenGroups.includes(pageRoute?.price_visibility_group || currentPriceVisibilityGroup())
+        || (pageRoute && (pageRoute.public_price_enabled === false || pageRoute.is_price_hidden === true));
+      const phone = settings.booking_whatsapp_enabled === false ? '' : (settings.booking_whatsapp || config.booking_whatsapp || '');
+      const fareBadges = document.querySelectorAll('.route-fare-badge:not([data-pricing-mode]), [data-live-route-fare]');
+      if (pageSlug !== 'contact' && fareBadges.length && pageRoute) {
+        fareBadges.forEach((badge) => {
+          badge.textContent = hidden || pageRoute.price_bhd == null
+            ? (state.lang === 'en' ? 'Get Live Seasonal Quote' : 'احصل على عرض سعر موسمي فوري')
+            : formatRouteFare(pageRoute, settings);
+          if ((hidden || pageRoute.price_bhd == null) && phone) {
+            const anchor = document.createElement('a');
+            anchor.className = 'vendora-hidden-price-cta';
+            anchor.textContent = state.lang === 'en' ? 'Get Live Seasonal Quote' : 'احصل على عرض سعر موسمي فوري';
+            anchor.href = `https://wa.me/${phone}?text=${encodeURIComponent(window.location.href)}`;
+            badge.replaceChildren(anchor);
+          }
+        });
+      }
+      const label = state.lang === 'en' ? 'Get Live Seasonal Quote' : 'احصل على عرض سعر موسمي فوري';
+      const message = state.lang === 'en'
+        ? `Hello, I would like to request pricing for this route: ${window.location.href}`
+        : `السلام عليكم، أود الاستفسار عن سعر هذا المسار: ${window.location.href}`;
+      const amountPattern = currencyAmountPattern();
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      for (const node of nodes) {
+        const parent = node.parentElement;
+        if (!parent || parent.closest('script,style,noscript,textarea,code,[data-price-hidden],#priceList,[data-vendora-hidden-price]')) continue;
+        const insideAnchor = parent.closest('a');
+        const original = node.nodeValue || '';
+        if (!hidden && pageRoute && pageRoute.price_bhd != null) {
+          const farePattern = routeFarePattern();
+          if (farePattern.test(original)) node.nodeValue = original.replace(routeFarePattern(), formatRouteFare(pageRoute, settings));
+          continue;
+        }
+        if (!hidden) continue;
+        amountPattern.lastIndex = 0;
+        if (!amountPattern.test(original)) continue;
+        amountPattern.lastIndex = 0;
+        const fragment = document.createDocumentFragment();
+        let cursor = 0;
+        for (const match of original.matchAll(amountPattern)) {
+          fragment.append(document.createTextNode(original.slice(cursor, match.index)));
+          const replacement = document.createElement(phone && !insideAnchor ? 'a' : 'span');
+          replacement.className = 'vendora-hidden-price-cta';
+          if (phone && !insideAnchor) {
+            replacement.href = `https://wa.me/${encodeURIComponent(phone)}?text=${encodeURIComponent(message)}`;
+            replacement.setAttribute('data-wa-message', message);
+            replacement.setAttribute('data-track-wa', '');
+          }
+          replacement.textContent = label;
+          replacement.setAttribute('data-vendora-hidden-price', '');
+          replacement.style.cssText = 'color:var(--brand-gold,#d5ae5a);font-weight:800;text-decoration:underline;text-underline-offset:3px';
+          fragment.append(replacement);
+          cursor = match.index + match[0].length;
+        }
+        fragment.append(document.createTextNode(original.slice(cursor)));
+        node.replaceWith(fragment);
+      }
+      document.querySelectorAll('meta[content]').forEach((meta) => {
+        const content = meta.getAttribute('content') || '';
+        amountPattern.lastIndex = 0;
+        if (hidden && amountPattern.test(content)) {
+          amountPattern.lastIndex = 0;
+          meta.setAttribute('content', content.replace(amountPattern, label));
+        } else if (!hidden && pageRoute && pageRoute.price_bhd != null && routeFarePattern().test(content)) {
+          meta.setAttribute('content', content.replace(routeFarePattern(), formatRouteFare(pageRoute, settings)));
+        }
+      });
+      const title = document.querySelector('title');
+      if (title) {
+        amountPattern.lastIndex = 0;
+        if (hidden) title.textContent = title.textContent.replace(amountPattern, label);
+        else if (pageRoute && pageRoute.price_bhd != null) title.textContent = title.textContent.replace(routeFarePattern(), formatRouteFare(pageRoute, settings));
+      }
+    } catch {
+      // If settings cannot be read, never leave a hard-coded public fare visible.
+      // This is a safety fallback; the Worker normally applies settings before HTML reaches the browser.
+      const label = state.lang === 'en' ? 'Get Live Seasonal Quote' : 'احصل على عرض سعر موسمي فوري';
+      const amountPattern = currencyAmountPattern();
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+      for (const node of nodes) {
+        if (!node.parentElement?.closest('script,style,noscript,textarea,code,[data-price-hidden],#priceList,[data-vendora-hidden-price]')) {
+          amountPattern.lastIndex = 0;
+          if (amountPattern.test(node.nodeValue || '')) node.nodeValue = (node.nodeValue || '').replace(amountPattern, label);
+        }
+      }
+    }
+  }
+
   const ROUTE_REVIEW_EXCLUDED_SLUGS = new Set([
     'home',
     'english-home',
@@ -3315,8 +3747,8 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     if (footer && !footer.classList.contains('transport-footer')) {
       footer.classList.add('transport-footer');
       footer.innerHTML = isEn
-        ? `<div class="container footer-grid"><div class="footer-card"><h3>Vendora Transport</h3><p>Private transport coordinated from Bahrain through WhatsApp, subject to vehicle availability and booking confirmation.</p><small style="display:block; font-size: 11px; opacity: 0.75; margin-top: 6px;">Vendora Gulf Transport & Logistics Services | CR No: 134858-1 | Office 240, The Address Tower, Seef, Kingdom of Bahrain</small><a class="wa-inline" data-wa-message="Hello, I would like to book private transport.">Book on WhatsApp</a></div><div class="footer-card"><h3>Bahrain services</h3><div class="footer-links"><a href="${base}bahrain-private-transport/">Local Bahrain transport</a><a href="${base}airport-transfer/">Airport transfers</a><a href="${base}hotel-transfer-bahrain/">Hotel transfers</a><a href="${base}full-day-vip-driver/">Full-day car</a></div></div><div class="footer-card"><h3>Information & Rights</h3><div class="footer-links"><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}booking-terms/">Booking terms</a><a href="${base}complaints/">Submit complaint</a><a href="${base}customer-reviews/">Customer reviews</a></div></div></div>`
-        : `<div class="container footer-grid"><div class="footer-card"><h3>Vendora Transport</h3><p>تنسيق نقل خاص من البحرين عبر واتساب، حسب توفر المركبة وتأكيد الحجز.</p><small style="display:block; font-size: 11px; opacity: 0.75; margin-top: 6px;">فيندورا الخليج لخدمات النقل واللوجستيات | س.ت: 134858-1 | مكتب 240، برج ذا أدريس، السيف، مملكة البحرين</small><a class="wa-inline" data-wa-message="مرحباً، أريد حجز خدمة نقل خاصة.">احجز عبر واتساب</a></div><div class="footer-card"><h3>خدمات البحرين</h3><div class="footer-links"><a href="${base}bahrain-private-transport/">النقل داخل البحرين</a><a href="${base}airport-transfer/">توصيل المطار</a><a href="${base}hotel-transfer-bahrain/">توصيل الفنادق</a><a href="${base}full-day-vip-driver/">سيارة ليوم كامل</a></div></div><div class="footer-card"><h3>المعلومات وحقوق العملاء</h3><div class="footer-links"><a href="${base}about/">عن فندورا</a><a href="${base}contact/">التواصل</a><a href="${base}privacy/">الخصوصية</a><a href="${base}booking-terms/">شروط الحجز والإلغاء</a><a href="${base}complaints/">تقديم شكوى</a><a href="${base}customer-reviews/">تقييمات العملاء</a></div></div></div>`;
+        ? `<div class="container footer-grid"><div class="footer-card"><h3>Vendora Transport</h3><p>Private transport coordinated from Bahrain through WhatsApp, subject to vehicle availability and booking confirmation.</p><small data-vendora-cr style="display:block; font-size:11px;margin-top:6px;">${config.legal_name} | CR No: ${config.cr_number} | ${config.public_address}</small><a class="wa-inline" data-wa-message="Hello, I would like to book private transport.">Book on WhatsApp</a></div><div class="footer-card"><h3>Bahrain services</h3><div class="footer-links"><a href="${base}bahrain-private-transport/">Local Bahrain transport</a><a href="${base}airport-transfer/">Airport transfers</a><a href="${base}hotel-transfer-bahrain/">Hotel transfers</a><a href="${base}full-day-vip-driver/">Full-day car</a></div></div><div class="footer-card"><h3>Information & Rights</h3><div class="footer-links"><a href="${base}about/">About</a><a href="${base}contact/">Contact</a><a href="${base}privacy/">Privacy</a><a href="${base}booking-terms/">Booking terms</a><a href="${base}complaints/">Submit complaint</a><a href="${base}customer-reviews/">Customer reviews</a></div></div></div>`
+        : `<div class="container footer-grid"><div class="footer-card"><h3>Vendora Transport</h3><p>تنسيق نقل خاص من البحرين عبر واتساب، حسب توفر المركبة وتأكيد الحجز.</p><small data-vendora-cr style="display:block; font-size:11px;margin-top:6px;">${config.legal_name_ar} | س.ت: ${config.cr_number} | ${config.public_address_ar}</small><a class="wa-inline" data-wa-message="مرحباً، أريد حجز خدمة نقل خاصة.">احجز عبر واتساب</a></div><div class="footer-card"><h3>خدمات البحرين</h3><div class="footer-links"><a href="${base}bahrain-private-transport/">النقل داخل البحرين</a><a href="${base}airport-transfer/">توصيل المطار</a><a href="${base}hotel-transfer-bahrain/">توصيل الفنادق</a><a href="${base}full-day-vip-driver/">سيارة ليوم كامل</a></div></div><div class="footer-card"><h3>المعلومات وحقوق العملاء</h3><div class="footer-links"><a href="${base}about/">عن فندورا</a><a href="${base}contact/">التواصل</a><a href="${base}privacy/">الخصوصية</a><a href="${base}booking-terms/">شروط الحجز والإلغاء</a><a href="${base}complaints/">تقديم شكوى</a><a href="${base}customer-reviews/">تقييمات العملاء</a></div></div></div>`;
     }
   }
 
@@ -3465,6 +3897,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     setupForms();
 
     applyLanguage();
+    applySitewidePriceVisibility();
     addBusinessAuthorityNotice();
     setupVipShell();
     renderIcons();
@@ -3491,6 +3924,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     setupOnlineHeartbeat();
 
     setupLuggageMatcher();
+    applySitewidePriceVisibility();
 
   }
 

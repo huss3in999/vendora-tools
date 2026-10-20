@@ -19,13 +19,20 @@ test('raw production pricing is server-rendered and private fields stay private'
   const apiText = await api.text();
   expect(apiText).not.toMatch(/driver_minimum|private_minimum|driver_price|min_driver/i);
   const config = JSON.parse(apiText);
-  const expected = config.routes.filter((route) => route.price_bhd != null);
+  const expected = config.routes.filter((route) => route.is_active !== false);
   for (const languagePath of ['prices/', 'en/prices/']) {
     const response = await request.get(`${LIVE}/bahrain-saudi-gcc-transport/${languagePath}?raw=${Date.now()}`);
     expect(response.status()).toBe(200);
     const html = await response.text();
     expect((html.match(/<article class="price-card"/g) || []).length).toBe(expected.length);
-    expect((html.match(/"priceCurrency":"BHD"/g) || []).length).toBe(expected.length);
+    const catalog = JSON.parse(html.match(/<script[^>]*id="pricesSchema"[^>]*>([\s\S]*?)<\/script>/)[1]);
+    expect(catalog['@type']).toBe('OfferCatalog');
+    expect(catalog.itemListElement).toHaveLength(expected.length);
+    for (const offer of catalog.itemListElement) {
+      const route = expected.find(r => r.route_name_en === offer.name || r.route_name_ar === offer.name);
+      expect(route, offer.name).toBeTruthy();
+      expect(offer.price).toBe(route.price_bhd == null ? undefined : Number(route.price_bhd));
+    }
     expect(html).not.toContain('id="pricesSchema" data-vendora-schema type="application/ld+json">{}');
   }
 });
@@ -52,6 +59,14 @@ for (const width of [1366, 768, 390, 360, 320]) {
       await page.setViewportSize({ width, height: width >= 768 ? 900 : 800 });
       const consoleErrors = [];
       const failedRequired = [];
+      if (LIVE.startsWith('http://127.0.0.1')) {
+        await page.route('**/api/transport/route-reviews*', route => route.fulfill({json:{ok:true,reviews:[],review_count:0,average_rating:null}}));
+        // Keep real telemetry requests in the isolated D1 test database, using
+        // the production Origin expected by the API's security policy.
+        for (const path of ['**/api/track', '**/api/transport/event']) {
+          await page.route(path, route => route.continue({headers:{...route.request().headers(),origin:'https://getvendora.net'}}));
+        }
+      }
       page.on('console', (message) => { if (message.type() === 'error') consoleErrors.push(message.text()); });
       page.on('requestfailed', (request) => {
         if (request.url().startsWith(LIVE) && /site\.js|prices-page\.js|public-settings/.test(request.url())) failedRequired.push(request.url());

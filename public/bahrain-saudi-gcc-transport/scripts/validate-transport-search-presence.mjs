@@ -26,8 +26,8 @@ await mustContain(resolve(links, "src", "index.js"), [
   ["shortener robots disallow", /Disallow: \/\\n/]
 ]);
 await mustContain(resolve(here, "en", "bahrain-to-kuwait", "index.html"), [["Kuwait title", /Bahrain to Kuwait Private Transport \| Vendora Transport/], ["Kuwait H1", /Bahrain to Kuwait Private Car with Driver/]]);
-await mustContain(resolve(here, "en", "bahrain-to-riyadh", "index.html"), [["Bahrain-Riyadh title", /Bahrain to Riyadh Private Transport \| Vendora Transport/]]);
-await mustContain(resolve(here, "en", "riyadh-to-bahrain", "index.html"), [["Riyadh-Bahrain title", /Riyadh to Bahrain Private Transport \| Vendora Transport/]]);
+await mustContain(resolve(here, "en", "bahrain-to-riyadh", "index.html"), [["Bahrain-Riyadh title", /Bahrain to Riyadh by Car \| Private Transport \| Vendora/]]);
+await mustContain(resolve(here, "en", "riyadh-to-bahrain", "index.html"), [["Riyadh-Bahrain title", /Riyadh to Bahrain by Car \| Private Transport \| Vendora/]]);
 
 const sitemap = await readFile(resolve(root, "public", "sitemap.xml"), "utf8");
 const retired = sitemap.match(/https:\/\/getvendora\.net\/(?:tools|calculators|calculator|guides|all-tools)\//i);

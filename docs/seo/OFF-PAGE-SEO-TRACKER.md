@@ -15,7 +15,7 @@ Legal entity when requested: Vendora Gulf Transport & Logistics Services
 - Address held in the project config: Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain
 - Address display is disabled by the current public configuration; do not publish it on a listing unless Hussain approves.
 - Legal name: Vendora Gulf Transport & Logistics Services
-- CR number: 134856-1. The repository contains the authoritative value in `config/business-config.json`, but no CR document was present in the inspected project tree.
+- CR number: 134858-1. The repository contains the authoritative value in `config/business-config.json`, but no CR document was present in the inspected project tree.
 - Services: private car with driver, chauffeur service, airport transfers, passenger transport, parcel delivery, and cross-border GCC transport from Bahrain.
 - Logo: `assets/brand/vendora-transport-logo-light.svg` or `assets/brand/vendora-transport-app-icon-512.png`
 - Existing map URL in project configuration: https://maps.app.goo.gl/XgirVcNRYSqJb1N26?g_st=ac

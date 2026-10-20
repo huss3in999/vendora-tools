@@ -1,6 +1,8 @@
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { publishTrust } from './trust-publisher.mjs';
+import { pricingCopy, offerCatalog } from '../assets/trust-schema.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const checkOnly = process.argv.includes('--check');
@@ -72,6 +74,8 @@ function legacySettings() {
     cr_number: business.cr_number,
     legal_information_enabled: business.legal_information_enabled,
     sar_per_bhd: business.sar_per_bhd,
+    public_prices_enabled: false,
+    hidden_price_destination_groups: [],
     customer_name_enabled: false,
     customer_name_required: false,
     customer_phone_enabled: false,
@@ -93,6 +97,7 @@ function legacyRoute(route, index) {
     unit_kind: unit,
     currency: 'BHD',
     trip_type: unit === 'per_day' ? 'additional_day' : unit === 'package' ? 'full_day' : 'one_way',
+    price_visibility_group: priceVisibilityGroup(route.route_id, route.destination),
     public_price_enabled: publicPrice,
     approximate_sar_enabled: ['king-fahd-causeway', 'bahrain-to-khobar', 'first-stop-after-causeway', 'bahrain-to-dammam-airport', 'bahrain-to-al-ahsa', 'bahrain-to-jubail', 'bahrain-to-riyadh', 'bahrain-to-madinah', 'bahrain-to-makkah', 'bahrain-to-khafji'].includes(route.route_id),
     causeway_toll_included: route.surcharge?.causeway_toll_included === true,
@@ -106,6 +111,18 @@ function legacyRoute(route, index) {
     route_notes_en: route.note_en,
     sort_order: index + 1
   };
+}
+
+function priceVisibilityGroup(routeId, destination = '') {
+  const slug = String(routeId || '').toLowerCase();
+  const target = String(destination || '').toLowerCase();
+  if (['king-fahd-causeway','bahrain-to-khobar','first-stop-after-causeway','bahrain-to-dammam-airport','bahrain-to-al-ahsa','bahrain-to-jubail','bahrain-to-riyadh','bahrain-to-madinah','bahrain-to-makkah','bahrain-to-khafji'].includes(slug) || /saudi|khobar|dammam|riyadh|ahsa|jubail|khafji|madinah|makkah/.test(target)) return 'saudi_arabia';
+  if (/qatar|doha/.test(slug + ' ' + target)) return 'qatar';
+  if (/kuwait|abdali/.test(slug + ' ' + target)) return 'kuwait';
+  if (/uae|dubai|abu-dhabi|sharjah/.test(slug + ' ' + target)) return 'uae';
+  if (/oman|muscat/.test(slug + ' ' + target)) return 'oman';
+  if (/bahrain|manama/.test(slug + ' ' + target)) return 'bahrain';
+  return 'other';
 }
 
 const publicConfig = { settings: legacySettings(), routes: pricing.routes.map(legacyRoute), version: business.config_version, updated_at: business.last_updated };
@@ -179,6 +196,18 @@ const CACHE_TTL_MS = 60_000;
 let cached = null;
 let pending = null;
 
+function priceVisibilityGroup(routeId, destination = '') {
+  const slug = String(routeId || '').toLowerCase();
+  const target = String(destination || '').toLowerCase();
+  if (['king-fahd-causeway','bahrain-to-khobar','first-stop-after-causeway','bahrain-to-dammam-airport','bahrain-to-al-ahsa','bahrain-to-jubail','bahrain-to-riyadh','bahrain-to-madinah','bahrain-to-makkah','bahrain-to-khafji'].includes(slug) || /saudi|khobar|dammam|riyadh|ahsa|jubail|khafji|madinah|makkah/.test(target)) return 'saudi_arabia';
+  if (/qatar|doha/.test(slug + ' ' + target)) return 'qatar';
+  if (/kuwait|abdali/.test(slug + ' ' + target)) return 'kuwait';
+  if (/uae|dubai|abu-dhabi|sharjah/.test(slug + ' ' + target)) return 'uae';
+  if (/oman|muscat/.test(slug + ' ' + target)) return 'oman';
+  if (/bahrain|manama/.test(slug + ' ' + target)) return 'bahrain';
+  return 'other';
+}
+
 export const DEFAULT_PUBLIC_SETTINGS = Object.freeze(${JSON.stringify(legacySettings(), null, 2)});
 
 export const DEFAULT_PUBLIC_ROUTES = Object.freeze(routePriceConfig.routes.map((route) => [
@@ -187,7 +216,8 @@ export const DEFAULT_PUBLIC_ROUTES = Object.freeze(routePriceConfig.routes.map((
   route.name_en,
   route.visibility === 'public' && !['quotation', 'range'].includes(route.price_type) ? route.one_way_price : null,
   ({ fixed: 'standard', from: 'from', range: 'request_quote', quotation: 'request_quote' })[route.price_type] || 'request_quote',
-  ({ vehicle: 'one_way_vehicle', trip: 'package', hour: 'package', day: 'per_day' })[route.unit] || 'one_way_vehicle'
+  ({ vehicle: 'one_way_vehicle', trip: 'package', hour: 'package', day: 'per_day' })[route.unit] || 'one_way_vehicle',
+  priceVisibilityGroup(route.route_id, route.destination)
 ]));
 /* END GENERATED CENTRAL TRANSPORT DEFAULTS */`;
 }
@@ -198,23 +228,28 @@ function routeUrl(route, lang) {
 }
 
 function priceCards(lang) {
-  return publicConfig.routes.filter((route) => route.is_active && route.public_price_enabled && route.price_bhd != null).map((route) => {
+  const quoteLabel = pricingCopy[lang].cta;
+  const showPrices = publicConfig.settings.public_prices_enabled !== false;
+  return publicConfig.routes.filter((route) => route.is_active && (showPrices ? (route.public_price_enabled && route.price_bhd != null) : true)).map((route) => {
     const name = lang === 'en' ? route.route_name_en : route.route_name_ar;
     const from = route.price_kind === 'from' ? (lang === 'en' ? 'From ' : 'ابتداءً من ') : '';
     const unit = route.unit_kind === 'per_day' ? (lang === 'en' ? 'per additional day' : 'لليوم الإضافي') : route.unit_kind === 'package' ? (lang === 'en' ? 'per package' : 'للباقة') : (lang === 'en' ? 'per vehicle, one way' : 'للمركبة، اتجاه واحد');
     const note = lang === 'en' ? route.route_notes_en : route.route_notes_ar;
     const currency = lang === 'en' ? 'BHD' : 'د.ب';
-    return `<article class="price-card" data-vendora-price="${escapeHtml(route.route_slug)}"><h2>${escapeHtml(name)}</h2><p class="price"><strong>${from}${escapeHtml(route.price_bhd)} ${currency}</strong></p><p>${escapeHtml(unit)}</p><p>${escapeHtml(note)}</p><a href="https://wa.me/${business.booking_whatsapp}" data-vendora-config="whatsapp-link" data-wa-message="${escapeHtml(lang === 'en' ? business.default_whatsapp_message_en : business.default_whatsapp_message_ar)}">${lang === 'en' ? 'Check availability' : 'تحقق من التوفر'}</a></article>`;
+    const hasPrice = showPrices && route.public_price_enabled && route.price_bhd != null;
+    const price = hasPrice
+      ? `<p class="price"><strong>${from}${escapeHtml(route.price_bhd)} ${currency}</strong></p>`
+      : `<p class="price price-quote"><strong>${escapeHtml(quoteLabel)}</strong></p>`;
+    const cta = hasPrice
+      ? (lang === 'en' ? 'Check availability' : 'تحقق من التوفر')
+      : quoteLabel;
+    const message = lang === 'en' ? `Hello, please send a live quote for ${name}.` : `مرحباً، أرجو إرسال عرض سعر فوري لمسار ${name}.`;
+    return `<article class="price-card" data-vendora-price="${escapeHtml(route.route_slug)}"><h2>${escapeHtml(name)}</h2>${price}<p>${escapeHtml(unit)}</p><p>${escapeHtml(note)}</p><a href="https://wa.me/${business.booking_whatsapp}?text=${encodeURIComponent(message)}" data-vendora-config="whatsapp-link" data-wa-message="${escapeHtml(message)}">${escapeHtml(cta)}</a></article>`;
   }).join('');
 }
 
 function pricingSchema(lang) {
-  const routes = publicConfig.routes.filter((route) => route.is_active && route.public_price_enabled && route.price_bhd != null);
-  return jsonForHtml({
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    itemListElement: routes.map((route, index) => ({ '@type': 'ListItem', position: index + 1, item: { '@type': 'Service', name: lang === 'en' ? route.route_name_en : route.route_name_ar, url: routeUrl(route, lang), offers: { '@type': 'Offer', price: route.price_bhd, priceCurrency: 'BHD', description: lang === 'en' ? route.route_notes_en : route.route_notes_ar } } }))
-  });
+  return jsonForHtml(offerCatalog(publicConfig.routes, publicConfig.settings, lang, `https://getvendora.net/bahrain-saudi-gcc-transport/${lang === 'en' ? 'en/' : ''}prices/`));
 }
 
 function relativeAsset(file, asset) {
@@ -302,10 +337,11 @@ function generatedRootContactHtml() {
     COMPLAINTS_URL: business.complaints.path_en,
     SCHEMA_JSON: JSON.stringify(schema, null, 2)
   };
-  return template.replace(/\{\{([A-Z_]+)\}\}/g, (match, key) => {
+  const html = template.replace(/\{\{([A-Z_]+)\}\}/g, (match, key) => {
     if (!(key in tokens)) throw new Error(`Unknown root contact template token: ${key}`);
     return key === 'SCHEMA_JSON' ? tokens[key] : escapeHtml(tokens[key]);
   });
+  return publishTrust(html, { slug:'contact', lang:'en', url:'https://getvendora.net/contact/', business, config:publicConfig, assetPrefix:'/bahrain-saudi-gcc-transport/assets/' });
 }
 
 function synchronizeHtml(file, original) {
@@ -321,6 +357,7 @@ function synchronizeHtml(file, original) {
   const brandWordmarkHref = relativeAsset(file, 'assets/brand/vendora-transport-logo-light.svg');
   const publicBrandIcon = 'https://getvendora.net/bahrain-saudi-gcc-transport/assets/brand/vendora-transport-app-icon-512.png';
   let html = original
+    .replace(/<p\b[^>]*data-pricing-mode[^>]*>[\s\S]*?<\/p>/gi, '')
     .replace(/\s*<!-- Vendora global sources:[\s\S]*?-->\s*/g, '\n')
     .replace(/\s*<link\b[^>]*data-vendora-global-theme[^>]*>\s*/gi, '\n')
     .replace(/\s*<script\b[^>]*data-vendora-global-config[^>]*><\/script>\s*/gi, '\n')
@@ -337,7 +374,7 @@ function synchronizeHtml(file, original) {
     .replaceAll('97333404044', business.support_phone)
     .replaceAll('+973 3340 4044', business.support_phone_display)
     .replaceAll('https://maps.app.goo.gl/XgirVcNRYSqJb1N26?g_st=ac', business.google_maps_url)
-    .replaceAll('Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain', business.public_address)
+    .replaceAll('Office 240, 2nd Floor, The Address Tower, Seef, Kingdom of Bahrain', business.public_address)
     .replaceAll('https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-transparent.png', publicBrandIcon)
     .replaceAll('https://pub-35cd730843794eadacaef9613c686ba8.r2.dev/logo-icon.png', publicBrandIcon);
 
@@ -405,16 +442,93 @@ function synchronizeHtml(file, original) {
     html = html.replace(/(<script\b[^>]*id=["']pricesSchema["'][^>]*>)[\s\S]*?(<\/script>)/i, `$1${pricingSchema(lang)}$2`);
   }
 
+  if (publicConfig.settings.public_prices_enabled === false) {
+    const quoteLabel = lang === 'en' ? 'Contact us on WhatsApp for pricing' : 'تواصل معنا عبر واتساب لمعرفة السعر';
+    html = html.replace(/<p\b[^>]*class=["'][^"']*\broute-fare-badge\b[^"']*["'][^>]*>[\s\S]*?<\/p>/gi, `<p class="route-fare-badge">${escapeHtml(quoteLabel)}</p>`);
+
+    const pricePattern = /(?:\d+[\s\u00A0]*(?:د\.ب|BHD|SAR|ر\.س|ريال|دينار))(?:\s*\(?[^)]*(?:SAR|ر\.س|ريال)\)?)?/gi;
+    html = html.replace(/data-wa-message="([^"]*)"/gi, (match, msg) => {
+      pricePattern.lastIndex = 0;
+      if (pricePattern.test(msg)) {
+        const cleaned = msg
+          .replace(pricePattern, '')
+          .replace(/\s*[—–-]\s*(?:للمركبة كاملة|رسوم الجسر مشمولة|Complete vehicle|Toll included)[^.]*/gi, '')
+          .replace(/\s*\(\s*\)/g, '')
+          .replace(/\s{2,}/g, ' ')
+          .trim();
+        return `data-wa-message="${escapeHtml(cleaned)}"`;
+      }
+      return match;
+    });
+
+    html = html.replace(/href="(https:\/\/wa\.me\/[^"]*)"/gi, (match, url) => {
+      if (url.includes('text=')) {
+        try {
+          const decoded = decodeURIComponent(url);
+          pricePattern.lastIndex = 0;
+          if (pricePattern.test(decoded)) {
+            const urlObj = new URL(url);
+            const text = urlObj.searchParams.get('text');
+            if (text && pricePattern.test(text)) {
+              const cleaned = text
+                .replace(pricePattern, '')
+                .replace(/\s*[—–-]\s*(?:للمركبة كاملة|رسوم الجسر مشمولة|Complete vehicle|Toll included)[^.]*/gi, '')
+                .replace(/\s*\(\s*\)/g, '')
+                .replace(/\s{2,}/g, ' ')
+                .trim();
+              urlObj.searchParams.set('text', cleaned);
+              return `href="${urlObj.toString()}"`;
+            }
+          }
+        } catch {}
+      }
+      return match;
+    });
+
+    html = html.replace(/"offers"\s*:\s*\{\s*"@type"\s*:\s*"Offer"\s*,\s*"price"\s*:\s*\d+[^}]*\},?/gi, '');
+  }
+
   const isPrivateCarePage = rel === 'care/index.html' || rel === 'care/en/index.html';
   const generated = `\n  <!-- Vendora brand sources: generated by scripts/sync-transport-site.mjs. -->\n  <link rel="icon" type="image/svg+xml" href="${brandIconHref}" data-vendora-brand-icon />\n  <link rel="icon" type="image/png" sizes="512x512" href="${brandIconPngHref}" data-vendora-brand-icon />\n  <link rel="apple-touch-icon" sizes="512x512" href="${brandIconPngHref}" data-vendora-brand-icon />\n  <!-- Vendora global sources: edit config/*.json and assets/vendora-theme.css, then run npm run sync. -->\n  <link rel="stylesheet" href="${themeHref}" data-vendora-global-theme />\n  <script defer src="${configSrc}" data-vendora-global-config></script>${isPrivateCarePage ? '' : `\n  <script defer src="${analyticsMapSrc}" data-vendora-analytics-map></script>\n  <script defer src="${transportAnalyticsSrc}" data-vendora-transport-analytics></script>`}\n`;
   html = html.replace(/\s*<\/head>/i, `${generated}</head>`);
   if (!isPrivateCarePage) {
     html = html.replace(/\s*<\/body>/i, `\n  <script defer src="${analyticsLoaderSrc}" data-vendora-analytics-loader></script>\n</body>`);
   }
+  if (!isPrivateCarePage) {
+    const slug = rel.replace(/^en\//, '').split('/')[0].replace('index.html', '') || 'home';
+    const url = `https://getvendora.net/bahrain-saudi-gcc-transport/${lang === 'en' ? 'en/' : ''}${slug === 'home' ? '' : `${slug}/`}`;
+    html = publishTrust(html, { slug, lang, url, business, config: publicConfig, assetPrefix: relativeAsset(file, 'assets/') + '/' });
+  }
   return html;
 }
 
 const changes = [];
+// Legacy script consumers use the same generated configuration as current pages.
+const legacyBusinessPath = join(root, 'business-config.js');
+if (readFileSync(legacyBusinessPath, 'utf8') !== generatedConfigSource()) {
+  changes.push('business-config.js');
+  if (!checkOnly) writeFileSync(legacyBusinessPath, generatedConfigSource(), 'utf8');
+}
+if (process.argv.includes('--defaults-only')) {
+  const workerDefaultsPath = resolve(root, '..', 'functions', 'api', 'transport', 'public-settings.js');
+  const workerCurrent = readFileSync(workerDefaultsPath, 'utf8');
+  const workerExpected = workerCurrent.replace(/\/\* BEGIN GENERATED CENTRAL TRANSPORT DEFAULTS \*\/[\s\S]*?\/\* END GENERATED CENTRAL TRANSPORT DEFAULTS \*\//, generatedWorkerDefaultsSource());
+  const configPath = join(root, 'assets', 'vendora-config.js');
+  const configCurrent = readFileSync(configPath, 'utf8');
+  const configExpected = generatedConfigSource();
+  const changed = [];
+  if (workerCurrent !== workerExpected) {
+    changed.push(toPosix(relative(root, workerDefaultsPath)));
+    if (!checkOnly) writeFileSync(workerDefaultsPath, workerExpected, 'utf8');
+  }
+  if (configCurrent !== configExpected) {
+    changed.push(toPosix(relative(root, configPath)));
+    if (!checkOnly) writeFileSync(configPath, configExpected, 'utf8');
+  }
+  console.log(JSON.stringify({ mode: checkOnly ? 'check' : 'write', defaults_only: true, changed_files: changed.length, files: changed }));
+  if (checkOnly && changed.length) process.exitCode = 1;
+  process.exit();
+}
 // A narrow repair mode avoids rewriting unrelated pages or Worker defaults.
 if (process.argv.includes('--config-only')) {
   const target = join(root, 'assets', 'vendora-config.js');

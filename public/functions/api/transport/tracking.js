@@ -6,6 +6,12 @@ import { updateDailyAnalyticsAggregate } from './analytics-rollups.js';
 const ALLOWED_ORIGINS = new Set([
   'https://getvendora.net',
   'https://www.getvendora.net',
+  'http://getvendora.net',
+  'http://www.getvendora.net',
+  'http://127.0.0.1:8799',
+  'http://localhost:8799',
+  'https://127.0.0.1:8799',
+  'https://localhost:8799',
   'http://127.0.0.1:8787',
   'http://localhost:8787',
   'http://127.0.0.1:4173',

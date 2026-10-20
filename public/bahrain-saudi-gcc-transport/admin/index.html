@@ -139,6 +139,22 @@
     }
     #mobileDock { display: none; }
     .app-menu-header, .app-menu-section { display: none; }
+    html.mobile-analytics-view #dashboardView > :not(header):not(#statusLine):not(#mobileQuickView) { display: none !important; }
+    html.mobile-analytics-view #mobileQuickView { display: block !important; }
+    html.mobile-analytics-view #mobileQuickView .quick-metric { min-width: 0; }
+    html.mobile-analytics-view #mobileQuickView .quick-metric p { overflow-wrap: anywhere; }
+    html.mobile-analytics-view #dashboardView { max-width: 760px; margin-inline: auto; }
+    html.mobile-analytics-view #dashboardView > header #exportBtn { display: none !important; }
+    html.mobile-analytics-view #dashboardView > header #refreshBtn,
+    html.mobile-analytics-view #dashboardView > header #logoutBtn { display: flex !important; }
+    @media (max-width: 639px) {
+      html.mobile-analytics-view main { padding: 10px 12px 24px; }
+      html.mobile-analytics-view #dashboardView { padding-bottom: 8px; }
+      html.mobile-analytics-view #dashboardView > header { position: static; }
+      html.mobile-analytics-view #dashboardView > header > div:first-child { display: none !important; }
+      html.mobile-analytics-view #dashboardView > header #refreshBtn,
+      html.mobile-analytics-view #dashboardView > header #logoutBtn { min-height: 40px; padding: 8px 10px; }
+    }
   </style>
   <script>
     (function () {
@@ -146,6 +162,9 @@
       if (/\blocal=1\b/.test(window.location.search || '')) return;
       window.location.replace('https://getvendora.net/bahrain-saudi-gcc-transport/admin/');
     })();
+    if (new URLSearchParams(window.location.search).get('view') === 'mobile') {
+      document.documentElement.classList.add('mobile-analytics-view');
+    }
   </script>
 </head>
 <body class="min-h-screen text-slate-100 antialiased selection:bg-brand/30 selection:text-brand-light">
@@ -232,6 +251,58 @@
       </header>
 
       <p id="statusLine" class="hidden rounded-2xl border px-5 py-4 text-sm"></p>
+
+      <section id="mobileQuickView" class="hidden space-y-4" aria-labelledby="mobileQuickTitle">
+        <div class="glass-panel rounded-3xl border border-brand/20 bg-gradient-to-br from-emerald-950/35 via-slate-950/80 to-slate-900/80 p-5 shadow-xl">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-brand">Vendora website</p>
+              <h2 id="mobileQuickTitle" class="mt-1 text-xl font-extrabold text-white">Quick activity</h2>
+              <p id="mobileQuickPeriod" class="mt-1 text-xs text-slate-400">Today</p>
+            </div>
+            <label class="sr-only" for="mobilePeriodSelect">Reporting period</label>
+            <select id="mobilePeriodSelect" class="glass-input min-h-11 max-w-32 rounded-xl px-3 py-2 text-xs font-bold">
+              <option value="today">Today</option>
+              <option value="yesterday">Yesterday</option>
+              <option value="7">7 days</option>
+              <option value="30">30 days</option>
+              <option value="all">All time</option>
+            </select>
+          </div>
+
+          <div class="mt-4 grid grid-cols-2 gap-3">
+            <article class="quick-metric rounded-2xl border border-cyan-400/15 bg-slate-950/65 p-4" title="Visitor totals are based on eligible page views. A confirmed WhatsApp tap can be recorded even if its page view was not.">
+              <p class="text-[11px] font-semibold text-slate-400">Estimated unique visitors</p>
+              <p id="quickVisitors" class="mt-2 text-3xl font-extrabold text-cyan-300">—</p>
+              <p id="quickVisitorsNote" class="mt-1 text-[10px] leading-relaxed text-slate-500">Counts page-view visitors; WhatsApp taps are attributed separately.</p>
+            </article>
+            <article class="quick-metric rounded-2xl border border-amber-400/15 bg-slate-950/65 p-4" title="Accepted website events that recorded a confirmed outbound handoff click to WhatsApp. This does not prove a message was sent.">
+              <p class="text-[11px] font-semibold text-slate-400">WhatsApp outbound taps</p>
+              <p id="quickWhatsAppClicks" class="mt-2 text-3xl font-extrabold text-amber-300">—</p>
+              <p id="quickWhatsAppNote" class="mt-1 text-[10px] leading-relaxed text-slate-500">Tracked taps; not messages or bookings.</p>
+            </article>
+            <article class="quick-metric rounded-2xl border border-indigo-400/15 bg-slate-950/65 p-4">
+              <p class="text-[11px] font-semibold text-slate-400">Sessions</p>
+              <p id="quickSessions" class="mt-2 text-3xl font-extrabold text-indigo-300">—</p>
+              <p class="mt-1 text-[10px] leading-relaxed text-slate-500">Visits, not unique people.</p>
+            </article>
+            <article class="quick-metric rounded-2xl border border-blue-400/15 bg-slate-950/65 p-4">
+              <p class="text-[11px] font-semibold text-slate-400">Page views</p>
+              <p id="quickPageviews" class="mt-2 text-3xl font-extrabold text-blue-300">—</p>
+              <p class="mt-1 text-[10px] leading-relaxed text-slate-500">Pages opened in the selected period.</p>
+            </article>
+          </div>
+
+          <div class="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-slate-700/60 pt-3 text-[11px]">
+            <span id="quickSource" class="text-slate-400">Waiting for data source…</span>
+            <span id="quickUpdatedAt" class="text-slate-500">Not loaded</span>
+          </div>
+        </div>
+
+        <a id="quickClarityLink" href="https://clarity.microsoft.com/projects/view/w28z01fb1p/dashboard" target="_blank" rel="noopener noreferrer" class="flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-brand/25 bg-brand/10 px-4 py-3 text-sm font-bold text-brand-light transition hover:bg-brand/20">
+          <i data-lucide="chart-no-axes-combined" class="h-4 w-4"></i> Open Clarity sessions, heatmaps &amp; recordings
+        </a>
+      </section>
 
       <!-- 5 CLEAN SECTIONS NAVIGATION -->
       <nav id="appNav" class="grid grid-cols-2 gap-1.5 rounded-2xl glass-panel p-2 shadow-md sm:grid-cols-5">
@@ -433,9 +504,9 @@
 
           <div class="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-5">
             <!-- 1. Human-Likely Visitors -->
-            <div data-jump="pageviews" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-cyan-500 transition hover:border-cyan-300 hover:bg-cyan-950/10" title="Human-Likely Visitors excludes verified bots and cloud datacenter probes. Unresolved traffic (cloud VPS, proxies) is tracked separately.">
+              <div data-jump="pageviews" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-cyan-500 transition hover:border-cyan-300 hover:bg-cyan-950/10" title="Visitor totals are based on eligible page views. A confirmed WhatsApp tap can be recorded even if its page view was not.">
               <div class="flex justify-between items-start text-slate-400">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Human-Likely Visitors</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Estimated visitors</span>
                 <i data-lucide="users" class="h-4 w-4 text-cyan-400"></i>
               </div>
               <p id="statVisitors" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
@@ -443,6 +514,7 @@
                 <span><strong id="statUnresolved" class="text-amber-300">0</strong> unresolved · <strong id="statBotsExcluded" class="text-rose-400">0</strong> bots excl.</span>
                 <span id="deltaVisitors" class="text-[10px] font-semibold text-slate-500">—</span>
               </div>
+              <p class="mt-1 text-[10px] leading-relaxed text-slate-500">Eligible page-view visitors; WhatsApp tap attribution is shown separately.</p>
               <div class="hidden">
                 <span id="statNewVisitors">0</span>
                 <span id="statReturningVisitors">0</span>
@@ -491,16 +563,15 @@
               </div>
             </div>
 
-            <!-- 5. WhatsApp Clicks -->
+            <!-- 5. WhatsApp outbound taps -->
             <div data-jump="leads" role="button" tabindex="0" class="cursor-pointer rounded-2xl glass-panel p-3.5 shadow-md border-l-4 border-amber-500 transition hover:border-amber-300 hover:bg-amber-950/10">
               <div class="flex justify-between items-start text-slate-400">
-                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">WhatsApp Clicks</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">WhatsApp outbound taps</span>
                 <i data-lucide="message-circle" class="h-4 w-4 text-amber-400"></i>
               </div>
               <p id="statIntents" class="mt-1.5 text-2xl font-extrabold text-amber-300">0</p>
               <div class="mt-1 text-[10px] text-slate-400 flex items-center justify-between">
-                <span>Opened modal</span>
-                <span id="deltaWhatsAppClicks" class="text-[10px] font-semibold text-slate-500">—</span>
+                <span id="statWhatsAppClickNote">Recorded site-to-WhatsApp taps; not messages sent</span>
               </div>
             </div>
 
@@ -539,7 +610,7 @@
               <p id="statJobsCompleted" class="mt-1.5 text-2xl font-extrabold text-white">0</p>
               <div class="mt-1 text-[10px] text-slate-400 flex items-center justify-between">
                 <span>Revenue:</span>
-                <span id="statRevenue" class="font-bold text-emerald-400">0.00 BHD</span>
+                <span id="statRevenue" class="font-bold text-emerald-400">0.Price on request</span>
               </div>
             </div>
 
@@ -632,11 +703,11 @@
             <!-- Stage 3 -->
             <div data-funnel-jump="leads" role="button" tabindex="0" class="funnel-step cursor-pointer rounded-2xl bg-slate-900/60 hover:bg-slate-800 border border-slate-800 p-3.5 transition">
               <div class="flex items-center justify-between text-[11px] text-slate-400 font-bold uppercase">
-                <span>3. WA Click</span>
+                <span>3. WA Interest (Visitors)</span>
                 <i data-lucide="message-circle" class="h-3.5 w-3.5 text-amber-400"></i>
               </div>
               <p id="funnelWaClicksCount" class="mt-2 text-2xl font-extrabold text-amber-300">0</p>
-              <p id="funnelWaClicksRate" class="text-[10px] text-amber-300 mt-1">0.0% click rate</p>
+              <p id="funnelWaClicksRate" class="text-[10px] text-amber-300 mt-1">0.0% with contact intent</p>
             </div>
             <!-- Stage 4 -->
             <div data-funnel-jump="leads" role="button" tabindex="0" class="funnel-step cursor-pointer rounded-2xl bg-slate-900/60 hover:bg-slate-800 border border-slate-800 p-3.5 transition">
@@ -663,7 +734,7 @@
                 <i data-lucide="check-circle" class="h-3.5 w-3.5 text-emerald-400"></i>
               </div>
               <p id="funnelCompletedCount" class="mt-2 text-2xl font-extrabold text-emerald-300">0</p>
-              <p id="funnelCompletedRevenue" class="text-[10px] text-emerald-300 mt-1">0.00 BHD</p>
+              <p id="funnelCompletedRevenue" class="text-[10px] text-emerald-300 mt-1">0.Price on request</p>
             </div>
           </div>
         </section>
@@ -833,7 +904,7 @@
                 <i data-lucide="navigation" class="text-blue-500"></i> Visitors Log
                 <span id="pvCount" class="rounded-full border border-blue-500/20 bg-blue-950/20 px-2 py-0.5 text-[11px] font-bold text-blue-300">0 customers</span>
               </h2>
-              <p class="text-xs text-slate-400 mt-0.5">One row per customer (not per page). Each person is counted once no matter how many pages they open. Tap a row to see their full journey.</p>
+              <p class="text-xs text-slate-400 mt-0.5">One row per identifiable browser or session (not per page). A tracked WhatsApp tap can still appear when its separate page-view record is missing. Tap a row to see the available journey.</p>
             </div>
             <div class="flex items-center gap-2">
               <button id="deleteVisitsBtn" type="button" class="rounded-xl border border-red-500/30 bg-red-950/20 px-3 py-1.5 text-[11px] font-semibold text-red-300 transition hover:bg-red-900/40 flex items-center gap-1">
@@ -862,6 +933,16 @@
             </table>
           </div>
         </div>
+        <section id="unmatchedClickPanel" class="hidden glass-panel rounded-3xl border border-amber-500/20 p-5 shadow-xl">
+          <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h3 class="text-sm font-extrabold text-amber-200">Tracked WhatsApp taps without a CRM row</h3>
+              <p class="mt-1 text-xs text-slate-400">Confirmed click events are shown here with their page, referrer, timestamp and approximate edge location. This is event history, not a booking or proof that a message was sent.</p>
+            </div>
+            <span id="unmatchedClickCount" class="text-xs font-bold text-amber-300"></span>
+          </div>
+          <div id="unmatchedClickEvents" class="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3"></div>
+        </section>
       </section>
 
       <!-- UNIFIED PRIVACY-SAFE ANALYTICS -->
@@ -1162,6 +1243,7 @@
           </div>
           <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="booking_whatsapp_enabled" type="checkbox" class="accent-brand" /> Booking enabled</label>
+            <label class="flex items-center gap-3 rounded-xl border border-brand/30 bg-brand/5 p-3 text-xs font-bold"><input name="public_prices_enabled" type="checkbox" class="accent-brand" /> Show public prices sitewide</label>
             <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="support_phone_enabled" type="checkbox" class="accent-brand" /> Support phone visible</label>
             <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="public_email_enabled" type="checkbox" class="accent-brand" /> Email visible</label>
             <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="cash_enabled" type="checkbox" class="accent-brand" /> Cash listed</label>
@@ -1174,6 +1256,7 @@
             <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="customer_phone_required" type="checkbox" class="accent-brand" /> Phone required</label>
             <label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-bold"><input name="follow_up_consent_enabled" type="checkbox" class="accent-brand" /> Follow-up consent</label>
           </div>
+          <fieldset class="max-w-3xl"><legend class="text-xs font-bold text-slate-300">Hide prices for destination groups</legend><div class="mt-2 grid gap-2 sm:grid-cols-2 lg:grid-cols-3"><label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-semibold"><input name="hidden_price_destination_groups" value="saudi_arabia" type="checkbox" class="accent-brand" /> Saudi Arabia</label><label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-semibold"><input name="hidden_price_destination_groups" value="qatar" type="checkbox" class="accent-brand" /> Qatar / Doha</label><label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-semibold"><input name="hidden_price_destination_groups" value="kuwait" type="checkbox" class="accent-brand" /> Kuwait</label><label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-semibold"><input name="hidden_price_destination_groups" value="uae" type="checkbox" class="accent-brand" /> United Arab Emirates</label><label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-semibold"><input name="hidden_price_destination_groups" value="oman" type="checkbox" class="accent-brand" /> Oman</label><label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-semibold"><input name="hidden_price_destination_groups" value="bahrain" type="checkbox" class="accent-brand" /> Bahrain</label><label class="flex items-center gap-3 rounded-xl border border-slate-800 p-3 text-xs font-semibold"><input name="hidden_price_destination_groups" value="other" type="checkbox" class="accent-brand" /> Other / custom destinations</label></div><small class="mt-2 block text-xs text-slate-500">New routes can join a group in their route pricing settings and will follow this hide/show control.</small></fieldset>
           <p class="rounded-xl border border-amber-500/20 bg-amber-950/20 p-3 text-xs text-amber-200">Legal and address information will not appear publicly until its matching verification switch is enabled.</p>
           <div class="flex justify-end"><button type="submit" class="rounded-xl bg-brand px-5 py-2.5 text-xs font-bold text-slate-950 hover:bg-brand-light">Save Public Settings</button></div>
         </form>
@@ -1388,11 +1471,11 @@
           </label>
           <label class="block">
             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Revenue earned (BHD)</span>
-            <input type="number" id="auditRevenue" name="revenue" min="0" step="0.001" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs outline-none focus:border-brand" placeholder="0.00 BHD" />
+            <input type="number" id="auditRevenue" name="revenue" min="0" step="0.001" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs outline-none focus:border-brand" placeholder="0.Price on request" />
           </label>
           <label class="block">
             <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Quoted price (BHD)</span>
-            <input type="number" id="auditQuotedPrice" name="quoted_price" min="0" step="0.001" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs outline-none focus:border-brand" placeholder="0.00 BHD" />
+            <input type="number" id="auditQuotedPrice" name="quoted_price" min="0" step="0.001" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs outline-none focus:border-brand" placeholder="0.Price on request" />
           </label>
           <label class="block"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Customer paid amount (BHD)</span><input type="number" id="auditCustomerPaid" name="customer_paid_amount" min="0" step="0.001" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" placeholder="Final amount received" /></label>
           <label class="block"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Actual driver payout (BHD)</span><input type="number" id="auditDriverPayout" name="driver_payout_amount" min="0" step="0.001" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" placeholder="Amount paid to driver" /></label>
@@ -1655,6 +1738,7 @@
       activityFilter: 'all',
       leads: [],
       pageviews: [],
+      clickEvents: [],
       routes: [],
       publicConfig: { settings: {}, routes: [] },
       summary: {},
@@ -2205,6 +2289,10 @@
       });
       const label = document.getElementById('periodLabel');
       if (label) label.textContent = period && PERIOD_LABELS[period] ? `Showing: ${PERIOD_LABELS[period]}` : '';
+      const mobilePeriodSelect = document.getElementById('mobilePeriodSelect');
+      if (mobilePeriodSelect && [...mobilePeriodSelect.options].some((option) => option.value === period)) {
+        mobilePeriodSelect.value = period;
+      }
     }
 
     async function applyPeriod(period) {
@@ -2215,7 +2303,7 @@
       state.filters = Object.fromEntries(new FormData(form).entries());
       highlightActivePeriod(period);
       try {
-        await loadDashboard();
+        await loadDashboard({ includeTracking: true });
         showStatus(`Showing ${PERIOD_LABELS[period] || 'results'}.`, 'success');
       } catch (err) {
         showStatus(err.message, 'error');
@@ -2404,7 +2492,7 @@
     function showOnlineVisitor(personKey) {
       if (!personKey) return;
       const key = String(personKey);
-      const events = [...state.pageviews, ...state.leads]
+      const events = [...state.pageviews, ...state.leads, ...unmatchedTrackedClicks().map(trackedClickJourneyEvent)]
         .filter((e) => (e.visitor_id && String(e.visitor_id) === key) || String(e.session_id) === key)
         .sort((a, b) => String(a.clicked_at).localeCompare(String(b.clicked_at)));
 
@@ -2809,7 +2897,12 @@
     function renderStats() {
       const summary = state.summary || {};
       const views = Number(summary.total_pageviews || 0);
-      const clicks = Number(summary.whatsapp_intents_count || summary.total || 0);
+      const clickEvents = summary.whatsapp_click_events_count == null
+        ? null : Number(summary.whatsapp_click_events_count);
+      const clickVisitors = summary.whatsapp_click_visitors_count == null
+        ? null : Number(summary.whatsapp_click_visitors_count);
+      const clickSessions = summary.whatsapp_click_sessions_count == null
+        ? null : Number(summary.whatsapp_click_sessions_count);
 
       // Pageviews (funnel top)
       const statPv = document.getElementById('statPageviews');
@@ -2831,7 +2924,8 @@
         : Math.max(0, sessions - intents);
 
       const statInt = document.getElementById('statIntents');
-      if (statInt) statInt.textContent = intents;
+      if (statInt) statInt.textContent = clickEvents === null || !Number.isFinite(clickEvents) ? '—' : clickEvents.toLocaleString();
+      const statWhatsAppClickNote = document.getElementById('statWhatsAppClickNote');
       const statCanc = document.getElementById('statCancelled');
       if (statCanc) statCanc.textContent = cancelled;
       const statDep = document.getElementById('statDeparted');
@@ -2859,8 +2953,11 @@
       const statRev = document.getElementById('statRevenue');
       if (statRev) statRev.textContent = `${Number(summary.total_revenue || 0).toFixed(2)} BHD`;
 
-      // Unique visitors (real people, not page hits)
-      const humanVisitors = Number(summary.human_likely_visitors ?? summary.total_visitors ?? 0);
+      // Estimated distinct users/browser IDs, not guaranteed distinct people.
+      const usesGa4Visitors = summary.traffic_metrics_source === 'ga4';
+      const humanVisitors = Number(usesGa4Visitors
+        ? summary.total_visitors ?? 0
+        : summary.human_likely_visitors ?? summary.total_visitors ?? 0);
       const unresolvedTraffic = Number(summary.unresolved_traffic ?? 0);
       const botsExcluded = Number(summary.verified_bots_excluded ?? 0);
       const returningVisitors = Number(summary.returning_visitors || 0);
@@ -2869,6 +2966,22 @@
         : Math.max(0, humanVisitors - returningVisitors);
       const statVis = document.getElementById('statVisitors');
       if (statVis) statVis.textContent = humanVisitors;
+      const clickAttribution = clickEvents === null
+        ? 'Unique clicker count is unavailable for this data source.'
+        : clickEvents === 0
+          ? 'No confirmed outbound WhatsApp taps in this period.'
+          : clickVisitors === null
+            ? (summary.whatsapp_click_visitors_note || 'Unique clicker count is unavailable in this aggregate.')
+            : clickVisitors > 0
+              ? `${clickVisitors.toLocaleString()} identified browser ID${clickVisitors === 1 ? '' : 's'} across ${clickEvents.toLocaleString()} confirmed tap${clickEvents === 1 ? '' : 's'}.`
+              : clickSessions > 0
+                ? `${clickEvents.toLocaleString()} confirmed tap${clickEvents === 1 ? '' : 's'} across ${clickSessions.toLocaleString()} session${clickSessions === 1 ? '' : 's'}; browser identity was unavailable.`
+                : `${clickEvents.toLocaleString()} confirmed tap${clickEvents === 1 ? '' : 's'}; visitor identity was unavailable.`;
+      const clickVisitorContext = humanVisitors === 0 && clickVisitors > 0
+        ? ' Overall visitors count page-view IDs, so a tap can appear while that total is zero.'
+        : '';
+      const clickNote = `${clickAttribution}${clickVisitorContext} A tap does not prove a message was sent.`;
+      if (statWhatsAppClickNote) statWhatsAppClickNote.textContent = clickNote;
       const statUnres = document.getElementById('statUnresolved');
       if (statUnres) statUnres.textContent = unresolvedTraffic;
       const statBotsExcl = document.getElementById('statBotsExcluded');
@@ -2892,12 +3005,32 @@
           : 'Traffic metrics come from D1 server activity for this filter.');
       }
 
-      // Prior-period comparison deltas
+      const quickVisitor = document.getElementById('quickVisitors');
+      if (quickVisitor) quickVisitor.textContent = Number.isFinite(humanVisitors) ? humanVisitors.toLocaleString() : '—';
+      const quickVisitorNote = document.getElementById('quickVisitorsNote');
+      if (quickVisitorNote) quickVisitorNote.textContent = usesGa4Visitors
+        ? 'GA4 user estimate; not deduplicated across devices. WhatsApp taps are tracked separately.'
+        : 'Eligible page-view browser IDs; a confirmed tap can exist without a matched page view.';
+      const quickClicks = document.getElementById('quickWhatsAppClicks');
+      if (quickClicks) quickClicks.textContent = clickEvents === null || !Number.isFinite(clickEvents) ? '—' : clickEvents.toLocaleString();
+      const quickClickNote = document.getElementById('quickWhatsAppNote');
+      if (quickClickNote) quickClickNote.textContent = clickNote;
+      const quickSessions = document.getElementById('quickSessions');
+      if (quickSessions) quickSessions.textContent = Number.isFinite(sessions) ? sessions.toLocaleString() : '—';
+      const quickPageviews = document.getElementById('quickPageviews');
+      if (quickPageviews) quickPageviews.textContent = Number.isFinite(views) ? views.toLocaleString() : '—';
+      const quickSource = document.getElementById('quickSource');
+      if (quickSource) quickSource.textContent = `Source: ${sourceBadge?.textContent || summary.traffic_metrics_source || 'first-party analytics'}`;
+      const quickUpdatedAt = document.getElementById('quickUpdatedAt');
+      if (quickUpdatedAt) quickUpdatedAt.textContent = `Updated ${new Date().toLocaleTimeString('en-BH', { timeZone: 'Asia/Bahrain', hour: '2-digit', minute: '2-digit' })} Bahrain time`;
+      const quickPeriod = document.getElementById('mobileQuickPeriod');
+      if (quickPeriod) quickPeriod.textContent = document.getElementById('periodLabel')?.textContent?.replace(/^Showing:\s*/i, '') || 'Selected period';
+
+      // Prior-period comparisons remain attached only to the matching visitor/session metrics.
       const prior = summary.prior_period || {};
       renderDeltaBadge('deltaVisitors', prior.delta_visitors_pct);
       renderDeltaBadge('deltaSessions', prior.delta_sessions_pct);
       renderDeltaBadge('deltaPageviews', prior.delta_pageviews_pct);
-      renderDeltaBadge('deltaWhatsAppClicks', prior.delta_whatsapp_clicks_pct);
       renderDeltaBadge('deltaWhatsAppHandoffs', prior.delta_whatsapp_handoffs_pct);
       renderDeltaBadge('deltaContacted', prior.delta_contacted_pct);
       renderDeltaBadge('deltaCompleted', prior.delta_completed_pct);
@@ -2932,7 +3065,7 @@
       const elFClicks = document.getElementById('funnelWaClicksCount');
       if (elFClicks) elFClicks.textContent = fClicks;
       const elFClicksRate = document.getElementById('funnelWaClicksRate');
-      if (elFClicksRate) elFClicksRate.textContent = fRoutes > 0 ? `${((fClicks / fRoutes) * 100).toFixed(1)}% of views` : (fVis > 0 ? `${((fClicks / fVis) * 100).toFixed(1)}% of visitors` : '0.0% conv.');
+      if (elFClicksRate) elFClicksRate.textContent = fVis > 0 ? `${((fClicks / fVis) * 100).toFixed(1)}% of visitors with a WhatsApp action` : '0.0% of visitors';
 
       const elFHandoffs = document.getElementById('funnelWaHandoffsCount');
       if (elFHandoffs) elFHandoffs.textContent = fHandoffs;
@@ -3297,6 +3430,42 @@
       return formatSessionShortId(id);
     }
 
+    function trackedClickHasCrmRow(event) {
+      const eventTime = new Date(event.clicked_at || event.created_at || '').getTime();
+      if (!Number.isFinite(eventTime)) return false;
+      return state.leads.some((lead) => {
+        const sameSession = event.session_id && lead.session_id
+          && String(event.session_id) === String(lead.session_id);
+        const sameVisitor = event.visitor_id && visitorIdFor(lead)
+          && String(event.visitor_id) === String(visitorIdFor(lead));
+        if (!sameSession && !sameVisitor) return false;
+        const leadTime = new Date(lead.clicked_at || '').getTime();
+        if (!Number.isFinite(leadTime) || Math.abs(eventTime - leadTime) > 5 * 60 * 1000) return false;
+        return !event.page_path || !lead.page_path || String(event.page_path) === String(lead.page_path);
+      });
+    }
+
+    function unmatchedTrackedClicks() {
+      return (state.clickEvents || []).filter((event) => !trackedClickHasCrmRow(event));
+    }
+
+    function trackedClickJourneyEvent(event) {
+      return {
+        ...event,
+        id: `analytics:${event.event_id || event.id || ''}`,
+        clicked_at: event.clicked_at || event.created_at,
+        service_type: 'whatsapp_click',
+        status: 'whatsapp_departed',
+        whatsapp_confirmed_at: event.whatsapp_confirmed_at || event.clicked_at || event.created_at,
+        click_text: event.click_text || event.button_text || '',
+        cf_city: event.cf_city || event.ip_city || '',
+        cf_region: event.cf_region || event.ip_region || '',
+        cf_country: event.cf_country || event.ip_country || '',
+        cf_timezone: event.cf_timezone || event.ip_timezone || '',
+        is_analytics_event: true,
+      };
+    }
+
     function formatMoney(value) {
       return `${Number(value || 0).toFixed(2)} BHD`;
     }
@@ -3626,12 +3795,34 @@
       `).join('') || '<p class="py-8 text-center text-xs text-slate-500">No WhatsApp leads found.</p>';
 
       // 2. Visitors Log — grouped by customer (one row per person)
-      const visitorGroups = groupVisitors([...pageviews, ...leads]);
+      const missingCrmClicks = unmatchedTrackedClicks().map(trackedClickJourneyEvent);
+      const visitorGroups = groupVisitors([...pageviews, ...leads, ...missingCrmClicks]);
+      const unmatchedClickPanel = document.getElementById('unmatchedClickPanel');
+      const unmatchedClickCount = document.getElementById('unmatchedClickCount');
+      if (unmatchedClickPanel) unmatchedClickPanel.classList.toggle('hidden', missingCrmClicks.length === 0);
+      if (unmatchedClickCount) unmatchedClickCount.textContent = `${missingCrmClicks.length} event${missingCrmClicks.length === 1 ? '' : 's'}`;
+      document.getElementById('unmatchedClickEvents').innerHTML = missingCrmClicks.map((event) => `
+        <article class="rounded-2xl border border-amber-500/20 bg-slate-950/50 p-4 text-xs">
+          <div class="flex items-start justify-between gap-2">
+            <strong class="text-white">${escapeHtml(prettyRouteName(event))}</strong>
+            <span class="shrink-0 text-[10px] text-slate-400">${escapeHtml(formatDate(event.clicked_at))}</span>
+          </div>
+          <p class="mt-2 break-all text-cyan-200">${escapeHtml(event.page_path || 'Page path unavailable')}</p>
+          <dl class="mt-3 space-y-1.5 text-slate-300">
+            <div class="flex justify-between gap-3"><dt class="text-slate-500">Country / city</dt><dd class="text-right">${escapeHtml([event.cf_city, event.cf_country ? countryLabel(event.cf_country) : ''].filter(Boolean).join(' · ') || 'Unknown')}</dd></div>
+            <div class="flex justify-between gap-3"><dt class="text-slate-500">Referrer</dt><dd class="max-w-[65%] truncate text-right" title="${escapeHtml(event.referrer || '')}">${escapeHtml(event.referrer || 'Direct / unknown')}</dd></div>
+            <div class="flex justify-between gap-3"><dt class="text-slate-500">Source · device · language</dt><dd class="text-right">${escapeHtml([event.traffic_source || event.utm_source || 'Direct', event.device_type || 'Unknown device', event.language || 'Unknown language'].join(' · '))}</dd></div>
+            <div class="flex justify-between gap-3"><dt class="text-slate-500">Visitor / session</dt><dd class="font-mono text-right">${escapeHtml(compactId(event.visitor_id || event.session_id))}</dd></div>
+          </dl>
+          <p class="mt-3 border-t border-slate-800 pt-2 text-[10px] text-amber-200/80">Tap was recorded; no corresponding CRM lead row is available for this event.</p>
+          <button class="mt-3 min-h-10 w-full rounded-xl border border-blue-500/30 bg-blue-950/20 px-3 py-2 font-bold text-blue-200" data-tracked-visitor="${escapeHtml(event.visitor_id || event.session_id || '')}" type="button">View this visitor’s available journey</button>
+        </article>
+      `).join('');
       const pvCountBadge = document.getElementById('pvCount');
       if (pvCountBadge) {
         const customers = visitorGroups.length;
         const views = pageviews.length;
-        pvCountBadge.textContent = `${customers} customer${customers === 1 ? '' : 's'} · ${views} page view${views === 1 ? '' : 's'}`;
+        pvCountBadge.textContent = `${customers} visitor profile${customers === 1 ? '' : 's'} · ${views} page view${views === 1 ? '' : 's'}`;
       }
 
       const kindBadge = (g) => g.returning
@@ -3897,6 +4088,7 @@
       const events = [
         ...state.pageviews.map((visit) => ({ ...visit, activity_type: 'Page visit' })),
         ...state.leads.map((lead) => ({ ...lead, activity_type: 'WhatsApp activity' })),
+        ...unmatchedTrackedClicks().map((event) => ({ ...trackedClickJourneyEvent(event), activity_type: 'WhatsApp activity' })),
       ];
       for (const event of events) {
         const visitorId = visitorIdFor(event);
@@ -3919,8 +4111,7 @@
         group.whatsappStatus = recentActivityWhatsappStatus(group.events);
         group.durationMs = recentActivityDuration(group);
         return group;
-      }).filter((group) => group.pageCount > 0)
-        .sort((a, b) => new Date(recentActivityTimestamp(b.lastEvent) || 0) - new Date(recentActivityTimestamp(a.lastEvent) || 0)).slice(0, 8);
+      }).sort((a, b) => new Date(recentActivityTimestamp(b.lastEvent) || 0) - new Date(recentActivityTimestamp(a.lastEvent) || 0)).slice(0, 8);
     }
 
     function renderActivityFeed() {
@@ -4210,6 +4401,7 @@
             <label class="block"><span class="text-[10px] font-bold uppercase text-slate-400">Currency</span><input data-field="currency" value="BHD" readonly class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
             <label class="block"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Price type</span><select data-field="price_kind" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs"><option value="standard" ${route.price_kind === 'standard' ? 'selected' : ''}>Standard</option><option value="from" ${route.price_kind === 'from' ? 'selected' : ''}>From</option><option value="request_quote" ${route.price_kind === 'request_quote' ? 'selected' : ''}>Request quote</option></select></label>
             <label class="block"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Trip type</span><select data-field="trip_type" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs"><option value="one_way" ${route.trip_type === 'one_way' ? 'selected' : ''}>One-way</option><option value="return_quote" ${route.trip_type === 'return_quote' ? 'selected' : ''}>Return quotation</option><option value="full_day" ${route.trip_type === 'full_day' ? 'selected' : ''}>Full day</option><option value="additional_day" ${route.trip_type === 'additional_day' ? 'selected' : ''}>Additional daily vehicle rate</option></select></label>
+            <label class="block"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Price visibility destination group</span><select data-field="price_visibility_group" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs"><option value="saudi_arabia" ${route.price_visibility_group === 'saudi_arabia' ? 'selected' : ''}>Saudi Arabia</option><option value="qatar" ${route.price_visibility_group === 'qatar' ? 'selected' : ''}>Qatar / Doha</option><option value="kuwait" ${route.price_visibility_group === 'kuwait' ? 'selected' : ''}>Kuwait</option><option value="uae" ${route.price_visibility_group === 'uae' ? 'selected' : ''}>United Arab Emirates</option><option value="oman" ${route.price_visibility_group === 'oman' ? 'selected' : ''}>Oman</option><option value="bahrain" ${route.price_visibility_group === 'bahrain' ? 'selected' : ''}>Bahrain</option><option value="other" ${route.price_visibility_group === 'other' ? 'selected' : ''}>Other / custom</option></select></label>
             <label class="block"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">WhatsApp override</span><input data-field="whatsapp_override" inputmode="tel" value="${escapeHtml(route.whatsapp_override || '')}" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" placeholder="Optional" /></label>
             <label class="block lg:col-span-2"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Included (English)</span><input data-field="included_en" value="${escapeHtml(route.included_en || '')}" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
             <label class="block lg:col-span-2" dir="rtl"><span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">المشمول (العربية)</span><input data-field="included_ar" value="${escapeHtml(route.included_ar || '')}" class="glass-input mt-1.5 w-full rounded-xl px-3 py-2 text-xs" /></label>
@@ -4242,7 +4434,15 @@
       const settings = state.publicConfig.settings || {};
       Array.from(form.elements).forEach((input) => {
         if (!input.name) return;
-        if (input.type === 'checkbox') input.checked = settings[input.name] === true;
+        if (input.name === 'hidden_price_destination_groups') {
+          input.checked = (settings.hidden_price_destination_groups || []).includes(input.value);
+          return;
+        }
+        if (input.multiple) {
+          const selected = new Set(Array.isArray(settings[input.name]) ? settings[input.name] : []);
+          Array.from(input.options).forEach((option) => { option.selected = selected.has(option.value); });
+        }
+        else if (input.type === 'checkbox') input.checked = settings[input.name] === true;
         else input.value = settings[input.name] ?? '';
       });
     }
@@ -4408,22 +4608,23 @@
       document.getElementById('analyticsUpdatedAt').textContent = `Updated ${new Date().toLocaleTimeString()}`;
     }
 
-    async function loadDashboard() {
+    async function loadDashboard({ includeStatic = false, includeTracking = false } = {}) {
       const search = state.filters.search || '';
       const allTime = state.activePeriod === 'all';
       const [leadsData, pvsData, routesData, summaryData, notificationData, errorsData, careData, publicData, trackingData] = await Promise.all([
         allTime ? Promise.resolve({ leads: [] }) : api(queryFromFilters({ resource: 'leads', limit: 200 })),
         allTime ? Promise.resolve({ leads: [] }) : api(queryFromFilters({ resource: 'pageviews', limit: 200 })),
-        api('?resource=routes'),
+        includeStatic ? api('?resource=routes') : Promise.resolve({ routes: state.routes }),
         api(queryFromFilters({ resource: 'summary', bot_filter: state.trafficFilter, period: state.activePeriod })),
-        api('?resource=notification-settings'),
-        api('?resource=errors&limit=200').catch(() => ({ errors: state.errors })),
+        includeStatic ? api('?resource=notification-settings') : Promise.resolve({ notification_settings: state.notificationSettings }),
+        includeStatic ? api('?resource=errors&limit=200').catch(() => ({ errors: state.errors })) : Promise.resolve({ errors: state.errors }),
         api(search ? `?resource=passenger-care&search=${encodeURIComponent(search)}&limit=200` : '?resource=passenger-care&limit=200'),
-        api('?resource=public-settings'),
-        api(queryFromFilters({ resource: 'tracking', period: state.activePeriod || 'today' })),
+        includeStatic ? api('?resource=public-settings') : Promise.resolve({ public_config: state.publicConfig }),
+        includeTracking ? api(queryFromFilters({ resource: 'tracking', period: state.activePeriod || 'today' })) : Promise.resolve(state.tracking),
       ]);
       state.leads = leadsData.leads || [];
       state.pageviews = pvsData.leads || [];
+      state.clickEvents = leadsData.click_events || [];
       state.routes = routesData.routes || [];
       state.summary = summaryData.summary || {};
       state.notificationSettings = normalizeNotificationSettings(notificationData.notification_settings || state.notificationSettings);
@@ -4466,7 +4667,7 @@
 
       showStatus('Loading dashboard metrics...', 'info');
       try {
-        await loadDashboard();
+        await loadDashboard({ includeStatic: true, includeTracking: true });
         await loadConciergeSettings();
         showStatus('Dashboard updated for Today.', 'success');
       } catch (err) {
@@ -4547,6 +4748,7 @@
       const events = [
         ...state.pageviews.filter(matchesLead).map((item) => ({ ...item, activity_type: 'Page visit' })),
         ...state.leads.filter(matchesLead).map((item) => ({ ...item, activity_type: 'WhatsApp click' })),
+        ...unmatchedTrackedClicks().map(trackedClickJourneyEvent).filter(matchesLead).map((item) => ({ ...item, activity_type: 'WhatsApp click' })),
       ];
 
       const seen = new Set();
@@ -4946,7 +5148,7 @@ Note: This report is automatically compiled by the Control Room operations track
 
     document.getElementById('refreshBtn').addEventListener('click', async () => {
       try {
-        await loadDashboard();
+        await loadDashboard({ includeStatic: true, includeTracking: true });
         showStatus('Dashboard refreshed.', 'success');
       } catch (err) {
         showStatus(err.message, 'error');
@@ -5258,13 +5460,18 @@ Note: This report is automatically compiled by the Control Room operations track
       document.getElementById('filtersForm').reset();
       state.filters = {};
       highlightActivePeriod('');
-      await loadDashboard();
+      await loadDashboard({ includeTracking: true });
       showStatus('All filters reset.', 'success');
     });
 
     // PERIOD QUICK-SELECT EVENTS (today / yesterday / 7d / 2w / 3w / 1m / 3m / 6m / all)
     document.querySelectorAll('.period-btn').forEach((button) => {
       button.addEventListener('click', () => applyPeriod(button.dataset.period));
+    });
+    document.getElementById('mobilePeriodSelect')?.addEventListener('change', (event) => {
+      const periodButton = [...document.querySelectorAll('.period-btn')]
+        .find((button) => button.dataset.period === event.target.value);
+      periodButton?.click();
     });
 
     document.getElementById('customPeriodToggle')?.addEventListener('click', () => {
@@ -5288,7 +5495,7 @@ Note: This report is automatically compiled by the Control Room operations track
         highlightActivePeriod('');
         document.getElementById('periodLabel').textContent = `${from} to ${to}`;
         try {
-          await loadDashboard();
+          await loadDashboard({ includeTracking: true });
           showStatus(`Showing dates from ${from} to ${to}.`, 'success');
         } catch (err) {
           showStatus(err.message, 'error');
@@ -5460,6 +5667,11 @@ Note: This report is automatically compiled by the Control Room operations track
     // VISITS (PAGEVIEWS) DELETE EVENTS — individual delete of a single visit
     const pageviewsPanel = document.getElementById('pageviewsPanel');
     const openVisitorJourney = (event) => {
+      const trackedClick = event.target.closest('[data-tracked-visitor]');
+      if (trackedClick) {
+        showOnlineVisitor(trackedClick.dataset.trackedVisitor);
+        return;
+      }
       const row = event.target.closest('[data-visitor-key]');
       if (!row) return;
       showOnlineVisitor(row.dataset.visitorKey);
@@ -5548,7 +5760,7 @@ Note: This report is automatically compiled by the Control Room operations track
       if (!document.getElementById('auditCustomerPaid').value || !document.getElementById('auditDriverPayout').value) {
         output.textContent = 'Enter paid amount and driver payout';
       } else if (paid < payout) {
-        output.textContent = '0.000 BHD — payout exceeds paid amount';
+        output.textContent = '0.Price on request— payout exceeds paid amount';
       } else {
         output.textContent = `${(paid - payout).toFixed(3)} BHD`;
       }
@@ -5577,6 +5789,7 @@ Note: This report is automatically compiled by the Control Room operations track
         currency: 'BHD',
         is_active: card.querySelector('[data-field="is_active"]').checked,
         public_price_enabled: card.querySelector('[data-field="public_price_enabled"]').checked,
+        price_visibility_group: card.querySelector('[data-field="price_visibility_group"]').value,
         approximate_sar_enabled: card.querySelector('[data-field="approximate_sar_enabled"]').checked,
         causeway_toll_included: card.querySelector('[data-field="causeway_toll_included"]').checked,
         price_kind: card.querySelector('[data-field="price_kind"]').value,
@@ -5595,7 +5808,7 @@ Note: This report is automatically compiled by the Control Room operations track
       button.textContent = 'Saving...';
       try {
         await api('', { method: 'PUT', body: JSON.stringify(payload) });
-        await loadDashboard();
+        await loadDashboard({ includeStatic: true });
         showStatus('Route pricing updated.', 'success');
       } catch (err) {
         showStatus(err.message, 'error');
@@ -5616,7 +5829,7 @@ Note: This report is automatically compiled by the Control Room operations track
         return;
       }
       const minimum = Number(minimumInput.value);
-      output.textContent = publicValue < minimum ? '0.000 BHD — check prices' : `${(publicValue - minimum).toFixed(3)} BHD`;
+      output.textContent = publicValue < minimum ? '0.Price on request— check prices' : `${(publicValue - minimum).toFixed(3)} BHD`;
     });
 
     document.getElementById('seedRoutesBtn').addEventListener('click', async () => {
@@ -5636,7 +5849,7 @@ Note: This report is automatically compiled by the Control Room operations track
             })
           });
         }
-        await loadDashboard();
+        await loadDashboard({ includeStatic: true });
         showStatus('Standard GCC routes initialized.', 'success');
       } catch (err) {
         showStatus(err.message, 'error');
@@ -5656,7 +5869,7 @@ Note: This report is automatically compiled by the Control Room operations track
         await api('', { method: 'POST', body: JSON.stringify(payload) });
         form.reset();
         form.classList.add('hidden');
-        await loadDashboard();
+        await loadDashboard({ includeStatic: true });
         showStatus('Custom route added.', 'success');
       } catch (err) {
         showStatus(err.message, 'error');
@@ -5667,9 +5880,12 @@ Note: This report is automatically compiled by the Control Room operations track
       event.preventDefault();
       const form = event.currentTarget;
       const payload = {};
+      payload.hidden_price_destination_groups = Array.from(form.querySelectorAll('input[name="hidden_price_destination_groups"]:checked')).map((input) => input.value);
       Array.from(form.elements).forEach((input) => {
-        if (!input.name) return;
-        payload[input.name] = input.type === 'checkbox' ? input.checked : input.value;
+        if (!input.name || input.name === 'hidden_price_destination_groups') return;
+        payload[input.name] = input.multiple
+          ? Array.from(input.selectedOptions).map((option) => option.value)
+          : input.type === 'checkbox' ? input.checked : input.value;
       });
       const button = form.querySelector('[type="submit"]');
       button.disabled = true;

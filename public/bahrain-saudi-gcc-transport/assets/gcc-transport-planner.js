@@ -64,7 +64,7 @@
     service: 'نوع الخدمة', airportService: 'خدمة المطار أو السائق', airportTransfer: 'استقبال أو توصيل المطار',
     hourly: 'طلب سائق بالساعة', fullDay: 'طلب سائق ليوم كامل', package: 'الباقة المطلوبة',
     flight: 'رقم الرحلة', waiting: 'متطلبات الانتظار', waitingPlaceholder: 'مثال: انتظار بعد الوصول أو توقف إضافي',
-    airportName: 'المطار', routeSummary: 'ملخص المسار', price: 'السعر أو حالة التسعير', quote: 'اطلب عرض سعر مؤكداً',
+    airportName: 'المطار', routeSummary: 'ملخص المسار', price: 'السعر أو حالة التسعير', quote: 'تواصل عبر واتساب لمعرفة السعر',
     unavailable: 'هذا الخيار غير مسعّر في الإعدادات العامة الحالية.', perVehicle: 'للمركبة كاملة، اتجاه واحد',
     perPackage: 'لباقة المركبة الكاملة', perDay: 'لكل يوم مركبة مؤهل', from: 'ابتداءً من', approx: 'تقريباً',
     distance: 'المسافة التقريبية', time: 'المدة التقريبية', status: 'حالة المسار', configured: 'سعر عام مُعدّ',
@@ -80,7 +80,7 @@
     service: 'Service type', airportService: 'Airport or driver service', airportTransfer: 'Airport pickup or drop-off',
     hourly: 'Hourly driver request', fullDay: 'Full-day driver request', package: 'Requested package',
     flight: 'Flight number', waiting: 'Waiting requirement', waitingPlaceholder: 'Example: wait after arrival or an additional stop',
-    airportName: 'Airport', routeSummary: 'Route summary', price: 'Price or quotation status', quote: 'Request a confirmed quotation',
+    airportName: 'Airport', routeSummary: 'Route summary', price: 'Price or quotation status', quote: 'Contact us on WhatsApp for pricing',
     unavailable: 'This option has no public configured price.', perVehicle: 'per complete vehicle, one way',
     perPackage: 'per complete vehicle package', perDay: 'per qualifying vehicle day', from: 'From', approx: 'approx.',
     distance: 'Approx. distance', time: 'Approx. journey time', status: 'Route status', configured: 'Configured public price',
@@ -211,17 +211,19 @@
     }
     if (!slug) return null;
     const candidate = publicConfig.routes.find((item) => {
-      if (item.route_slug !== slug || item.is_active === false || item.is_active === 0 || item.public_price_enabled === false || item.public_price_enabled === 0) return false;
+      if (item.route_slug !== slug || item.is_active === false || item.is_active === 0) return false;
       if (direction === 'return') return item.trip_type === 'return_quote';
       return item.trip_type !== 'return_quote';
     });
-    if (!candidate || candidate.currency !== 'BHD' || candidate.price_kind === 'request_quote' || candidate.price_bhd == null || !Number.isFinite(Number(candidate.price_bhd))) return null;
+    if (!candidate || candidate.currency !== 'BHD') return null;
     return candidate;
   }
 
   function priceDisplay(route) {
     const price = configuredPrice(route);
-    if (!price) return { text: t.quote, unit: t.unavailable, configured: false };
+    const group = { saudi: 'saudi_arabia', qatar: 'qatar', kuwait: 'kuwait', uae: 'uae', oman: 'oman', bahrain: 'bahrain' }[route.to.group] || 'other';
+    const hiddenGroups = publicConfig.settings?.hidden_price_destination_groups || [];
+    if (publicConfig.settings?.public_prices_enabled === false || !price || price.is_price_hidden || price.public_price_enabled === false || hiddenGroups.includes(group) || price.price_kind === 'request_quote' || price.price_bhd == null || !Number.isFinite(Number(price.price_bhd))) return { text: t.quote, unit: t.unavailable, configured: false };
     const amount = Number(price.price_bhd).toFixed(Number(price.price_bhd) % 1 ? 3 : 0);
     const prefix = price.price_kind === 'from' ? `${t.from} ` : '';
     const sarRate = Number(publicConfig.settings?.sar_per_bhd || 0);
@@ -312,8 +314,15 @@
       try {
         const response = await fetch(`${rootPath}api/transport/public-settings`, { credentials: 'omit' });
         const data = response.ok ? await response.json() : null;
-        if (Array.isArray(data?.routes)) publicConfig = data;
-      } catch { /* quotation mode remains available */ }
+        if (!Array.isArray(data?.routes)) throw new Error('Public route settings unavailable');
+        publicConfig = data;
+      } catch {
+        publicConfig = {
+          ...publicConfig,
+          settings: { ...(publicConfig.settings || {}), public_prices_enabled: false },
+          routes: (publicConfig.routes || []).map((route) => ({ ...route, price_bhd: null, is_price_hidden: true }))
+        };
+      }
     }
     update();
   }
