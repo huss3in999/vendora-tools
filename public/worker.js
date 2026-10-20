@@ -517,7 +517,16 @@ export default {
     try {
       // Short public entry paths resolve to one canonical transport URL.
       const publicSlug = url.pathname.replace(/^\/|\/$/g, '');
-      if (publicSlug === 'prices' || Object.hasOwn(routeProfiles, publicSlug)) {
+      const b2bHubSlugs = new Set([
+        'exhibition-world-bahrain-transport',
+        'luxury-hotel-transfers-bahrain',
+        'corporate-chauffeur-bahrain',
+        'b2b-travel-partners',
+      ]);
+      if (publicSlug === 'prices' || Object.hasOwn(routeProfiles, publicSlug) || b2bHubSlugs.has(publicSlug)) {
+        return Response.redirect(`${url.origin}${SITE_PATH_PREFIX}/${publicSlug}/${url.search}`, 301);
+      }
+      if (publicSlug.startsWith('en/') && b2bHubSlugs.has(publicSlug.slice(3))) {
         return Response.redirect(`${url.origin}${SITE_PATH_PREFIX}/${publicSlug}/${url.search}`, 301);
       }
       if (path === '/ai-chat-test' || path.startsWith('/ai-chat-test/')

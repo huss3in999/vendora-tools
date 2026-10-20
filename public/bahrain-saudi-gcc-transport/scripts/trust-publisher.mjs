@@ -40,6 +40,30 @@ export function publishTrust(html, { slug, lang, url, business, config, assetPre
     { '@type':'BreadcrumbList', itemListElement:[{ '@type':'ListItem', position:1, name:en?'Home':'الرئيسية', item:`https://getvendora.net/bahrain-saudi-gcc-transport/${en?'en/':''}` },
       ...(slug === 'home' ? [] : [{ '@type':'ListItem',position:2,name:pageTitle,item:url }])] }];
   if (slug === 'gcc-transport-planner') graph.push({ '@type':'Service', name:pageTitle, provider:{'@id':'https://getvendora.net/#organization'}, areaServed:['BH','SA','KW','QA','AE','OM'] });
+  const commercialHubs = new Set([
+    'exhibition-world-bahrain-transport',
+    'luxury-hotel-transfers-bahrain',
+    'corporate-chauffeur-bahrain',
+    'b2b-travel-partners'
+  ]);
+  if (commercialHubs.has(slug)) {
+    const serviceName = pageTitle.split('|')[0].trim();
+    graph.push({
+      '@type': 'TaxiService',
+      '@id': `${url}#service`,
+      name: serviceName,
+      url,
+      provider: { '@id': 'https://getvendora.net/#organization' },
+      serviceType: en ? 'VIP chauffeur, executive transfers & corporate roadshows' : 'سائق خاص VIP، تنقلات تنفيذية وجولات أعمال',
+      offers: {
+        '@type': 'Offer',
+        name: serviceName,
+        url,
+        description: pricingCopy[lang].seasonal,
+        seller: { '@id': 'https://getvendora.net/#organization' }
+      }
+    });
+  }
   if (p) {
     graph.push(serviceEntity(route || { route_slug: slug, public_price_enabled: false }, config.settings, lang, url, p));
     graph.push(offerCatalog([route || { route_slug: slug, public_price_enabled:false }], config.settings, lang, url, profiles));
