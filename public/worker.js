@@ -643,7 +643,7 @@ export default {
         return await dispatchPagesFunction(publicSettingsApi, request, env, ctx);
       }
 
-      if (path === '/api/transport/booking-desk') {
+      if (path === '/api/transport/booking-desk' || path === '/api/bookings' || path === '/api/transport/bookings') {
         return await dispatchPagesFunction(bookingDeskApi, request, env, ctx);
       }
 

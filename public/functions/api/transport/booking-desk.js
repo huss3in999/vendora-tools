@@ -2,8 +2,9 @@
  * Vendora Transport Booking Desk API Proxy
  * Bridges getvendora.net with the Google Apps Script booking tracker.
  *
- * Provides private, unindexed access to the Google Sheet backend
+ * Provides private, authenticated access to the Google Sheet backend
  * without CORS or OAuth redirect issues in the browser.
+ * Anonymous/unauthenticated requests are strictly rejected with 401 Unauthorized.
  */
 
 const DEFAULT_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw8c6Kg026JUbjWkqlELgpNAPb4ll-PflySuElUaAaQEr4THN6_CAPBCAToFS3BRvAjpg/exec';
@@ -15,8 +16,25 @@ const JSON_HEADERS = {
   'X-Robots-Tag': 'noindex, nofollow, noarchive, nosnippet',
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Desk-Key, X-Apps-Script-Url',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Desk-Key, X-Admin-Token, X-Apps-Script-Url',
 };
+
+function isAuthorized(request, env) {
+  const authHeader = request.headers.get('authorization') || '';
+  const bearer = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : '';
+  const providedToken = request.headers.get('x-desk-key')
+    || bearer
+    || request.headers.get('x-admin-token')
+    || '';
+
+  const expectedSecret = (env && env.BOOKING_TRACKER_SECRET_KEY) || DEFAULT_SECRET_KEY;
+  const adminToken = env && env.TRANSPORT_ADMIN_TOKEN;
+
+  if (!providedToken) return false;
+  if (providedToken === expectedSecret) return true;
+  if (adminToken && providedToken === adminToken) return true;
+  return false;
+}
 
 function resolveTargetUrl(request, env) {
   const customHeader = request.headers.get('x-apps-script-url');
@@ -42,6 +60,17 @@ export async function onRequestOptions() {
 
 export async function onRequestGet(context) {
   const { request, env } = context;
+
+  if (!isAuthorized(request, env)) {
+    return new Response(JSON.stringify({
+      ok: false,
+      error: 'Unauthorized: Valid admin desk credentials required.'
+    }), {
+      status: 401,
+      headers: JSON_HEADERS,
+    });
+  }
+
   const url = new URL(request.url);
   const action = url.searchParams.get('action') || 'getBoard';
   const id = url.searchParams.get('id') || '';
@@ -68,7 +97,6 @@ export async function onRequestGet(context) {
     try {
       data = JSON.parse(text);
     } catch {
-      // If Apps Script returned HTML or error text
       return new Response(JSON.stringify({
         ok: false,
         error: 'Google Apps Script did not return JSON. Please ensure the Apps Script is deployed as a Web App (Execute as: Me, Access: Anyone).',
@@ -96,6 +124,17 @@ export async function onRequestGet(context) {
 
 export async function onRequestPost(context) {
   const { request, env } = context;
+
+  if (!isAuthorized(request, env)) {
+    return new Response(JSON.stringify({
+      ok: false,
+      error: 'Unauthorized: Valid admin desk credentials required.'
+    }), {
+      status: 401,
+      headers: JSON_HEADERS,
+    });
+  }
+
   const gasUrl = resolveTargetUrl(request, env);
   const secretKey = resolveSecretKey(request, env);
 

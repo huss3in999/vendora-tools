@@ -3040,14 +3040,17 @@ body.vip-transport .footer { color: var(--vip-ivory); background: var(--vip-ink)
   body.vip-transport .lang-toggle svg { display: none; }
 
   .vip-app-hero,
-  .vip-content-hero { padding: 0 !important; }
+  .vip-content-hero,
+  body.vip-transport:not(.transport-hub) main > :is(.hero, .premium-hero, .planner-hero) { padding: 0 !important; }
   .vip-app-hero > .container,
-  .vip-content-hero > .container { width: 100% !important; }
+  .vip-content-hero > .container,
+  body.vip-transport:not(.transport-hub) main > :is(.hero, .premium-hero, .planner-hero) > .container { width: 100% !important; max-width: 100% !important; padding-inline: 0 !important; }
   .vip-app-hero-grid,
-  .vip-content-hero-grid {
+  .vip-content-hero-grid,
+  body.vip-transport:not(.transport-hub) main > :is(.hero, .premium-hero, .planner-hero) :is(.hero-grid, .premium-hero-grid, .planner-hero-grid) {
     display: grid;
     grid-template-columns: minmax(0, 1fr) !important;
-    min-height: 500px;
+    min-height: 0;
     gap: 0 !important;
   }
 
@@ -3228,12 +3231,14 @@ body.vip-transport .footer { color: var(--vip-ivory); background: var(--vip-ink)
   .vip-home-supporting-inner .flag-badges,
   .vip-home-supporting-inner .hero-proof { margin-top: 0 !important; }
 
-  .vip-content-hero-grid {
+  .vip-content-hero-grid,
+  body.vip-transport:not(.transport-hub) main > :is(.hero, .premium-hero, .planner-hero) :is(.hero-grid, .premium-hero-grid, .planner-hero-grid) {
     display: grid;
     min-height: 0;
     background: var(--vip-navy);
   }
-  .vip-content-hero-visual {
+  .vip-content-hero-visual,
+  body.vip-transport:not(.transport-hub) :is(.hero-grid, .premium-hero-grid, .planner-hero-grid) > :is(.hero-side, .hero-media-card, .planner-media-frame) {
     position: relative;
     inset: auto;
     order: -1;
@@ -3241,14 +3246,23 @@ body.vip-transport .footer { color: var(--vip-ivory); background: var(--vip-ink)
     height: 220px;
     border-bottom: 1px solid rgba(200, 169, 107, 0.3);
   }
-  .vip-content-hero-visual .vip-page-hero-image { min-height: 220px; height: 220px; object-position: center; }
-  .vip-content-hero-copy {
+  .vip-content-hero-visual .vip-page-hero-image,
+  body.vip-transport:not(.transport-hub) :is(.hero-grid, .premium-hero-grid, .planner-hero-grid) > :is(.hero-side, .hero-media-card, .planner-media-frame) img {
+    min-height: 220px;
+    height: 220px;
+    object-position: center;
+  }
+  .vip-content-hero-copy,
+  body.vip-transport:not(.transport-hub) :is(.hero-grid, .premium-hero-grid, .planner-hero-grid) > :is(.hero-copy, .premium-hero-copy, .planner-hero-copy) {
     position: relative;
     align-self: auto;
     padding: 22px 20px 26px !important;
     background: var(--vip-navy);
   }
-  .vip-content-hero-copy .hero-actions { margin-top: 14px; }
+  .vip-content-hero-copy .hero-actions,
+  body.vip-transport:not(.transport-hub) :is(.hero-grid, .premium-hero-grid, .planner-hero-grid) > :is(.hero-copy, .premium-hero-copy, .planner-hero-copy) .hero-actions {
+    margin-top: 14px;
+  }
   .vip-content-hero .planner-media-stack { order: -1; }
   .vip-content-hero .planner-media-frame { min-height: 220px !important; height: 220px; border: 0; border-radius: 0; }
   .vip-content-hero .planner-media-frame img { min-height: 220px !important; height: 220px !important; object-fit: cover; }
@@ -3405,13 +3419,15 @@ html[lang="ar"] body.planner-page .gcc-flag-chip .flag { display: none; }
 
 /* Final mobile service-media sizing follows the image ratio; planner media keeps its compact tool layout. */
 @media (max-width: 900px) {
-  body.vip-content-app:not(.planner-page) .vip-content-hero-visual {
+  body.vip-content-app:not(.planner-page) .vip-content-hero-visual,
+  body.vip-transport:not(.transport-hub):not(.planner-page) :is(.hero-grid, .premium-hero-grid) > :is(.hero-side, .hero-media-card) {
     min-height: 0;
     height: auto;
     aspect-ratio: 16 / 9;
   }
 
-  body.vip-content-app:not(.planner-page) .vip-content-hero-visual .vip-page-hero-image {
+  body.vip-content-app:not(.planner-page) .vip-content-hero-visual .vip-page-hero-image,
+  body.vip-transport:not(.transport-hub):not(.planner-page) :is(.hero-grid, .premium-hero-grid) > :is(.hero-side, .hero-media-card) img {
     min-height: 0;
     height: 100%;
     aspect-ratio: 16 / 9;
@@ -5198,4 +5214,71 @@ body.vip-transport :is(.dock-btn.primary-wa, [data-booking-submit]) span {
   body.vip-transport :is(footer, .footer, .site-footer, .transport-footer) a:not(.wa-inline):not(.primary-btn) {
     color: #d4af37 !important;
   }
+}
+
+
+/* ==========================================================================
+   Core Web Vitals Remediation — Desktop & Mobile Zero CLS Containment
+   ========================================================================== */
+.hero {
+  min-height: 480px;
+  contain: layout style;
+}
+
+.hero-grid {
+  min-height: 460px;
+  align-items: start;
+}
+
+.hero-side {
+  min-height: 380px;
+}
+
+.hero-side img,
+.vip-home-hero-image,
+.hero-media img {
+  width: 100%;
+  aspect-ratio: 1672 / 941;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.route-grid {
+  min-height: 180px;
+  contain-intrinsic-size: 180px;
+}
+
+.hotel-zones-grid {
+  min-height: 220px;
+}
+
+.booking-card {
+  min-height: 160px;
+}
+
+.route-fare-badge {
+  min-height: 44px;
+}
+
+.route-rating-badge {
+  min-height: 34px;
+}
+
+.route-reviews-wrap,
+.route-reviews-preview {
+  min-height: 200px;
+}
+
+/* Button and Icon Layout Shift Prevention */
+.wa-inline [data-lucide],
+.primary-btn [data-lucide],
+.ghost-btn [data-lucide],
+.floating-wa [data-lucide] {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  display: inline-block;
+  vertical-align: middle;
 }

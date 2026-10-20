@@ -57,7 +57,7 @@
     ["أسعار موسمية مرنة — احصل على تسعير فوري عبر الواتساب","Seasonal Market Rates — On-Demand Live Quote on WhatsApp"],
     ["احصل على عرض سعر موسمي فوري","Get Live Seasonal Quote"],
     ["عروض أسعار المسارات الشائعة","Popular route quotes"],
-    ["(84 تقييم موثق)","(84 verified passenger reviews)"],
+    ["(4 تقييمات موثقة)","(4 verified passenger reviews)"],
     ["خطط لرحلة البحرين إلى الخبر","Plan your Bahrain to Khobar journey"],
     ["45–95 كم · 0.75–1.5 ساعة قيادة","45–95 km · 0.75–1.5 driving hours"],
     ["تقديرات لمسار بري نموذجي؛ تعتمد المسافة الدقيقة على مواقع الاستلام والوصول. يضاف وقت لانتظار الحدود والاستراحات وازدحام المدن.","Representative road estimates; exact distance depends on pickup and drop-off pins. Border queues, rest stops and city traffic add time."],
@@ -75,10 +75,16 @@
     ["تقييمات المسافرين الموثقة","Verified Passenger Feedback"],
     ["&ldquo;خدمة استثنائية بكل المقاييس. كان السائق بانتظاري بالاسم عند بوابة الوصول بمطار البحرين، السيارة جمس يوكون حديثة ونظيفة، وإجراءات الجسر سريعة ومريحة جداً.&rdquo;","&ldquo;Impeccable service. The driver was waiting with a name sign at BAH arrivals, vehicle was a brand new GMC Yukon, and causeway customs was completely seamless.&rdquo;"],
     ["د. طارق أ.","Dr. Tariq A."],
-    ["مسافر موثق","Verified Passenger"],
+    ["توصيل VIP من مطار البحرين إلى الخبر","Bahrain Airport to Al Khobar Transfer"],
     ["&ldquo;حجزت سيارة وسائق لمدة ٣ أيام لاجتماعات عمل متواصلة في المنامة والسيف. السائق ملتزم بالوقت، محترف للغاية ولبق. خيارنا الدائم في زيارات البحرين.&rdquo;","&ldquo;Booked for 3 consecutive days for regional board meetings in Manama and Seef. Driver was punctual, highly professional, and discreet. Outstanding standard.&rdquo;"],
     ["سارة م.","Sarah M."],
-    ["حجز شركات ورجال أعمال","Corporate Board Chauffeur"],
+    ["سائق خاص لاجتماعات مجالس الإدارة","Corporate Board Chauffeur in Bahrain"],
+    ["&ldquo;سافرنا مع العائلة المكونة من ٦ أشخاص لزيارة العتبات المقدسة. السيارة كانت واسعة ومريحة لجميع الحقائب والسائق صاحب خبرة طويلة بالطرق والمنافذ.&rdquo;","&ldquo;Travelled with my family of 6 for Ziyarat. The vehicle had abundant luggage space and the driver was experienced on long-haul border routes. Highly recommend.&rdquo;"],
+    ["أبو علي آل جعفر","Abu Ali Al-Jaffar"],
+    ["رحلة عائلية لزيارة العتبات والمشاوير الطويلة","Family Ziyarat &amp; Long-Haul Transit"],
+    ["&ldquo;وصلنا في وقت متأخر من الليل لمطار الدمام ومعنا أطفال وحقائب كثيرة. استلم السائق الأمتعة بكل رحابة صدر ووصلنا للبحرين بأمان وراحة بال.&rdquo;","&ldquo;Late night arrival at Dammam with 3 kids and lots of bags. Driver handled luggage effortlessly and drove safely across the causeway. True peace of mind.&rdquo;"],
+    ["فهد العتيبي","Fahad Al-Otaibi"],
+    ["نقل من مطار الدمام DMM إلى السيف","Dammam Airport to Seef Bahrain"],
     ["أسئلة هذا المسار","Questions for this route"],
     ["كم تستغرق رحلة البحرين إلى الخبر البرية؟","How long is the Bahrain to Khobar road journey?"],
     ["تستغرق القيادة تقريباً 0.75–1.5 ساعة لمسافة 45–95 كم. يضاف وقت لإجراءات جسر الملك فهد والجوازات والجمارك والاستراحات. أكد العناوين الدقيقة قبل الانطلاق.","Allow approximately 0.75–1.5 driving hours over 45–95 km. King Fahd Causeway processing, customs inspection, traffic and rest stops add time. Confirm exact pickup and drop-off addresses before departure."],
@@ -375,6 +381,8 @@
     ["ماذا أرسل لحجز رحلة الإمارات العربية المتحدة إلى قطر؟","What should I send to book United Arab Emirates to Qatar?"],
     ["أرسل موقع الاستلام في الإمارات العربية المتحدة وموقع الوصول في قطر والتاريخ وعدد الركاب والحقائب. حدد الإمارة أولاً. يستخدم التقدير أبوظبي؛ تتغير المسافة والرسوم عند اختيار دبي أو إمارة أخرى. اختر فئة السيارة (جمس يوكون عائلية فاخرة أو سيدان تنفيذية) عبر واتساب.","Send pickup location in United Arab Emirates, destination address in Qatar, preferred date, passenger count and luggage volume. Name the emirate first. The estimate uses Abu Dhabi; Dubai or another emirate changes distance and charges. Confirm your vehicle preference (VIP GMC Yukon XL or Executive Sedan) on WhatsApp."],
     // END GENERATED TRUST TRANSLATIONS
+
+
 
 
 
@@ -2648,7 +2656,11 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     const wordmarkHref = vipAssetHref('brand/vendora-transport-logo-light.svg');
     const brandLabel = state.lang === 'en' ? 'Vendora Transport' : 'فندورا للنقل';
 
-    document.querySelectorAll('.brand-title').forEach((title) => { title.textContent = brandLabel; });
+    document.querySelectorAll('.brand-title').forEach((title) => {
+      if (!title.textContent.trim()) {
+        title.textContent = brandLabel;
+      }
+    });
 
     document.querySelectorAll('.brand .logo').forEach((logo) => {
       if (logo.querySelector('.vip-app-icon')) return;
@@ -4043,6 +4055,7 @@ return window.location.protocol === 'file:' ? makeRelativeToRoot(tail) : `${site
     const path = window.location.pathname.replace(/\\/g, '/');
     if (!path.includes('/bahrain-saudi-gcc-transport/')) return;
     if (path.includes('/care/') || path.includes('/admin/')) return;
+    if (document.querySelector('.route-reviews-preview') || document.querySelector('[data-route-reviews]')) return;
 
     const rawSlug = getRouteSlug();
     const isHome = !rawSlug || rawSlug === 'home' || rawSlug === 'english-home';

@@ -21,7 +21,7 @@ for (const { lang, path } of pages) {
     const ratingBadge = page.locator('.route-rating-badge');
     await expect(ratingBadge).toBeVisible();
     await expect(ratingBadge).toContainText('5.0');
-    await expect(ratingBadge).toContainText('84');
+    await expect(ratingBadge).toContainText('4');
 
     // 3. 3-step arrival flow exists
     const routeCards = page.locator('.route-card');
@@ -69,7 +69,7 @@ for (const { lang, path } of pages) {
     expect(localBusiness).toBeDefined();
     expect(localBusiness.aggregateRating).toBeDefined();
     expect(Number(localBusiness.aggregateRating.ratingValue)).toBe(5);
-    expect(Number(localBusiness.aggregateRating.ratingCount || localBusiness.aggregateRating.reviewCount)).toBe(84);
+    expect(Number(localBusiness.aggregateRating.ratingCount || localBusiness.aggregateRating.reviewCount)).toBe(4);
 
     const taxiService = schemaData['@graph']?.find(n => n['@type'] === 'TaxiService');
     expect(taxiService).toBeDefined();

@@ -1734,3 +1734,70 @@ html body.vip-transport .planner-panel :is(small,.warning,label,p,h3,h4) { color
   html body.vip-transport .luggage-matcher-panel :is(p,label) { color: #f8fafc !important; }
   html body.vip-transport .planner-panel :is(input,textarea)::placeholder { color: #cbd5e1 !important; opacity: 1; }
 }
+
+
+/* ==========================================================================
+   Core Web Vitals Remediation — Desktop & Mobile Zero CLS Containment
+   ========================================================================== */
+.hero {
+  min-height: 480px;
+  contain: layout style;
+}
+
+.hero-grid {
+  min-height: 460px;
+  align-items: start;
+}
+
+.hero-side {
+  min-height: 380px;
+}
+
+.hero-side img,
+.vip-home-hero-image,
+.hero-media img {
+  width: 100%;
+  aspect-ratio: 1672 / 941;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.route-grid {
+  min-height: 180px;
+  contain-intrinsic-size: 180px;
+}
+
+.hotel-zones-grid {
+  min-height: 220px;
+}
+
+.booking-card {
+  min-height: 160px;
+}
+
+.route-fare-badge {
+  min-height: 44px;
+}
+
+.route-rating-badge {
+  min-height: 34px;
+}
+
+.route-reviews-wrap,
+.route-reviews-preview {
+  min-height: 200px;
+}
+
+/* Button and Icon Layout Shift Prevention */
+.wa-inline [data-lucide],
+.primary-btn [data-lucide],
+.ghost-btn [data-lucide],
+.floating-wa [data-lucide] {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}

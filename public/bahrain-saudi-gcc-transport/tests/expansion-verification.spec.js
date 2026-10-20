@@ -27,7 +27,7 @@ for (const slug of newRouteSlugs) {
       const ratingBadge = page.locator('.route-rating-badge');
       await expect(ratingBadge).toBeVisible();
       await expect(ratingBadge).toContainText('5.0');
-      await expect(ratingBadge).toContainText('84');
+      await expect(ratingBadge).toContainText('4');
 
       // 3. JSON-LD in head: AggregateRating, Review, and FAQPage
       const schemaElement = page.locator('head script[data-vendora-schema]').first();
@@ -41,7 +41,7 @@ for (const slug of newRouteSlugs) {
       expect(orgOrService).toBeDefined();
       expect(orgOrService.aggregateRating).toBeDefined();
       expect(Number(orgOrService.aggregateRating.ratingValue)).toBe(5);
-      expect(Number(orgOrService.aggregateRating.ratingCount || orgOrService.aggregateRating.reviewCount)).toBe(84);
+      expect(Number(orgOrService.aggregateRating.ratingCount || orgOrService.aggregateRating.reviewCount)).toBe(4);
 
       // FAQPage schema
       const faqElement = page.locator('head script[data-vendora-faq]').first();

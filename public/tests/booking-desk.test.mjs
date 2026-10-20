@@ -14,7 +14,35 @@ test('onRequestOptions returns 204 with private noindex and CORS headers', async
   assert.equal(res.headers.get('access-control-allow-origin'), '*');
 });
 
-test('onRequestGet forwards getBoard query to Google Apps Script and returns JSON', async () => {
+test('onRequestGet rejects anonymous unauthenticated requests with 401 Unauthorized', async () => {
+  const context = {
+    request: new Request('https://getvendora.net/api/transport/booking-desk?action=getBoard'),
+    env: {},
+  };
+  const response = await onRequestGet(context);
+  assert.equal(response.status, 401);
+  const data = await response.json();
+  assert.equal(data.ok, false);
+  assert.ok(data.error.includes('Unauthorized'));
+});
+
+test('onRequestPost rejects anonymous unauthenticated requests with 401 Unauthorized', async () => {
+  const context = {
+    request: new Request('https://getvendora.net/api/transport/booking-desk', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ action: 'getBoard' }),
+    }),
+    env: {},
+  };
+  const response = await onRequestPost(context);
+  assert.equal(response.status, 401);
+  const data = await response.json();
+  assert.equal(data.ok, false);
+  assert.ok(data.error.includes('Unauthorized'));
+});
+
+test('onRequestGet forwards getBoard query to Google Apps Script when authorized and returns JSON', async () => {
   const mockBookings = [
     { id: 'V-001', travelDate: '2026-10-14', pickupTime: '09:50', pickup: 'Airport', destination: 'Hotel' }
   ];
@@ -32,7 +60,9 @@ test('onRequestGet forwards getBoard query to Google Apps Script and returns JSO
 
   try {
     const context = {
-      request: new Request('https://getvendora.net/api/transport/booking-desk?action=getBoard'),
+      request: new Request('https://getvendora.net/api/transport/booking-desk?action=getBoard', {
+        headers: { 'x-desk-key': 'vendora_booking_desk_secret' },
+      }),
       env: {},
     };
     const response = await onRequestGet(context);
@@ -49,7 +79,7 @@ test('onRequestGet forwards getBoard query to Google Apps Script and returns JSO
   }
 });
 
-test('onRequestPost forwards action and payload and returns upstream result', async () => {
+test('onRequestPost forwards action and payload when authorized and returns upstream result', async () => {
   let capturedBody = null;
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async (url, opts) => {
@@ -69,7 +99,10 @@ test('onRequestPost forwards action and payload and returns upstream result', as
     const context = {
       request: new Request('https://getvendora.net/api/transport/booking-desk', {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
+        headers: {
+          'content-type': 'application/json',
+          'x-desk-key': 'vendora_booking_desk_secret',
+        },
         body: JSON.stringify(payload),
       }),
       env: {},
@@ -93,12 +126,14 @@ test('onRequestPost handles invalid JSON payload with 400', async () => {
   const context = {
     request: new Request('https://getvendora.net/api/transport/booking-desk', {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: {
+        'content-type': 'application/json',
+        'x-desk-key': 'vendora_booking_desk_secret',
+      },
       body: 'invalid-json{{{',
     }),
     env: {},
   };
-
   const response = await onRequestPost(context);
   assert.equal(response.status, 400);
   const data = await response.json();

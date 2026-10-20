@@ -105,7 +105,8 @@ export function priceHidden(settings, route) {
 }
 
 export function businessEntity(business, lang = 'en') {
-  const ratingCount = business.aggregate_rating?.rating_count || business.aggregate_rating?.review_count || 84;
+  const reviews = reviewEntities(lang, business);
+  const ratingCount = reviews.length;
   const ratingValue = Number(business.aggregate_rating?.value || business.aggregate_rating?.rating_value || 5.0);
   return {
     '@type': ['LocalBusiness', 'TravelAgency'],
