@@ -383,6 +383,7 @@
 
 
 
+
     // BEGIN GENERATED TRUST TRANSLATIONS
     ["أسعار واضحة مسبقاً","Transparent Upfront Pricing"],
     ["أسعار موسمية مرنة — احصل على تسعير فوري عبر الواتساب","Seasonal Market Rates — On-Demand Live Quote on WhatsApp"],

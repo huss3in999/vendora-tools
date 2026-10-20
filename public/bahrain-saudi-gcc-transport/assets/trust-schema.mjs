@@ -67,14 +67,33 @@ export const approvedReviews = {
   ]
 };
 
-export function reviewEntities(lang = 'en') {
+export function reviewEntities(lang = 'en', business = null) {
+  const orgName = business?.brand_display_name || (lang === 'ar' ? 'ڤيندورا لخدمات النقل والخدمات اللوجستية' : 'Vendora Gulf Transport & Logistics Services');
+  const phone = business?.booking_whatsapp ? `+${business.booking_whatsapp}` : '+97333225954';
+  const street = (lang === 'ar' ? business?.public_address_ar : business?.public_address) || (lang === 'ar' ? 'مكتب ٢٤٠، الطابق الثاني، برج ذي أدرس، السيف، مملكة البحرين' : 'Office 240, 2nd Floor, The Address Tower, Seef, Kingdom of Bahrain');
+  const locality = lang === 'ar' ? 'السيف' : 'Seef';
+
   return (approvedReviews[lang] || approvedReviews.en).map((r) => ({
     '@type': 'Review',
     author: { '@type': 'Person', name: r.author },
     name: r.name,
     reviewBody: r.body,
     reviewRating: { '@type': 'Rating', ratingValue: r.rating, bestRating: 5, worstRating: 1 },
-    datePublished: r.datePublished
+    datePublished: r.datePublished,
+    itemReviewed: {
+      '@type': 'LocalBusiness',
+      '@id': 'https://getvendora.net/#organization',
+      name: orgName,
+      image: 'https://getvendora.net/bahrain-saudi-gcc-transport/assets/images/hero-vendora-vip-gmc-airport.webp',
+      telephone: phone,
+      priceRange: '$$',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: street,
+        addressLocality: locality,
+        addressCountry: 'BH'
+      }
+    }
   }));
 }
 
@@ -89,12 +108,21 @@ export function businessEntity(business, lang = 'en') {
   const ratingCount = business.aggregate_rating?.rating_count || business.aggregate_rating?.review_count || 84;
   const ratingValue = Number(business.aggregate_rating?.value || business.aggregate_rating?.rating_value || 5.0);
   return {
-    '@type': ['LocalBusiness', 'TravelAgency'], '@id': 'https://getvendora.net/#organization',
-    name: business.brand_display_name, legalName: lang === 'ar' ? business.legal_name_ar : business.legal_name,
+    '@type': ['LocalBusiness', 'TravelAgency'],
+    '@id': 'https://getvendora.net/#organization',
+    name: business.brand_display_name,
+    legalName: lang === 'ar' ? business.legal_name_ar : business.legal_name,
+    image: 'https://getvendora.net/bahrain-saudi-gcc-transport/assets/images/hero-vendora-vip-gmc-airport.webp',
+    priceRange: '$$',
     identifier: { '@type': 'PropertyValue', propertyID: 'CR', value: business.cr_number },
-    url: 'https://getvendora.net/', telephone: `+${business.booking_whatsapp}`,
-    address: { '@type': 'PostalAddress', streetAddress: lang === 'ar' ? business.public_address_ar : business.public_address,
-      addressLocality: lang === 'ar' ? 'السيف' : 'Seef', addressCountry: 'BH' },
+    url: 'https://getvendora.net/',
+    telephone: `+${business.booking_whatsapp}`,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: lang === 'ar' ? business.public_address_ar : business.public_address,
+      addressLocality: lang === 'ar' ? 'السيف' : 'Seef',
+      addressCountry: 'BH'
+    },
     description: business[`service_description_${lang}`],
     aggregateRating: {
       '@type': 'AggregateRating',
@@ -104,7 +132,7 @@ export function businessEntity(business, lang = 'en') {
       bestRating: 5,
       worstRating: 1
     },
-    review: reviewEntities(lang)
+    review: reviewEntities(lang, business)
   };
 }
 
@@ -120,24 +148,16 @@ export function serviceEntity(route, settings, lang = 'en', url = '', profile = 
     offer.priceSpecification = { '@type': 'PriceSpecification', price: Number(route.price_bhd), priceCurrency: 'BHD',
       ...(route.price_kind === 'from' ? { minPrice: Number(route.price_bhd) } : {}) };
   }
-  const ratingCount = settings.aggregate_rating?.rating_count || settings.aggregate_rating?.review_count || 84;
-  const ratingValue = Number(settings.aggregate_rating?.value || settings.aggregate_rating?.rating_value || 5.0);
   return {
-    '@type': 'TaxiService', '@id': `${url}#service-${route.route_slug}`, name, url,
+    '@type': 'TaxiService',
+    '@id': `${url}#service-${route.route_slug}`,
+    name,
+    url,
     provider: { '@id': 'https://getvendora.net/#organization' },
     serviceType: lang === 'en' ? 'Private car with driver; VIP GMC Yukon XL or executive sedan, subject to confirmation'
       : 'سيارة خاصة مع سائق؛ جمس يوكون أو سيدان تنفيذية حسب التأكيد',
     ...(profile ? { areaServed: [profile[`origin_${lang}`], profile[`destination_${lang}`]].map((name) => ({ '@type': 'Place', name })) } : {}),
-    offers: offer,
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue,
-      reviewCount: ratingCount,
-      ratingCount,
-      bestRating: 5,
-      worstRating: 1
-    },
-    review: reviewEntities(lang)
+    offers: offer
   };
 }
 
