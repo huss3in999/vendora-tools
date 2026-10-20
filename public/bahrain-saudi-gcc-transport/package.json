@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node scripts/sync-transport-site.mjs && node scripts/sync-trust-extras.mjs && node scripts/validate-central-config.mjs",
+    "build": "node scripts/prepare-responsive-media.mjs && node scripts/sync-transport-site.mjs && node scripts/sync-trust-extras.mjs && node scripts/finalize-output.mjs && node scripts/validate-central-config.mjs",
     "sync": "node scripts/sync-transport-site.mjs",
     "sync:search": "node scripts/sync-search-discovery.mjs",
     "validate:central-config": "node scripts/validate-central-config.mjs",

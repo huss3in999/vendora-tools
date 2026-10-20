@@ -467,16 +467,9 @@
       } catch (e) { /* ignore */ }
     }
 
-    appendScript(
-      'https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516',
-      {
-        defer: 'defer',
-        integrity: 'sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==',
-        crossorigin: 'anonymous',
-        'data-cf-beacon':
-          '{"version":"2024.11.0","token":"1b5d66d169ce4d759bd3ead40f0fcc60","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}',
-      }
-    );
+    // Cloudflare Web Analytics is managed by the zone. Do not inject an obsolete
+    // same-origin RUM beacon whose collection endpoint is not configured.
+
   }
 
   // Update Visitor History on Entry

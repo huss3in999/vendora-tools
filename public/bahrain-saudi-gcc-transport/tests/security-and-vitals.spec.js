@@ -24,8 +24,7 @@ test.describe('Security & Core Web Vitals Suite', () => {
     const schemaData = JSON.parse(await schemaElement.textContent());
     const lb = schemaData['@graph']?.find(n => Array.isArray(n['@type']) && n['@type'].includes('LocalBusiness'));
     expect(lb).toBeDefined();
-    expect(Number(lb.aggregateRating.ratingCount)).toBe(4);
-    expect(Number(lb.aggregateRating.reviewCount)).toBe(4);
+    expect(lb.aggregateRating).toBeUndefined();
     expect(lb.review.length).toBe(4);
   });
 

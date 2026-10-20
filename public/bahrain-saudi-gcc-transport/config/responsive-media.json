@@ -1,0 +1,804 @@
+{
+  "/bahrain-saudi-gcc-transport/assets/images/airport-pickup-bahrain.webp": {
+    "width": 1000,
+    "height": 667,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-5cf2a70b044c-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-5cf2a70b044c-768.webp"
+      },
+      {
+        "width": 1000,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-5cf2a70b044c-1000.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/bahrain-airport-private-transfer.webp": {
+    "width": 1152,
+    "height": 960,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-4ed39694f2c8-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-4ed39694f2c8-768.webp"
+      },
+      {
+        "width": 1152,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-4ed39694f2c8-1152.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/business-vip-gcc-transfer.webp": {
+    "width": 1200,
+    "height": 1030,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-fc332f6ee11d-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-fc332f6ee11d-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-fc332f6ee11d-1200.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/family-gcc-private-transport.webp": {
+    "width": 1152,
+    "height": 960,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-2f9aa52ee079-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-2f9aa52ee079-768.webp"
+      },
+      {
+        "width": 1152,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-2f9aa52ee079-1152.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-airport-transfer-luggage.webp": {
+    "width": 1200,
+    "height": 960,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-271decadcdb7-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-271decadcdb7-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-271decadcdb7-1200.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-airport-transfer.webp": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0778833cc24f-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0778833cc24f-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0778833cc24f-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0778833cc24f-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-country-bahrain-transport.webp": {
+    "width": 1448,
+    "height": 1086,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-7191093a9816-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-7191093a9816-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-7191093a9816-1200.webp"
+      },
+      {
+        "width": 1448,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-7191093a9816-1448.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-country-kuwait-transport.webp": {
+    "width": 1448,
+    "height": 1086,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-662cb98f165c-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-662cb98f165c-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-662cb98f165c-1200.webp"
+      },
+      {
+        "width": 1448,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-662cb98f165c-1448.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-country-oman-transport.webp": {
+    "width": 1448,
+    "height": 1086,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-975555a8f47a-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-975555a8f47a-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-975555a8f47a-1200.webp"
+      },
+      {
+        "width": 1448,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-975555a8f47a-1448.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-country-qatar-transport.webp": {
+    "width": 1448,
+    "height": 1086,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-188223929ddc-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-188223929ddc-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-188223929ddc-1200.webp"
+      },
+      {
+        "width": 1448,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-188223929ddc-1448.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-country-saudi-transport.webp": {
+    "width": 1448,
+    "height": 1086,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-e2edfb2cf9bb-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-e2edfb2cf9bb-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-e2edfb2cf9bb-1200.webp"
+      },
+      {
+        "width": 1448,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-e2edfb2cf9bb-1448.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-country-uae-transport.webp": {
+    "width": 1448,
+    "height": 1086,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-2a342c695c1f-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-2a342c695c1f-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-2a342c695c1f-1200.webp"
+      },
+      {
+        "width": 1448,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-2a342c695c1f-1448.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-family-luggage-transport.webp": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-d596eddbefcc-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-d596eddbefcc-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-d596eddbefcc-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-d596eddbefcc-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-parcel-delivery.webp": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-adc259f885f2-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-adc259f885f2-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-adc259f885f2-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-adc259f885f2-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-private-transport-hero.webp": {
+    "width": 1400,
+    "height": 875,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-a5a972ef2e49-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-a5a972ef2e49-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-a5a972ef2e49-1200.webp"
+      },
+      {
+        "width": 1400,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-a5a972ef2e49-1400.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-road-travel.webp": {
+    "width": 1000,
+    "height": 563,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-a1863d38ac2a-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-a1863d38ac2a-768.webp"
+      },
+      {
+        "width": 1000,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-a1863d38ac2a-1000.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-route-map-bahrain-saudi-kuwait-qatar-uae-oman.webp": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-c0ee21899f3b-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-c0ee21899f3b-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-c0ee21899f3b-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-c0ee21899f3b-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-transport-planner-hero.webp": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-5ab14194a4fa-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-5ab14194a4fa-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-5ab14194a4fa-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-5ab14194a4fa-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gcc-vehicle-size-comparison.webp": {
+    "width": 900,
+    "height": 750,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-c81669eee777-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-c81669eee777-768.webp"
+      },
+      {
+        "width": 900,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-c81669eee777-900.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/getvendora-journey-coordination.webp": {
+    "width": 1152,
+    "height": 960,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-ef5d4f14dc7a-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-ef5d4f14dc7a-768.webp"
+      },
+      {
+        "width": 1152,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-ef5d4f14dc7a-1152.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/gmc-xl-interior-comfort.webp": {
+    "width": 1000,
+    "height": 563,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-968d8b934209-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-968d8b934209-768.webp"
+      },
+      {
+        "width": 1000,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-968d8b934209-1000.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/hero-gcc-private-transport.webp": {
+    "width": 1200,
+    "height": 675,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-2d0a02e166b1-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-2d0a02e166b1-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-2d0a02e166b1-1200.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/hero-vendora-vip-gmc-airport-640.webp": {
+    "width": 640,
+    "height": 360,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-b07b5e8a5c44-480.webp"
+      },
+      {
+        "width": 640,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-b07b5e8a5c44-640.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/hero-vendora-vip-gmc-airport-960.webp": {
+    "width": 960,
+    "height": 540,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-32d8edba83b4-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-32d8edba83b4-768.webp"
+      },
+      {
+        "width": 960,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-32d8edba83b4-960.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/hero-vendora-vip-gmc-airport.webp": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0418c6b69bc9-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0418c6b69bc9-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0418c6b69bc9-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0418c6b69bc9-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/king-fahd-causeway-private-transfer.webp": {
+    "width": 1152,
+    "height": 960,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-83b0a948c0dc-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-83b0a948c0dc-768.webp"
+      },
+      {
+        "width": 1152,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-83b0a948c0dc-1152.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/transport/service-airport-transfer-bahrain.png": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-8dbfafdb50fa-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-8dbfafdb50fa-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-8dbfafdb50fa-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-8dbfafdb50fa-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/transport/service-airport-transfer-bahrain.webp": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0f31475442eb-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0f31475442eb-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0f31475442eb-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0f31475442eb-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/transport/service-bahrain-saudi-transfer.png": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-57b57c0ecf84-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-57b57c0ecf84-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-57b57c0ecf84-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-57b57c0ecf84-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/transport/service-bahrain-saudi-transfer.webp": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-3d8a94087aaa-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-3d8a94087aaa-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-3d8a94087aaa-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-3d8a94087aaa-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/transport/service-business-chauffeur-bahrain.png": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0911b02c1522-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0911b02c1522-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0911b02c1522-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-0911b02c1522-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/transport/service-business-chauffeur-bahrain.webp": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-b44b74438d53-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-b44b74438d53-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-b44b74438d53-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-b44b74438d53-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/transport/service-family-transport-bahrain.png": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-14f560b43382-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-14f560b43382-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-14f560b43382-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-14f560b43382-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/transport/service-family-transport-bahrain.webp": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-067b44030fc2-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-067b44030fc2-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-067b44030fc2-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-067b44030fc2-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/transport/service-hotel-transfer-bahrain.png": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-2859eea94e3b-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-2859eea94e3b-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-2859eea94e3b-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-2859eea94e3b-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/transport/service-hotel-transfer-bahrain.webp": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-c6c1f51a1a7c-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-c6c1f51a1a7c-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-c6c1f51a1a7c-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-c6c1f51a1a7c-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/transport/vendora-fleet-vehicle-options.png": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-5c8cba2935ee-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-5c8cba2935ee-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-5c8cba2935ee-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-5c8cba2935ee-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/transport/vendora-fleet-vehicle-options.webp": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-036e20a9cacd-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-036e20a9cacd-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-036e20a9cacd-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-036e20a9cacd-1672.webp"
+      }
+    ]
+  },
+  "/bahrain-saudi-gcc-transport/assets/images/vendora-vip-gmc-airport-hero-draft-v1.png": {
+    "width": 1672,
+    "height": 941,
+    "variants": [
+      {
+        "width": 480,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-9fad568923b7-480.webp"
+      },
+      {
+        "width": 768,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-9fad568923b7-768.webp"
+      },
+      {
+        "width": 1200,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-9fad568923b7-1200.webp"
+      },
+      {
+        "width": 1672,
+        "url": "/bahrain-saudi-gcc-transport/assets/images/responsive/media-9fad568923b7-1672.webp"
+      }
+    ]
+  }
+}

@@ -1,4 +1,5 @@
 import profiles from '../config/route-profiles.mjs';
+import { finalizePublicHtml } from './finalize-public-html.mjs';
 import { businessEntity, serviceEntity, offerCatalog, faqEntity, pricingCopy, approvedReviews } from '../assets/trust-schema.mjs';
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
@@ -23,6 +24,11 @@ export function publishTrust(html, { slug, lang, url, business, config, assetPre
     const toll = en ? (p.uses_causeway ? 'King Fahd Causeway: confirm the current vehicle toll in the JESR app or with the authority. The former BHD 2.500 / SAR 25 tariff was superseded in February 2026. Ask whether the confirmed fare includes tolls, insurance and waiting.' : 'This route does not use King Fahd Causeway. Confirm the land borders, road tolls, insurance and waiting charges in your written quote.') : (p.uses_causeway ? 'جسر الملك فهد: أكد رسم عبور المركبة الحالي عبر تطبيق جسر أو المؤسسة. تم استبدال تعرفة ٢٫٥٠٠ دينار بحريني أو ٢٥ ريالاً سعودياً في فبراير ٢٠٢٦. اسأل إن كان السعر المؤكد يشمل الرسوم والتأمين والانتظار.' : 'لا يمر هذا المسار بجسر الملك فهد. أكد المعابر البرية ورسوم الطرق والتأمين والانتظار في عرض السعر المكتوب.');
     const faqs = p[`faq_${lang}`];
     const routeSummary = `<p><strong>${esc(p[`name_${lang}`])}:</strong> ${distance} · ${drive}. ${explanation} <span data-live-route-fare>${pricingCopy[lang].cta}</span></p>`;
+    // Older summary tables and social descriptions must use the same route facts.
+    if (slug === 'bahrain-to-riyadh' || slug === 'riyadh-to-bahrain') {
+      html = html.replace(/(?:~|about\s+|About\s+)?450\s*(?:km|كم)/g, distance);
+      html = html.replace(/~?4\.5[–-]5\.5\s*(?:hours driving|driving hours|hours|hrs driving|ساعة قيادة|ساعة)/g, drive);
+    }
     html = html.replace(/(<div\b[^>]*class=["'][^"']*\bphase10-answer-first\b[^"']*["'][^>]*>)[\s\S]*?(<\/div>)/gi, `$1${routeSummary}$2`);
     const faqMarkup = faqs.map(([q,a]) => `<details class="faq-item"><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('');
     
@@ -33,7 +39,7 @@ export function publishTrust(html, { slug, lang, url, business, config, assetPre
       reviews.map((r) => `<article class="review-card glass" style="padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);"><div class="review-stars" style="color:#fbbf24;">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p class="review-text">&ldquo;${esc(r.body)}&rdquo;</p><div class="review-author-meta" style="margin-top:10px;font-size:0.85rem;color:#cbd5e1;"><span class="review-author" style="color:#f8fafc;font-weight:600;">${esc(r.author)}</span> &bull; <span>${esc(r.name)}</span></div></article>`).join('') +
       `</div></div>`;
     
-    const section = `<section class="section" data-route-profile="${slug}"><div class="container section-shell"><div class="section-head">${starBadge}<h2>${esc(title)}</h2><p>${distance} · ${drive}</p><p>${explanation}</p></div><div class="route-grid"><article class="route-card"><h3>${en ? 'Pickup planning' : 'ترتيب الاستلام'}</h3><p>${esc(p[`pickup_${lang}`])}</p></article><article class="route-card"><h3>${en ? 'Destination drop-off hubs' : 'نقاط الوصول في الوجهة'}</h3><p>${esc(p[`hubs_${lang}`])}</p><p>${esc(p[`arrival_${lang}`])}</p></article><article class="route-card"><h3>${en ? 'Tolls and border documents' : 'الرسوم ووثائق الحدود'}</h3><p>${toll}</p><p>${documents}</p><p><a href="https://kfca.sa/">${en ? 'Causeway authority' : 'مؤسسة جسر الملك فهد'}</a> · <a href="https://visa.visitsaudi.com/">${en ? 'Saudi visa portal' : 'بوابة التأشيرة السعودية'}</a> · <a href="https://www.evisa.gov.bh/">${en ? 'Bahrain visa eligibility' : 'أهلية تأشيرة البحرين'}</a></p></article></div>${reviewCards}<h2>${en ? 'Questions for this route' : 'أسئلة هذا المسار'}</h2><div class="faq-wrap" data-route-faq>${faqMarkup}</div></div></section>`;
+    const section = `<section class="section" data-route-profile="${slug}"><div class="container section-shell"><div class="section-head">${starBadge}<h2>${esc(title)}</h2><p>${distance} · ${drive}</p><p>${explanation}</p></div><div class="route-grid"><article class="route-card"><h3>${en ? 'Pickup planning' : 'ترتيب الاستلام'}</h3><p>${esc(p[`pickup_${lang}`])}</p></article><article class="route-card"><h3>${en ? 'Destination drop-off hubs' : 'نقاط الوصول في الوجهة'}</h3><p>${esc(p[`hubs_${lang}`])}</p><p>${esc(p[`arrival_${lang}`])}</p></article><article class="route-card"><h3>${en ? 'Tolls and border documents' : 'الرسوم ووثائق الحدود'}</h3><p>${toll}</p><p>${documents}</p><p><a href="https://kfca.sa/">${en ? 'Causeway authority' : 'مؤسسة جسر الملك فهد'}</a> · <a href="https://visa.visitsaudi.com/">${en ? 'Saudi visa portal' : 'بوابة التأشيرة السعودية'}</a> · <a href="https://www.evisa.gov.bh/">${en ? 'Bahrain visa eligibility' : 'أهلية تأشيرة البحرين'}</a></p></article></div>${reviewCards}<h2>${en ? 'Questions for this route' : 'أسئلة هذا المسار'}</h2><div id="faq" class="faq-wrap" data-route-faq>${faqMarkup}</div></div></section>`;
     // Replace the old shared route FAQ and details, so distinct content takes its place.
     html = html.replace(/<section\b[^>]*(?:id=["']faq["']|class=["'][^"']*\b(?:seo-route-details|route-insights|route-concept-note)\b[^"']*["'])[^>]*>[\s\S]*?<\/section>/gi, '');
     html = html.replace(/(<\/section>)/i, `$1${section}`);
@@ -98,5 +104,5 @@ export function publishTrust(html, { slug, lang, url, business, config, assetPre
     }).join('');
     html=html.replace('</main>',`<section class="section" data-contact-rates-section><div class="container section-shell"><h2>${en?'Popular route quotes':'عروض أسعار المسارات الشائعة'}</h2><div class="route-grid" data-contact-prices>${cards}</div></div></section></main>`);
   }
-  return html;
+  return finalizePublicHtml(html, { slug, lang, url });
 }

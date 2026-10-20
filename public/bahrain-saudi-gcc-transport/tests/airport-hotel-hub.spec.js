@@ -67,9 +67,10 @@ for (const { lang, path } of pages) {
       Array.isArray(n['@type']) && n['@type'].includes('LocalBusiness')
     );
     expect(localBusiness).toBeDefined();
-    expect(localBusiness.aggregateRating).toBeDefined();
-    expect(Number(localBusiness.aggregateRating.ratingValue)).toBe(5);
-    expect(Number(localBusiness.aggregateRating.ratingCount || localBusiness.aggregateRating.reviewCount)).toBe(4);
+    expect(localBusiness.aggregateRating).toBeUndefined();
+      expect(localBusiness.review).toHaveLength(4);
+
+
 
     const taxiService = schemaData['@graph']?.find(n => n['@type'] === 'TaxiService');
     expect(taxiService).toBeDefined();

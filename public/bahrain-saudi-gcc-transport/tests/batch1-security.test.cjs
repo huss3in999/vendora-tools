@@ -12,7 +12,8 @@ test('approved public catalog is complete and does not contain driver pricing fi
   const routeConfig = JSON.parse(read(transport, 'config/route-prices.json'));
   assert.match(source, /DEFAULT_PUBLIC_ROUTES/);
   assert.match(source, /routePriceConfig\.routes\.map/);
-  assert.equal(routeConfig.routes.length, 22);
+  assert.ok(routeConfig.routes.length >= 22, 'retain the approved routes as the catalog expands');
+  assert.equal(new Set(routeConfig.routes.map(route=>route.route_id)).size, routeConfig.routes.length, 'route IDs remain unique');
   assert.doesNotMatch(`${source}\n${JSON.stringify(routeConfig)}`, /driver_(?:rate|price)|internal_(?:rate|price)|wholesale_price/i);
 });
 

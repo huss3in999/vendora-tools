@@ -125,14 +125,14 @@ export function businessEntity(business, lang = 'en') {
       addressCountry: 'BH'
     },
     description: business[`service_description_${lang}`],
-    aggregateRating: {
+    ...(business.review_policy?.publish_aggregate_rating === true ? { aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue,
       reviewCount: ratingCount,
       ratingCount,
       bestRating: 5,
       worstRating: 1
-    },
+    } } : {}),
     review: reviewEntities(lang, business)
   };
 }

@@ -1801,3 +1801,57 @@ html body.vip-transport .planner-panel :is(small,.warning,label,p,h3,h4) { color
   display: inline-block;
   vertical-align: middle;
 }
+
+/* Audited surface/text pairs: these components use light cards in both locales. */
+body.home-premium .live-dispatch-bar,
+body.vip-transport .live-dispatch-bar { color:#14532d !important; background:#dcfce7 !important; }
+body.home-premium .live-dispatch-bar *, body.vip-transport .live-dispatch-bar * { color:#14532d !important; }
+body.home-premium .hero-side > p,
+body.home-premium .hero-media-card > p,
+body.vip-transport .hero-copy :is(p,li),
+body.vip-transport .hero-media-card > p,
+body.home-premium .review-card :is(.review-author,.review-author-meta,.review-route-tag,.review-verified-pill),
+body.vip-transport .review-card :is(.review-author,.review-author-meta,.review-author-meta span),
+body.vip-transport .hero-features :is(li,span),
+body.vip-transport .hero-bullets :is(li,span),
+body.vip-transport .hero-copy .badge,
+body.vip-transport .hero-copy .feature-pill { color:#334155 !important; }
+body.home-premium .cert-badge,
+body.vip-transport .route-rating-badge :is(strong,span),
+body.home-premium .fleet-tier-badge { color:#714912 !important; background:#fff4d6 !important; }
+body.home-premium .fleet-tier-card .fleet-tier-features li,
+body.vip-transport .fleet-tier-card .fleet-tier-features li { color:#334155 !important; }
+body.home-premium .fleet-tier-card,
+body.vip-transport .fleet-tier-card { background:#fff !important; color:#102a42 !important; }
+body.home-premium .fleet-tier-card :is(h3,p),
+body.vip-transport .fleet-tier-card :is(h3,p) { color:#102a42 !important; }
+body.home-premium .review-card .review-stars,
+body.vip-transport .review-card .review-stars { color:#895500 !important; }
+body.vip-transport .hero-copy .hero-feature,
+body.vip-transport .hero-copy .hero-benefit { color:#334155 !important; background:#fff !important; }
+/* Reserve only the final image ratio; avoid tall empty mobile hero space. */
+@media (max-width:900px) {
+  body.vip-content-app .vip-content-hero-visual { max-height:300px; min-height:0; overflow:hidden; }
+  body.vip-content-app .vip-content-hero-visual img { height:300px; width:100%; object-fit:cover; }
+  body.vip-content-app .vip-content-hero { min-height:0; }
+  body.vip-content-app .vip-content-hero-grid { min-height:0; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .live-dispatch-bar *, .vip-home-hero-image { animation:none !important; }
+}
+
+html body.vip-transport .section-shell .route-rating-badge strong {color:#714912 !important;}
+
+body.home-premium #fleet-matrix .container { min-width:0; max-width:100%; box-sizing:border-box; }
+body.home-premium .fleet-tier-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); min-width:0; }
+body.home-premium :is(.fleet-tier-card,.luggage-matcher-panel) { min-width:0; max-width:100%; box-sizing:border-box; }
+
+html body.vip-transport main [data-route-profile] .section-shell .route-rating-badge strong {color:#714912 !important;}
+
+/* Match Lucide's placeholder and rendered geometry before script hydration. */
+body.home-premium :is([data-lucide],svg.lucide), body.vip-transport :is([data-lucide],svg.lucide) {
+  display:inline-block; width:20px !important; height:20px !important; min-width:20px; min-height:20px; vertical-align:middle; flex:0 0 20px;
+}
+body.vip-transport .hero-copy .trust-points span {color:#334155 !important;}
+
+html body.vip-transport .hero-copy .proof-points span {color:#334155 !important; background:#fff !important;}

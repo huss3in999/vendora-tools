@@ -120,8 +120,8 @@ function failClosedPriceHtml(response, pathname) {
       const content = element.getAttribute('content') || '';
       if (currencyAmountPattern().test(content)) element.setAttribute('content', redactPriceText(content, replacement));
     } })
-    .on('title', { text(text) { text.replace(redactPriceText(text.text, replacement)); } })
-    .on('body', { text(text) {
+    .on('title', { text(text) { if (currencyAmountPattern().test(text.text)) text.replace(redactPriceText(text.text, replacement), { html:true }); } })
+    .on('[data-fare-text], [data-live-route-fare], .price, .route-fare-badge', { text(text) {
       if (currencyAmountPattern().test(text.text)) text.replace(redactPriceText(text.text, replacement));
     } })
     .transform(response);
@@ -321,15 +321,15 @@ async function rewriteTransportHtml(request, response, env) {
       }
     } })
     .on('title', { text(text) {
-      if (hidePricesOnPage) text.replace(redactPriceText(text.text, lang === 'en' ? 'Get Live Seasonal Quote' : 'احصل على عرض سعر موسمي فوري'));
-      else if (refreshPricesOnPage) text.replace(refreshFareText(text.text, route, settings, lang));
+      if (hidePricesOnPage && currencyAmountPattern().test(text.text)) text.replace(redactPriceText(text.text, lang === 'en' ? 'Get Live Seasonal Quote' : 'احصل على عرض سعر موسمي فوري'), { html:true });
+      else if (refreshPricesOnPage && fareTextPattern().test(text.text)) text.replace(refreshFareText(text.text, route, settings, lang), { html:true });
     } })
     .on('script[src]', { element(element) {
       const src = element.getAttribute('src') || '';
       if (!/(?:^|\/)(?:site\.js|prices-page\.js|gcc-transport-planner\.js)(?:\?|$)/.test(src)) return;
-      element.setAttribute('src', `${src.split('?')[0]}?v=20261020-trust-pricing`);
+      // Preserve the build's content hash so old cached payloads never mask a release.
     } })
-    .on('body', { text(text) {
+    .on('[data-fare-text], .price, .route-fare-badge', { text(text) {
       if (hidePricesOnPage && currencyAmountPattern().test(text.text)) {
         text.replace(redactPriceText(text.text, hiddenPriceMarkup(settings, lang)), { html: true });
       } else if (refreshPricesOnPage && fareTextPattern().test(text.text)) {
@@ -439,6 +439,8 @@ function secureAssetResponse(request, response) {
   const privatePath = /\/(?:admin|care|ai-chat-test|api|scratch|tests|test-results|booking-desk|desk)(?:\/|$)/i.test(pathname);
   const staticAsset = /\.(?:js|css|svg|webp|avif|png|jpe?g|gif|ico|woff2?|json)$/i.test(pathname);
   const longLivedAsset = /\.(?:webp|avif|png|jpe?g|gif|ico|woff2?)$/i.test(pathname);
+  const versionedAsset = /\/media-[a-f0-9]{12}-\d+\.webp$/.test(pathname)
+    || /^[a-f0-9]{12}$/.test(new URL(request.url).searchParams.get('v') || '');
   const headers = new Headers(response.headers);
   headers.set('x-content-type-options', 'nosniff');
   headers.set('referrer-policy', 'strict-origin-when-cross-origin');
@@ -448,7 +450,7 @@ function secureAssetResponse(request, response) {
     headers.set('x-robots-tag', 'noindex, nofollow, noarchive');
     headers.set('cache-control', 'no-store');
   } else if (staticAsset) {
-    headers.set('cache-control', longLivedAsset
+    headers.set('cache-control', versionedAsset ? 'public, max-age=31536000, immutable' : longLivedAsset
       ? 'public, max-age=86400, stale-while-revalidate=604800'
       : 'public, max-age=3600, stale-while-revalidate=86400');
   }
