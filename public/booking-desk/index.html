@@ -3159,6 +3159,25 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
   color: var(--ink-muted, #94a3b8);
   text-transform: uppercase;
 }
+.fast-filters-bar {
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  background: #081220;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 8px;
+}
+.fast-segmented-group {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 8px;
+  padding: 2px;
+}
 .vis-segmented-group {
   display: flex;
   align-items: center;
@@ -3166,6 +3185,40 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
   background: rgba(0, 0, 0, 0.35);
   border-radius: 8px;
   padding: 2px;
+}
+.vis-badge-count {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 900;
+  padding: 1px 5px;
+  border-radius: 6px;
+}
+.vis-badge-green {
+  background: #10b981;
+  color: #fff;
+  font-size: 9.5px;
+  font-weight: 900;
+  padding: 1px 5px;
+  border-radius: 6px;
+}
+.vis-badge-amber {
+  background: #f59e0b;
+  color: #000;
+  font-size: 9.5px;
+  font-weight: 900;
+  padding: 1px 5px;
+  border-radius: 6px;
+}
+.vis-segment-btn#btn-fast-with-driver.active {
+  background: rgba(16, 185, 129, 0.22);
+  border-color: #10b981;
+  color: #6ee7b7;
+}
+.vis-segment-btn#btn-fast-without-driver.active {
+  background: rgba(245, 158, 11, 0.22);
+  border-color: #f59e0b;
+  color: #fde68a;
 }
 .vis-segment-btn {
   background: transparent;
@@ -3660,18 +3713,29 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
     </section>
 
     <!-- BOOKING VISIBILITY SEGMENTED CONTROL (Non-canceled, Canceled Only, All Bookings) -->
-    <div class="booking-visibility-control" id="booking-visibility-bar">
-      <span class="vis-control-title" id="lbl-booking-vis">الحجوزات:</span>
-      <div class="vis-segmented-group" id="vis-segmented-group">
-        <button type="button" class="vis-segment-btn active" data-vis="non_canceled" id="btn-vis-non-canceled">
+    <div class="booking-visibility-control fast-filters-bar" id="booking-visibility-bar" aria-label="Fast Booking Filters">
+      <div class="vis-segmented-group fast-segmented-group" id="vis-segmented-group">
+        <button type="button" class="vis-segment-btn active" data-fast="all" data-vis="all" id="btn-vis-all" title="عرض كل الحجوزات">
+          <span id="txt-vis-all">كل الحجوزات</span>
+          <span class="vis-badge-count" id="cnt-fast-all">0</span>
+        </button>
+        <button type="button" class="vis-segment-btn" data-fast="non_canceled" data-vis="non_canceled" id="btn-vis-non-canceled" style="display:none;">
           <span id="txt-vis-non-canceled">غير الملغية</span>
         </button>
-        <button type="button" class="vis-segment-btn" data-vis="canceled_only" id="btn-vis-canceled-only">
-          <span id="txt-vis-canceled-only">الملغية فقط</span>
+          <span id="txt-vis-all">كل الحجوزات</span>
+          <span class="vis-badge-count" id="cnt-fast-all">0</span>
+        </button>
+        <button type="button" class="vis-segment-btn" data-fast="canceled" data-vis="canceled_only" id="btn-vis-canceled-only" title="عرض الحجوزات الملغية في كل التواريخ">
+          <span id="txt-vis-canceled-only">الملغية</span>
           <span class="vis-badge-red" id="cnt-vis-canceled">0</span>
         </button>
-        <button type="button" class="vis-segment-btn" data-vis="all" id="btn-vis-all">
-          <span id="txt-vis-all">جميع الحجوزات</span>
+        <button type="button" class="vis-segment-btn" data-fast="with_driver" id="btn-fast-with-driver" title="الحجوزات النشطة التي تم تعيين سائق لها">
+          <span id="txt-fast-with-driver">مع سائق</span>
+          <span class="vis-badge-green" id="cnt-fast-with-driver">0</span>
+        </button>
+        <button type="button" class="vis-segment-btn" data-fast="without_driver" id="btn-fast-without-driver" title="الحجوزات النشطة بانتظار تعيين سائق">
+          <span id="txt-fast-without-driver">بدون سائق</span>
+          <span class="vis-badge-amber" id="cnt-fast-without-driver">0</span>
         </button>
       </div>
     </div>
@@ -4326,10 +4390,17 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
             <input type="tel" id="inp-drv-phone" placeholder="+966xxxxxxxxx / +973xxxxxxxxx" dir="ltr">
           </div>
           <div class="form-col">
-            <label id="lbl-drv-lang">لغة الرسالة</label>
+            <label id="lbl-drv-lang">لغة رسالة الواتساب</label>
             <select id="sel-drv-lang">
-              <option value="Arabic">العربية</option>
-              <option value="English">English</option>
+              <option value="Arabic">العربية (نص الرسالة)</option>
+              <option value="English">English (Message Text)</option>
+            </select>
+          </div>
+          <div class="form-col">
+            <label id="lbl-drv-doc-lang">لغة الوثيقة (الصورة والـ PDF)</label>
+            <select id="sel-drv-doc-lang">
+              <option value="en" selected>English (Default / رسمي)</option>
+              <option value="ar">العربية (اختياري)</option>
             </select>
           </div>
           <div class="form-col">
@@ -5060,8 +5131,9 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
     const App = {
       theme: safeGetStorage('vendora_theme', 'system'),
       lang: safeGetStorage('vendora_desk_lang', 'ar'),
-      filter: 'upcoming', // by default upcoming trips; filter: 'all' available in tabs
+      filter: 'all', // 'all' by default for full booking visibility
       visibilityFilter: 'non_canceled', // 'non_canceled' (default) | 'canceled_only' | 'all'
+      fastFilter: 'all', // 'all' | 'canceled' | 'with_driver' | 'without_driver'
       weekOffset: 0,
       cityFilter: 'all',
       specificDate: '',
@@ -6524,13 +6596,18 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       if (!b || b.bookingStatus === 'Trashed') return false;
       const isCanc = isBookingCancelled(b);
 
-      // CANCELED BOOKINGS MANAGEMENT (Requirement 6)
-      if (App.visibilityFilter === 'canceled_only') {
+      // FAST FILTERS & VISIBILITY FILTER (All Bookings, Canceled, With Driver, Without Driver)
+      if (App.fastFilter === 'canceled' || App.visibilityFilter === 'canceled_only') {
         if (!isCanc) return false;
+      } else if (App.fastFilter === 'with_driver') {
+        if (isCanc || !isDriverAssigned(b)) return false;
+      } else if (App.fastFilter === 'without_driver') {
+        if (isCanc || isDriverAssigned(b)) return false;
+      } else if (App.fastFilter === 'all' || App.visibilityFilter === 'all') {
+        // All bookings pass
       } else if (App.visibilityFilter === 'non_canceled') {
         if (isCanc) return false;
       }
-      // When App.visibilityFilter === 'all', both canceled and non-canceled bookings pass
 
       if (!ignoreTabFilters) {
         if (App.filter === 'cancelled') {
@@ -6552,14 +6629,18 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         } else if (App.filter && App.filter.startsWith('date:')) {
           const dTarget = App.filter.slice(5);
           if (b.travelDate !== dTarget) return false;
+        } else if (App.filter === 'all') {
+          // Allow all! Past, current, and future bookings
         } else if (App.filter === 'upcoming') {
           if (b.travelDate < todayStr || b.bookingStatus === 'Completed') return false;
         }
 
         if (!matchesDateRange(b)) return false;
       } else {
+        if ((App.fastFilter === 'canceled' || App.visibilityFilter === 'canceled_only') && !isCanc) return false;
+        if (App.fastFilter === 'without_driver' && (isCanc || isDriverAssigned(b))) return false;
+        if (App.fastFilter === 'with_driver' && (isCanc || !isDriverAssigned(b))) return false;
         if (App.visibilityFilter === 'non_canceled' && isCanc) return false;
-        if (App.visibilityFilter === 'canceled_only' && !isCanc) return false;
       }
 
       if (q) {
@@ -7000,9 +7081,18 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       baseD.setDate(baseD.getDate() + (App.weekOffset * 7));
 
       const allValid = App.bookings.filter(b => b && b.bookingStatus !== 'Trashed');
-      const activeBookings = (App.visibilityFilter === 'canceled_only')
-        ? allValid.filter(isBookingCancelled)
-        : (App.visibilityFilter === 'all' ? allValid : allValid.filter(b => !isBookingCancelled(b)));
+      let activeBookings = allValid;
+      if (App.fastFilter === 'canceled' || App.visibilityFilter === 'canceled_only') {
+        activeBookings = allValid.filter(isBookingCancelled);
+      } else if (App.fastFilter === 'with_driver') {
+        activeBookings = allValid.filter(b => !isBookingCancelled(b) && isDriverAssigned(b));
+      } else if (App.fastFilter === 'without_driver') {
+        activeBookings = allValid.filter(b => !isBookingCancelled(b) && !isDriverAssigned(b));
+      } else if (App.fastFilter === 'all' || App.visibilityFilter === 'all') {
+        activeBookings = allValid;
+      } else {
+        activeBookings = allValid.filter(b => !isBookingCancelled(b));
+      }
 
       let html = '';
       for (let i = 0; i < 7; i++) {
@@ -7317,12 +7407,20 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       renderDateStrip(allValid, active, todayStr, tomorrowStr);
       renderSevenDayStrip();
 
-      if ($('cnt-vis-canceled')) {
-        $('cnt-vis-canceled').textContent = cancelledTrips.length;
-      }
+      if ($('cnt-fast-all')) $('cnt-fast-all').textContent = allValid.length;
+      if ($('cnt-vis-canceled')) $('cnt-vis-canceled').textContent = cancelledTrips.length;
+      const withDriverTrips = active.filter(b => isDriverAssigned(b));
+      const withoutDriverTrips = active.filter(b => !isDriverAssigned(b));
+      if ($('cnt-fast-with-driver')) $('cnt-fast-with-driver').textContent = withDriverTrips.length;
+      if ($('cnt-fast-without-driver')) $('cnt-fast-without-driver').textContent = withoutDriverTrips.length;
+
+      document.querySelectorAll('.vis-segment-btn[data-fast]').forEach(btn => {
+        const f = btn.getAttribute('data-fast');
+        btn.classList.toggle('active', f === (App.fastFilter || 'all'));
+      });
       document.querySelectorAll('.vis-segment-btn[data-vis]').forEach(btn => {
         const v = btn.getAttribute('data-vis');
-        btn.classList.toggle('active', v === (App.visibilityFilter || 'non_canceled'));
+        btn.classList.toggle('active', v === (App.visibilityFilter || 'all'));
       });
 
       const q = App.search.trim();
@@ -9711,9 +9809,12 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       $('inp-drv-phone').value = b.driverPhone || '';
       $('inp-drv-note').value = '';
       $('sel-drv-lang').value = App.lang === 'ar' ? 'Arabic' : 'English';
+      if ($('sel-drv-doc-lang')) $('sel-drv-doc-lang').value = 'en';
       $('sel-drv-faremode').value = b.paymentStatus === 'Paid' ? 'prepaid' : 'cash';
       if ($('chk-cust-phone')) $('chk-cust-phone').checked = true;
       if ($('chk-cust-name')) $('chk-cust-name').checked = true;
+      if ($('chk-fare')) $('chk-fare').checked = true;
+      if ($('chk-payout')) $('chk-payout').checked = true;
       if (!b.customerPhone || !b.customerPhone.trim()) {
         showToast(App.lang === 'ar' ? '⚠️ تنبيه: هاتف العميل غير مسجل في هذا الحجز' : '⚠️ Warning: Customer phone is missing from this booking', true);
       }
@@ -9869,131 +9970,159 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
 
       const custPhoneFormatted = digits ? `\u200E+${digits}` : (b.customerPhone ? `\u200E${b.customerPhone.trim()}` : '');
       const custPhoneLtr = custPhoneFormatted;
+
+      // Professional Fare & Collection Instructions
+      let collectionLine = '';
+      if (fareMode === 'cash') {
+        if (fareStr) {
+          collectionLine = isAr
+            ? `مطلوب التحصيل من العميل: ${fareStr} (نقداً)`
+            : `Collect from Customer: ${fareStr} (Cash)`;
+        } else {
+          collectionLine = isAr
+            ? `مطلوب التحصيل من العميل: المبلغ غير مؤكد — يرجى مراجعة الإدارة`
+            : `Collect from Customer: Amount not confirmed — please check with dispatch`;
+        }
+      } else if (fareMode === 'prepaid') {
+        collectionLine = isAr
+          ? `الدفع: مدفوع مسبقاً — لا تحصّل أي مبالغ من العميل`
+          : `Payment: PREPAID — DO NOT COLLECT FROM CUSTOMER`;
+      } else {
+        collectionLine = isAr
+          ? `التحصيل: تحصيل مخصص حسب تعليمات الإدارة`
+          : `Collection: Custom collection as per dispatch instructions`;
+      }
+
+      let payoutLine = '';
+      if ($('chk-payout') && $('chk-payout').checked && payoutStr) {
+        payoutLine = payoutStr;
+      }
+
       if (tpl === 'confirm_req') {
         if (isAr) {
           lines.push(`${RLM}🔔 *فندورا للنقل — طلب تأكيد استلام رحلة*`);
-          lines.push(`${RLM}🔖 *رقم الحجز:* #${b.id}`);
+          lines.push(`${RLM}🎫 *رقم الحجز:* #${b.id}`);
           lines.push(`${RLM}📅 *التاريخ:* ${dateStr} | ⏰ *الوقت:* *${timeStr}*`);
           lines.push(`${RLM}📍 *المسار:* ${pickupText} ← ${destText}`);
-          if (payoutStr) lines.push(`${RLM}💵 *مستحق السائق:* *${payoutStr}*`);
+          if (collectionLine) lines.push(`${RLM}💰 *التحصيل:* ${collectionLine}`);
+          if (payoutLine) lines.push(`${RLM}💵 *مستحق السائق:* *${payoutLine}*`);
+          lines.push(``);
           lines.push(`${RLM}يرجى الرد بـ *(مؤكد)* لاعتماد الرحلة باسمكم في جدول التشغيل.`);
         } else {
           lines.push(`🔔 *VENDORA DISPATCH — CONFIRMATION REQUEST*`);
-          lines.push(`🔖 *Booking:* #${b.id}`);
+          lines.push(`🎫 *Booking:* #${b.id}`);
           lines.push(`📅 *Date:* ${dateStr} | ⏰ *Pickup Time:* *${timeStr}*`);
           lines.push(`📍 *Route:* ${pickupText} → ${destText}`);
-          if (payoutStr) lines.push(`💵 *Driver Payout:* *${payoutStr}*`);
+          if (collectionLine) lines.push(`💰 *Collection:* ${collectionLine}`);
+          if (payoutLine) lines.push(`💵 *Driver Payout:* *${payoutLine}*`);
+          lines.push(``);
           lines.push(`Please reply *(CONFIRMED)* to lock this assignment.`);
         }
       } else if (tpl === 'reminder') {
         if (isAr) {
           lines.push(`${RLM}⏰ *تذكير بموعد رحلة — فندورا للنقل*`);
-          lines.push(`${RLM}🔖 *رقم الحجز:* #${b.id}`);
+          lines.push(`${RLM}🎫 *رقم الحجز:* #${b.id}`);
           lines.push(`${RLM}📅 *التاريخ:* ${dateStr} | ⏰ *وقت الاستلام:* *${timeStr}*`);
           lines.push(`${RLM}📍 *من:* ${pickupText}`);
           lines.push(`${RLM}🏁 *إلى:* ${destText}`);
           if (realCustName) lines.push(`${RLM}👤 *المسافر:* *${realCustName}*`);
           if (custPhoneLtr) lines.push(`${RLM}📞 *رقم التواصل:* ${custPhoneLtr}`);
+          if (collectionLine) lines.push(`${RLM}💰 *التحصيل:* ${collectionLine}`);
+          if (payoutLine) lines.push(`${RLM}💵 *مستحق السائق:* *${payoutLine}*`);
+          lines.push(``);
           lines.push(`${RLM}يرجى التواجد في موقع الاستلام قبل الموعد بـ 15 دقيقة وإبلاغنا فور الوصول.`);
         } else {
           lines.push(`⏰ *VENDORA DISPATCH — PICKUP REMINDER*`);
-          lines.push(`🔖 *Booking:* #${b.id}`);
+          lines.push(`🎫 *Booking:* #${b.id}`);
           lines.push(`📅 *Date:* ${dateStr} | ⏰ *Pickup Time:* *${timeStr}*`);
           lines.push(`📍 *Pickup:* ${pickupText}`);
           lines.push(`🏁 *Drop-off:* ${destText}`);
           if (realCustName) lines.push(`👤 *Passenger:* *${realCustName}*`);
           if (custPhoneLtr) lines.push(`📞 *Contact Number:* ${custPhoneLtr}`);
+          if (collectionLine) lines.push(`💰 *Collection:* ${collectionLine}`);
+          if (payoutLine) lines.push(`💵 *Driver Payout:* *${payoutLine}*`);
+          lines.push(``);
           lines.push(`Please arrive at the pickup point 15 minutes early and notify dispatch upon arrival.`);
         }
       } else if (tpl === 'change_notice') {
         if (isAr) {
-          lines.push(`${RLM}🔄 *فندورا للنقل — إشعار تحديث / إعادة تعيين السائق*`);
-          lines.push(`${RLM}🔖 *رقم الحجز:* #${b.id}`);
+          lines.push(`${RLM}🔄 *فندورا للنقل — إشعار تحديث / تعيين السائق*`);
+          lines.push(`${RLM}🎫 *رقم الحجز:* #${b.id}`);
           lines.push(`${RLM}📅 *التاريخ:* ${dateStr} | ⏰ *وقت الاستلام:* *${timeStr}*`);
           lines.push(`${RLM}📍 *المسار:* ${pickupText} ← ${destText}`);
-          if (b.driverName) lines.push(`${RLM}🚗 *السائق المعتمد حالياً:* *${toPureArabicName(b.driverName)}*`);
-          if (payoutStr) lines.push(`${RLM}💵 *مستحق السائق:* *${payoutStr}*`);
+          if (b.driverName) lines.push(`${RLM}🚗 *السائق المعتمد:* *${toPureArabicName(b.driverName)}*`);
+          if (collectionLine) lines.push(`${RLM}💰 *التحصيل:* ${collectionLine}`);
+          if (payoutLine) lines.push(`${RLM}💵 *مستحق السائق:* *${payoutLine}*`);
+          lines.push(``);
           lines.push(`${RLM}يرجى مراجعة التحديث أعلاه وتأكيد العلم بالجدول الجديد.`);
         } else {
-          lines.push(`🔄 *VENDORA DISPATCH — DRIVER CHANGE / REASSIGNMENT NOTICE*`);
-          lines.push(`🔖 *Booking:* #${b.id}`);
+          lines.push(`🔄 *VENDORA DISPATCH — DRIVER ASSIGNMENT UPDATE*`);
+          lines.push(`🎫 *Booking:* #${b.id}`);
           lines.push(`📅 *Date:* ${dateStr} | ⏰ *Pickup Time:* *${timeStr}*`);
           lines.push(`📍 *Route:* ${pickupText} → ${destText}`);
           if (b.driverName) lines.push(`🚗 *Assigned Chauffeur:* *${toPureEnglishName(b.driverName)}*`);
-          if (payoutStr) lines.push(`💵 *Driver Payout:* *${payoutStr}*`);
+          if (collectionLine) lines.push(`💰 *Collection:* ${collectionLine}`);
+          if (payoutLine) lines.push(`💵 *Driver Payout:* *${payoutLine}*`);
+          lines.push(``);
           lines.push(`Please note this driver assignment update and reply to confirm receipt.`);
         }
       } else if (tpl === 'cancel_notice') {
         if (isAr) {
           lines.push(`${RLM}🚫 *إشعار إلغاء مهمة — فندورا للنقل*`);
-          lines.push(`${RLM}🔖 *رقم الحجز:* #${b.id}`);
+          lines.push(`${RLM}🎫 *رقم الحجز:* #${b.id}`);
           lines.push(`${RLM}📅 *التاريخ:* ${dateStr} | ⏰ *الوقت:* *${timeStr}*`);
           lines.push(`${RLM}📍 *المسار:* ${pickupText} ← ${destText}`);
+          lines.push(``);
           lines.push(`${RLM}نود إبلاغكم بأنه تم إلغاء/إيقاف هذه الرحلة من جدول التشغيل. شكراً لتعاونكم.`);
         } else {
           lines.push(`🚫 *VENDORA DISPATCH — CANCELLATION NOTICE*`);
-          lines.push(`🔖 *Booking:* #${b.id}`);
+          lines.push(`🎫 *Booking:* #${b.id}`);
           lines.push(`📅 *Date:* ${dateStr} | ⏰ *Time:* *${timeStr}*`);
           lines.push(`📍 *Route:* ${pickupText} → ${destText}`);
+          lines.push(``);
           lines.push(`Please note this trip has been cancelled/removed from your schedule. Thank you.`);
         }
       } else if (tpl === 'short') {
         if (isAr) {
-          lines.push(`🚘 فانديرا للنقل | تكليف رحلة`);
-          lines.push(`رقم الحجز: ${b.id}`);
-          lines.push(`• التاريخ: ${dateStr}`);
-          if (arrivalStr) lines.push(`• وصول الطائرة: ${arrivalStr}`);
-          lines.push(`• وقت الاستلام: ${timeStr}`);
-          if ($('chk-flight').checked && flightStr) lines.push(`• رقم الرحلة: ${flightStr}`);
+          lines.push(`🚘 *فندورا للنقل | تكليف سائق*`);
+          lines.push(`🎫 *الحجز:* #${b.id}`);
+          lines.push(`📅 *التاريخ:* ${dateStr}`);
+          lines.push(`🕒 *وقت الاستلام:* *${timeStr}*`);
+          if (arrivalStr) lines.push(`✈️ *وصول الرحلة:* ${arrivalStr}`);
+          if ($('chk-flight').checked && flightStr) lines.push(`✈️ *الرحلة:* ${flightStr}`);
           if ($('chk-route').checked) {
-            lines.push(`• مكان الاستلام: ${pickupText}`);
-            lines.push(`• الوجهة: ${destText}`);
+            lines.push(`📍 *المسار:* ${pickupText} ← ${destText}`);
           }
-          if ($('chk-car').checked && vehicleStr) lines.push(`• المركبة: ${vehicleStr}`);
-          if ($('chk-fare').checked && fareStr) {
-            if (fareMode === 'cash') lines.push(`• المطلوب تحصيله: ${fareStr} (نقداً)`);
-            else if (fareMode === 'prepaid') lines.push(`• الدفع: مدفوع مسبقاً (لا تحصّل من المسافر)`);
-            else lines.push(`• سعر الرحلة: ${fareStr}`);
-          }
-          if ($('chk-payout').checked && payoutStr) lines.push(`• مستحق السائق: ${payoutStr}`);
-          if (note) lines.push(`• ملاحظات: ${note}`);
+          if ($('chk-car').checked && vehicleStr) lines.push(`🚙 *المركبة:* ${vehicleStr}`);
+          if (collectionLine) lines.push(`💰 *التحصيل:* ${collectionLine}`);
+          if (payoutLine) lines.push(`💵 *مستحق السائق:* ${payoutLine}`);
+          if (note) lines.push(`📝 *ملاحظات:* ${note}`);
           if (($('chk-cust-phone').checked && custPhoneFormatted) || ($('chk-cust-name').checked && realCustName)) {
-            lines.push(``);
-            lines.push(`📞 بيانات العميل`);
-            if ($('chk-cust-name').checked && realCustName) lines.push(realCustName);
-            if ($('chk-cust-phone').checked && custPhoneFormatted) {
-              lines.push(`رقم التواصل:`);
-              lines.push(custPhoneFormatted);
-            }
+            lines.push(`👤 *المسافر:* ${realCustName || 'العميل الكريم'} | 📞 ${custPhoneFormatted}`);
           }
+          if (shortInviteUrl) lines.push(`🔐 *الرابط:* ${shortInviteUrl}`);
+          lines.push(``);
+          lines.push(`يرجى الرد لتأكيد الاستلام.`);
         } else {
-          lines.push(`🚘 VENDORA TRANSPORT | DRIVER ASSIGNMENT`);
-          lines.push(`Booking Ref: ${b.id}`);
-          lines.push(`• Date: ${dateStr}`);
-          if (arrivalStr) lines.push(`• Flight Arrival: ${arrivalStr}`);
-          lines.push(`• Pickup Time: ${timeStr}`);
-          if ($('chk-flight').checked && flightStr) lines.push(`• Flight Number: ${flightStr}`);
+          lines.push(`🚘 *VENDORA TRANSPORT | DRIVER ASSIGNMENT*`);
+          lines.push(`🎫 *Booking:* #${b.id}`);
+          lines.push(`📅 *Date:* ${dateStr}`);
+          lines.push(`🕒 *Pickup:* *${timeStr}*`);
+          if (arrivalStr) lines.push(`✈️ *Flight Arrival:* ${arrivalStr}`);
+          if ($('chk-flight').checked && flightStr) lines.push(`✈️ *Flight:* ${flightStr}`);
           if ($('chk-route').checked) {
-            lines.push(`• Pickup Location: ${pickupText}`);
-            lines.push(`• Destination: ${destText}`);
+            lines.push(`📍 *Route:* ${pickupText} → ${destText}`);
           }
-          if ($('chk-car').checked && vehicleStr) lines.push(`• Vehicle: ${vehicleStr}`);
-          if ($('chk-fare').checked && fareStr) {
-            if (fareMode === 'cash') lines.push(`• Collect from Customer: ${fareStr} (Cash)`);
-            else if (fareMode === 'prepaid') lines.push(`• Payment: Prepaid (Do NOT collect)`);
-            else lines.push(`• Fare: ${fareStr}`);
-          }
-          if ($('chk-payout').checked && payoutStr) lines.push(`• Driver Payout: ${payoutStr}`);
-          if (note) lines.push(`• Note: ${note}`);
+          if ($('chk-car').checked && vehicleStr) lines.push(`🚙 *Vehicle:* ${vehicleStr}`);
+          if (collectionLine) lines.push(`💰 *Collection:* ${collectionLine}`);
+          if (payoutLine) lines.push(`💵 *Driver Payout:* ${payoutLine}`);
+          if (note) lines.push(`📝 *Note:* ${note}`);
           if (($('chk-cust-phone').checked && custPhoneFormatted) || ($('chk-cust-name').checked && realCustName)) {
-            lines.push(``);
-            lines.push(`📞 Customer Details`);
-            if ($('chk-cust-name').checked && realCustName) lines.push(realCustName);
-            if ($('chk-cust-phone').checked && custPhoneFormatted) {
-              lines.push(`Contact Number:`);
-              lines.push(custPhoneFormatted);
-            }
+            lines.push(`👤 *Customer:* ${realCustName || 'Valued Customer'} | 📞 ${custPhoneFormatted}`);
           }
+          if (shortInviteUrl) lines.push(`🔐 *Link:* ${shortInviteUrl}`);
+          lines.push(``);
+          lines.push(`Please reply to confirm.`);
         }
       } else {
         const paxStr = formatPassengersForDriver(b.passengers, isAr);
@@ -10034,12 +10163,8 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
             lines.push(`• المركبة: ${vehicleStr}`);
           }
 
-          if (($('chk-fare').checked && fareStr) || ($('chk-payout').checked && payoutStr)) {
-            if ($('chk-fare').checked && fareStr && fareMode === 'cash') {
-              lines.push(`• المطلوب تحصيله: ${fareStr} (نقداً)`);
-            }
-            if ($('chk-payout').checked && payoutStr) lines.push(`• مستحق السائق: ${payoutStr}`);
-          }
+          if (collectionLine) lines.push(`• التحصيل: ${collectionLine}`);
+          if (payoutLine) lines.push(`• مستحق السائق: ${payoutLine}`);
 
           if (note) {
             lines.push(`• ملاحظات: ${note}`);
@@ -10075,82 +10200,70 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
           lines.push(`Vendora Transport`);
           lines.push(`🌐 https://getvendora.net`);
         } else {
-          lines.push(`🚘 VENDORA TRANSPORT | DRIVER ASSIGNMENT`);
+          lines.push(`🚘 *VENDORA TRANSPORT | DRIVER ASSIGNMENT*`);
           lines.push(``);
-          lines.push(`Booking Ref: ${b.id}`);
-          lines.push(``);
-          lines.push(`• Date: ${dateStr}`);
+          lines.push(`🎫 *Booking:* #${b.id}`);
+          lines.push(`📅 *Date:* ${dateStr}`);
+          lines.push(`🕒 *Pickup:* *${timeStr}*`);
           if (arrivalStr) {
-            lines.push(`• Flight Arrival: ${arrivalStr}`);
+            lines.push(`✈️ *Flight Arrival:* ${arrivalStr}`);
           }
-          lines.push(`• Pickup Time: ${timeStr}`);
           if ($('chk-flight').checked && flightStr) {
-            lines.push(`• Flight Number: ${flightStr}`);
+            lines.push(`✈️ *Flight:* ${flightStr}`);
           }
+          lines.push(``);
           if ($('chk-route').checked && pickupText && destText) {
-            lines.push(`• Pickup Location: ${pickupText}`);
-            if (pickupParsed.mapUrl) {
-              lines.push(`• Pickup Map: ${pickupParsed.mapUrl}`);
-            }
+            lines.push(`📍 *From:* ${pickupText}`);
             if (pickupParsed.instructions) {
-              lines.push(`• Pickup Note: ${pickupParsed.instructions}`);
+              lines.push(`ℹ️ *Pickup Note:* ${pickupParsed.instructions}`);
             }
-            lines.push(`• Destination: ${destText}`);
+            if (pickupParsed.mapUrl) {
+              lines.push(`🗺️ *Pickup Map:* ${pickupParsed.mapUrl}`);
+            }
+            lines.push(`🏁 *To:* ${destText}`);
             if (destParsed.mapUrl) {
-              lines.push(`• Drop-off Map: ${destParsed.mapUrl}`);
+              lines.push(`🗺️ *Drop-off Map:* ${destParsed.mapUrl}`);
             }
+            lines.push(``);
+          }
+          if (($('chk-cust-name').checked && realCustName) || ($('chk-cust-phone').checked && custPhoneFormatted)) {
+            if ($('chk-cust-name').checked && realCustName) {
+              lines.push(`👤 *Customer:* ${realCustName}`);
+            }
+            if ($('chk-cust-phone').checked && custPhoneFormatted) {
+              lines.push(`📞 *Phone:* ${custPhoneFormatted}`);
+            }
+            lines.push(``);
           }
           if ($('chk-pax').checked && paxStr) {
-            lines.push(`• Passengers: ${paxStr}`);
+            lines.push(`👥 *Passengers:* ${paxStr}`);
           }
           if ($('chk-pax').checked && b.luggage && !/^(none|null|undefined|0|n\/?a|not provided)$/i.test(String(b.luggage).trim())) {
             const lugStr = String(b.luggage).match(/^\d+$/) ? `${b.luggage} bags` : localizeLuggage(b.luggage, 'en');
-            lines.push(`• Luggage: ${lugStr}`);
+            lines.push(`🧳 *Luggage:* ${lugStr}`);
           }
           if ($('chk-car').checked && vehicleStr && !/^(none|null|undefined|to be assigned|not assigned|not specified)$/i.test(vehicleStr.trim())) {
-            lines.push(`• Vehicle: ${vehicleStr}`);
+            lines.push(`🚙 *Vehicle:* ${vehicleStr}`);
+          }
+          if (($('chk-pax').checked && paxStr) || ($('chk-car').checked && vehicleStr)) {
+            lines.push(``);
           }
 
-          if (($('chk-fare').checked && fareStr) || ($('chk-payout').checked && payoutStr)) {
-            if ($('chk-fare').checked && fareStr && fareMode === 'cash') {
-              lines.push(`• Collect Cash: ${fareStr}`);
-            }
-            if ($('chk-payout').checked && payoutStr) lines.push(`• Driver Payout: ${payoutStr}`);
-          }
+          if (collectionLine) lines.push(`💰 *Collection:* ${collectionLine}`);
+          if (payoutLine) lines.push(`💵 *Driver Payout:* *${payoutLine}*`);
 
           if (note) {
-            lines.push(`• Note: ${note}`);
-          }
-
-          if (($('chk-cust-phone').checked && custPhoneFormatted) || ($('chk-cust-name').checked && realCustName)) {
             lines.push(``);
-            lines.push(`📞 Customer Details`);
-            if ($('chk-cust-name').checked && realCustName) {
-              lines.push(realCustName);
-            }
-            if ($('chk-cust-phone').checked && custPhoneFormatted) {
-              lines.push(`Contact Number:`);
-              lines.push(custPhoneFormatted);
-            }
+            lines.push(`📝 *Note:* ${note}`);
           }
 
           if (shortInviteUrl) {
             lines.push(``);
-            lines.push(`🔐 Driver Registration`);
-            lines.push(`Please register the following details:`);
-            lines.push(`* Driver Name`);
-            lines.push(`* Phone Number`);
-            lines.push(``);
-            lines.push(`Tap the link to register your details:`);
-            lines.push(shortInviteUrl);
-            lines.push(``);
-            lines.push(`⏳ Link valid for 24 hours.`);
-            lines.push(``);
-            lines.push(`Important: Your contact details will be shared with the customer to facilitate direct communication when needed and avoid any trip delay or cancellation due to communication difficulties.`);
+            lines.push(`🔐 *Confirmation:*\n${shortInviteUrl}`);
           }
+
           lines.push(``);
-          lines.push(`Vendora Transport`);
-          lines.push(`🌐 https://getvendora.net`);
+          lines.push(`Please confirm receipt of this assignment.`);
         }
       }
 
@@ -10215,7 +10328,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       const caption = prevEl ? (prevEl.value || prevEl.textContent) : '';
       const drvPhone = $('inp-drv-phone') ? $('inp-drv-phone').value.trim() : (b.driverPhone || '');
       const isAr = $('sel-drv-lang') ? ($('sel-drv-lang').value === 'Arabic') : (App.lang === 'ar');
-      const docLang = isAr ? 'ar' : 'en';
+      const docLang = ($('sel-drv-doc-lang') && $('sel-drv-doc-lang').value) || 'en';
       const inviteUrl = (b.driverInvite && b.driverInvite.token && Date.now() < Number(b.driverInvite.expiresAt))
         ? (b.driverInvite.url || `https://getvendora.net/d/${b.driverInvite.token}`)
         : '';
@@ -10233,7 +10346,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
     if ($('btn-drv-open-pdf')) {
       $('btn-drv-open-pdf').onclick = () => {
         const b = App.activeDriverBooking;
-        const chosenLang = $('sel-drv-lang') ? ($('sel-drv-lang').value === 'Arabic' ? 'ar' : 'en') : (App.lang === 'ar' ? 'ar' : 'en');
+        const chosenLang = ($('sel-drv-doc-lang') && $('sel-drv-doc-lang').value) || 'en';
         $('dlg-driver').close();
         if (b) openPdfModal(b, chosenLang);
       };
@@ -10458,7 +10571,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       }, 'Driver dispatch logged');
     };
 
-    ['sel-drv-lang', 'sel-drv-faremode', 'inp-drv-note',
+    ['sel-drv-lang', 'sel-drv-doc-lang', 'sel-drv-faremode', 'inp-drv-note',
      'chk-cust-phone', 'chk-cust-name', 'chk-fare', 'chk-payout',
      'chk-flight', 'chk-route', 'chk-pax', 'chk-car', 'chk-drv-embed-caption'].forEach(id => {
       const el = $(id);
@@ -12918,6 +13031,9 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         App.selectedDates = [];
         App.dateRangeFrom = '';
         App.dateRangeTo = '';
+        App.filter = 'all';
+        App.fastFilter = 'all';
+        App.visibilityFilter = 'all';
         renderStream();
       };
     }
@@ -12927,11 +13043,47 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         if (bar) bar.style.display = (bar.style.display === 'none' || !bar.style.display) ? 'flex' : 'none';
       };
     }
+    document.querySelectorAll('.vis-segment-btn[data-fast]').forEach(btn => {
+      btn.onclick = () => {
+        const f = btn.getAttribute('data-fast');
+        App.fastFilter = f;
+        if (f === 'canceled') {
+          App.visibilityFilter = 'canceled_only';
+          App.filter = 'all';
+          App.specificDate = '';
+          App.selectedDates = [];
+          App.dateRangeFrom = '';
+          App.dateRangeTo = '';
+        } else if (f === 'all') {
+          App.visibilityFilter = 'all';
+          App.filter = 'all';
+          App.specificDate = '';
+          App.selectedDates = [];
+          App.dateRangeFrom = '';
+          App.dateRangeTo = '';
+        } else if (f === 'with_driver' || f === 'without_driver') {
+          App.visibilityFilter = 'non_canceled';
+          App.filter = 'all';
+          App.specificDate = '';
+          App.selectedDates = [];
+          App.dateRangeFrom = '';
+          App.dateRangeTo = '';
+        }
+        document.querySelectorAll('.vis-segment-btn[data-fast]').forEach(b => b.classList.toggle('active', b === btn));
+        renderStream();
+      };
+    });
     document.querySelectorAll('.vis-segment-btn[data-vis]').forEach(btn => {
       btn.onclick = () => {
         const v = btn.getAttribute('data-vis');
         App.visibilityFilter = v;
-        document.querySelectorAll('.vis-segment-btn[data-vis]').forEach(b => b.classList.toggle('active', b === btn));
+        if (v === 'canceled_only') App.fastFilter = 'canceled';
+        else if (v === 'all') App.fastFilter = 'all';
+        App.filter = 'all';
+        App.specificDate = '';
+        App.selectedDates = [];
+        App.dateRangeFrom = '';
+        App.dateRangeTo = '';
         renderStream();
       };
     });
@@ -13448,7 +13600,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
 
         // Register Service Worker for PWA offline shell & fast mobile caching
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m2', { scope: '/booking-desk/' })
+          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m3', { scope: '/booking-desk/' })
             .then(reg => { if (reg) reg.update(); })
             .catch(() => {});
         }
@@ -13549,8 +13701,10 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       setTxt('txt-shortcut-custom', t('customRangeBtn'));
       setTxt('lbl-booking-vis', isAr ? 'الحجوزات:' : 'Visibility:');
       setTxt('txt-vis-non-canceled', t('visNonCanceled'));
-      setTxt('txt-vis-canceled-only', t('visCanceledOnly'));
-      setTxt('txt-vis-all', t('visAllBookings'));
+      setTxt('txt-vis-canceled-only', isAr ? 'الملغية' : 'Canceled');
+      setTxt('txt-vis-all', isAr ? 'كل الحجوزات' : 'All Bookings');
+      setTxt('txt-fast-with-driver', isAr ? 'مع سائق' : 'With Driver');
+      setTxt('txt-fast-without-driver', isAr ? 'بدون سائق' : 'No Driver');
       renderSevenDayStrip();
 
       // Date Range Selector Labels & Presets
@@ -13646,6 +13800,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       setTxt('lbl-drv-name', isAr ? 'اسم السائق' : 'Driver Name');
       setTxt('lbl-drv-phone', isAr ? 'واتساب السائق (مع الرمز)' : 'Driver WhatsApp');
       setTxt('lbl-drv-lang', isAr ? 'لغة الرسالة' : 'Message Language');
+      setTxt('lbl-drv-doc-lang', isAr ? 'لغة الوثيقة (الصورة والـ PDF)' : 'Document Language (Image / PDF)');
       setTxt('lbl-drv-faremode', isAr ? 'تعليمات التحصيل من المسافر' : 'Collection Instructions');
       setTxt('lbl-drv-checklist', isAr ? 'البيانات المضمنة في الرسالة:' : 'Included Fields:');
       setTxt('lbl-drv-note', isAr ? 'ملاحظة تشغيلية إضافية للسائق (اختياري)' : 'Additional Driver Note (Optional)');
