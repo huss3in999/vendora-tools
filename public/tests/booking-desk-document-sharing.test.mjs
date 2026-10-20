@@ -6,7 +6,7 @@ import path from 'node:path';
 const htmlPath = fs.existsSync('public/booking-desk/index.html')
   ? path.resolve('public/booking-desk/index.html')
   : path.resolve('booking-desk/index.html');
-const html = fs.readFileSync(htmlPath, 'utf8');
+const html = fs.readFileSync(htmlPath, 'utf8').replace(/\r\n/g, '\n');
 
 test('Document Sharing Workflow: Buttons and IDs exist for Driver and Customer', () => {
   // Driver modal buttons
