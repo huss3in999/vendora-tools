@@ -1,47 +1,93 @@
-User-agent: *
+User-agent: Googlebot
 Allow: /
-
-# Private / internal paths (noindex pages and build mirrors)
+Disallow: /admin/
+Disallow: /api/private/
 Disallow: /_site/
 Disallow: /demo/
-Disallow: /nada Menu/
 Disallow: /nada%20Menu/
 Disallow: /bahrain-saudi-gcc-transport/admin/
 Disallow: /bahrain-saudi-gcc-transport/care/
 Disallow: /bahrain-saudi-gcc-transport/ai-chat-test/
-
-# Machine-readable discovery files (linked from HTML; not sitemap entries)
-# https://getvendora.net/llms.txt
-# https://getvendora.net/.well-known/llms.txt
-# https://getvendora.net/ai-index.json
-
-Sitemap: https://getvendora.net/sitemap.xml
-Sitemap: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-index.xml
-Sitemap: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-gcc-transport.xml
-Sitemap: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-gcc-transport-en.xml
-# AI discovery files (explicitly allowed for LLM/assistant crawlers)
-Allow: /llms.txt
-Allow: /.well-known/llms.txt
-Allow: /ai-index.json
-Allow: /bahrain-saudi-gcc-transport/llms.txt
-
-# Search and answer-engine crawlers may access the same public content.
-# Private and test surfaces remain unavailable in every explicit group.
-User-agent: Googlebot
-Allow: /
-Disallow: /bahrain-saudi-gcc-transport/admin/
-Disallow: /bahrain-saudi-gcc-transport/care/
-Disallow: /bahrain-saudi-gcc-transport/ai-chat-test/
+Disallow: /booking-desk/
+Disallow: /desk/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /admin/
+Disallow: /api/private/
+Disallow: /_site/
+Disallow: /demo/
+Disallow: /nada%20Menu/
 Disallow: /bahrain-saudi-gcc-transport/admin/
 Disallow: /bahrain-saudi-gcc-transport/care/
 Disallow: /bahrain-saudi-gcc-transport/ai-chat-test/
+Disallow: /booking-desk/
+Disallow: /desk/
+
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/private/
+Disallow: /_site/
+Disallow: /demo/
+Disallow: /nada%20Menu/
+Disallow: /bahrain-saudi-gcc-transport/admin/
+Disallow: /bahrain-saudi-gcc-transport/care/
+Disallow: /bahrain-saudi-gcc-transport/ai-chat-test/
+Disallow: /booking-desk/
+Disallow: /desk/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /admin/
+Disallow: /api/private/
+Disallow: /_site/
+Disallow: /demo/
+Disallow: /nada%20Menu/
 Disallow: /bahrain-saudi-gcc-transport/admin/
 Disallow: /bahrain-saudi-gcc-transport/care/
 Disallow: /bahrain-saudi-gcc-transport/ai-chat-test/
+Disallow: /booking-desk/
+Disallow: /desk/
 
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/private/
+Disallow: /_site/
+Disallow: /demo/
+Disallow: /nada%20Menu/
+Disallow: /bahrain-saudi-gcc-transport/admin/
+Disallow: /bahrain-saudi-gcc-transport/care/
+Disallow: /bahrain-saudi-gcc-transport/ai-chat-test/
+Disallow: /booking-desk/
+Disallow: /desk/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/private/
+Disallow: /_site/
+Disallow: /demo/
+Disallow: /nada%20Menu/
+Disallow: /bahrain-saudi-gcc-transport/admin/
+Disallow: /bahrain-saudi-gcc-transport/care/
+Disallow: /bahrain-saudi-gcc-transport/ai-chat-test/
+Disallow: /booking-desk/
+Disallow: /desk/
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/private/
+Disallow: /_site/
+Disallow: /demo/
+Disallow: /nada%20Menu/
+Disallow: /bahrain-saudi-gcc-transport/admin/
+Disallow: /bahrain-saudi-gcc-transport/care/
+Disallow: /bahrain-saudi-gcc-transport/ai-chat-test/
+Disallow: /booking-desk/
+Disallow: /desk/
+
+Sitemap: https://getvendora.net/sitemap.xml
+Sitemap: https://getvendora.net/bahrain-saudi-gcc-transport/sitemap-index.xml

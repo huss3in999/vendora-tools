@@ -25,6 +25,8 @@ export async function updateDailyAnalyticsAggregate(env, payload = {}, eventName
   const visitCount = Math.max(0, Math.round(number(payload.visitCount ?? payload.visit_count)));
   const isPageView = eventName === 'page_view' || eventName === 'gcc_guide_page_view';
   const isWhatsApp = ['whatsapp_intent', 'whatsapp_click', 'whatsapp_cancel', 'gcc_guide_whatsapp_click'].includes(eventName);
+  const isWhatsAppOutboundClick = eventName === 'whatsapp_click'
+    && number(payload.confirmed_departure) === 1;
   const isLead = ['whatsapp_intent', 'whatsapp_click', 'whatsapp_cancel', 'quote_request', 'booking_start', 'booking_submit'].includes(eventName);
   const isConfirmed = eventName === 'booking_submit'
     || (isWhatsApp && number(payload.confirmed_departure) === 1);
@@ -44,8 +46,8 @@ export async function updateDailyAnalyticsAggregate(env, payload = {}, eventName
     INSERT INTO daily_analytics_aggregates (
       aggregate_date, route_name, page_path, country,
       unique_visitors, sessions, page_views, events, whatsapp_clicks, leads,
-      confirmed_bookings, updated_at
-    ) VALUES (date(?, '+3 hours'), ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+      confirmed_bookings, whatsapp_outbound_clicks, updated_at
+    ) VALUES (date(?, '+3 hours'), ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
     ON CONFLICT(aggregate_date, route_name, page_path, country) DO UPDATE SET
       unique_visitors = unique_visitors + excluded.unique_visitors,
       sessions = sessions + excluded.sessions,
@@ -54,6 +56,7 @@ export async function updateDailyAnalyticsAggregate(env, payload = {}, eventName
       whatsapp_clicks = whatsapp_clicks + excluded.whatsapp_clicks,
       leads = leads + excluded.leads,
       confirmed_bookings = confirmed_bookings + excluded.confirmed_bookings,
+      whatsapp_outbound_clicks = whatsapp_outbound_clicks + excluded.whatsapp_outbound_clicks,
       updated_at = excluded.updated_at
     `).bind(
       new Date().toISOString(), route, page, country,
@@ -63,6 +66,7 @@ export async function updateDailyAnalyticsAggregate(env, payload = {}, eventName
       isWhatsApp ? 1 : 0,
       isLead ? 1 : 0,
       isConfirmed ? 1 : 0,
+      isWhatsAppOutboundClick ? 1 : 0,
     ).run();
   } catch (error) {
     if (!/no such table/i.test(String(error?.message || error))) throw error;

@@ -17,13 +17,24 @@ test.describe('Admin dashboard', () => {
             total_visitors: 12,
             total_sessions: 13,
             total_pageviews: 14,
+            whatsapp_click_events_count: 2,
+            whatsapp_click_visitors_count: 1,
+            whatsapp_click_sessions_count: 1,
             whatsapp_intents_count: 2,
             whatsapp_cancelled_count: 1,
             whatsapp_departed_count: 1,
             left_without_whatsapp: 10,
             total: 2,
           } }
-          : { ok: true, leads: [] };
+          : resource === 'leads'
+            ? { ok: true, leads: [], click_events: [{
+              event_id: 'synthetic-wa-event', visitor_id: 'synthetic-browser-1', session_id: 'synthetic-session-1',
+              clicked_at: '2026-10-13T10:00:00.000Z', page_path: '/bahrain-saudi-gcc-transport/en/riyadh-to-bahrain/',
+              route_label: 'Riyadh to Bahrain', route_slug: 'riyadh-to-bahrain', referrer: 'https://www.google.com/',
+              traffic_source: 'Google Organic', cf_city: 'Manama', cf_country: 'BH', device_type: 'mobile', language: 'en',
+              click_text: 'Book on WhatsApp', is_analytics_event: true,
+            }] }
+            : { ok: true, leads: [] };
 
       await route.fulfill({
         status: 200,
@@ -46,8 +57,19 @@ test.describe('Admin dashboard', () => {
     await expect(page.locator('#statSessions')).toHaveText('13');
     await expect(page.locator('#statPageviews')).toHaveText('14');
     await expect(page.locator('#statIntents')).toHaveText('2');
+    await expect(page.locator('#statWhatsAppClickNote')).toContainText('1 identified browser ID');
     await expect(page.locator('#statCancelled')).toHaveText('1');
     await expect(page.locator('#statDeparted')).toHaveText('1');
+    await page.evaluate(() => setTab('pageviews'));
+    await expect(page.locator('#unmatchedClickPanel')).toBeVisible();
+    await expect(page.locator('#unmatchedClickEvents')).toContainText('/bahrain-saudi-gcc-transport/en/riyadh-to-bahrain/');
+    await expect(page.locator('#unmatchedClickEvents')).toContainText('Bahrain');
+    await expect(page.locator('#pvCount')).toContainText('1 visitor profile');
+    await page.locator('#unmatchedClickEvents [data-tracked-visitor]').click();
+    await expect(page.locator('#visitorDialog')).toBeVisible();
+    await expect(page.locator('#visitorDialogBody')).toContainText('Cloudflare Country');
+    await expect(page.locator('#visitorDialogBody')).toContainText('/bahrain-saudi-gcc-transport/en/riyadh-to-bahrain/');
+    await page.locator('#closeVisitorDialogBtn').click();
     await page.evaluate(() => setTab('reports'));
     await expect(page.locator('#reportCards > div').filter({ hasText: 'Users' }).locator('p').first()).toHaveText('12');
     await expect(page.locator('#reportCards > div').filter({ hasText: 'Sessions' }).locator('p').first()).toHaveText('13');

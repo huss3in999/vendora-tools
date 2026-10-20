@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#08111f">
+  <title>Vendora Dispatch · تسجيل بيانات السائق للرحلة</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --card: #101e33;
+      --surface: #152742;
+      --border: rgba(148, 163, 184, 0.22);
+      --gold: #c5a880;
+      --gold-light: #f3e5ab;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --ink: #f8fafc;
+      --ink-dim: #cbd5e1;
+      --ink-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Arabic", sans-serif;
+      background: radial-gradient(circle at center, #10233f 0%, var(--bg) 75%);
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--ink);
+      min-height: 100vh;
+      padding: 16px 14px 40px;
+      line-height: 1.5;
+    }
+    .shell {
+      max-width: 500px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background: rgba(16, 30, 51, 0.92);
+      background-position: center;
+      border: 1px solid rgba(197, 168, 128, 0.32);
+      border-radius: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: #081826;
+      border: 1.5px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-weight: 900;
+      font-family: Georgia, serif;
+      font-size: 20px;
+    }
+    .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .brand-sub {
+      font-size: 11px;
+      color: var(--gold-light);
+    }
+    .btn-lang {
+      background: var(--surface);
+      color: var(--ink);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      min-height: 38px;
+    }
+    .card {
+      background: var(--card);
+      background-position: center;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+      text-align: center;
+    }
+    .trip-badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .ref-pill {
+      background: rgba(197, 168, 128, 0.16);
+      background-position: center;
+      color: var(--gold-light);
+      border: 1px solid rgba(197, 168, 128, 0.4);
+      padding: 4px 12px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 13px;
+      direction: ltr;
+    }
+    .exp-pill {
+      font-size: 11px;
+      color: #fde68a;
+      background: rgba(245, 158, 11, 0.14);
+      background-position: center;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+    .trip-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      justify-content: center;
+    }
+    .trip-item {
+      background: rgba(8, 17, 31, 0.65);
+      background-position: center;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 3px;
+    }
+    .trip-item.full {
+      grid-column: 1 / -1;
+    }
+    .trip-lbl {
+      font-size: 11px;
+      color: var(--ink-muted);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 2px;
+      text-align: center;
+      width: 100%;
+    }
+    .trip-val {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #fff;
+      word-break: break-word;
+      text-align: center;
+      width: 100%;
+    }
+    .payout-box {
+      margin-top: 10px;
+      background: rgba(16, 185, 129, 0.12);
+      background-position: center;
+      border: 1px solid rgba(16, 185, 129, 0.38);
+      border-radius: 11px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 4px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 12px;
+    }
+    .form-group label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-dim);
+      text-align: center;
+      width: 100%;
+    }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      min-height: 44px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #091322;
+      background-position: center;
+      color: #fff;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-family: inherit;
+      text-align: center;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      outline: 2px solid var(--gold);
+      border-color: transparent;
+    }
+    .check-box-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 10px;
+      background: rgba(197, 168, 128, 0.08);
+      background-position: center;
+      border: 1px solid rgba(197, 168, 128, 0.28);
+      border-radius: 11px;
+      padding: 11px 12px;
+      margin-bottom: 14px;
+      cursor: pointer;
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+    .check-box-row input {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--emerald);
+      flex-shrink: 0;
+    }
+    .btn-submit {
+      width: 100%;
+      min-height: 48px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #10b981, #059669);
+      background-position: center;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-submit:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+    .status-state {
+      text-align: center;
+      padding: 26px 16px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .status-icon {
+      font-size: 38px;
+    }
+    .status-title {
+      font-size: 17px;
+      font-weight: 800;
+    }
+    .status-desc {
+      font-size: 13px;
+      color: var(--ink-dim);
+      max-width: 360px;
+    }
+    .error-banner {
+      display: none;
+      background: rgba(239, 68, 68, 0.14);
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      color: #fca5a5;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="top-bar">
+      <div class="brand">
+        <div class="brand-mark">V</div>
+        <div>
+          <div class="brand-title" id="ui-brand-title">فندورا للنقل · Vendora</div>
+          <div class="brand-sub" id="ui-brand-sub">بوابة تسجيل السائق المؤقتة (رابط لمرة واحدة)</div>
+        </div>
+      </div>
+      <button type="button" class="btn-lang" id="btn-toggle-lang">English</button>
+    </header>
+
+    <!-- Status Screen (Loading / Expired / Used / Revoked / Success) -->
+    <section class="card status-state" id="status-card" style="display:flex;">
+      <div class="status-icon" id="status-icon">⏳</div>
+      <div class="status-title" id="status-title">جاري التحقق من صلاحية الرابط...</div>
+      <div class="status-desc" id="status-desc">يرجى الانتظار لحظة لتحميل تفاصيل الرحلة.</div>
+    </section>
+
+    <!-- Main Invitation Content (Visible only when token is valid & active) -->
+    <main id="invite-main" style="display:none;flex-direction:column;gap:14px;">
+      <section class="card">
+        <div class="trip-badge-row">
+          <span class="ref-pill" id="val-booking-ref">#V-000</span>
+          <span class="exp-pill" id="val-expiry-badge">⏳ صالح لفترة محدودة</span>
+        </div>
+        <div class="trip-grid">
+          <div class="trip-item">
+            <span class="trip-lbl" id="lbl-date">📅 تاريخ الرحلة</span>
+            <span class="trip-val" id="val-date">—</span>
+          </div>
+          <div class="trip-item">
+            <span class="trip-lbl" id="lbl-time">⏰ وقت الاستلام (12 ساعة)</span>
+            <span class="trip-val" id="val-time" dir="ltr">—</span>
+          </div>
+          <div class="trip-item full">
+            <span class="trip-lbl" id="lbl-pickup">📍 منطقة الاستلام (Pickup)</span>
+            <span class="trip-val" id="val-pickup">—</span>
+          </div>
+          <div class="trip-item full">
+            <span class="trip-lbl" id="lbl-dest">🏁 منطقة الوجهة (Drop-off)</span>
+            <span class="trip-val" id="val-dest">—</span>
+          </div>
+          <div class="trip-item">
+            <span class="trip-lbl" id="lbl-pax">👥 الركاب والأمتعة</span>
+            <span class="trip-val" id="val-pax">—</span>
+          </div>
+          <div class="trip-item">
+            <span class="trip-lbl" id="lbl-veh-req">🚘 المركبة المطلوبة</span>
+            <span class="trip-val" id="val-veh-req">—</span>
+          </div>
+        </div>
+        <div class="payout-box" id="payout-box" style="display:none;">
+          <span style="font-size:12px;font-weight:800;color:#6ee7b7;" id="lbl-payout">💵 مستحق السائق المتفق عليه:</span>
+          <strong style="font-size:15px;font-weight:900;color:#fff;direction:ltr;" id="val-payout">—</strong>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 style="font-size:15px;font-weight:800;color:var(--gold-light);margin-bottom:12px;" id="hdr-form">
+          🚗 بيانات السائق والمركبة لاعتماد التكليف
+        </h2>
+        <div class="error-banner" id="form-error"></div>
+        <form id="driver-invite-form" novalidate>
+          <div class="form-group">
+            <label for="inp-driver-phone" id="lbl-f-phone">رقم الجوال (واتساب مع رمز الدولة) *</label>
+            <input type="tel" id="inp-driver-phone" dir="ltr" required autocomplete="tel" placeholder="+966 5X XXX XXXX / +973 XXXX XXXX">
+          </div>
+          <div class="form-group">
+            <label for="inp-driver-name" id="lbl-f-name">الاسم الكامل للسائق (اختياري)</label>
+            <input type="text" id="inp-driver-name" autocomplete="name" placeholder="مثال: أبو سلمان / محمد الدوسري">
+          </div>
+          <div class="form-group">
+            <label for="inp-vehicle-type" id="lbl-f-vehtype">نوع وموديل المركبة (اختياري)</label>
+            <input type="text" id="inp-vehicle-type" placeholder="مثال: جمس يوكن XL 2025 / كامري">
+          </div>
+          <div class="form-group">
+            <label for="inp-vehicle-plate" id="lbl-f-plate">رقم لوحة المركبة (اختياري)</label>
+            <input type="text" id="inp-vehicle-plate" dir="ltr" placeholder="مثال: KSA 1234 ABC / BH 55441">
+          </div>
+          <div class="form-group">
+            <label for="inp-driver-notes" id="lbl-f-notes">ملاحظة إضافية للمنسق (اختياري)</label>
+            <input type="text" id="inp-driver-notes" placeholder="مثال: جاهز للاستلام قبل الموعد بـ 15 دقيقة">
+          </div>
+          <label class="check-box-row">
+            <input type="checkbox" id="chk-agree-terms" checked>
+            <span id="lbl-agree-terms">أؤكد استعدادي لتنفيذ الرحلة في الموعد المحدد والموافقة على تفاصيل ومستحق الرحلة.</span>
+          </label>
+          <button type="submit" class="btn-submit" id="btn-submit-driver">
+            <span>✓</span>
+            <span id="txt-submit-btn">تأكيد بياناتي</span>
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    'use strict';
+    const COPY = {
+      ar: {
+        brandTitle: 'فندورا للنقل · Vendora',
+        brandSub: 'بوابة تسجيل السائق المؤقتة (رابط لمرة واحدة)',
+        langBtn: 'English',
+        loadingTitle: 'جاري التحقق من صلاحية الرابط...',
+        loadingDesc: 'يرجى الانتظار لحظة لتحميل تفاصيل الرحلة.',
+        date: '📅 تاريخ الرحلة',
+        time: '⏰ وقت الاستلام (12 ساعة)',
+        pickup: '📍 منطقة الاستلام (Pickup)',
+        dest: '🏁 منطقة الوجهة (Drop-off)',
+        pax: '👥 الركاب والأمتعة',
+        vehReq: '🚘 المركبة المطلوبة',
+        payout: '💵 مستحق السائق المتفق عليه:',
+        formHdr: '🚗 بيانات السائق لتأكيد التكليف',
+        fName: 'الاسم الكامل للسائق (اختياري)',
+        fPhone: 'رقم الجوال (واتساب مع رمز الدولة) *',
+        fVeh: 'نوع وموديل المركبة (اختياري)',
+        fPlate: 'رقم لوحة المركبة (اختياري)',
+        fNotes: 'ملاحظة إضافية للمنسق (اختياري)',
+        agree: 'أؤكد استعدادي لتنفيذ الرحلة في الموعد المحدد والموافقة على تفاصيل ومستحق الرحلة.',
+        submit: 'تأكيد بياناتي',
+        submitting: 'جاري التأكيد...',
+        errRequired: 'يرجى إدخال رقم الجوال بشكل صحيح (6 أرقام على الأقل).',
+        expiredTitle: 'انتهت صلاحية هذا الرابط المؤقت',
+        expiredDesc: 'هذا الرابط مخصص لفترة زمنية محددة وقد انتهت صلاحيته. يرجى التواصل مع منسق فندورا لطلب رابط جديد.',
+        usedTitle: 'تم استخدام هذا الرابط مسبقاً ✓',
+        usedDesc: 'تم إرسال بيانات السائق لهذه الرحلة بالفعل. لا يمكن استخدام الرابط المؤقت أكثر من مرة واحدة.',
+        revokedTitle: 'تم إلغاء هذا الرابط من قِبل الإدارة',
+        revokedDesc: 'قام منسق التشغيل بإلغاء أو تحديث رابط التكليف لهذه الرحلة.',
+        invalidTitle: 'رابط غير صالح',
+        invalidDesc: 'تأكد من فتح الرابط الكامل المرسل لك من منسق فندورا للنقل.',
+        successTitle: 'تم استلام بياناتك بنجاح! ✓',
+        successDesc: 'تم استلام وتأكيد بيانات السائق بنجاح. سيقوم قسم التشغيل بمراجعة بياناتك والتواصل معك عبر واتساب.'
+      },
+      en: {
+        brandTitle: 'Vendora Transport',
+        brandSub: 'Temporary Driver Assignment Portal (Single-Use Link)',
+        langBtn: 'العربية',
+        loadingTitle: 'Verifying invitation link...',
+        loadingDesc: 'Please wait while trip details are securely loaded.',
+        date: '📅 Travel Date',
+        time: '⏰ Pickup Time (12-Hour)',
+        pickup: '📍 Pickup Area',
+        dest: '🏁 Destination Area',
+        pax: '👥 Passengers & Luggage',
+        vehReq: '🚘 Requested Vehicle',
+        payout: '💵 Agreed Driver Payout:',
+        formHdr: '🚗 Driver Details for Assignment',
+        fName: 'Driver Full Name (Optional)',
+        fPhone: 'Mobile / WhatsApp Number (with country code) *',
+        fVeh: 'Vehicle Make & Model (Optional)',
+        fPlate: 'Vehicle Plate Number (Optional)',
+        fNotes: 'Additional Note for Dispatch (Optional)',
+        agree: 'I confirm my availability for this schedule and accept the trip terms.',
+        submit: 'Confirm My Details',
+        submitting: 'Submitting...',
+        errRequired: 'Please enter a valid mobile number (at least 6 digits).',
+        expiredTitle: 'Invitation Link Expired',
+        expiredDesc: 'This temporary driver link has expired. Please contact Vendora Dispatch if you need a new link.',
+        usedTitle: 'Link Already Submitted ✓',
+        usedDesc: 'Driver details have already been submitted using this single-use link.',
+        revokedTitle: 'Invitation Cancelled',
+        revokedDesc: 'This temporary link was revoked by Vendora Dispatch.',
+        invalidTitle: 'Invalid Invitation Link',
+        invalidDesc: 'Please make sure you opened the complete link sent by Vendora Dispatch.',
+        successTitle: 'Driver Details Submitted! ✓',
+        successDesc: 'Driver details have been received and recorded. Vendora Dispatch will reach out via WhatsApp.'
+      }
+    };
+
+    let lang = 'ar';
+    let activeInvite = null;
+    const params = new URLSearchParams(window.location.search);
+    let token = params.get('t') || '';
+    if (!token) {
+      const match = window.location.pathname.match(/\/(?:driver\/invite|driver-invite|d)\/([^/?#]+)/i);
+      if (match && match[1]) {
+        token = decodeURIComponent(match[1]);
+      }
+    }
+
+    function $(id) { return document.getElementById(id); }
+
+    function applyLang() {
+      const c = COPY[lang];
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      $('ui-brand-title').textContent = c.brandTitle;
+      $('ui-brand-sub').textContent = c.brandSub;
+      $('btn-toggle-lang').textContent = c.langBtn;
+      $('lbl-date').textContent = c.date;
+      $('lbl-time').textContent = c.time;
+      $('lbl-pickup').textContent = c.pickup;
+      $('lbl-dest').textContent = c.dest;
+      $('lbl-pax').textContent = c.pax;
+      $('lbl-veh-req').textContent = c.vehReq;
+      $('lbl-payout').textContent = c.payout;
+      $('hdr-form').textContent = c.formHdr;
+      $('lbl-f-name').textContent = c.fName;
+      $('lbl-f-phone').textContent = c.fPhone;
+      $('lbl-f-vehtype').textContent = c.fVeh;
+      $('lbl-f-plate').textContent = c.fPlate;
+      $('lbl-f-notes').textContent = c.fNotes;
+      $('lbl-agree-terms').textContent = c.agree;
+      $('txt-submit-btn').textContent = c.submit;
+    }
+
+    $('btn-toggle-lang').onclick = () => {
+      lang = lang === 'ar' ? 'en' : 'ar';
+      applyLang();
+    };
+
+    function showStatusScreen(icon, title, desc) {
+      $('invite-main').style.display = 'none';
+      const sc = $('status-card');
+      sc.style.display = 'flex';
+      $('status-icon').textContent = icon;
+      $('status-title').textContent = title;
+      $('status-desc').textContent = desc;
+    }
+
+    async function initInvitePage() {
+      applyLang();
+      const c = COPY[lang];
+      if (!token || (token.length < 16 && !token.startsWith('v1.'))) {
+        showStatusScreen('⚠️', c.invalidTitle, c.invalidDesc);
+        return;
+      }
+
+      let data = null;
+      try {
+        const res = await fetch(`/api/transport/driver-invite?t=${encodeURIComponent(token)}`, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' },
+          cache: 'no-store'
+        });
+        data = await res.json();
+      } catch {
+        data = { ok: false, code: 'DURABLE_STORAGE_REQUIRED' };
+      }
+
+      if (!data || !data.ok || !data.invite) {
+        const code = (data && data.code) || 'INVALID';
+        if (code === 'EXPIRED') showStatusScreen('⌛', c.expiredTitle, c.expiredDesc);
+        else if (code === 'USED') showStatusScreen('✅', c.usedTitle, c.usedDesc);
+        else if (code === 'REVOKED') showStatusScreen('🚫', c.revokedTitle, c.revokedDesc);
+        else showStatusScreen('⚠️', c.invalidTitle, (data && data.error) || c.invalidDesc);
+        return;
+      }
+
+      activeInvite = data.invite;
+      $('status-card').style.display = 'none';
+      $('invite-main').style.display = 'flex';
+
+      $('val-booking-ref').textContent = '#' + (activeInvite.bookingId || 'V-001');
+      $('val-date').textContent = activeInvite.travelDate || '—';
+      $('val-time').textContent = activeInvite.pickupTime12h || '—';
+      $('val-pickup').textContent = activeInvite.pickupArea || '—';
+      $('val-dest').textContent = activeInvite.destArea || '—';
+      const paxLug = [
+        activeInvite.passengers ? `${activeInvite.passengers} pax` : '',
+        activeInvite.luggage || ''
+      ].filter(Boolean).join(' · ') || '1 pax';
+      $('val-pax').textContent = paxLug;
+      $('val-veh-req').textContent = activeInvite.vehicleReq || (lang === 'ar' ? 'مركبة خاصة' : 'Executive Vehicle');
+
+      if (activeInvite.payoutDisplay) {
+        $('payout-box').style.display = 'flex';
+        $('val-payout').textContent = activeInvite.payoutDisplay;
+      }
+
+      if (activeInvite.expiresAt) {
+        const minsLeft = Math.max(1, Math.round((Number(activeInvite.expiresAt) - Date.now()) / 60000));
+        if (lang === 'ar') {
+          $('val-expiry-badge').textContent = minsLeft > 60
+            ? `⏳ متبقي ${Math.ceil(minsLeft / 60)} ساعة`
+            : `⏳ متبقي ${minsLeft} دقيقة`;
+        } else {
+          $('val-expiry-badge').textContent = minsLeft > 60
+            ? `⏳ ${Math.ceil(minsLeft / 60)}h remaining`
+            : `⏳ ${minsLeft}m remaining`;
+        }
+      }
+    }
+
+    let isSubmittingInvite = false;
+    $('driver-invite-form').onsubmit = async e => {
+      e.preventDefault();
+      if (isSubmittingInvite) return;
+      const c = COPY[lang];
+      const errEl = $('form-error');
+      errEl.style.display = 'none';
+
+      const driverPhone = $('inp-driver-phone').value.trim();
+      const driverName = $('inp-driver-name').value.trim();
+      const vehicleType = $('inp-vehicle-type').value.trim();
+      const vehiclePlate = $('inp-vehicle-plate').value.trim();
+      const driverNotes = $('inp-driver-notes').value.trim();
+      const agreedPayout = $('chk-agree-terms').checked;
+
+      const digits = driverPhone.replace(/\D/g, '');
+      if (!driverPhone || digits.length < 6) {
+        errEl.textContent = c.errRequired;
+        errEl.style.display = 'block';
+        return;
+      }
+
+      isSubmittingInvite = true;
+      const btn = $('btn-submit-driver');
+      btn.disabled = true;
+      $('txt-submit-btn').textContent = c.submitting;
+
+      let result = null;
+      try {
+        const res = await fetch('/api/transport/driver-invite', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            action: 'submit',
+            token,
+            driverName,
+            driverPhone,
+            vehicleType,
+            vehiclePlate,
+            driverNotes,
+            agreedPayout
+          })
+        });
+        result = await res.json();
+      } catch {
+        result = { ok: false, error: 'Could not reach server. Please try again.' };
+      }
+
+      if (result && result.ok) {
+        showStatusScreen('✅', COPY[lang].successTitle, COPY[lang].successDesc);
+      } else {
+        isSubmittingInvite = false;
+        btn.disabled = false;
+        $('txt-submit-btn').textContent = c.submit;
+        if (result && result.code === 'USED') {
+          showStatusScreen('✅', c.usedTitle, c.usedDesc);
+          return;
+        }
+        if (result && result.code === 'REVOKED') {
+          showStatusScreen('🚫', c.revokedTitle, c.revokedDesc);
+          return;
+        }
+        if (result && result.code === 'EXPIRED') {
+          showStatusScreen('⌛', c.expiredTitle, c.expiredDesc);
+          return;
+        }
+        errEl.textContent = (result && result.error) || c.expiredDesc;
+        errEl.style.display = 'block';
+      }
+    };
+
+    initInvitePage();
+  </script>
+</body>
+</html>

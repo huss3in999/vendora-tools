@@ -1,3 +1,6 @@
+import businessConfig from './bahrain-saudi-gcc-transport/config/business-config.json' with { type: 'json' };
+import routeProfiles from './bahrain-saudi-gcc-transport/config/route-profiles.mjs';
+import { businessEntity, serviceEntity, offerCatalog, pricingCopy } from './bahrain-saudi-gcc-transport/assets/trust-schema.mjs';
 import * as passengerCareApi from './functions/api/transport/passenger-care.js';
 import * as routeReviewsApi from './functions/api/transport/route-reviews.js';
 import * as complaintsApi from './functions/api/transport/complaints.js';
@@ -13,6 +16,8 @@ import { DEFAULT_PUBLIC_SETTINGS, getPublicConfig } from './functions/api/transp
 import { recordError } from './functions/api/transport/error-log.js';
 import * as nadaMenuApi from './functions/api/nada/menu.js';
 import * as marocMarketApi from './functions/api/maroc-market/image.js';
+import * as bookingDeskApi from './functions/api/transport/booking-desk.js';
+import * as driverInviteApi from './functions/api/transport/driver-invite.js';
 
 
 const SITE_PATH_PREFIX = '/bahrain-saudi-gcc-transport';
@@ -23,10 +28,14 @@ function escapeHtml(value) {
   }[char]));
 }
 
-function transportRouteSlug(pathname) {
+function rawTransportPageSlug(pathname) {
   const parts = pathname.replace(SITE_PATH_PREFIX, '').split('/').filter(Boolean);
   if (parts[0] === 'en') parts.shift();
-  const slug = parts[0] || 'home';
+  return parts[0] || 'home';
+}
+
+function transportRouteSlug(pathname) {
+  const slug = rawTransportPageSlug(pathname);
   const aliases = {
     'king-fahd-causeway-guide': 'king-fahd-causeway',
     'dammam-airport-to-bahrain': 'bahrain-to-dammam-airport',
@@ -36,7 +45,89 @@ function transportRouteSlug(pathname) {
     'abu-dhabi-to-bahrain': 'bahrain-to-abu-dhabi',
     'khafji-to-bahrain': 'bahrain-to-khafji',
   };
-  return aliases[slug] || slug;
+  if (aliases[slug]) return aliases[slug];
+  // Reverse-direction route detail pages still use the canonical route fare.
+  if (slug.endsWith('-to-bahrain')) return `bahrain-to-${slug.slice(0, -'-to-bahrain'.length)}`;
+  return slug;
+}
+
+function routeDisplayName(route, pageSlug, lang) {
+  if (!route) return lang === 'en' ? 'Transport information' : 'معلومات النقل';
+  const rawName = lang === 'en' ? route.route_name_en : route.route_name_ar;
+  if (String(pageSlug || '').endsWith('-to-bahrain')) {
+    if (lang === 'en' && /^Bahrain to /i.test(rawName)) {
+      return `${rawName.replace(/^Bahrain to /i, '')} to Bahrain`;
+    }
+    if (lang !== 'en' && /^البحرين إلى /.test(rawName)) {
+      return `${rawName.replace(/^البحرين إلى /, '')} إلى البحرين`;
+    }
+  }
+  return rawName;
+}
+
+function priceVisibilityForPage(settings, route) {
+  const hiddenGroups = new Set(Array.isArray(settings?.hidden_price_destination_groups) ? settings.hidden_price_destination_groups : []);
+  return settings?.public_prices_enabled === false
+    || route?.is_price_hidden === true
+    || route?.public_price_enabled === false
+    || hiddenGroups.has(route?.price_visibility_group);
+}
+
+function hiddenPriceMarkup(settings, lang) {
+  const label = lang === 'en' ? 'Get Live Seasonal Quote' : 'احصل على عرض سعر موسمي فوري';
+  const style = 'color:var(--brand-gold,#d5ae5a);font-weight:800;text-decoration:underline;text-underline-offset:3px';
+  const phone = settings?.booking_whatsapp_enabled === false ? '' : String(settings?.booking_whatsapp || '').replace(/\D/g, '');
+  if (!phone) return `<span class="vendora-hidden-price-cta" data-vendora-hidden-price style="${style}">${label}</span>`;
+  const message = lang === 'en' ? 'Hello, please send me the price for this route.' : 'السلام عليكم، أرجو إرسال سعر هذا المسار.';
+  return `<a class="vendora-hidden-price-cta" data-vendora-hidden-price data-track-wa data-wa-message="${escapeHtml(message)}" style="${style}" href="https://wa.me/${escapeHtml(phone)}?text=${encodeURIComponent(message)}">${label}</a>`;
+}
+
+function currencyAmountPattern() {
+  return /(?:\d[\d,]*(?:\.\d+)?\s*(?:BHD|BD|SAR|QAR|AED|KWD|OMR|د\.ب|ر\.س|ر\.ق|د\.إ|د\.ك|ر\.ع)|(?:BHD|BD|SAR|QAR|AED|KWD|OMR|د\.ب|ر\.س|ر\.ق|د\.إ|د\.ك|ر\.ع)\s*\d[\d,]*(?:\.\d+)?)(?:\s*(?:\/|\s*لـ|\s*per)\s*(?:ساعة|hour|يوم|day))?(?:\s*\([^)]*(?:BHD|BD|SAR|QAR|AED|KWD|OMR|د\.ب|ر\.س|ر\.ق|د\.إ|د\.ك|ر\.ع)[^)]*\))?/gi;
+}
+
+function redactPriceText(value, replacement) {
+  return String(value || '').replace(currencyAmountPattern(), replacement);
+}
+
+function fareTextPattern() {
+  return /(?:\d[\d,]*(?:\.\d+)?\s*(?:BHD|BD|د\.ب)|(?:BHD|BD|د\.ب)\s*\d[\d,]*(?:\.\d+)?)(?:\s*\([^)]*(?:SAR|ر\.س)[^)]*\))?/gi;
+}
+
+function formatPublicFare(route, settings, lang) {
+  const amount = Number(route?.price_bhd);
+  if (!Number.isFinite(amount)) return '';
+  const formatted = Number.isInteger(amount) ? String(amount) : amount.toFixed(3).replace(/0+$/, '').replace(/\.$/, '');
+  const isEn = lang === 'en';
+  const currency = isEn ? 'BHD' : 'د.ب';
+  const sar = route.approximate_sar_enabled ? Math.round(amount * Number(settings?.sar_per_bhd || 10)).toLocaleString(isEn ? 'en' : 'ar') : null;
+  const approximate = sar ? (isEn ? ` (approx. SAR ${sar})` : ` (تقريباً ${sar} ر.س)`) : '';
+  return `${formatted} ${currency}${approximate}`;
+}
+
+function refreshFareText(value, route, settings, lang) {
+  const fare = formatPublicFare(route, settings, lang);
+  return fare ? String(value || '').replace(fareTextPattern(), fare) : String(value || '');
+}
+
+function failClosedPriceHtml(response, pathname) {
+  if (!response.headers.get('content-type')?.includes('text/html') || typeof HTMLRewriter === 'undefined') return response;
+  const lang = pathname.includes('/en/') || !pathname.startsWith(`${SITE_PATH_PREFIX}/`) ? 'en' : 'ar';
+  const replacement = lang === 'en' ? 'Get Live Seasonal Quote' : 'احصل على عرض سعر موسمي فوري';
+  const rewritten = new HTMLRewriter()
+    .on('script[type="application/ld+json"]', { element(element) { element.remove(); } })
+    .on('meta[content]', { element(element) {
+      const content = element.getAttribute('content') || '';
+      if (currencyAmountPattern().test(content)) element.setAttribute('content', redactPriceText(content, replacement));
+    } })
+    .on('title', { text(text) { text.replace(redactPriceText(text.text, replacement)); } })
+    .on('body', { text(text) {
+      if (currencyAmountPattern().test(text.text)) text.replace(redactPriceText(text.text, replacement));
+    } })
+    .transform(response);
+  const headers = new Headers(rewritten.headers);
+  headers.set('content-type', 'text/html; charset=utf-8');
+  return new Response(rewritten.body, { status: rewritten.status, statusText: rewritten.statusText, headers });
 }
 
 function priceSection(route, lang, sarRate) {
@@ -66,65 +157,18 @@ function priceSection(route, lang, sarRate) {
   return `<section class="section public-price-section" data-public-price="${escapeHtml(route.route_slug)}"><div class="container"><div class="public-price-card glass"><span class="public-price-kicker">${title}</span><div class="public-price-line"><strong>${price}</strong>${sarText}</div><p>${unit}</p><ul><li>${escapeHtml(included)}</li><li>${escapeHtml(notice)}</li></ul><a class="wa-inline" data-booking-submit data-public-price-cta href="#">${isEn ? 'Prepare request on WhatsApp' : 'جهّز الطلب عبر واتساب'}</a></div></div></section>`;
 }
 
-function publicSchema(url, config, route, lang) {
+function publicSchema(url, config, route, lang, pageSlug = '') {
   const settings = config.settings || DEFAULT_PUBLIC_SETTINGS;
-  const base = `${SITE_PATH_PREFIX}/`;
-  const graph = [{
-    '@type': 'Organization',
-    '@id': 'https://getvendora.net/#organization',
-    name: 'Vendora Transport',
-    url: 'https://getvendora.net/',
-    logo: 'https://getvendora.net/bahrain-saudi-gcc-transport/assets/brand/vendora-transport-logo-light.svg',
-    description: lang === 'en' ? settings.service_description_en : settings.service_description_ar,
-    telephone: settings.booking_whatsapp_enabled ? `+${settings.booking_whatsapp}` : undefined,
-  }, {
-    '@type': 'WebSite',
-    '@id': 'https://getvendora.net/#website',
-    url: 'https://getvendora.net/',
-    name: 'Vendora Transport',
-    inLanguage: ['ar', 'en'],
-  }, {
-    '@type': 'WebPage',
-    '@id': `${url}#webpage`,
-    url,
-    inLanguage: lang,
-    isPartOf: { '@id': 'https://getvendora.net/#website' },
-  }, {
-    '@type': 'BreadcrumbList',
-    '@id': `${url}#breadcrumb`,
-    itemListElement: [{
-      '@type': 'ListItem',
-      position: 1,
-      name: lang === 'en' ? 'Transport home' : 'الرئيسية',
-      item: `https://getvendora.net${base}${lang === 'en' ? 'en/' : ''}`,
-    }, {
-      '@type': 'ListItem',
-      position: 2,
-      name: route ? (lang === 'en' ? route.route_name_en : route.route_name_ar) : (lang === 'en' ? 'Transport information' : 'معلومات النقل'),
-      item: url,
-    }],
-  }];
-  if (route) {
-    const service = {
-      '@type': 'Service',
-      '@id': `${url}#service`,
-      name: lang === 'en' ? route.route_name_en : route.route_name_ar,
-      provider: { '@id': 'https://getvendora.net/#organization' },
-      areaServed: ['BH', 'SA', 'KW', 'QA', 'AE', 'OM', 'IQ'],
-    };
-    if (route.price_bhd != null) {
-      service.offers = {
-        '@type': 'Offer',
-        priceCurrency: 'BHD',
-        price: Number(route.price_bhd),
-        description: route.price_kind === 'from'
-          ? (lang === 'en' ? 'Starting public price per complete vehicle' : 'سعر عام ابتدائي للمركبة كاملة')
-          : (lang === 'en' ? 'Standard public price per complete vehicle' : 'السعر العام القياسي للمركبة كاملة'),
-      };
-    }
-    graph.push(service);
+  const graph = [businessEntity(businessConfig, lang),
+    { '@type':'WebSite', '@id':'https://getvendora.net/#website', url:'https://getvendora.net/', name:businessConfig.brand_display_name, inLanguage:['ar','en'] },
+    { '@type':'WebPage', '@id':url+'#webpage', url, inLanguage:lang, isPartOf:{ '@id':'https://getvendora.net/#website' } }];
+  const profile = routeProfiles[pageSlug];
+  if (route || profile) {
+    const item = route || { route_slug:pageSlug, public_price_enabled:false };
+    graph.push(serviceEntity(item, settings, lang, url, profile));
+    graph.push(offerCatalog([item], settings, lang, url, { [item.route_slug]:profile }));
   }
-  return JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
+  return JSON.stringify({ '@context':'https://schema.org', '@graph':graph }).replace(/</g, '\\u003c');
 }
 
 function formatBahrainPhone(value) {
@@ -166,12 +210,24 @@ function publicPricingRoutes(config) {
   ));
 }
 
+function allActivePricingRoutes(config) {
+  return (config.routes || []).filter((route) => route.is_active !== false);
+}
+
 function pricingCards(config, lang) {
   const isEn = lang === 'en';
   const settings = config.settings || DEFAULT_PUBLIC_SETTINGS;
   const phone = settings.booking_whatsapp_enabled ? settings.booking_whatsapp : '';
-  return publicPricingRoutes(config).map((route) => {
-    const amount = Number(route.price_bhd).toFixed(Number(route.price_bhd) % 1 ? 3 : 0);
+  const hiddenGroups = new Set(Array.isArray(settings.hidden_price_destination_groups) ? settings.hidden_price_destination_groups : []);
+  return allActivePricingRoutes(config).map((route) => {
+    const hidden = settings.public_prices_enabled === false
+      || route.is_price_hidden === true
+      || route.public_price_enabled === false
+      || hiddenGroups.has(route.price_visibility_group)
+      || route.price_kind === 'request_quote'
+      || route.price_bhd == null
+      || !Number.isFinite(Number(route.price_bhd));
+    const amount = hidden ? '' : Number(route.price_bhd).toFixed(Number(route.price_bhd) % 1 ? 3 : 0);
     const name = isEn ? route.route_name_en : route.route_name_ar;
     const prefix = route.price_kind === 'from' ? (isEn ? 'From ' : 'ابتداءً من ') : '';
     const unit = route.unit_kind === 'per_day'
@@ -179,46 +235,25 @@ function pricingCards(config, lang) {
       : route.unit_kind === 'package'
         ? (isEn ? 'per package' : 'للباقة')
         : (isEn ? 'per vehicle, one way' : 'للمركبة، اتجاه واحد');
-    const sar = route.approximate_sar_enabled
+    const sar = !hidden && route.approximate_sar_enabled
       ? `<span>${isEn ? 'approx.' : 'تقريباً'} ${Math.round(Number(route.price_bhd) * Number(settings.sar_per_bhd || 10))} SAR</span>`
       : '';
     const included = isEn ? route.included_en : route.included_ar;
     const message = isEn
-      ? `Hello, I would like to check availability for ${name}.`
-      : `مرحباً، أود التحقق من توفر خدمة ${name}.`;
+      ? `Hello, I would like to ${hidden ? 'request pricing for' : 'check availability for'} ${name}.`
+      : `السلام عليكم، أود ${hidden ? 'الاستفسار عن سعر' : 'التحقق من توفر'} ${name}.`;
     const action = phone
-      ? `<a href="https://wa.me/${escapeHtml(phone)}?text=${encodeURIComponent(message)}" data-track-wa>${isEn ? 'Check availability' : 'تحقق من التوفر'}</a>`
+      ? `<a href="https://wa.me/${escapeHtml(phone)}?text=${encodeURIComponent(message)}" data-wa-message="${escapeHtml(message)}" data-track-wa>${isEn ? (hidden ? 'Get Live Seasonal Quote' : 'Check availability') : (hidden ? 'احصل على عرض سعر موسمي فوري' : 'تحقق من التوفر')}</a>`
       : '';
-    return `<article class="price-card" data-route="${escapeHtml(route.route_slug)}"><h2>${escapeHtml(name)}</h2><p class="price"><strong>${escapeHtml(prefix)}${escapeHtml(amount)} BHD</strong>${sar}</p><p>${unit}</p>${included ? `<p>${escapeHtml(included)}</p>` : ''}${action}</article>`;
+    const price = hidden
+      ? `<p class="price price-quote"><strong>${isEn ? 'Get Live Seasonal Quote' : 'احصل على عرض سعر موسمي فوري'}</strong></p>`
+      : `<p class="price"><strong>${escapeHtml(prefix)}${escapeHtml(amount)} ${isEn ? 'BHD' : 'د.ب'}</strong>${sar}</p>`;
+    return `<article class="price-card" data-route="${escapeHtml(route.route_slug)}" data-price-hidden="${hidden}"><h2>${escapeHtml(name)}</h2>${price}<p>${unit}</p>${included ? `<p>${escapeHtml(included)}</p>` : ''}${action}</article>`;
   }).join('');
 }
 
 function pricingSchema(url, config, lang) {
-  const isEn = lang === 'en';
-  const routes = publicPricingRoutes(config);
-  return JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    itemListElement: routes.map((route, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      item: {
-        '@type': 'Service',
-        name: isEn ? route.route_name_en : route.route_name_ar,
-        url: `${url}#${route.route_slug}`,
-        offers: {
-          '@type': 'Offer',
-          price: Number(route.price_bhd),
-          priceCurrency: 'BHD',
-          description: route.unit_kind === 'package'
-            ? (isEn ? 'Per complete vehicle package' : 'لباقة المركبة الكاملة')
-            : route.unit_kind === 'per_day'
-              ? (isEn ? 'Per qualifying additional vehicle day' : 'لكل يوم مركبة إضافي مؤهل')
-              : (isEn ? 'One way per complete vehicle' : 'اتجاه واحد للمركبة كاملة'),
-        },
-      },
-    })),
-  }).replace(/</g, '\\u003c');
+  return JSON.stringify(offerCatalog(config.routes || [], config.settings || DEFAULT_PUBLIC_SETTINGS, lang, url, routeProfiles)).replace(/</g, '\\u003c');
 }
 
 function homepageFaq(settings) {
@@ -248,16 +283,22 @@ function arabicDmmAuthoritySection(path, settings) {
 async function rewriteTransportHtml(request, response, env) {
   const contentType = response.headers.get('content-type') || '';
   const path = new URL(request.url).pathname;
-  if (!contentType.includes('text/html') || !path.startsWith(`${SITE_PATH_PREFIX}/`)) return response;
+  if (!contentType.includes('text/html') || !(path.startsWith(`${SITE_PATH_PREFIX}/`) || path === '/' || path === '/contact/')) return response;
   if (/\/(admin|care|ai-chat-test|api)(\/|$)/.test(path)) return response;
-  if (typeof HTMLRewriter === 'undefined' || !env.TRANSPORT_DB) return response;
+  if (typeof HTMLRewriter === 'undefined') return response;
+  if (!env.TRANSPORT_DB) return failClosedPriceHtml(response, path);
 
   let config;
-  try { config = await getPublicConfig(env); } catch { return response; }
-  const lang = path.includes('/en/') ? 'en' : 'ar';
+  try { config = await getPublicConfig(env); } catch { return failClosedPriceHtml(response, path); }
+  const lang = path.includes('/en/') || !path.startsWith(`${SITE_PATH_PREFIX}/`) ? 'en' : 'ar';
+  const pageSlug = rawTransportPageSlug(path);
   const slug = transportRouteSlug(path);
   const route = (config.routes || []).find((item) => item.route_slug === slug) || null;
   const settings = config.settings || DEFAULT_PUBLIC_SETTINGS;
+  // If settings fail to load, hide amounts server-side instead of leaking
+  // static prices while the browser waits for its settings request.
+  const hidePricesOnPage = !config.settings || priceVisibilityForPage(settings, route);
+  const refreshPricesOnPage = !hidePricesOnPage && route && Number.isFinite(Number(route.price_bhd));
   const bookingNumber = route?.whatsapp_override || settings.booking_whatsapp;
   const canonical = `https://getvendora.net${path}`;
   const serialized = JSON.stringify(config).replace(/</g, '\\u003c');
@@ -266,19 +307,53 @@ async function rewriteTransportHtml(request, response, env) {
   const transformed = new HTMLRewriter()
     .on('script[type="application/ld+json"]', { element(element) {
       if (slug === 'gcc-transport-planner') return;
-      if (element.getAttribute('id') !== 'pricesSchema') element.remove();
+      if (element.getAttribute('id') !== 'pricesSchema' && !element.hasAttribute('data-route-schema') && !element.hasAttribute('data-vendora-faq')) element.remove();
     } })
     .on('head', { element(element) {
-      element.append(`<script type="application/json" id="transport-public-config">${serialized}</script><script type="application/ld+json" data-vendora-schema>${publicSchema(canonical, config, route, lang)}</script>`, { html: true });
+      element.append(`<script type="application/json" id="transport-public-config">${serialized}</script><script type="application/ld+json" data-vendora-schema>${publicSchema(canonical, config, route, lang, pageSlug)}</script>`, { html: true });
+    } })
+    .on('meta[content]', { element(element) {
+      const content = element.getAttribute('content') || '';
+      if (hidePricesOnPage && currencyAmountPattern().test(content)) {
+        element.setAttribute('content', redactPriceText(content, lang === 'en' ? 'Get Live Seasonal Quote' : 'احصل على عرض سعر موسمي فوري'));
+      } else if (refreshPricesOnPage && fareTextPattern().test(content)) {
+        element.setAttribute('content', refreshFareText(content, route, settings, lang));
+      }
+    } })
+    .on('title', { text(text) {
+      if (hidePricesOnPage) text.replace(redactPriceText(text.text, lang === 'en' ? 'Get Live Seasonal Quote' : 'احصل على عرض سعر موسمي فوري'));
+      else if (refreshPricesOnPage) text.replace(refreshFareText(text.text, route, settings, lang));
+    } })
+    .on('script[src]', { element(element) {
+      const src = element.getAttribute('src') || '';
+      if (!/(?:^|\/)(?:site\.js|prices-page\.js|gcc-transport-planner\.js)(?:\?|$)/.test(src)) return;
+      element.setAttribute('src', `${src.split('?')[0]}?v=20261020-trust-pricing`);
+    } })
+    .on('body', { text(text) {
+      if (hidePricesOnPage && currencyAmountPattern().test(text.text)) {
+        text.replace(redactPriceText(text.text, hiddenPriceMarkup(settings, lang)), { html: true });
+      } else if (refreshPricesOnPage && fareTextPattern().test(text.text)) {
+        text.replace(refreshFareText(text.text, route, settings, lang));
+      }
+    } })
+    .on('[data-pricing-mode]', { element(element) {
+      element.setInnerContent(pricingCopy[lang][settings.public_prices_enabled === true ? 'fixed' : 'seasonal']);
+    } })
+    .on('.route-fare-badge', { element(element) {
+      if (pageSlug === 'contact') element.setInnerContent(pricingCopy[lang][settings.public_prices_enabled === true ? 'fixed' : 'seasonal']);
+    } })
+    .on('[data-live-route-fare]', { element(element) {
+      element.setInnerContent(hidePricesOnPage || !route || route.price_bhd == null ? hiddenPriceMarkup(settings, lang) : escapeHtml(formatPublicFare(route,settings,lang)), {html:true});
     } })
     .on('#priceList', { element(element) {
       if (isPricingPage) element.setInnerContent(pricingCards(config, lang), { html: true });
     } })
+    .on('[data-contact-prices]', { element(element) {
+      const routes=(config.routes||[]).filter(r=>['bahrain-to-khobar','bahrain-to-dammam-airport','bahrain-to-riyadh'].includes(r.route_slug));
+      element.setInnerContent(pricingCards({...config,routes},lang),{html:true});
+    } })
     .on('#pricesSchema', { element(element) {
       if (isPricingPage) element.setInnerContent(pricingSchema(canonical, config, lang));
-    } })
-    .on('.faq-wrap', { element(element) {
-      if (slug === 'home' && lang === 'ar') element.setInnerContent(homepageFaq(settings), { html: true });
     } })
     .on('.phase7-authority-links', { element(element) {
       element.remove();
@@ -287,9 +362,38 @@ async function rewriteTransportHtml(request, response, env) {
       if (lang === 'ar') element.remove();
     } })
     .on('a', { element(element) {
-      const href = element.getAttribute('href') || '';
+      let href = element.getAttribute('href') || '';
       if (/https:\/\/wa\.me\/\d+/i.test(href) && bookingNumber) {
-        element.setAttribute('href', href.replace(/https:\/\/wa\.me\/\d+/i, `https://wa.me/${bookingNumber}`));
+        href = href.replace(/https:\/\/wa\.me\/\d+/i, `https://wa.me/${bookingNumber}`);
+        element.setAttribute('href', href);
+      }
+      if (hidePricesOnPage) {
+        const waMsg = element.getAttribute('data-wa-message');
+        if (waMsg && currencyAmountPattern().test(waMsg)) {
+          const cleaned = waMsg
+            .replace(currencyAmountPattern(), '')
+            .replace(/\s*[—–-]\s*(?:للمركبة كاملة|رسوم الجسر مشمولة|Complete vehicle|Toll included)[^.]*/gi, '')
+            .replace(/\s*\(\s*\)/g, '')
+            .replace(/\s{2,}/g, ' ')
+            .trim();
+          element.setAttribute('data-wa-message', cleaned);
+        }
+        if (href.includes('text=') && currencyAmountPattern().test(decodeURIComponent(href))) {
+          try {
+            const urlObj = new URL(href);
+            const textParam = urlObj.searchParams.get('text');
+            if (textParam && currencyAmountPattern().test(textParam)) {
+              const cleanedText = textParam
+                .replace(currencyAmountPattern(), '')
+                .replace(/\s*[—–-]\s*(?:للمركبة كاملة|رسوم الجسر مشمولة|Complete vehicle|Toll included)[^.]*/gi, '')
+                .replace(/\s*\(\s*\)/g, '')
+                .replace(/\s{2,}/g, ' ')
+                .trim();
+              urlObj.searchParams.set('text', cleanedText);
+              element.setAttribute('href', urlObj.toString());
+            }
+          } catch {}
+        }
       }
       if ((element.getAttribute('data-wa-message') != null || element.getAttribute('data-booking-submit') != null) && !settings.booking_whatsapp_enabled) {
         element.removeAttribute('href');
@@ -332,7 +436,7 @@ function logicalPathname(url) {
 
 function secureAssetResponse(request, response) {
   const pathname = new URL(request.url).pathname;
-  const privatePath = /\/(?:admin|care|ai-chat-test|api|scratch|tests|test-results)(?:\/|$)/i.test(pathname);
+  const privatePath = /\/(?:admin|care|ai-chat-test|api|scratch|tests|test-results|booking-desk|desk)(?:\/|$)/i.test(pathname);
   const staticAsset = /\.(?:js|css|svg|webp|avif|png|jpe?g|gif|ico|woff2?|json)$/i.test(pathname);
   const longLivedAsset = /\.(?:webp|avif|png|jpe?g|gif|ico|woff2?)$/i.test(pathname);
   const headers = new Headers(response.headers);
@@ -411,6 +515,11 @@ export default {
     const path = logicalPathname(url);
 
     try {
+      // Short public entry paths resolve to one canonical transport URL.
+      const publicSlug = url.pathname.replace(/^\/|\/$/g, '');
+      if (publicSlug === 'prices' || Object.hasOwn(routeProfiles, publicSlug)) {
+        return Response.redirect(`${url.origin}${SITE_PATH_PREFIX}/${publicSlug}/${url.search}`, 301);
+      }
       if (path === '/ai-chat-test' || path.startsWith('/ai-chat-test/')
         || path === '/scratch' || path.startsWith('/scratch/')
         || path === '/tests' || path.startsWith('/tests/')
@@ -522,6 +631,33 @@ export default {
 
       if (path === '/api/transport/public-settings') {
         return await dispatchPagesFunction(publicSettingsApi, request, env, ctx);
+      }
+
+      if (path === '/api/transport/booking-desk') {
+        return await dispatchPagesFunction(bookingDeskApi, request, env, ctx);
+      }
+
+      if (path === '/api/transport/driver-invite') {
+        return await dispatchPagesFunction(driverInviteApi, request, env, ctx);
+      }
+
+      if (path === '/desk' || path === '/desk/') {
+        return Response.redirect(`${url.origin}/booking-desk/`, 302);
+      }
+
+      if (path === '/driver/invite' || path === '/driver/invite/' || path.startsWith('/driver/invite/')
+        || path === '/driver-invite' || path === '/driver-invite/' || path.startsWith('/driver-invite/')
+        || path.startsWith('/d/')) {
+        let rawToken = '';
+        if (path.startsWith('/d/')) {
+          rawToken = path.slice('/d/'.length).replace(/^\/+/, '').trim();
+        } else {
+          const prefix = path.startsWith('/driver/invite') ? '/driver/invite' : '/driver-invite';
+          rawToken = path.slice(prefix.length).replace(/^\/+/, '').trim();
+        }
+        const targetUrl = new URL(`/booking-desk/driver-invite/${rawToken ? `?t=${encodeURIComponent(rawToken)}` : ''}`, url.origin);
+        const assetResponse = await env.ASSETS.fetch(new Request(targetUrl, request));
+        return secureAssetResponse(request, assetResponse);
       }
 
       if (path === '/api/nada/health'

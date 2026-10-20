@@ -73,7 +73,7 @@ test.describe('real Wrangler HTML response integration', () => {
     await waitForWrangler();
   });
 
-  test.afterAll(() => {
+  test.afterAll(async () => {
     if (connectedOrigin) return;
     if (wrangler && wrangler.exitCode == null) {
       if (process.platform === 'win32') {
@@ -88,7 +88,9 @@ test.describe('real Wrangler HTML response integration', () => {
     if (dirname(cleanupPath) !== resolve(testCacheRoot) || !cleanupPath.endsWith(`integration-test-${process.pid}`)) {
       throw new Error('Refusing cleanup outside the Wrangler test directory');
     }
-    rmSync(cleanupPath, { recursive: true, force: true, maxRetries: 20, retryDelay: 250 });
+    // Wait for the killed process to release SQLite before deleting its state.
+    if (wrangler && wrangler.exitCode == null) await new Promise(resolve => wrangler.once('exit', resolve));
+    rmSync(cleanupPath, { recursive: true, force: true, maxRetries: 30, retryDelay: 500 });
   });
 
   test('every sitemap page is rewritten successfully by the real Worker', async () => {

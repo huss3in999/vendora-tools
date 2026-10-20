@@ -14,10 +14,10 @@ export default defineConfig({
   timeout: 90_000,
   expect: { timeout: 15_000 },
   use: {
-    baseURL: 'http://127.0.0.1:4173',
+    baseURL: process.env.TRANSPORT_TEST_ORIGIN || 'http://127.0.0.1:4173',
     trace: 'on-first-retry',
   },
-  webServer: {
+  webServer: process.env.TRANSPORT_TEST_ORIGIN ? undefined : {
     command: 'npx.cmd --yes http-server . -p 4173 -c-1 --silent',
     cwd: publicRoot,
     url: 'http://127.0.0.1:4173/bahrain-saudi-gcc-transport/',

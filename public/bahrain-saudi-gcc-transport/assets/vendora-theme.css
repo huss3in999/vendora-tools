@@ -1675,3 +1675,62 @@ body.vip-transport .route-review-card .review-author,
     color: #d4af37 !important;
   }
 }
+
+@layer vendora-surface-fixes {
+/* Explicit final surfaces for embedded planners and server-rendered quotations. */
+html body.vip-transport .planner-panel {
+  background: #102a42 !important;
+  color: #f8fafc !important;
+}
+html body.vip-transport .planner-panel :is(label,p,h2,h3,h4,.field-help,.warning,.planner-warning) {
+  color: #f8fafc !important;
+}
+html body.vip-transport .planner-panel :is(input,select,textarea) {
+  background: #102a42 !important;
+  color: #f8fafc !important;
+  color-scheme: dark;
+}
+html body.vip-transport .planner-panel :is(option,optgroup) {
+  background: #102a42 !important;
+  color: #f8fafc !important;
+}
+html body.vip-transport .vendora-hidden-price-cta {
+  background: #102a42 !important;
+  color: #fff !important;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+html body.vip-transport .public-contact-card {
+  background: #102a42 !important;
+}
+html body.vip-transport .public-contact-card a {
+  flex-wrap: wrap !important;
+}
+html body.vip-transport .public-contact-card :is(h2,a,span,bdi) {
+  color: #f8fafc !important;
+}
+/* The long-form guide uses light panels; its navigation and copy share that surface. */
+html body.vip-transport:has(.index-links) main,
+html body.vip-transport:has(.index-links) main > .section {
+  background: #f8fafc !important;
+  color: #0f294a !important;
+}
+html body.vip-transport:has(.index-links) main :is(h1,h2,h3,h4,h5,h6,p,li,label,summary) {
+  color: #0f294a !important;
+}
+html body.vip-transport:has(.index-links) main a:not(.primary-btn):not(.wa-inline):not(.btn.primary) {
+  color: #243b63 !important;
+  background: #fff !important;
+}
+html body.vip-transport .calculator-timeline { background: #102a42 !important; }
+html body.vip-transport .calculator-timeline :is(h4,p,li,span,small),
+html body.vip-transport .planner-panel :is(small,.warning,label,p,h3,h4) { color: #f8fafc !important; }
+}
+@layer vendora-surface-fixes {
+  html body.vip-transport:has(.index-links) .panel :is(h2,p) { color: #0f294a !important; }
+  html body.vip-transport .fleet-tier-card,
+  html body.vip-transport .luggage-matcher-panel { background: #102a42 !important; }
+  html body.vip-transport .fleet-tier-card :is(h3,p),
+  html body.vip-transport .luggage-matcher-panel :is(p,label) { color: #f8fafc !important; }
+  html body.vip-transport .planner-panel :is(input,textarea)::placeholder { color: #cbd5e1 !important; opacity: 1; }
+}

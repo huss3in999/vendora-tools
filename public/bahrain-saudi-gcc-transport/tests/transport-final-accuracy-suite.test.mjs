@@ -54,6 +54,7 @@ async function createTestEnv() {
     '0011_transport_analytics_enrichment.sql',
     '0012_transport_analytics_session_backfill.sql',
     '0013_transport_lead_identifier_backfill.sql',
+    '0017_whatsapp_outbound_click_aggregates.sql',
   ];
 
   for (const file of migrationFiles) {
@@ -198,6 +199,8 @@ test('1-8: Single Visitor Lifecycle & Unique Funnel Normalization', async () => 
   assert.equal(sum.raw_intents, 3, 'Scenario 8: Two intents plus one cancel are three technical intent-stage events');
   assert.equal(sum.raw_cancels, 1, 'Scenario 6: Technical raw cancels = 1');
   assert.equal(sum.raw_departures, 1, 'Scenario 6: Technical raw departures = 1');
+  assert.equal(sum.whatsapp_click_events_count, 1, 'Only a confirmed outbound handoff is counted as an actual WhatsApp tap');
+  assert.equal(sum.whatsapp_click_sessions_count, 1, 'The actual WhatsApp tap is tied to one session');
 });
 
 test('9-13: Same Visitor Sessions, Page Views, and Returns', async () => {
@@ -450,6 +453,43 @@ test('54: Anonymous visitor journey simulation through all funnel stages', async
   assert.equal(summary.whatsapp_departed_count, 1, 'Exactly 1 WhatsApp handoff counted');
   assert.equal(summary.whatsapp_cancelled_count, 0, 'Zero cancellations recorded');
   assert.equal(summary.left_without_whatsapp, 0, 'Visitor did not leave without WhatsApp');
+});
+
+test('55: WhatsApp tapper attribution remains visible when no page-view event was recorded', async () => {
+  const { sqlite, env } = await createTestEnv();
+  sqlite.prepare(`
+    INSERT INTO analytics_events (
+      event_id, visitor_id, session_id, created_at, page_url, page_path,
+      event_name, route_name, language, raw_payload
+    ) VALUES (?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ', 'now'), ?, ?, 'whatsapp_click', ?, 'en', ?)
+  `).run(
+    'click-without-pageview', 'synthetic-browser-1', 'synthetic-session-1',
+    'https://getvendora.net/bahrain-saudi-gcc-transport/en/riyadh-to-bahrain/',
+    '/bahrain-saudi-gcc-transport/en/riyadh-to-bahrain/', 'riyadh-to-bahrain',
+    JSON.stringify({ confirmed_departure: 1 }),
+  );
+  sqlite.prepare(`
+    UPDATE analytics_events
+    SET referrer = 'https://www.google.com/', button_text = 'Book on WhatsApp',
+      ip_country = 'BH', ip_city = 'Manama', device_type = 'mobile'
+    WHERE event_id = 'click-without-pageview'
+  `).run();
+
+  const response = await callAdmin(env, makeRequest('http://127.0.0.1:8787/api/transport/admin?resource=summary&bot_filter=all'));
+  const { summary } = await response.json();
+  assert.equal(summary.total_visitors, 0, 'The page-view visitor metric remains based on recorded page views');
+  assert.equal(summary.whatsapp_click_events_count, 1, 'The confirmed outbound tap is counted');
+  assert.equal(summary.whatsapp_click_visitors_count, 1, 'The associated identifiable browser ID is available to the UI');
+  assert.equal(summary.whatsapp_click_sessions_count, 1, 'The associated session is available to the UI');
+
+  const detailsResponse = await callAdmin(env, makeRequest('http://127.0.0.1:8787/api/transport/admin?resource=leads&limit=50'));
+  const details = await detailsResponse.json();
+  assert.equal(details.leads.length, 0, 'No CRM row is fabricated when lead creation did not complete');
+  assert.equal(details.click_events.length, 1, 'The click event remains available for investigation');
+  assert.equal(details.click_events[0].page_path, '/bahrain-saudi-gcc-transport/en/riyadh-to-bahrain/');
+  assert.equal(details.click_events[0].cf_country, 'BH');
+  assert.equal(details.click_events[0].visitor_id, 'synthetic-browser-1');
+  assert.equal(details.click_events[0].is_analytics_event, true);
 });
 
 

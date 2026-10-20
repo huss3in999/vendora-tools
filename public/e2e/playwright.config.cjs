@@ -14,11 +14,17 @@ module.exports = defineConfig({
     baseURL: 'http://127.0.0.1:4173',
     trace: 'on-first-retry',
   },
-  webServer: {
+  webServer: [{
     command: 'npx --yes http-server . -p 4173 -c-1 -i true --silent',
     cwd: publicRoot,
     url: 'http://127.0.0.1:4173/',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
-  },
+  }, {
+    command: 'npx wrangler dev --local --ip 127.0.0.1 --port 8799 --persist-to ../.wrangler/e2e-retirement',
+    cwd: publicRoot,
+    url: 'http://127.0.0.1:8799/api/transport/health',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
+  }],
 });

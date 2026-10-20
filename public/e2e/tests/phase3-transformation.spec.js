@@ -8,7 +8,7 @@ test.describe('Phase 3 Transformation Verification Suite', () => {
     await page.goto(`${BASE_URL}/`);
     await expect(page).toHaveTitle(/Vendora Transport/i);
     await expect(page.locator('h1')).toContainText(/Private Car with Driver/i);
-    await expect(page.locator('body')).toContainText('Office 240, Second Floor, The Address Tower, Seef');
+    await expect(page.locator('body')).toContainText('Office 240, 2nd Floor, The Address Tower, Seef');
     await expect(page.locator('body')).toContainText('+973 3322 5954');
   });
 

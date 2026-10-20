@@ -368,6 +368,26 @@ function cleanDate(value) {
   return text;
 }
 
+function bahrainMidnightUtcPrefix(dateText, dayOffset = 0) {
+  if (!dateText) return null;
+  const date = new Date(`${dateText}T00:00:00.000Z`);
+  if (!Number.isFinite(date.valueOf()) || date.toISOString().slice(0, 10) !== dateText) return null;
+  date.setUTCDate(date.getUTCDate() + dayOffset);
+  date.setUTCHours(-3, 0, 0, 0);
+  // Keep this as a prefix without Z/fractional seconds so all ISO-8601 UTC
+  // forms at the boundary compare correctly while retaining index use.
+  return date.toISOString().slice(0, 19);
+}
+
+export function bahrainUtcDateBounds(fromValue, toValue) {
+  const from = cleanDate(fromValue);
+  const to = cleanDate(toValue);
+  return {
+    fromInclusive: bahrainMidnightUtcPrefix(from),
+    toExclusive: bahrainMidnightUtcPrefix(to, 1),
+  };
+}
+
 function bahrainToday() {
   const parts = new Intl.DateTimeFormat('en-US', {
     timeZone: 'Asia/Bahrain',
@@ -649,16 +669,17 @@ function buildLeadFilters(url, options = {}) {
     bindings.push(status);
   }
 
-  const from = cleanDate(url.searchParams.get('from'));
-  if (from) {
-    clauses.push("date(clicked_at, '+3 hours') >= ?");
-    bindings.push(from);
+  const { fromInclusive, toExclusive } = bahrainUtcDateBounds(
+    url.searchParams.get('from'),
+    url.searchParams.get('to'),
+  );
+  if (fromInclusive) {
+    clauses.push('clicked_at >= ?');
+    bindings.push(fromInclusive);
   }
-
-  const to = cleanDate(url.searchParams.get('to'));
-  if (to) {
-    clauses.push("date(clicked_at, '+3 hours') <= ?");
-    bindings.push(to);
+  if (toExclusive) {
+    clauses.push('clicked_at < ?');
+    bindings.push(toExclusive);
   }
 
   const search = cleanText(url.searchParams.get('search'), 120);
@@ -838,16 +859,17 @@ function buildAnalyticsFilters(url, options = {}) {
     bindings.push(source);
   }
 
-  const from = cleanDate(url.searchParams.get('from'));
-  if (from) {
-    clauses.push("date(e.created_at, '+3 hours') >= ?");
-    bindings.push(from);
+  const { fromInclusive, toExclusive } = bahrainUtcDateBounds(
+    url.searchParams.get('from'),
+    url.searchParams.get('to'),
+  );
+  if (fromInclusive) {
+    clauses.push('e.created_at >= ?');
+    bindings.push(fromInclusive);
   }
-
-  const to = cleanDate(url.searchParams.get('to'));
-  if (to) {
-    clauses.push("date(e.created_at, '+3 hours') <= ?");
-    bindings.push(to);
+  if (toExclusive) {
+    clauses.push('e.created_at < ?');
+    bindings.push(toExclusive);
   }
 
   const search = cleanText(url.searchParams.get('search'), 120);
@@ -959,7 +981,56 @@ async function getEventRows(env, request, eventType) {
     LIMIT ?
   `).bind(...bindings, limit).all();
 
-  return { leads: results || [] };
+  if (eventType !== 'lead') return { leads: results || [] };
+
+  // The headline WhatsApp tap count comes from analytics_events. A visitor can
+  // navigate to WhatsApp before the separate CRM lead request finishes, so
+  // expose confirmed taps from that event stream as a bounded fallback. This is
+  // read-only and deliberately does not create or mutate CRM records.
+  const analyticsFilters = buildAnalyticsFilters(url, { botFilter: 'all' });
+  const clickLimit = Math.min(100, limit);
+  const { results: clickEvents } = await env.TRANSPORT_DB.prepare(`
+    SELECT
+      e.event_id,
+      e.visitor_id,
+      e.session_id,
+      e.created_at AS clicked_at,
+      e.page_url,
+      e.page_path,
+      e.event_label AS route_label,
+      e.route_name AS route_slug,
+      e.referrer,
+      e.utm_source,
+      e.utm_medium,
+      e.utm_campaign,
+      COALESCE(NULLIF(e.utm_source, ''), NULLIF(e.referrer, ''), 'Direct / unknown') AS traffic_source,
+      e.button_text AS click_text,
+      e.ip_city AS cf_city,
+      e.ip_region AS cf_region,
+      e.ip_country AS cf_country,
+      e.ip_timezone AS cf_timezone,
+      e.device_type,
+      e.language,
+      e.raw_payload
+    FROM analytics_events e
+    ${analyticsFilters.whereSql}
+      AND e.event_name = 'whatsapp_click'
+      AND COALESCE(CAST(json_extract(e.raw_payload, '$.confirmed_departure') AS INTEGER), 0) = 1
+    ORDER BY e.created_at DESC
+    LIMIT ?
+  `).bind(...analyticsFilters.bindings, clickLimit).all();
+
+  return {
+    leads: results || [],
+    click_events: (clickEvents || []).map((row) => ({
+      ...row,
+      id: `analytics:${row.event_id}`,
+      service_type: 'whatsapp_click',
+      status: 'whatsapp_departed',
+      whatsapp_confirmed_at: row.clicked_at,
+      is_analytics_event: true,
+    })),
+  };
 }
 
 function mergeDayRows(clickRows = [], pageviewRows = []) {
@@ -1017,30 +1088,34 @@ async function getAggregateSummary(env) {
         COALESCE(SUM(sessions), 0) AS total_sessions,
         COALESCE(SUM(page_views), 0) AS total_pageviews,
         COALESCE(SUM(events), 0) AS total_events,
-        COALESCE(SUM(whatsapp_clicks), 0) AS whatsapp_clicks,
+        COALESCE(SUM(whatsapp_outbound_clicks), 0) AS whatsapp_click_events_count,
         COALESCE(SUM(leads), 0) AS lead_records_total,
         COALESCE(SUM(confirmed_bookings), 0) AS completed
       FROM daily_analytics_aggregates
     `).first();
     const { results: byDay } = await env.TRANSPORT_DB.prepare(`
-      SELECT aggregate_date AS label, SUM(page_views) AS pageviews, SUM(whatsapp_clicks) AS count
+      SELECT aggregate_date AS label, SUM(page_views) AS pageviews, SUM(whatsapp_outbound_clicks) AS count
       FROM daily_analytics_aggregates GROUP BY aggregate_date ORDER BY aggregate_date DESC LIMIT 366
     `).all();
     const { results: byRoute } = await env.TRANSPORT_DB.prepare(`
       SELECT COALESCE(NULLIF(route_name, ''), 'unknown') AS label,
-        SUM(page_views) AS pageviews, SUM(whatsapp_clicks) AS clicks, SUM(leads) AS count
+        SUM(page_views) AS pageviews, SUM(whatsapp_outbound_clicks) AS clicks, SUM(leads) AS count
       FROM daily_analytics_aggregates GROUP BY route_name ORDER BY pageviews DESC LIMIT 20
     `).all();
     return { summary: {
-      ...(totals || {}), total: Number(totals?.whatsapp_clicks || 0), today: 0,
+      ...(totals || {}), total: Number(totals?.whatsapp_click_events_count || 0), today: 0,
       sessions: Number(totals?.total_sessions || 0), total_sessions: Number(totals?.total_sessions || 0),
       total_pageviews: Number(totals?.total_pageviews || 0), pageviews_today: 0,
-      whatsapp_intents_count: Number(totals?.whatsapp_clicks || 0),
+      whatsapp_click_visitors_count: null,
+      whatsapp_click_sessions_count: null,
+      whatsapp_click_events_coverage: 'since_migration_0017',
+      whatsapp_click_events_note: 'Exact outbound taps are counted from migration 0017 onward. Earlier daily aggregates combined clicks with intents and cancellations.',
+      whatsapp_click_visitors_note: 'The All Time aggregate does not retain distinct clicker identities; use a date-filtered report for identified browser IDs.',
       human_likely_visitors: Number(totals?.total_visitors || 0),
       traffic_metrics_source: 'd1_daily_aggregate',
       traffic_metrics_warning: 'All Time uses incremental aggregates only. Historical rows are not backfilled automatically.',
       aggregate_coverage: 'incremental_since_migration',
-      funnel: { visitors: Number(totals?.total_visitors || 0), route_views: Number(totals?.total_pageviews || 0), whatsapp_clicks: Number(totals?.whatsapp_clicks || 0), completed: Number(totals?.completed || 0) },
+      funnel: { visitors: Number(totals?.total_visitors || 0), route_views: Number(totals?.total_pageviews || 0), whatsapp_clicks: 0, completed: Number(totals?.completed || 0) },
       by_route: byRoute || [], by_day: byDay || [], by_source: [], by_campaign: [], by_country: [], by_device: [], by_hour: [],
       status_breakdown: [], top_pages: [], lost_reasons: [], repeat_customers: [], recent_activity: [],
       online_now: 0, online_transport: 0, online_care: 0, online_all: 0, online_sessions: 0, online_recent: [], online_care_recent: [],
@@ -1153,6 +1228,20 @@ async function getSummary(env, request) {
     FROM valid_events
   `);
 
+  const whatsappClickMetrics = await bindFirst(analyticsFilters, `
+    SELECT
+      COUNT(*) AS whatsapp_click_events_count,
+      COUNT(DISTINCT e.session_id) AS whatsapp_click_sessions_count,
+      COUNT(DISTINCT CASE
+        WHEN e.visitor_id IS NOT NULL AND e.visitor_id NOT IN ('', 'unknown_visitor') THEN e.visitor_id
+      END) AS whatsapp_click_visitors_count
+    FROM analytics_events e
+    LEFT JOIN analytics_sessions s ON s.session_id = e.session_id
+    ${analyticsFilters.whereSql}
+      AND e.event_name = 'whatsapp_click'
+      AND COALESCE(CAST(json_extract(e.raw_payload, '$.confirmed_departure') AS INTEGER), 0) = 1
+  `).catch(() => null);
+
   const rawAnalyticsFilters = buildAnalyticsFilters(url, { botFilter: 'all' });
   const sessionBreakdown = await env.TRANSPORT_DB.prepare(`
     SELECT
@@ -1177,6 +1266,11 @@ async function getSummary(env, request) {
 
   const enrichedVisitorFunnel = {
     ...(visitorFunnel || {}),
+    whatsapp_click_events_count: whatsappClickMetrics == null ? null : Number(whatsappClickMetrics.whatsapp_click_events_count || 0),
+    whatsapp_click_sessions_count: whatsappClickMetrics == null ? null : Number(whatsappClickMetrics.whatsapp_click_sessions_count || 0),
+    whatsapp_click_visitors_count: whatsappClickMetrics == null ? null : Number(whatsappClickMetrics.whatsapp_click_visitors_count || 0),
+    whatsapp_click_events_coverage: 'selected_period_events',
+    whatsapp_click_visitors_note: 'Distinct known browser IDs associated with confirmed outbound taps; this is not a count of people across devices.',
     total_visitors: humanLikelyVisitors,
     human_likely_visitors: humanLikelyVisitors,
     unresolved_traffic: unresolvedTraffic,
@@ -1518,6 +1612,7 @@ async function getSummary(env, request) {
       const prevStartDate = new Date(prevEndDate.getTime() - (durationDays - 1) * 24 * 60 * 60 * 1000);
       const prevFrom = prevStartDate.toISOString().slice(0, 10);
       const prevTo = prevEndDate.toISOString().slice(0, 10);
+      const previousBounds = bahrainUtcDateBounds(prevFrom, prevTo);
 
       const prevTotals = await env.TRANSPORT_DB.prepare(`
         SELECT
@@ -1526,10 +1621,10 @@ async function getSummary(env, request) {
           SUM(CASE WHEN COALESCE(service_type, '') = 'pageview' THEN 1 ELSE 0 END) AS prev_pageviews,
           SUM(CASE WHEN COALESCE(service_type, '') IN ('whatsapp_intent', 'whatsapp_click', 'whatsapp_cancel') OR COALESCE(click_text, '') <> '' THEN 1 ELSE 0 END) AS prev_whatsapp_intents
         FROM whatsapp_leads
-        WHERE date(clicked_at, '+3 hours') >= ? AND date(clicked_at, '+3 hours') <= ?
+        WHERE clicked_at >= ? AND clicked_at < ?
           AND COALESCE(page_path, '') NOT LIKE '%/admin/%'
           AND COALESCE(page_path, '') NOT LIKE '%/care/%'
-      `).bind(prevFrom, prevTo).first();
+      `).bind(previousBounds.fromInclusive, previousBounds.toExclusive).first();
 
       const calcDelta = (curr, prev) => {
         if (!prev || prev <= 0) return null;
@@ -2056,6 +2151,7 @@ async function getTrackingSummary(env, request) {
 }
 
 async function getRoutes(env) {
+  await ensurePublicSettingsSchema(env);
   const fetchRoutes = () => env.TRANSPORT_DB.prepare(`
     SELECT
       p.*,

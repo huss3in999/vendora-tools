@@ -74,7 +74,7 @@ test('return never doubles one-way pricing and uses a configured return quotatio
   await page.locator('[data-planner-from]').selectOption('bahrain');
   await page.locator('[data-planner-to]').selectOption('riyadh');
   await page.locator('input[name="calculator-direction"][value="return"]').check();
-  await expect(page.locator('[data-result-price]')).toHaveText('Request a confirmed quotation');
+  await expect(page.locator('[data-result-price]')).toHaveText('Contact us on WhatsApp for pricing');
 
   await page.unrouteAll({ behavior: 'wait' });
   await openCalculator(page, 'en', [publicRoute({ trip_type: 'return_quote', approximate_sar_enabled: false })]);
@@ -89,7 +89,7 @@ test('disabled, unsupported and non-BHD routes remain quotation requests', async
   await openCalculator(page, 'en', [publicRoute({ public_price_enabled: false })]);
   await page.locator('[data-planner-from]').selectOption('bahrain');
   await page.locator('[data-planner-to]').selectOption('riyadh');
-  await expect(page.locator('[data-result-price]')).toHaveText('Request a confirmed quotation');
+  await expect(page.locator('[data-result-price]')).toHaveText('Contact us on WhatsApp for pricing');
   await page.locator('[data-planner-from]').selectOption('doha');
   await page.locator('[data-planner-to]').selectOption('muscat');
   await expect(page.locator('[data-result-support]')).toHaveText('Needs confirmation');
@@ -118,7 +118,7 @@ test('airport, hourly and configured full-day requests behave without invented r
   await openCalculator(page, 'en', [fullDay]);
   await page.locator('[data-calculator-mode="airport"]').click();
   await page.locator('[data-calculator-airport-service]').selectOption('hourly');
-  await expect(page.locator('[data-result-price]')).toHaveText('Request a confirmed quotation');
+  await expect(page.locator('[data-result-price]')).toHaveText('Contact us on WhatsApp for pricing');
   await page.locator('[data-calculator-airport-service]').selectOption('full-day');
   await page.locator('[data-calculator-package]').selectOption('bahrain-sightseeing-full-day');
   await expect(page.locator('[data-result-price]')).toHaveText('123 BHD');
@@ -173,7 +173,7 @@ test('calculator schema is valid and only appears on calculator pages', async ({
   expect(apps).toHaveLength(1);
   expect(apps[0]).toMatchObject({ '@context': 'https://schema.org', '@type': 'WebApplication', applicationCategory: 'TravelApplication' });
   await page.goto(`${base}/en/`, { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('script[type="application/ld+json"]')).not.toContainText('WebApplication');
+  expect((await page.locator('script[type="application/ld+json"]').allTextContents()).join('')).not.toContain('WebApplication');
 });
 
 test('calculator source contains no hardcoded public amount or telephone number', () => {
@@ -186,6 +186,7 @@ test('calculator source contains no hardcoded public amount or telephone number'
 test('published route fares match the approved central price catalog', async ({ page }) => {
   const config = JSON.parse(readFileSync(join(root, 'config', 'route-prices.json'), 'utf8'));
   const riyadh = config.routes.find(route => route.route_id === 'bahrain-to-riyadh');
+  await mockPublicSettings(page, [publicRoute({ price_bhd: riyadh.one_way_price, approximate_sar_enabled: false })]);
   await page.goto('/bahrain-saudi-gcc-transport/en/bahrain-to-riyadh/');
   await expect(page.locator('body')).toContainText(String(riyadh.one_way_price));
 });

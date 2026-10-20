@@ -7,6 +7,18 @@ const CACHE_TTL_MS = 60_000;
 let cached = null;
 let pending = null;
 
+function priceVisibilityGroup(routeId, destination = '') {
+  const slug = String(routeId || '').toLowerCase();
+  const target = String(destination || '').toLowerCase();
+  if (['king-fahd-causeway','bahrain-to-khobar','first-stop-after-causeway','bahrain-to-dammam-airport','bahrain-to-al-ahsa','bahrain-to-jubail','bahrain-to-riyadh','bahrain-to-madinah','bahrain-to-makkah','bahrain-to-khafji'].includes(slug) || /saudi|khobar|dammam|riyadh|ahsa|jubail|khafji|madinah|makkah/.test(target)) return 'saudi_arabia';
+  if (/qatar|doha/.test(slug + ' ' + target)) return 'qatar';
+  if (/kuwait|abdali/.test(slug + ' ' + target)) return 'kuwait';
+  if (/uae|dubai|abu-dhabi|sharjah/.test(slug + ' ' + target)) return 'uae';
+  if (/oman|muscat/.test(slug + ' ' + target)) return 'oman';
+  if (/bahrain|manama/.test(slug + ' ' + target)) return 'bahrain';
+  return 'other';
+}
+
 export const DEFAULT_PUBLIC_SETTINGS = Object.freeze({
   "brand_display_name": "Vendora Transport",
   "service_description_ar": "فندورا للنقل: خدمة نقل خاص ونقل ركاب وسائق خاص ورحلات عبر جسر الملك فهد ودول الخليج من البحرين.",
@@ -36,12 +48,14 @@ export const DEFAULT_PUBLIC_SETTINGS = Object.freeze({
   "luggage_policy_wording_en": "Vehicle type and model depend on the route, passenger count, luggage and availability when the booking is confirmed. Customers must provide the number and approximate size of their bags. Additional luggage arrangements may be possible when suitable and confirmed in advance.",
   "insurance_wording_ar": "ترتيب المركبة والسائق حسب المسار والتوفر.",
   "insurance_wording_en": "Vehicle and driver arrangements depend on route and availability.",
-  "public_address": "Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain",
+  "public_address": "Office 240, 2nd Floor, The Address Tower, Seef, Kingdom of Bahrain",
   "address_display_enabled": false,
   "legal_name": "Vendora Gulf Transport & Logistics Services",
   "cr_number": "134858-1",
   "legal_information_enabled": true,
   "sar_per_bhd": 10,
+  "public_prices_enabled": false,
+  "hidden_price_destination_groups": [],
   "customer_name_enabled": false,
   "customer_name_required": false,
   "customer_phone_enabled": false,
@@ -55,11 +69,29 @@ export const DEFAULT_PUBLIC_ROUTES = Object.freeze(routePriceConfig.routes.map((
   route.name_en,
   route.visibility === 'public' && !['quotation', 'range'].includes(route.price_type) ? route.one_way_price : null,
   ({ fixed: 'standard', from: 'from', range: 'request_quote', quotation: 'request_quote' })[route.price_type] || 'request_quote',
-  ({ vehicle: 'one_way_vehicle', trip: 'package', hour: 'package', day: 'per_day' })[route.unit] || 'one_way_vehicle'
+  ({ vehicle: 'one_way_vehicle', trip: 'package', hour: 'package', day: 'per_day' })[route.unit] || 'one_way_vehicle',
+  priceVisibilityGroup(route.route_id, route.destination)
 ]));
 /* END GENERATED CENTRAL TRANSPORT DEFAULTS */
 
 const ALLOWED_SETTING_KEYS = new Set(Object.keys(DEFAULT_PUBLIC_SETTINGS));
+const PRICE_DESTINATION_GROUPS = new Set(['bahrain', 'saudi_arabia', 'qatar', 'kuwait', 'uae', 'oman', 'other']);
+const SAUDI_ROUTE_SLUGS = new Set([
+  'king-fahd-causeway', 'bahrain-to-khobar', 'first-stop-after-causeway', 'bahrain-to-dammam-airport',
+  'bahrain-to-al-ahsa', 'bahrain-to-jubail', 'bahrain-to-riyadh', 'bahrain-to-madinah',
+  'bahrain-to-makkah', 'bahrain-to-khafji'
+]);
+
+function inferPriceVisibilityGroup(routeSlug) {
+  const slug = String(routeSlug || '').toLowerCase();
+  if (SAUDI_ROUTE_SLUGS.has(slug) || /^bahrain-to-(?:saudi|dammam|khobar|riyadh|madinah|makkah|mecca|jubail|khafji|ahsa|al-ahsa)(?:-|$)/.test(slug)) return 'saudi_arabia';
+  if (/qatar|doha/.test(slug)) return 'qatar';
+  if (/kuwait|abdali/.test(slug)) return 'kuwait';
+  if (/uae|dubai|abu-dhabi|sharjah/.test(slug)) return 'uae';
+  if (/oman|muscat/.test(slug)) return 'oman';
+  if (/bahrain|manama/.test(slug)) return 'bahrain';
+  return 'other';
+}
 const RETIRED_NON_GCC_ROUTES = new Set([
   'bahrain-to-iraq', 'bahrain-to-baghdad', 'bahrain-to-basra', 'bahrain-to-karbala', 'bahrain-to-najaf',
   'arbaeen-transport', 'ziyarat-iraq-transport', 'family-transport-bahrain-najaf-karbala'
@@ -93,11 +125,26 @@ export function sanitizePublicSettings(input = {}) {
   const next = { ...DEFAULT_PUBLIC_SETTINGS };
   for (const key of ALLOWED_SETTING_KEYS) {
     if (!(key in input)) continue;
-    if (key.endsWith('_enabled') || key.endsWith('_required')) next[key] = cleanBoolean(input[key]);
+    if (key === 'hidden_price_destination_groups') {
+      next[key] = Array.isArray(input[key]) ? [...new Set(input[key].filter((group) => PRICE_DESTINATION_GROUPS.has(group)))] : [];
+    }
+    else if (key.endsWith('_enabled') || key.endsWith('_required')) next[key] = cleanBoolean(input[key]);
     else if (key.endsWith('_url')) next[key] = cleanUrl(input[key]);
     else if (key === 'booking_whatsapp' || key === 'support_phone') next[key] = cleanPhone(input[key]);
     else if (key === 'sar_per_bhd') next[key] = Math.max(0, Math.min(100, Number(input[key]) || 10));
     else next[key] = cleanText(input[key], key.includes('description') ? 800 : 500);
+  }
+  if (!next.brand_display_name || next.brand_display_name === 'GetVendora Transport') {
+    next.brand_display_name = DEFAULT_PUBLIC_SETTINGS.brand_display_name;
+  }
+  // Registered identity comes from the shared configuration, including when an
+  // older D1 settings record still contains a superseded registration number.
+  next.cr_number = businessConfig.cr_number;
+  next.legal_name = businessConfig.legal_name;
+  next.public_address = businessConfig.public_address;
+  const hasLegacyEmptyLegal = !input.legal_name;
+  if (hasLegacyEmptyLegal && input.legal_information_enabled === false) {
+    next.legal_information_enabled = DEFAULT_PUBLIC_SETTINGS.legal_information_enabled;
   }
   if (!next.legal_information_enabled) {
     next.legal_name = '';
@@ -120,6 +167,7 @@ export function sanitizePublicRoute(input = {}) {
     unit_kind: ['one_way_vehicle', 'package', 'per_day'].includes(input.unit_kind) ? input.unit_kind : 'one_way_vehicle',
     currency: input.currency === 'BHD' ? 'BHD' : 'BHD',
     trip_type: ['one_way', 'return_quote', 'full_day', 'additional_day'].includes(input.trip_type) ? input.trip_type : 'one_way',
+    price_visibility_group: PRICE_DESTINATION_GROUPS.has(input.price_visibility_group) ? input.price_visibility_group : inferPriceVisibilityGroup(slug),
     public_price_enabled: input.public_price_enabled === undefined ? true : cleanBoolean(input.public_price_enabled),
     approximate_sar_enabled: cleanBoolean(input.approximate_sar_enabled),
     causeway_toll_included: cleanBoolean(input.causeway_toll_included),
@@ -146,18 +194,28 @@ export async function ensurePublicSettingsSchema(env) {
     ['public_price_enabled', 'INTEGER NOT NULL DEFAULT 1'],
     ['approximate_sar_enabled', 'INTEGER NOT NULL DEFAULT 0'],
     ['causeway_toll_included', 'INTEGER NOT NULL DEFAULT 0'],
+    ['price_visibility_group', "TEXT NOT NULL DEFAULT 'other'"],
   ];
+  const addVisibilityGroup = !columns.has('price_visibility_group');
   for (const [name, type] of additions) {
     if (!columns.has(name)) await env.TRANSPORT_DB.prepare(`ALTER TABLE transport_public_routes ADD COLUMN ${name} ${type}`).run();
+  }
+  if (addVisibilityGroup) {
+    await env.TRANSPORT_DB.prepare(`UPDATE transport_public_routes SET price_visibility_group = 'saudi_arabia' WHERE route_slug IN ('king-fahd-causeway','bahrain-to-khobar','first-stop-after-causeway','bahrain-to-dammam-airport','bahrain-to-al-ahsa','bahrain-to-jubail','bahrain-to-riyadh','bahrain-to-madinah','bahrain-to-makkah','bahrain-to-khafji')`).run();
+    await env.TRANSPORT_DB.prepare(`UPDATE transport_public_routes SET price_visibility_group = 'qatar' WHERE route_slug LIKE '%qatar%' OR route_slug LIKE '%doha%'`).run();
+    await env.TRANSPORT_DB.prepare(`UPDATE transport_public_routes SET price_visibility_group = 'kuwait' WHERE route_slug LIKE '%kuwait%' OR route_slug LIKE '%abdali%'`).run();
+    await env.TRANSPORT_DB.prepare(`UPDATE transport_public_routes SET price_visibility_group = 'uae' WHERE route_slug LIKE '%dubai%' OR route_slug LIKE '%abu-dhabi%' OR route_slug LIKE '%uae%'`).run();
+    await env.TRANSPORT_DB.prepare(`UPDATE transport_public_routes SET price_visibility_group = 'oman' WHERE route_slug LIKE '%oman%' OR route_slug LIKE '%muscat%'`).run();
+    await env.TRANSPORT_DB.prepare(`UPDATE transport_public_routes SET price_visibility_group = 'bahrain' WHERE route_slug LIKE '%bahrain%' OR route_slug LIKE '%manama%'`).run();
   }
   await env.TRANSPORT_DB.prepare(`INSERT OR IGNORE INTO transport_public_settings (id, settings_json, version) VALUES (1, ?, 1)`).bind(JSON.stringify(DEFAULT_PUBLIC_SETTINGS)).run();
   const sarRoutes = new Set(['king-fahd-causeway', 'bahrain-to-khobar', 'first-stop-after-causeway', 'bahrain-to-dammam-airport', 'bahrain-to-al-ahsa', 'bahrain-to-jubail', 'bahrain-to-riyadh', 'bahrain-to-madinah', 'bahrain-to-makkah', 'bahrain-to-khafji']);
   const localRoutes = new Set(['bahrain-sightseeing-full-day', 'bahrain-sightseeing-afternoon']);
   for (let i = 0; i < DEFAULT_PUBLIC_ROUTES.length; i += 1) {
-    const [slug, ar, en, price, kind, unit] = DEFAULT_PUBLIC_ROUTES[i];
+    const [slug, ar, en, price, kind, unit, priceVisibilityGroup] = DEFAULT_PUBLIC_ROUTES[i];
     const tripType = unit === 'package' ? 'full_day' : unit === 'per_day' ? 'additional_day' : 'one_way';
-    await env.TRANSPORT_DB.prepare(`INSERT OR IGNORE INTO transport_public_routes (route_slug, route_name_ar, route_name_en, price_bhd, price_kind, unit_kind, currency, trip_type, public_price_enabled, approximate_sar_enabled, causeway_toll_included, is_active, included_ar, included_en, sort_order) VALUES (?, ?, ?, ?, ?, ?, 'BHD', ?, 1, ?, ?, 1, ?, ?, ?)`)
-      .bind(slug, ar, en, price, kind, unit, tripType, sarRoutes.has(slug) ? 1 : 0, localRoutes.has(slug) ? 0 : 1, 'يشمل الرسوم العادية للمسار ورسوم جسر الملك فهد عند انطباقها.', 'Includes normal standard route charges and King Fahd Causeway tolls where applicable.', i + 1).run();
+    await env.TRANSPORT_DB.prepare(`INSERT OR IGNORE INTO transport_public_routes (route_slug, route_name_ar, route_name_en, price_bhd, price_kind, unit_kind, currency, trip_type, public_price_enabled, approximate_sar_enabled, causeway_toll_included, is_active, included_ar, included_en, sort_order, price_visibility_group) VALUES (?, ?, ?, ?, ?, ?, 'BHD', ?, 1, ?, ?, 1, ?, ?, ?, ?)`)
+      .bind(slug, ar, en, price, kind, unit, tripType, sarRoutes.has(slug) ? 1 : 0, localRoutes.has(slug) ? 0 : 1, 'يشمل الرسوم العادية للمسار ورسوم جسر الملك فهد عند انطباقها.', 'Includes normal standard route charges and King Fahd Causeway tolls where applicable.', i + 1, PRICE_DESTINATION_GROUPS.has(priceVisibilityGroup) ? priceVisibilityGroup : inferPriceVisibilityGroup(slug)).run();
   }
 }
 
@@ -173,13 +231,14 @@ async function readPublicConfig(env) {
   ]);
   let saved = {};
   try { saved = JSON.parse(settingsRow?.settings_json || '{}'); } catch { saved = {}; }
+  const settings = sanitizePublicSettings(saved);
+  const hiddenGroups = new Set(settings.hidden_price_destination_groups);
   const value = {
-    settings: sanitizePublicSettings(saved),
-    routes: (routeResult.results || []).map(sanitizePublicRoute).filter((route) => !RETIRED_NON_GCC_ROUTES.has(route.route_slug)).map((route) => (
-      route.public_price_enabled && route.price_kind !== 'request_quote'
-        ? route
-        : { ...route, price_bhd: null }
-    )),
+    settings,
+    routes: (routeResult.results || []).map(sanitizePublicRoute).filter((route) => !RETIRED_NON_GCC_ROUTES.has(route.route_slug)).map((route) => {
+      const hidden = !settings.public_prices_enabled || !route.public_price_enabled || hiddenGroups.has(route.price_visibility_group) || route.price_kind === 'request_quote';
+      return { ...route, is_price_hidden: hidden, price_bhd: hidden ? null : route.price_bhd };
+    }),
     version: Number(settingsRow?.version || 1),
     updated_at: settingsRow?.updated_at || '',
   };
@@ -207,12 +266,14 @@ export async function getPublicConfig(env, options = {}) {
             route_slug: slug,
             route_name_ar: ar,
             route_name_en: en,
-            price_bhd: price,
+            price_bhd: null,
             price_kind: kind,
             unit_kind: unit,
             currency: 'BHD',
             trip_type: unit === 'package' ? 'full_day' : unit === 'per_day' ? 'additional_day' : 'one_way',
             public_price_enabled: true,
+            price_visibility_group: inferPriceVisibilityGroup(slug),
+            is_price_hidden: true,
             approximate_sar_enabled: false,
             causeway_toll_included: false,
             is_active: true,
@@ -250,8 +311,8 @@ export async function savePublicRoute(env, input) {
   await ensurePublicSettingsSchema(env);
   const route = sanitizePublicRoute(input);
   if (!route.route_slug || !route.route_name_ar || !route.route_name_en) throw new Error('Route slug and Arabic/English names are required');
-  await env.TRANSPORT_DB.prepare(`INSERT INTO transport_public_routes (route_slug, route_name_ar, route_name_en, price_bhd, price_kind, unit_kind, currency, trip_type, public_price_enabled, approximate_sar_enabled, causeway_toll_included, is_active, whatsapp_override, booking_notice_ar, booking_notice_en, included_ar, included_en, route_notes_ar, route_notes_en, sort_order, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) ON CONFLICT(route_slug) DO UPDATE SET route_name_ar=excluded.route_name_ar, route_name_en=excluded.route_name_en, price_bhd=excluded.price_bhd, price_kind=excluded.price_kind, unit_kind=excluded.unit_kind, currency=excluded.currency, trip_type=excluded.trip_type, public_price_enabled=excluded.public_price_enabled, approximate_sar_enabled=excluded.approximate_sar_enabled, causeway_toll_included=excluded.causeway_toll_included, is_active=excluded.is_active, whatsapp_override=excluded.whatsapp_override, booking_notice_ar=excluded.booking_notice_ar, booking_notice_en=excluded.booking_notice_en, included_ar=excluded.included_ar, included_en=excluded.included_en, route_notes_ar=excluded.route_notes_ar, route_notes_en=excluded.route_notes_en, sort_order=excluded.sort_order, updated_at=excluded.updated_at`)
-    .bind(route.route_slug, route.route_name_ar, route.route_name_en, route.price_bhd, route.price_kind, route.unit_kind, route.currency, route.trip_type, route.public_price_enabled ? 1 : 0, route.approximate_sar_enabled ? 1 : 0, route.causeway_toll_included ? 1 : 0, route.is_active ? 1 : 0, route.whatsapp_override, route.booking_notice_ar, route.booking_notice_en, route.included_ar, route.included_en, route.route_notes_ar, route.route_notes_en, route.sort_order).run();
+  await env.TRANSPORT_DB.prepare(`INSERT INTO transport_public_routes (route_slug, route_name_ar, route_name_en, price_bhd, price_kind, unit_kind, currency, trip_type, public_price_enabled, approximate_sar_enabled, causeway_toll_included, is_active, whatsapp_override, booking_notice_ar, booking_notice_en, included_ar, included_en, route_notes_ar, route_notes_en, sort_order, price_visibility_group, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, strftime('%Y-%m-%dT%H:%M:%fZ', 'now')) ON CONFLICT(route_slug) DO UPDATE SET route_name_ar=excluded.route_name_ar, route_name_en=excluded.route_name_en, price_bhd=excluded.price_bhd, price_kind=excluded.price_kind, unit_kind=excluded.unit_kind, currency=excluded.currency, trip_type=excluded.trip_type, public_price_enabled=excluded.public_price_enabled, approximate_sar_enabled=excluded.approximate_sar_enabled, causeway_toll_included=excluded.causeway_toll_included, is_active=excluded.is_active, whatsapp_override=excluded.whatsapp_override, booking_notice_ar=excluded.booking_notice_ar, booking_notice_en=excluded.booking_notice_en, included_ar=excluded.included_ar, included_en=excluded.included_en, route_notes_ar=excluded.route_notes_ar, route_notes_en=excluded.route_notes_en, sort_order=excluded.sort_order, price_visibility_group=excluded.price_visibility_group, updated_at=excluded.updated_at`)
+    .bind(route.route_slug, route.route_name_ar, route.route_name_en, route.price_bhd, route.price_kind, route.unit_kind, route.currency, route.trip_type, route.public_price_enabled ? 1 : 0, route.approximate_sar_enabled ? 1 : 0, route.causeway_toll_included ? 1 : 0, route.is_active ? 1 : 0, route.whatsapp_override, route.booking_notice_ar, route.booking_notice_en, route.included_ar, route.included_en, route.route_notes_ar, route.route_notes_en, route.sort_order, route.price_visibility_group).run();
   invalidatePublicSettingsCache();
   return route;
 }

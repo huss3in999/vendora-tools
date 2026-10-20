@@ -19,7 +19,7 @@ test('approved public catalog is complete and does not contain driver pricing fi
 test('legal identity and address are configured with real details by default', () => {
   const source = read(publicRoot, 'functions/api/transport/public-settings.js');
   const business = JSON.parse(read(transport, 'config/business-config.json'));
-  assert.equal(business.public_address, 'Office 240, Second Floor, The Address Tower, Seef, Kingdom of Bahrain');
+  assert.equal(business.public_address, 'Office 240, 2nd Floor, The Address Tower, Seef, Kingdom of Bahrain');
   assert.equal(business.address_display_enabled, false);
   assert.equal(business.legal_name, 'Vendora Gulf Transport & Logistics Services');
   assert.equal(business.cr_number, '134858-1');

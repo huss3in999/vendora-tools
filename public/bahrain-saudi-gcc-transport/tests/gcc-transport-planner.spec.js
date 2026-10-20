@@ -72,8 +72,8 @@ test.describe('GCC transport planner documents', () => {
       const schemas = await page.locator('script[type="application/ld+json"]').evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent || '{}')));
       expect(schemas.length).toBeGreaterThan(0);
       const graph = schemas.flatMap((schema) => schema['@graph'] || [schema]);
-      for (const type of ['WebPage', 'Service', 'BreadcrumbList', 'Organization', 'FAQPage']) {
-        expect(graph.some((entry) => entry['@type'] === type), `schema includes ${type}`).toBeTruthy();
+      for (const type of ['WebPage', 'Service', 'BreadcrumbList', 'LocalBusiness', 'FAQPage']) {
+        expect(graph.some((entry) => [].concat(entry['@type']).includes(type)), `schema includes ${type}`).toBeTruthy();
       }
       const faqSchema = graph.find((entry) => entry['@type'] === 'FAQPage');
       const visibleFaq = await page.locator('details.faq-item').evaluateAll((items) => items.map((item) => ({
@@ -123,7 +123,10 @@ test.describe('GCC transport planner documents', () => {
     const plannerScript = readFileSync(join(root, 'assets', 'gcc-transport-planner.js'), 'utf8');
     const combined = `${arabicHtml}\n${englishHtml}\n${plannerScript}`;
     expect(combined).not.toMatch(/ðŸ‡|Ã°|Ãƒ|Ã‚|Ã˜|Ã™|ï¿½|\uFFFD/);
-    expect(`${arabicHtml}\n${englishHtml}`).not.toContain('97333225954');
+    const actionableHtml = `${arabicHtml}\n${englishHtml}`.replace(/<script\b[^>]*type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/g, '');
+    // Generated business schema contains the canonical company telephone; the
+    // planner's UI and link builder must still obtain it from public settings.
+    expect(actionableHtml).not.toContain('97333225954');
     expect(plannerScript).not.toMatch(/phoneNumber|97333225954|wa\.me\//);
     expect(`${arabicHtml}\n${englishHtml}\n${plannerScript}`).not.toMatch(/wa\.me\/\d|(?:booking_whatsapp|phoneNumber)\s*[:=]\s*['"]?\d/);
     expect((plannerScript.match(/^\s{4}'[^']+\|[^']+': \[/gm) || [])).toHaveLength(29);
