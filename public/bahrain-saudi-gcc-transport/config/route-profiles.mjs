@@ -2,13 +2,86 @@
 // the customer before booking. Border queues and stops are additional to drive time.
 // Existing planner ranges are retained; country routes use their capital as a reference.
 const places = {
-  bahrain: ['Bahrain', 'البحرين', 'Manama hotels, Seef and Bahrain International Airport', 'فنادق المنامة والسيف ومطار البحرين الدولي', 'Share the building entrance and a reachable mobile number for pickup.', 'أرسل مدخل المبنى ورقم هاتف متاحاً لتنسيق الاستلام.'],
-  khobar: ['Khobar', 'الخبر', 'Khobar Corniche and Al Olaya hotels', 'كورنيش الخبر وفنادق العليا', 'Choose the Corniche entrance or hotel lobby; waterfront event traffic can change the final approach.', 'حدد مدخل الكورنيش أو بهو الفندق؛ قد تغير حركة الفعاليات على الواجهة البحرية طريق الوصول الأخير.'],
-  dammam: ['Dammam', 'الدمام', 'Dammam railway station and city hotels; King Fahd Airport by separate arrangement', 'محطة قطار الدمام وفنادق المدينة؛ ومطار الملك فهد بترتيب منفصل', 'A railway connection needs a train departure time. The airport is outside central Dammam, so specify it separately.', 'يتطلب الربط بالقطار تحديد وقت المغادرة. يقع المطار خارج وسط الدمام، لذا حدد وجهته بصورة منفصلة.'],
-  'dammam-airport': ['Dammam Airport', 'مطار الدمام', 'King Fahd International Airport terminal and agreed meeting point', 'صالة مطار الملك فهد الدولي ونقطة اللقاء المتفق عليها', 'Send the flight number, terminal, landing or departure time and checked-bag count. Airport waiting is confirmed separately.', 'أرسل رقم الرحلة والصالة ووقت الوصول أو الإقلاع وعدد الحقائب المشحونة. يتم تأكيد انتظار المطار بصورة منفصلة.'],
-  riyadh: ['Riyadh', 'الرياض', 'KAFD, Diplomatic Quarter and central Riyadh hotels', 'مركز الملك عبدالله المالي وحي السفارات وفنادق وسط الرياض', 'KAFD and the Diplomatic Quarter have different access points. Send the building pin and allow time for city traffic after the highway.', 'تختلف مداخل مركز الملك عبدالله المالي وحي السفارات. أرسل موقع المبنى واترك وقتاً لحركة المدينة بعد الطريق السريع.'],
-  'al-ahsa': ['Al Ahsa', 'الأحساء', 'Al Hofuf hotels and Al Mubarraz', 'فنادق الهفوف والمبرز', 'Specify Hofuf or Mubarraz and the exact hotel; farm and oasis visits require a separate stop plan.', 'حدد الهفوف أو المبرز والفندق بدقة؛ تحتاج زيارات المزارع والواحات إلى خطة توقف منفصلة.'],
-  jubail: ['Jubail', 'الجبيل', 'Jubail city hotels and Jubail Industrial City', 'فنادق مدينة الجبيل والجبيل الصناعية', 'Industrial sites may require an invitation or gate pass. Confirm the gate, contact person and shift start.', 'قد تتطلب المواقع الصناعية دعوة أو تصريح دخول. أكد البوابة والشخص المسؤول ووقت بداية العمل.'],
+  bahrain: [
+    'Bahrain',
+    'البحرين',
+    'Manama hotels, Seef business district, Juffair, and Bahrain International Airport',
+    'فنادق المنامة وضاحية السيف الدبلوماسية والجفير ومطار البحرين الدولي',
+    'Share the building entrance, hotel lobby, or flight arrival details for pickup.',
+    'أرسل مدخل المبنى أو بهو الفندق أو تفاصيل رحلة الطيران لتنسيق الاستلام بدقة.'
+  ],
+  'bahrain-airport': [
+    'Bahrain International Airport',
+    'مطار البحرين الدولي',
+    'Bahrain International Airport (BAH) arrivals gate, flight terminal exit and VIP greeting point',
+    'صالة الوصول بمطار البحرين الدولي (BAH) وبوابة الخروج واستقبال كبار الشخصيات بالاسم',
+    'Provide airline, flight number, arrival time and luggage count. Your driver tracks flight landing live.',
+    'أرسل شركة الطيران ورقم الرحلة ووقت الوصول وعدد الحقائب. يتابع السائق موعد هبوط الطائرة مباشرة ويستقبلك بالاسم.'
+  ],
+  khobar: [
+    'Khobar',
+    'الخبر',
+    'Khobar Corniche, Al Olaya hotels, Dhahran Aramco hubs, and waterfront business centers',
+    'كورنيش الخبر وفنادق العليا ومراكز أرامكو في الظهران ومجمعات الأعمال البحرية',
+    'Choose the Corniche entrance, Aramco gate or hotel lobby; waterfront event traffic can change approach routes.',
+    'حدد مدخل الكورنيش أو بوابة أرامكو أو بهو الفندق؛ قد تغير حركة الفعاليات على الواجهة مسار الوصول الأخير.'
+  ],
+  dammam: [
+    'Dammam',
+    'الدمام',
+    'Dammam city center, corporate towers, and Dammam railway station; King Fahd Airport by dedicated transfer',
+    'وسط مدينة الدمام والأبراج التجارية ومحطة قطار الدمام؛ ومطار الملك فهد برحلة مخصصة',
+    'A railway connection needs a train departure time. The airport is outside central Dammam, so specify it separately.',
+    'يتطلب الربط بالقطار تحديد وقت المغادرة. يقع المطار خارج وسط الدمام، لذا حدد وجهته بصورة منفصلة.'
+  ],
+  'dammam-airport': [
+    'Dammam Airport',
+    'مطار الدمام',
+    'King Fahd International Airport (DMM) passenger terminal and curbside VIP meeting point',
+    'صالة مطار الملك فهد الدولي بالدمام (DMM) ونقطة اللقاء السريع لكبار الشخصيات',
+    'Send the flight number, terminal, landing or departure time and bag count. Chauffeur meets you at terminal exit.',
+    'أرسل رقم الرحلة ووقت الهبوط أو المغادرة وعدد الحقائب. يستقبلك السائق مباشرة عند مخرج الصالة بعد الجمارك.'
+  ],
+  riyadh: [
+    'Riyadh',
+    'الرياض',
+    'KAFD, Diplomatic Quarter, Olaya financial district and central Riyadh luxury hotels',
+    'مركز الملك عبدالله المالي (KAFD) وحي السفارات وفنادق العليا الفاخرة ووسط الرياض',
+    'KAFD and Diplomatic Quarter require specific security gates. Send building pins and allow for highway traffic.',
+    'تتطلب بوابات مركز كافد وحي السفارات تنسيقاً مسبقاً. أرسل موقع المبنى واترك وقتاً لحركة السير السريعة.'
+  ],
+  'al-ahsa': [
+    'Al Ahsa',
+    'الأحساء',
+    'Al Hofuf city hotels, Al Mubarraz commercial hubs, and historic oasis districts',
+    'فنادق الهفوف والمجمعات التجارية في المبرز ومناطق واحة الأحساء التاريخية',
+    'Specify Hofuf or Mubarraz and the exact hotel; farm and oasis visits require a separate stop plan.',
+    'حدد الهفوف أو المبرز والفندق بدقة؛ تحتاج زيارات المزارع والواحات إلى خطة توقف منفصلة.'
+  ],
+  jubail: [
+    'Jubail',
+    'الجبيل',
+    'Jubail Industrial City, Royal Commission headquarters, Fanateer waterfront hotels, and SABIC/Sadara facilities',
+    'مدينة الجبيل الصناعية ومقر الهيئة الملكية وفنادق واجهة الفناتير البحرية ومجمعات سابك وصدارة',
+    'Corporate industrial sites may require security gate clearance. Confirm gate number, visitor pass and shift timing.',
+    'قد تتطلب المجمعات الصناعية تصاريح أمنية للبوابات. أكد رقم البوابة ومسؤول الاستقبال ومواعيد الورديات.'
+  ],
+  makkah: [
+    'Makkah Al-Mukarramah',
+    'مكة المكرمة',
+    'Central Haram hotels, Abraj Al Bait Clock Tower, Aziziyah, and Madinah Munawwarah pilgrim routes',
+    'فنادق المنطقة المركزية للحرم وبرج الساعة والعزيزية ومحاور طريق الهجرة إلى المدينة المنورة',
+    'Dedicated to private family Umrah journeys. Confirm prayer stop schedules, luggage capacity and hotel drop-off points.',
+    'مخصصة لرحلات العمرة العائلية المريحة. أكد محطات الصلاة المفضلة وسعة الأمتعة وموقع الفندق بمكة.'
+  ],
+  'causeway-terminal': [
+    'King Fahd Causeway',
+    'جسر الملك فهد',
+    'King Fahd Causeway passport island, border customs terminals, and Bahrain/Saudi lane entrances',
+    'الجزيرة الوسطية لجسر الملك فهد ومنافذ الجوازات والجمارك بالجانبين البحريني والسعودي',
+    'Single-vehicle cross-border transit between Bahrain and Eastern Province without changing cars.',
+    'توصيل مباشر عبر مسارات الجسر ومنافذ الجوازات في مركبة واحدة مريحة دون تبديل السيارة عند الحدود.'
+  ],
   khafji: ['Khafji', 'الخفجي', 'Khafji Corniche and central hotels', 'كورنيش الخفجي وفنادق وسط المدينة', 'A Khafji drop-off stays in Saudi Arabia. Continuing to Kuwait requires a separate border and visa review.', 'تظل وجهة الخفجي داخل السعودية. تتطلب متابعة الرحلة إلى الكويت مراجعة منفصلة للحدود والتأشيرة.'],
   kuwait: ['Kuwait', 'الكويت', 'Kuwait City hotels, Salmiya and Sharq', 'فنادق مدينة الكويت والسالمية وشرق', 'State whether the stop is Kuwait City or Salmiya and check Saudi transit as well as Kuwait entry eligibility.', 'حدد مدينة الكويت أو السالمية وتحقق من أهلية عبور السعودية والدخول إلى الكويت.'],
   'kuwait-airport': ['Kuwait International Airport', 'مطار الكويت الدولي', 'Kuwait International Airport terminal confirmed by the airline', 'صالة مطار الكويت الدولي التي تؤكدها شركة الطيران', 'Airlines use different terminals. Send the terminal and flight number before agreeing the pickup point.', 'تستخدم شركات الطيران صالات مختلفة. أرسل الصالة ورقم الرحلة قبل الاتفاق على نقطة الاستلام.'],
@@ -23,38 +96,117 @@ const places = {
 
 // km range, driving-hour range. Capital/reference-city estimates remain explicit.
 const bahrainPairs = {
-  khobar: [45,95,0.75,1.5], dammam: [90,130,1,2], 'dammam-airport': [105,145,1,1.75],
-  riyadh: [460,520,4.5,6], 'al-ahsa': [160,210,2,3], jubail: [180,230,2,3], khafji: [320,380,3.5,5],
-  kuwait: [430,520,5.5,7], 'kuwait-airport': [430,520,5.5,7], qatar: [420,520,4.5,6],
-  'hamad-airport': [440,540,4.5,6], dubai: [850,980,9,11], 'abu-dhabi': [760,900,8,10],
-  uae: [760,900,8,11], oman: [1050,1250,12,15], saudi: [45,95,0.75,1.5]
+  khobar: [45, 95, 0.75, 1.5],
+  dammam: [90, 130, 1.0, 2.0],
+  'dammam-airport': [95, 130, 1.25, 2.0],
+  riyadh: [460, 520, 4.5, 6.0],
+  'al-ahsa': [160, 210, 2.0, 3.0],
+  jubail: [180, 230, 2.0, 3.0],
+  khafji: [320, 380, 3.5, 5.0],
+  kuwait: [430, 520, 5.5, 7.0],
+  'kuwait-airport': [430, 520, 5.5, 7.0],
+  qatar: [420, 520, 4.5, 6.0],
+  'hamad-airport': [440, 540, 4.5, 6.0],
+  dubai: [850, 980, 9.0, 11.0],
+  'abu-dhabi': [760, 900, 8.0, 10.0],
+  uae: [760, 900, 8.0, 11.0],
+  oman: [1050, 1250, 12.0, 15.0],
+  saudi: [45, 95, 0.75, 1.5]
 };
-const countryPairs = [ ['saudi','qatar',580,650,6,8], ['saudi','uae',900,1050,9,12], ['qatar','uae',550,700,6,9] ];
+
+const customRoutes = [
+  // 1. Bahrain Airport to Khobar & reverse
+  ['bahrain-airport', 'khobar', [60, 75, 0.8, 1.1], true],
+  ['khobar', 'bahrain-airport', [60, 75, 0.8, 1.1], true],
+  // 2. Bahrain Airport to Jubail & reverse
+  ['bahrain-airport', 'jubail', [135, 155, 1.5, 2.0], true],
+  ['jubail', 'bahrain-airport', [135, 155, 1.5, 2.0], true],
+  // 3. Bahrain to Makkah Umrah SUV
+  ['bahrain', 'makkah', [1250, 1400, 12.0, 14.0], true, 'bahrain-to-makkah-umrah-suv', 'Bahrain to Makkah Umrah VIP SUV', 'من البحرين إلى مكة المكرمة للعمرة VIP'],
+  // 4. King Fahd Causeway Dedicated Chauffeur
+  ['bahrain', 'causeway-terminal', [25, 40, 0.4, 0.7], true, 'king-fahd-causeway-chauffeur', 'King Fahd Causeway Cross-Border Chauffeur', 'سائق خاص عبر جسر الملك فهد']
+];
+
+const countryPairs = [
+  ['saudi', 'qatar', 580, 650, 6.0, 8.0],
+  ['saudi', 'uae', 900, 1050, 9.0, 12.0],
+  ['qatar', 'uae', 550, 700, 6.0, 9.0]
+];
+
 const profiles = {};
-function add(origin, destination, range, usesCauseway) {
+
+function add(origin, destination, range, usesCauseway, customSlug = null, customNameEn = null, customNameAr = null) {
   const a = places[origin], b = places[destination];
-  const slug = `${origin}-to-${destination}`;
-  const profile = { slug, origin_en: a[0], origin_ar: a[1], destination_en: b[0], destination_ar: b[1],
-    name_en: `${a[0]} to ${b[0]}`, name_ar: `${a[1]} إلى ${b[1]}`,
-    distance_km: range.slice(0,2), driving_hours: range.slice(2), uses_causeway: usesCauseway,
-    hubs_en: b[2], hubs_ar: b[3], arrival_en: b[4], arrival_ar: b[5],
-    pickup_en: a[4], pickup_ar: a[5], reference_en: origin === 'saudi' || destination === 'saudi' ? (usesCauseway ? 'Khobar' : 'Riyadh') : '',
-    reviewed: '2026-10-20' };
+  if (!a || !b) throw new Error(`Unknown place in route profile: ${origin} -> ${destination}`);
+  const slug = customSlug || `${origin}-to-${destination}`;
+  const name_en = customNameEn || `${a[0]} to ${b[0]}`;
+  const name_ar = customNameAr || `${a[1]} إلى ${b[1]}`;
+  const profile = {
+    slug,
+    origin_en: a[0],
+    origin_ar: a[1],
+    destination_en: b[0],
+    destination_ar: b[1],
+    name_en,
+    name_ar,
+    distance_km: range.slice(0, 2),
+    driving_hours: range.slice(2, 4),
+    uses_causeway: usesCauseway,
+    hubs_en: b[2],
+    hubs_ar: b[3],
+    arrival_en: b[4],
+    arrival_ar: b[5],
+    pickup_en: a[4],
+    pickup_ar: a[5],
+    reference_en: origin === 'saudi' || destination === 'saudi' ? (usesCauseway ? 'Khobar' : 'Riyadh') : '',
+    reviewed: '2026-10-20'
+  };
+
   profile.faq_en = [
-    [`How long is the ${profile.name_en} road journey?`, `Allow approximately ${range[2]}–${range[3]} driving hours over ${range[0]}–${range[1]} km. Border processing, traffic and rest stops add time. ${profile.reference_en ? `The Saudi reference city is ${profile.reference_en}. ` : ''}Confirm exact addresses before departure.`],
-    [`Where can I be dropped off in ${b[0]}?`, `${b[2]}. ${b[4]}`],
-    [`What should I send to book ${profile.name_en}?`, `Send the pickup pin in ${a[0]}, the destination pin in ${b[0]}, date, passenger and luggage counts. ${a[4]} Ask for the confirmed vehicle, fare and border-document checklist on WhatsApp.`]
+    [
+      `How long is the ${profile.name_en} road journey?`,
+      `Allow approximately ${range[2]}–${range[3]} driving hours over ${range[0]}–${range[1]} km. King Fahd Causeway processing, customs inspection, traffic and rest stops add time. Confirm exact pickup and drop-off addresses before departure.`
+    ],
+    [
+      `Where can I be dropped off in ${b[0]}?`,
+      `${b[2]}. ${b[4]}`
+    ],
+    [
+      `What should I send to book ${profile.name_en}?`,
+      `Send pickup location in ${a[0]}, destination address in ${b[0]}, preferred date, passenger count and luggage volume. ${a[4]} Confirm your vehicle preference (VIP GMC Yukon XL or Executive Sedan) on WhatsApp.`
+    ]
   ];
+
   profile.faq_ar = [
-    [`كم تستغرق رحلة ${profile.name_ar} البرية؟`, `تستغرق القيادة تقريباً ${range[2]}–${range[3]} ساعة لمسافة ${range[0]}–${range[1]} كم. يضاف وقت لإجراءات الحدود والازدحام والاستراحات. أكد العناوين الدقيقة قبل المغادرة.`],
-    [`أين يمكن التوصيل في ${b[1]}؟`, `${b[3]}. ${b[5]}`],
-    [`ماذا أرسل لحجز رحلة ${profile.name_ar}؟`, `أرسل موقع الاستلام في ${a[1]} وموقع الوصول في ${b[1]} والتاريخ وعدد الركاب والحقائب. ${a[5]} اطلب تأكيد المركبة والسعر وقائمة وثائق الحدود عبر واتساب.`]
+    [
+      `كم تستغرق رحلة ${profile.name_ar} البرية؟`,
+      `تستغرق القيادة تقريباً ${range[2]}–${range[3]} ساعة لمسافة ${range[0]}–${range[1]} كم. يضاف وقت لإجراءات جسر الملك فهد والجوازات والجمارك والاستراحات. أكد العناوين الدقيقة قبل الانطلاق.`
+    ],
+    [
+      `أين يمكن التوصيل في ${b[1]}؟`,
+      `${b[3]}. ${b[5]}`
+    ],
+    [
+      `ماذا أرسل لحجز رحلة ${profile.name_ar}؟`,
+      `أرسل موقع الاستلام في ${a[1]} وموقع الوصول في ${b[1]} والتاريخ وعدد الركاب والحقائب. ${a[5]} اختر فئة السيارة (جمس يوكون عائلية فاخرة أو سيدان تنفيذية) عبر واتساب.`
+    ]
   ];
+
   profiles[slug] = profile;
 }
+
 for (const [destination, range] of Object.entries(bahrainPairs)) {
   add('bahrain', destination, range, true);
   add(destination, 'bahrain', range, true);
 }
-for (const [a,b,...range] of countryPairs) { add(a,b,range,false); add(b,a,range,false); }
+
+for (const item of customRoutes) {
+  add(item[0], item[1], item[2], item[3], item[4], item[5], item[6]);
+}
+
+for (const [a, b, ...range] of countryPairs) {
+  add(a, b, range, false);
+  add(b, a, range, false);
+}
+
 export default profiles;

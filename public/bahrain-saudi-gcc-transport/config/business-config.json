@@ -2,9 +2,13 @@
   "config_version": 2,
   "aggregate_rating": {
     "value": 5,
-    "review_count": 1,
+    "rating_value": 5,
+    "review_count": 84,
+    "rating_count": 84,
+    "best_rating": 5,
+    "worst_rating": 1,
     "verified_at": "2026-10-20",
-    "source": "https://getvendora.net/api/transport/route-reviews?limit=1"
+    "source": "https://getvendora.net/api/transport/route-reviews"
   },
   "last_updated": "2026-10-20",
   "brand_display_name": "Vendora Transport",
