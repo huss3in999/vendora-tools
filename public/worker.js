@@ -522,6 +522,7 @@ export default {
         'luxury-hotel-transfers-bahrain',
         'corporate-chauffeur-bahrain',
         'b2b-travel-partners',
+        'bahrain-airport-to-hotel-transfers',
       ]);
       if (publicSlug === 'prices' || Object.hasOwn(routeProfiles, publicSlug) || b2bHubSlugs.has(publicSlug)) {
         return Response.redirect(`${url.origin}${SITE_PATH_PREFIX}/${publicSlug}/${url.search}`, 301);

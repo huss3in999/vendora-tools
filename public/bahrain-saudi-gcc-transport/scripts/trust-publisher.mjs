@@ -44,7 +44,8 @@ export function publishTrust(html, { slug, lang, url, business, config, assetPre
     'exhibition-world-bahrain-transport',
     'luxury-hotel-transfers-bahrain',
     'corporate-chauffeur-bahrain',
-    'b2b-travel-partners'
+    'b2b-travel-partners',
+    'bahrain-airport-to-hotel-transfers'
   ]);
   if (commercialHubs.has(slug)) {
     const serviceName = pageTitle.split('|')[0].trim();
