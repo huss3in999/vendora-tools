@@ -3940,7 +3940,10 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
     <!-- FILTERED SCOPE SUMMARY BAR (When list filters narrow bookings within the selected date range) -->
     <div id="filtered-scope-summary" style="display:none;background:rgba(19,34,56,0.92);border:1px solid rgba(197,168,128,0.35);border-radius:10px;padding:7px 11px;margin-bottom:8px;font-size:11.5px;color:var(--ink-dim);align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;"></div>
 
-      <!-- DESKTOP TWO-COLUMN MASTER-DETAIL WORKSPACE (Left: Searchable Compact List, Right: Selected Booking Inspector) -->
+          <!-- CANCELLATION FINANCIAL & STATS SUMMARY BANNER -->
+    <div id="cancellation-summary-banner" style="display:none;background:rgba(239,68,68,0.12);border:1.5px solid rgba(239,68,68,0.45);border-radius:12px;padding:10px 14px;margin-bottom:10px;font-size:12px;color:var(--ink);box-shadow:0 3px 12px rgba(239,68,68,0.15);"></div>
+
+    <!-- DESKTOP TWO-COLUMN MASTER-DETAIL WORKSPACE (Left: Searchable Compact List, Right: Selected Booking Inspector) -->
       <div class="desktop-split-workspace" id="desktop-split-workspace">
         <div id="trips-stream" class="desktop-list-column">
           <div class="empty-box">جاري تحميل الرحلات...</div>
@@ -5584,7 +5587,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       if (!b) return false;
       const bs = String(b.bookingStatus || '').trim().toLowerCase();
       const ts = String(b.tripStatus || '').trim().toLowerCase();
-      return bs === 'cancelled' || bs === 'canceled' || bs === 'ملغي' || bs === 'ملغية' ||
+      return bs.startsWith('cancelled') || bs.startsWith('canceled') || bs.includes('ملغي') || bs.includes('ملغية') || bs.includes('إلغاء') ||
              ts === 'cancelled' || ts === 'canceled' || ts === 'ملغي' || ts === 'ملغية';
     }
 
@@ -6596,7 +6599,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       if (!b || b.bookingStatus === 'Trashed') return false;
       const isCanc = isBookingCancelled(b);
 
-      // FAST FILTERS & VISIBILITY FILTER (All Bookings, Canceled, With Driver, Without Driver)
+      // 1. FAST FILTERS & VISIBILITY FILTER (All Bookings, Canceled, With Driver, Without Driver)
       if (App.fastFilter === 'canceled' || App.visibilityFilter === 'canceled_only') {
         if (!isCanc) return false;
       } else if (App.fastFilter === 'with_driver') {
@@ -6604,45 +6607,12 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       } else if (App.fastFilter === 'without_driver') {
         if (isCanc || isDriverAssigned(b)) return false;
       } else if (App.fastFilter === 'all' || App.visibilityFilter === 'all') {
-        // All bookings pass
+        // All bookings pass (including canceled, completed, past, present, future)
       } else if (App.visibilityFilter === 'non_canceled') {
         if (isCanc) return false;
       }
 
-      if (!ignoreTabFilters) {
-        if (App.filter === 'cancelled') {
-          if (!isCanc) return false;
-        } else if (App.filter === 'unassigned') {
-          if (isCanc || isDriverAssigned(b) || b.bookingStatus === 'Completed') return false;
-        } else if (App.filter === 'completed') {
-          if (isCanc || b.bookingStatus !== 'Completed') return false;
-        } else if (App.filter === 'history') {
-          if (isCanc) return false;
-          if (b.travelDate >= todayStr && b.bookingStatus !== 'Completed') return false;
-        } else if (App.filter === 'today') {
-          if (b.travelDate !== todayStr) return false;
-        } else if (App.filter === 'tomorrow') {
-          if (b.travelDate !== tomorrowStr) return false;
-        } else if (App.filter === 'after_tomorrow') {
-          const aftTom = addDaysToDateStr(todayStr, 2);
-          if (b.travelDate !== aftTom) return false;
-        } else if (App.filter && App.filter.startsWith('date:')) {
-          const dTarget = App.filter.slice(5);
-          if (b.travelDate !== dTarget) return false;
-        } else if (App.filter === 'all') {
-          // Allow all! Past, current, and future bookings
-        } else if (App.filter === 'upcoming') {
-          if (b.travelDate < todayStr || b.bookingStatus === 'Completed') return false;
-        }
-
-        if (!matchesDateRange(b)) return false;
-      } else {
-        if ((App.fastFilter === 'canceled' || App.visibilityFilter === 'canceled_only') && !isCanc) return false;
-        if (App.fastFilter === 'without_driver' && (isCanc || isDriverAssigned(b))) return false;
-        if (App.fastFilter === 'with_driver' && (isCanc || !isDriverAssigned(b))) return false;
-        if (App.visibilityFilter === 'non_canceled' && isCanc) return false;
-      }
-
+      // 2. SEARCH FILTER (Query text or digits)
       if (q) {
         const qClean = q.toLowerCase().trim();
         const qDigits = qClean.replace(/\D/g, '');
@@ -6667,7 +6637,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
 
         let match = false;
 
-        if (/^\d{1,2}(?:\s*[,\-\/&\s]\s*\d{1,2})+$/.test(qClean)) {
+        if (/^\d{1,2}(?:\s*[\-,\/&\s]\s*\d{1,2})+$/.test(qClean)) {
           const bDay = parseInt((b.travelDate || '').split('-')[2], 10);
           if (qClean.includes('-') && /^\d{1,2}\s*-\s*\d{1,2}$/.test(qClean)) {
             const parts = qClean.split('-').map(x => parseInt(x.trim(), 10));
@@ -6710,38 +6680,40 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         if (!match) return false;
       }
 
-      if (ignoreTabFilters) return true;
+      // 3. DATE FILTERING (matchesDateRange)
+      if (!matchesDateRange(b)) return false;
 
-      if (App.dateRangeFrom || App.dateRangeTo) {
-        if (App.dateRangeFrom && (b.travelDate || '') < App.dateRangeFrom) return false;
-        if (App.dateRangeTo && (b.travelDate || '') > App.dateRangeTo) return false;
-        if (App.filter === 'cancelled' && !isCanc) return false;
-        if (App.filter === 'unassigned' && (isDriverAssigned(b) || b.bookingStatus === 'Completed' || isCanc)) return false;
-        if (App.filter === 'completed' && (b.bookingStatus !== 'Completed' || isCanc)) return false;
-      } else if (App.selectedDates && App.selectedDates.length > 0) {
-        if (!App.selectedDates.includes(b.travelDate)) return false;
-      } else if (App.specificDate) {
-        if (b.travelDate !== App.specificDate) return false;
-      } else {
-        if (App.filter === 'cancelled') {
+      // 4. OPERATIONAL TAB & STATUS FILTERS
+      if (!ignoreTabFilters) {
+        if (App.fastFilter === 'canceled' || App.visibilityFilter === 'canceled_only') {
+          // Handled in step 1: only cancelled bookings pass
+        } else if (App.fastFilter === 'all' || App.visibilityFilter === 'all') {
+          // Handled in step 1: all bookings pass
+        } else if (App.filter === 'cancelled') {
           if (!isCanc) return false;
         } else if (App.filter === 'unassigned') {
-          if (isDriverAssigned(b) || b.bookingStatus === 'Completed' || isCanc) return false;
+          if (isCanc || isDriverAssigned(b) || b.bookingStatus === 'Completed') return false;
+        } else if (App.filter === 'completed') {
+          if (isCanc || b.bookingStatus !== 'Completed') return false;
+        } else if (App.filter === 'history') {
+          if (isCanc) return false;
+          if (b.travelDate >= todayStr && b.bookingStatus !== 'Completed') return false;
         } else if (App.filter === 'today') {
           if (b.travelDate !== todayStr || isCanc) return false;
         } else if (App.filter === 'tomorrow') {
           if (b.travelDate !== tomorrowStr || isCanc) return false;
-        } else if (App.filter === 'history') {
-          if ((b.travelDate >= todayStr && b.bookingStatus !== 'Completed') || isCanc) return false;
-        } else if (App.filter === 'completed') {
-          if (b.bookingStatus !== 'Completed' || isCanc) return false;
-        } else if (App.filter === 'all') {
-          if (isCanc) return false;
+        } else if (App.filter === 'after_tomorrow') {
+          const aftTom = addDaysToDateStr(todayStr, 2);
+          if (b.travelDate !== aftTom || isCanc) return false;
+        } else if (App.filter && App.filter.startsWith('date:')) {
+          const dTarget = App.filter.slice(5);
+          if (b.travelDate !== dTarget) return false;
         } else if (App.filter === 'upcoming') {
           if (b.travelDate < todayStr || b.bookingStatus === 'Completed' || isCanc) return false;
         }
       }
 
+      // 5. CITY / ROUTE FILTER
       if (App.cityFilter !== 'all') {
         if (App.cityFilter === 'riyadh' && !isRiyadh(b)) return false;
         if (App.cityFilter === 'bahrain' && !isBahrain(b)) return false;
@@ -6752,6 +6724,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         if (App.cityFilter === 'other' && (isRiyadh(b) || isBahrain(b) || isKhobarDammam(b))) return false;
       }
 
+      // 6. COUNTRY FILTER
       if (App.countryFilter !== 'all') {
         if (App.countryFilter === 'sa' && !isSaudi(b)) return false;
         if (App.countryFilter === 'bh' && !isBahrain(b)) return false;
@@ -6760,11 +6733,13 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         if (App.countryFilter === 'kw' && !isKuwait(b)) return false;
       }
 
+      // 7. PAYMENT STATUS FILTER
       if (App.payFilter !== 'all') {
         if (App.payFilter === 'paid' && b.paymentStatus !== 'Paid') return false;
         if (App.payFilter === 'unpaid' && b.paymentStatus === 'Paid') return false;
       }
 
+      // 8. DRIVER FILTER
       if (App.driverFilter !== 'all') {
         if (App.driverFilter === 'assigned' && !isDriverAssigned(b)) return false;
         if (App.driverFilter === 'unassigned' && isDriverAssigned(b)) return false;
@@ -7288,6 +7263,49 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       }
     }
 
+    function computeCancellationStats(cancList) {
+      const items = Array.isArray(cancList) ? cancList.filter(b => b && b.bookingStatus !== 'Trashed' && isBookingCancelled(b)) : [];
+      let totalCount = items.length;
+      let totalOriginalBhd = 0;
+      let totalCollectedBhd = 0;
+      let totalRefundedBhd = 0;
+      let otherCurrencies = {};
+
+      items.forEach(b => {
+        const fareNum = parseFloat(String(b.fare || '').replace(/[^0-9.]/g, '')) || 0;
+        const cur = String(b.currency || 'BHD').trim().toUpperCase() || 'BHD';
+        const isPaid = (b.paymentStatus === 'Paid' || b.paidStatus === 'Paid');
+        const paidNum = parseFloat(String(b.paidAmount || (isPaid ? b.fare : 0)).replace(/[^0-9.]/g, '')) || 0;
+        const refundNum = parseFloat(String(b.refundAmount || b.refundedAmount || 0).replace(/[^0-9.]/g, '')) || 0;
+
+        if (cur === 'BHD') {
+          totalOriginalBhd += fareNum;
+          totalCollectedBhd += paidNum;
+          totalRefundedBhd += refundNum;
+        } else {
+          const rateToBhd = toBhdAmount(1, cur);
+          if (rateToBhd > 0) {
+            totalOriginalBhd += toBhdAmount(fareNum, cur);
+            totalCollectedBhd += toBhdAmount(paidNum, cur);
+            totalRefundedBhd += toBhdAmount(refundNum, cur);
+          } else {
+            if (!otherCurrencies[cur]) otherCurrencies[cur] = { original: 0, collected: 0, refunded: 0 };
+            otherCurrencies[cur].original += fareNum;
+            otherCurrencies[cur].collected += paidNum;
+            otherCurrencies[cur].refunded += refundNum;
+          }
+        }
+      });
+
+      return {
+        count: totalCount,
+        originalBhd: totalOriginalBhd,
+        collectedBhd: totalCollectedBhd,
+        refundedBhd: totalRefundedBhd,
+        otherCurrencies
+      };
+    }
+
     function computeFinancialStats(bookingsList) {
       let totalBhd = 0;
       let paidBhd = 0;
@@ -7426,52 +7444,111 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       const q = App.search.trim();
       let list = App.bookings.filter(b => matchesBooking(b, q, todayStr, tomorrowStr));
 
-      // Compute Dashboard KPI stats for the selected date range (or current active view)
-      const rangeScopedAll = allValid.filter(b => matchesDateRange(b));
-      const rangeScopedActive = rangeScopedAll.filter(b => !isBookingCancelled(b));
-      const rangeScopedCancelled = rangeScopedAll.filter(b => isBookingCancelled(b));
-      const hasExplicitRange = Boolean(App.dateRangeFrom || App.dateRangeTo || App.specificDate || (App.selectedDates && App.selectedDates.length > 0));
-      const kpiSourceList = hasExplicitRange ? rangeScopedAll : list;
-      const viewStats = computeFinancialStats(kpiSourceList);
-      const kpiUnassignedList = (hasExplicitRange ? rangeScopedActive : active.filter(b => b.travelDate >= todayStr)).filter(b => !isDriverAssigned(b) && b.bookingStatus !== 'Completed');
+      const isCanceledView = (App.fastFilter === 'canceled' || App.visibilityFilter === 'canceled_only');
+      const cancBanner = $('cancellation-summary-banner');
 
-      // Card 1: Total Bookings (Active + Cancelled distinction)
-      if ($('kpi-val-bookings')) {
-        $('kpi-val-bookings').textContent = viewStats.activeCount;
-      }
-      if ($('kpi-sub-bookings')) {
-        const cancCnt = hasExplicitRange ? rangeScopedCancelled.length : cancelledTrips.length;
-        $('kpi-sub-bookings').textContent = isAr
-          ? `${viewStats.activeCount} نشطة · ${cancCnt} ملغية`
-          : `${viewStats.activeCount} active · ${cancCnt} cancelled`;
-      }
+      if (isCanceledView) {
+        // CANCELED VIEW: Compute and render real cancellation stats
+        const cancStats = computeCancellationStats(list);
+        if (cancBanner) {
+          cancBanner.style.display = 'block';
+          cancBanner.innerHTML = `
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;width:100%;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:20px;">🚫</span>
+                <div>
+                  <div style="font-weight:900;color:#fca5a5;font-size:13.5px;">${isAr ? 'ملخص الحجوزات الملغية' : 'Canceled Bookings Summary'}</div>
+                  <div style="color:var(--ink-muted);font-size:11px;">${isAr ? 'قيمة الحجوزات الأصلية قبل الإلغاء (مستبعدة من المبيعات النشطة)' : 'Original booking value before cancellation (excluded from active revenue)'}</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                <div style="text-align:center;background:rgba(0,0,0,0.35);padding:4px 10px;border-radius:8px;border:1px solid rgba(239,68,68,0.35);">
+                  <div style="font-size:10px;color:var(--ink-muted);">${isAr ? 'عدد الملغية' : 'Canceled'}</div>
+                  <div style="font-size:15px;font-weight:900;color:#fca5a5;">${cancStats.count}</div>
+                </div>
+                <div style="text-align:center;background:rgba(0,0,0,0.35);padding:4px 10px;border-radius:8px;border:1px solid rgba(239,68,68,0.35);">
+                  <div style="font-size:10px;color:var(--ink-muted);">${isAr ? 'قيمة الحجوزات الأصلية' : 'Original Booking Value'}</div>
+                  <div style="font-size:15px;font-weight:900;color:var(--champagne);" dir="ltr">${formatBhd(cancStats.originalBhd, true)}</div>
+                </div>
+                ${cancStats.collectedBhd > 0 ? `
+                <div style="text-align:center;background:rgba(0,0,0,0.35);padding:4px 10px;border-radius:8px;border:1px solid rgba(16,185,129,0.35);">
+                  <div style="font-size:10px;color:var(--ink-muted);">${isAr ? 'المحصل' : 'Collected'}</div>
+                  <div style="font-size:15px;font-weight:900;color:#34d399;" dir="ltr">${formatBhd(cancStats.collectedBhd, true)}</div>
+                </div>` : ''}
+                ${cancStats.refundedBhd > 0 ? `
+                <div style="text-align:center;background:rgba(0,0,0,0.35);padding:4px 10px;border-radius:8px;border:1px solid rgba(56,189,248,0.35);">
+                  <div style="font-size:10px;color:var(--ink-muted);">${isAr ? 'المسترد' : 'Refunded'}</div>
+                  <div style="font-size:15px;font-weight:900;color:#7dd3fc;" dir="ltr">${formatBhd(cancStats.refundedBhd, true)}</div>
+                </div>` : ''}
+              </div>
+            </div>
+          `;
+        }
 
-      // Card 2: Total Customer Charges (BHD 3 decimal places)
-      if ($('kpi-val-revenue')) {
-        $('kpi-val-revenue').textContent = formatBhd(viewStats.totalBhd, true);
-      }
-      if ($('kpi-sub-revenue')) {
-        $('kpi-sub-revenue').textContent = isAr
+        // Card 1: Total Canceled
+        if ($('kpi-lbl-bookings')) $('kpi-lbl-bookings').textContent = isAr ? 'الحجوزات الملغية' : 'Canceled Trips';
+        if ($('kpi-val-bookings')) $('kpi-val-bookings').textContent = cancStats.count;
+        if ($('kpi-sub-bookings')) $('kpi-sub-bookings').textContent = isAr ? `${cancStats.count} رحلة ملغية في النظام` : `${cancStats.count} total canceled trips`;
+
+        // Card 2: Original Value
+        if ($('kpi-lbl-revenue')) $('kpi-lbl-revenue').textContent = isAr ? 'قيمة الملغية (د.ب)' : 'Canceled Value (BHD)';
+        if ($('kpi-val-revenue')) $('kpi-val-revenue').textContent = formatBhd(cancStats.originalBhd, true);
+        if ($('kpi-sub-revenue')) $('kpi-sub-revenue').textContent = isAr ? 'قيمة الحجوزات قبل الإلغاء' : 'Original value before cancel';
+
+        // Card 3: Collected / Refunded
+        if ($('kpi-lbl-collected')) $('kpi-lbl-collected').textContent = isAr ? 'المحصل من الملغية' : 'Collected (Canceled)';
+        if ($('kpi-val-collected')) $('kpi-val-collected').textContent = formatBhd(cancStats.collectedBhd, true);
+        if ($('kpi-sub-collected')) $('kpi-sub-collected').textContent = cancStats.refundedBhd > 0
+          ? (isAr ? `المسترد: ${formatBhd(cancStats.refundedBhd, true)}` : `Refunded: ${formatBhd(cancStats.refundedBhd, true)}`)
+          : (isAr ? 'لا توجد مبالغ محصلة' : 'No payments collected');
+
+        // Card 4: Driver Alerts in Canceled View
+        if ($('kpi-lbl-unassigned')) $('kpi-lbl-unassigned').textContent = isAr ? 'حالة التشغيل' : 'Driver Alerts';
+        if ($('kpi-val-unassigned')) $('kpi-val-unassigned').textContent = '0';
+        if ($('kpi-sub-unassigned')) $('kpi-sub-unassigned').textContent = isAr ? 'ملغية بالكامل (لا تتطلب سائق) ✓' : 'All canceled (no driver needed) ✓';
+      } else {
+        if (cancBanner) {
+          cancBanner.style.display = 'none';
+          cancBanner.innerHTML = '';
+        }
+
+        // NORMAL VIEW: Active bookings & sales
+        const rangeScopedAll = allValid.filter(b => matchesDateRange(b));
+        const rangeScopedActive = rangeScopedAll.filter(b => !isBookingCancelled(b));
+        const rangeScopedCancelled = rangeScopedAll.filter(b => isBookingCancelled(b));
+        const hasExplicitRange = Boolean(App.dateRangeFrom || App.dateRangeTo || App.specificDate || (App.selectedDates && App.selectedDates.length > 0));
+        const kpiSourceList = hasExplicitRange ? rangeScopedActive : active;
+        const viewStats = computeFinancialStats(kpiSourceList);
+        const kpiUnassignedList = (hasExplicitRange ? rangeScopedActive : active.filter(b => b.travelDate >= todayStr)).filter(b => !isDriverAssigned(b) && b.bookingStatus !== 'Completed');
+
+        // Card 1: Total Bookings
+        if ($('kpi-lbl-bookings')) $('kpi-lbl-bookings').textContent = isAr ? 'إجمالي الحجوزات' : 'Total Bookings';
+        if ($('kpi-val-bookings')) $('kpi-val-bookings').textContent = viewStats.activeCount;
+        if ($('kpi-sub-bookings')) {
+          const cancCnt = hasExplicitRange ? rangeScopedCancelled.length : cancelledTrips.length;
+          $('kpi-sub-bookings').textContent = isAr
+            ? `${viewStats.activeCount} نشطة · ${cancCnt} ملغية`
+            : `${viewStats.activeCount} active · ${cancCnt} cancelled`;
+        }
+
+        // Card 2: Total Customer Charges (BHD 3 decimal places)
+        if ($('kpi-lbl-revenue')) $('kpi-lbl-revenue').textContent = isAr ? 'إجمالي الرسوم (د.ب)' : 'Total Revenue (BHD)';
+        if ($('kpi-val-revenue')) $('kpi-val-revenue').textContent = formatBhd(viewStats.totalBhd, true);
+        if ($('kpi-sub-revenue')) $('kpi-sub-revenue').textContent = isAr
           ? `إجمالي رسوم ${viewStats.activeCount} حجز نشط`
           : `Across ${viewStats.activeCount} active booking(s)`;
-      }
 
-      // Card 3: Collected Amount (Strictly actual paid bookings, 3 decimals)
-      if ($('kpi-val-collected')) {
-        $('kpi-val-collected').textContent = formatBhd(viewStats.paidBhd, true);
-      }
-      if ($('kpi-sub-collected')) {
-        $('kpi-sub-collected').textContent = isAr
+        // Card 3: Collected Amount
+        if ($('kpi-lbl-collected')) $('kpi-lbl-collected').textContent = isAr ? 'المبالغ المحصلة' : 'Collected Amount';
+        if ($('kpi-val-collected')) $('kpi-val-collected').textContent = formatBhd(viewStats.paidBhd, true);
+        if ($('kpi-sub-collected')) $('kpi-sub-collected').textContent = isAr
           ? `متبقي للتحصيل: ${formatBhd(viewStats.unpaidBhd, true)}`
           : `Unpaid: ${formatBhd(viewStats.unpaidBhd, true)}`;
-      }
 
-      // Card 4: Driver Needed
-      if ($('kpi-val-unassigned')) {
-        $('kpi-val-unassigned').textContent = kpiUnassignedList.length;
-      }
-      if ($('kpi-sub-unassigned')) {
-        $('kpi-sub-unassigned').textContent = kpiUnassignedList.length > 0
+        // Card 4: Driver Needed
+        if ($('kpi-lbl-unassigned')) $('kpi-lbl-unassigned').textContent = isAr ? 'بانتظار سائق' : 'Driver Needed';
+        if ($('kpi-val-unassigned')) $('kpi-val-unassigned').textContent = kpiUnassignedList.length;
+        if ($('kpi-sub-unassigned')) $('kpi-sub-unassigned').textContent = kpiUnassignedList.length > 0
           ? (isAr ? '⚠️ اضغط لتصفية وتعيين السائق' : '⚠️ Tap to filter unassigned')
           : (isAr ? 'جميع الرحلات معينة ✓' : 'All trips assigned ✓');
       }
@@ -13049,11 +13126,18 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         App.fastFilter = f;
         if (f === 'canceled') {
           App.visibilityFilter = 'canceled_only';
-          App.filter = 'all';
+          App.filter = 'cancelled';
+          // Clear all conflicting filters
           App.specificDate = '';
           App.selectedDates = [];
           App.dateRangeFrom = '';
           App.dateRangeTo = '';
+          App.search = '';
+          if ($('search-input')) $('search-input').value = '';
+          App.cityFilter = 'all';
+          App.countryFilter = 'all';
+          App.payFilter = 'all';
+          App.driverFilter = 'all';
         } else if (f === 'all') {
           App.visibilityFilter = 'all';
           App.filter = 'all';
@@ -13061,6 +13145,10 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
           App.selectedDates = [];
           App.dateRangeFrom = '';
           App.dateRangeTo = '';
+          App.cityFilter = 'all';
+          App.countryFilter = 'all';
+          App.payFilter = 'all';
+          App.driverFilter = 'all';
         } else if (f === 'with_driver' || f === 'without_driver') {
           App.visibilityFilter = 'non_canceled';
           App.filter = 'all';
@@ -13068,6 +13156,10 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
           App.selectedDates = [];
           App.dateRangeFrom = '';
           App.dateRangeTo = '';
+          App.cityFilter = 'all';
+          App.countryFilter = 'all';
+          App.payFilter = 'all';
+          App.driverFilter = 'all';
         }
         document.querySelectorAll('.vis-segment-btn[data-fast]').forEach(b => b.classList.toggle('active', b === btn));
         renderStream();
@@ -13600,7 +13692,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
 
         // Register Service Worker for PWA offline shell & fast mobile caching
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m3', { scope: '/booking-desk/' })
+          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m4', { scope: '/booking-desk/' })
             .then(reg => { if (reg) reg.update(); })
             .catch(() => {});
         }
