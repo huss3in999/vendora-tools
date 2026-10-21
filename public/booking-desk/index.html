@@ -2792,7 +2792,158 @@
     .modal-shell textarea::placeholder {
       color: #64748b !important;
     }
-  </style>
+  
+    /* ========================================================
+       VENDORA DISPATCH — TRIP SUMMARY & GROUP SHARING STYLES
+       ======================================================== */
+    dialog.trip-summary-dialog {
+      max-width: 960px;
+      width: 100%;
+    }
+    .trip-summary-shell {
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100dvh - 44px);
+    }
+    .sum-preset-bar {
+      display: flex;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 6px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+    }
+    .sum-preset-btn {
+      flex: 1;
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--ink-dim);
+      font-size: 12px;
+      font-weight: 750;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .sum-preset-btn.active {
+      background: rgba(197, 168, 128, 0.18);
+      border-color: #C5A880;
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    .sum-cal-strip {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-block: 4px;
+      scrollbar-width: thin;
+    }
+    .sum-cal-day {
+      flex: 0 0 76px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+    }
+    .sum-cal-day:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(197, 168, 128, 0.4);
+    }
+    .sum-cal-day.active {
+      background: rgba(13, 148, 136, 0.22);
+      border-color: #14b8a6;
+      color: #5eead4;
+      box-shadow: 0 0 10px rgba(20, 184, 166, 0.25);
+    }
+    .sum-cal-weekday {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .sum-cal-num {
+      font-size: 15px;
+      font-weight: 900;
+    }
+    .sum-cal-month {
+      font-size: 9.5px;
+      opacity: 0.8;
+    }
+    .sum-cal-count {
+      font-size: 9.5px;
+      padding: 1px 6px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      font-weight: 800;
+    }
+    .sum-cal-day.active .sum-cal-count {
+      background: #0d9488;
+      color: #fff;
+    }
+    .sum-check-icon {
+      font-size: 11px;
+      font-weight: 900;
+      margin-top: 1px;
+    }
+    .sum-trip-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .sum-trip-row:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .sum-trip-row.selected {
+      border-color: rgba(197, 168, 128, 0.55);
+      background: rgba(197, 168, 128, 0.09);
+    }
+    .sum-trip-row input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: #0d9488;
+      cursor: pointer;
+    }
+    .sum-field-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .sum-field-chip:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .sum-field-chip input {
+      margin: 0;
+      accent-color: #C5A880;
+      cursor: pointer;
+    }
+
+</style>
   <style id="dispatch-visual-refinement">
 /* CSS-only presentation layer. Keep original markup, scripts and action bindings intact. */
 :root, html[data-theme="dark"] {
@@ -3555,6 +3706,10 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
             <span class="side-icon" style="color:var(--champagne);">📊</span>
             <span class="side-label" id="side-lbl-finance-rep">التقرير المالي (BHD)</span>
           </button>
+          <button type="button" class="sidebar-nav-item" id="side-op-trip-summary">
+            <span class="side-icon" style="color:var(--brand);">📋</span>
+            <span class="side-label" id="side-lbl-trip-summary">ملخص ومشاركة الرحلات</span>
+          </button>
           <button type="button" class="sidebar-nav-item" id="side-op-export">
             <span class="side-icon">📥</span>
             <span class="side-label" id="side-lbl-export-data">تصدير إكسل / CSV</span>
@@ -3602,6 +3757,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
               <span id="txt-theme-toggle">داكن</span>
             </button>
             <button class="btn btn-sm" id="btn-lang" type="button" aria-label="Switch Language">English</button>
+            <button class="btn btn-sm" id="btn-top-trip-summary" type="button" title="ملخص ومشاركة الرحلات"><span>📋</span> <span id="txt-top-trip-summary">ملخص الرحلات</span></button>
             <button class="btn btn-sm" id="btn-refresh" type="button" title="تحديث البيانات">
               <span id="spin-icon" style="display:inline-block;">↻</span>
               <span id="txt-refresh">تحديث</span>
@@ -4939,6 +5095,13 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
               <div style="font-size:10.5px;color:var(--ink-dim);font-weight:600;" id="sub-menu-drivers">إدارة السائقين والتكليف</div>
             </div>
           </button>
+          <button type="button" class="menu-item-btn" id="menu-btn-trip-summary">
+            <span class="menu-item-icon">📋</span>
+            <div>
+              <div id="txt-menu-trip-summary">ملخص ومشاركة الرحلات</div>
+              <div style="font-size:10.5px;color:var(--ink-dim);font-weight:600;" id="sub-menu-trip-summary">مشاركة ملخص مجموعات السائقين والعمليات كنص وصورة واحدة</div>
+            </div>
+          </button>
           <button type="button" class="menu-item-btn" id="menu-btn-finance">
             <span class="menu-item-icon">💰</span>
             <div>
@@ -5031,6 +5194,202 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       <div class="modal-foot">
         <button type="button" class="btn" id="btn-clear-activity-log">مسح السجل المحلي</button>
         <button type="button" class="btn btn-primary" data-close="dlg-activity">إغلاق</button>
+      </div>
+    </div>
+  </dialog>
+
+    <!-- MODAL: TRIP SUMMARY & GROUP SHARING (ملخص ومشاركة الرحلات) -->
+  <dialog id="dlg-trip-summary" class="trip-summary-dialog">
+    <div class="modal-shell trip-summary-shell">
+      <div class="modal-head">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:20px;">📋</span>
+          <div>
+            <h2 id="txt-sum-modal-title" style="margin:0;font-size:16px;">ملخص ومشاركة الرحلات | Trip Summary</h2>
+            <div style="font-size:11px;color:var(--ink-muted);" id="txt-sum-modal-sub">مشاركة ملخص مجموعات السائقين والعمليات كنص واتساب أو صورة معتمدة واحدة</div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-icon" data-close="dlg-trip-summary">✕</button>
+      </div>
+
+      <div class="modal-body" style="display:flex;flex-direction:column;gap:12px;padding:12px 14px;">
+        
+        <!-- 1. SHARING PRESETS (2 Modes) -->
+        <div class="sum-preset-bar" id="sum-preset-bar" role="group" aria-label="Sharing Presets">
+          <button type="button" class="sum-preset-btn active" id="btn-preset-driver-avail">
+            <span>👨‍✈️</span>
+            <span id="txt-preset-driver-avail">ملخص رحلات السائقين (Driver Availability)</span>
+          </button>
+          <button type="button" class="sum-preset-btn" id="btn-preset-operational">
+            <span>📊</span>
+            <span id="txt-preset-operational">ملخص تشغيلي داخلي (Operational)</span>
+          </button>
+        </div>
+
+        <!-- 2. DATE SELECTION TOOLBAR & MULTI-SELECT 7-DAY CALENDAR -->
+        <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+            <div style="font-size:11px;font-weight:800;color:var(--champagne);display:flex;align-items:center;gap:6px;">
+              <span>📅</span>
+              <span id="lbl-sum-dates-header">تحديد التواريخ (Multi-Date Calendar):</span>
+            </div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-sm" id="btn-sum-date-today" style="min-height:28px;padding:2px 8px;font-size:11px;">اليوم</button>
+              <button type="button" class="btn btn-sm" id="btn-sum-date-tomorrow" style="min-height:28px;padding:2px 8px;font-size:11px;">غداً</button>
+              <button type="button" class="btn btn-sm" id="btn-sum-date-next7" style="min-height:28px;padding:2px 8px;font-size:11px;">الـ 7 أيام القادمة</button>
+              <button type="button" class="btn btn-sm" id="btn-sum-cal-select-all" style="min-height:28px;padding:2px 8px;font-size:11px;border-color:#0d9488;color:#2dd4bf;">تحديد الأسبوع</button>
+              <button type="button" class="btn btn-sm" id="btn-sum-cal-clear" style="min-height:28px;padding:2px 8px;font-size:11px;color:#fca5a5;">مسح التحديد</button>
+            </div>
+          </div>
+
+          <!-- 7-DAY CALENDAR STRIP WITH PREV/NEXT -->
+          <div style="display:flex;align-items:center;gap:6px;">
+            <button type="button" class="btn btn-sm btn-icon" id="btn-sum-calendar-prev" style="min-width:30px;min-height:48px;" title="الأسبوع السابق">‹</button>
+            <div class="sum-cal-strip" id="sum-calendar-strip" style="flex:1;">
+              <!-- Rendered dynamically -->
+            </div>
+            <button type="button" class="btn btn-sm btn-icon" id="btn-sum-calendar-next" style="min-width:30px;min-height:48px;" title="الأسبوع القادم">›</button>
+          </div>
+
+          <!-- CUSTOM RANGE ACCORDION / INPUTS -->
+          <details id="details-sum-custom-range" style="font-size:11.5px;color:var(--ink-muted);margin-top:2px;">
+            <summary style="cursor:pointer;font-weight:700;color:var(--ink-dim);user-select:none;">
+              <span id="txt-sum-custom-range-toggle">🔍 تحديد فترة زمنية مخصصة (Custom Date Range)</span>
+            </summary>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:4px;">
+                <label for="sum-range-from" style="font-size:10.5px;">من:</label>
+                <input type="date" id="sum-range-from" style="min-height:32px;font-size:11px;padding:2px 6px;border-radius:6px;">
+              </div>
+              <div style="display:flex;align-items:center;gap:4px;">
+                <label for="sum-range-to" style="font-size:10.5px;">إلى:</label>
+                <input type="date" id="sum-range-to" style="min-height:32px;font-size:11px;padding:2px 6px;border-radius:6px;">
+              </div>
+              <button type="button" class="btn btn-sm btn-primary" id="btn-sum-apply-range" style="min-height:32px;padding:2px 10px;font-size:11px;">تطبيق الفترة</button>
+            </div>
+          </details>
+        </div>
+
+        <!-- 3. TRIP SELECTION CHECKLIST -->
+        <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:12px;font-weight:800;color:#fff;" id="lbl-sum-trips-heading">الرحلات المطابقة:</span>
+              <span class="pill" id="sum-selection-counter" style="font-size:11px;color:#2dd4bf;border-color:#0d9488;">0 محددة</span>
+            </div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-sm" id="btn-sum-sel-all" style="min-height:26px;padding:2px 8px;font-size:10.5px;">تحديد الكل</button>
+              <button type="button" class="btn btn-sm" id="btn-sum-desel-all" style="min-height:26px;padding:2px 8px;font-size:10.5px;">إلغاء التحديد</button>
+              <button type="button" class="btn btn-sm" id="btn-sum-sel-unassigned" style="min-height:26px;padding:2px 8px;font-size:10.5px;color:#fbbf24;border-color:rgba(251,191,36,0.4);">بدون سائق فقط</button>
+              <button type="button" class="btn btn-sm" id="btn-sum-sel-assigned" style="min-height:26px;padding:2px 8px;font-size:10.5px;color:#34d399;border-color:rgba(52,211,153,0.4);">المعينة فقط</button>
+            </div>
+          </div>
+
+          <!-- EXTRA FILTERS: COMPLETED / CANCELED -->
+          <div style="display:flex;align-items:center;gap:12px;font-size:11px;color:var(--ink-muted);padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;">
+            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+              <input type="checkbox" id="chk-sum-include-completed">
+              <span id="txt-sum-inc-completed">تضمين الرحلات المكتملة (Include Completed)</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:4px;cursor:pointer;">
+              <input type="checkbox" id="chk-sum-include-cancelled">
+              <span id="txt-sum-inc-cancelled">تضمين الملغية (Include Canceled - افتراضياً مغلق)</span>
+            </label>
+          </div>
+
+          <!-- CHECKLIST LIST CONTAINER -->
+          <div id="sum-trips-list" style="max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;padding-right:2px;">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <!-- 4. FIELD CUSTOMIZATION ACCORDION -->
+        <details id="details-sum-fields" style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:12px;padding:8px 12px;">
+          <summary style="cursor:pointer;font-weight:750;font-size:12px;color:var(--champagne);display:flex;align-items:center;gap:6px;user-select:none;">
+            <span>⚙️ تخصيص الحقول المشتركة (Shared Fields):</span>
+          </summary>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));gap:6px;margin-top:10px;">
+            <label class="sum-field-chip"><input type="checkbox" id="chk-sum-ref" checked> <span>📌 رقم الحجز</span></label>
+            <label class="sum-field-chip"><input type="checkbox" id="chk-sum-time" checked> <span>🕒 الوقت والتاريخ</span></label>
+            <label class="sum-field-chip"><input type="checkbox" id="chk-sum-route" checked> <span>📍 المسار كامل</span></label>
+            <label class="sum-field-chip"><input type="checkbox" id="chk-sum-fare" checked> <span>💰 السعر والعملة</span></label>
+            <label class="sum-field-chip"><input type="checkbox" id="chk-sum-cust-name"> <span>👤 اسم العميل</span></label>
+            <label class="sum-field-chip"><input type="checkbox" id="chk-sum-cust-phone"> <span>📞 هاتف العميل</span></label>
+            <label class="sum-field-chip"><input type="checkbox" id="chk-sum-pax"> <span>👥 عدد الركاب</span></label>
+            <label class="sum-field-chip"><input type="checkbox" id="chk-sum-luggage"> <span>🧳 الحقائب</span></label>
+            <label class="sum-field-chip"><input type="checkbox" id="chk-sum-vehicle"> <span>🚘 نوع المركبة</span></label>
+            <label class="sum-field-chip"><input type="checkbox" id="chk-sum-flight"> <span>✈️ موعد الطيران</span></label>
+            <label class="sum-field-chip"><input type="checkbox" id="chk-sum-driver"> <span>👨‍✈️ حالة السائق</span></label>
+            <label class="sum-field-chip"><input type="checkbox" id="chk-sum-notes"> <span>📝 ملاحظات التحرك</span></label>
+          </div>
+          <div id="sum-sensitive-warning" style="display:none;background:rgba(234,179,8,0.14);border:1px solid #eab308;border-radius:8px;padding:8px 10px;margin-top:8px;color:#fef08a;font-size:11px;">
+            ⚠️ تنبيه خصوصية: تم تفعيل بيانات شخصية للعميل (الهاتف أو الاسم). لا تشارك هذا الملخص في مجموعات السائقين العامة!
+          </div>
+        </details>
+
+        <!-- 5. LANGUAGE SETTINGS (ARABIC DEFAULT!) -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;background:rgba(0,0,0,0.25);border:1px solid var(--border);border-radius:10px;padding:6px 12px;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <label for="sel-sum-text-lang" style="font-size:11px;font-weight:700;color:var(--ink-muted);" id="lbl-sum-text-lang">لغة نص الواتساب:</label>
+              <select id="sel-sum-text-lang" style="min-height:30px;font-size:11px;padding:2px 8px;border-radius:6px;width:auto;">
+                <option value="ar" selected>العربية (افتراضي)</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <label for="sel-sum-doc-lang" style="font-size:11px;font-weight:700;color:var(--ink-muted);" id="lbl-sum-doc-lang">لغة الصورة / المستند:</label>
+              <select id="sel-sum-doc-lang" style="min-height:30px;font-size:11px;padding:2px 8px;border-radius:6px;width:auto;">
+                <option value="ar" selected>العربية (افتراضي)</option>
+                <option value="en">English</option>
+              </select>
+            </div>
+          </div>
+          <div class="tpl-switcher" id="sum-tab-switcher" style="margin:0;">
+            <button type="button" class="tpl-btn active" id="btn-sum-tab-text">💬 نص الواتساب</button>
+            <button type="button" class="tpl-btn" id="btn-sum-tab-img">🖼️ الصورة المعتمدة</button>
+          </div>
+        </div>
+
+        <!-- 6. PREVIEW AREA: TEXT & CANVAS -->
+        <div id="sum-tab-content-text">
+          <textarea id="sum-text-preview" readonly dir="auto" style="width:100%;height:180px;font-size:12px;line-height:1.6;background:#060d17;border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:#f8fafc;font-family:monospace;white-space:pre-wrap;resize:vertical;"></textarea>
+        </div>
+
+        <div id="sum-tab-content-img" style="display:none;align-items:center;justify-content:center;flex-direction:column;gap:6px;">
+          <div style="max-height:360px;overflow-y:auto;width:100%;text-align:center;border:1px solid var(--border);border-radius:12px;padding:6px;background:#050912;">
+            <canvas id="trip-summary-canvas" style="max-width:100%;height:auto;border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,0.6);"></canvas>
+          </div>
+          <div style="font-size:10.5px;color:var(--ink-muted);" id="txt-sum-canvas-note">
+            * يتم توليد صورة موحدة واحدة عالية الدقة تشمل كافة الرحلات المحددة بدون اقتطاع.
+          </div>
+        </div>
+
+      </div> <!-- modal-body -->
+
+      <!-- 7. MODAL FOOTER: ACTION BUTTONS -->
+      <div class="modal-foot" style="flex-wrap:wrap;gap:6px;justify-content:space-between;">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button type="button" class="btn btn-sm btn-primary" id="btn-sum-copy-text" style="min-height:36px;font-weight:800;">
+            <span>📋</span> <span id="txt-sum-copy-text">نسخ النص</span>
+          </button>
+          <button type="button" class="btn btn-sm btn-wa" id="btn-sum-share-wa" style="min-height:36px;font-weight:800;background:#25d366;color:#000;">
+            <span>💬</span> <span id="txt-sum-share-wa">مشاركة واتساب</span>
+          </button>
+          <button type="button" class="btn btn-sm" id="btn-sum-copy-img" style="min-height:36px;font-weight:700;">
+            <span>📋</span> <span id="txt-sum-copy-img">نسخ الصورة</span>
+          </button>
+          <button type="button" class="btn btn-sm" id="btn-sum-share-img" style="min-height:36px;font-weight:700;">
+            <span>📤</span> <span id="txt-sum-share-img">مشاركة الصورة</span>
+          </button>
+          <button type="button" class="btn btn-sm" id="btn-sum-download-img" style="min-height:36px;font-weight:700;">
+            <span>💾</span> <span id="txt-sum-download-img">تحميل PNG</span>
+          </button>
+          <button type="button" class="btn btn-sm" id="btn-sum-download-pdf" style="min-height:36px;font-weight:700;">
+            <span>📄</span> <span id="txt-sum-download-pdf">تحميل PDF</span>
+          </button>
+        </div>
+        <button type="button" class="btn btn-sm" data-close="dlg-trip-summary" id="btn-sum-close">إغلاق</button>
       </div>
     </div>
   </dialog>
@@ -13690,7 +14049,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
 
         // Register Service Worker for PWA offline shell & fast mobile caching
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m7', { scope: '/booking-desk/' })
+          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m8', { scope: '/booking-desk/' })
             .then(reg => { if (reg) reg.update(); })
             .catch(() => {});
         }
@@ -13764,6 +14123,10 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       setTxt('side-lbl-drivers-dir', isAr ? 'دليل السائقين' : 'Driver Directory');
       setTxt('side-lbl-finance-rep', isAr ? 'التقرير المالي (BHD)' : 'Financial Reports (BHD)');
       setTxt('side-lbl-export-data', isAr ? 'تصدير إكسل / CSV' : 'Export Data (CSV)');
+      setTxt('side-lbl-trip-summary', isAr ? 'ملخص ومشاركة الرحلات' : 'Trip Summary & Group Share');
+      setTxt('txt-top-trip-summary', isAr ? 'ملخص الرحلات' : 'Trip Summary');
+      setTxt('txt-menu-trip-summary', isAr ? 'ملخص ومشاركة الرحلات' : 'Trip Summary & Group Share');
+      setTxt('sub-menu-trip-summary', isAr ? 'مشاركة ملخص مجموعات السائقين والعمليات كنص وصورة واحدة' : 'Share driver and operational summaries as text or single image');
       setTxt('side-txt-lang', isAr ? 'English' : 'عربي');
       setTxt('side-txt-refresh', isAr ? 'تحديث' : 'Refresh');
 
@@ -14100,6 +14463,1041 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         if ($('side-live-clock')) $('side-live-clock').textContent = (App.lang === 'ar' ? 'توقيت البحرين / السعودية: ' : 'Bahrain / Saudi Time: ') + s;
       } catch (e) {}
     }, 1000);
+
+
+    /* ========================================================
+       VENDORA DISPATCH — TRIP SUMMARY & GROUP SHARING LOGIC
+       ======================================================== */
+    const TripSummary = {
+      activePreset: 'driver_availability', // 'driver_availability' | 'operational'
+      calendarWeekOffset: 0,
+      selectedDates: [],
+      rangeFrom: '',
+      rangeTo: '',
+      includeCompleted: false,
+      includeCancelled: false,
+      selectedBookingIds: new Set(),
+      textLang: 'ar', // DEFAULT ARABIC FOR TRIP SUMMARY
+      docLang: 'ar',  // DEFAULT ARABIC FOR TRIP SUMMARY
+      activeTab: 'text',
+      fields: {
+        ref: true,
+        time: true,
+        route: true,
+        fare: true,
+        custName: false,
+        custPhone: false,
+        pax: false,
+        luggage: false,
+        vehicle: false,
+        flight: false,
+        driver: false,
+        notes: false
+      }
+    };
+
+    function computeTripSummaryTotals(trips, isAr = false) {
+      const totals = {};
+      (trips || []).forEach(b => {
+        const raw = String(b.fare || '0').replace(/,/g, '').trim();
+        const num = parseFloat(raw);
+        if (!isNaN(num) && num > 0) {
+          const curr = (b.currency || 'BHD').toUpperCase().trim();
+          totals[curr] = (totals[curr] || 0) + num;
+        }
+      });
+      const parts = Object.entries(totals).map(([curr, amt]) => {
+        if (curr === 'BHD') return amt.toFixed(3) + (isAr ? ' د.ب' : ' BHD');
+        if (curr === 'SAR') return amt.toFixed(0) + (isAr ? ' ر.س' : ' SAR');
+        if (curr === 'AED') return amt.toFixed(0) + (isAr ? ' د.إ' : ' AED');
+        if (curr === 'QAR') return amt.toFixed(0) + (isAr ? ' ر.ق' : ' QAR');
+        return amt.toFixed(2) + ' ' + curr;
+      });
+      return {
+        totals,
+        totalsText: parts.length > 0 ? parts.join(' + ') : (isAr ? 'غير محدد' : 'Not specified'),
+        hasFare: parts.length > 0
+      };
+    }
+
+    function buildTripSummaryWhatsAppText(trips, opts = {}) {
+      const isAr = (opts.lang || TripSummary.textLang || 'ar') === 'ar';
+      const fields = opts.fields || TripSummary.fields;
+      const dateLabel = opts.dateLabel || formatTripSummaryDateRangeLabel(isAr);
+
+      const header = isAr
+        ? '🚘 *فندورا للنقل | ملخص الرحلات*'
+        : '🚘 *VENDORA TRANSPORT | TRIP SUMMARY*';
+
+      const dateLine = isAr
+        ? (dateLabel ? `📅 التاريخ: ${dateLabel}` : '')
+        : (dateLabel ? `📅 Date: ${dateLabel}` : '');
+
+      const lines = [header];
+      if (dateLine) lines.push(dateLine);
+      lines.push('');
+
+      const dates = [...new Set((trips || []).map(b => b.travelDate).filter(Boolean))];
+      const isMultiDate = dates.length > 1;
+
+      let globalIndex = 1;
+      const groups = {};
+      (trips || []).forEach(b => {
+        const k = b.travelDate || 'other';
+        if (!groups[k]) groups[k] = [];
+        groups[k].push(b);
+      });
+
+      const sortedDates = Object.keys(groups).sort();
+      sortedDates.forEach((dKey) => {
+        if (isMultiDate) {
+          lines.push(`📅 *${formatDateHeader(dKey)}*`);
+        }
+        groups[dKey].forEach(b => {
+          const tripHeader = fields.ref ? `${globalIndex}. *${b.id || 'Booking'}*` : `${globalIndex}.`;
+          lines.push(tripHeader);
+
+          if (fields.time) {
+            const timeVal = formatTimeDisplay(b) || b.pickupTime || (isAr ? 'حسب الإجراءات' : 'TBD');
+            lines.push(`🕒 ${timeVal}`);
+          }
+
+          if (fields.route) {
+            const fromLoc = localizeLocation(b.pickup, isAr ? 'ar' : 'en') || b.pickup || '';
+            const toLoc = localizeLocation(b.destination, isAr ? 'ar' : 'en') || b.destination || '';
+            const arrow = isAr ? '←' : '→';
+            lines.push(`📍 ${fromLoc} ${arrow} ${toLoc}`);
+          }
+
+          if (fields.fare) {
+            let fareVal = isAr ? 'غير محدد' : 'TBD';
+            const num = parseFloat(String(b.fare || '0').replace(/,/g, ''));
+            if (!isNaN(num) && num > 0) {
+              const curr = (b.currency || 'BHD').toUpperCase().trim();
+              fareVal = curr === 'BHD' ? `${num.toFixed(3)} ${isAr ? 'د.ب' : 'BHD'}` : `${num} ${curr}`;
+            }
+            lines.push(`💰 ${fareVal}`);
+          }
+
+          if (fields.custName && b.customerName) {
+            const cName = localizeCustomerName(b.customerName, isAr ? 'ar' : 'en') || b.customerName;
+            lines.push(`👤 ${isAr ? 'العميل: ' : 'Customer: '}${cName}`);
+          }
+          if (fields.custPhone && b.customerPhone) {
+            const cPhone = formatDisplayInternationalPhone(b.customerPhone) || b.customerPhone;
+            lines.push(`📞 ${isAr ? 'الهاتف: ' : 'Phone: '}${cPhone}`);
+          }
+          if (fields.pax && b.passengers) {
+            lines.push(`👥 ${isAr ? 'الركاب: ' : 'Pax: '}${b.passengers}`);
+          }
+          if (fields.luggage && b.luggage) {
+            const lugText = localizeLuggage(b.luggage, isAr ? 'ar' : 'en') || b.luggage;
+            lines.push(`🧳 ${isAr ? 'الحقائب: ' : 'Luggage: '}${lugText}`);
+          }
+          if (fields.vehicle && b.vehicle) {
+            const vehText = localizeVehicle(b.vehicle, isAr ? 'ar' : 'en') || b.vehicle;
+            lines.push(`🚘 ${isAr ? 'المركبة: ' : 'Vehicle: '}${vehText}`);
+          }
+          if (fields.flight && b.flight && b.flight !== '-' && b.flight.toLowerCase() !== 'none') {
+            lines.push(`✈️ ${isAr ? 'الطيران: ' : 'Flight: '}${b.flight}`);
+          }
+          if (fields.driver) {
+            let drvName = isAr ? 'بانتظار سائق' : 'Unassigned';
+            if (isDriverAssigned(b)) {
+              drvName = (isAr ? 'مع سائق: ' : 'Assigned: ') + (b.driverName || 'Confirmed');
+            }
+            lines.push(`👨‍✈️ ${drvName}`);
+          }
+          if (fields.notes && b.notes) {
+            const noteText = localizeNotes(b.notes, isAr ? 'ar' : 'en') || b.notes;
+            lines.push(`📝 ${isAr ? 'ملاحظات: ' : 'Notes: '}${noteText}`);
+          }
+
+          lines.push('');
+          globalIndex++;
+        });
+      });
+
+      lines.push(isAr ? `إجمالي الرحلات: ${(trips || []).length}` : `Total Trips: ${(trips || []).length}`);
+      if (fields.fare) {
+        const totalsRes = computeTripSummaryTotals(trips, isAr);
+        if (totalsRes.hasFare) {
+          lines.push(isAr ? `إجمالي القيمة: ${totalsRes.totalsText}` : `Total Value: ${totalsRes.totalsText}`);
+        }
+      }
+
+      lines.push('');
+      lines.push('🌐 getvendora.net');
+
+      return lines.join('\n');
+    }
+
+    function formatTripSummaryDateRangeLabel(isAr) {
+      const dates = TripSummary.selectedDates.slice().sort();
+      if (dates.length === 0) {
+        return isAr ? 'كافة التواريخ' : 'All Dates';
+      }
+      if (dates.length === 1) {
+        return formatDateHeader(dates[0]);
+      }
+      return `${formatDateHeader(dates[0])} - ${formatDateHeader(dates[dates.length - 1])}`;
+    }
+
+    function getFilteredTripSummaryList() {
+      const all = (App.bookings || []).filter(b => b && b.ref && b.bookingStatus !== 'Trashed');
+      let filtered = all;
+
+      if (TripSummary.selectedDates && TripSummary.selectedDates.length > 0) {
+        filtered = filtered.filter(b => TripSummary.selectedDates.includes(b.travelDate));
+      } else if (TripSummary.rangeFrom || TripSummary.rangeTo) {
+        const from = TripSummary.rangeFrom || '0000-00-00';
+        const to = TripSummary.rangeTo || '9999-99-99';
+        filtered = filtered.filter(b => b.travelDate >= from && b.travelDate <= to);
+      }
+
+      if (!TripSummary.includeCompleted) {
+        filtered = filtered.filter(b => b.bookingStatus !== 'Completed');
+      }
+
+      if (!TripSummary.includeCancelled) {
+        filtered = filtered.filter(b => !isBookingCancelled(b));
+      }
+
+      return filtered.sort((a, b) => {
+        if (a.travelDate !== b.travelDate) return a.travelDate.localeCompare(b.travelDate);
+        return (a.sortPickupTime || a.pickupTime || '').localeCompare(b.sortPickupTime || b.pickupTime || '');
+      });
+    }
+
+    function renderSummaryCalendarStrip() {
+      const container = $('sum-calendar-strip');
+      if (!container) return;
+      const isAr = TripSummary.docLang === 'ar';
+      const todayStr = getTodayStr();
+
+      const baseD = new Date(todayStr + 'T12:00:00+03:00');
+      baseD.setDate(baseD.getDate() + (TripSummary.calendarWeekOffset * 7));
+
+      const allValid = (App.bookings || []).filter(b => b && b.bookingStatus !== 'Trashed' && !isBookingCancelled(b));
+
+      let html = '';
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(baseD);
+        d.setDate(d.getDate() + i);
+        const dStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Bahrain' }).format(d);
+        const isSelected = TripSummary.selectedDates.includes(dStr);
+
+        let weekdayShort = '';
+        let monthShort = '';
+        const dayNum = dStr.split('-')[2];
+        try {
+          const locale = isAr ? 'ar-BH-u-nu-latn' : 'en-GB';
+          weekdayShort = new Intl.DateTimeFormat(locale, { weekday: 'short', timeZone: 'Asia/Bahrain' }).format(d);
+          monthShort = new Intl.DateTimeFormat(locale, { month: 'short', timeZone: 'Asia/Bahrain' }).format(d);
+        } catch (e) {
+          weekdayShort = '';
+          monthShort = dStr.slice(5, 7);
+        }
+
+        const count = allValid.filter(b => b.travelDate === dStr).length;
+
+        html += `
+          <div class="sum-cal-day ${isSelected ? 'active' : ''}" data-sum-date="${esc(dStr)}">
+            <span class="sum-cal-weekday">${esc(weekdayShort)}</span>
+            <span class="sum-cal-num">${esc(dayNum)}</span>
+            <span class="sum-cal-month">${esc(monthShort)}</span>
+            <span class="sum-cal-count">${count}</span>
+            ${isSelected ? '<span class="sum-check-icon">✓</span>' : ''}
+          </div>
+        `;
+      }
+
+      container.innerHTML = html;
+
+      container.querySelectorAll('.sum-cal-day').forEach(el => {
+        el.onclick = () => {
+          const dt = el.getAttribute('data-sum-date');
+          if (TripSummary.selectedDates.includes(dt)) {
+            TripSummary.selectedDates = TripSummary.selectedDates.filter(x => x !== dt);
+          } else {
+            TripSummary.selectedDates.push(dt);
+          }
+          // Sync selection
+          repopulateTripSummarySelection();
+          updateTripSummaryView();
+        };
+      });
+    }
+
+    function renderTripSummaryChecklist() {
+      const container = $('sum-trips-list');
+      if (!container) return;
+      const list = getFilteredTripSummaryList();
+      const isAr = TripSummary.docLang === 'ar';
+      const todayStr = getTodayStr();
+      const tomorrowStr = getTomorrowStr();
+
+      if (list.length === 0) {
+        container.innerHTML = `<div class="empty-box" style="padding:20px;font-size:12px;">${isAr ? 'لا توجد رحلات مطابقة للتواريخ المحددة' : 'No matching trips found for selected dates'}</div>`;
+        if ($('sum-selection-counter')) $('sum-selection-counter').textContent = isAr ? '0 محددة' : '0 selected';
+        return;
+      }
+
+      let selectedCount = 0;
+      html = list.map(b => {
+        const isChecked = TripSummary.selectedBookingIds.has(b.id);
+        if (isChecked) selectedCount++;
+
+        const timeStr = formatTimeDisplay(b) || b.pickupTime || (isAr ? 'حسب الإجراءات' : 'TBD');
+        const fromLoc = localizeLocation(b.pickup, isAr ? 'ar' : 'en') || b.pickup || '';
+        const toLoc = localizeLocation(b.destination, isAr ? 'ar' : 'en') || b.destination || '';
+        const arrow = isAr ? '←' : '→';
+
+        let fareVal = isAr ? 'غير محدد' : 'TBD';
+        const num = parseFloat(String(b.fare || '0').replace(/,/g, ''));
+        if (!isNaN(num) && num > 0) {
+          const curr = (b.currency || 'BHD').toUpperCase().trim();
+          fareVal = curr === 'BHD' ? `${num.toFixed(3)} ${isAr ? 'د.ب' : 'BHD'}` : `${num} ${curr}`;
+        }
+
+        const hasDrv = isDriverAssigned(b);
+        const drvBadge = hasDrv
+          ? `<span class="pill" style="font-size:10px;color:#34d399;border-color:rgba(52,211,153,0.4);">👤 ${esc(b.driverName || 'Driver')}</span>`
+          : `<span class="pill" style="font-size:10px;color:#fbbf24;border-color:rgba(251,191,36,0.4);">⚠️ ${isAr ? 'بانتظار سائق' : 'No Driver'}</span>`;
+
+        const isCanc = isBookingCancelled(b);
+        const cancBadge = isCanc ? `<span class="pill" style="font-size:10px;color:#fca5a5;border-color:rgba(239,68,68,0.5);background:rgba(239,68,68,0.15);">🚫 ${isAr ? 'ملغي' : 'Canceled'}</span>` : '';
+
+        return `
+          <div class="sum-trip-row ${isChecked ? 'selected' : ''}" data-sum-row-id="${esc(b.id)}">
+            <input type="checkbox" data-sum-check-id="${esc(b.id)}" ${isChecked ? 'checked' : ''}>
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px;">
+                <span class="booking-ref-badge" style="font-size:11px;">#${esc(b.id)}</span>
+                <span class="pill" style="font-size:10.5px;color:#7dd3fc;border-color:rgba(56,189,248,0.35);">🕒 ${esc(timeStr)}</span>
+                <span style="font-size:10.5px;color:var(--champagne);font-weight:800;" dir="ltr">${esc(fareVal)}</span>
+                ${drvBadge}
+                ${cancBadge}
+                <span style="font-size:10px;color:var(--ink-muted);margin-inline-start:auto;">${esc(b.travelDate)}</span>
+              </div>
+              <div style="font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                📍 ${esc(fromLoc)} ${arrow} ${esc(toLoc)}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = html;
+
+      if ($('sum-selection-counter')) {
+        $('sum-selection-counter').textContent = isAr
+          ? `تم تحديد ${selectedCount} من ${list.length} رحلة`
+          : `${selectedCount} of ${list.length} selected`;
+      }
+
+      container.querySelectorAll('.sum-trip-row').forEach(row => {
+        row.onclick = (e) => {
+          if (e.target && e.target.tagName === 'INPUT') return;
+          const id = row.getAttribute('data-sum-row-id');
+          if (TripSummary.selectedBookingIds.has(id)) {
+            TripSummary.selectedBookingIds.delete(id);
+          } else {
+            TripSummary.selectedBookingIds.add(id);
+          }
+          updateTripSummaryView();
+        };
+      });
+
+      container.querySelectorAll('input[data-sum-check-id]').forEach(chk => {
+        chk.onchange = () => {
+          const id = chk.getAttribute('data-sum-check-id');
+          if (chk.checked) {
+            TripSummary.selectedBookingIds.add(id);
+          } else {
+            TripSummary.selectedBookingIds.delete(id);
+          }
+          updateTripSummaryView();
+        };
+      });
+    }
+
+    function repopulateTripSummarySelection() {
+      const list = getFilteredTripSummaryList();
+      TripSummary.selectedBookingIds.clear();
+      list.forEach(b => {
+        if (TripSummary.activePreset === 'driver_availability') {
+          if (!isDriverAssigned(b)) TripSummary.selectedBookingIds.add(b.id);
+        } else {
+          TripSummary.selectedBookingIds.add(b.id);
+        }
+      });
+    }
+
+    function getSelectedTripSummaryObjects() {
+      return (App.bookings || []).filter(b => TripSummary.selectedBookingIds.has(b.id));
+    }
+
+    function drawTripSummaryCanvas(canvas, trips, opts = {}) {
+      if (!canvas) return;
+      const isAr = (opts.docLang || TripSummary.docLang || 'ar') === 'ar';
+      const fields = opts.fields || TripSummary.fields;
+      const dateLabel = opts.dateLabel || formatTripSummaryDateRangeLabel(isAr);
+
+      const W = 1200;
+      const marginX = 40;
+      const contentW = W - (marginX * 2);
+
+      // Compute dynamic height
+      const headerH = 200;
+      const footerH = 130;
+      const dates = [...new Set((trips || []).map(b => b.travelDate).filter(Boolean))];
+      const isMultiDate = dates.length > 1;
+      const dateGroupsH = isMultiDate ? (dates.length * 48) : 0;
+
+      const hasExtra = fields.custName || fields.custPhone || fields.pax || fields.luggage || fields.vehicle || fields.flight || fields.notes;
+      const cardH = hasExtra ? 120 : 92;
+      const cardsTotalH = (trips || []).length * (cardH + 12);
+      const H = Math.max(800, headerH + dateGroupsH + cardsTotalH + footerH + 60);
+
+      canvas.width = W;
+      canvas.height = H;
+      const ctx = canvas.getContext('2d');
+
+      // 1. Background Gradient (Luxury Vendora Navy)
+      const grad = ctx.createLinearGradient(0, 0, 0, H);
+      grad.addColorStop(0, '#060B14');
+      grad.addColorStop(0.5, '#09111F');
+      grad.addColorStop(1, '#050A12');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      // 2. Outer Gold Border
+      ctx.strokeStyle = '#C5A880';
+      ctx.lineWidth = 3;
+      drawRoundRect(ctx, 16, 16, W - 32, H - 32, 16);
+      ctx.stroke();
+
+      // Corner Accents
+      ctx.strokeStyle = '#D8B36A';
+      ctx.lineWidth = 4;
+      const cornerSize = 30;
+      // Top Left
+      ctx.beginPath(); ctx.moveTo(14, 14 + cornerSize); ctx.lineTo(14, 14); ctx.lineTo(14 + cornerSize, 14); ctx.stroke();
+      // Top Right
+      ctx.beginPath(); ctx.moveTo(W - 14 - cornerSize, 14); ctx.lineTo(W - 14, 14); ctx.lineTo(W - 14, 14 + cornerSize); ctx.stroke();
+      // Bottom Left
+      ctx.beginPath(); ctx.moveTo(14, H - 14 - cornerSize); ctx.lineTo(14, H - 14); ctx.lineTo(14 + cornerSize, H - 14); ctx.stroke();
+      // Bottom Right
+      ctx.beginPath(); ctx.moveTo(W - 14 - cornerSize, H - 14); ctx.lineTo(W - 14, H - 14); ctx.lineTo(W - 14, H - 14 - cornerSize); ctx.stroke();
+
+      // 3. Header Block
+      ctx.direction = isAr ? 'rtl' : 'ltr';
+      ctx.textAlign = isAr ? 'right' : 'left';
+
+      // Logo Crest
+      const logoX = isAr ? (W - marginX - 50) : (marginX + 50);
+      const logoY = 68;
+      ctx.fillStyle = '#081220';
+      ctx.beginPath();
+      ctx.arc(logoX, logoY, 36, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#C5A880';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#D8B36A';
+      ctx.font = 'bold 36px Cairo, Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('V', logoX, logoY + 1);
+
+      // Brand Title & Subtitle
+      const titleX = isAr ? (W - marginX - 110) : (marginX + 110);
+      ctx.textAlign = isAr ? 'right' : 'left';
+      ctx.textBaseline = 'alphabetic';
+
+      ctx.fillStyle = '#D8B36A';
+      ctx.font = 'bold 28px Cairo, Arial, sans-serif';
+      ctx.fillText(isAr ? 'فندورا للنقل الفاخر — VENDORA TRANSPORT' : 'VENDORA TRANSPORT — EXECUTIVE FLEET', titleX, 58);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 20px Cairo, Arial, sans-serif';
+      ctx.fillText(isAr ? 'ملخص الرحلات المعتمد (GCC & Domestic)' : 'OFFICIAL TRIP SUMMARY (GCC & Domestic)', titleX, 86);
+
+      // Date & Timestamp Banner
+      const nowTimeStr = new Intl.DateTimeFormat(isAr ? 'ar-BH' : 'en-GB', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'Asia/Bahrain' }).format(new Date());
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '14px Cairo, Arial, sans-serif';
+      ctx.fillText(`📅 ${dateLabel}  ·  ⏱️ ${isAr ? 'تم الاستخراج: ' : 'Generated: '}${nowTimeStr} (${isAr ? 'توقيت البحرين' : 'Bahrain Time'})`, titleX, 114);
+
+      // Header Divider Line
+      ctx.strokeStyle = 'rgba(197, 168, 128, 0.4)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(marginX, 142);
+      ctx.lineTo(W - marginX, 142);
+      ctx.stroke();
+
+      let curY = 160;
+
+      // 4. Render Grouped Trips
+      const groups = {};
+      (trips || []).forEach(b => {
+        const k = b.travelDate || 'other';
+        if (!groups[k]) groups[k] = [];
+        groups[k].push(b);
+      });
+
+      const sortedDates = Object.keys(groups).sort();
+      let itemIdx = 1;
+
+      if ((trips || []).length === 0) {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+        drawRoundRect(ctx, marginX, curY, contentW, 120, 12);
+        ctx.fill();
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '18px Cairo, Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(isAr ? 'لا توجد رحلات محددة للعرض في هذا الملخص' : 'No trips selected for this summary', W / 2, curY + 65);
+        curY += 140;
+      }
+
+      sortedDates.forEach(dKey => {
+        if (isMultiDate) {
+          // Date Group Header
+          ctx.fillStyle = 'rgba(197, 168, 128, 0.12)';
+          drawRoundRect(ctx, marginX, curY, contentW, 36, 8);
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(197, 168, 128, 0.35)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+
+          ctx.direction = isAr ? 'rtl' : 'ltr';
+          ctx.textAlign = isAr ? 'right' : 'left';
+          ctx.fillStyle = '#D8B36A';
+          ctx.font = 'bold 15px Cairo, Arial, sans-serif';
+          const grpTextX = isAr ? (W - marginX - 16) : (marginX + 16);
+          ctx.fillText(`📅 ${formatDateHeader(dKey)} (${groups[dKey].length} ${isAr ? 'رحلات' : 'trips'})`, grpTextX, curY + 23);
+
+          curY += 46;
+        }
+
+        groups[dKey].forEach(b => {
+          // Trip Card
+          ctx.fillStyle = '#0B1322';
+          drawRoundRect(ctx, marginX, curY, contentW, cardH, 12);
+          ctx.fill();
+          ctx.strokeStyle = 'rgba(197, 168, 128, 0.28)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+
+          // Left/Right alignment
+          ctx.direction = isAr ? 'rtl' : 'ltr';
+          ctx.textAlign = isAr ? 'right' : 'left';
+
+          const cardPadX = 18;
+          const textStartX = isAr ? (W - marginX - cardPadX) : (marginX + cardPadX);
+
+          // Line 1: Badges Row (Ref, Time, Fare, Status)
+          let badgeX = textStartX;
+          const step = isAr ? -1 : 1;
+
+          // Ref Badge
+          const refStr = fields.ref ? `#${b.id}` : `#${itemIdx}`;
+          ctx.font = 'bold 16px Cairo, Arial, sans-serif';
+          ctx.fillStyle = '#F8FAFC';
+          ctx.fillText(refStr, badgeX, curY + 30);
+
+          // Time Badge
+          if (fields.time) {
+            const timeStr = formatTimeDisplay(b) || b.pickupTime || (isAr ? 'حسب الإجراءات' : 'TBD');
+            ctx.font = 'bold 15px Cairo, Arial, sans-serif';
+            ctx.fillStyle = '#38BDF8';
+            const offset = isAr ? -110 : 110;
+            ctx.fillText(`🕒 ${timeStr}`, badgeX + offset, curY + 30);
+          }
+
+          // Fare Badge
+          if (fields.fare) {
+            let fareVal = isAr ? 'غير محدد' : 'TBD';
+            const num = parseFloat(String(b.fare || '0').replace(/,/g, ''));
+            if (!isNaN(num) && num > 0) {
+              const curr = (b.currency || 'BHD').toUpperCase().trim();
+              fareVal = curr === 'BHD' ? `${num.toFixed(3)} ${isAr ? 'د.ب' : 'BHD'}` : `${num} ${curr}`;
+            }
+            ctx.font = 'bold 15px Cairo, Arial, sans-serif';
+            ctx.fillStyle = '#D8B36A';
+            const offset = isAr ? -290 : 290;
+            ctx.fillText(`💰 ${fareVal}`, badgeX + offset, curY + 30);
+          }
+
+          // Driver Status Badge (far opposite side)
+          const statusX = isAr ? (marginX + cardPadX) : (W - marginX - cardPadX);
+          ctx.textAlign = isAr ? 'left' : 'right';
+          if (isDriverAssigned(b)) {
+            ctx.fillStyle = '#34D399';
+            ctx.font = 'bold 14px Cairo, Arial, sans-serif';
+            ctx.fillText(`👤 ${b.driverName || (isAr ? 'مع سائق' : 'Assigned')}`, statusX, curY + 30);
+          } else {
+            ctx.fillStyle = '#FBBF24';
+            ctx.font = 'bold 14px Cairo, Arial, sans-serif';
+            ctx.fillText(isAr ? '⚠️ بانتظار سائق' : '⚠️ No Driver', statusX, curY + 30);
+          }
+
+          // Line 2: Route with Pin and Arrow
+          ctx.textAlign = isAr ? 'right' : 'left';
+          ctx.font = 'bold 17px Cairo, Arial, sans-serif';
+          ctx.fillStyle = '#FFFFFF';
+          const fromLoc = localizeLocation(b.pickup, isAr ? 'ar' : 'en') || b.pickup || '';
+          const toLoc = localizeLocation(b.destination, isAr ? 'ar' : 'en') || b.destination || '';
+          const arrow = isAr ? '←' : '→';
+          ctx.fillText(`📍 ${fromLoc} ${arrow} ${toLoc}`, textStartX, curY + 62);
+
+          // Optional Line 3: Extra Tags
+          if (hasExtra) {
+            const extraParts = [];
+            if (fields.custName && b.customerName) extraParts.push(`👤 ${b.customerName}`);
+            if (fields.custPhone && b.customerPhone) extraParts.push(`📞 ${formatDisplayInternationalPhone(b.customerPhone)}`);
+            if (fields.pax && b.passengers) extraParts.push(`👥 ${b.passengers} ${isAr ? 'ركاب' : 'pax'}`);
+            if (fields.luggage && b.luggage) extraParts.push(`🧳 ${localizeLuggage(b.luggage, isAr ? 'ar' : 'en')}`);
+            if (fields.vehicle && b.vehicle) extraParts.push(`🚘 ${localizeVehicle(b.vehicle, isAr ? 'ar' : 'en')}`);
+            if (fields.flight && b.flight && b.flight !== '-') extraParts.push(`✈️ ${b.flight}`);
+            if (fields.notes && b.notes) extraParts.push(`📝 ${b.notes}`);
+
+            if (extraParts.length > 0) {
+              ctx.font = '13px Cairo, Arial, sans-serif';
+              ctx.fillStyle = '#94A3B8';
+              ctx.fillText(extraParts.join('  ·  '), textStartX, curY + 92);
+            }
+          }
+
+          curY += cardH + 12;
+          itemIdx++;
+        });
+      });
+
+      // 5. Summary Footer Block
+      curY += 8;
+      ctx.fillStyle = '#060D17';
+      drawRoundRect(ctx, marginX, curY, contentW, 95, 14);
+      ctx.fill();
+      ctx.strokeStyle = '#C5A880';
+      ctx.lineWidth = 1.8;
+      ctx.stroke();
+
+      ctx.direction = isAr ? 'rtl' : 'ltr';
+      ctx.textAlign = isAr ? 'right' : 'left';
+      const footTextX = isAr ? (W - marginX - 22) : (marginX + 22);
+
+      // Total Trips
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 20px Cairo, Arial, sans-serif';
+      ctx.fillText(isAr ? `إجمالي الرحلات: ${(trips || []).length}` : `Total Trips: ${(trips || []).length}`, footTextX, curY + 40);
+
+      // Total Fare
+      if (fields.fare) {
+        const totalsRes = computeTripSummaryTotals(trips, isAr);
+        if (totalsRes.hasFare) {
+          ctx.fillStyle = '#D8B36A';
+          ctx.font = 'bold 20px Cairo, Arial, sans-serif';
+          const fareOffset = isAr ? -260 : 260;
+          ctx.fillText(isAr ? `إجمالي القيمة: ${totalsRes.totalsText}` : `Total Value: ${totalsRes.totalsText}`, footTextX + fareOffset, curY + 40);
+        }
+      }
+
+      // Website & Branding Footer Line
+      ctx.fillStyle = '#64748B';
+      ctx.font = '13.5px Cairo, Arial, sans-serif';
+      ctx.fillText(isAr ? '🌐 getvendora.net  ·  فندورا لإدارة النقل والرحلات (GCC)' : '🌐 getvendora.net  ·  Vendora Transport Fleet Operations (GCC)', footTextX, curY + 72);
+    }
+
+    function updateTripSummaryView() {
+      renderSummaryCalendarStrip();
+      renderTripSummaryChecklist();
+
+      const selectedTrips = getSelectedTripSummaryObjects();
+      const txt = buildTripSummaryWhatsAppText(selectedTrips);
+      if ($('sum-text-preview')) $('sum-text-preview').value = txt;
+
+      const canvas = $('trip-summary-canvas');
+      if (canvas) {
+        drawTripSummaryCanvas(canvas, selectedTrips, {
+          docLang: TripSummary.docLang,
+          fields: TripSummary.fields,
+          dateLabel: formatTripSummaryDateRangeLabel(TripSummary.docLang === 'ar')
+        });
+      }
+
+      // Sensitive phone warning
+      const warn = $('sum-sensitive-warning');
+      if (warn) {
+        warn.style.display = (TripSummary.fields.custPhone || TripSummary.fields.custName) ? 'block' : 'none';
+      }
+    }
+
+    function openTripSummaryModal() {
+      // Default to Today if no dates
+      if (!TripSummary.selectedDates || TripSummary.selectedDates.length === 0) {
+        TripSummary.selectedDates = [getTodayStr()];
+      }
+      TripSummary.calendarWeekOffset = 0;
+      repopulateTripSummarySelection();
+      updateTripSummaryView();
+
+      const dlg = $('dlg-trip-summary');
+      if (dlg) dlg.showModal();
+    }
+
+    // Bind Trip Summary Events
+    function bindTripSummaryControls() {
+      // Presets
+      if ($('btn-preset-driver-avail')) {
+        $('btn-preset-driver-avail').onclick = () => {
+          TripSummary.activePreset = 'driver_availability';
+          $('btn-preset-driver-avail').classList.add('active');
+          if ($('btn-preset-operational')) $('btn-preset-operational').classList.remove('active');
+          TripSummary.includeCompleted = false;
+          TripSummary.includeCancelled = false;
+          if ($('chk-sum-include-completed')) $('chk-sum-include-completed').checked = false;
+          if ($('chk-sum-include-cancelled')) $('chk-sum-include-cancelled').checked = false;
+          // Hide sensitive customer details
+          TripSummary.fields.custName = false;
+          TripSummary.fields.custPhone = false;
+          if ($('chk-sum-cust-name')) $('chk-sum-cust-name').checked = false;
+          if ($('chk-sum-cust-phone')) $('chk-sum-cust-phone').checked = false;
+          repopulateTripSummarySelection();
+          updateTripSummaryView();
+        };
+      }
+
+      if ($('btn-preset-operational')) {
+        $('btn-preset-operational').onclick = () => {
+          TripSummary.activePreset = 'operational';
+          $('btn-preset-operational').classList.add('active');
+          if ($('btn-preset-driver-avail')) $('btn-preset-driver-avail').classList.remove('active');
+          TripSummary.includeCompleted = true;
+          if ($('chk-sum-include-completed')) $('chk-sum-include-completed').checked = true;
+          repopulateTripSummarySelection();
+          updateTripSummaryView();
+        };
+      }
+
+      // Quick Date Buttons
+      if ($('btn-sum-date-today')) {
+        $('btn-sum-date-today').onclick = () => {
+          TripSummary.selectedDates = [getTodayStr()];
+          TripSummary.calendarWeekOffset = 0;
+          repopulateTripSummarySelection();
+          updateTripSummaryView();
+        };
+      }
+
+      if ($('btn-sum-date-tomorrow')) {
+        $('btn-sum-date-tomorrow').onclick = () => {
+          TripSummary.selectedDates = [getTomorrowStr()];
+          TripSummary.calendarWeekOffset = 0;
+          repopulateTripSummarySelection();
+          updateTripSummaryView();
+        };
+      }
+
+      if ($('btn-sum-date-next7')) {
+        $('btn-sum-date-next7').onclick = () => {
+          const dates = [];
+          const baseD = new Date(getTodayStr() + 'T12:00:00+03:00');
+          for (let i = 0; i < 7; i++) {
+            const d = new Date(baseD);
+            d.setDate(d.getDate() + i);
+            dates.push(new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Bahrain' }).format(d));
+          }
+          TripSummary.selectedDates = dates;
+          TripSummary.calendarWeekOffset = 0;
+          repopulateTripSummarySelection();
+          updateTripSummaryView();
+        };
+      }
+
+      if ($('btn-sum-cal-select-all')) {
+        $('btn-sum-cal-select-all').onclick = () => {
+          const baseD = new Date(getTodayStr() + 'T12:00:00+03:00');
+          baseD.setDate(baseD.getDate() + (TripSummary.calendarWeekOffset * 7));
+          for (let i = 0; i < 7; i++) {
+            const d = new Date(baseD);
+            d.setDate(d.getDate() + i);
+            const dStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Bahrain' }).format(d);
+            if (!TripSummary.selectedDates.includes(dStr)) TripSummary.selectedDates.push(dStr);
+          }
+          repopulateTripSummarySelection();
+          updateTripSummaryView();
+        };
+      }
+
+      if ($('btn-sum-cal-clear')) {
+        $('btn-sum-cal-clear').onclick = () => {
+          TripSummary.selectedDates = [];
+          repopulateTripSummarySelection();
+          updateTripSummaryView();
+        };
+      }
+
+      // Week Nav
+      if ($('btn-sum-calendar-prev')) {
+        $('btn-sum-calendar-prev').onclick = () => {
+          TripSummary.calendarWeekOffset -= 1;
+          renderSummaryCalendarStrip();
+        };
+      }
+
+      if ($('btn-sum-calendar-next')) {
+        $('btn-sum-calendar-next').onclick = () => {
+          TripSummary.calendarWeekOffset += 1;
+          renderSummaryCalendarStrip();
+        };
+      }
+
+      // Custom Range
+      if ($('btn-sum-apply-range')) {
+        $('btn-sum-apply-range').onclick = () => {
+          const from = $('sum-range-from') ? $('sum-range-from').value : '';
+          const to = $('sum-range-to') ? $('sum-range-to').value : '';
+          if (!from || !to) {
+            showToast(TripSummary.textLang === 'ar' ? 'يرجى اختيار تاريخ البداية والنهاية' : 'Please select both from and to dates', true);
+            return;
+          }
+          const dates = [];
+          const cur = new Date(from + 'T12:00:00+03:00');
+          const end = new Date(to + 'T12:00:00+03:00');
+          while (cur <= end) {
+            dates.push(new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Bahrain' }).format(cur));
+            cur.setDate(cur.getDate() + 1);
+          }
+          TripSummary.selectedDates = dates;
+          TripSummary.rangeFrom = from;
+          TripSummary.rangeTo = to;
+          repopulateTripSummarySelection();
+          updateTripSummaryView();
+        };
+      }
+
+      // Checklist Actions
+      if ($('btn-sum-sel-all')) {
+        $('btn-sum-sel-all').onclick = () => {
+          getFilteredTripSummaryList().forEach(b => TripSummary.selectedBookingIds.add(b.id));
+          updateTripSummaryView();
+        };
+      }
+
+      if ($('btn-sum-desel-all')) {
+        $('btn-sum-desel-all').onclick = () => {
+          TripSummary.selectedBookingIds.clear();
+          updateTripSummaryView();
+        };
+      }
+
+      if ($('btn-sum-sel-unassigned')) {
+        $('btn-sum-sel-unassigned').onclick = () => {
+          TripSummary.selectedBookingIds.clear();
+          getFilteredTripSummaryList().forEach(b => {
+            if (!isDriverAssigned(b)) TripSummary.selectedBookingIds.add(b.id);
+          });
+          updateTripSummaryView();
+        };
+      }
+
+      if ($('btn-sum-sel-assigned')) {
+        $('btn-sum-sel-assigned').onclick = () => {
+          TripSummary.selectedBookingIds.clear();
+          getFilteredTripSummaryList().forEach(b => {
+            if (isDriverAssigned(b)) TripSummary.selectedBookingIds.add(b.id);
+          });
+          updateTripSummaryView();
+        };
+      }
+
+      if ($('chk-sum-include-completed')) {
+        $('chk-sum-include-completed').onchange = (e) => {
+          TripSummary.includeCompleted = e.target.checked;
+          repopulateTripSummarySelection();
+          updateTripSummaryView();
+        };
+      }
+
+      if ($('chk-sum-include-cancelled')) {
+        $('chk-sum-include-cancelled').onchange = (e) => {
+          TripSummary.includeCancelled = e.target.checked;
+          repopulateTripSummarySelection();
+          updateTripSummaryView();
+        };
+      }
+
+      // Field Checkboxes
+      const fieldKeys = [
+        ['chk-sum-ref', 'ref'],
+        ['chk-sum-time', 'time'],
+        ['chk-sum-route', 'route'],
+        ['chk-sum-fare', 'fare'],
+        ['chk-sum-cust-name', 'custName'],
+        ['chk-sum-cust-phone', 'custPhone'],
+        ['chk-sum-pax', 'pax'],
+        ['chk-sum-luggage', 'luggage'],
+        ['chk-sum-vehicle', 'vehicle'],
+        ['chk-sum-flight', 'flight'],
+        ['chk-sum-driver', 'driver'],
+        ['chk-sum-notes', 'notes']
+      ];
+      fieldKeys.forEach(([id, k]) => {
+        const el = $(id);
+        if (el) {
+          el.onchange = () => {
+            TripSummary.fields[k] = el.checked;
+            updateTripSummaryView();
+          };
+        }
+      });
+
+      // Language Selectors
+      if ($('sel-sum-text-lang')) {
+        $('sel-sum-text-lang').onchange = (e) => {
+          TripSummary.textLang = e.target.value;
+          updateTripSummaryView();
+        };
+      }
+
+      if ($('sel-sum-doc-lang')) {
+        $('sel-sum-doc-lang').onchange = (e) => {
+          TripSummary.docLang = e.target.value;
+          updateTripSummaryView();
+        };
+      }
+
+      // Tabs: Text vs Image
+      if ($('btn-sum-tab-text')) {
+        $('btn-sum-tab-text').onclick = () => {
+          $('btn-sum-tab-text').classList.add('active');
+          if ($('btn-sum-tab-img')) $('btn-sum-tab-img').classList.remove('active');
+          if ($('sum-tab-content-text')) $('sum-tab-content-text').style.display = 'block';
+          if ($('sum-tab-content-img')) $('sum-tab-content-img').style.display = 'none';
+        };
+      }
+
+      if ($('btn-sum-tab-img')) {
+        $('btn-sum-tab-img').onclick = () => {
+          $('btn-sum-tab-img').classList.add('active');
+          if ($('btn-sum-tab-text')) $('btn-sum-tab-text').classList.remove('active');
+          if ($('sum-tab-content-text')) $('sum-tab-content-text').style.display = 'none';
+          if ($('sum-tab-content-img')) $('sum-tab-content-img').style.display = 'flex';
+          updateTripSummaryView();
+        };
+      }
+
+      // Action 1: Copy Text
+      if ($('btn-sum-copy-text')) {
+        $('btn-sum-copy-text').onclick = async () => {
+          const txt = $('sum-text-preview') ? $('sum-text-preview').value : '';
+          const ok = await copyTextToClipboard(txt);
+          if (ok) {
+            showToast(TripSummary.textLang === 'ar' ? 'تم نسخ ملخص الرحلات بنجاح!' : 'Trip summary copied successfully!');
+          } else {
+            showToast(TripSummary.textLang === 'ar' ? 'تعذر النسخ تلقائياً' : 'Could not copy text', true);
+          }
+        };
+      }
+
+      // Action 2: Share WhatsApp
+      if ($('btn-sum-share-wa')) {
+        $('btn-sum-share-wa').onclick = async () => {
+          const txt = $('sum-text-preview') ? $('sum-text-preview').value : '';
+          if (navigator.share) {
+            try {
+              await navigator.share({ title: 'Vendora Trip Summary', text: txt });
+              return;
+            } catch (err) {}
+          }
+          window.open('https://wa.me/?text=' + encodeURIComponent(txt), '_blank');
+        };
+      }
+
+      // Action 3: Copy Image
+      if ($('btn-sum-copy-img')) {
+        $('btn-sum-copy-img').onclick = async () => {
+          const canvas = $('trip-summary-canvas');
+          if (!canvas) return;
+          const ok = await copyCanvasImageToClipboard(canvas);
+          if (ok) {
+            showToast(TripSummary.textLang === 'ar' ? 'تم نسخ صورة ملخص الرحلات! الصقها الآن في واتساب' : 'Image copied! Paste now in WhatsApp');
+          } else {
+            showToast(TripSummary.textLang === 'ar' ? 'المتصفح لا يدعم نسخ الصور المباشر، استخدم التحميل' : 'Direct image copy unsupported, use download', true);
+          }
+        };
+      }
+
+      // Action 4: Share Image (Native Web Share with File)
+      if ($('btn-sum-share-img')) {
+        $('btn-sum-share-img').onclick = async () => {
+          const canvas = $('trip-summary-canvas');
+          if (!canvas) return;
+          const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+          if (!pngBlob) return;
+          const filename = `Vendora-Trip-Summary-${getTodayStr()}.png`;
+          const file = new File([pngBlob], filename, { type: 'image/png' });
+
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+              await navigator.share({
+                files: [file],
+                title: 'Vendora Trip Summary',
+                text: 'Vendora Transport — Official Trip Summary'
+              });
+              return;
+            } catch (err) {}
+          }
+
+          // Fallback: download image and copy text
+          triggerBlobDownload(pngBlob, filename);
+          const txt = $('sum-text-preview') ? $('sum-text-preview').value : '';
+          await copyTextToClipboard(txt);
+          showToast(TripSummary.textLang === 'ar' ? 'تم تنزيل الصورة ونسخ النص! أرفقها الآن في واتساب' : 'Image downloaded & text copied! Attach in WhatsApp');
+        };
+      }
+
+      // Action 5: Download PNG
+      if ($('btn-sum-download-img')) {
+        $('btn-sum-download-img').onclick = async () => {
+          const canvas = $('trip-summary-canvas');
+          if (!canvas) return;
+          const pngBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+          if (!pngBlob) return;
+          const filename = `Vendora-Trip-Summary-${getTodayStr()}.png`;
+          triggerBlobDownload(pngBlob, filename);
+          showToast(TripSummary.textLang === 'ar' ? `تم تنزيل ${filename}` : `Downloaded ${filename}`);
+        };
+      }
+
+      // Action 6: Download PDF
+      if ($('btn-sum-download-pdf')) {
+        $('btn-sum-download-pdf').onclick = () => {
+          const canvas = $('trip-summary-canvas');
+          if (!canvas) return;
+          const blob = buildPdfBlobFromCanvases([canvas]);
+          const filename = `Vendora-Trip-Summary-${getTodayStr()}.pdf`;
+          triggerBlobDownload(blob, filename);
+          showToast(TripSummary.textLang === 'ar' ? `تم تنزيل ${filename}` : `Downloaded ${filename}`);
+        };
+      }
+
+      // Navigation Open Triggers
+      if ($('btn-top-trip-summary')) $('btn-top-trip-summary').onclick = openTripSummaryModal;
+      if ($('side-op-trip-summary')) $('side-op-trip-summary').onclick = openTripSummaryModal;
+      if ($('menu-btn-trip-summary')) {
+        $('menu-btn-trip-summary').onclick = () => {
+          if ($('dlg-menu')) $('dlg-menu').close();
+          openTripSummaryModal();
+        };
+      }
+    }
+
+    bindTripSummaryControls();
 
     applyTheme(App.theme);
     setupVendoraPWA();
