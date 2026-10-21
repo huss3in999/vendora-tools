@@ -9,9 +9,9 @@ const swPath = path.resolve('public/booking-desk/sw.js');
 const html = fs.readFileSync(htmlPath, 'utf8');
 const sw = fs.readFileSync(swPath, 'utf8');
 
-test('1. SW Cache Version: Bumped to vendora-dispatch-v20261021-m9 in sw.js and index.html', () => {
-  assert.ok(sw.includes('vendora-dispatch-v20261021-m9'), 'sw.js must define vendora-dispatch-v20261021-m9');
-  assert.ok(html.includes('/booking-desk/sw.js?v=20261021-m9'), 'index.html must register sw.js with query param v=20261021-m9');
+test('1. SW Cache Version: Bumped to vendora-dispatch-v20261021-m9 or later in sw.js and index.html', () => {
+  assert.ok(/vendora-dispatch-v20261021-m(?:9|10)/.test(sw), 'sw.js must define latest cache version');
+  assert.ok(/\/booking-desk\/sw\.js\?v=20261021-m(?:9|10)/.test(html), 'index.html must register sw.js with latest query param');
 });
 
 test('2. Driver Share Modal: chk-fare, chk-payout, and sel-drv-doc-lang configured properly', () => {

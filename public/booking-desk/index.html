@@ -14049,7 +14049,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
 
         // Register Service Worker for PWA offline shell & fast mobile caching
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m9', { scope: '/booking-desk/' })
+          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m10', { scope: '/booking-desk/' })
             .then(reg => { if (reg) reg.update(); })
             .catch(() => {});
         }
@@ -14744,7 +14744,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       }
 
       let selectedCount = 0;
-      html = list.map(b => {
+      const html = list.map(b => {
         const isChecked = TripSummary.selectedBookingIds.has(b.id);
         if (isChecked) selectedCount++;
 
