@@ -3722,9 +3722,6 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         <button type="button" class="vis-segment-btn" data-fast="non_canceled" data-vis="non_canceled" id="btn-vis-non-canceled" style="display:none;">
           <span id="txt-vis-non-canceled">غير الملغية</span>
         </button>
-          <span id="txt-vis-all">كل الحجوزات</span>
-          <span class="vis-badge-count" id="cnt-fast-all">0</span>
-        </button>
         <button type="button" class="vis-segment-btn" data-fast="canceled" data-vis="canceled_only" id="btn-vis-canceled-only" title="عرض الحجوزات الملغية في كل التواريخ">
           <span id="txt-vis-canceled-only">الملغية</span>
           <span class="vis-badge-red" id="cnt-vis-canceled">0</span>
@@ -13693,7 +13690,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
 
         // Register Service Worker for PWA offline shell & fast mobile caching
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m6', { scope: '/booking-desk/' })
+          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m7', { scope: '/booking-desk/' })
             .then(reg => { if (reg) reg.update(); })
             .catch(() => {});
         }
