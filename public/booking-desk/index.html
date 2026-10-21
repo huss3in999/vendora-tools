@@ -7422,6 +7422,14 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       const upcoming = active.filter(b => b.travelDate >= todayStr && b.bookingStatus !== 'Completed');
       const pastTrips = active.filter(b => b.travelDate < todayStr || b.bookingStatus === 'Completed');
 
+      const hasExplicitRange = Boolean(App.dateRangeFrom || App.dateRangeTo || App.specificDate || (App.selectedDates && App.selectedDates.length > 0));
+      const rangeScopedAll = allValid.filter(b => matchesDateRange(b));
+      const rangeScopedActive = rangeScopedAll.filter(b => !isBookingCancelled(b));
+      const rangeScopedCancelled = rangeScopedAll.filter(b => isBookingCancelled(b));
+      const kpiSourceList = hasExplicitRange ? rangeScopedActive : active;
+      const viewStats = computeFinancialStats(kpiSourceList);
+      const kpiUnassignedList = (hasExplicitRange ? rangeScopedActive : active.filter(b => b.travelDate >= todayStr)).filter(b => !isDriverAssigned(b) && b.bookingStatus !== 'Completed');
+
       renderDateStrip(allValid, active, todayStr, tomorrowStr);
       renderSevenDayStrip();
 
@@ -7513,13 +7521,6 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         }
 
         // NORMAL VIEW: Active bookings & sales
-        const rangeScopedAll = allValid.filter(b => matchesDateRange(b));
-        const rangeScopedActive = rangeScopedAll.filter(b => !isBookingCancelled(b));
-        const rangeScopedCancelled = rangeScopedAll.filter(b => isBookingCancelled(b));
-        const hasExplicitRange = Boolean(App.dateRangeFrom || App.dateRangeTo || App.specificDate || (App.selectedDates && App.selectedDates.length > 0));
-        const kpiSourceList = hasExplicitRange ? rangeScopedActive : active;
-        const viewStats = computeFinancialStats(kpiSourceList);
-        const kpiUnassignedList = (hasExplicitRange ? rangeScopedActive : active.filter(b => b.travelDate >= todayStr)).filter(b => !isDriverAssigned(b) && b.bookingStatus !== 'Completed');
 
         // Card 1: Total Bookings
         if ($('kpi-lbl-bookings')) $('kpi-lbl-bookings').textContent = isAr ? 'إجمالي الحجوزات' : 'Total Bookings';
@@ -13692,7 +13693,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
 
         // Register Service Worker for PWA offline shell & fast mobile caching
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m5', { scope: '/booking-desk/' })
+          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m6', { scope: '/booking-desk/' })
             .then(reg => { if (reg) reg.update(); })
             .catch(() => {});
         }
