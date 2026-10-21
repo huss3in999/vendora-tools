@@ -14049,7 +14049,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
 
         // Register Service Worker for PWA offline shell & fast mobile caching
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m8', { scope: '/booking-desk/' })
+          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m9', { scope: '/booking-desk/' })
             .then(reg => { if (reg) reg.update(); })
             .catch(() => {});
         }
@@ -14644,7 +14644,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
     }
 
     function getFilteredTripSummaryList() {
-      const all = (App.bookings || []).filter(b => b && b.ref && b.bookingStatus !== 'Trashed');
+      const all = (App.bookings || []).filter(b => b && (b.id || b.ref) && b.bookingStatus !== 'Trashed');
       let filtered = all;
 
       if (TripSummary.selectedDates && TripSummary.selectedDates.length > 0) {
