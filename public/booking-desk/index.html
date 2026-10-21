@@ -6083,20 +6083,188 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       }
     }
 
-    function formatTimeTo12h(rawTime) {
+    const AR_PROPER_NOUNS = {
+      'saudi arabia': 'السعودية',
+      'saudi': 'السعودية',
+      'eastern province': 'المنطقة الشرقية',
+      'riyadh': 'الرياض',
+      'dammam': 'الدمام',
+      'khobar': 'الخبر',
+      'al khobar': 'الخبر',
+      'dhahran': 'الظهران',
+      'jubail': 'الجبيل',
+      'al jubail': 'الجبيل',
+      'qatif': 'القطيف',
+      'al qatif': 'القطيف',
+      'al ahsa': 'الأحساء',
+      'hofuf': 'الهفوف',
+      'al hofuf': 'الهفوف',
+      'jeddah': 'جدة',
+      'makkah': 'مكة المكرمة',
+      'medina': 'المدينة المنورة',
+      'bahrain': 'البحرين',
+      'manama': 'المنامة',
+      'al manama': 'المنامة',
+      'juffair': 'الجفير',
+      'al juffair': 'الجفير',
+      'seef': 'ضاحية السيف',
+      'al seef': 'ضاحية السيف',
+      'amwaj': 'جزر أمواج',
+      'amwaj islands': 'جزر أمواج',
+      'marassi': 'مراسي',
+      'marassi al bahrain': 'مراسي البحرين',
+      'riffa': 'الرفاع',
+      'muharraq': 'المحرق',
+      'saar': 'سار',
+      'budaiya': 'البديع',
+      'hamad town': 'مدينة حمد',
+      'isa town': 'مدينة عيسى',
+      'doha': 'الدوحة',
+      'qatar': 'قطر',
+      'dubai': 'دبي',
+      'abu dhabi': 'أبوظبي',
+      'salwa': 'سلوى',
+      'bahrain international airport': 'مطار البحرين الدولي',
+      'bahrain airport': 'مطار البحرين',
+      'king fahd international airport': 'مطار الملك فهد الدولي بالدمام',
+      'hamad international airport': 'مطار حمد الدولي',
+      'doha international airport': 'مطار الدوحة الدولي',
+      'king fahd causeway': 'جسر الملك فهد',
+      'al qurtubah': 'حي القرطبة',
+      'qurtubah': 'حي القرطبة',
+      'al sulaimaniyah': 'حي السليمانية',
+      'sulaimaniyah': 'حي السليمانية',
+      'al olaya': 'حي العليا',
+      'olaya': 'حي العليا',
+      'olaya street': 'شارع العليا',
+      'al sahafah': 'حي الصحافة',
+      'sahafah': 'حي الصحافة',
+      'al shulah': 'حي الشعلة',
+      'shulah': 'حي الشعلة',
+      'al jalawiyah': 'حي الجلاوية',
+      'jalawiyah': 'حي الجلاوية',
+      'al qusour': 'حي القصور',
+      'qusour': 'حي القصور',
+      'al qairawan': 'حي القيروان',
+      'alqairawan': 'حي القيروان',
+      'qairawan': 'حي القيروان',
+      'al malqa': 'حي الملقا',
+      'malqa': 'حي الملقا',
+      'al yasmin': 'حي الياسمين',
+      'yasmin': 'حي الياسمين',
+      'al narjis': 'حي النرجس',
+      'narjis': 'حي النرجس',
+      'al nakheel': 'حي النخيل',
+      'nakheel': 'حي النخيل',
+      'al falah': 'حي الفلاح',
+      'falah': 'حي الفلاح',
+      'al aqeeq': 'حي العقيق',
+      'aqeeq': 'حي العقيق',
+      'al hamra': 'حي الحمراء',
+      'hamra': 'حي الحمراء',
+      'novo hotel': 'فندق نوفو',
+      'novo': 'نوفو',
+      'seven hotel': 'فندق سيفن',
+      'hilton hotel': 'فندق هيلتون',
+      'hilton': 'هيلتون',
+      'four seasons hotel': 'فندق فور سيزونز',
+      'four seasons': 'فور سيزونز',
+      'ritz-carlton hotel': 'فندق ريتز كارلتون',
+      'ritz carlton': 'ريتز كارلتون',
+      'andorra village compound': 'مجمع قرية أندورا',
+      'andorra village': 'مجمع قرية أندورا',
+      'arabian home': 'المسكن العربي',
+      'between residential': 'بيتوين ريزيدنشال (حي سكني)'
+    };
+
+    function to12h(timeStr, isAr = false) {
+      if (!timeStr) return '';
+      const m = String(timeStr).match(/(\d{1,2}):(\d{2})(?:\s*(am|pm|a\.m\.|p\.m\.|ص|م|صباحاً|مساءً))?/i);
+      if (!m) return timeStr;
+      let h = parseInt(m[1], 10);
+      const min = m[2];
+      const marker = m[3] ? m[3].toLowerCase() : '';
+      let isPm = false;
+      if (marker) {
+        isPm = marker.includes('p') || marker.includes('م') || marker.includes('مساء');
+      } else {
+        isPm = h >= 12;
+      }
+      if (h > 12) h -= 12;
+      if (h === 0) h = 12;
+      const period = isAr ? (isPm ? 'م' : 'ص') : (isPm ? 'PM' : 'AM');
+      return `${h}:${min} ${period}`;
+    }
+
+    function formatTimeTo12hArabic(rawStr, isAr = true) {
+      if (!rawStr) return '—';
+      let s = String(rawStr).trim();
+      if (!s) return '—';
+
+      if (isAr) {
+        if (/after\s+immigration\s*(?:\/|\s+and\s+|\s*&\s*)\s*baggage/i.test(s)) {
+          return 'الاستلام بعد إنهاء إجراءات الجوازات واستلام الأمتعة';
+        }
+        if (/after\s+immigration/i.test(s)) {
+          return 'الاستلام بعد إنهاء إجراءات الجوازات';
+        }
+        if (/after\s+(?:airport\s+)?procedures|after\s+baggage/i.test(s)) {
+          return 'الاستلام بعد إجراءات المطار';
+        }
+      }
+
+      const isFlightArr = /flight\s*arrival|arrival|وصول/i.test(s);
+      const isEstimated = /estimated|متوقع/i.test(s);
+
+      const pickupMatch = s.match(/(?:pickup|استلام)[:\s]*(\d{1,2}:\d{2}(?:\s*(?:am|pm|ص|م))?)/i) ||
+                          s.match(/(\d{1,2}:\d{2}(?:\s*(?:am|pm|ص|م))?)\s*(?:requested\s*pickup|pickup|استلام)/i);
+      const arrMatch = s.match(/(?:flight\s*arrival|scheduled\s*arrival|arrival|وصول(?:\s*الرحلة|\s*الطائرة)?)[:\s]*(\d{1,2}:\d{2}(?:\s*(?:am|pm|ص|م))?)/i) ||
+                       s.match(/(\d{1,2}:\d{2}(?:\s*(?:am|pm|ص|م))?)\s*(?:flight\s*arrival|scheduled\s*arrival|arrival|وصول)/i);
+
+      let mainClock = '';
+      let noteSuffix = '';
+
+      if (pickupMatch) {
+        mainClock = pickupMatch[1];
+        if (arrMatch) {
+          const arrClock = to12h(arrMatch[1], isAr);
+          noteSuffix = isAr ? ` (وصول الرحلة: ${arrClock})` : ` (Flight Arrival: ${arrClock})`;
+        }
+      } else if (arrMatch) {
+        mainClock = arrMatch[1];
+        noteSuffix = isAr ? ' (وصول الرحلة)' : ' (Flight Arrival)';
+      } else {
+        const t = s.match(/(\b\d{1,2}:\d{2}(?:\s*(?:am|pm|a\.m\.|p\.m\.|ص|م|صباحاً|مساءً))?)/i);
+        if (t) mainClock = t[1];
+      }
+
+      if (mainClock) {
+        const formatted = to12h(mainClock, isAr);
+        if (isEstimated) {
+          noteSuffix = isAr ? ' (وصول متوقع)' : ' (Est. Arrival)';
+        }
+        return formatted + noteSuffix;
+      }
+
+      if (isAr) {
+        return toPureArabicText(s);
+      }
+      return s;
+    }
+
+    function formatTimeTo12h(rawTime, lang = null) {
       if (!rawTime || typeof rawTime !== 'string') return rawTime || '—';
       const str = rawTime.trim();
       if (!str) return '—';
+      const isAr = lang === 'ar' || (!lang && typeof App !== 'undefined' && App.lang === 'ar');
       const m = str.match(/(\b\d{1,2}):(\d{2})(?::\d{2})?(?:\s*(am|pm|a\.m\.|p\.m\.|ص|م|صباحاً|مساءً))?/i);
-      if (!m) return str;
+      if (!m) return isAr ? toPureArabicText(str) : str;
       let h = parseInt(m[1], 10);
       const min = m[2];
       const marker = m[3] ? m[3].toLowerCase() : '';
       let period = 'AM';
       if (marker) {
-        period = (marker.includes('p') || marker.includes('م')) ? 'PM' : 'AM';
-        if (period === 'PM' && h < 12) h = h;
-        if (period === 'AM' && h === 12) h = 12;
+        period = (marker.includes('p') || marker.includes('م') || marker.includes('مساء')) ? 'PM' : 'AM';
       } else {
         if (h >= 12) {
           period = 'PM';
@@ -6108,9 +6276,14 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       }
       if (h > 12) h -= 12;
       if (h === 0) h = 12;
-      const formatted12h = `${h}:${min} ${period}`;
+      const periodText = isAr ? (period === 'PM' ? 'م' : 'ص') : period;
+      const formatted12h = `${h}:${min} ${periodText}`;
       if (str === m[0].trim()) return formatted12h;
-      return str.replace(m[0], formatted12h);
+      let res = str.replace(m[0], formatted12h);
+      if (isAr) {
+        res = res.replace(/\bAM\b/gi, 'ص').replace(/\bPM\b/gi, 'م');
+      }
+      return res;
     }
 
     function parseTripTimingDetails(b, lang = null) {
@@ -6132,7 +6305,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       const arrMatch = combined.match(/(\d{1,2}:\d{2}(?:\s*(?:am|pm|a\.m\.|p\.m\.|ص|م|صباحاً|مساءً))?)\s*(?:flight\s*arrival|arrival|وصول|هبوط)/i) ||
                        combined.match(/(?:flight\s*arrival|arrival|وصول\s*الطائرة|وصول\s*الرحلة|وصول|هبوط)[:\s]+(\d{1,2}:\d{2}(?:\s*(?:am|pm|a\.m\.|p\.m\.|ص|م|صباحاً|مساءً))?)/i);
       if (arrMatch) {
-        flightArrivalTime = formatTimeTo12h(arrMatch[1].trim());
+        flightArrivalTime = formatTimeTo12h(arrMatch[1].trim(), isAr ? 'ar' : 'en');
       }
 
       // 2. Flight number fallback if not in b.flight
@@ -6141,30 +6314,39 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         if (fnMatch) flightNumber = fnMatch[1].trim();
       }
 
-      // 3. Check for qualitative pickup note (e.g. 'pickup after airport procedures' or 'بعد إجراءات المطار')
-      const procMatch = rawPickup.match(/(?:pickup|استلام|الاستلام)?[:\s]*(after\s+airport\s+procedures|after\s+procedures|after\s+baggage\s+claim|بعد\s+إجراءات\s+المطار|بعد\s+انهاء\s+الإجراءات|بعد\s+إنهاء\s+الإجراءات|بعد\s+التفتيش)/i);
+      // 3. Check for qualitative pickup note
+      const procMatch = rawPickup.match(/(?:pickup|استلام|الاستلام)?[:\s]*(after\s+airport\s+procedures|after\s+procedures|after\s+immigration(?:\s*\/|\s+and\s+|\s*&\s*)baggage(?:\s+claim)?|after\s+immigration|after\s+baggage\s+claim|بعد\s+إجراءات\s+المطار|بعد\s+انهاء\s+الإجراءات|بعد\s+إنهاء\s+الإجراءات|بعد\s+إنهاء\s+إجراءات\s+الجوازات|بعد\s+التفتيش)/i);
       if (procMatch) {
-        pickupNote = isAr ? 'بعد إجراءات المطار' : 'After airport procedures';
+        const matchedProc = procMatch[1].toLowerCase();
+        if (matchedProc.includes('immigration') && matchedProc.includes('baggage')) {
+          pickupNote = isAr ? 'الاستلام بعد إنهاء إجراءات الجوازات واستلام الأمتعة' : 'Pickup after immigration and baggage claim';
+        } else if (matchedProc.includes('immigration')) {
+          pickupNote = isAr ? 'الاستلام بعد إنهاء إجراءات الجوازات' : 'Pickup after immigration';
+        } else {
+          pickupNote = isAr ? 'بعد إجراءات المطار' : 'After airport procedures';
+        }
       }
 
-      // 4. Look for explicit pickup clock time (e.g. 'pickup 09:30 AM' or 'pickup: 10:00 PM' or standalone clock)
-      const explicitPickupMatch = rawPickup.match(/(?:pickup|استلام|الاستلام)[:\s]+(\d{1,2}:\d{2}(?:\s*(?:am|pm|a\.m\.|p\.m\.|ص|م|صباحاً|مساءً))?)/i);
+      // 4. Look for explicit pickup clock time
+      const explicitPickupMatch = rawPickup.match(/(?:pickup|استلام|الاستلام)[:\s]+(\d{1,2}:\d{2}(?:\s*(?:am|pm|a\.m\.|p\.m\.|ص|م|صباحاً|مساءً))?)/i) ||
+                                  rawPickup.match(/(\d{1,2}:\d{2}(?:\s*(?:am|pm|a\.m\.|p\.m\.|ص|م|صباحاً|مساءً))?)\s*(?:requested\s*pickup|pickup|استلام)/i);
       if (explicitPickupMatch) {
-        pickupTime = formatTimeTo12h(explicitPickupMatch[1].trim());
+        const matchedTime = explicitPickupMatch[1] || explicitPickupMatch[2];
+        pickupTime = formatTimeTo12h(matchedTime.trim(), isAr ? 'ar' : 'en');
         isClock = true;
       } else if (!procMatch) {
         const tMatch = rawPickup.match(/(\b\d{1,2}:\d{2}(?:\s*(?:am|pm|a\.m\.|p\.m\.|ص|م|صباحاً|مساءً))?)/i);
         if (tMatch && tMatch[1] !== (arrMatch && arrMatch[1])) {
-          pickupTime = formatTimeTo12h(tMatch[1].trim());
+          pickupTime = formatTimeTo12h(tMatch[1].trim(), isAr ? 'ar' : 'en');
           isClock = true;
         } else if (tMatch && !flightArrivalTime) {
-          pickupTime = formatTimeTo12h(tMatch[1].trim());
+          pickupTime = formatTimeTo12h(tMatch[1].trim(), isAr ? 'ar' : 'en');
           isClock = true;
         }
       }
 
       if (!pickupTime && !pickupNote && rawSort) {
-        pickupTime = formatTimeTo12h(rawSort);
+        pickupTime = formatTimeTo12h(rawSort, isAr ? 'ar' : 'en');
         isClock = true;
       }
 
@@ -6172,15 +6354,15 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         pickupTime = pickupNote;
         isClock = false;
       } else if (!pickupTime) {
-        pickupTime = rawPickup ? formatTimeTo12h(rawPickup) : '—';
+        pickupTime = rawPickup ? formatTimeTo12h(rawPickup, isAr ? 'ar' : 'en') : '—';
         if (pickupTime && /^\d{1,2}:\d{2}/.test(pickupTime)) isClock = true;
       }
 
       let flightVal = '';
       if (flightNumber && flightArrivalTime) {
-        flightVal = `${flightNumber} · ${flightArrivalTime}`;
+        flightVal = isAr ? `وصول الرحلة ${flightArrivalTime} (${flightNumber})` : `${flightNumber} · ${flightArrivalTime}`;
       } else if (flightArrivalTime) {
-        flightVal = flightArrivalTime;
+        flightVal = isAr ? `وصول الرحلة ${flightArrivalTime}` : flightArrivalTime;
       } else if (flightNumber) {
         flightVal = flightNumber;
       }
@@ -6196,10 +6378,15 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       };
     }
 
-    function formatTimeDisplay(b) {
+    function formatTimeDisplay(b, forceLang = null) {
       if (!b) return '—';
-      const timing = parseTripTimingDetails(b);
-      return timing.pickupVal || '—';
+      const isAr = (forceLang || App.lang) === 'ar';
+      const timing = parseTripTimingDetails(b, isAr ? 'ar' : 'en');
+      let val = timing.pickupVal || '—';
+      if (isAr) {
+        val = formatTimeTo12hArabic(val, true);
+      }
+      return val;
     }
 
     function extractSortTime(b) {
@@ -6554,33 +6741,101 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         for (const [en, ar] of LOCATIONS_MAP) {
           if (s.toLowerCase() === en.toLowerCase()) return ar;
         }
-        return s
-          .replace(/\bBahrain International Airport\b/gi, 'مطار البحرين الدولي')
-          .replace(/\bBahrain Airport\b/gi, 'مطار البحرين')
-          .replace(/\bKing Fahd International Airport\b/gi, 'مطار الملك فهد الدولي')
-          .replace(/\bHamad International Airport\b/gi, 'مطار حمد الدولي')
-          .replace(/\bKing Fahd Causeway\b/gi, 'جسر الملك فهد')
-          .replace(/\bAl Sulaimaniyah\b/gi, 'حي السليمانية')
-          .replace(/\bSaudi Arabia\b/gi, 'السعودية')
-          .replace(/\bEastern Province\b/gi, 'المنطقة الشرقية')
-          .replace(/\bBahrain\b/gi, 'البحرين')
-          .replace(/\bRiyadh\b/gi, 'الرياض')
-          .replace(/\bDammam\b/gi, 'الدمام')
-          .replace(/\bKhobar\b/gi, 'الخبر')
-          .replace(/\bDhahran\b/gi, 'الظهران')
-          .replace(/\bManama\b/gi, 'المنامة')
-          .replace(/\bJuffair\b/gi, 'الجفير')
-          .replace(/\bJubail\b/gi, 'الجبيل')
-          .replace(/\bQatif\b/gi, 'القطيف')
-          .replace(/\bAl Ahsa\b/gi, 'الأحساء')
-          .replace(/\bDoha\b/gi, 'الدوحة')
-          .replace(/\bQatar\b/gi, 'قطر')
-          .replace(/\bDubai\b/gi, 'دبي')
-          .replace(/\bAbu Dhabi\b/gi, 'أبوظبي')
-          .replace(/\bHotel\b/gi, 'فندق')
-          .replace(/\bDistrict\b/gi, 'حي')
-          .replace(/\bAirport\b/gi, 'مطار')
-          .replace(/\bArrivals hall\b/gi, 'صالة القادمون');
+
+        // Clean map pins & technical suffixes
+        s = s.replace(/\([^)]*(?:map\s*pin|exact\s*pin|pin\s*in\s*notes|exact\s*drop-off|verify)[^)]*\)/gi, '').trim();
+
+        // 1. Specific cases
+        if (/Between Residential/i.test(s)) {
+          s = s.replace(/Between Residential\s*\|\s*بيتوين ريزيدنشال/i, 'بيتوين ريزيدنشال (حي سكني)')
+               .replace(/Between Residential/i, 'بيتوين ريزيدنشال (حي سكني)');
+        }
+
+        s = s.replace(/\bHotel in Saudi Eastern Province\b/gi, 'فندق في المنطقة الشرقية، السعودية')
+             .replace(/\bHotel in Saudi\b/gi, 'فندق في السعودية')
+             .replace(/\bin Saudi Eastern Province\b/gi, 'في المنطقة الشرقية، السعودية')
+             .replace(/\bin Saudi\b/gi, 'في السعودية')
+             .replace(/\bBefore entrance to King Fahd Causeway, Khobar side\b/gi, 'قبل مدخل جسر الملك فهد (جانب الخبر)')
+             .replace(/\bBefore entrance to\b/gi, 'قبل مدخل')
+             .replace(/\bentrance to\b/gi, 'مدخل')
+             .replace(/\bKhobar side\b/gi, 'جانب الخبر')
+             .replace(/\bside\b/gi, 'جانب');
+
+        // 2. Grammar order for District, Hotel, Compound, Tower, Building
+        s = s.replace(/\b([A-Za-z\s'-]+?)\s+District\b/gi, (match, name) => {
+          const cleanName = name.trim().toLowerCase();
+          if (AR_PROPER_NOUNS[cleanName]) {
+            const arVal = AR_PROPER_NOUNS[cleanName];
+            return arVal.startsWith('حي') ? arVal : `حي ${arVal}`;
+          }
+          return `حي ${name.trim()}`;
+        });
+
+        s = s.replace(/\b([A-Za-z\s'-]+?)\s+Hotel\b/gi, (match, name) => {
+          const cleanName = name.trim().toLowerCase();
+          if (AR_PROPER_NOUNS[cleanName]) {
+            const arVal = AR_PROPER_NOUNS[cleanName];
+            return arVal.startsWith('فندق') ? arVal : `فندق ${arVal}`;
+          }
+          return `فندق ${name.trim()}`;
+        });
+
+        s = s.replace(/\b([A-Za-z\s'-]+?)\s+Compound\b/gi, (match, name) => {
+          const cleanName = name.trim().toLowerCase();
+          if (AR_PROPER_NOUNS[cleanName]) {
+            const arVal = AR_PROPER_NOUNS[cleanName];
+            return arVal.startsWith('مجمع') ? arVal : `مجمع ${arVal}`;
+          }
+          return `مجمع ${name.trim()}`;
+        });
+
+        s = s.replace(/\b([A-Za-z\s'-]+?)\s+Towers?\b/gi, (match, name) => {
+          const cleanName = name.trim().toLowerCase();
+          if (AR_PROPER_NOUNS[cleanName]) {
+            const arVal = AR_PROPER_NOUNS[cleanName];
+            return arVal.startsWith('برج') ? arVal : `برج ${arVal}`;
+          }
+          return `برج ${name.trim()}`;
+        });
+
+        s = s.replace(/\b([A-Za-z\s'-]+?)\s+Building\b/gi, (match, name) => {
+          const cleanName = name.trim().toLowerCase();
+          if (AR_PROPER_NOUNS[cleanName]) {
+            const arVal = AR_PROPER_NOUNS[cleanName];
+            return arVal.startsWith('مبنى') ? arVal : `مبنى ${arVal}`;
+          }
+          return `مبنى ${name.trim()}`;
+        });
+
+        // 3. Match proper nouns (longest keys first)
+        const sortedKeys = Object.keys(AR_PROPER_NOUNS).sort((a, b) => b.length - a.length);
+        for (const k of sortedKeys) {
+          const reg = new RegExp(`\\b${k}\\b`, 'gi');
+          if (reg.test(s)) {
+            s = s.replace(reg, AR_PROPER_NOUNS[k]);
+          }
+        }
+
+        // 4. Generic replacements
+        s = s.replace(/\barrivals?\s*hall\b/gi, 'صالة القادمون')
+             .replace(/\barrivals?\s*gate\b/gi, 'بوابة القادمون')
+             .replace(/\bdepartures?\s*hall\b/gi, 'صالة المغادرون')
+             .replace(/\bdepartures?\b/gi, 'المغادرون')
+             .replace(/\bhotel\b/gi, 'فندق')
+             .replace(/\bdistrict\b/gi, 'حي')
+             .replace(/\bresidential\b/gi, 'سكني')
+             .replace(/\bcompound\b/gi, 'مجمع')
+             .replace(/\btower\b/gi, 'برج')
+             .replace(/\bbuilding\b/gi, 'مبنى')
+             .replace(/\bairport\b/gi, 'مطار')
+             .replace(/\bvia\s*salwa\b/gi, 'عبر منفذ سلوى')
+             .replace(/\bvia\b/gi, 'عبر')
+             .replace(/\s*,\s*/g, '، ')
+             .replace(/،\s*،/g, '،')
+             .replace(/^[\s،,.-]+|[\s،,.-]+$/g, '')
+             .trim();
+
+        return s;
       } else {
         for (const [en, ar] of LOCATIONS_MAP) {
           if (s === ar) return en;
@@ -6626,6 +6881,13 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       if (!str || typeof str !== 'string') return '';
       let s = localizeLocation(str, 'ar');
       return s
+        .replace(/\b(?:pickup\s+)?after\s+immigration\s*(?:\/|\s+and\s+|\s*&\s*)\s*baggage(?:\s+claim)?\b/gi, 'الاستلام بعد إنهاء إجراءات الجوازات واستلام الأمتعة')
+        .replace(/\b(?:pickup\s+)?after\s+immigration\b/gi, 'الاستلام بعد إنهاء إجراءات الجوازات')
+        .replace(/\b(?:pickup\s+)?after\s+airport\s+procedures\b/gi, 'الاستلام بعد إجراءات المطار')
+        .replace(/\b(?:pickup\s+)?after\s+procedures\b/gi, 'الاستلام بعد إجراءات المطار')
+        .replace(/\b(?:pickup\s+)?after\s+baggage(?:\s+claim)?\b/gi, 'الاستلام بعد استلام الأمتعة')
+        .replace(/\bname\s+pending\b/gi, 'الاسم غير مؤكد')
+        .replace(/\bflight\s+arrival\b/gi, 'وصول الرحلة')
         .replace(/Pickup at arrivals gate with name sign/gi, 'الاستقبال عند بوابة القادمون مع لوحة بالاسم')
         .replace(/Pickup at arrivals hall/gi, 'الاستقبال في صالة القادمون')
         .replace(/arrivals gate/gi, 'بوابة القادمون')
@@ -6638,6 +6900,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         .replace(/Customer cancelled flight/gi, 'ألغى العميل الرحلة')
         .replace(/DO NOT DISPATCH/gi, 'لا يتم الإرسال')
         .replace(/needs coordination/gi, 'يحتاج تنسيق الموعد')
+        .replace(/to be reviewed/gi, 'للمراجعة')
         .replace(/Standard Sedan/gi, 'سيدان مريحة')
         .replace(/Sedan/gi, 'سيدان')
         .replace(/Van/gi, 'فان عائلي')
@@ -6647,8 +6910,89 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
         .replace(/GMC/gi, 'جمس')
         .replace(/\(BAH\)/gi, '(مطار البحرين)')
         .replace(/BAH/g, 'مطار البحرين')
-        .replace(/AM/gi, 'صباحاً')
-        .replace(/PM/gi, 'مساءً');
+        .replace(/\bAM\b/gi, 'ص')
+        .replace(/\bPM\b/gi, 'م');
+    }
+
+    function normalizeBookingForExport(b, lang = 'ar') {
+      if (!b) return null;
+      const isAr = (lang || 'ar') === 'ar';
+      
+      const ref = b.id || b.ref || 'V-001';
+      const dateStr = formatDateHeader(b.travelDate, isAr ? 'ar' : 'en');
+
+      const rawPickup = (b.pickupTime && String(b.pickupTime).trim()) || '';
+      const rawNotes = (b.notes && String(b.notes).trim()) || '';
+      const rawSort = (b.sortPickupTime && String(b.sortPickupTime).trim()) || '';
+
+      const pickupDisplay = formatTimeTo12hArabic(rawPickup || rawSort || '—', isAr);
+
+      // Locations
+      const pickupParsed = parseLocationField(b.pickup);
+      const destParsed = parseLocationField(b.destination);
+      const fromLoc = isAr
+        ? (toPureArabicText(pickupParsed.cleanLocation) || 'مطار البحرين')
+        : (localizeLocation(pickupParsed.cleanLocation, 'en') || 'Bahrain Airport');
+      const toLoc = isAr
+        ? (toPureArabicText(destParsed.cleanLocation) || 'غير محدد')
+        : (localizeLocation(destParsed.cleanLocation, 'en') || 'Not specified');
+
+      // Fare
+      let fareVal = isAr ? 'غير محدد' : 'TBD';
+      const num = parseFloat(String(b.fare || '0').replace(/,/g, ''));
+      if (!isNaN(num) && num > 0) {
+        const curr = (b.currency || 'BHD').toUpperCase().trim();
+        fareVal = curr === 'BHD' ? `${num.toFixed(3)} ${isAr ? 'د.ب' : 'BHD'}` : `${num} ${curr}`;
+      }
+
+      // Driver
+      const hasDrv = isDriverAssigned(b);
+      const driverName = hasDrv ? (b.driverName || (isAr ? 'سائق معتمد' : 'Confirmed Driver')) : '';
+      const driverStatusDisplay = hasDrv
+        ? (isAr ? `مع سائق: ${driverName}` : `Assigned: ${driverName}`)
+        : (isAr ? 'بانتظار سائق' : 'Unassigned');
+
+      // Extras
+      const custName = b.customerName
+        ? (isAr ? toPureArabicName(b.customerName) : toPureEnglishName(b.customerName))
+        : '';
+      const custPhone = b.customerPhone ? formatDisplayInternationalPhone(b.customerPhone) : '';
+      const passengers = b.passengers ? String(b.passengers) : '';
+      const luggage = b.luggage ? localizeLuggage(b.luggage, isAr ? 'ar' : 'en') : '';
+      const vehicle = b.vehicle ? localizeVehicle(b.vehicle, isAr ? 'ar' : 'en') : '';
+      
+      let flightDisplay = '';
+      if (b.flight && b.flight !== '-' && b.flight.toLowerCase() !== 'none') {
+        flightDisplay = isAr ? toPureArabicText(b.flight) : b.flight;
+      }
+
+      let notes = '';
+      if (b.notes) {
+        notes = isAr ? toPureArabicText(b.notes) : localizeNotes(b.notes, 'en');
+      }
+
+      return {
+        ref,
+        travelDate: b.travelDate,
+        dateStr,
+        pickupDisplay,
+        fromLoc,
+        toLoc,
+        fareVal,
+        rawFareNum: isNaN(num) ? 0 : num,
+        currency: (b.currency || 'BHD').toUpperCase().trim(),
+        hasDriver: hasDrv,
+        driverName,
+        driverStatusDisplay,
+        custName,
+        custPhone,
+        passengers,
+        luggage,
+        vehicle,
+        flightDisplay,
+        notes,
+        isCancelled: isBookingCancelled(b)
+      };
     }
 
     function localizeLuggage(str, lang = App.lang) {
@@ -14049,7 +14393,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
 
         // Register Service Worker for PWA offline shell & fast mobile caching
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m10', { scope: '/booking-desk/' })
+          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m11', { scope: '/booking-desk/' })
             .then(reg => { if (reg) reg.update(); })
             .catch(() => {});
         }
@@ -14542,75 +14886,58 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
 
       let globalIndex = 1;
       const groups = {};
-      (trips || []).forEach(b => {
-        const k = b.travelDate || 'other';
+      (trips || []).forEach(rawB => {
+        const k = rawB.travelDate || 'other';
         if (!groups[k]) groups[k] = [];
-        groups[k].push(b);
+        groups[k].push(rawB);
       });
 
       const sortedDates = Object.keys(groups).sort();
       sortedDates.forEach((dKey) => {
         if (isMultiDate) {
-          lines.push(`📅 *${formatDateHeader(dKey)}*`);
+          lines.push(`📅 *${formatDateHeader(dKey, isAr ? 'ar' : 'en')}*`);
         }
-        groups[dKey].forEach(b => {
-          const tripHeader = fields.ref ? `${globalIndex}. *${b.id || 'Booking'}*` : `${globalIndex}.`;
+        groups[dKey].forEach(rawB => {
+          const b = normalizeBookingForExport(rawB, isAr ? 'ar' : 'en');
+          const tripHeader = fields.ref ? `${globalIndex}. *#${b.ref}*` : `${globalIndex}.`;
           lines.push(tripHeader);
 
           if (fields.time) {
-            const timeVal = formatTimeDisplay(b) || b.pickupTime || (isAr ? 'حسب الإجراءات' : 'TBD');
-            lines.push(`🕒 ${timeVal}`);
+            lines.push(`🕒 ${b.pickupDisplay}`);
           }
 
           if (fields.route) {
-            const fromLoc = localizeLocation(b.pickup, isAr ? 'ar' : 'en') || b.pickup || '';
-            const toLoc = localizeLocation(b.destination, isAr ? 'ar' : 'en') || b.destination || '';
             const arrow = isAr ? '←' : '→';
-            lines.push(`📍 ${fromLoc} ${arrow} ${toLoc}`);
+            lines.push(`📍 ${b.fromLoc} ${arrow} ${b.toLoc}`);
           }
 
           if (fields.fare) {
-            let fareVal = isAr ? 'غير محدد' : 'TBD';
-            const num = parseFloat(String(b.fare || '0').replace(/,/g, ''));
-            if (!isNaN(num) && num > 0) {
-              const curr = (b.currency || 'BHD').toUpperCase().trim();
-              fareVal = curr === 'BHD' ? `${num.toFixed(3)} ${isAr ? 'د.ب' : 'BHD'}` : `${num} ${curr}`;
-            }
-            lines.push(`💰 ${fareVal}`);
+            lines.push(`💰 ${b.fareVal}`);
           }
 
-          if (fields.custName && b.customerName) {
-            const cName = localizeCustomerName(b.customerName, isAr ? 'ar' : 'en') || b.customerName;
-            lines.push(`👤 ${isAr ? 'العميل: ' : 'Customer: '}${cName}`);
+          if (fields.custName && b.custName) {
+            lines.push(`👤 ${isAr ? 'العميل: ' : 'Customer: '}${b.custName}`);
           }
-          if (fields.custPhone && b.customerPhone) {
-            const cPhone = formatDisplayInternationalPhone(b.customerPhone) || b.customerPhone;
-            lines.push(`📞 ${isAr ? 'الهاتف: ' : 'Phone: '}${cPhone}`);
+          if (fields.custPhone && b.custPhone) {
+            lines.push(`📞 ${isAr ? 'الهاتف: ' : 'Phone: '}${b.custPhone}`);
           }
           if (fields.pax && b.passengers) {
             lines.push(`👥 ${isAr ? 'الركاب: ' : 'Pax: '}${b.passengers}`);
           }
           if (fields.luggage && b.luggage) {
-            const lugText = localizeLuggage(b.luggage, isAr ? 'ar' : 'en') || b.luggage;
-            lines.push(`🧳 ${isAr ? 'الحقائب: ' : 'Luggage: '}${lugText}`);
+            lines.push(`🧳 ${isAr ? 'الحقائب: ' : 'Luggage: '}${b.luggage}`);
           }
           if (fields.vehicle && b.vehicle) {
-            const vehText = localizeVehicle(b.vehicle, isAr ? 'ar' : 'en') || b.vehicle;
-            lines.push(`🚘 ${isAr ? 'المركبة: ' : 'Vehicle: '}${vehText}`);
+            lines.push(`🚘 ${isAr ? 'المركبة: ' : 'Vehicle: '}${b.vehicle}`);
           }
-          if (fields.flight && b.flight && b.flight !== '-' && b.flight.toLowerCase() !== 'none') {
-            lines.push(`✈️ ${isAr ? 'الطيران: ' : 'Flight: '}${b.flight}`);
+          if (fields.flight && b.flightDisplay) {
+            lines.push(`✈️ ${isAr ? 'الطيران: ' : 'Flight: '}${b.flightDisplay}`);
           }
           if (fields.driver) {
-            let drvName = isAr ? 'بانتظار سائق' : 'Unassigned';
-            if (isDriverAssigned(b)) {
-              drvName = (isAr ? 'مع سائق: ' : 'Assigned: ') + (b.driverName || 'Confirmed');
-            }
-            lines.push(`👨‍✈️ ${drvName}`);
+            lines.push(`👨‍✈️ ${b.driverStatusDisplay}`);
           }
           if (fields.notes && b.notes) {
-            const noteText = localizeNotes(b.notes, isAr ? 'ar' : 'en') || b.notes;
-            lines.push(`📝 ${isAr ? 'ملاحظات: ' : 'Notes: '}${noteText}`);
+            lines.push(`📝 ${isAr ? 'ملاحظات: ' : 'Notes: '}${b.notes}`);
           }
 
           lines.push('');
@@ -14844,21 +15171,103 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       const fields = opts.fields || TripSummary.fields;
       const dateLabel = opts.dateLabel || formatTripSummaryDateRangeLabel(isAr);
 
-      const W = 1200;
-      const marginX = 40;
+      const W = 1400;
+      const marginX = 48;
       const contentW = W - (marginX * 2);
+      const cardPadX = 26;
+      const cardContentW = contentW - (cardPadX * 2);
 
-      // Compute dynamic height
-      const headerH = 200;
-      const footerH = 130;
+      // Helper to wrap text into lines based on canvas width
+      function wrapTextLines(ctx, text, maxWidth) {
+        if (!text) return [];
+        const words = String(text).split(/\s+/);
+        const lines = [];
+        let curLine = '';
+        for (let i = 0; i < words.length; i++) {
+          const w = words[i];
+          const test = curLine ? `${curLine} ${w}` : w;
+          if (ctx.measureText(test).width > maxWidth && curLine) {
+            lines.push(curLine);
+            curLine = w;
+          } else {
+            curLine = test;
+          }
+        }
+        if (curLine) lines.push(curLine);
+        return lines;
+      }
+
+      // Group trips
       const dates = [...new Set((trips || []).map(b => b.travelDate).filter(Boolean))];
       const isMultiDate = dates.length > 1;
-      const dateGroupsH = isMultiDate ? (dates.length * 48) : 0;
 
-      const hasExtra = fields.custName || fields.custPhone || fields.pax || fields.luggage || fields.vehicle || fields.flight || fields.notes;
-      const cardH = hasExtra ? 120 : 92;
-      const cardsTotalH = (trips || []).length * (cardH + 12);
-      const H = Math.max(800, headerH + dateGroupsH + cardsTotalH + footerH + 60);
+      const groups = {};
+      (trips || []).forEach(rawB => {
+        const k = rawB.travelDate || 'other';
+        if (!groups[k]) groups[k] = [];
+        groups[k].push(normalizeBookingForExport(rawB, isAr ? 'ar' : 'en'));
+      });
+      const sortedDates = Object.keys(groups).sort();
+
+      // Pass 1: Measure canvas context & card heights dynamically
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = W;
+      tempCanvas.height = 100;
+      const mCtx = tempCanvas.getContext('2d');
+
+      const cardHeights = [];
+      (trips || []).forEach(rawB => {
+        const b = normalizeBookingForExport(rawB, isAr ? 'ar' : 'en');
+        // Badges row: 44px
+        let ch = 44;
+
+        // Route row
+        mCtx.font = 'bold 25px Cairo, Arial, sans-serif';
+        const arrow = isAr ? '←' : '→';
+        const singleRoute = `📍 ${b.fromLoc} ${arrow} ${b.toLoc}`;
+        let routeLines = [];
+        if (mCtx.measureText(singleRoute).width <= cardContentW) {
+          routeLines = [singleRoute];
+        } else {
+          const fromLine = `📍 ${isAr ? 'من:' : 'From:'} ${b.fromLoc}`;
+          const toLine = `🏁 ${isAr ? 'إلى:' : 'To:'} ${b.toLoc}`;
+          routeLines = wrapTextLines(mCtx, fromLine, cardContentW).concat(wrapTextLines(mCtx, toLine, cardContentW));
+        }
+        ch += routeLines.length * 36;
+
+        // Extras row (Customer, Phone, Pax, Luggage, Vehicle, Flight, Notes)
+        mCtx.font = '20px Cairo, Arial, sans-serif';
+        const extraParts = [];
+        if (fields.custName && b.custName) extraParts.push(`👤 ${b.custName}`);
+        if (fields.custPhone && b.custPhone) extraParts.push(`📞 ${b.custPhone}`);
+        if (fields.pax && b.passengers) extraParts.push(`👥 ${b.passengers} ${isAr ? 'ركاب' : 'pax'}`);
+        if (fields.luggage && b.luggage) extraParts.push(`🧳 ${b.luggage}`);
+        if (fields.vehicle && b.vehicle) extraParts.push(`🚘 ${b.vehicle}`);
+        if (fields.flight && b.flightDisplay) extraParts.push(`✈️ ${b.flightDisplay}`);
+
+        let extraLines = [];
+        if (extraParts.length > 0) {
+          extraLines = wrapTextLines(mCtx, extraParts.join('  ·  '), cardContentW);
+        }
+        if (fields.notes && b.notes) {
+          const noteText = `📝 ${isAr ? 'ملاحظات: ' : 'Notes: '}${b.notes}`;
+          const noteWrapped = wrapTextLines(mCtx, noteText, cardContentW);
+          extraLines = extraLines.concat(noteWrapped);
+        }
+
+        if (extraLines.length > 0) {
+          ch += (extraLines.length * 30) + 14;
+        }
+
+        ch += 30; // top & bottom padding
+        cardHeights.push({ cardH: ch, routeLines, extraLines, b });
+      });
+
+      const headerH = 220;
+      const footerH = 140;
+      const dateGroupsH = isMultiDate ? (sortedDates.length * 52) : 0;
+      const totalCardsH = cardHeights.reduce((acc, curr) => acc + curr.cardH + 16, 0);
+      const H = Math.max(900, headerH + dateGroupsH + totalCardsH + footerH + 50);
 
       canvas.width = W;
       canvas.height = H;
@@ -14872,244 +15281,209 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, W, H);
 
-      // 2. Outer Gold Border
+      // 2. Outer Gold Border & Corner Accents
       ctx.strokeStyle = '#C5A880';
-      ctx.lineWidth = 3;
-      drawRoundRect(ctx, 16, 16, W - 32, H - 32, 16);
+      ctx.lineWidth = 3.5;
+      drawRoundRect(ctx, 18, 18, W - 36, H - 36, 18);
       ctx.stroke();
 
-      // Corner Accents
+      const cornerSize = 34;
       ctx.strokeStyle = '#D8B36A';
-      ctx.lineWidth = 4;
-      const cornerSize = 30;
+      ctx.lineWidth = 4.5;
       // Top Left
-      ctx.beginPath(); ctx.moveTo(14, 14 + cornerSize); ctx.lineTo(14, 14); ctx.lineTo(14 + cornerSize, 14); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(16, 16 + cornerSize); ctx.lineTo(16, 16); ctx.lineTo(16 + cornerSize, 16); ctx.stroke();
       // Top Right
-      ctx.beginPath(); ctx.moveTo(W - 14 - cornerSize, 14); ctx.lineTo(W - 14, 14); ctx.lineTo(W - 14, 14 + cornerSize); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(W - 16 - cornerSize, 16); ctx.lineTo(W - 16, 16); ctx.lineTo(W - 16, 16 + cornerSize); ctx.stroke();
       // Bottom Left
-      ctx.beginPath(); ctx.moveTo(14, H - 14 - cornerSize); ctx.lineTo(14, H - 14); ctx.lineTo(14 + cornerSize, H - 14); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(16, H - 16 - cornerSize); ctx.lineTo(16, H - 16); ctx.lineTo(16 + cornerSize, H - 16); ctx.stroke();
       // Bottom Right
-      ctx.beginPath(); ctx.moveTo(W - 14 - cornerSize, H - 14); ctx.lineTo(W - 14, H - 14); ctx.lineTo(W - 14, H - 14 - cornerSize); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(W - 16 - cornerSize, H - 16); ctx.lineTo(W - 16, H - 16); ctx.lineTo(W - 16, H - 16 - cornerSize); ctx.stroke();
 
       // 3. Header Block
       ctx.direction = isAr ? 'rtl' : 'ltr';
       ctx.textAlign = isAr ? 'right' : 'left';
 
       // Logo Crest
-      const logoX = isAr ? (W - marginX - 50) : (marginX + 50);
-      const logoY = 68;
+      const logoX = isAr ? (W - marginX - 55) : (marginX + 55);
+      const logoY = 74;
       ctx.fillStyle = '#081220';
       ctx.beginPath();
-      ctx.arc(logoX, logoY, 36, 0, Math.PI * 2);
+      ctx.arc(logoX, logoY, 40, 0, Math.PI * 2);
       ctx.fill();
       ctx.strokeStyle = '#C5A880';
-      ctx.lineWidth = 2.5;
+      ctx.lineWidth = 3;
       ctx.stroke();
 
       ctx.fillStyle = '#D8B36A';
-      ctx.font = 'bold 36px Cairo, Arial, sans-serif';
+      ctx.font = 'bold 40px Cairo, Arial, sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('V', logoX, logoY + 1);
 
-      // Brand Title & Subtitle
-      const titleX = isAr ? (W - marginX - 110) : (marginX + 110);
+      // Title & Subtitle
+      const titleX = isAr ? (W - marginX - 120) : (marginX + 120);
       ctx.textAlign = isAr ? 'right' : 'left';
       ctx.textBaseline = 'alphabetic';
 
       ctx.fillStyle = '#D8B36A';
-      ctx.font = 'bold 28px Cairo, Arial, sans-serif';
-      ctx.fillText(isAr ? 'فندورا للنقل الفاخر — VENDORA TRANSPORT' : 'VENDORA TRANSPORT — EXECUTIVE FLEET', titleX, 58);
+      ctx.font = 'bold 36px Cairo, Arial, sans-serif';
+      ctx.fillText(isAr ? 'فندورا للنقل الفاخر — VENDORA TRANSPORT' : 'VENDORA TRANSPORT — EXECUTIVE FLEET', titleX, 64);
 
       ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'bold 20px Cairo, Arial, sans-serif';
-      ctx.fillText(isAr ? 'ملخص الرحلات المعتمد (GCC & Domestic)' : 'OFFICIAL TRIP SUMMARY (GCC & Domestic)', titleX, 86);
+      ctx.font = 'bold 26px Cairo, Arial, sans-serif';
+      ctx.fillText(isAr ? 'ملخص الرحلات المعتمد (GCC & Domestic)' : 'OFFICIAL TRIP SUMMARY (GCC & Domestic)', titleX, 98);
 
-      // Date & Timestamp Banner
       const nowTimeStr = new Intl.DateTimeFormat(isAr ? 'ar-BH' : 'en-GB', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'Asia/Bahrain' }).format(new Date());
       ctx.fillStyle = '#94A3B8';
-      ctx.font = '14px Cairo, Arial, sans-serif';
-      ctx.fillText(`📅 ${dateLabel}  ·  ⏱️ ${isAr ? 'تم الاستخراج: ' : 'Generated: '}${nowTimeStr} (${isAr ? 'توقيت البحرين' : 'Bahrain Time'})`, titleX, 114);
+      ctx.font = '20px Cairo, Arial, sans-serif';
+      ctx.fillText(`📅 ${dateLabel}  ·  ⏱️ ${isAr ? 'تم الاستخراج: ' : 'Generated: '}${nowTimeStr} (${isAr ? 'توقيت البحرين' : 'Bahrain Time'})`, titleX, 132);
 
       // Header Divider Line
-      ctx.strokeStyle = 'rgba(197, 168, 128, 0.4)';
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = 'rgba(197, 168, 128, 0.45)';
+      ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(marginX, 142);
-      ctx.lineTo(W - marginX, 142);
+      ctx.moveTo(marginX, 162);
+      ctx.lineTo(W - marginX, 162);
       ctx.stroke();
 
-      let curY = 160;
-
-      // 4. Render Grouped Trips
-      const groups = {};
-      (trips || []).forEach(b => {
-        const k = b.travelDate || 'other';
-        if (!groups[k]) groups[k] = [];
-        groups[k].push(b);
-      });
-
-      const sortedDates = Object.keys(groups).sort();
-      let itemIdx = 1;
+      let curY = 186;
+      let globalIdx = 0;
 
       if ((trips || []).length === 0) {
         ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
-        drawRoundRect(ctx, marginX, curY, contentW, 120, 12);
+        drawRoundRect(ctx, marginX, curY, contentW, 140, 14);
         ctx.fill();
         ctx.fillStyle = '#94a3b8';
-        ctx.font = '18px Cairo, Arial, sans-serif';
+        ctx.font = 'bold 22px Cairo, Arial, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(isAr ? 'لا توجد رحلات محددة للعرض في هذا الملخص' : 'No trips selected for this summary', W / 2, curY + 65);
-        curY += 140;
+        ctx.fillText(isAr ? 'لا توجد رحلات محددة للعرض في هذا الملخص' : 'No trips selected for this summary', W / 2, curY + 75);
+        curY += 160;
       }
 
       sortedDates.forEach(dKey => {
         if (isMultiDate) {
-          // Date Group Header
-          ctx.fillStyle = 'rgba(197, 168, 128, 0.12)';
-          drawRoundRect(ctx, marginX, curY, contentW, 36, 8);
+          ctx.fillStyle = 'rgba(197, 168, 128, 0.14)';
+          drawRoundRect(ctx, marginX, curY, contentW, 44, 10);
           ctx.fill();
-          ctx.strokeStyle = 'rgba(197, 168, 128, 0.35)';
-          ctx.lineWidth = 1;
+          ctx.strokeStyle = 'rgba(197, 168, 128, 0.45)';
+          ctx.lineWidth = 1.2;
           ctx.stroke();
 
           ctx.direction = isAr ? 'rtl' : 'ltr';
           ctx.textAlign = isAr ? 'right' : 'left';
           ctx.fillStyle = '#D8B36A';
-          ctx.font = 'bold 15px Cairo, Arial, sans-serif';
-          const grpTextX = isAr ? (W - marginX - 16) : (marginX + 16);
-          ctx.fillText(`📅 ${formatDateHeader(dKey)} (${groups[dKey].length} ${isAr ? 'رحلات' : 'trips'})`, grpTextX, curY + 23);
+          ctx.font = 'bold 22px Cairo, Arial, sans-serif';
+          const grpTextX = isAr ? (W - marginX - 20) : (marginX + 20);
+          ctx.fillText(`📅 ${formatDateHeader(dKey, isAr ? 'ar' : 'en')} (${groups[dKey].length} ${isAr ? 'رحلات' : 'trips'})`, grpTextX, curY + 29);
 
-          curY += 46;
+          curY += 54;
         }
 
-        groups[dKey].forEach(b => {
-          // Trip Card
+        groups[dKey].forEach(() => {
+          const item = cardHeights[globalIdx];
+          const b = item.b;
+          const ch = item.cardH;
+
+          // Card Background
           ctx.fillStyle = '#0B1322';
-          drawRoundRect(ctx, marginX, curY, contentW, cardH, 12);
+          drawRoundRect(ctx, marginX, curY, contentW, ch, 14);
           ctx.fill();
-          ctx.strokeStyle = 'rgba(197, 168, 128, 0.28)';
-          ctx.lineWidth = 1;
+          ctx.strokeStyle = 'rgba(197, 168, 128, 0.35)';
+          ctx.lineWidth = 1.2;
           ctx.stroke();
 
-          // Left/Right alignment
           ctx.direction = isAr ? 'rtl' : 'ltr';
           ctx.textAlign = isAr ? 'right' : 'left';
+          const startX = isAr ? (W - marginX - cardPadX) : (marginX + cardPadX);
 
-          const cardPadX = 18;
-          const textStartX = isAr ? (W - marginX - cardPadX) : (marginX + cardPadX);
+          // Line 1: Badges Row (Ref, Time, Fare)
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = 'bold 24px Cairo, Arial, sans-serif';
+          ctx.fillText(fields.ref ? `#${b.ref}` : `#${globalIdx + 1}`, startX, curY + 36);
 
-          // Line 1: Badges Row (Ref, Time, Fare, Status)
-          let badgeX = textStartX;
-          const step = isAr ? -1 : 1;
-
-          // Ref Badge
-          const refStr = fields.ref ? `#${b.id}` : `#${itemIdx}`;
-          ctx.font = 'bold 16px Cairo, Arial, sans-serif';
-          ctx.fillStyle = '#F8FAFC';
-          ctx.fillText(refStr, badgeX, curY + 30);
-
-          // Time Badge
           if (fields.time) {
-            const timeStr = formatTimeDisplay(b) || b.pickupTime || (isAr ? 'حسب الإجراءات' : 'TBD');
-            ctx.font = 'bold 15px Cairo, Arial, sans-serif';
             ctx.fillStyle = '#38BDF8';
-            const offset = isAr ? -110 : 110;
-            ctx.fillText(`🕒 ${timeStr}`, badgeX + offset, curY + 30);
+            ctx.font = 'bold 22px Cairo, Arial, sans-serif';
+            const offset = isAr ? -140 : 140;
+            ctx.fillText(`🕒 ${b.pickupDisplay}`, startX + offset, curY + 36);
           }
 
-          // Fare Badge
           if (fields.fare) {
-            let fareVal = isAr ? 'غير محدد' : 'TBD';
-            const num = parseFloat(String(b.fare || '0').replace(/,/g, ''));
-            if (!isNaN(num) && num > 0) {
-              const curr = (b.currency || 'BHD').toUpperCase().trim();
-              fareVal = curr === 'BHD' ? `${num.toFixed(3)} ${isAr ? 'د.ب' : 'BHD'}` : `${num} ${curr}`;
-            }
-            ctx.font = 'bold 15px Cairo, Arial, sans-serif';
             ctx.fillStyle = '#D8B36A';
-            const offset = isAr ? -290 : 290;
-            ctx.fillText(`💰 ${fareVal}`, badgeX + offset, curY + 30);
+            ctx.font = 'bold 22px Cairo, Arial, sans-serif';
+            const offset = isAr ? -520 : 520;
+            ctx.fillText(`💰 ${b.fareVal}`, startX + offset, curY + 36);
           }
 
-          // Driver Status Badge (far opposite side)
+          // Driver Status Badge (opposite side)
           const statusX = isAr ? (marginX + cardPadX) : (W - marginX - cardPadX);
           ctx.textAlign = isAr ? 'left' : 'right';
-          if (isDriverAssigned(b)) {
+          if (b.hasDriver) {
             ctx.fillStyle = '#34D399';
-            ctx.font = 'bold 14px Cairo, Arial, sans-serif';
-            ctx.fillText(`👤 ${b.driverName || (isAr ? 'مع سائق' : 'Assigned')}`, statusX, curY + 30);
+            ctx.font = 'bold 21px Cairo, Arial, sans-serif';
+            ctx.fillText(`👤 ${b.driverName}`, statusX, curY + 36);
           } else {
             ctx.fillStyle = '#FBBF24';
-            ctx.font = 'bold 14px Cairo, Arial, sans-serif';
-            ctx.fillText(isAr ? '⚠️ بانتظار سائق' : '⚠️ No Driver', statusX, curY + 30);
+            ctx.font = 'bold 21px Cairo, Arial, sans-serif';
+            ctx.fillText(isAr ? '⚠️ بانتظار سائق' : '⚠️ No Driver', statusX, curY + 36);
           }
 
-          // Line 2: Route with Pin and Arrow
+          // Line 2: Route Lines
           ctx.textAlign = isAr ? 'right' : 'left';
-          ctx.font = 'bold 17px Cairo, Arial, sans-serif';
+          ctx.font = 'bold 25px Cairo, Arial, sans-serif';
           ctx.fillStyle = '#FFFFFF';
-          const fromLoc = localizeLocation(b.pickup, isAr ? 'ar' : 'en') || b.pickup || '';
-          const toLoc = localizeLocation(b.destination, isAr ? 'ar' : 'en') || b.destination || '';
-          const arrow = isAr ? '←' : '→';
-          ctx.fillText(`📍 ${fromLoc} ${arrow} ${toLoc}`, textStartX, curY + 62);
+          let rY = curY + 76;
+          item.routeLines.forEach(rl => {
+            ctx.fillText(rl, startX, rY);
+            rY += 36;
+          });
 
-          // Optional Line 3: Extra Tags
-          if (hasExtra) {
-            const extraParts = [];
-            if (fields.custName && b.customerName) extraParts.push(`👤 ${b.customerName}`);
-            if (fields.custPhone && b.customerPhone) extraParts.push(`📞 ${formatDisplayInternationalPhone(b.customerPhone)}`);
-            if (fields.pax && b.passengers) extraParts.push(`👥 ${b.passengers} ${isAr ? 'ركاب' : 'pax'}`);
-            if (fields.luggage && b.luggage) extraParts.push(`🧳 ${localizeLuggage(b.luggage, isAr ? 'ar' : 'en')}`);
-            if (fields.vehicle && b.vehicle) extraParts.push(`🚘 ${localizeVehicle(b.vehicle, isAr ? 'ar' : 'en')}`);
-            if (fields.flight && b.flight && b.flight !== '-') extraParts.push(`✈️ ${b.flight}`);
-            if (fields.notes && b.notes) extraParts.push(`📝 ${b.notes}`);
-
-            if (extraParts.length > 0) {
-              ctx.font = '13px Cairo, Arial, sans-serif';
-              ctx.fillStyle = '#94A3B8';
-              ctx.fillText(extraParts.join('  ·  '), textStartX, curY + 92);
-            }
+          // Line 3: Extras & Notes
+          if (item.extraLines.length > 0) {
+            ctx.font = '20px Cairo, Arial, sans-serif';
+            ctx.fillStyle = '#CBD5E1';
+            let eY = rY + 4;
+            item.extraLines.forEach(el => {
+              ctx.fillText(el, startX, eY);
+              eY += 30;
+            });
           }
 
-          curY += cardH + 12;
-          itemIdx++;
+          curY += ch + 16;
+          globalIdx++;
         });
       });
 
       // 5. Summary Footer Block
       curY += 8;
       ctx.fillStyle = '#060D17';
-      drawRoundRect(ctx, marginX, curY, contentW, 95, 14);
+      drawRoundRect(ctx, marginX, curY, contentW, 110, 16);
       ctx.fill();
       ctx.strokeStyle = '#C5A880';
-      ctx.lineWidth = 1.8;
+      ctx.lineWidth = 2;
       ctx.stroke();
 
       ctx.direction = isAr ? 'rtl' : 'ltr';
       ctx.textAlign = isAr ? 'right' : 'left';
-      const footTextX = isAr ? (W - marginX - 22) : (marginX + 22);
+      const footTextX = isAr ? (W - marginX - 26) : (marginX + 26);
 
-      // Total Trips
       ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'bold 20px Cairo, Arial, sans-serif';
-      ctx.fillText(isAr ? `إجمالي الرحلات: ${(trips || []).length}` : `Total Trips: ${(trips || []).length}`, footTextX, curY + 40);
+      ctx.font = 'bold 26px Cairo, Arial, sans-serif';
+      ctx.fillText(isAr ? `إجمالي الرحلات: ${(trips || []).length}` : `Total Trips: ${(trips || []).length}`, footTextX, curY + 46);
 
-      // Total Fare
       if (fields.fare) {
         const totalsRes = computeTripSummaryTotals(trips, isAr);
         if (totalsRes.hasFare) {
           ctx.fillStyle = '#D8B36A';
-          ctx.font = 'bold 20px Cairo, Arial, sans-serif';
-          const fareOffset = isAr ? -260 : 260;
-          ctx.fillText(isAr ? `إجمالي القيمة: ${totalsRes.totalsText}` : `Total Value: ${totalsRes.totalsText}`, footTextX + fareOffset, curY + 40);
+          ctx.font = 'bold 26px Cairo, Arial, sans-serif';
+          const fareOffset = isAr ? -340 : 340;
+          ctx.fillText(isAr ? `إجمالي القيمة: ${totalsRes.totalsText}` : `Total Value: ${totalsRes.totalsText}`, footTextX + fareOffset, curY + 46);
         }
       }
 
-      // Website & Branding Footer Line
       ctx.fillStyle = '#64748B';
-      ctx.font = '13.5px Cairo, Arial, sans-serif';
-      ctx.fillText(isAr ? '🌐 getvendora.net  ·  فندورا لإدارة النقل والرحلات (GCC)' : '🌐 getvendora.net  ·  Vendora Transport Fleet Operations (GCC)', footTextX, curY + 72);
+      ctx.font = '18px Cairo, Arial, sans-serif';
+      ctx.fillText(isAr ? '🌐 getvendora.net  ·  فندورا لإدارة النقل والرحلات (GCC)' : '🌐 getvendora.net  ·  Vendora Transport Fleet Operations (GCC)', footTextX, curY + 84);
     }
 
     function updateTripSummaryView() {
