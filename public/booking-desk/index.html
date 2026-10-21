@@ -7561,7 +7561,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       if ($('side-cnt-airports')) $('side-cnt-airports').textContent = active.filter(isAirport).length;
       if ($('side-cnt-uae')) $('side-cnt-uae').textContent = active.filter(isUAE).length;
       if ($('side-cnt-qatar')) $('side-cnt-qatar').textContent = active.filter(isQatar).length;
-      if ($('side-cnt-unassigned')) $('side-cnt-unassigned').textContent = kpiUnassignedList.length;
+      if ($('side-cnt-unassigned')) $('side-cnt-unassigned').textContent = unassignedTrips.length;
       document.querySelectorAll('#sidebar-dest-list [data-side-city]').forEach(el => {
         el.classList.toggle('active', el.getAttribute('data-side-city') === (App.cityFilter || 'all'));
       });
@@ -13692,7 +13692,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
 
         // Register Service Worker for PWA offline shell & fast mobile caching
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m4', { scope: '/booking-desk/' })
+          navigator.serviceWorker.register('/booking-desk/sw.js?v=20261021-m5', { scope: '/booking-desk/' })
             .then(reg => { if (reg) reg.update(); })
             .catch(() => {});
         }

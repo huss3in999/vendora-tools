@@ -1,5 +1,5 @@
 /* Vendora Dispatch PWA Service Worker (Cache-First for Static Shell, Network-Only for APIs) */
-const CACHE_NAME = 'vendora-dispatch-v20261021-m4';
+const CACHE_NAME = 'vendora-dispatch-v20261021-m5';
 const PRECACHE_ASSETS = [
   '/booking-desk/',
   '/booking-desk/index.html',
