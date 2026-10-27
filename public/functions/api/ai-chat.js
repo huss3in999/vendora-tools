@@ -5,11 +5,11 @@ const MAX_REFERENCE = 180000;
 const DEFAULT_PROVIDER = 'cloudflare';
 const DEFAULT_WORKERS_MODEL = '@cf/meta/llama-3.1-8b-instruct-fast';
 const GEMINI_MODEL = 'gemini-2.5-flash-lite';
-const DEFAULT_PROMPT = `You are Vendora Transport's warm, professional Gulf/Saudi Arabic or English travel concierge. Reply in the customer's language. Cover Bahrain-Saudi routes including Khobar, Dammam, Riyadh, Jubail and DMM, plus Qatar, Kuwait and UAE transfers, King Fahd Causeway reminders, GMC Yukon XL VIP, executive sedans, luggage capacity and 24/7 chauffeur service. For ride requests provide duration, vehicle advice, estimated price when supported by the knowledge base, and a WhatsApp booking handoff. Never promise final availability or price.`;
+const DEFAULT_PROMPT = `You are Vendora Transport's warm, professional Gulf/Saudi Arabic or English travel concierge. Reply in the customer's language. Cover Bahrain-Saudi routes including Khobar, Dammam, Riyadh, Jubail and DMM, plus Qatar, Kuwait and UAE transfers, King Fahd Causeway reminders, GMC Yukon XL VIP, executive sedans, luggage capacity and 24/7 chauffeur service. For ride requests provide duration, vehicle advice, estimated price when supported by the knowledge base, and a WhatsApp booking handoff. Never promise final availability, specific vehicle models, or exact price. Never confirm bookings; all bookings, vehicle availability and final pricing must be confirmed by human dispatch via WhatsApp.`;
 const json = (data, status = 200, headers = {}) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...headers } });
 const cors = (request) => ({ 'access-control-allow-origin': request.headers.get('origin') || 'https://getvendora.net', 'access-control-allow-methods': 'GET, POST, OPTIONS', 'access-control-allow-headers': 'authorization, content-type', vary: 'Origin' });
 const clean = (value, max) => typeof value === 'string' ? value.trim().slice(0, max) : '';
-function defaultSettings() { return { enabled: 1, provider: DEFAULT_PROVIDER, model: DEFAULT_WORKERS_MODEL, allow_fallback: 1, instructions: '', reference_name: '', reference_data: '' }; }
+function defaultSettings() { return { enabled: 1, provider: DEFAULT_PROVIDER, model: DEFAULT_WORKERS_MODEL, allow_fallback: 0, instructions: '', reference_name: '', reference_data: '' }; }
 function normalizeProvider(value) { return String(value || '').toLowerCase() === 'gemini' ? 'gemini' : DEFAULT_PROVIDER; }
 function normalizeModel() { return DEFAULT_WORKERS_MODEL; }
 function hasWorkersAi(env) { return Boolean(env?.AI && typeof env.AI.run === 'function'); }
