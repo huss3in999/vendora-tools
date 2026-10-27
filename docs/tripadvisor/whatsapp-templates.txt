@@ -1,0 +1,19 @@
+ENGLISH — send once, about 40 minutes after a completed trip
+
+Hello [Client Name], thank you for riding with Vendora Transport from [Origin] to [Destination].
+
+Please share your honest experience about your driver, vehicle and journey on Tripadvisor to help other travelers:
+https://www.tripadvisor.com/UserReviewEdit-d34715134
+
+We look forward to welcoming you again. Let us know if you prefer no follow-up messages.
+
+العربية — تُرسل مرة واحدة بعد نحو ٤٠ دقيقة من اكتمال الرحلة
+
+مرحباً [اسم العميل]، شكراً لاختيارك ڤيندورا ترانسبورت لرحلتك من [نقطة الانطلاق] إلى [الوجهة].
+
+نرحب برأيك الصادق عن السائق والمركبة والرحلة على تريب أدفايزر لمساعدة المسافرين الآخرين:
+https://www.tripadvisor.com/UserReviewEdit-d34715134
+
+نتطلع لخدمتك مجدداً. إذا كنت لا ترغب برسائل متابعة، أخبرنا بذلك.
+
+Dispatch notes: replace placeholders, check the recipient, honor opt-outs, and request honest feedback from all completed-trip customers. Do not condition the request on a positive experience or offer incentives. These templates are not sent automatically.

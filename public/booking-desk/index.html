@@ -5396,6 +5396,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
 
   <!-- TOAST -->
   <div id="toast" class="toast"></div>
+  <script src="/booking-desk/tripadvisor-followups.js?v=20261023"></script>
   <script>
     'use strict';
 
@@ -7553,6 +7554,12 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
           if (target) Object.assign(target, res.booking);
           safeSetStorage('vendora_cached_bookings', JSON.stringify(App.bookings));
         }
+        if (payload.bookingStatus && window.VendoraReviewFollowups) {
+          const booking = App.bookings.find(x => x.id === bookingId);
+          if (payload.bookingStatus === 'Completed' && booking) {
+            window.VendoraReviewFollowups.completed({ ...booking, customerPhone: normalizeWhatsAppPhone(booking.customerPhone) });
+          } else window.VendoraReviewFollowups.reopened(bookingId);
+        }
         renderStream();
         return true;
       } catch (err) {
@@ -7667,6 +7674,7 @@ html[data-theme="light"] .tpl-btn.active { background: #0b192c; color: #fff; }
       try {
         const data = await apiRequest('/api/transport/booking-desk', 'GET', { action: 'getBoard' });
         if (data && Array.isArray(data.bookings)) {
+          window.VendoraReviewFollowups?.setAvailable(true);
           App.bookings = data.bookings.map(b => {
             if (b && b.id && (b.id.length > 20 || !/^V-\d+$/i.test(b.id))) {
               if (b._row && Number.isInteger(b._row) && b._row >= 2) {

@@ -21,8 +21,8 @@ function priceVisibilityGroup(routeId, destination = '') {
 
 export const DEFAULT_PUBLIC_SETTINGS = Object.freeze({
   "brand_display_name": "Vendora Transport",
-  "service_description_ar": "فندورا للنقل: خدمة نقل خاص ونقل ركاب وسائق خاص ورحلات عبر جسر الملك فهد ودول الخليج من البحرين.",
-  "service_description_en": "Vendora Transport: Private car with driver, chauffeur service, airport transfers and cross-border GCC transport from Bahrain.",
+  "service_description_ar": "تقدم ڤيندورا ترانسبورت نقلاً خاصاً بين دول الخليج في الاتجاهين، بما يشمل البحرين وجميع مناطق السعودية والكويت وقطر والإمارات العربية المتحدة وسلطنة عُمان، إضافة إلى تأجير سيارة خاصة مع سائق بالساعة أو ليوم كامل أو لعدة أيام داخل كل دولة. يتم تأكيد المسار والمركبة والتوفر قبل السفر.",
+  "service_description_en": "Vendora Transport provides private country-to-country transfers in both directions across Bahrain, all of Saudi Arabia, Kuwait, Qatar, the United Arab Emirates and Oman, plus hourly, full-day and multi-day private car-with-driver hire within each country. Routes, vehicles and availability are confirmed before travel.",
   "booking_whatsapp": "97333225954",
   "booking_whatsapp_enabled": true,
   "support_phone": "97333404044",
@@ -31,7 +31,7 @@ export const DEFAULT_PUBLIC_SETTINGS = Object.freeze({
   "public_email_enabled": true,
   "instagram_url": "",
   "tiktok_url": "",
-  "other_social_url": "",
+  "other_social_url": "https://www.linkedin.com/company/vendora-transport/",
   "operating_hours_ar": "يمكن إرسال طلب الرحلة في أي وقت، والتأكيد حسب التوفر.",
   "operating_hours_en": "Trip requests can be submitted at any time and are confirmed subject to availability.",
   "cash_enabled": true,

@@ -105,9 +105,6 @@ export function priceHidden(settings, route) {
 }
 
 export function businessEntity(business, lang = 'en') {
-  const reviews = reviewEntities(lang, business);
-  const ratingCount = reviews.length;
-  const ratingValue = Number(business.aggregate_rating?.value || business.aggregate_rating?.rating_value || 5.0);
   return {
     '@type': ['LocalBusiness', 'TravelAgency'],
     '@id': 'https://getvendora.net/#organization',
@@ -117,6 +114,14 @@ export function businessEntity(business, lang = 'en') {
     priceRange: '$$',
     identifier: { '@type': 'PropertyValue', propertyID: 'CR', value: business.cr_number },
     url: 'https://getvendora.net/',
+    logo: { '@type': 'ImageObject', url: 'https://getvendora.net/bahrain-saudi-gcc-transport/assets/brand/vendora-transport-app-icon-512.png', width: 512, height: 512 },
+    areaServed: [
+      ['BH', 'Bahrain', 'البحرين'], ['SA', 'Saudi Arabia', 'المملكة العربية السعودية'],
+      ['KW', 'Kuwait', 'الكويت'], ['QA', 'Qatar', 'قطر'],
+      ['AE', 'United Arab Emirates', 'الإمارات العربية المتحدة'], ['OM', 'Oman', 'سلطنة عُمان'],
+    ].map(([identifier, en, ar]) => ({ '@type': 'Country', identifier, name: lang === 'ar' ? ar : en })),
+    sameAs: ['https://www.tripadvisor.com/34715134', 'https://www.linkedin.com/company/vendora-transport/'],
+    email: business.public_email || 'booking@getvendora.net',
     telephone: `+${business.booking_whatsapp}`,
     address: {
       '@type': 'PostalAddress',
@@ -125,15 +130,7 @@ export function businessEntity(business, lang = 'en') {
       addressCountry: 'BH'
     },
     description: business[`service_description_${lang}`],
-    ...(business.review_policy?.publish_aggregate_rating === true ? { aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue,
-      reviewCount: ratingCount,
-      ratingCount,
-      bestRating: 5,
-      worstRating: 1
-    } } : {}),
-    review: reviewEntities(lang, business)
+    // Our own testimonials remain visible content, not self-serving review rich results.
   };
 }
 

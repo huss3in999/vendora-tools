@@ -9,7 +9,7 @@ const DEFAULT_PROMPT = `You are Vendora Transport's warm, professional Gulf/Saud
 const json = (data, status = 200, headers = {}) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...headers } });
 const cors = (request) => ({ 'access-control-allow-origin': request.headers.get('origin') || 'https://getvendora.net', 'access-control-allow-methods': 'GET, POST, OPTIONS', 'access-control-allow-headers': 'authorization, content-type', vary: 'Origin' });
 const clean = (value, max) => typeof value === 'string' ? value.trim().slice(0, max) : '';
-function defaultSettings() { return { enabled: 0, provider: DEFAULT_PROVIDER, model: DEFAULT_WORKERS_MODEL, allow_fallback: 0, instructions: '', reference_name: '', reference_data: '' }; }
+function defaultSettings() { return { enabled: 1, provider: DEFAULT_PROVIDER, model: DEFAULT_WORKERS_MODEL, allow_fallback: 1, instructions: '', reference_name: '', reference_data: '' }; }
 function normalizeProvider(value) { return String(value || '').toLowerCase() === 'gemini' ? 'gemini' : DEFAULT_PROVIDER; }
 function normalizeModel() { return DEFAULT_WORKERS_MODEL; }
 function hasWorkersAi(env) { return Boolean(env?.AI && typeof env.AI.run === 'function'); }

@@ -34,8 +34,8 @@ window.VENDORA_BUSINESS_CONFIG = Object.freeze({
   ],
   "cash_enabled": true,
   "benefitpay_enabled": true,
-  "service_description_ar": "فندورا للنقل: خدمة نقل خاص ونقل ركاب وسائق خاص ورحلات عبر جسر الملك فهد ودول الخليج من البحرين.",
-  "service_description_en": "Vendora Transport: Private car with driver, chauffeur service, airport transfers and cross-border GCC transport from Bahrain.",
+  "service_description_ar": "تقدم ڤيندورا ترانسبورت نقلاً خاصاً بين دول الخليج في الاتجاهين، بما يشمل البحرين وجميع مناطق السعودية والكويت وقطر والإمارات العربية المتحدة وسلطنة عُمان، إضافة إلى تأجير سيارة خاصة مع سائق بالساعة أو ليوم كامل أو لعدة أيام داخل كل دولة. يتم تأكيد المسار والمركبة والتوفر قبل السفر.",
+  "service_description_en": "Vendora Transport provides private country-to-country transfers in both directions across Bahrain, all of Saudi Arabia, Kuwait, Qatar, the United Arab Emirates and Oman, plus hourly, full-day and multi-day private car-with-driver hire within each country. Routes, vehicles and availability are confirmed before travel.",
   "default_whatsapp_message_ar": "مرحباً، أود معرفة تفاصيل الحجز والخدمة.",
   "default_whatsapp_message_en": "Hello, I would like to ask about booking and service details.",
   "complaints": {
@@ -50,7 +50,7 @@ window.VENDORA_BUSINESS_CONFIG = Object.freeze({
   "social_links": {
     "instagram_url": "",
     "tiktok_url": "",
-    "other_social_url": ""
+    "other_social_url": "https://www.linkedin.com/company/vendora-transport/"
   },
   "passenger_capacity_ar": "تُؤكد سعة الركاب والأمتعة فقط بعد تحديد فئة المركبة وتجهيزها الفعلي للحجز.",
   "passenger_capacity_en": "Passenger and luggage capacity is confirmed only after the assigned vehicle category and actual booking configuration are known.",
@@ -727,8 +727,8 @@ window.VENDORA_ROUTE_PRICES = Object.freeze([
 window.VENDORA_PUBLIC_CONFIG = Object.freeze({
   "settings": {
     "brand_display_name": "Vendora Transport",
-    "service_description_ar": "فندورا للنقل: خدمة نقل خاص ونقل ركاب وسائق خاص ورحلات عبر جسر الملك فهد ودول الخليج من البحرين.",
-    "service_description_en": "Vendora Transport: Private car with driver, chauffeur service, airport transfers and cross-border GCC transport from Bahrain.",
+    "service_description_ar": "تقدم ڤيندورا ترانسبورت نقلاً خاصاً بين دول الخليج في الاتجاهين، بما يشمل البحرين وجميع مناطق السعودية والكويت وقطر والإمارات العربية المتحدة وسلطنة عُمان، إضافة إلى تأجير سيارة خاصة مع سائق بالساعة أو ليوم كامل أو لعدة أيام داخل كل دولة. يتم تأكيد المسار والمركبة والتوفر قبل السفر.",
+    "service_description_en": "Vendora Transport provides private country-to-country transfers in both directions across Bahrain, all of Saudi Arabia, Kuwait, Qatar, the United Arab Emirates and Oman, plus hourly, full-day and multi-day private car-with-driver hire within each country. Routes, vehicles and availability are confirmed before travel.",
     "booking_whatsapp": "97333225954",
     "booking_whatsapp_enabled": true,
     "support_phone": "97333404044",
@@ -737,7 +737,7 @@ window.VENDORA_PUBLIC_CONFIG = Object.freeze({
     "public_email_enabled": true,
     "instagram_url": "",
     "tiktok_url": "",
-    "other_social_url": "",
+    "other_social_url": "https://www.linkedin.com/company/vendora-transport/",
     "operating_hours_ar": "يمكن إرسال طلب الرحلة في أي وقت، والتأكيد حسب التوفر.",
     "operating_hours_en": "Trip requests can be submitted at any time and are confirmed subject to availability.",
     "cash_enabled": true,

@@ -3,11 +3,13 @@ import { fileURLToPath } from 'node:url';
 import { resolve, dirname } from 'node:path';
 import { publishTrust } from './trust-publisher.mjs';
 import profiles from '../config/route-profiles.mjs';
+import { gccBrandCopy } from '../assets/gcc-brand-copy.mjs';
 import { businessEntity, pricingCopy } from '../assets/trust-schema.mjs';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const business = JSON.parse(readFileSync(resolve(root,'config/business-config.json'),'utf8'));
 const config = { settings:{public_prices_enabled:false}, routes:[] };
 const pairs = Object.keys(pricingCopy.ar).map((key)=>[pricingCopy.ar[key],pricingCopy.en[key]]);
+pairs.push(...Object.keys(gccBrandCopy.ar).map(key => [gccBrandCopy.ar[key], gccBrandCopy.en[key]]));
 pairs.push(['عروض أسعار المسارات الشائعة','Popular route quotes']);
 for (const slug of Object.keys(profiles)) {
   const texts = ['ar','en'].map((lang) => {
@@ -19,7 +21,7 @@ for (const slug of Object.keys(profiles)) {
   texts[0].forEach((ar,i) => { if(/[\u0600-\u06ff]/.test(ar)) pairs.push([ar,texts[1][i]]); });
 }
 const sitePath=resolve(root,'site.js'); let site=readFileSync(sitePath,'utf8');
-site=site.replace(/\s*\/\/ BEGIN GENERATED TRUST TRANSLATIONS[\s\S]*?\/\/ END GENERATED TRUST TRANSLATIONS\n/g,'\n');
+site=site.replace(/\s*\/\/ BEGIN GENERATED TRUST TRANSLATIONS[\s\S]*?\/\/ END GENERATED TRUST TRANSLATIONS\r?\n/g,'\n');
 site=site.replace('const translations = [',`const translations = [\n    // BEGIN GENERATED TRUST TRANSLATIONS\n${[...new Map(pairs.map(p=>[p[0],p])).values()].map(p=>'    '+JSON.stringify(p)+',').join('\n')}\n    // END GENERATED TRUST TRANSLATIONS\n`);
 const legalTemplate = "`${state.lang === 'en' ? config.legal_name : config.legal_name_ar} | ${state.lang === 'en' ? 'CR No:' : 'س.ت:'} ${config.cr_number} | ${state.lang === 'en' ? config.public_address : config.public_address_ar}`";
 site=site.replace(/crSmall.textContent = state.lang === 'en'[\s\S]*?;\n/,`crSmall.textContent = ${legalTemplate};\n`);

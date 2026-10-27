@@ -574,7 +574,16 @@ body.vendora-root-page {
   .dock-btn i { width: 18px; height: 18px; }
   .floating-wa { display: none !important; }
   body.vendora-root-page { padding-bottom: 74px; }
-  .ai-concierge-launcher { display: none; }
+  .ai-concierge-launcher {
+    bottom: 84px;
+    right: 16px;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+  }
+  [dir="rtl"] .ai-concierge-launcher {
+    right: auto;
+    left: 16px;
+  }
   
   .authority-cert-grid { grid-template-columns: 1fr 1fr; }
   .fleet-tier-grid { grid-template-columns: 1fr; }

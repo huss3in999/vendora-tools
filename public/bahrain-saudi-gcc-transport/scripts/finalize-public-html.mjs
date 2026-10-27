@@ -3,6 +3,7 @@ import { resolve, dirname, posix } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import profiles from '../config/route-profiles.mjs';
+import { gccBrandCopy } from '../assets/gcc-brand-copy.mjs';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const mediaPath = resolve(root,'config/responsive-media.json');
 const media = existsSync(mediaPath) ? JSON.parse(readFileSync(mediaPath,'utf8')) : {};
@@ -18,6 +19,54 @@ function classes(s, names) {
 }
 export function finalizePublicHtml(html, { slug, lang, url }) {
   const en = lang === 'en';
+  if (['home', 'english-home'].includes(slug)) {
+    const copy = gccBrandCopy[en ? 'en' : 'ar'];
+    const esc = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(copy.title)}</title>`)
+      .replace(/(<meta\b[^>]*(?:name|property)=["'](?:description|og:description|twitter:description)["'][^>]*content=["'])[^"']*(["'][^>]*>)/gi, `$1${esc(copy.description)}$2`)
+      .replace(/(<meta\b[^>]*(?:name|property)=["'](?:og:title|twitter:title)["'][^>]*content=["'])[^"']*(["'][^>]*>)/gi, `$1${esc(copy.title)}$2`)
+      .replace(/(<meta\b[^>]*name="keywords"[^>]*content=")[^"]*("[^>]*>)/gi, `$1${esc(copy.keywords)}$2`)
+      .replace(/<h1\b[^>]*>[\s\S]*?<\/h1>/i, `<h1>${copy.heading}</h1>`)
+      .replace(/<p class="lead">[\s\S]*?<\/p>/i, `<p class="lead">${copy.lead}</p>`)
+      .replace(/<p class="home-hero-mobile-summary">[\s\S]*?<\/p>/i, `<p class="home-hero-mobile-summary">${copy.countries}</p>`)
+      .replace(/<span class="eyebrow"><strong>[\s\S]*?<\/strong><\/span>/i, `<span class="eyebrow"><strong>${copy.eyebrow}</strong></span>`)
+      .replace(/<ul class="hero-points">[\s\S]*?<\/ul>/i, `<ul class="hero-points"><li>${copy.countries}</li><li>${copy.transferHeading}</li><li>${copy.localHeading}</li><li>${copy.note}</li></ul>`);
+    html = html.replace('المسار الرئيسي: البحرين ⇄ الرياض ونقل خاص للسعودية والخليج', copy.eyebrow);
+    html = html.replace(/(<div class="hero-actions"[^>]*>)([\s\S]*?)(<\/div>)/i, (_, open, body, close) => {
+      let index = 0;
+      body = body.replace(/<a\b[^>]*>/g, tag => {
+        if (!/wa\.me|data-wa-message/.test(tag)) return tag;
+        const phone = tag.match(/wa\.me\/(\d+)/)?.[1] || '97333225954';
+        return set(set(tag, 'href', `https://wa.me/${phone}?text=${encodeURIComponent(copy.bookingMessage)}`), 'data-wa-message', copy.bookingMessage);
+      });
+      return open + body.replace(/<a class="ghost-btn"[^>]*>[\s\S]*?<\/a>/g, () => index++ === 0
+        ? `<a class="ghost-btn" href="/bahrain-saudi-gcc-transport/${en ? 'en/' : ''}gcc-destinations/">${copy.transferCta}</a>`
+        : `<a class="ghost-btn" href="${url === 'https://getvendora.net/' ? '#booking-section' : '#booking'}">${copy.localCta}</a>`) + close;
+    });
+    html = html.replace(/(<script\b[^>]*type="application\/ld\+json"[^>]*>)([\s\S]*?)(<\/script>)/g, (match, open, content, close) => {
+      try {
+        const data = JSON.parse(content);
+        for (const node of data['@graph'] || []) if (node['@type'] === 'WebPage') node.name = copy.title;
+        return open + JSON.stringify(data).replace(/</g, '\\u003c') + close;
+      } catch { return match; }
+    });
+    html = html.replace(/<section\b[^>]*data-gcc-service-overview[^>]*>[\s\S]*?<\/section>/g, '');
+    const base = `/bahrain-saudi-gcc-transport/${en ? 'en/' : ''}`;
+    const booking = url === 'https://getvendora.net/' ? '#booking-section' : '#booking';
+    const section = `<section class="section" data-gcc-service-overview><div class="container section-shell"><div class="section-head"><span class="section-kicker">${copy.countries}</span><h2>${copy.serviceHeading}</h2></div><div class="route-grid"><article class="price-card"><h3>${copy.transferHeading}</h3><p>${copy.transferBody}</p><a class="primary-btn" href="${base}gcc-destinations/">${copy.transferCta}</a></article><article class="price-card"><h3>${copy.localHeading}</h3><p>${copy.localBody}</p><a class="primary-btn" href="${booking}">${copy.localCta}</a></article></div></div></section>`;
+    html = html.replace(/<\/section>/i, `</section>${section}`);
+  }
+  // Keep third-party profile links crawlable and separate from our own testimonials.
+  html = html.replace(/<div data-tripadvisor-links>[\s\S]*?<\/div>/g, '');
+  html = html.replace(/<p data-linkedin-link>[\s\S]*?<\/p>/g, '');
+  if (/<footer\b/.test(html) && (url === 'https://getvendora.net/' || url.includes('/bahrain-saudi-gcc-transport/'))) {
+    const label = en ? 'Find Vendora Transport on Tripadvisor' : 'ڤيندورا ترانسبورت على تريب أدفايزر';
+    const cta = en ? 'Review your journey on Tripadvisor' : 'قيّم رحلتك على تريب أدفايزر';
+    const copy = en ? 'Travelled with Vendora? Share your honest feedback to help other travelers.' : 'سافرت مع ڤيندورا؟ شارك رأيك الصادق لمساعدة المسافرين الآخرين.';
+    html = html.replace(/<\/footer>/i, `<div data-tripadvisor-links><p><a href="https://www.tripadvisor.com/34715134" target="_blank" rel="noopener noreferrer"><img src="/assets/tripadvisor-badge.svg" alt="" width="160" height="40" loading="lazy" decoding="async"> ${label}</a></p><p>${copy}</p><p><a href="https://www.tripadvisor.com/UserReviewEdit-d34715134" target="_blank" rel="noopener noreferrer">${cta}</a></p></div></footer>`);
+    const linkedinLabel = en ? 'Follow Vendora Transport on LinkedIn' : 'تابع فندورا ترانسبورت على لينكدإن';
+    html = html.replace(/<\/footer>/i, `<p data-linkedin-link><a href="https://www.linkedin.com/company/vendora-transport/" target="_blank" rel="noopener noreferrer">${linkedinLabel}</a></p></footer>`);
+  }
   if(en) html=html.replace(/<a\b([^>]*)>\s*العربية\s*<\/a>/gi,(_,attrs)=>classes(`<a${attrs}>`,'lang-toggle')+'Arabic</a>');
   // Curated testimonials are distinct from the separately moderated Passenger Care feed.
   const labels = en ? [
